@@ -13,6 +13,7 @@ return array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
+        'DefaultModule',
         'Users',
         'Utilities',
         'Mustache',

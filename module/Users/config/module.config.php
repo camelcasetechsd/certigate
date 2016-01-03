@@ -14,6 +14,8 @@ return array(
         ),
         'factories' => array(
             'Users\Model\User' => 'Users\Model\UserFactory',
+            'Users\Auth\Authentication' => 'Users\Auth\AuthenticationFactory',
+            'Users\Event\AuthenticationEvent' => 'Users\Event\AuthenticationEventFactory'
         ),
     ),
     'doctrine' => array(
