@@ -1,0 +1,16 @@
+{
+    "name": "camelcasetechsd/certigate",
+    "description": "Certigate website",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.3.3",
+        "doctrine/doctrine-orm-module": "0.*",
+        "widmogrod/zf2-mustache-module": "dev-master"
+    },
+    "require-dev": {
+        "zendframework/zftool": "dev-master",
+        "phpunit/phpunit": "4.7.x",
+        "apigen/apigen": "2.8.1"
+    }
+}
