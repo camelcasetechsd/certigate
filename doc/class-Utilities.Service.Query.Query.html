@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class Utilities\Service\Query\Query | certigate</title>
+
+	<link rel="stylesheet" href="resources/style.css?3901564645">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li><a href="namespace-CustomMustache.html">CustomMustache<span></span></a>
+						<ul>
+				<li><a href="namespace-CustomMustache.Service.html">Service</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
+				<li><a href="namespace-Users.html">Users<span></span></a>
+						<ul>
+				<li><a href="namespace-Users.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Users.Entity.html">Entity</a>
+						</li>
+				<li><a href="namespace-Users.Form.html">Form</a>
+						</li>
+				<li><a href="namespace-Users.Model.html">Model</a>
+						</li>
+							</ul></li>
+				<li class="active"><a href="namespace-Utilities.html">Utilities<span></span></a>
+						<ul>
+				<li><a href="namespace-Utilities.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Utilities.Form.html">Form</a>
+						</li>
+				<li class="active"><a href="namespace-Utilities.Service.html">Service<span></span></a>
+						<ul>
+				<li class="active"><a href="namespace-Utilities.Service.Query.html">Query</a>
+						</li>
+							</ul></li></ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Utilities.Service.Query.Query.html">Query</a></li>
+				<li><a href="class-Utilities.Service.Query.QueryFactory.html">QueryFactory</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Utilities.Service.Query.html" title="Summary of Utilities\Service\Query"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Query</h1>
+
+
+	<div class="description">
+	
+<p>Query</p>
+
+<p>Handles database queries related business Wrapping commonly used database
+queries</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Utilities.html">Utilities</a>\<a href="namespace-Utilities.Service.html">Service</a>\<a href="namespace-Utilities.Service.Query.html">Query</a><br>
+		<b>Package:</b> utilities\query<br>
+
+				<b>Used by:</b>
+				<code><code><a href="class-Utilities.Service.Query.QueryFactory.html#_createService">Utilities\Service\Query\QueryFactory::createService()</a></code></code> <br>
+		<b>Located at</b> <a href="source-class-Utilities.Service.Query.Query.html#8-205" title="Go to source code">Utilities/src/Utilities/Service/Query/Query.php</a><br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#43-52" title="Go to source code">__construct</a>( <span>Doctrine\Common\Persistence\ObjectManager <var>$entityManager</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set needed properties</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set needed properties</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityManager</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setEntity" id="_setEntity">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Utilities.Service.Query.Query.html">Utilities\Service\Query\Query</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setEntity">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#54-68" title="Go to source code">setEntity</a>( <span>string <var>$entityName</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set entity that is to-be-queried</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set entity that is to-be-queried</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Utilities.Service.Query.Query.html">Utilities\Service\Query\Query</a></code></code><br>\Utilities\Service\Query\Query<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="find" id="_find">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_find">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#70-82" title="Go to source code">find</a>( <span>string <var>$entityName</var></span>, <span>mixed <var>$id</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Finds an entity by its primary key / identifier.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Finds an entity by its primary key / identifier.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+					<dt><var>$id</var></dt>
+					<dd>The identifier.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>object|null The entity instance or NULL if the entity can not be found.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="findAll" id="_findAll">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_findAll">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#84-94" title="Go to source code">findAll</a>( <span>string <var>$entityName</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Finds all entities in the repository.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Finds all entities in the repository.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>The entities.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="findBy" id="_findBy">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_findBy">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#96-111" title="Go to source code">findBy</a>( <span>string <var>$entityName</var></span>, <span>array <var>$criteria</var></span>, <span>array <var>$orderBy</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$limit</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$offset</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Finds entities by a set of criteria.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Finds entities by a set of criteria.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+					<dt><var>$criteria</var></dt>
+					<dd></dd>
+					<dt><var>$orderBy</var></dt>
+					<dd>,default is null</dd>
+					<dt><var>$limit</var></dt>
+					<dd>,default is null</dd>
+					<dt><var>$offset</var></dt>
+					<dd>,default is null</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>The objects.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="findOneBy" id="_findOneBy">
+
+		<td class="attributes"><code>
+			 public 
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_findOneBy">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#113-126" title="Go to source code">findOneBy</a>( <span>string <var>$entityName</var></span>, <span>array <var>$criteria</var></span>, <span>array <var>$orderBy</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Finds a single entity by a set of criteria.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Finds a single entity by a set of criteria.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+					<dt><var>$criteria</var></dt>
+					<dd></dd>
+					<dt><var>$orderBy</var></dt>
+					<dd>,default is null</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br>object|null The entity instance or NULL if the entity can not be found.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="filter" id="_filter">
+
+		<td class="attributes"><code>
+			 public 
+			type
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_filter">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#128-150" title="Go to source code">filter</a>( <span>string <var>$entityName</var></span>, <span>mixed <var>$criteria</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$countFlag</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Filter entities by a set of criteria. Only count of entities can be
+retrieved</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Filter entities by a set of criteria. Only count of entities can be
+retrieved</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entityName</var></dt>
+					<dd></dd>
+					<dt><var>$criteria</var></dt>
+					<dd>Criteria instance ,default is bool false</dd>
+					<dt><var>$countFlag</var></dt>
+					<dd>,default is bool false</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>type</code><br>type<br>
+				</div>
+
+
+				<h4>Uses</h4>
+				<div class="list">
+						Criteria<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="save" id="_save">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_save">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#152-191" title="Go to source code">save</a>( <span>mixed <var>$entity</var></span>, <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Save entity in database If entity's association hold id not actual object,
+Then find that object to set the corresponding property with it If data is
+passed to method, then if exchangeArray method exists in entity, It will be
+called with the passed data as a parameter</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Save entity in database If entity's association hold id not actual object,
+Then find that object to set the corresponding property with it If data is
+passed to method, then if exchangeArray method exists in entity, It will be
+called with the passed data as a parameter</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entity</var></dt>
+					<dd>entity object to be persisted</dd>
+					<dt><var>$data</var></dt>
+					<dd>,default is empty array</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="remove" id="_remove">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_remove">#</a>
+		<code><a href="source-class-Utilities.Service.Query.Query.html#193-203" title="Go to source code">remove</a>( <span>mixed <var>$entity</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Remove entity from database</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Remove entity from database</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$entity</var></dt>
+					<dd>entity object to be removed</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="entityManager" id="$entityManager">
+		<td class="attributes"><code>
+			public  
+			Doctrine\Common\Persistence\ObjectManager
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#25-29" title="Go to source code"><var>$entityManager</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#$entityManager" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="entityRepository" id="$entityRepository">
+		<td class="attributes"><code>
+			public  
+			Doctrine\Common\Persistence\ObjectRepository
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#31-35" title="Go to source code"><var>$entityRepository</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#$entityRepository" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="entityName" id="$entityName">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#37-41" title="Go to source code"><var>$entityName</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#$entityName" class="anchor">#</a><code></code></div></td>
+	</tr>
+	</table>
+
+
+
+	<table class="summary properties" id="magicProperties">
+	<caption>Magic properties summary</caption>
+	<tr data-order="entityManager" id="m$entityManager">
+		<td class="attributes"><code>
+			public  
+			Doctrine\Common\Persistence\ObjectManager
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#16" title="Go to source code"><var>$entityManager</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="entityRepository" id="m$entityRepository">
+		<td class="attributes"><code>
+			public  
+			Doctrine\Common\Persistence\ObjectRepository
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#17" title="Go to source code"><var>$entityRepository</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="entityName" id="m$entityName">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Utilities.Service.Query.Query.html#18" title="Go to source code"><var>$entityName</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+</div>
+
+	<div id="footer">
+		certigate API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?3380057051"></script>
+<script src="elementlist.js?2754230898"></script>
+</body>
+</html>

@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class Users\Entity\User | certigate</title>
+
+	<link rel="stylesheet" href="resources/style.css?3901564645">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li><a href="namespace-CustomMustache.html">CustomMustache<span></span></a>
+						<ul>
+				<li><a href="namespace-CustomMustache.Service.html">Service</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
+				<li class="active"><a href="namespace-Users.html">Users<span></span></a>
+						<ul>
+				<li><a href="namespace-Users.Controller.html">Controller</a>
+						</li>
+				<li class="active"><a href="namespace-Users.Entity.html">Entity</a>
+						</li>
+				<li><a href="namespace-Users.Form.html">Form</a>
+						</li>
+				<li><a href="namespace-Users.Model.html">Model</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-Utilities.html">Utilities<span></span></a>
+						<ul>
+				<li><a href="namespace-Utilities.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Utilities.Form.html">Form</a>
+						</li>
+				<li><a href="namespace-Utilities.Service.html">Service<span></span></a>
+						<ul>
+				<li><a href="namespace-Utilities.Service.Query.html">Query</a>
+						</li>
+							</ul></li></ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Users.Entity.Role.html">Role</a></li>
+				<li class="active"><a href="class-Users.Entity.User.html">User</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Users.Entity.html" title="Summary of Users\Entity"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class User</h1>
+
+
+	<div class="description">
+	
+<p>User Entity</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Users.html">Users</a>\<a href="namespace-Users.Entity.html">Entity</a><br>
+		<b>Package:</b> users\entity<br>
+
+				<b>Used by:</b>
+				<code><code><a href="class-Users.Controller.IndexController.html#_newAction">Users\Controller\IndexController::newAction()</a></code></code> <br>
+				<b>Used by:</b>
+				<code><code><a href="class-Users.Model.User.html#_saveUser">Users\Model\User::saveUser()</a></code></code> <br>
+				<b>ORM\Entity</b>
+				<br>
+				<b>ORM\Table(name="user")</b>
+				<br>
+		<b>Located at</b> <a href="source-class-Users.Entity.User.html#10-568" title="Go to source code">Users/src/Users/Entity/User.php</a><br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="hashPassword" id="_hashPassword">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_hashPassword">#</a>
+		<code><a href="source-class-Users.Entity.User.html#128-142" title="Go to source code">hashPassword</a>( <span>string <var>$password</var></span> )</code>
+
+		<div class="description short">
+			
+<p>hash password</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>hash password</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$password</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>hashed password<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="verifyPassword" id="_verifyPassword">
+
+		<td class="attributes"><code>
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_verifyPassword">#</a>
+		<code><a href="source-class-Users.Entity.User.html#144-159" title="Go to source code">verifyPassword</a>( <span>string <var>$givenPassword</var></span>, <span>string <var>$savedPassword</var></span> )</code>
+
+		<div class="description short">
+			
+<p>verify submitted password matches the saved one</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>verify submitted password matches the saved one</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$givenPassword</var></dt>
+					<dd></dd>
+					<dt><var>$savedPassword</var></dt>
+					<dd>hashed password</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br>true if passwords mathced, false else<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getDateOfBirth" id="_getDateOfBirth">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DateTime.html">DateTime</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getDateOfBirth">#</a>
+		<code><a href="source-class-Users.Entity.User.html#161-170" title="Go to source code">getDateOfBirth</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get dateOfBirth</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get dateOfBirth</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DateTime.html">DateTime</a></code></code><br>dateOfBirth<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getDescription" id="_getDescription">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getDescription">#</a>
+		<code><a href="source-class-Users.Entity.User.html#172-181" title="Go to source code">getDescription</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get description</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get description</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>description<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getMaritalStatus" id="_getMaritalStatus">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getMaritalStatus">#</a>
+		<code><a href="source-class-Users.Entity.User.html#183-192" title="Go to source code">getMaritalStatus</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get maritalStatus</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get maritalStatus</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>maritalStatus<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getMobile" id="_getMobile">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getMobile">#</a>
+		<code><a href="source-class-Users.Entity.User.html#194-203" title="Go to source code">getMobile</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get mobile</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get mobile</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>mobile<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getName" id="_getName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getName">#</a>
+		<code><a href="source-class-Users.Entity.User.html#205-214" title="Go to source code">getName</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get name</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get name</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>name<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPassword" id="_getPassword">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPassword">#</a>
+		<code><a href="source-class-Users.Entity.User.html#216-225" title="Go to source code">getPassword</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get password</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get password</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>password<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPhoto" id="_getPhoto">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPhoto">#</a>
+		<code><a href="source-class-Users.Entity.User.html#227-236" title="Go to source code">getPhoto</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get photo</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get photo</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>photo<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getRole" id="_getRole">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.Role.html">Users\Entity\Role</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getRole">#</a>
+		<code><a href="source-class-Users.Entity.User.html#238-247" title="Go to source code">getRole</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get role</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get role</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.Role.html">Users\Entity\Role</a></code></code><br>role<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getStatus" id="_getStatus">
+
+		<td class="attributes"><code>
+			 public 
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getStatus">#</a>
+		<code><a href="source-class-Users.Entity.User.html#249-258" title="Go to source code">getStatus</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get status</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get status</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br>status<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getUsername" id="_getUsername">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getUsername">#</a>
+		<code><a href="source-class-Users.Entity.User.html#260-269" title="Go to source code">getUsername</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get username</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get username</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>username<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setDateOfBirth" id="_setDateOfBirth">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setDateOfBirth">#</a>
+		<code><a href="source-class-Users.Entity.User.html#271-282" title="Go to source code">setDateOfBirth</a>( <span><code><a href="class-DateTime.html">DateTime</a></code> <var>$dateOfBirth</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set dateOfBirth</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set dateOfBirth</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$dateOfBirth</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setDescription" id="_setDescription">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setDescription">#</a>
+		<code><a href="source-class-Users.Entity.User.html#284-295" title="Go to source code">setDescription</a>( <span>string <var>$description</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set description</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set description</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$description</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setMaritalStatus" id="_setMaritalStatus">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setMaritalStatus">#</a>
+		<code><a href="source-class-Users.Entity.User.html#297-308" title="Go to source code">setMaritalStatus</a>( <span>string <var>$maritalStatus</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set maritalStatus</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set maritalStatus</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$maritalStatus</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setMobile" id="_setMobile">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setMobile">#</a>
+		<code><a href="source-class-Users.Entity.User.html#310-321" title="Go to source code">setMobile</a>( <span>string <var>$mobile</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set mobile</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set mobile</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$mobile</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setName" id="_setName">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setName">#</a>
+		<code><a href="source-class-Users.Entity.User.html#323-334" title="Go to source code">setName</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set name</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set name</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPassword" id="_setPassword">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPassword">#</a>
+		<code><a href="source-class-Users.Entity.User.html#336-347" title="Go to source code">setPassword</a>( <span>string <var>$password</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set password</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set password</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$password</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPhoto" id="_setPhoto">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPhoto">#</a>
+		<code><a href="source-class-Users.Entity.User.html#349-360" title="Go to source code">setPhoto</a>( <span>string <var>$photo</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set photo</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set photo</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$photo</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setRole" id="_setRole">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setRole">#</a>
+		<code><a href="source-class-Users.Entity.User.html#362-373" title="Go to source code">setRole</a>( <span>Users/Entity/Role <var>$role</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set role</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set role</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$role</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setStatus" id="_setStatus">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setStatus">#</a>
+		<code><a href="source-class-Users.Entity.User.html#375-386" title="Go to source code">setStatus</a>( <span>integer <var>$status</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set status</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set status</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$status</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setUsername" id="_setUsername">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setUsername">#</a>
+		<code><a href="source-class-Users.Entity.User.html#388-399" title="Go to source code">setUsername</a>( <span>string <var>$username</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set username</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set username</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$username</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-Users.Entity.User.html">Users\Entity\User</a></code></code><br>current entity<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getArrayCopy" id="_getArrayCopy">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getArrayCopy">#</a>
+		<code><a href="source-class-Users.Entity.User.html#401-410" title="Go to source code">getArrayCopy</a>( )</code>
+
+		<div class="description short">
+			
+<p>Convert the object to an array.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Convert the object to an array.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>current entity properties<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="exchangeArray" id="_exchangeArray">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_exchangeArray">#</a>
+		<code><a href="source-class-Users.Entity.User.html#412-433" title="Go to source code">exchangeArray</a>( <span>array <var>$data</var> = <span class="php-keyword1">array</span>()</span> )</code>
+
+		<div class="description short">
+			
+<p>Populate from an array.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Populate from an array.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd>,default is empty array</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setInputFilter" id="_setInputFilter">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setInputFilter">#</a>
+		<code><a href="source-class-Users.Entity.User.html#435-445" title="Go to source code">setInputFilter</a>( <span>Zend\InputFilter\InputFilterInterface <var>$inputFilter</var></span> )</code>
+
+		<div class="description short">
+			
+<p>setting inputFilter is forbidden</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>setting inputFilter is forbidden</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$inputFilter</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-Exception.html">Exception</a></code></code><br>\Exception<br>
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getInputFilter" id="_getInputFilter">
+
+		<td class="attributes"><code>
+			 public 
+			Zend\InputFilter\InputFilter
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getInputFilter">#</a>
+		<code><a href="source-class-Users.Entity.User.html#447-566" title="Go to source code">getInputFilter</a>( )</code>
+
+		<div class="description short">
+			
+<p>set validation constraints</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>set validation constraints</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Zend\InputFilter\InputFilter</code><br>validation constraints<br>
+				</div>
+
+
+				<h4>Uses</h4>
+				<div class="list">
+						InputFilter<br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary constants" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="STATUS_ACTIVE" id="STATUS_ACTIVE">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Users.Entity.User.html#34-37" title="Go to source code"><b>STATUS_ACTIVE</b></a>
+			</code>
+
+			<div class="description short">
+				
+<p>User is active</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>User is active</p>
+
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#STATUS_ACTIVE" class="anchor">#</a><code><span class="php-num">1</span></code></div></td>
+	</tr>
+	<tr data-order="STATUS_DELETED" id="STATUS_DELETED">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name">
+			<code>
+				<a href="source-class-Users.Entity.User.html#38-41" title="Go to source code"><b>STATUS_DELETED</b></a>
+			</code>
+
+			<div class="description short">
+				
+<p>User is deleted</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>User is deleted</p>
+
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#STATUS_DELETED" class="anchor">#</a><code><span class="php-num">2</span></code></div></td>
+	</tr>
+	</table>
+
+
+
+
+	<table class="summary properties" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="inputFilter" id="$inputFilter">
+		<td class="attributes"><code>
+			private  
+			Zend\InputFilter\InputFilter
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#43-47" title="Go to source code"><var>$inputFilter</var></a>
+
+			<div class="description short">
+				
+<p>validation constraints</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>validation constraints</p>
+
+
+			</div>
+		</td>
+		<td class="value"><div><a href="#$inputFilter" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="id" id="$id">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#49-55" title="Go to source code"><var>$id</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="integer");</h4>
+					<div class="list">
+					</div>
+					<h4>ORM\GeneratedValue(strategy="AUTO")</h4>
+					<div class="list">
+					</div>
+					<h4>ORM\Id</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$id" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="name" id="$name">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#57-62" title="Go to source code"><var>$name</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string")</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$name" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="username" id="$username">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#64-69" title="Go to source code"><var>$username</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string"</h4>
+					<div class="list">
+							, unique=true)<br>
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$username" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="password" id="$password">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#71-76" title="Go to source code"><var>$password</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string"</h4>
+					<div class="list">
+							, length =64)<br>
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$password" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="mobile" id="$mobile">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#78-83" title="Go to source code"><var>$mobile</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string"</h4>
+					<div class="list">
+							, length = 11 )<br>
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$mobile" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="dateOfBirth" id="$dateOfBirth">
+		<td class="attributes"><code>
+			public  
+			<code><a href="class-DateTime.html">DateTime</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#85-90" title="Go to source code"><var>$dateOfBirth</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="date")</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$dateOfBirth" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="photo" id="$photo">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#92-97" title="Go to source code"><var>$photo</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string")</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$photo" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="maritalStatus" id="$maritalStatus">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#99-104" title="Go to source code"><var>$maritalStatus</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string"</h4>
+					<div class="list">
+							)<br>
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$maritalStatus" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="description" id="$description">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#106-111" title="Go to source code"><var>$description</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="string"</h4>
+					<div class="list">
+							, length = 1024 )<br>
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$description" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="role" id="$role">
+		<td class="attributes"><code>
+			public  
+			<code><a href="class-Users.Entity.Role.html">Users\Entity\Role</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#113-119" title="Go to source code"><var>$role</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\JoinColumn(name="role_id",</h4>
+					<div class="list">
+							referencedColumnName="id")<br>
+					</div>
+					<h4>ORM\ManyToOne(targetEntity="Users\Entity\Role")</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$role" class="anchor">#</a><code></code></div></td>
+	</tr>
+	<tr data-order="status" id="$status">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#121-126" title="Go to source code"><var>$status</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>ORM\Column(type="integer")</h4>
+					<div class="list">
+					</div>
+			</div>
+		</td>
+		<td class="value"><div><a href="#$status" class="anchor">#</a><code></code></div></td>
+	</tr>
+	</table>
+
+
+
+	<table class="summary properties" id="magicProperties">
+	<caption>Magic properties summary</caption>
+	<tr data-order="inputFilter" id="m$inputFilter">
+		<td class="attributes"><code>
+			public  
+			Zend\InputFilter\InputFilter
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#16" title="Go to source code"><var>$inputFilter</var></a>
+
+			<div class="description short">
+				
+<p>validation constraints</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>validation constraints</p>
+
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="id" id="m$id">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#17" title="Go to source code"><var>$id</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="name" id="m$name">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#18" title="Go to source code"><var>$name</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="username" id="m$username">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#19" title="Go to source code"><var>$username</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="password" id="m$password">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#20" title="Go to source code"><var>$password</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="mobile" id="m$mobile">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#21" title="Go to source code"><var>$mobile</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="dateOfBirth" id="m$dateOfBirth">
+		<td class="attributes"><code>
+			public  
+			<code><a href="class-DateTime.html">DateTime</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#22" title="Go to source code"><var>$dateOfBirth</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="photo" id="m$photo">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#23" title="Go to source code"><var>$photo</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="maritalStatus" id="m$maritalStatus">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#24" title="Go to source code"><var>$maritalStatus</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="description" id="m$description">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#25" title="Go to source code"><var>$description</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="role" id="m$role">
+		<td class="attributes"><code>
+			public  
+			<code><a href="class-Users.Entity.Role.html">Users\Entity\Role</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#26" title="Go to source code"><var>$role</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	<tr data-order="status" id="m$status">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Users.Entity.User.html#27" title="Go to source code"><var>$status</var></a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+</div>
+
+	<div id="footer">
+		certigate API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?3380057051"></script>
+<script src="elementlist.js?2754230898"></script>
+</body>
+</html>

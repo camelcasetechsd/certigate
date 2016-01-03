@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class Utilities\Service\Inflector | certigate</title>
+
+	<link rel="stylesheet" href="resources/style.css?3901564645">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li><a href="namespace-CustomMustache.html">CustomMustache<span></span></a>
+						<ul>
+				<li><a href="namespace-CustomMustache.Service.html">Service</a>
+						</li>
+							</ul></li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
+				<li><a href="namespace-Users.html">Users<span></span></a>
+						<ul>
+				<li><a href="namespace-Users.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Users.Entity.html">Entity</a>
+						</li>
+				<li><a href="namespace-Users.Form.html">Form</a>
+						</li>
+				<li><a href="namespace-Users.Model.html">Model</a>
+						</li>
+							</ul></li>
+				<li class="active"><a href="namespace-Utilities.html">Utilities<span></span></a>
+						<ul>
+				<li><a href="namespace-Utilities.Controller.html">Controller</a>
+						</li>
+				<li><a href="namespace-Utilities.Form.html">Form</a>
+						</li>
+				<li class="active"><a href="namespace-Utilities.Service.html">Service<span></span></a>
+						<ul>
+				<li><a href="namespace-Utilities.Service.Query.html">Query</a>
+						</li>
+							</ul></li></ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Utilities.Service.Inflector.html">Inflector</a></li>
+				<li><a href="class-Utilities.Service.Random.html">Random</a></li>
+				<li><a href="class-Utilities.Service.Time.html">Time</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-Utilities.Service.html" title="Summary of Utilities\Service"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+			<li>
+				<a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+			</li>
+			<li>
+				<a href="todo.html" title="Todo list"><span>Todo</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Inflector</h1>
+
+
+	<div class="description">
+	
+<p>Inflector for pluralize and singularize English nouns.</p>
+
+<p>This Inflector is a port of Ruby on Rails Inflector.</p>
+
+<p>It can be really helpful for developers that want to create frameworks based
+on naming conventions rather than configurations.</p>
+
+<p>It was ported to PHP for the Akelos Framework, a multilingual Ruby on Rails
+like framework for PHP that will be launched soon.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Utilities.html">Utilities</a>\<a href="namespace-Utilities.Service.html">Service</a><br>
+		<b>Package:</b> utilities\service<br>
+
+				<b>Copyright:</b>
+				Copyright (c) 2002-2006, Akelos Media, S.L. <a
+href="http://www.akelos.org">http://www.akelos.org</a><br>
+				<b>License:</b>
+				<a href="GNU">Lesser General Public License &lt;http://www.gnu.org/copyleft/lesser.html&gt;</a><br>
+				<b>Author:</b>
+				Bermi Ferrer Martinez &lt;bermi akelos com&gt;<br>
+				<b>Version:</b>
+				$Revision 0.1 $<br>
+				<b>Since:</b>
+				0.1<br>
+				<b>Used by:</b>
+				<code><code><a href="class-Utilities.Form.Form.html#___construct">Utilities\Form\Form::__construct()</a></code></code> <br>
+		<b>Located at</b> <a href="source-class-Utilities.Service.Inflector.html#20-361" title="Go to source code">Utilities/src/Utilities/Service/Inflector.php</a><br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="pluralize" id="_pluralize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pluralize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#47-105" title="Go to source code">pluralize</a>( <span>string <var>$word</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Pluralizes English nouns.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Pluralizes English nouns.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>English noun to pluralize</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Plural noun<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="singularize" id="_singularize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_singularize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#110-175" title="Go to source code">singularize</a>( <span>string <var>$word</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Singularizes English nouns.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Singularizes English nouns.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>English noun to singularize</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Singular noun.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="titleize" id="_titleize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_titleize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#180-201" title="Go to source code">titleize</a>( <span>string <var>$word</var></span>, <span>string <var>$uppercase</var> = <span class="php-quote">''</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Converts an underscored or CamelCase word into a English sentence.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Converts an underscored or CamelCase word into a English sentence.</p>
+
+<p>The titleize function converts text like "WelcomePage", "welcome_page" or
+"welcome page" to this "Welcome Page". If second parameter is set to 'first' it
+will only capitalize the first character of the title.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>Word to format as tile</dd>
+					<dt><var>$uppercase</var></dt>
+					<dd>If set to 'first' it will only uppercase the first character. Otherwise it will
+uppercase all the words in the title.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Text formatted as title<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="camelize" id="_camelize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_camelize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#206-221" title="Go to source code">camelize</a>( <span>string <var>$word</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Returns given word as CamelCased</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Returns given word as CamelCased</p>
+
+<p>Converts a word like "send_email" to "SendEmail". It will remove non
+alphanumeric character from the word, so "who's online" will be converted to
+"WhoSOnline"</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>Word to convert to camel case</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>UpperCamelCasedWord<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Utilities.Service.Inflector.html#_variablize">Utilities\Service\Inflector::variablize()</a></code></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="underscore" id="_underscore">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_underscore">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#226-241" title="Go to source code">underscore</a>( <span>string <var>$word</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Converts a word "into_it_s_underscored_version"</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Converts a word "into_it_s_underscored_version"</p>
+
+<p>Convert any "CamelCased" or "ordinary Word" into an "underscored_word".</p>
+
+<p>This can be really useful for creating friendly URLs.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>Word to underscore</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Underscored word<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="humanize" id="_humanize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_humanize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#246-266" title="Go to source code">humanize</a>( <span>string <var>$word</var></span>, <span>string <var>$uppercase</var> = <span class="php-quote">''</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Returns a human-readable string from $word</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Returns a human-readable string from $word</p>
+
+<p>Returns a human-readable string from $word, by replacing underscores with a
+space, and by upper-casing the initial character by default.</p>
+
+<p>If you need to uppercase all the words you just have to pass 'all' as a
+second parameter.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>String to "humanize"</dd>
+					<dt><var>$uppercase</var></dt>
+					<dd>If set to 'all' it will uppercase all the words instead of just the first one.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Human-readable word<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="variablize" id="_variablize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_variablize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#271-287" title="Go to source code">variablize</a>( <span>string <var>$word</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Same as camelize but first char is underscored</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Same as camelize but first char is underscored</p>
+
+<p>Converts a word like "send_email" to "sendEmail". It will remove non
+alphanumeric character from the word, so "who's online" will be converted to
+"whoSOnline"</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$word</var></dt>
+					<dd>Word to lowerCamelCase</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Returns a lowerCamelCasedWord<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Utilities.Service.Inflector.html#_camelize">Utilities\Service\Inflector::camelize()</a></code></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="tableize" id="_tableize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_tableize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#292-306" title="Go to source code">tableize</a>( <span>string <var>$class_name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Converts a class name to its table name according to rails naming
+conventions.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Converts a class name to its table name according to rails naming
+conventions.</p>
+
+<p>Converts "Person" to "people"</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$class_name</var></dt>
+					<dd>Class name for getting related table_name.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>plural_table_name<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Utilities.Service.Inflector.html#_classify">Utilities\Service\Inflector::classify()</a></code></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="classify" id="_classify">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_classify">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#311-325" title="Go to source code">classify</a>( <span>string <var>$table_name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Converts a table name to its class name according to rails naming
+conventions.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Converts a table name to its class name according to rails naming
+conventions.</p>
+
+<p>Converts "people" to "Person"</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table_name</var></dt>
+					<dd>Table name for getting related ClassName.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>SingularClassName<br>
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-Utilities.Service.Inflector.html#_tableize">Utilities\Service\Inflector::tableize()</a></code></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="ordinalize" id="_ordinalize">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_ordinalize">#</a>
+		<code><a href="source-class-Utilities.Service.Inflector.html#330-358" title="Go to source code">ordinalize</a>( <span>integer <var>$number</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Converts number to its ordinal English form.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Converts number to its ordinal English form.</p>
+
+<p>This method converts 13 to 13th, 2 to 2nd ...</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$number</var></dt>
+					<dd>Number to get its ordinal value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>Ordinal representation of given string.<br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		certigate API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js?3380057051"></script>
+<script src="elementlist.js?2754230898"></script>
+</body>
+</html>
