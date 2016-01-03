@@ -1,0 +1,45 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br />
+<a href="/users/new"><button class="btn btn-small btn-success">Create new User</button></a>
+<br/>
+<div class="panel panel-default users-list">
+      <div class="panel-heading">Users</div>
+
+      <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Status</th>
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {{#userList}}
+                <tr>
+                    <th scope="row"><img src="{{photo}}" data-toggle="tooltip" data-placement="left" title="{{name}}" class="user-photos" style="height: 70px !important;width: 70px !important;"></th>
+                    <td>{{id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{username}}</td>
+                    <td>{{status}}</td>
+                    <td>
+                        {{#active}}
+                            <a data-toggle="tooltip" data-placement="left" title="Edit" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-toggle="tooltip" data-placement="left" title="Delete" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{/active}}
+                    </td>
+                </tr>
+            {{/userList}}
+        </tbody>
+      </table>
+    </div>
+<br>
+{{/content}}
+
+{{/layout}}
