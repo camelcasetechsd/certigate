@@ -11,7 +11,7 @@ use Zend\Authentication\AuthenticationService;
  *
  * Handles Authentication related business
  *
- * @author Mohamed Labib <mohamed.labib@camelcasetech.com>
+ * 
  * @property Zend\Http\Request $request
  * @property Utilities\Service\Query\Query $query
  * 
@@ -34,7 +34,7 @@ class Authentication {
 
     /**
      * Set needed properties
-     * @author Mohamed Labib <mohamed.labib@camelcasetech.com>
+     * 
      * 
      * @access public
      * @param Query $query
@@ -45,7 +45,7 @@ class Authentication {
 
     /**
      * Set request
-     * @author Mohamed Labib <mohamed.labib@camelcasetech.com>
+     * 
      * 
      * @access public
      * @param Zend\Http\Request  $request
@@ -58,7 +58,7 @@ class Authentication {
 
     /**
      * Attempt authenticating with submitted data
-     * @author Mohamed Labib <mohamed.labib@camelcasetech.com>
+     * 
      * 
      * @access public
      * @uses Adapter
@@ -82,7 +82,7 @@ class Authentication {
 
     /**
      * Set session with authenticated user data
-     * @author Mohamed Labib <mohamed.labib@camelcasetech.com>
+     * 
      * 
      * @access public
      * @uses AuthenticationService
