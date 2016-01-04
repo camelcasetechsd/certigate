@@ -1,0 +1,44 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/cms/page/new"class="btn btn-small btn-success create-new">Create new Page</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Pages</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Menu Item Parent</th>
+                <th>Path</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#pages}}
+            <tr>
+                <td>{{menuItem.title}}</td>
+                <td>
+                    {{#menuItem.parent}}
+                        {{menuItem.parent.title}}
+                    {{/menuItem.parent}}
+                    {{^menuItem.parent}}
+                        Root
+                    {{/menuItem.parent}}
+                </td>
+                <td>{{menuItem.path}}</td>
+                <td>
+                    <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+            </tr>
+            {{/pages}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
