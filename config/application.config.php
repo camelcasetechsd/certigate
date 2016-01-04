@@ -14,6 +14,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'DefaultModule',
+        'CMS',
         'Users',
         'Utilities',
         'Mustache',
