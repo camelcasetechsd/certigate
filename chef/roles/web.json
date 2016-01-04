@@ -23,8 +23,7 @@
         "db": {
             "name": "certigate",
             "username": "root"
-        },
-        "php-fpm": {}
+        }
     },
     "run_list": [
         "recipe[apt]",
@@ -36,6 +35,7 @@
         "recipe[nodejs]",
         "recipe[composer]",
         "recipe[memcached]",
+        "recipe[git]",
         "recipe[certigate]"
     ]
 }
