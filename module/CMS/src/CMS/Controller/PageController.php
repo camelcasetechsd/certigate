@@ -32,9 +32,10 @@ class PageController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         
         $data = $query->findAll(/*$entityName =*/null);
-        $variables['pages'] = $data;
+        $variables['pages'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
 
@@ -61,7 +62,7 @@ class PageController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($pageObj->getInputFilter());
+            $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($pageObj, $data);
@@ -99,7 +100,7 @@ class PageController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($pageObj->getInputFilter());
+            $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($pageObj);
