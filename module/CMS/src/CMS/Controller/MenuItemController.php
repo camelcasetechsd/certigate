@@ -32,9 +32,10 @@ class MenuItemController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\MenuItem');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         
         $data = $query->findAll(/*$entityName =*/null);
-        $variables['menuItems'] = $data;
+        $variables['menuItems'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
 
@@ -61,7 +62,7 @@ class MenuItemController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($menuItemObj->getInputFilter());
+            $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($menuItemObj, $data);
@@ -99,7 +100,7 @@ class MenuItemController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($menuItemObj->getInputFilter());
+            $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($menuItemObj);
