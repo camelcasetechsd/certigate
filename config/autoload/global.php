@@ -51,8 +51,9 @@ return array(
                     'host'     => 'localhost',
                     'port'     => '3306',
                     'user'     => 'root',
-                    'password' => '123',
-                    'dbname'   => 'certigatedb',
+                    'password' => 'testpass',
+                    'dbname'   => 'certigate',
+                    'unix_socket' => '/var/run/mysql-certigate/mysqld.sock'
                 )
             )
         )
