@@ -171,15 +171,26 @@ class Menu {
      * @uses InputFilter
      * 
      * @access public
+     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter($query) {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
                 'name' => 'title',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'   => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('title')
+                        )
+                    ),
+                )
             ));
             $this->inputFilter = $inputFilter;
         }

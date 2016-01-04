@@ -29,15 +29,6 @@ use Zend\InputFilter\InputFilter;
 class MenuItem {
 
     /**
-     * MenuItem is active
-     */
-    const STATUS_ACTIVE = 1;
-    /**
-     * MenuItem is inactive
-     */
-    const STATUS_INACTIVE = 0;
-    
-    /**
      *
      * @var InputFilter validation constraints 
      */
@@ -360,9 +351,10 @@ class MenuItem {
      * @uses InputFilter
      * 
      * @access public
+     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter($query) {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -372,7 +364,17 @@ class MenuItem {
             ));
             $inputFilter->add(array(
                 'name' => 'path',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'   => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('path')
+                        )
+                    ),
+                )
             ));
             $inputFilter->add(array(
                 'name' => 'menu',
