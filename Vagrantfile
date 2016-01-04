@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
     config.omnibus.chef_version = '12.6.0'
     config.librarian_chef.cheffile_dir = 'chef'
     config.vm.provision 'chef_solo' do |chef|
-        chef.log_level = :info
+        chef.log_level = :debug
         chef.cookbooks_path = ['chef/cookbooks', 'chef/site-cookbooks']
         chef.roles_path = "chef/roles"
         chef.add_role("web")
