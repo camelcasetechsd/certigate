@@ -209,9 +209,10 @@ class Page {
      * @uses InputFilter
      * 
      * @access public
+     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter($query) {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -221,7 +222,17 @@ class Page {
             ));
             $inputFilter->add(array(
                 'name' => 'menuItem',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'   => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('menuItem')
+                        )
+                    ),
+                )
             ));
             $this->inputFilter = $inputFilter;
         }
