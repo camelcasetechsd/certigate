@@ -1,0 +1,9 @@
+{
+    "name": "Certigate",
+    "version": "1.0.0",
+    "homepage": "https://github.com/camelcasetechsd/attendance-system.git",
+    "license": "MIT",
+    "dependencies": {
+        "bootstrap": "~3.x"
+    }
+}
