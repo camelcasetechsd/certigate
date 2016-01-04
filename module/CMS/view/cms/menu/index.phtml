@@ -1,0 +1,33 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/cms/menu/new"class="btn btn-small btn-success create-new">Create new Menu</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Menus</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#menus}}
+            <tr>
+                <td>{{title}}</td>
+                <td>
+                    <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+            </tr>
+            {{/menus}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

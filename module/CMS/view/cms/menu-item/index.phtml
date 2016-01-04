@@ -1,0 +1,48 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/cms/menuitem/new"class="btn btn-small btn-success create-new">Create new Menu Item</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Menu Items</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Menu Item Parent</th>
+                <th>Path</th>
+                <th>Menu</th>
+                <th>status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#menuItems}}
+            <tr>
+                <td>{{title}}</td>
+                <td>
+                    {{#parent}}
+                        {{parent.title}}
+                    {{/parent}}
+                    {{^parent}}
+                        Root
+                    {{/parent}}
+                </td>
+                <td>{{path}}</td>
+                <td>{{menu.title}}</td>
+                <td>{{status}}</td>
+                <td>
+                    <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+            </tr>
+            {{/menuItems}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
