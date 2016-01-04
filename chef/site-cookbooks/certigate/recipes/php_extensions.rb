@@ -1,0 +1,6 @@
+include_recipe "nodejs"
+include_recipe "nodejs::npm"
+include_recipe "php::module_mysql"
+include_recipe "php::module_apc"
+include_recipe "php::module_memcache"
+include_recipe "php::module_curl"

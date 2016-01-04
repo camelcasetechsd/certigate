@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+site 'https://supermarket.getchef.com/api/v1'
+
+cookbook 'apt'
+cookbook 'build-essential'
+cookbook 'mysql'
+cookbook 'database'
+cookbook 'mysql2_chef_gem'
+cookbook 'php'
+cookbook 'apache2'
+cookbook 'nodejs'
+cookbook 'composer'
+cookbook 'hostsfile'
+cookbook 'memcached'

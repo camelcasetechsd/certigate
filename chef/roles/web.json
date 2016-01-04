@@ -1,0 +1,41 @@
+{
+    "name": "web",
+    "chef_type": "role",
+    "json_class": "Chef::Role",
+    "description": "",
+    "default_attributes": {
+        "site": {
+            "name": "certigate",
+            "environment": "vagrant",
+            "host": "local-certigate.com",
+            "public_path": "/var/www/html/public"
+        },
+        "user": {
+            "name": "vagrant"
+        },
+        "mysql": {
+            "root_connection": {
+                "host": "127.0.0.1",
+                "username": "root",
+                "password": "testpass"
+            }
+        },
+        "db": {
+            "name": "certigate",
+            "username": "root"
+        },
+        "php-fpm": {}
+    },
+    "run_list": [
+        "recipe[apt]",
+        "recipe[build-essential]",
+        "recipe[apache2]",
+        "recipe[php]",
+        "recipe[apache2::mod_php5]",
+        "recipe[apache2::mod_rewrite]",
+        "recipe[nodejs]",
+        "recipe[composer]",
+        "recipe[memcached]",
+        "recipe[certigate]"
+    ]
+}
