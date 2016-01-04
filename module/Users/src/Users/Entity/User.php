@@ -30,15 +30,6 @@ use Zend\Validator\Regex;
  * @subpackage entity
  */
 class User {
-
-    /**
-     * User is active
-     */
-    const STATUS_ACTIVE = 1;
-    /**
-     * User is deleted
-     */
-    const STATUS_DELETED = 2;
     
     /**
      *

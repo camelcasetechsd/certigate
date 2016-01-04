@@ -6,6 +6,7 @@ use Users\Entity\User as UserEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
 use DateTime;
+use Utilities\Service\Status;
 
 /**
  * User Model
@@ -59,11 +60,11 @@ class User {
     public function prepareForDisplay($data) {
         foreach ($data as $user) {
             switch ($user->status) {
-                case UserEntity::STATUS_ACTIVE :
+                case Status::STATUS_ACTIVE :
                     $user->status = 'Active';
                     $user->active = TRUE;
                     break;
-                case UserEntity::STATUS_DELETED :
+                case Status::STATUS_DELETED :
                     $user->status = 'Deleted';
                     break;
             }
@@ -107,7 +108,7 @@ class User {
         if (!empty($userInfo['photo']['name'])) {
             $entity->photo = $this->savePhoto();
         }
-        $entity->status = UserEntity::STATUS_ACTIVE;
+        $entity->status = Status::STATUS_ACTIVE;
 
         $em->persist($entity);
 
@@ -156,7 +157,7 @@ class User {
      */
     public function deleteUser($userId) {
         $user = $this->query->find(/* $entityName = */ 'Users\Entity\User', $userId);
-        $user->status = UserEntity::STATUS_DELETED;
+        $user->status = Status::STATUS_DELETED;
         $this->query->entityManager->merge($user);
         $this->query->entityManager->flush($user);
     }

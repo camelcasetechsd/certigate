@@ -3,7 +3,7 @@
 namespace CMS\Form;
 
 use Utilities\Form\Form;
-use CMS\Entity\MenuItem;
+use Utilities\Service\Status;
 
 /**
  * MenuItem Form
@@ -97,7 +97,7 @@ class MenuItemForm extends Form {
                     'name' => 'findBy',
                     'params' => array(
                         'criteria' => array(
-                            'status' => MenuItem::STATUS_ACTIVE
+                            'status' => Status::STATUS_ACTIVE
                         )
                     )
                 ),
@@ -114,8 +114,8 @@ class MenuItemForm extends Form {
             ),
             'options' => array(
                 'label' => 'Status',
-                'checked_value' => MenuItem::STATUS_ACTIVE,
-                'unchecked_value' => MenuItem::STATUS_INACTIVE
+                'checked_value' => Status::STATUS_ACTIVE,
+                'unchecked_value' => Status::STATUS_INACTIVE
             ),
         ));
         

@@ -3,7 +3,7 @@
 namespace CMS\Form;
 
 use Utilities\Form\Form;
-use CMS\Entity\MenuItem;
+use Utilities\Service\Status;
 
 /**
  * Page Form
@@ -67,7 +67,7 @@ class PageForm extends Form {
                     'name' => 'findBy',
                     'params' => array(
                         'criteria' => array(
-                            'status' => MenuItem::STATUS_ACTIVE
+                            'status' => Status::STATUS_ACTIVE
                         )
                     )
                 ),
