@@ -24,7 +24,8 @@ module.exports = function (grunt) {
                 dest: '<%= dirs.dest %>/app.js',
                 src: [
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
-                    '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js'                   
+                    '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
+                    '<%= dirs.jsSrc %>/reset.js',
                 ]
 
             },
@@ -34,6 +35,7 @@ module.exports = function (grunt) {
                 src: [
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/errors.css',
                 ]
             }
         },
