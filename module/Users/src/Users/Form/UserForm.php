@@ -10,8 +10,6 @@ use Utilities\Form\Form;
  * Handles User form setup
  * 
  * 
- * @author Mohamed Ramadan
- * 
  * @property Utilities\Service\Query\Query $query
  * 
  * @package users
