@@ -1,0 +1,160 @@
+<?php
+
+namespace CMS;
+
+return array(
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view',
+        ),
+    ),
+    'service_manager' => array(
+        'aliases' => array(
+            'cmsPage' => 'CMS\Controller\PageController',
+            'cmsMenu' => 'CMS\Controller\MenuController',
+            'cmsMenuItem' => 'CMS\Controller\MenuItemController',
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'CMS\Controller\Page' => 'CMS\Controller\PageController',
+            'CMS\Controller\Menu' => 'CMS\Controller\MenuController',
+            'CMS\Controller\MenuItem' => 'CMS\Controller\MenuItemController',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'cmsPage' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    /*
+                      We want to make /cms the main end point, with
+                      an optional controller and action.
+                     */
+                    'route' => '/cms/page[/:action]',
+                    /*
+                      We want a default end point (if no controller
+                      and action is given) to go to the index action
+                      of the controller.
+                     */
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'index'
+                    ),
+                    /*
+                      We only want to allow alphanumeric characters
+                      with an exception to the dash and underscore.
+                     */
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'cmsPageEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/page/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'cmsMenu' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    /*
+                      We want to make /cms the main end point, with
+                      an optional controller and action.
+                     */
+                    'route' => '/cms/menu[/:action]',
+                    /*
+                      We want a default end point (if no controller
+                      and action is given) to go to the index action
+                      of the controller.
+                     */
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Menu',
+                        'action' => 'index'
+                    ),
+                    /*
+                      We only want to allow alphanumeric characters
+                      with an exception to the dash and underscore.
+                     */
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'cmsMenuEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/menu/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Menu',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'cmsMenuItem' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    /*
+                      We want to make /cms the main end point, with
+                      an optional controller and action.
+                     */
+                    'route' => '/cms/menuitem[/:action]',
+                    /*
+                      We want a default end point (if no controller
+                      and action is given) to go to the index action
+                      of the controller.
+                     */
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\MenuItem',
+                        'action' => 'index'
+                    ),
+                    /*
+                      We only want to allow alphanumeric characters
+                      with an exception to the dash and underscore.
+                     */
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'cmsMenuItemEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/menuitem/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\MenuItem',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+        )
+    )
+);
