@@ -15,6 +15,7 @@ use Zend\InputFilter\InputFilter;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $title
+ * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
  * 
@@ -44,6 +45,13 @@ class Menu {
      */
     public $title;
 
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $status;
+    
     /**
      *
      * @ORM\Column(type="date")
@@ -79,6 +87,30 @@ class Menu {
      */
     public function setTitle($title) {
         $this->title = $title;
+        return $this;
+    }
+    
+    /**
+     * Get status
+     * 
+     * 
+     * @access public
+     * @return int status
+     */
+    public function getStatus() {
+        return $this->status;
+    }
+    
+    /**
+     * Set status
+     * 
+     * 
+     * @access public
+     * @param int $status
+     * @return Menu current entity
+     */
+    public function setStatus($status) {
+        $this->status = $status;
         return $this;
     }
     
@@ -149,6 +181,9 @@ class Menu {
     public function exchangeArray($data = array()) {
         if(array_key_exists('title', $data)){
             $this->setTitle($data["title"]);
+        }
+        if(array_key_exists('status', $data)){
+            $this->setStatus($data["status"]);
         }
     }
 

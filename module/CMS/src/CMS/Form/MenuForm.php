@@ -3,6 +3,8 @@
 namespace CMS\Form;
 
 use Utilities\Form\Form;
+use Utilities\Service\Status;
+
 
 /**
  * Menu Form
@@ -40,6 +42,19 @@ class MenuForm extends Form {
             ),
         ));
 
+        $this->add(array(
+            'name' => 'status',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Status',
+                'checked_value' => Status::STATUS_ACTIVE,
+                'unchecked_value' => Status::STATUS_INACTIVE
+            ),
+        ));
+        
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
