@@ -4,6 +4,7 @@
     "homepage": "https://github.com/camelcasetechsd/attendance-system.git",
     "license": "MIT",
     "dependencies": {
-        "bootstrap": "~3.x"
+        "bootstrap": "~3.x",
+        "ckeditor": "#full/stable"
     }
 }
