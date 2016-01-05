@@ -91,7 +91,9 @@ class PageController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pageObj = $query->find('CMS\Entity\Page', $id);
-
+        // extract body data
+        $pageObj->body = $pageObj->getBody();
+        
         $options = array();
         $options['query'] = $query;
         $form = new PageForm(/* $name = */ null, $options);
@@ -114,6 +116,23 @@ class PageController extends ActionController
         return new ViewModel($variables);
     }
 
+    /**
+     * Delete page
+     *
+     * 
+     * @access public
+     */
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $pageObj = $query->find('CMS\Entity\Page', $id);
+        
+        $query->remove($pageObj);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsPage'));
+        $this->redirect()->toUrl($url);
+    }
 
 }
 
