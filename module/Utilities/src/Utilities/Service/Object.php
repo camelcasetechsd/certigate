@@ -15,7 +15,6 @@ use Utilities\Service\Status;
  */
 class Object {
 
-    
     /**
      * prepare object for display
      * 
@@ -25,9 +24,13 @@ class Object {
      * @return array objects prepared for display
      */
     public function prepareForDisplay(array $objectsArray) {
-        foreach($objectsArray as $object){
-            $objectProperties = get_object_vars($object);
-            if (array_key_exists("status", $objectProperties)){
+        foreach ($objectsArray as $object) {
+            if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
+                $objectProperties = $object->getArrayCopy();
+            } else {
+                $objectProperties = get_object_vars($object);
+            }
+            if (array_key_exists("status", $objectProperties)) {
                 switch ($object->status) {
                     case Status::STATUS_ACTIVE:
                         $object->status = Status::STATUS_ACTIVE_TEXT;
@@ -42,8 +45,8 @@ class Object {
                         break;
                 }
             }
-            foreach ($objectProperties as $objectPropertyName => $objectPropertyValue){
-                if($objectPropertyValue instanceof \DateTime){
+            foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
+                if ($objectPropertyValue instanceof \DateTime) {
                     $object->$objectPropertyName = $objectPropertyValue->format("D, d M Y H:i");
                 }
             }
