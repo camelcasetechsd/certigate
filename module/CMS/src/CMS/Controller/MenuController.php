@@ -109,6 +109,24 @@ class MenuController extends ActionController
         $variables['menuForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
+    
+    /**
+     * Delete menu
+     *
+     * 
+     * @access public
+     */
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $menuObj = $query->find('CMS\Entity\Menu', $id);
+        
+        $query->remove($menuObj);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
+        $this->redirect()->toUrl($url);
+    }
 
 
 }

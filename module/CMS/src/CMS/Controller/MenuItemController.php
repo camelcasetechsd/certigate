@@ -114,6 +114,22 @@ class MenuItemController extends ActionController
         return new ViewModel($variables);
     }
 
-
+    /**
+     * Delete menu item
+     *
+     * 
+     * @access public
+     */
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
+        
+        $query->remove($menuItemObj);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
+        $this->redirect()->toUrl($url);
+    }
 }
 

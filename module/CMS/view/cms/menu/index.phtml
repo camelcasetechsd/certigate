@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>Title</th>
+                <th>status</th>
                 <th>Created</th>
                 <th colspan="2">Actions</th>
             </tr>
@@ -20,9 +21,12 @@
             {{#menus}}
             <tr>
                 <td>{{title}}</td>
+                <td>{{status}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/cms/menu/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
             {{/menus}}
