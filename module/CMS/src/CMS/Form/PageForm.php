@@ -44,6 +44,8 @@ class PageForm extends Form {
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
+                'rows' => 10,
+                'cols' => 80,
             ),
             'options' => array(
                 'label' => 'Body',
@@ -61,8 +63,9 @@ class PageForm extends Form {
                 'label' => 'Menu Item',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'CMS\Entity\MenuItem',
-                'property' => 'title',
-                'is_method' => true,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getNestedTitle();
+                },
                 'find_method' => array(
                     'name' => 'findBy',
                     'params' => array(
