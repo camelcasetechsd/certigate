@@ -71,7 +71,11 @@ class PageForm extends Form {
                     'params' => array(
                         'criteria' => array(
                             'status' => Status::STATUS_ACTIVE
-                        )
+                        ),
+                        'orderBy' => array(
+                            'weight' => 'ASC',
+                            'id' => 'ASC'
+                        ),
                     )
                 ),
             ),
