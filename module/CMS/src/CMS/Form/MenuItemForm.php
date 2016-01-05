@@ -99,11 +99,29 @@ class MenuItemForm extends Form {
                     'params' => array(
                         'criteria' => array(
                             'status' => Status::STATUS_ACTIVE
-                        )
+                        ),
+                        'orderBy' => array(
+                            'weight' => 'ASC',
+                            'id' => 'ASC'
+                        ),
                     )
                 ),
                 'display_empty_item' => true,
                 'empty_item_label' => "Root",
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'weight',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Lower value will be displayed at the Top',
+                'required' => 'required',
+                'class' => 'form-control',
+                'min' => '1',
+            ),
+            'options' => array(
+                'label' => 'Sort Order',
             ),
         ));
 

@@ -19,6 +19,7 @@ use Zend\InputFilter\InputFilter;
  * @property CMS\Entity\Page $page
  * @property CMS\Entity\Menu $menu
  * @property CMS\Entity\MenuItem $parent
+ * @property int $weight
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -48,7 +49,7 @@ class MenuItem {
      * @var string
      */
     public $title;
-    
+
     /**
      *
      * @ORM\Column(type="string", unique=true)
@@ -70,7 +71,7 @@ class MenuItem {
      * @var CMS\Entity\Menu
      */
     public $menu;
-    
+
     /**
      *
      * @ORM\ManyToOne(targetEntity="CMS\Entity\MenuItem")
@@ -78,28 +79,35 @@ class MenuItem {
      * @var CMS\Entity\MenuItem
      */
     public $parent;
-    
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $weight;
+
     /**
      *
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
-    
+
     /**
      *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $created;
-    
+
     /**
      *
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $modified = null;
-    
+
     /**
      * Get title
      * 
@@ -109,7 +117,7 @@ class MenuItem {
      */
     public function getTitle() {
         return $this->title;
-    }    
+    }
 
     /**
      * Set title
@@ -123,7 +131,7 @@ class MenuItem {
         $this->title = $title;
         return $this;
     }
-    
+
     /**
      * Get path
      * 
@@ -133,7 +141,7 @@ class MenuItem {
      */
     public function getPath() {
         return $this->path;
-    }    
+    }
 
     /**
      * Set path
@@ -147,7 +155,7 @@ class MenuItem {
         $this->path = $path;
         return $this;
     }
-    
+
     /**
      * Get page
      * 
@@ -171,7 +179,7 @@ class MenuItem {
         $this->page = $page;
         return $this;
     }
-    
+
     /**
      * Get menu
      * 
@@ -195,7 +203,7 @@ class MenuItem {
         $this->menu = $menu;
         return $this;
     }
-    
+
     /**
      * Get parent
      * 
@@ -216,13 +224,37 @@ class MenuItem {
      * @return MenuItem current entity
      */
     public function setParent($parent) {
-        if(empty($parent)){
+        if (empty($parent)) {
             $parent = null;
         }
         $this->parent = $parent;
         return $this;
     }
-    
+
+    /**
+     * Get weight
+     * 
+     * 
+     * @access public
+     * @return int weight
+     */
+    public function getWeight() {
+        return $this->weight;
+    }
+
+    /**
+     * Set weight
+     * 
+     * 
+     * @access public
+     * @param int $weight
+     * @return MenuItem current entity
+     */
+    public function setWeight($weight) {
+        $this->weight = $weight;
+        return $this;
+    }
+
     /**
      * Get status
      * 
@@ -233,7 +265,7 @@ class MenuItem {
     public function getStatus() {
         return $this->status;
     }
-    
+
     /**
      * Set status
      * 
@@ -246,7 +278,7 @@ class MenuItem {
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -257,7 +289,7 @@ class MenuItem {
     public function getCreated() {
         return $this->created;
     }
-    
+
     /**
      * Set created
      * 
@@ -269,7 +301,7 @@ class MenuItem {
         $this->created = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get modified
      * 
@@ -280,7 +312,7 @@ class MenuItem {
     public function getModified() {
         return $this->modified;
     }
-    
+
     /**
      * Set modified
      * 
@@ -303,7 +335,7 @@ class MenuItem {
     public function getArrayCopy() {
         return get_object_vars($this);
     }
-    
+
     /**
      * Get depth level.
      * Minimum depth level is one for menuitem with root parent
@@ -314,13 +346,13 @@ class MenuItem {
     public function getDepthLevel() {
         $depthLevel = 1;
         $menuItem = $this;
-        while($menuItem->getParent() instanceof MenuItem){
+        while ($menuItem->getParent() instanceof MenuItem) {
             $depthLevel++;
             $menuItem = $menuItem->getParent();
         }
         return $depthLevel;
     }
-    
+
     /**
      * Get nested title.
      * get menu item title with depth level apparent in display
@@ -329,7 +361,7 @@ class MenuItem {
      * @return string nested title
      */
     public function getNestedTitle() {
-        $nestedTitle = str_repeat('  ',$this->getDepthLevel()) . $this->getTitle();
+        $nestedTitle = str_repeat('  ', $this->getDepthLevel()) . $this->getTitle();
         return $nestedTitle;
     }
 
@@ -341,22 +373,25 @@ class MenuItem {
      * @param array $data ,default is empty array
      */
     public function exchangeArray($data = array()) {
-        if(array_key_exists('title', $data)){
+        if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
         }
-        if(array_key_exists('path', $data)){
+        if (array_key_exists('path', $data)) {
             $this->setPath($data["path"]);
         }
-        if(array_key_exists('page', $data)){
+        if (array_key_exists('page', $data)) {
             $this->setPage($data["page"]);
         }
-        if(array_key_exists('menu', $data)){
+        if (array_key_exists('menu', $data)) {
             $this->setMenu($data["menu"]);
         }
-        if(array_key_exists('parent', $data)){
+        if (array_key_exists('parent', $data)) {
             $this->setParent($data["parent"]);
         }
-        if(array_key_exists('status', $data)){
+        if (array_key_exists('weight', $data)) {
+            $this->setWeight($data["weight"]);
+        }
+        if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
     }
@@ -397,7 +432,7 @@ class MenuItem {
                 'validators' => array(
                     array('name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context'   => true,
+                            'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields' => array('path')
@@ -408,6 +443,21 @@ class MenuItem {
             $inputFilter->add(array(
                 'name' => 'menu',
                 'required' => true
+            ));
+            $inputFilter->add(array(
+                'name' => 'weight',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'inclusive' => false
+                        )
+                    ),
+                    array(
+                        'name' => 'Digits',
+                    ),
+                )
             ));
             $inputFilter->add(array(
                 'name' => 'parent',
