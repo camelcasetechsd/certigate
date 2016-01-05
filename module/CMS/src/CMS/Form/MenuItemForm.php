@@ -22,7 +22,7 @@ class MenuItemForm extends Form {
      * @var Utilities\Service\Query\Query 
      */
     protected $query;
-    
+
     /**
      * setup form
      * 
@@ -49,7 +49,7 @@ class MenuItemForm extends Form {
                 'label' => 'Title',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'path',
             'type' => 'Zend\Form\Element\Text',
@@ -80,7 +80,7 @@ class MenuItemForm extends Form {
                 ),
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'parent',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
@@ -91,8 +91,9 @@ class MenuItemForm extends Form {
                 'label' => 'Parent',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'CMS\Entity\MenuItem',
-                'property' => 'title',
-                'is_method' => true,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getNestedTitle();
+                },
                 'find_method' => array(
                     'name' => 'findBy',
                     'params' => array(
@@ -105,7 +106,7 @@ class MenuItemForm extends Form {
                 'empty_item_label' => "Root",
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'status',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -118,7 +119,7 @@ class MenuItemForm extends Form {
                 'unchecked_value' => Status::STATUS_INACTIVE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
@@ -132,7 +133,7 @@ class MenuItemForm extends Form {
                 'value' => 'Create',
             )
         ));
-        
+
         $this->add(array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',

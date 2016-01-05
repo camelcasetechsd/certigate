@@ -303,6 +303,35 @@ class MenuItem {
     public function getArrayCopy() {
         return get_object_vars($this);
     }
+    
+    /**
+     * Get depth level.
+     * Minimum depth level is one for menuitem with root parent
+     * 
+     * @access public
+     * @return int depth level
+     */
+    public function getDepthLevel() {
+        $depthLevel = 1;
+        $menuItem = $this;
+        while($menuItem->getParent() instanceof MenuItem){
+            $depthLevel++;
+            $menuItem = $menuItem->getParent();
+        }
+        return $depthLevel;
+    }
+    
+    /**
+     * Get nested title.
+     * get menu item title with depth level apparent in display
+     * 
+     * @access public
+     * @return string nested title
+     */
+    public function getNestedTitle() {
+        $nestedTitle = str_repeat('  ',$this->getDepthLevel()) . $this->getTitle();
+        return $nestedTitle;
+    }
 
     /**
      * Populate from an array.
