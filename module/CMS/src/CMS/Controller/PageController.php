@@ -6,6 +6,8 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\PageForm;
 use CMS\Entity\Page;
+use Utilities\Service\Status;
+use CMS\Form\FormViewHelper;
 
 /**
  * Page Controller
@@ -72,6 +74,8 @@ class PageController extends ActionController
             }
         }
 
+        $formViewHelper = new FormViewHelper();
+        $this->setFormViewHelper($formViewHelper);
         $variables['pageForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -91,7 +95,7 @@ class PageController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pageObj = $query->find('CMS\Entity\Page', $id);
-        // extract body data
+        // extract body data to be able to display it in it's natural form
         $pageObj->body = $pageObj->getBody();
         
         $options = array();
@@ -112,6 +116,8 @@ class PageController extends ActionController
             }
         }
 
+        $formViewHelper = new FormViewHelper();
+        $this->setFormViewHelper($formViewHelper);
         $variables['pageForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -128,7 +134,10 @@ class PageController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pageObj = $query->find('CMS\Entity\Page', $id);
         
-        $query->remove($pageObj);
+        $menuItem = $pageObj->getMenuItem();
+        $menuItem->setStatus(Status::STATUS_INACTIVE);
+
+        $query->setEntity('CMS\Entity\MenuItem')->save($menuItem);
         
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsPage'));
         $this->redirect()->toUrl($url);
