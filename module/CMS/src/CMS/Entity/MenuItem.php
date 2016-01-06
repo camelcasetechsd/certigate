@@ -5,10 +5,12 @@ namespace CMS\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
+use Utilities\Service\Status;
 
 /**
  * MenuItem Entity
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CMS\Entity\MenuItemRepository")
  * @ORM\Table(name="menuItem",uniqueConstraints={@ORM\UniqueConstraint(name="path_idx", columns={"path"})})
  * @ORM\HasLifecycleCallbacks
  * 
@@ -29,6 +31,11 @@ use Zend\InputFilter\InputFilter;
  */
 class MenuItem {
 
+    /**
+     * Separator between menu and menu item titles
+     */
+    const MENU_ITEM_TITLE_SEPARATOR = "%^*";
+    
     /**
      *
      * @var InputFilter validation constraints 
@@ -108,6 +115,17 @@ class MenuItem {
      */
     public $modified = null;
 
+    /**
+     * Get id
+     * 
+     * 
+     * @access public
+     * @return int id
+     */
+    public function getId() {
+        return $this->id;
+    }  
+    
     /**
      * Get title
      * 
@@ -361,7 +379,11 @@ class MenuItem {
      * @return string nested title
      */
     public function getNestedTitle() {
-        $nestedTitle = str_repeat('  ', $this->getDepthLevel()) . $this->getTitle();
+        $menu = $this->getMenu();
+        $nestedTitle = $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR . str_repeat('- ', $this->getDepthLevel()) . $this->getTitle();
+        if ($this->getStatus() === Status::STATUS_INACTIVE || $menu->getStatus() === Status::STATUS_INACTIVE) {
+            $nestedTitle .= ' ['.Status::STATUS_INACTIVE_TEXT.']';
+        }
         return $nestedTitle;
     }
 

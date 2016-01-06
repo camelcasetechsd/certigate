@@ -35,7 +35,10 @@ class MenuItemForm extends Form {
         $this->query = $options['query'];
         unset($options['query']);
         parent::__construct($name, $options);
-
+        $hiddenMenuItemsIds = array();
+        if(isset($options['hiddenMenuItemsIds'])){
+            $hiddenMenuItemsIds = $options['hiddenMenuItemsIds'];
+        }
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
@@ -63,25 +66,6 @@ class MenuItemForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'menu',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Menu',
-                'object_manager' => $this->query->entityManager,
-                'target_class' => 'CMS\Entity\Menu',
-                'property' => 'title',
-                'is_method' => true,
-                'find_method' => array(
-                    'name' => 'findAll',
-                ),
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'parent',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
@@ -95,19 +79,13 @@ class MenuItemForm extends Form {
                     return $targetEntity->getNestedTitle();
                 },
                 'find_method' => array(
-                    'name' => 'findBy',
+                    'name' => 'getMenuItemsSorted',
                     'params' => array(
-                        'criteria' => array(
-                            'status' => Status::STATUS_ACTIVE
-                        ),
-                        'orderBy' => array(
-                            'weight' => 'ASC',
-                            'id' => 'ASC'
-                        ),
+                        'hiddenMenuItemsIds' => $hiddenMenuItemsIds
                     )
                 ),
                 'display_empty_item' => true,
-                'empty_item_label' => "Root",
+                'empty_item_label' => "- - ",
             ),
         ));
 
@@ -138,6 +116,11 @@ class MenuItemForm extends Form {
             ),
         ));
 
+        $this->add(array(
+            'name' => 'menu',
+            'type' => 'Zend\Form\Element\Hidden',
+        ));
+        
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',

@@ -14,6 +14,10 @@ return array(
             'cmsMenu' => 'CMS\Controller\MenuController',
             'cmsMenuItem' => 'CMS\Controller\MenuItemController',
         ),
+        'factories' => array(
+            'CMS\Model\Page' => 'CMS\Model\PageFactory',
+            'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
+        ),
     ),
     'doctrine' => array(
         'driver' => array(
