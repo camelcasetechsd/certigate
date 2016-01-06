@@ -93,15 +93,13 @@ class Authentication {
         ));
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
-        $role = $entity->role;
+        
         // here to add new entries to the session
         $storage->write(array(
             'id' => $entity->id,
             'name' => $entity->name,
             'username' => $entity->username,
             'photo' => $entity->photo,
-            'role' => $role,
-            'rolename' => (!is_null($role) ) ? $role->name : null,
             'status' => $entity->status
         ));
     }

@@ -23,7 +23,7 @@ use Zend\Validator\Regex;
  * @property string $photo
  * @property string $maritalStatus
  * @property string $description
- * @property Users\Entity\Role $role
+ * @property array $roles
  * @property int $status
  * 
  * @package users
@@ -103,11 +103,10 @@ class User {
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Users\Entity\Role")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
-     * @var Users\Entity\Role
+     * @ORM\ManyToMany(targetEntity="Users\Entity\Role")
+     * @var array Users\Entity\Role
      */
-    public $role;
+    public $roles;
 
     /**
      *

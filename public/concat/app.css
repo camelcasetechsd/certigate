@@ -6868,3 +6868,19 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+/* OriginalFileName : public/css/errors.css */ 
+
+.errors{
+    list-style: outside none none;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 8px 5px 8px 5px;
+    margin-top: 2px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+.input-error{
+    border: 1px solid red;
+}
