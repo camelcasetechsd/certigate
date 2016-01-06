@@ -53,7 +53,6 @@ return array(
                     'user'     => 'root',
                     'password' => 'testpass',
                     'dbname'   => 'certigate',
-                    'unix_socket' => '/var/run/mysql-certigate/mysqld.sock'
                 )
             )
         )
