@@ -22,14 +22,21 @@ class MenuItemRepository extends EntityRepository {
      * @param bool $menuItemStatus ,default is null
      * @param bool $menuStatus ,default is null
      * @param bool $withPagesOnlyFlag ,default is false
+     * @param array $select ,default is null
      * @param bool $treeFlag ,default is false
      * @return array
      */
-    public function getMenuItemsSorted($hiddenMenuItemsIds = array(), $menuItemStatus = null, $menuStatus = null, $withPagesOnlyFlag = false, $treeFlag = false) {
+    public function getMenuItemsSorted($hiddenMenuItemsIds = array(), $menuItemStatus = null, $menuStatus = null, $withPagesOnlyFlag = false, $select = null, $treeFlag = false) {
         $repository = $this->getEntityManager();
-        $queryBuilder = $repository->createQueryBuilder('mt');
+        if (is_null($select)) {
+            $alias = $select = 'mt';
+        }else{
+            $alias = null;
+        }
+        $queryBuilder = $repository->createQueryBuilder($alias);
         $parameters = array();
-        $queryBuilder->select('mt')
+        
+        $queryBuilder->select($select)
                 ->from("CMS\Entity\MenuItem", "mt")
                 ->orderBy('mt.menu,mt.weight', 'ASC');
         if (count($hiddenMenuItemsIds) > 0) {
@@ -53,8 +60,13 @@ class MenuItemRepository extends EntityRepository {
         }
         $menuItems = $queryBuilder->getQuery()->getResult();
 
-        $menuItemModel = new MenuItemModel();
-        $menuItemsTree = $menuItemModel->getSortedMenuItems($menuItems, /* $root = */ 0, $treeFlag);
+        if ($select === "mt") {
+
+            $menuItemModel = new MenuItemModel();
+            $menuItemsTree = $menuItemModel->getSortedMenuItems($menuItems, /* $root = */ 0, $treeFlag);
+        }else{
+            $menuItemsTree = $menuItems;
+        }
         return $menuItemsTree;
     }
 
