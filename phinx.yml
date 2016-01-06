@@ -31,4 +31,3 @@ environments:
         pass: testpass
         port: 3306
         charset: utf8
-        unix_socket: /var/run/mysql-certigate/mysqld.sock

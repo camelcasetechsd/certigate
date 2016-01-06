@@ -9,6 +9,7 @@ mysql_service "#{node.db.name}" do
     port '3306'
     version '5.5'
     initial_root_password "#{node.mysql.root_connection.password}"
+    socket "/var/run/mysqld/mysqld.sock"
     action [:create, :start]
 end
 
