@@ -2,37 +2,70 @@
 
 namespace CMS\Model;
 
+use Utilities\Service\Inflector;
+
 /**
  * MenuItem Model
  * 
  * Handles MenuItem Entity related business
  * 
+ * @property Utilities\Service\Inflector $inflector
  * 
  * @package cms
  * @subpackage model
  */
 class MenuItem {
 
+     /**
+     *
+     * @var Utilities\Service\Inflector
+     */
+    protected $inflector;
+
+    /**
+     * Set needed properties
+     * 
+     * @access public
+     */
+    public function __construct() {
+        $this->inflector = new Inflector();
+    }
     /**
      * Recursive menu items by parents branch extrusion
      * 
      * @access public
      * @param array $menuItemsByParents
      * @param array $menuItemsPerParent
+     * @param bool $treeFlag ,default is false
+     * 
      * @return array parent children with children appended under it
      */
-    public function sortMenuItemsByParents(&$menuItemsByParents, &$menuItemsPerParent) {
+    public function sortMenuItemsByParents(&$menuItemsByParents, &$menuItemsPerParent, $treeFlag = false) {
         $tree = array();
         foreach ($menuItemsPerParent as $menuItem) {
+            $menuItem->children = array();
             if (isset($menuItemsByParents[$menuItem->getId()])) {
                 // get all children under menu item
-                $menuItem->children = $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$menuItem->getId()]);
+                $menuItem->children = $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$menuItem->getId()], $treeFlag);
             }
-            $tree[] = $menuItem;
-            // append children under direct parent
-            if (isset($menuItem->children)) {
-                $tree = array_merge($tree, $menuItem->children);
-                unset($menuItem->children);
+            if($treeFlag === false){
+                $tree[] = $menuItem;
+                // append children under direct parent
+                if (count($menuItem->children) > 0) {
+                    $tree = array_merge($tree, $menuItem->children);
+                    unset($menuItem->children);
+                }
+            }else{
+                $menuItemTitle = $menuItem->getTitle();
+                $menuTitle = $menuItem->getMenu()->getTitle();
+                $menuItemArray = array(
+                    'path' => $menuItem->getPath(),
+                    'weight' => $menuItem->getWeight(),
+                    'title' => $menuItemTitle,
+                    'title_underscored' => $this->inflector->underscore($menuItemTitle),
+                    'children' => $menuItem->children
+                );
+                $tree[$menuTitle][$menuItemTitle] = $menuItemArray;
             }
         }
         return $tree;
@@ -43,10 +76,12 @@ class MenuItem {
      * 
      * @access public
      * @param array $menuItems
-     * @param int $root
-     * @return array
+     * @param int $root ,default is 0
+     * @param bool $treeFlag ,default is false
+     * 
+     * @return array menu items sorted
      */
-    public function getSortedMenuItems($menuItems, $root = 0) {
+    public function getSortedMenuItems($menuItems, $root = 0, $treeFlag = false) {
         $menuItemsByParents = array(
             $root => array()
         );
@@ -57,7 +92,7 @@ class MenuItem {
             }
             $menuItemsByParents[$menuItemParentId][] = $menuItem;
         }
-        return $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root]);
+        return $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root], $treeFlag);
     }
 
 }

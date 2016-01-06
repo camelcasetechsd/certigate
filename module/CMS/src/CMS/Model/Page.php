@@ -2,9 +2,6 @@
 
 namespace CMS\Model;
 
-use Doctrine\ORM\Query\Expr\Join;
-use Utilities\Service\Status;
-
 /**
  * Page Model
  * 
