@@ -67,6 +67,17 @@ class Menu {
     public $modified = null;
     
     /**
+     * Get id
+     * 
+     * 
+     * @access public
+     * @return int id
+     */
+    public function getId() {
+        return $this->id;
+    }  
+    
+    /**
      * Get title
      * 
      * 
