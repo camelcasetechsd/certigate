@@ -14,6 +14,7 @@ use Zend\InputFilter\InputFilter;
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
+ * @property string $title
  * @property string $body
  * @property CMS\Entity\MenuItem $menuItem
  * @property \DateTime $created
@@ -43,6 +44,13 @@ class Page {
      * @ORM\Column(type="string")
      * @var string
      */
+    public $title;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
     public $body;
 
     /**
@@ -66,6 +74,41 @@ class Page {
      * @var \DateTime
      */
     public $modified = null;
+    
+    /**
+     * Get id
+     * 
+     * 
+     * @access public
+     * @return int id
+     */
+    public function getId() {
+        return $this->id;
+    }  
+    
+    /**
+     * Get title
+     * 
+     * 
+     * @access public
+     * @return string title
+     */
+    public function getTitle() {
+        return $this->title;
+    }    
+
+    /**
+     * Set title
+     * 
+     * 
+     * @access public
+     * @param string $title
+     * @return Page current entity
+     */
+    public function setTitle($title) {
+        $this->title = $title;
+        return $this;
+    }
     
     /**
      * Get body
@@ -182,6 +225,9 @@ class Page {
      * @param array $data ,default is empty array
      */
     public function exchangeArray($data = array()) {
+        if(array_key_exists('title', $data)){
+            $this->setTitle($data["title"]);
+        }
         if(array_key_exists('body', $data)){
             $this->setBody($data["body"]);
         }
@@ -216,6 +262,10 @@ class Page {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $inputFilter->add(array(
+                'name' => 'title',
+                'required' => true
+            ));
             $inputFilter->add(array(
                 'name' => 'body',
                 'required' => true
