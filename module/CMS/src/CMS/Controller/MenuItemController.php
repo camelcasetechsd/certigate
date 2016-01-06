@@ -6,6 +6,8 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\MenuItemForm;
 use CMS\Entity\MenuItem;
+use Utilities\Service\Status;
+use CMS\Form\FormViewHelper;
 
 /**
  * MenuItem Controller
@@ -72,6 +74,8 @@ class MenuItemController extends ActionController
             }
         }
 
+        $formViewHelper = new FormViewHelper();
+        $this->setFormViewHelper($formViewHelper);
         $variables['menuItemForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -94,7 +98,12 @@ class MenuItemController extends ActionController
 
         $options = array();
         $options['query'] = $query;
+        // hide current menu from possible parents options
+        $options['hiddenMenuItemsIds'] = array($id);
         $form = new MenuItemForm(/* $name = */ null, $options);
+        $menu = $menuItemObj->getMenu();
+        // menu hidden field can hold only id, not an object
+        $menuItemObj->setMenu($menu->getId());
         $form->bind($menuItemObj);
 
         $request = $this->getRequest();
@@ -110,6 +119,9 @@ class MenuItemController extends ActionController
             }
         }
 
+        $menuItemObj->setMenu($menu);
+        $formViewHelper = new FormViewHelper();
+        $this->setFormViewHelper($formViewHelper);
         $variables['menuItemForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -126,7 +138,9 @@ class MenuItemController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
         
-        $query->remove($menuItemObj);
+        $menuItemObj->setStatus(Status::STATUS_INACTIVE);
+
+        $query->save($menuItemObj);
         
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
         $this->redirect()->toUrl($url);
