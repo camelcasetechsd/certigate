@@ -39,6 +39,17 @@ class PageForm extends Form {
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
+            'name' => 'title',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Title',
+            ),
+        ));
+        $this->add(array(
             'name' => 'body',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -67,15 +78,8 @@ class PageForm extends Form {
                     return $targetEntity->getNestedTitle();
                 },
                 'find_method' => array(
-                    'name' => 'findBy',
+                    'name' => 'getMenuItemsSorted',
                     'params' => array(
-                        'criteria' => array(
-                            'status' => Status::STATUS_ACTIVE
-                        ),
-                        'orderBy' => array(
-                            'weight' => 'ASC',
-                            'id' => 'ASC'
-                        ),
                     )
                 ),
             ),
