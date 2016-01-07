@@ -9,6 +9,7 @@ mysql_service "#{node.db.name}" do
     port '3306'
     version '5.5'
     initial_root_password "#{node.mysql.root_connection.password}"
+    socket "/var/run/mysqld/mysqld.sock"
     action [:create, :start]
 end
 
@@ -25,6 +26,16 @@ web_app "certigate" do
     template "default.conf.erb"
     server_name "#{node.site.host}"
     docroot "#{node.site.public_path}"
+    environment "#{node.site.environment}"
+end
+
+# manage some php module 
+apache_module "mpm_prefork" do
+    enable true
+end
+
+apache_module "mpm_event" do
+    enable false
 end
 
 hostsfile_entry '127.0.0.1' do

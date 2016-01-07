@@ -12,30 +12,38 @@
         <thead>
             <tr>
                 <th>Title</th>
+                <th>Menu Title</th>
                 <th>Menu Item Parent</th>
                 <th>Path</th>
+                <th>Status</th>
+                <th>Menu Status</th>
                 <th>Created</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
             {{#pages}}
-            <tr>
+            <tr class="{{^menuItem.status}}container-inactive{{/menuItem.status}} {{^menuItem.menu.status}}container-inactive{{/menuItem.menu.status}}" >
+                <td>{{title}}</td>
                 <td>{{menuItem.title}}</td>
                 <td>
                     {{#menuItem.parent}}
-                        {{menuItem.parent.title}}
+                    {{menuItem.parent.title}}
                     {{/menuItem.parent}}
                     {{^menuItem.parent}}
-                        Root
+                    Root
                     {{/menuItem.parent}}
                 </td>
                 <td>{{menuItem.path}}</td>
+                <td>{{menuItem.statusText}}</td>
+                <td>{{menuItem.menu.statusText}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{#menuItem.status}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/menuItem.status}}
                 </td>
             </tr>
             {{/pages}}

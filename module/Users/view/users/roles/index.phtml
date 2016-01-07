@@ -1,0 +1,37 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/roles/new"class="btn btn-small btn-success create-new">Create new Role</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Roles</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#roles}}
+            <tr>
+                <td>{{name}}</td>
+                <td>
+                    <a href="/roles/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;
+                    <a href="/roles/privileges/{{id}}" data-toggle="tooltip" data-placement="left" title="Privileges"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/roles/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            </tr>
+            {{/roles}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

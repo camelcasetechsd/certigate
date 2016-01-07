@@ -6,6 +6,7 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\MenuForm;
 use CMS\Entity\Menu;
+use Utilities\Service\Status;
 
 /**
  * Menu Controller
@@ -122,7 +123,9 @@ class MenuController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuObj = $query->find('CMS\Entity\Menu', $id);
         
-        $query->remove($menuObj);
+        $menuObj->setStatus(Status::STATUS_INACTIVE);
+
+        $query->save($menuObj);
         
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
         $this->redirect()->toUrl($url);

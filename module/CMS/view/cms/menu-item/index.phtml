@@ -17,13 +17,14 @@
                 <th>Menu</th>
                 <th>Sort order</th>
                 <th>Status</th>
+                <th>Menu Status</th>
                 <th>Created</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
             {{#menuItems}}
-            <tr>
+            <tr class="{{^status}}container-inactive{{/status}} {{^menu.status}}container-inactive{{/menu.status}}" >
                 <td>{{title}}</td>
                 <td>
                     {{#parent}}
@@ -36,13 +37,15 @@
                 <td>{{path}}</td>
                 <td>{{menu.title}}</td>
                 <td>{{weight}}</td>
-                <td>{{status}}</td>
+                <td>{{statusText}}</td>
+                <td>{{menu.statusText}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
-
+                    {{#status}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
                 </td>
             </tr>
             {{/menuItems}}

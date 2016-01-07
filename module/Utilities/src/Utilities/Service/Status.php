@@ -32,7 +32,7 @@ class Status {
     /**
      * Entity is inactive text
      */
-    const STATUS_INACTIVE_TEXT = "InActive";
+    const STATUS_INACTIVE_TEXT = "Inactive";
     
     /**
      * Entity is deleted

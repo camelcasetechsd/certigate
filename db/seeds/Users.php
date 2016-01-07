@@ -20,7 +20,6 @@ class Users extends AbstractSeed
     public function run()
     {
         $user = [
-            "role_id" => NULL,
             "name" => "Admin",
             "username" => "admin",
             "password" => User::hashPassword( "adminadmin" ),
