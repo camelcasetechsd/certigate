@@ -8,7 +8,30 @@
             "name": "certigate",
             "environment": "vagrant",
             "host": "local-certigate.com",
-            "public_path": "/var/www/html/public"
+            "public_path": "/var/www/html/public",
+            "db": {
+                "name": "certigate",
+                "username": "root",
+                "encoding": "utf8",
+                "collation": "utf8_general_ci"
+            }
+        },
+        "estore": {
+            "name": "certigate_estore",
+            "environment": "vagrant",
+            "host": "estore.local-certigate.com",
+            "public_path": "/var/www/html/eStore",
+            "db": {
+                "name": "certigate_estore",
+                "username": "root",
+                "encoding": "utf8",
+                "collation": "utf8_general_ci"
+            },
+            "admin":{
+                "username" : "admin",
+                "password": "admin",
+                "email": "admin@certigate-pro.com"
+            }
         },
         "user": {
             "name": "vagrant"
@@ -17,12 +40,10 @@
             "root_connection": {
                 "host": "127.0.0.1",
                 "username": "root",
-                "password": "testpass"
+                "password": "testpass",
+                "port": 3306,
+                "driver": "mysqli"
             }
-        },
-        "db": {
-            "name": "certigate",
-            "username": "root"
         }
     },
     "run_list": [
