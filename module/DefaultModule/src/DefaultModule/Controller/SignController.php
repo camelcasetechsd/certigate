@@ -57,8 +57,9 @@ class SignController extends ActionController
                 $result = $auth->authenticateMe();
                 if ($result->isValid()) {
                     $auth->newSession();
-                    $cache = $this->getServiceLocator()->get('cacheHandlerUtilities');
-                    $cache->prepareCachedCMSData();
+                    $cmsCacheHandler = $this->getServiceLocator()->get('cmsCacheHandler');
+                    $forceFlush = (APPLICATION_ENV == "production" )? false : true;
+                    $cmsCacheHandler->prepareCachedCMSData($forceFlush);
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
                     $this->redirect()->toUrl($url);
                 } else {
