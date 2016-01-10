@@ -20,6 +20,7 @@ return array(
             'CMS\Model\Page' => 'CMS\Model\PageFactory',
             'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
             'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
+            'CMS\Event\RouteEvent' => 'CMS\Event\RouteEventFactory',
         ),
         'invokables' => array(
             'CMS\Service\View\MenuView' => 'CMS\Service\View\MenuView',
