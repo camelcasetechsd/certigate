@@ -13,11 +13,17 @@ return array(
             'cmsPage' => 'CMS\Controller\PageController',
             'cmsMenu' => 'CMS\Controller\MenuController',
             'cmsMenuItem' => 'CMS\Controller\MenuItemController',
+            'cmsCacheHandler' => 'CMS\Service\CacheHandler',
+            'cmsMenuView' => 'CMS\Service\View\MenuView',
         ),
         'factories' => array(
             'CMS\Model\Page' => 'CMS\Model\PageFactory',
             'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
+            'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
         ),
+        'invokables' => array(
+            'CMS\Service\View\MenuView' => 'CMS\Service\View\MenuView',
+        )
     ),
     'doctrine' => array(
         'driver' => array(
