@@ -38,7 +38,7 @@ class RendererFactory implements FactoryInterface {
         $config = $config['mustache'];
 
         // set isProduction according to current environment
-        $config['helpers']['isProduction'] = $forceFlush = (APPLICATION_ENV == "production" )? true : false;
+        $config['helpers']['isProduction'] = (APPLICATION_ENV == "production" )? true : false;
         $forceFlush = !$config['helpers']['isProduction'];
         
         $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
