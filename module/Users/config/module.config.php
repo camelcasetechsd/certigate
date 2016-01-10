@@ -160,15 +160,4 @@ return array(
             ),
         )
     ),
-    'roles_management' => array(
-        'excluded_modules' => array(
-            'DoctrineModule',
-            'DoctrineORMModule',
-            'DefaultModule',
-            'Utilities',
-            'Mustache',
-            'CustomMustache',
-            'CertigateAcl'
-        )
-    )
 );

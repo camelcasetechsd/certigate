@@ -146,7 +146,7 @@ class RolesController extends ActionController
         $em = $query->entityManager;
 
         $roleObj = $query->find( 'Users\Entity\Role', $id );
-        $rolePrivileges = $query->findAll( 'Users\Entity\Acl', array('role' => $roleObj) );
+        $rolePrivileges = $query->findBy( 'Users\Entity\Acl', array('role' => $roleObj) );
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -177,7 +177,7 @@ class RolesController extends ActionController
 
         $manager = $this->getServiceLocator()->get( 'ModuleManager' );
         $loadedModules = $manager->getLoadedModules();
-        $excludedModules = $loadedModules['Users']->getConfig()['roles_management']['excluded_modules'];
+        $excludedModules = $loadedModules['CertigateAcl']->getConfig()['roles_management']['excluded_modules'];
         $filtereModules = [];
         foreach ($loadedModules as $k => $v) {
             if (!in_array( $k, $excludedModules )) {
