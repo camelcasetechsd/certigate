@@ -3,6 +3,7 @@
 namespace Users\Form;
 
 use Utilities\Form\Form;
+use Zend\Form\FormInterface;
 
 /**
  * User Form
@@ -15,7 +16,8 @@ use Utilities\Form\Form;
  * @package users
  * @subpackage form
  */
-class UserForm extends Form {
+class UserForm extends Form
+{
 
     /**
      *
@@ -31,14 +33,15 @@ class UserForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct( $name = null, $options = null )
+    {
         $this->query = $options['query'];
-        unset($options['query']);
-        parent::__construct($name, $options);
+        unset( $options['query'] );
+        parent::__construct( $name, $options );
 
-        $this->setAttribute('class', 'form form-horizontal');
+        $this->setAttribute( 'class', 'form form-horizontal' );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'username',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -49,9 +52,9 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'UserName: ',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'password',
             'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
@@ -61,9 +64,9 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Password: ',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'confirmPassword',
             'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
@@ -73,8 +76,8 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'ConfirmPassword: ',
             ),
-        ));
-        $this->add(array(
+        ) );
+        $this->add( array(
             'name' => 'name',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -85,9 +88,24 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'YourName: ',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $rolesElement = new \Zend\Form\Element\Select( 'roles', [
+            'label' => 'Roles',
+            ] );
+        $rolesElement->setAttributes( array(
+            'class' => 'form-control',
+            'multiple' => true,
+        ) );
+
+        $roles = $this->query->findAll( '\Users\Entity\Role' );
+        foreach ($roles as $role) {
+            $rolesValues[$role->getId()] = $role->getName();
+        }
+        $rolesElement->setValueOptions( $rolesValues );
+        $this->add( $rolesElement );
+
+        $this->add( array(
             'name' => 'mobile',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -98,9 +116,9 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Mobile: ',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'dateOfBirth',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
@@ -113,9 +131,9 @@ class UserForm extends Form {
                 'label' => 'DateOfBirth: ',
                 'format' => 'm/d/Y',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'description',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -126,9 +144,9 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Description: ',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'maritalStatus',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
@@ -141,29 +159,29 @@ class UserForm extends Form {
                     'married' => 'Married'
                 ),
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'photo',
             'type' => 'Zend\Form\Element\File',
             'options' => array(
                 'label' => 'Picture',
             ),
-        ));
-        $this->add(array(
+        ) );
+        $this->add( array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => 'Create',
             )
-        ));
-        $this->add(array(
+        ) );
+        $this->add( array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
@@ -171,7 +189,20 @@ class UserForm extends Form {
                 'value' => 'Reset',
                 'type' => 'button',
             )
-        ));
+        ) );
+    }
+
+    public function bind( $object, $flags = FormInterface::VALUES_NORMALIZED)
+    {
+        parent::bind( $object, $flags );
+        
+        $userRoles = $object->getRoles();
+        
+        $userRolesValues = [];
+        foreach ($userRoles as $r){
+            $userRolesValues[] = $r->getId();
+        }
+        $this->get('roles')->setValue($userRolesValues);
     }
 
 }
