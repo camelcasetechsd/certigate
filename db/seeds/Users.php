@@ -19,6 +19,12 @@ class Users extends AbstractSeed
      */
     public function run()
     {
+        $role = [
+            'name' => 'Admin'
+        ];
+        $this->insert('role', $role);
+        $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+        
         $user = [
             "name" => "Admin",
             "username" => "admin",
@@ -30,8 +36,14 @@ class Users extends AbstractSeed
             "description" => "admin user",
             "status" => true
         ];
-
         $this->insert( 'user', $user );
+        $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
+        
+        $this->insert('user_role',
+            [
+                'user_id' => $adminUserId,
+                'role_id' => $adminRoleId
+            ]);
     }
 
 }

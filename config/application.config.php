@@ -18,7 +18,8 @@ return array(
         'Users',
         'Utilities',
         'Mustache',
-        'CustomMustache'
+        'CustomMustache',
+        'CertigateAcl'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
