@@ -5,7 +5,8 @@ namespace CustomMustache\Service;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Mustache\View\Renderer;
-use Zend\Authentication\AuthenticationService;
+use CMS\Entity\Menu;
+use CMS\Service\Cache\CacheHandler;
 
 /**
  * Renderer Factory
@@ -37,8 +38,15 @@ class RendererFactory implements FactoryInterface {
         $config = $config['mustache'];
 
         // set isProduction according to current environment
-        $config['helpers']['isProduction'] = (APPLICATION_ENV == "production" )? true : false;
-
+        $config['helpers']['isProduction'] = $forceFlush = (APPLICATION_ENV == "production" )? true : false;
+        $forceFlush = !$config['helpers']['isProduction'];
+        
+        $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
+        $menuView = $serviceLocator->get('cmsMenuView');
+        $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
+        $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /*$menuTitleUnderscored =*/ Menu::PRIMARY_MENU_UNDERSCORED);
+        $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
+        
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
         $pathResolver = clone $serviceLocator->get('ViewTemplatePathStack');
         $pathResolver->setDefaultSuffix($config['suffix']);
