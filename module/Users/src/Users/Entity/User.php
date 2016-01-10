@@ -548,6 +548,11 @@ class User {
                     ),
                 )
             ));
+            
+            $inputFilter->add(array(
+                'name' => 'roles',
+                'required' => true,
+            ));
 
             $this->inputFilter = $inputFilter;
         }
