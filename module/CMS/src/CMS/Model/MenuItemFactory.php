@@ -27,7 +27,10 @@ class MenuItemFactory implements FactoryInterface {
      * @return MenuItem
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        return new MenuItem();
+        $config = $serviceLocator->get('Configuration');
+        $staticMenus = $config['static_menus'];
+        $query = $serviceLocator->get('wrapperQuery')->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem');
+        return new MenuItem($query, $staticMenus);
     }
 
 }
