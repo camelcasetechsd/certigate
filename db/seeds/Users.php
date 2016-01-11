@@ -2,12 +2,13 @@
 
 require_once 'init_autoloader.php';
 require_once 'module/Users/src/Users/Entity/User.php';
+require_once 'module/Users/src/Users/Entity/Role.php';
 
 use Phinx\Seed\AbstractSeed;
 use \Users\Entity\User;
+use \Users\Entity\Role;
 
-class Users extends AbstractSeed
-{
+class Users extends AbstractSeed {
 
     /**
      * Run Method.
@@ -17,33 +18,48 @@ class Users extends AbstractSeed
      * More information on writing seeders is available here:
      * http://docs.phinx.org/en/latest/seeding.html
      */
-    public function run()
-    {
-        $role = [
-            'name' => 'Admin'
-        ];
+    public function run() {
+        $role = array(
+            array('name' => 'User'),
+            array('name' => Role::ADMIN_ROLE),
+        );
         $this->insert('role', $role);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
-        
-        $user = [
-            "name" => "Admin",
-            "username" => "admin",
-            "password" => User::hashPassword( "adminadmin" ),
-            "mobile" => "01115991948",
-            "dateOfBirth" => "'2015-11-01'",
-            "photo" => '/upload/images/userdefault.png',
-            "maritalStatus" => "single",
-            "description" => "admin user",
-            "status" => true
-        ];
-        $this->insert( 'user', $user );
+        $normalUserRoleId = $adminRoleId - 1;
+        $user = array(
+            array(
+                "name" => "User",
+                "username" => "user",
+                "password" => User::hashPassword("useruser"),
+                "mobile" => "01115991948",
+                "dateOfBirth" => "'2015-11-01'",
+                "photo" => '/upload/images/userdefault.png',
+                "maritalStatus" => "single",
+                "description" => "normal user",
+                "status" => true
+            ),
+            array(
+                "name" => "Admin",
+                "username" => "admin",
+                "password" => User::hashPassword("adminadmin"),
+                "mobile" => "01115991948",
+                "dateOfBirth" => "'2015-11-01'",
+                "photo" => '/upload/images/userdefault.png',
+                "maritalStatus" => "single",
+                "description" => "admin user",
+                "status" => true
+            ),
+        );
+        $this->insert('user', $user);
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        
-        $this->insert('user_role',
-            [
-                'user_id' => $adminUserId,
-                'role_id' => $adminRoleId
-            ]);
+        $normalUserId = $adminUserId - 1;
+        $this->insert('user_role', array(
+            'user_id' => $adminUserId,
+            'role_id' => $adminRoleId
+                ), array(
+            'user_id' => $normalUserId,
+            'role_id' => $normalUserRoleId
+        ));
     }
 
 }
