@@ -48,14 +48,14 @@ class RendererFactory implements FactoryInterface {
         $config['helpers']['primaryMenu'] = '';
         if ($auth->hasIdentity()) {
             $roles = $storage['roles'];
-            if (!in_array(Role::ADMIN_ROLE, $roles)) {
-                $forceFlush = !$config['helpers']['isProduction'];
-                $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
-                $menuView = $serviceLocator->get('cmsMenuView');
-                $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
-                $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED);
-                $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
-            }
+        }
+        if (!isset($roles) || (isset($roles) && !in_array(Role::ADMIN_ROLE, $roles))) {
+            $forceFlush = !$config['helpers']['isProduction'];
+            $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
+            $menuView = $serviceLocator->get('cmsMenuView');
+            $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
+            $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED);
+            $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
         }
 
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
