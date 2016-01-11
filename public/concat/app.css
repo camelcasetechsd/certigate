@@ -6884,3 +6884,9 @@ body {
 .input-error{
     border: 1px solid red;
 }
+/* OriginalFileName : public/css/inactive.css */ 
+
+.container-inactive{
+    background-color:#F2DEDE;
+    color:#767676;
+}

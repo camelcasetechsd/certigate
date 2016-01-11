@@ -19,6 +19,7 @@ return array(
         'Utilities',
         'Mustache',
         'CustomMustache',
+        'CertigateAcl',
         'Directories'
     ),
     'module_listener_options' => array(

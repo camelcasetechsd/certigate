@@ -94,13 +94,19 @@ class Authentication {
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
         
+        $rolesNames = array();
+        foreach($entity->roles as $role){
+            $rolesNames[] = $role->getName();
+        }
+        
         // here to add new entries to the session
         $storage->write(array(
             'id' => $entity->id,
             'name' => $entity->name,
             'username' => $entity->username,
             'photo' => $entity->photo,
-            'status' => $entity->status
+            'status' => $entity->status,
+            'roles' => $rolesNames
         ));
     }
 

@@ -10,6 +10,7 @@ return array(
         'invokables' => array(
             'DefaultModule\Controller\Index' => 'DefaultModule\Controller\IndexController',
             'DefaultModule\Controller\Sign' => 'DefaultModule\Controller\SignController',
+            'DefaultModule\Controller\Error' => 'DefaultModule\Controller\ErrorController',
         ),
     ),
     'router' => array(
@@ -49,6 +50,16 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
                 )
+            ),
+            'noaccess' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/noaccess',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'noaccess',
+                    ),
+                ),
             ),
         )
     )

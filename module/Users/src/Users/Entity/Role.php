@@ -20,6 +20,10 @@ use Zend\InputFilter\InputFilter;
  */
 class Role
 {
+    /**
+     * Admin role
+     */
+    const ADMIN_ROLE = "Admin";
     
     /**
      *

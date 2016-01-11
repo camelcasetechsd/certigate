@@ -80,15 +80,18 @@ class User {
      * @uses UserEntity
      * 
      * @param array $userInfo
-     * @param Users\Entity\User $userObj ,default is null in case new user is being created
+     * @param UserEntity $userObj ,default is null in case new user is being created
      */
     public function saveUser($userInfo, $userObj = null) {
+        /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->query->entityManager;
 
         if (is_null($userObj)) {
             $entity = new UserEntity();
         } else {
             $entity = $userObj;
+            // resetting roles
+            $entity->roles = [];
         }
 
         $entity->username = $userInfo['username'];
@@ -103,7 +106,11 @@ class User {
         $entity->description = $userInfo['description'];
         $entity->maritalStatus = $userInfo['maritalStatus'];
 
-        $entity->role = $this->query->find('Users\Entity\Role', 1);
+        $roles = $userInfo['roles'];
+        foreach($roles as $r){
+            $roleEntity = $em->getRepository('\Users\Entity\Role')->find($r);
+            $entity->addRole($roleEntity);
+        }
 
         if (!empty($userInfo['photo']['name'])) {
             $entity->photo = $this->savePhoto();

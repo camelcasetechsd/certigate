@@ -1,10 +1,10 @@
 <?php
 
-namespace Utilities\Service\Cache;
+namespace CMS\Service\Cache;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Utilities\Service\Cache\CacheHandler;
+use CMS\Service\Cache\CacheHandler;
 
 /**
  * CacheHandler Factory
@@ -13,7 +13,7 @@ use Utilities\Service\Cache\CacheHandler;
  * 
  * 
  * 
- * @package utilities
+ * @package cms
  * @subpackage cache
  */
 class CacheHandlerFactory implements FactoryInterface {
@@ -32,7 +32,8 @@ class CacheHandlerFactory implements FactoryInterface {
         
         $cache = $serviceLocator->get('cacheUtilities');
         $query = $serviceLocator->get('wrapperQuery');
-        $cacheHandler = new CacheHandler($cache, $query);
+        $menuItem = $serviceLocator->get('CMS\Model\MenuItem');
+        $cacheHandler = new CacheHandler($cache, $query, $menuItem);
         return $cacheHandler;
     }
 

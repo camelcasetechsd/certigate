@@ -142,6 +142,27 @@ class PageController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsPage'));
         $this->redirect()->toUrl($url);
     }
+    
+    /**
+     * View page
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function viewAction()
+    {
+        $staticPagePath = $this->getRequest()->getRequestUri();
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        
+        $page = $query->setEntity('CMS\Entity\Page')->entityRepository->getPageByPath($staticPagePath);
+        $variables = array(
+            "title" => $page->getTitle(),
+            "body" => $page->getBody()
+        );
+        return new ViewModel($variables);
+    }
 
 }
 

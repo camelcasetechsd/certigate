@@ -6,4 +6,15 @@ return array(
             'CertigateAclPlugin' => 'CertigateAcl\Controller\Plugin\CertigateAclPlugin',
         )
     ),
+    'roles_management' => array(
+        'excluded_modules' => array(
+            'DoctrineModule',
+            'DoctrineORMModule',
+            'DefaultModule',
+            'Utilities',
+            'Mustache',
+            'CustomMustache',
+            'CertigateAcl'
+        )
+    )
 );

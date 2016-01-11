@@ -16,7 +16,7 @@ if ($('#menu_item_form_parent').length) {
             }
         });
     // selected parent is not empty value "root"          
-    } else if( $('#menu_item_form_parent :selected').val() ) {
+    } else {
         // update menu field with selected option menu
         menuId = $('#menu_item_form_parent :selected').attr('data-menu');
         $('#menu_item_form_menu').val(menuId);

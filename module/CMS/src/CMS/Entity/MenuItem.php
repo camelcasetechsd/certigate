@@ -9,7 +9,6 @@ use Utilities\Service\Status;
 
 /**
  * MenuItem Entity
- * @ORM\Entity
  * @ORM\Entity(repositoryClass="CMS\Entity\MenuItemRepository")
  * @ORM\Table(name="menuItem",uniqueConstraints={@ORM\UniqueConstraint(name="path_idx", columns={"path"})})
  * @ORM\HasLifecycleCallbacks

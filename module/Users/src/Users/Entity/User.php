@@ -226,14 +226,14 @@ class User {
     }
 
     /**
-     * Get role
+     * Get roles
      * 
      * 
      * @access public
-     * @return Users\Entity\Role role
+     * @return array Users\Entity\Role roles
      */
-    public function getRole() {
-        return $this->role;
+    public function getRoles() {
+        return $this->roles;
     }
 
     /**
@@ -350,15 +350,15 @@ class User {
     }
 
     /**
-     * Set role
+     * add role
      * 
      * 
      * @access public
      * @param Users/Entity/Role $role
      * @return User current entity
      */
-    public function setRole($role) {
-        $this->role = $role;
+    public function addRole($role) {
+        $this->roles[] = $role;
         return $this;
     }
 
@@ -547,6 +547,11 @@ class User {
                         )
                     ),
                 )
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'roles',
+                'required' => true,
             ));
 
             $this->inputFilter = $inputFilter;

@@ -25,6 +25,11 @@ use Zend\InputFilter\InputFilter;
 class Menu {
 
     /**
+     * Primary menu
+     */
+    const PRIMARY_MENU_UNDERSCORED = "primary_menu";
+    
+    /**
      *
      * @var InputFilter validation constraints 
      */

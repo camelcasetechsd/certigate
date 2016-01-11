@@ -8,7 +8,7 @@ use Zend\InputFilter\InputFilter;
 
 /**
  * Page Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CMS\Entity\PageRepository")
  * @ORM\Table(name="page",uniqueConstraints={@ORM\UniqueConstraint(name="menuitem_idx", columns={"menuitem_id"})})
  * @ORM\HasLifecycleCallbacks
  * 
