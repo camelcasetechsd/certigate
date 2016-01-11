@@ -7,6 +7,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Mustache\View\Renderer;
 use CMS\Entity\Menu;
 use CMS\Service\Cache\CacheHandler;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
 /**
  * Renderer Factory
@@ -33,20 +35,29 @@ class RendererFactory implements FactoryInterface {
      * @return Renderer
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        
+
         $config = $serviceLocator->get('Configuration');
         $config = $config['mustache'];
 
         // set isProduction according to current environment
-        $config['helpers']['isProduction'] = (APPLICATION_ENV == "production" )? true : false;
-        $forceFlush = !$config['helpers']['isProduction'];
-        
-        $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
-        $menuView = $serviceLocator->get('cmsMenuView');
-        $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
-        $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /*$menuTitleUnderscored =*/ Menu::PRIMARY_MENU_UNDERSCORED);
-        $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
-        
+        $config['helpers']['isProduction'] = (APPLICATION_ENV == "production" ) ? true : false;
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        $config['helpers']['primaryMenu'] = '';
+        if ($auth->hasIdentity()) {
+            $roles = $storage['roles'];
+            if (!in_array(Role::ADMIN_ROLE, $roles)) {
+                $forceFlush = !$config['helpers']['isProduction'];
+                $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
+                $menuView = $serviceLocator->get('cmsMenuView');
+                $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
+                $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED);
+                $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
+            }
+        }
+
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
         $pathResolver = clone $serviceLocator->get('ViewTemplatePathStack');
         $pathResolver->setDefaultSuffix($config['suffix']);
