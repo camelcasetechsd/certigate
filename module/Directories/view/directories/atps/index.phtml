@@ -1,0 +1,58 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br />
+<a href="/directories/atps/new"><button class="btn btn-small btn-success create-new">Create new ATP</button></a>
+<br/>
+<div class="panel panel-default atcs-list">
+    <div class="panel-heading">ATPs</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Telephone</th>
+                <th>Summary</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+<!--            {{#atpsList}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{telephone}}</td>
+                <td class="trimmed_summary">{{summary}}</td>
+                <td>
+                    {{#active}}
+                    <a href="/directories/atcs/more/{{id}}">More</a>     
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/directories/atps/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/directories/atps/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/active}}
+                </td>
+            </tr>
+            {{/atpsList}}-->
+
+            <!--Dummy Data Remove it and unHash the perivous html-->
+
+            <tr>
+                <td>TestUser</td>
+                <td>0125214875</td>
+                <td class="trimmed_summary">Developer</td>
+                <td>
+                    <a href="/directories/atcs/more/9">More</a>     
+                    &nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/directories/atps/edit/9"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/directories/atps/delete/9"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{{/content}}
+
+{{/layout}}
