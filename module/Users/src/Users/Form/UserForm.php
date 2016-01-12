@@ -90,21 +90,26 @@ class UserForm extends Form
             ),
         ) );
 
-        $rolesElement = new \Zend\Form\Element\Select( 'roles', [
-            'label' => 'Roles',
-            ] );
-        $rolesElement->setAttributes( array(
-            'class' => 'form-control',
-            'multiple' => true,
-        ) );
-
-        $roles = $this->query->findAll( '\Users\Entity\Role' );
-        foreach ($roles as $role) {
-            $rolesValues[$role->getId()] = $role->getName();
-        }
-        $rolesElement->setValueOptions( $rolesValues );
-        $this->add( $rolesElement );
-
+        $this->add(array(
+            'name' => 'roles',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'class' => 'form-control',
+                'multiple' => true,
+            ),
+            'options' => array(
+                'label' => 'Roles',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Users\Entity\Role',
+                'property' => 'name',
+                'find_method' => array(
+                    'name' => 'findAll',
+                    'params' => array(
+                    )
+                )
+            ),
+        ));
+        
         $this->add( array(
             'name' => 'mobile',
             'type' => 'Zend\Form\Element\Text',

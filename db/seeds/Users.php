@@ -19,14 +19,14 @@ class Users extends AbstractSeed {
      * http://docs.phinx.org/en/latest/seeding.html
      */
     public function run() {
-        $role = array(
+        $roles = array(
             array('name' => 'User'),
             array('name' => Role::ADMIN_ROLE),
         );
-        $this->insert('role', $role);
+        $this->insert('role', $roles);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
         $normalUserRoleId = $adminRoleId - 1;
-        $user = array(
+        $users = array(
             array(
                 "name" => "User",
                 "username" => "user",
@@ -50,16 +50,17 @@ class Users extends AbstractSeed {
                 "status" => true
             ),
         );
-        $this->insert('user', $user);
+        $this->insert('user', $users);
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
         $normalUserId = $adminUserId - 1;
-        $this->insert('user_role', array(
+        $userRoles = array(array(
             'user_id' => $adminUserId,
             'role_id' => $adminRoleId
                 ), array(
             'user_id' => $normalUserId,
             'role_id' => $normalUserRoleId
         ));
+        $this->insert('user_role', $userRoles);
     }
 
 }
