@@ -581,6 +581,9 @@ class User {
         if(array_key_exists('status', $data)){
             $this->setStatus($data["status"]);
         }
+        if(array_key_exists('photo', $data) && is_string($data['photo'])){
+            $this->setPhoto($data["photo"]);
+        }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDescription($data["description"])
                 ->setMaritalStatus($data["maritalStatus"])

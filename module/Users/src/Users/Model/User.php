@@ -61,10 +61,8 @@ class User {
      */
     public function saveUser($userInfo, $userObj = null) {
         if (is_null($userObj)) {
-            $entity = new UserEntity();
-        } else {
-            $entity = $userObj;
-        }
+            $userObj = new UserEntity();
+        } 
         if (is_null($userObj)) {
             $userInfo['password'] = UserEntity::hashPassword($userInfo['password']);
         }
