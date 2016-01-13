@@ -193,36 +193,6 @@ class UserForm extends Form
             ),
         ) );
 
-        
-
-        $this->add( array(
-            'name' => 'description',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-                'class' => 'form-control',
-                'rows' => '5',
-                'placeholder' => 'Enter User description'
-            ),
-            'options' => array(
-                'label' => 'Description',
-            ),
-        ) );
-
-        $this->add( array(
-            'name' => 'maritalStatus',
-            'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Marital Status',
-                'value_options' => array(
-                    'single' => 'Single',
-                    'married' => 'Married'
-                ),
-            ),
-        ) );
-
         $this->add( array(
             'name' => 'photo',
             'type' => 'Zend\Form\Element\File',

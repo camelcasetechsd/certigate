@@ -26,8 +26,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $mobile
  * @property \DateTime $dateOfBirth
  * @property string $photo
- * @property string $maritalStatus
- * @property string $description
  * @property array $roles
  * @property int $status
  * 
@@ -122,20 +120,6 @@ class User {
 
     /**
      *
-     * @ORM\Column(type="string" )
-     * @var string
-     */
-    public $maritalStatus;
-
-    /**
-     *
-     * @ORM\Column(type="string" , length = 1024 )
-     * @var string
-     */
-    public $description;
-
-    /**
-     *
      * @ORM\ManyToMany(targetEntity="Users\Entity\Role")
      * @var array Users\Entity\Role
      */
@@ -200,28 +184,6 @@ class User {
      */
     public function getDateOfBirth() {
         return $this->dateOfBirth;
-    }
-
-    /**
-     * Get description
-     * 
-     * 
-     * @access public
-     * @return string description
-     */
-    public function getDescription() {
-        return $this->description;
-    }
-
-    /**
-     * Get maritalStatus
-     * 
-     * 
-     * @access public
-     * @return string maritalStatus
-     */
-    public function getMaritalStatus() {
-        return $this->maritalStatus;
     }
 
     /**
@@ -371,32 +333,6 @@ class User {
      */
     public function setDateOfBirth($dateOfBirth) {
         $this->dateOfBirth = new \DateTime($dateOfBirth);
-        return $this;
-    }
-
-    /**
-     * Set description
-     * 
-     * 
-     * @access public
-     * @param string $description
-     * @return User current entity
-     */
-    public function setDescription($description) {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * Set maritalStatus
-     * 
-     * 
-     * @access public
-     * @param string $maritalStatus
-     * @return User current entity
-     */
-    public function setMaritalStatus($maritalStatus) {
-        $this->maritalStatus = $maritalStatus;
         return $this;
     }
 
@@ -585,8 +521,6 @@ class User {
             $this->setPhoto($data["photo"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
-                ->setDescription($data["description"])
-                ->setMaritalStatus($data["maritalStatus"])
                 ->setMobile($data["mobile"])
                 ->setFirstName($data["firstName"])
                 ->setLastName($data["lastName"])
@@ -723,15 +657,6 @@ class User {
                 )
             ));
            
-            $inputFilter->add(array(
-                'name' => 'description',
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                    )
-                ),
-            ));
-
             $inputFilter->add(array(
                 'name' => 'photo',
                 'required' => true,
