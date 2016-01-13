@@ -23,27 +23,36 @@ class Users extends AbstractSeed {
             array('name' => 'User'),
             array('name' => Role::ADMIN_ROLE),
         );
+        $faker = Faker\Factory::create();
         $this->insert('role', $roles);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
         $normalUserRoleId = $adminRoleId - 1;
         $users = array(
             array(
-                "name" => "User",
+                "firstName" => "User",
+                "middleName" => "Foo",
+                "lastName" => "Bar",
+                "country" => $faker->countryCode,
+                "language" => $faker->languageCode,
                 "username" => "user",
                 "password" => User::hashPassword("useruser"),
                 "mobile" => "01115991948",
-                "dateOfBirth" => "'2015-11-01'",
+                "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
                 "maritalStatus" => "single",
                 "description" => "normal user",
                 "status" => true
             ),
             array(
-                "name" => "Admin",
+                "firstName" => "Admin",
+                "middleName" => "Foo",
+                "lastName" => "Bar",
+                "country" => $faker->countryCode,
+                "language" => $faker->languageCode,
                 "username" => "admin",
                 "password" => User::hashPassword("adminadmin"),
                 "mobile" => "01115991948",
-                "dateOfBirth" => "'2015-11-01'",
+                "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
                 "maritalStatus" => "single",
                 "description" => "admin user",
