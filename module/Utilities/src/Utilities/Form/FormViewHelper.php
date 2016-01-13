@@ -40,6 +40,13 @@ class FormViewHelper extends Form {
                 $formContent.= $this->getView()->formCollection($element);
             } else {
 
+                // add required class to all required elements
+                if (! empty($element->getAttribute('required'))) {
+                    $labelAttributes = $element->getLabelAttributes();
+                    $labelClass = (isset($labelAttributes["class"]))?$labelAttributes["class"] : "";
+                    $labelAttributes["class"] = $labelClass . " required";
+                    $element->setLabelAttributes($labelAttributes);
+                }
                 // Add Id to all form elements
                 // When element has an Id, Label tag won't enclose form element
                 if (empty($element->getAttribute('id'))) {

@@ -36,6 +36,7 @@ module.exports = function (grunt) {
                 src: [
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                 ]
