@@ -25,6 +25,18 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $password
  * @property string $mobile
  * @property \DateTime $dateOfBirth
+ * @property string $addressOne
+ * @property string $addressTwo
+ * @property string $city
+ * @property string $zipCode
+ * @property string $phone
+ * @property string $nationality
+ * @property string $identificationType
+ * @property string $identificationNumber
+ * @property \DateTime $identificationExpiryDate
+ * @property string $email
+ * @property string $securityQuestion
+ * @property string $securityAnswer
  * @property string $photo
  * @property array $roles
  * @property int $status
@@ -103,7 +115,91 @@ class User {
      * @var string
      */
     public $mobile;
-
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $addressOne;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $addressTwo;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $city;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $zipCode;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $phone;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $nationality;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $identificationType;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $identificationNumber;
+    
+    /**
+     *
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $identificationExpiryDate;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $email;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $securityQuestion;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $securityAnswer;
+    
     /**
      *
      * @ORM\Column(type="date")
@@ -324,6 +420,138 @@ class User {
     }
 
     /**
+     * Get addressOne
+     * 
+     * 
+     * @access public
+     * @return string addressOne
+     */
+    public function getAddressOne() {
+        return $this->addressOne;
+    }
+    
+    /**
+     * Get addressTwo
+     * 
+     * 
+     * @access public
+     * @return string addressTwo
+     */
+    public function getAddressTwo() {
+        return $this->addressTwo;
+    }
+    
+    /**
+     * Get city
+     * 
+     * 
+     * @access public
+     * @return string city
+     */
+    public function getCity() {
+        return $this->city;
+    }
+    
+    /**
+     * Get zipCode
+     * 
+     * 
+     * @access public
+     * @return string zipCode
+     */
+    public function getZipCode() {
+        return $this->zipCode;
+    }
+    
+    /**
+     * Get phone
+     * 
+     * 
+     * @access public
+     * @return string phone
+     */
+    public function getPhone() {
+        return $this->phone;
+    }
+    
+    /**
+     * Get nationality
+     * 
+     * 
+     * @access public
+     * @return string nationality
+     */
+    public function getNationality() {
+        return $this->nationality;
+    }
+    
+    /**
+     * Get identificationType
+     * 
+     * 
+     * @access public
+     * @return string identificationType
+     */
+    public function getIdentificationType() {
+        return $this->identificationType;
+    }
+    
+    /**
+     * Get identificationNumber
+     * 
+     * 
+     * @access public
+     * @return string identificationNumber
+     */
+    public function getIdentificationNumber() {
+        return $this->identificationNumber;
+    }
+    
+    /**
+     * Get identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @return \DateTime identificationExpiryDate
+     */
+    public function getIdentificationExpiryDate() {
+        return $this->identificationExpiryDate;
+    }
+    
+    /**
+     * Get email
+     * 
+     * 
+     * @access public
+     * @return string email
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+    
+    /**
+     * Get securityQuestion
+     * 
+     * 
+     * @access public
+     * @return string securityQuestion
+     */
+    public function getSecurityQuestion() {
+        return $this->securityQuestion;
+    }
+    
+    /**
+     * Get securityAnswer
+     * 
+     * 
+     * @access public
+     * @return string securityAnswer
+     */
+    public function getSecurityAnswer() {
+        return $this->securityAnswer;
+    }
+
+    /**
      * Set dateOfBirth
      * 
      * 
@@ -493,6 +721,162 @@ class User {
     }
 
     /**
+     * Set addressOne
+     * 
+     * 
+     * @access public
+     * @param string $addressOne
+     * @return User current entity
+     */
+    public function setAddressOne($addressOne) {
+        $this->addressOne = $addressOne;
+        return $this;
+    }
+    
+    /**
+     * Set addressTwo
+     * 
+     * 
+     * @access public
+     * @param string $addressTwo
+     * @return User current entity
+     */
+    public function setAddressTwo($addressTwo) {
+        $this->addressTwo = $addressTwo;
+        return $this;
+    }
+    
+    /**
+     * Set city
+     * 
+     * 
+     * @access public
+     * @param string $city
+     * @return User current entity
+     */
+    public function setCity($city) {
+        $this->city = $city;
+        return $this;
+    }
+    
+    /**
+     * Set zipCode
+     * 
+     * 
+     * @access public
+     * @param string $zipCode
+     * @return User current entity
+     */
+    public function setZipCode($zipCode) {
+        $this->zipCode = $zipCode;
+        return $this;
+    }
+    
+    /**
+     * Set phone
+     * 
+     * 
+     * @access public
+     * @param string $phone
+     * @return User current entity
+     */
+    public function setPhone($phone) {
+        $this->phone = $phone;
+        return $this;
+    }
+    
+    /**
+     * Set nationality
+     * 
+     * 
+     * @access public
+     * @param string $nationality
+     * @return User current entity
+     */
+    public function setNationality($nationality) {
+        $this->nationality = $nationality;
+        return $this;
+    }
+    
+    /**
+     * Set identificationType
+     * 
+     * 
+     * @access public
+     * @param string $identificationType
+     * @return User current entity
+     */
+    public function setIdentificationType($identificationType) {
+        $this->identificationType = $identificationType;
+        return $this;
+    }
+    
+    /**
+     * Set identificationNumber
+     * 
+     * 
+     * @access public
+     * @param string $identificationNumber
+     * @return User current entity
+     */
+    public function setIdentificationNumber($identificationNumber) {
+        $this->identificationNumber = $identificationNumber;
+        return $this;
+    }
+    
+    /**
+     * Set identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @param \DateTime $identificationExpiryDate
+     * @return User current entity
+     */
+    public function setIdentificationExpiryDate($identificationExpiryDate) {
+        $this->identificationExpiryDate = new \DateTime($identificationExpiryDate);
+        return $this;
+    }
+    
+    /**
+     * Set email
+     * 
+     * 
+     * @access public
+     * @param string $email
+     * @return User current entity
+     */
+    public function setEmail($email) {
+        $this->email = $email;
+        return $this;
+    }
+    
+    /**
+     * Set securityQuestion
+     * 
+     * 
+     * @access public
+     * @param string $securityQuestion
+     * @return User current entity
+     */
+    public function setSecurityQuestion($securityQuestion) {
+        $this->securityQuestion = $securityQuestion;
+        return $this;
+    }
+    
+    /**
+     * Set securityAnswer
+     * 
+     * 
+     * @access public
+     * @param string $securityAnswer
+     * @return User current entity
+     */
+    public function setSecurityAnswer($securityAnswer) {
+        $this->securityAnswer = $securityAnswer;
+        return $this;
+    }
+    
+    /**
      * Convert the object to an array.
      * 
      * 
@@ -528,7 +912,20 @@ class User {
                 ->setCountry($data["country"])
                 ->setLanguage($data["language"])
                 ->setPassword($data["password"])
-                ->setUsername($data["username"]);
+                ->setUsername($data["username"])
+                ->setAddressOne($data["addressOne"])
+                ->setAddressTwo($data["addressTwo"])
+                ->setCity($data["city"])
+                ->setEmail($data["email"])
+                ->setIdentificationExpiryDate($data["identificationExpiryDate"])
+                ->setIdentificationNumber($data["identificationNumber"])
+                ->setIdentificationType($data["identificationType"])
+                ->setNationality($data["nationality"])
+                ->setPhone($data["phone"])
+                ->setSecurityAnswer($data["securityAnswer"])
+                ->setSecurityQuestion($data["securityQuestion"])
+                ->setZipCode($data["zipCode"])
+                ;
     }
 
     /**
@@ -630,18 +1027,6 @@ class User {
                     array(
                         'name' => 'StringTrim',
                     )
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Digits',
-                    ),
-                    array(
-                        'name' => 'regex',
-                        'options' => array(
-                            'pattern' => '/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/',
-                            'messages' => array(Regex::NOT_MATCH => 'This is not a mobile number!')
-                        )
-                    )
                 )
             ));
             $inputFilter->add(array(
@@ -674,6 +1059,63 @@ class User {
                 )
             ));
             
+            $inputFilter->add(array(
+                'name' => 'addressOne',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'city',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'nationality',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'identificationType',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'identificationNumber',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'identificationExpiryDate',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'm/d/Y',
+                        )
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'securityQuestion',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'securityAnswer',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'email',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'EmailAddress',
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'confirmEmail',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'EmailAddress',
+                    ),
+                )
+            ));
+          
             $inputFilter->add(array(
                 'name' => 'roles',
                 'required' => true,
