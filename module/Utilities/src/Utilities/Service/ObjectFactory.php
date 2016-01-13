@@ -1,38 +1,38 @@
 <?php
 
-namespace Utilities\Service\Query;
+namespace Utilities\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Utilities\Service\Query\Query;
+use Utilities\Service\Object;
 
 /**
- * Query Factory
+ * Object Factory
  * 
- * Prepare Query service factory
+ * Prepare Object service factory
  * 
  * 
  * 
  * @package utilities
- * @subpackage query
+ * @subpackage service
  */
-class QueryFactory implements FactoryInterface {
+class ObjectFactory implements FactoryInterface {
 
     /**
-     * Prepare Query service
+     * Prepare Object service
      * 
      * 
-     * @uses Query
+     * @uses Object
      * 
      * @access public
      * @param ServiceLocatorInterface $serviceLocator
-     * @return Query
+     * @return Object
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        // Get the entity manager through our service manager
-        $entitymanager = $serviceLocator->get('doctrine.entitymanager.orm_default');
-        $query = new Query($entitymanager);
-        return $query;
+        $countriesService = $serviceLocator->get('losi18n-countries');
+        $languagesService = $serviceLocator->get('losi18n-languages');
+        $object = new Object($countriesService, $languagesService);
+        return $object;
     }
 
 }

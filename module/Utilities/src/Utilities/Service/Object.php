@@ -3,17 +3,47 @@
 namespace Utilities\Service;
 
 use Utilities\Service\Status;
+use LosI18n\Service\CountryService;
+use LosI18n\Service\LanguageService;
 
 /**
  * Object
  * 
  * Handles Object-related operations
  * 
+ * @property array $countries
+ * @property array $languages
  * 
  * @package utilities
  * @subpackage service
  */
 class Object {
+
+    /**
+     *
+     * @var array 
+     */
+    public $countries;
+
+    /**
+     *
+     * @var array 
+     */
+    public $languages;
+
+    /**
+     * Set needed properties
+     * 
+     * 
+     * @access public
+     * @param CountryService $countriesService
+     * @param LanguageService $languagesService
+     */
+    public function __construct(CountryService $countriesService, LanguageService $languagesService) {
+        $locale = "en";
+        $this->countries = $countriesService->getAllCountries($locale);
+        $this->languages = $languagesService->getAllLanguages($locale);
+    }
 
     /**
      * prepare object for display
@@ -30,9 +60,17 @@ class Object {
         foreach ($objectsArray as $object) {
             $objectProperties = $this->prepareForStatusDisplay($object);
             foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
-                if ($objectPropertyValue instanceof \DateTime) {
+                if(is_string($objectPropertyValue) && strlen($objectPropertyValue) <= 5 ) {
+                    $textObjectPropertyName = $objectPropertyName."Text";
+                    if(array_key_exists($objectPropertyValue, $this->languages)){
+                        $object->$textObjectPropertyName = $this->languages[$objectPropertyValue];
+                    }elseif(strlen($objectPropertyValue) == 2 && array_key_exists($objectPropertyValue, $this->countries)){
+                        $object->$textObjectPropertyName = $this->countries[$objectPropertyValue];
+                    }
+                    
+                } elseif ($objectPropertyValue instanceof \DateTime) {
                     $object->$objectPropertyName = $objectPropertyValue->format("D, d M Y H:i");
-                } elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel){
+                } elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel) {
                     $objectsPropertyValue = $this->prepareForDisplay(array($objectPropertyValue), $depthLevel, $maxDepthLevel);
                     $object->$objectPropertyName = reset($objectsPropertyValue);
                 }
