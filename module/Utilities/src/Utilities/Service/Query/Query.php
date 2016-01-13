@@ -4,6 +4,7 @@ namespace Utilities\Service\Query;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Query
@@ -172,13 +173,38 @@ class Query {
             } else {
                 $currentValue = $entity->$associationName;
             }
-            if (!is_object($currentValue) && is_numeric($currentValue)) {
-                $targetClass = $classMetadata->getAssociationTargetClass($associationName);
-                $currentValue = $this->find($targetClass, $currentValue);
-                if (isset($data[$associationName])) {
-                    $data[$associationName] = $currentValue;
-                } else {
-                    $entity->$associationName = $currentValue;
+            if (!is_object($currentValue)) {
+                $currentValueArray = $currentValue;
+                $currentValueArrayFlag = true;
+                if (is_numeric($currentValue)) {
+                    $currentValueArray = array($currentValue);
+                    $currentValueArrayFlag = false;
+                }
+                if (is_array($currentValueArray)) {
+                    $processedValueArrayCollection = null;
+                    $targetClass = $classMetadata->getAssociationTargetClass($associationName);
+                    foreach ($currentValueArray as $currentValue) {
+                        $processedValue = $this->find($targetClass, $currentValue);
+                        if ($currentValueArrayFlag === true) {
+                            if (is_null($processedValueArrayCollection)) {
+                                $processedValueArrayCollection = new ArrayCollection();
+                            }
+                            $processedValueArrayCollection->add($processedValue);
+                        } else {
+                            if (isset($data[$associationName])) {
+                                $data[$associationName] = $processedValue;
+                            } else {
+                                $entity->$associationName = $processedValue;
+                            }
+                        }
+                    }
+                    if ($currentValueArrayFlag === true) {
+                        if (isset($data[$associationName])) {
+                            $data[$associationName] = $processedValueArrayCollection;
+                        } else {
+                            $entity->$associationName = $processedValueArrayCollection;
+                        }
+                    }
                 }
             }
         }
