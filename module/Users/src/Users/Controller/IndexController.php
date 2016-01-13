@@ -29,11 +29,11 @@ class IndexController extends ActionController {
     public function indexAction() {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $userModel = $this->getServiceLocator()->get('Users\Model\User');
-
+        $objectUtilities = $this->getServiceLocator()->get( 'objectUtilities' );
+        
         $data = $query->findAll('Users\Entity\User');
         // process data that will be displayed later
-        $processedData = $userModel->prepareForDisplay($data);
+        $processedData = $objectUtilities->prepareForDisplay($data);
 
         $variables['userList'] = $processedData;
         return new ViewModel($variables);
@@ -52,12 +52,17 @@ class IndexController extends ActionController {
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
+        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = $query->find('Users\Entity\User', $id);
         $photo = $userObj->photo;
 
         $options = array();
         $options['query'] = $query;
+        $locale = "en";
+        $options['countries'] = $countriesService->getAllCountries($locale);
+        $options['languages'] = $languagesService->getAllLanguages($locale);
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
 
@@ -113,10 +118,15 @@ class IndexController extends ActionController {
 
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
+        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
+        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = new User();
         $options = array();
         $options['query'] = $query;
+        $locale = "en";
+        $options['countries'] = $countriesService->getAllCountries($locale);
+        $options['languages'] = $languagesService->getAllLanguages($locale);
         $form = new UserForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();

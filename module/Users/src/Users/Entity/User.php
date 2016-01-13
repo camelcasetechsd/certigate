@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Regex;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User Entity
@@ -15,7 +16,11 @@ use Zend\Validator\Regex;
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
- * @property string $name
+ * @property string $firstName
+ * @property string $middleName
+ * @property string $lastName
+ * @property string $country
+ * @property string $language
  * @property string $username
  * @property string $password
  * @property string $mobile
@@ -50,7 +55,35 @@ class User {
      * @ORM\Column(type="string")
      * @var string
      */
-    public $name;
+    public $firstName;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $middleName;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $lastName;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $country;
+    
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $language;
 
     /**
      *
@@ -149,6 +182,16 @@ class User {
     }
 
     /**
+     * Prepare user entity
+     * 
+     * 
+     * @access public
+     */
+    public function __construct() {
+        $this->roles = new ArrayCollection();
+    }
+    
+    /**
      * Get dateOfBirth
      * 
      * 
@@ -193,14 +236,74 @@ class User {
     }
 
     /**
-     * Get name
+     * Get firstName
      * 
      * 
      * @access public
-     * @return string name
+     * @return string firstName
      */
-    public function getName() {
-        return $this->name;
+    public function getFirstName() {
+        return $this->firstName;
+    }
+    
+    /**
+     * Get middleName
+     * 
+     * 
+     * @access public
+     * @return string middleName
+     */
+    public function getMiddleName() {
+        return $this->middleName;
+    }
+    
+    /**
+     * Get lastName
+     * 
+     * 
+     * @access public
+     * @return string lastName
+     */
+    public function getLastName() {
+        return $this->lastName;
+    }
+    
+    /**
+     * Get country
+     * 
+     * 
+     * @access public
+     * @return string country
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+    
+    /**
+     * Get language
+     * 
+     * 
+     * @access public
+     * @return string language
+     */
+    public function getLanguage() {
+        return $this->language;
+    }
+    
+    /**
+     * Get fullName
+     * 
+     * 
+     * @access public
+     * @return string fullName
+     */
+    public function getFullName() {
+        $fullName = $this->getFirstName();
+        if(! empty($this->getMiddleName())){
+            $fullName .= " ".$this->getMiddleName();
+        }
+        $fullName .= " ".$this->getLastName();
+        return $fullName;
     }
 
     /**
@@ -230,7 +333,7 @@ class User {
      * 
      * 
      * @access public
-     * @return array Users\Entity\Role roles
+     * @return ArrayCollection Users\Entity\Role roles
      */
     public function getRoles() {
         return $this->roles;
@@ -267,7 +370,7 @@ class User {
      * @return User current entity
      */
     public function setDateOfBirth($dateOfBirth) {
-        $this->dateOfBirth = $dateOfBirth;
+        $this->dateOfBirth = new \DateTime($dateOfBirth);
         return $this;
     }
 
@@ -311,15 +414,67 @@ class User {
     }
 
     /**
-     * Set name
+     * Set firstName
      * 
      * 
      * @access public
-     * @param string $name
+     * @param string $firstName
      * @return User current entity
      */
-    public function setName($name) {
-        $this->name = $name;
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * Set middleName
+     * 
+     * 
+     * @access public
+     * @param string $middleName
+     * @return User current entity
+     */
+    public function setMiddleName($middleName) {
+        $this->middleName = $middleName;
+        return $this;
+    }
+
+    /**
+     * Set lastName
+     * 
+     * 
+     * @access public
+     * @param string $lastName
+     * @return User current entity
+     */
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
+        return $this;
+    }
+    
+    /**
+     * Set country
+     * 
+     * 
+     * @access public
+     * @param string $country
+     * @return User current entity
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+        return $this;
+    }
+    
+    /**
+     * Set language
+     * 
+     * 
+     * @access public
+     * @param string $language
+     * @return User current entity
+     */
+    public function setLanguage($language) {
+        $this->language = $language;
         return $this;
     }
 
@@ -362,6 +517,19 @@ class User {
         return $this;
     }
 
+    /**
+     * Set roles
+     * 
+     * 
+     * @access public
+     * @param array $roles array of Users\Entity\Role instances or just ids
+     * @return User current entity
+     */
+    public function setRoles($roles) {
+        $this->roles = $roles;
+        return $this;
+    }
+    
     /**
      * Set status
      * 
@@ -407,8 +575,8 @@ class User {
      * @param array $data ,default is empty array
      */
     public function exchangeArray($data = array()) {
-        if(array_key_exists('role', $data)){
-            $this->setRole($data["role"]);
+        if(array_key_exists('roles', $data)){
+            $this->setRoles($data["roles"]);
         }
         if(array_key_exists('status', $data)){
             $this->setStatus($data["status"]);
@@ -417,7 +585,11 @@ class User {
                 ->setDescription($data["description"])
                 ->setMaritalStatus($data["maritalStatus"])
                 ->setMobile($data["mobile"])
-                ->setName($data["name"])
+                ->setFirstName($data["firstName"])
+                ->setLastName($data["lastName"])
+                ->setMiddleName($data["middleName"])
+                ->setCountry($data["country"])
+                ->setLanguage($data["language"])
                 ->setPassword($data["password"])
                 ->setUsername($data["username"]);
     }
@@ -481,13 +653,38 @@ class User {
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'name',
+                'name' => 'firstName',
                 'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
+            ));
+            $inputFilter->add(array(
+                'name' => 'lastName',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'middleName',
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'country',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'language',
+                'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'mobile',

@@ -36,11 +36,92 @@ class UserForm extends Form
     public function __construct( $name = null, $options = null )
     {
         $this->query = $options['query'];
+        $countries = $options['countries'];
+        $languages = $options['languages'];
         unset( $options['query'] );
+        unset( $options['countries'] );
+        unset( $options['languages'] );
         parent::__construct( $name, $options );
 
         $this->setAttribute( 'class', 'form form-horizontal' );
 
+        $this->add( array(
+            'name' => 'firstName',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter User\'s first name',
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'First Name',
+            ),
+        ) );
+        $this->add( array(
+            'name' => 'middleName',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter User\'s first name',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Middle Name',
+            ),
+        ) );
+        $this->add( array(
+            'name' => 'lastName',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter User\'s first name',
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Last Name',
+            ),
+        ) );
+        
+        $this->add(array(
+            'name' => 'country',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Country',
+                'value_options' => $countries,
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'language',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Language',
+                'value_options' => $languages,
+            ),
+        ));
+        
+        $this->add( array(
+            'name' => 'dateOfBirth',
+            'type' => 'Zend\Form\Element\Date',
+            'attributes' => array(
+                'placeholder' => 'Example: 10/10/2010',
+                'required' => 'required',
+                'class' => 'form-control date',
+                'type' => 'text',
+            ),
+            'options' => array(
+                'label' => 'Date Of Birth',
+                'format' => 'm/d/Y',
+            ),
+        ) );
+        
         $this->add( array(
             'name' => 'username',
             'type' => 'Zend\Form\Element\Text',
@@ -50,7 +131,7 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'UserName: ',
+                'label' => 'User Name',
             ),
         ) );
 
@@ -62,7 +143,7 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Password: ',
+                'label' => 'Password',
             ),
         ) );
 
@@ -74,21 +155,10 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'ConfirmPassword: ',
+                'label' => 'Confirm Password',
             ),
         ) );
-        $this->add( array(
-            'name' => 'name',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Enter User\'s appeared name',
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'YourName: ',
-            ),
-        ) );
+        
 
         $this->add(array(
             'name' => 'roles',
@@ -119,24 +189,11 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Mobile: ',
+                'label' => 'Mobile',
             ),
         ) );
 
-        $this->add( array(
-            'name' => 'dateOfBirth',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'DateOfBirth: ',
-                'format' => 'm/d/Y',
-            ),
-        ) );
+        
 
         $this->add( array(
             'name' => 'description',
@@ -147,7 +204,7 @@ class UserForm extends Form
                 'placeholder' => 'Enter User description'
             ),
             'options' => array(
-                'label' => 'Description: ',
+                'label' => 'Description',
             ),
         ) );
 
@@ -158,7 +215,7 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'MaritalStatus: ',
+                'label' => 'Marital Status',
                 'value_options' => array(
                     'single' => 'Single',
                     'married' => 'Married'
