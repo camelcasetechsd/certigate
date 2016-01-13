@@ -5,7 +5,7 @@ namespace Users\Model;
 use Users\Entity\User as UserEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
-use DateTime;
+use Users\Entity\Role;
 use Utilities\Service\Status;
 
 /**
@@ -63,7 +63,7 @@ class User {
         if (is_null($userObj)) {
             $userObj = new UserEntity();
         } 
-        if (is_null($userObj)) {
+        if (! empty($userInfo['password'])) {
             $userInfo['password'] = UserEntity::hashPassword($userInfo['password']);
         }
         if (!empty($userInfo['photo']['name'])) {
@@ -71,7 +71,13 @@ class User {
         }
         $userInfo['status'] = Status::STATUS_ACTIVE;
 
-        $this->query->save($userObj, $userInfo);
+        // All users should always have user role
+        $userRole = $this->query->findOneBy("Users\Entity\Role", /*$criteria =*/ array("name" => Role::USER_ROLE));
+        if(!in_array($userRole->getId(), $userInfo['roles'])){
+            $userInfo['roles'][] = $userRole->getId();
+        }
+        
+        $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
     }
 
     /**

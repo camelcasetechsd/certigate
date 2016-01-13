@@ -904,6 +904,9 @@ class User {
         if(array_key_exists('photo', $data) && is_string($data['photo'])){
             $this->setPhoto($data["photo"]);
         }
+        if(array_key_exists('password', $data) && ! empty($data['password'])){
+            $this->setPassword($data["password"]);
+        }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setMobile($data["mobile"])
                 ->setFirstName($data["firstName"])
@@ -911,7 +914,6 @@ class User {
                 ->setMiddleName($data["middleName"])
                 ->setCountry($data["country"])
                 ->setLanguage($data["language"])
-                ->setPassword($data["password"])
                 ->setUsername($data["username"])
                 ->setAddressOne($data["addressOne"])
                 ->setAddressTwo($data["addressTwo"])
