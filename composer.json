@@ -7,7 +7,10 @@
         "zendframework/zendframework": "2.3.3",
         "doctrine/doctrine-orm-module": "0.*",
         "widmogrod/zf2-mustache-module": "dev-master",
-        "robmorgan/phinx": "^0.5.1"
+        "robmorgan/phinx": "^0.5.1",
+        "los/losi18n-data": "1.*",
+        "los/losi18n": "1.*",
+        "fzaninotto/faker": "^1.5"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",

@@ -17,6 +17,7 @@ return array(
         'CMS',
         'Users',
         'Utilities',
+        'LosI18n',
         'Mustache',
         'CustomMustache',
         'CertigateAcl',
