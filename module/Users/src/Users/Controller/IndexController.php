@@ -85,12 +85,25 @@ class IndexController extends ActionController {
                 $input = $inputFilter->get('photo');
                 $input->setRequired(false);
             }
+            
+            if (empty($data['email']) || trim($data['email']) == $userObj->getEmail()) {
+                $email = $inputFilter->get('email');
+                $email->setRequired(false);
+                $confirmEmail = $inputFilter->get('confirmEmail');
+                $confirmEmail->setRequired(false);
+            }elseif ($data['email'] != $data['confirmEmail']) {
+                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+            }
+            
             if (empty($data['password'])) {
                 $password = $inputFilter->get('password');
                 $password->setRequired(false);
                 $confirmPassword = $inputFilter->get('confirmPassword');
                 $confirmPassword->setRequired(false);
+            }elseif ($data['password'] != $data['confirmPassword']) {
+                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
             }
+            
             if ($form->isValid()) {
                 $userModel->saveUser($data, $userObj);
 
@@ -141,6 +154,9 @@ class IndexController extends ActionController {
 
             $form->setInputFilter($userObj->getInputFilter());
             $form->setData($data);
+            if ($data['email'] != $data['confirmEmail']) {
+                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+            }
             if ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
             }
