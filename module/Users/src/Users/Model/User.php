@@ -50,29 +50,6 @@ class User {
     }
 
     /**
-     * Prepare users for display
-     * 
-     * 
-     * @access public
-     * @param array $data
-     * @return array users array after being prepared for display
-     */
-    public function prepareForDisplay($data) {
-        foreach ($data as $user) {
-            switch ($user->status) {
-                case Status::STATUS_ACTIVE :
-                    $user->status = 'Active';
-                    $user->active = TRUE;
-                    break;
-                case Status::STATUS_DELETED :
-                    $user->status = 'Deleted';
-                    break;
-            }
-        }
-        return $data;
-    }
-
-    /**
      * Save User
      * 
      * 
@@ -83,43 +60,20 @@ class User {
      * @param UserEntity $userObj ,default is null in case new user is being created
      */
     public function saveUser($userInfo, $userObj = null) {
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->query->entityManager;
-
         if (is_null($userObj)) {
             $entity = new UserEntity();
         } else {
             $entity = $userObj;
-            // resetting roles
-            $entity->roles = [];
         }
-
-        $entity->username = $userInfo['username'];
-        $entity->name = $userInfo['name'];
         if (is_null($userObj)) {
-            $entity->password = UserEntity::hashPassword($userInfo['password']);
+            $userInfo['password'] = UserEntity::hashPassword($userInfo['password']);
         }
-        $dateString = $userInfo['dateOfBirth'];
-        $date = new DateTime($dateString);
-        $entity->dateOfBirth = $date;
-        $entity->mobile = $userInfo['mobile'];
-        $entity->description = $userInfo['description'];
-        $entity->maritalStatus = $userInfo['maritalStatus'];
-
-        $roles = $userInfo['roles'];
-        foreach($roles as $r){
-            $roleEntity = $em->getRepository('\Users\Entity\Role')->find($r);
-            $entity->addRole($roleEntity);
-        }
-
         if (!empty($userInfo['photo']['name'])) {
-            $entity->photo = $this->savePhoto();
+            $userInfo['photo'] = $this->savePhoto();
         }
-        $entity->status = Status::STATUS_ACTIVE;
+        $userInfo['status'] = Status::STATUS_ACTIVE;
 
-        $em->persist($entity);
-
-        $em->flush($entity);
+        $this->query->save($userObj, $userInfo);
     }
 
     /**
