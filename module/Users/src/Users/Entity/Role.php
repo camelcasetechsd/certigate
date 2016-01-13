@@ -20,10 +20,35 @@ use Zend\InputFilter\InputFilter;
  */
 class Role
 {
+
+    /**
+     * User role
+     */
+    const USER_ROLE = "User";
     /**
      * Admin role
      */
     const ADMIN_ROLE = "Admin";
+    /**
+     * Student role
+     */
+    const STUDENT_ROLE = "Student";
+    /**
+     * Proctor role
+     */
+    const PROCTOR_ROLE = "Proctor";
+    /**
+     * Instructor role
+     */
+    const INSTRUCTOR_ROLE = "Instructor";
+    /**
+     * Test Center Administrator role
+     */
+    const TEST_CENTER_ADMIN_ROLE = "Test Center Administrator";
+    /**
+     * Training Manager role
+     */
+    const TRAINING_MANAGER_ROLE = "Training Manager";
     
     /**
      *

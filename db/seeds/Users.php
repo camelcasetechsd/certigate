@@ -21,25 +21,23 @@ class Users extends AbstractSeed {
     public function run() {
         $faker = Faker\Factory::create();
         
-        $userRole = array('name' => 'User');
+        $roles = array(
+            array('name' => Role::INSTRUCTOR_ROLE),
+            array('name' => Role::PROCTOR_ROLE),
+            array('name' => Role::STUDENT_ROLE),
+            array('name' => Role::TEST_CENTER_ADMIN_ROLE),
+            array('name' => Role::TRAINING_MANAGER_ROLE),
+            );
+        $this->insert('role', $roles);
+        
+        $userRole = array('name' => Role::USER_ROLE);
         $this->insert('role', $userRole);
         $normalUserRoleId = $this->getAdapter()->getConnection()->lastInsertId();
         
         $adminRole = array('name' => Role::ADMIN_ROLE);
         $this->insert('role', $adminRole);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
-// * @property string $addressOne
-// * @property string $addressTwo
-// * @property string $city
-// * @property string $zipCode
-// * @property string $phone
-// * @property string $nationality
-// * @property string $identificationType
-// * @property string $identificationNumber
-// * @property \DateTime $identificationNumberExpiryDate
-// * @property string $email
-// * @property string $securityQuestion
-// * @property string $securityAnswer   
+
         $adminUser = array(
                 "firstName" => $faker->firstName,
                 "middleName" => $faker->name,
