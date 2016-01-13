@@ -19,31 +19,17 @@ class Users extends AbstractSeed {
      * http://docs.phinx.org/en/latest/seeding.html
      */
     public function run() {
-        $roles = array(
-            array('name' => 'User'),
-            array('name' => Role::ADMIN_ROLE),
-        );
         $faker = Faker\Factory::create();
-        $this->insert('role', $roles);
+        
+        $userRole = array('name' => 'User');
+        $this->insert('role', $userRole);
+        $normalUserRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+        
+        $adminRole = array('name' => Role::ADMIN_ROLE);
+        $this->insert('role', $adminRole);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
-        $normalUserRoleId = $adminRoleId - 1;
-        $users = array(
-            array(
-                "firstName" => "User",
-                "middleName" => "Foo",
-                "lastName" => "Bar",
-                "country" => $faker->countryCode,
-                "language" => $faker->languageCode,
-                "username" => "user",
-                "password" => User::hashPassword("useruser"),
-                "mobile" => "01115991948",
-                "dateOfBirth" => date('Y-m-d H:i:s'),
-                "photo" => '/upload/images/userdefault.png',
-                "maritalStatus" => "single",
-                "description" => "normal user",
-                "status" => true
-            ),
-            array(
+                
+        $adminUser = array(
                 "firstName" => "Admin",
                 "middleName" => "Foo",
                 "lastName" => "Bar",
@@ -54,14 +40,27 @@ class Users extends AbstractSeed {
                 "mobile" => "01115991948",
                 "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
-                "maritalStatus" => "single",
-                "description" => "admin user",
                 "status" => true
-            ),
-        );
-        $this->insert('user', $users);
+            );
+        $this->insert('user', $adminUser);
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        $normalUserId = $adminUserId - 1;
+        
+        $normalUser = array(
+                "firstName" => "User",
+                "middleName" => "Foo",
+                "lastName" => "Bar",
+                "country" => $faker->countryCode,
+                "language" => $faker->languageCode,
+                "username" => "user",
+                "password" => User::hashPassword("useruser"),
+                "mobile" => "01115991948",
+                "dateOfBirth" => date('Y-m-d H:i:s'),
+                "photo" => '/upload/images/userdefault.png',
+                "status" => true
+            );
+        $this->insert('user', $normalUser);
+        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
+        
         $userRoles = array(array(
             'user_id' => $adminUserId,
             'role_id' => $adminRoleId
