@@ -41,7 +41,7 @@ class FormViewHelper extends Form {
             } else {
 
                 // add required class to all required elements
-                if (! empty($element->getAttribute('required'))) {
+                if (! empty($element->getAttribute('required')) && ! $element->getLabelOption("disable_html_escape") ) {
                     $labelAttributes = $element->getLabelAttributes();
                     $labelClass = (isset($labelAttributes["class"]))?$labelAttributes["class"] : "";
                     $labelAttributes["class"] = $labelClass . " required";

@@ -171,7 +171,7 @@ class UserForm extends Form {
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Security Question <p><ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul></p>',
+                'label' => '<p class="required">Security Question</p> <p><ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul></p>',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
