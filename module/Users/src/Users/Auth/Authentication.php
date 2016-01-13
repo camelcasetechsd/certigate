@@ -102,7 +102,10 @@ class Authentication {
         // here to add new entries to the session
         $storage->write(array(
             'id' => $entity->id,
-            'name' => $entity->name,
+            'firstName' => $entity->firstName,
+            'middleName' => $entity->middleName,
+            'lastName' => $entity->lastName,
+            'name' => $entity->getFullName(),
             'username' => $entity->username,
             'photo' => $entity->photo,
             'status' => $entity->status,
