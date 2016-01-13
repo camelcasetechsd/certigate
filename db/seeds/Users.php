@@ -28,16 +28,39 @@ class Users extends AbstractSeed {
         $adminRole = array('name' => Role::ADMIN_ROLE);
         $this->insert('role', $adminRole);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
-                
+// * @property string $addressOne
+// * @property string $addressTwo
+// * @property string $city
+// * @property string $zipCode
+// * @property string $phone
+// * @property string $nationality
+// * @property string $identificationType
+// * @property string $identificationNumber
+// * @property \DateTime $identificationNumberExpiryDate
+// * @property string $email
+// * @property string $securityQuestion
+// * @property string $securityAnswer   
         $adminUser = array(
-                "firstName" => "Admin",
-                "middleName" => "Foo",
-                "lastName" => "Bar",
+                "firstName" => $faker->firstName,
+                "middleName" => $faker->name,
+                "lastName" => $faker->lastName,
                 "country" => $faker->countryCode,
                 "language" => $faker->languageCode,
                 "username" => "admin",
                 "password" => User::hashPassword("adminadmin"),
-                "mobile" => "01115991948",
+                "mobile" => $faker->phoneNumber,
+                "addressOne" => $faker->address,
+                "addressTwo" => $faker->address,
+                "city" => $faker->city,
+                "zipCode" => $faker->postcode,
+                "phone" => $faker->phoneNumber,
+                "nationality" => $faker->countryCode,
+                "identificationType" => $faker->word,
+                "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
+                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format('Y-m-d H:i:s'),
+                "email" => $faker->freeEmail,
+                "securityQuestion" => $faker->sentence,
+                "securityAnswer" => $faker->sentence,
                 "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
                 "status" => true
@@ -46,14 +69,26 @@ class Users extends AbstractSeed {
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
         
         $normalUser = array(
-                "firstName" => "User",
-                "middleName" => "Foo",
-                "lastName" => "Bar",
+                "firstName" => $faker->firstName,
+                "middleName" => $faker->name,
+                "lastName" => $faker->lastName,
                 "country" => $faker->countryCode,
                 "language" => $faker->languageCode,
                 "username" => "user",
                 "password" => User::hashPassword("useruser"),
-                "mobile" => "01115991948",
+                "mobile" => $faker->phoneNumber,
+                "addressOne" => $faker->address,
+                "addressTwo" => $faker->address,
+                "city" => $faker->city,
+                "zipCode" => $faker->postcode,
+                "phone" => $faker->phoneNumber,
+                "nationality" => $faker->countryCode,
+                "identificationType" => $faker->word,
+                "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
+                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format('Y-m-d H:i:s'),
+                "email" => $faker->freeEmail,
+                "securityQuestion" => $faker->sentence,
+                "securityAnswer" => $faker->sentence,
                 "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
                 "status" => true
