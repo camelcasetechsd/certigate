@@ -95,15 +95,17 @@ class PageController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pageObj = $query->find('CMS\Entity\Page', $id);
-        // extract body data to be able to display it in it's natural form
-        $pageObj->body = $pageObj->getBody();
+        $request = $this->getRequest();
+        if(!$request->isPost()){
+            // extract body data to be able to display it in it's natural form
+            $pageObj->body = $pageObj->getBody();
+        }
         
         $options = array();
         $options['query'] = $query;
         $form = new PageForm(/* $name = */ null, $options);
         $form->bind($pageObj);
 
-        $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             $form->setInputFilter($pageObj->getInputFilter($query));

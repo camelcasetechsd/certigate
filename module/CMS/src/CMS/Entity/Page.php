@@ -48,7 +48,7 @@ class Page {
     
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      * @var string
      */
     public $body;
@@ -118,7 +118,7 @@ class Page {
      * @return string body
      */
     public function getBody() {
-        return gzuncompress(base64_decode($this->body));
+        return bzdecompress(base64_decode($this->body));
     }    
 
     /**
@@ -132,7 +132,7 @@ class Page {
     public function setBody($body) {
         // compress large page content
         // encode data, so that binary data survive transport through transport layers that are not 8-bit clean
-        $this->body = base64_encode(gzcompress($body));
+        $this->body = base64_encode(bzcompress($body));
         return $this;
     }
     
