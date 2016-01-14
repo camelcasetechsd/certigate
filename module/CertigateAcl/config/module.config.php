@@ -15,6 +15,12 @@ return array(
             'Mustache',
             'CustomMustache',
             'CertigateAcl'
+        ),
+        'anonymous_routes' => array(
+            'userCreate' => array(
+                'resource' => 'Users',
+                'privileges' => 'userCreate',
+            )
         )
     )
 );

@@ -41,32 +41,6 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'userEdit' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/users/edit/:id',
-                    'defaults' => array(
-                        'controller' => 'Users\Controller\Index',
-                        'action' => 'edit',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                    ),
-                )
-            ),
-            'userDelete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/users/delete/:id',
-                    'defaults' => array(
-                        'controller' => 'Users\Controller\Index',
-                        'action' => 'delete',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                    ),
-                )
-            ),
             'users' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -90,6 +64,42 @@ return array(
                      */
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'userEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'userCreate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/new',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'new',
+                    ),
+                )
+            ),
+            'userDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/delete/:id',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
                     ),
                 )
             ),
