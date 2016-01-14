@@ -28,9 +28,9 @@ use Utilities\Service\Query\Query;
 class Organization
 {
 
-    protected $CR_ATTACHMENT_PATH = '/upload/attachments/crAttachments/';
-    protected $ATP_ATTACHMENT_PATH = '/upload/attachments/atpAttachments/';
-    protected $ATC_ATTACHMENT_PATH = '/upload/attachments/atcAttachments/';
+    protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
+    protected $ATP_ATTACHMENT_PATH = 'public/upload/attachments/atpAttachments/';
+    protected $ATC_ATTACHMENT_PATH = 'public/upload/attachments/atcAttachments/';
 
     /*
      *
@@ -143,13 +143,13 @@ class Organization
         /**
          * Handling transfered Files
          */
-        if (!empty($orgInfo['CRAttachment']['name'])&&  $orgInfo['atcLicenseAttachment']['name'] != '') {
+        if (!empty($orgInfo['CRAttachment']['name'])&&  $orgInfo['CRAttachment']['name'] != '') {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
         else {
             $orgInfo['CRAttachment'] = null;
         }
-        if (!empty($orgInfo['atpLicenseAttachment'])&&  $orgInfo['atcLicenseAttachment']['name'] != '') {
+        if (!empty($orgInfo['atpLicenseAttachment'])&&  $orgInfo['atpLicenseAttachment']['name'] != '') {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
         else {
@@ -189,12 +189,11 @@ class Organization
     {
         $uploadResult = null;
         $upload = new Http();
-
-        $upload->setDestination('public/upload/attachments/');
+        $upload->setDestination($attachmentPath);
 
         try {
             // upload received file(s)
-            $upload->receive();
+            $upload->receive($filename);
         } catch (\Exception $e) {
             var_dump($e);
             exit;
@@ -205,12 +204,12 @@ class Organization
         $extention = pathinfo($name, PATHINFO_EXTENSION);
         //get random new name
         $newName = $this->random->getRandomUniqueName() . '_' . date('Y.m.d_h:i:sa');
+        $newFullName = $attachmentPath . $newName . '.' . $extention;
         // rename
-        rename($name, $attachmentPath . $newName . '.' . $extention);
+        rename($name, $newFullName);
 
-        $uploadResult = '/public/upload/attachments/crAttachments/' . $newName . '.' . $extention;
+        $uploadResult = $newFullName;
 
         return $uploadResult;
     }
-
 }
