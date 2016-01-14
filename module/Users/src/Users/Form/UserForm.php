@@ -5,6 +5,7 @@ namespace Users\Form;
 use Utilities\Form\Form;
 use Zend\Form\FormInterface;
 use Users\Service\Statement;
+use Users\Entity\Role;
 
 /**
  * User Form
@@ -37,9 +38,11 @@ class UserForm extends Form {
         $this->query = $options['query'];
         $countries = $options['countries'];
         $languages = $options['languages'];
+        $excludedRoles = $options['excludedRoles'];
         unset($options['query']);
         unset($options['countries']);
         unset($options['languages']);
+        unset($options['excludedRoles']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -349,8 +352,9 @@ class UserForm extends Form {
                 'target_class' => 'Users\Entity\Role',
                 'property' => 'name',
                 'find_method' => array(
-                    'name' => 'findAll',
+                    'name' => 'getRoles',
                     'params' => array(
+                        'excludedRoles' => $excludedRoles
                     )
                 )
             ),

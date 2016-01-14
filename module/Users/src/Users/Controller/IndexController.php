@@ -7,6 +7,8 @@ use Zend\View\Model\ViewModel;
 use Users\Form\UserForm;
 use Users\Entity\User;
 use Users\Service\Statement;
+use Users\Entity\Role;
+use Zend\Authentication\AuthenticationService;
 
 /**
  * Index Controller
@@ -64,6 +66,12 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['excludedRoles'] = array();
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+            $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
 
@@ -143,6 +151,12 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['excludedRoles'] = array();
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+            $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
         $form = new UserForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
