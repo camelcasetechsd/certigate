@@ -7,6 +7,7 @@ module.exports = function (grunt) {
             jsSrc: 'public/js',
             cssSrc: 'public/css',
             bowerSrc: 'public/bower_components',
+            nodeSrc: 'node_modules',
             dest: 'public/concat'
         },
         concat: {
@@ -25,7 +26,9 @@ module.exports = function (grunt) {
                 src: [
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
+                    '<%= dirs.nodeSrc %>/bootbox/bootbox.js' ,
                     '<%= dirs.jsSrc %>/reset.js',
+                    '<%= dirs.jsSrc %>/userCRUD.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
                 ]
 
