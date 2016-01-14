@@ -2,3 +2,9 @@
     content:" *"; 
     color:red; 
 }
+input[type="checkbox"].form-control{
+    width: auto;
+    height: auto;
+    margin: 4px 4px;
+    float: left;
+}
