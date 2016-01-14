@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="ownerName">Owner Name</label>  
                     <div class="col-md-4">
-                        <input id="ownerName" name="ownerName" type="text" placeholder="Owner Name" class="form-control input-md" required="true">
+                        <input id="ownerName" name="ownerName" type="text" placeholder="Owner Name" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="CRNo">CR No.</label>  
                     <div class="col-md-4">
-                        <input id="CRNo" name="CRNo" type="text" placeholder="CR No." class="form-control input-md" required="true">
+                        <input id="CRNo" name="CRNo" type="text" placeholder="CR No." class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="CRExpiration">CR Expiration Date</label>  
                     <div class="col-md-4">
-                        <input id="CRExpiration" name="CRExpiration" type="text" placeholder="CR Expiration Date" class="form-control input-md datepicker" required="true">
+                        <input id="CRExpiration" name="CRExpiration" type="text" placeholder="CR Expiration Date" class="form-control input-md datepicker" required="required">
 
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                     <label class="col-md-4 control-label" for="type">Organization Type</label>
                     <div class="col-md-4"> 
                         <label class="radio-inline" for="type-0">
-                            <input type="checkbox" class="type" name="type" id="type-0" value="1" checked="checked">
+                            <input type="checkbox" class="type" name="type" id="type-0" value="1">
                             ATC
                         </label> 
                         <label class="radio-inline" for="type-1">
@@ -97,7 +97,7 @@
                         </label> 
                     </div>
                 </div>
-                
+
                 <!-- Hidden text input-->
                 <div class="form-group">
                     <div class="col-md-4">
@@ -105,7 +105,7 @@
 
                     </div>
                 </div>
-                
+
                 <div id="atpSet">
                     <!-- Text input-->
                     <div class="form-group">
@@ -132,7 +132,80 @@
                             <input id="atpLicenseAttachment" name="atpLicenseAttachment" class="input-file" type="file">
                         </div>
                     </div>
+
+
+
+
+                    <div id="atp_resource">
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class=" col-md-4 control-label" for="labsNo">Labs No</label>  
+                            <div class="col-md-4">
+                                <input id="labsNo" name="labsNo" type="text" placeholder="Labs No" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="pcsNo_lab">PCs / Lab</label>  
+                            <div class="col-md-4">
+                                <input id="pcsNo_lab" name="pcsNo_lab" type="text" placeholder="PCs / Lab" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class=" col-md-4 control-label" for="internetSpeed_lab">Internet Speed / L</label>  
+                            <div class="col-md-4">
+                                <input id="internetSpeed_lab" name="internetSpeed_lab" type="text" placeholder="InternetSpeed / L" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class=" col-md-4 control-label" for="operatingSystem">Operating System</label>  
+                            <div class="col-md-4">
+                                <input id="operatingSystem" name="operatingSystem" type="text" placeholder="Operating System" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class=" col-md-4 control-label" for="operatingSystemLang">Operating System Language</label>  
+                            <div class="col-md-4">
+                                <input id="operatingSystemLang" name="operatingSystemLang" type="text" placeholder="Operating System Language" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class=" col-md-4 control-label" for="officeVersion">Microsoft Office Version</label>  
+                            <div class="col-md-4">
+                                <input id="officeVersion" name="officeVersion" type="text" placeholder="Microsoft Office Version" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="atp_resource col-md-4 control-label" for="officeLang">Microsoft Office Language</label>  
+                            <div class="col-md-4">
+                                <input id="officeLang" name="officeLang" type="text" placeholder="Microsoft Office Language" class=" form-control input-md" required="false">
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+                
+                <hr>
                 <!-- Text input-->
                 <div id="atcSet">
                     <div class="form-group">
@@ -159,12 +232,34 @@
                             <input id="atcLicenseAttachment" name="atcLicenseAttachment" class="input-file" type="file">
                         </div>
                     </div>
+
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" col-md-4 control-label" for="classesNo">Classes No.</label>  
+                        <div class="col-md-4">
+                            <input id="classesNo" name="classesNo" type="text" placeholder="Classes No." class=" form-control input-md" required="false">
+
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class=" col-md-4 control-label" for="pcsNo_class">PCs / Class </label>  
+                        <div class="col-md-4">
+                            <input id="pcsNo_class" name="pcsNo_class" type="text" placeholder="PCs / Class " class=" form-control input-md" required="false">
+
+                        </div>
+                    </div>
+
                 </div>
+                
+                <hr>
                 <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="addressline1">Address 1</label>  
                     <div class="col-md-4">
-                        <input id="addressLine1" name="addressLine1" type="text" placeholder="Address 1" class="form-control input-md" required="true">
+                        <input id="addressLine1" name="addressLine1" type="text" placeholder="Address 1" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -182,7 +277,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="city">City</label>  
                     <div class="col-md-4">
-                        <input id="city" name="city" type="text" placeholder="City" class="form-control input-md" required="true">
+                        <input id="city" name="city" type="text" placeholder="City" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -191,7 +286,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="zipCode">ZipCode</label>  
                     <div class="col-md-4">
-                        <input id="zipCode" name="zipCode" type="text" placeholder="ZipCode" class="form-control input-md" required="true">
+                        <input id="zipCode" name="zipCode" type="text" placeholder="ZipCode" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -200,7 +295,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="phone1">Phone 1</label>  
                     <div class="col-md-4">
-                        <input id="phone1" name="phone1" type="text" placeholder="Phone 1" class="form-control input-md" required="true">
+                        <input id="phone1" name="phone1" type="text" placeholder="Phone 1" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -236,7 +331,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="website">Website</label>  
                     <div class="col-md-4">
-                        <input id="website" name="website" type="text" placeholder="Website" class="form-control input-md" required="true">
+                        <input id="website" name="website" type="text" placeholder="Website" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -245,7 +340,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="email">Official Email</label>  
                     <div class="col-md-4">
-                        <input id="email" name="email" type="text" placeholder="Official Email" class="form-control input-md" required="true">
+                        <input id="email" name="email" type="text" placeholder="Official Email" class="form-control input-md" required="required">
 
                     </div>
                 </div>
@@ -255,6 +350,7 @@
                     <label class="col-md-4 control-label" for="trainingManager">Training Manager</label>
                     <div class="col-md-4">
                         <select id="trainingManager" name="trainingManager_id" class="form-control">
+                            <option value="0">__Select__</option>
                             {{#userList}}
                             <option value="{{id}}">{{firstName}} {{middleName}} {{lastName}}</option>
                             {{/userList}}
@@ -267,6 +363,7 @@
                     <label class="col-md-4 control-label" for="testCenterAdmin">Test Center Admin</label>
                     <div class="col-md-4">
                         <select id="trainingManager" name="testCenterAdmin_id" class="form-control">
+                            <option value="0">__Select__</option>
                             {{#userList}}
                             <option value="{{id}}">{{firstName}} {{middleName}} {{lastName}}</option>
                             {{/userList}}
@@ -278,94 +375,12 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="focalContactPerson">Focal Contact Person</label>
                     <div class="col-md-4">
-                        <select id="focalContactPerson" name="focalContactPerson_id" class="form-control" required="true">
+                        <select id="focalContactPerson" name="focalContactPerson_id" class="form-control" required="required">
+                            <option value="0">__Select__</option>
                             {{#userList}}
                             <option value="{{id}}">{{firstName}} {{middleName}} {{lastName}}</option>
                             {{/userList}}
                         </select>
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="labsNo">Labs No</label>  
-                    <div class="col-md-4">
-                        <input id="labsNo" name="labsNo" type="text" placeholder="Labs No" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="pcsNo_lab">PCs / Lab</label>  
-                    <div class="col-md-4">
-                        <input id="pcsNo_lab" name="pcsNo_lab" type="text" placeholder="PCs / Lab" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="classesNo">Classes No.</label>  
-                    <div class="col-md-4">
-                        <input id="classesNo" name="classesNo" type="text" placeholder="Classes No." class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="pcsNo_class">PCs / Class </label>  
-                    <div class="col-md-4">
-                        <input id="pcsNo_class" name="pcsNo_class" type="text" placeholder="PCs / Class " class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="internetSpeed_lab">Internet Speed / L</label>  
-                    <div class="col-md-4">
-                        <input id="internetSpeed_lab" name="internetSpeed_lab" type="text" placeholder="InternetSpeed / L" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="operatingSystem">Operating System</label>  
-                    <div class="col-md-4">
-                        <input id="operatingSystem" name="operatingSystem" type="text" placeholder="Operating System" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="operatingSystemLang">Operating System Language</label>  
-                    <div class="col-md-4">
-                        <input id="operatingSystemLang" name="operatingSystemLang" type="text" placeholder="Operating System Language" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="officeVersion">Microsoft Office Version</label>  
-                    <div class="col-md-4">
-                        <input id="officeVersion" name="officeVersion" type="text" placeholder="Microsoft Office Version" class="form-control input-md" required="false">
-
-                    </div>
-                </div>
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="officeLang">Microsoft Office Language</label>  
-                    <div class="col-md-4">
-                        <input id="officeLang" name="officeLang" type="text" placeholder="Microsoft Office Language" class="form-control input-md" required="false">
-
                     </div>
                 </div>
 

@@ -50,6 +50,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATP, \Organizations\Entity\Organization::TYPE_BOTH));
+
         foreach ($variables['userList'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
         }
@@ -148,12 +149,12 @@ class OrganizationsController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
 
-            // Make certain to merge the files info!
-            $fileData = $request->getFiles()->toArray();
 
             $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
+                    $this->getRequest()->getPost()->toArray(), $this->getRequest()->getFiles()->toArray()
             );
+
+
 
             $organizationModel->saveOrganization($data, $organizationModel->getOrganizationby('id', $id)[0]);
         }

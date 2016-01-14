@@ -12198,374 +12198,2667 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 ;
-/* OriginalFileName : public/js/reset.js */ 
+/* OriginalFileName : node_modules/bootbox/bootbox.js */ 
 
-$(document).ready(function () {
-    $(".resetButton").click(function () {
-        var closestForm = $(this).closest('form');
-        closestForm.find(":input")
-                .not(':button, :submit, :reset, :hidden')
-                .removeAttr('checked').removeAttr('selected')
-                .not(':checkbox, :radio, select')
-                .val('').removeAttr('value');
-        closestForm.find("select").prop('selectedIndex',0);
+/**
+ * bootbox.js [v4.4.0]
+ *
+ * http://bootboxjs.com/license.txt
+ */
+
+// @see https://github.com/makeusabrew/bootbox/issues/180
+// @see https://github.com/makeusabrew/bootbox/issues/186
+(function (root, factory) {
+
+  "use strict";
+  if (typeof define === "function" && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(["jquery"], factory);
+  } else if (typeof exports === "object") {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(require("jquery"));
+  } else {
+    // Browser globals (root is window)
+    root.bootbox = factory(root.jQuery);
+  }
+
+}(this, function init($, undefined) {
+
+  "use strict";
+
+  // the base DOM structure needed to create a modal
+  var templates = {
+    dialog:
+      "<div class='bootbox modal' tabindex='-1' role='dialog'>" +
+        "<div class='modal-dialog'>" +
+          "<div class='modal-content'>" +
+            "<div class='modal-body'><div class='bootbox-body'></div></div>" +
+          "</div>" +
+        "</div>" +
+      "</div>",
+    header:
+      "<div class='modal-header'>" +
+        "<h4 class='modal-title'></h4>" +
+      "</div>",
+    footer:
+      "<div class='modal-footer'></div>",
+    closeButton:
+      "<button type='button' class='bootbox-close-button close' data-dismiss='modal' aria-hidden='true'>&times;</button>",
+    form:
+      "<form class='bootbox-form'></form>",
+    inputs: {
+      text:
+        "<input class='bootbox-input bootbox-input-text form-control' autocomplete=off type=text />",
+      textarea:
+        "<textarea class='bootbox-input bootbox-input-textarea form-control'></textarea>",
+      email:
+        "<input class='bootbox-input bootbox-input-email form-control' autocomplete='off' type='email' />",
+      select:
+        "<select class='bootbox-input bootbox-input-select form-control'></select>",
+      checkbox:
+        "<div class='checkbox'><label><input class='bootbox-input bootbox-input-checkbox' type='checkbox' /></label></div>",
+      date:
+        "<input class='bootbox-input bootbox-input-date form-control' autocomplete=off type='date' />",
+      time:
+        "<input class='bootbox-input bootbox-input-time form-control' autocomplete=off type='time' />",
+      number:
+        "<input class='bootbox-input bootbox-input-number form-control' autocomplete=off type='number' />",
+      password:
+        "<input class='bootbox-input bootbox-input-password form-control' autocomplete='off' type='password' />"
+    }
+  };
+
+  var defaults = {
+    // default language
+    locale: "en",
+    // show backdrop or not. Default to static so user has to interact with dialog
+    backdrop: "static",
+    // animate the modal in/out
+    animate: true,
+    // additional class string applied to the top level dialog
+    className: null,
+    // whether or not to include a close button
+    closeButton: true,
+    // show the dialog immediately by default
+    show: true,
+    // dialog container
+    container: "body"
+  };
+
+  // our public object; augmented after our private API
+  var exports = {};
+
+  /**
+   * @private
+   */
+  function _t(key) {
+    var locale = locales[defaults.locale];
+    return locale ? locale[key] : locales.en[key];
+  }
+
+  function processCallback(e, dialog, callback) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    // by default we assume a callback will get rid of the dialog,
+    // although it is given the opportunity to override this
+
+    // so, if the callback can be invoked and it *explicitly returns false*
+    // then we'll set a flag to keep the dialog active...
+    var preserveDialog = $.isFunction(callback) && callback.call(dialog, e) === false;
+
+    // ... otherwise we'll bin it
+    if (!preserveDialog) {
+      dialog.modal("hide");
+    }
+  }
+
+  function getKeyLength(obj) {
+    // @TODO defer to Object.keys(x).length if available?
+    var k, t = 0;
+    for (k in obj) {
+      t ++;
+    }
+    return t;
+  }
+
+  function each(collection, iterator) {
+    var index = 0;
+    $.each(collection, function(key, value) {
+      iterator(key, value, index++);
     });
-});;
-/* OriginalFileName : public/js/bootstrap-datepicker.js */ 
+  }
 
-/* =========================================================
- * bootstrap-datepicker.js 
- * http://www.eyecon.ro/bootstrap-datepicker
- * =========================================================
+  function sanitize(options) {
+    var buttons;
+    var total;
+
+    if (typeof options !== "object") {
+      throw new Error("Please supply an object of options");
+    }
+
+    if (!options.message) {
+      throw new Error("Please specify a message");
+    }
+
+    // make sure any supplied options take precedence over defaults
+    options = $.extend({}, defaults, options);
+
+    if (!options.buttons) {
+      options.buttons = {};
+    }
+
+    buttons = options.buttons;
+
+    total = getKeyLength(buttons);
+
+    each(buttons, function(key, button, index) {
+
+      if ($.isFunction(button)) {
+        // short form, assume value is our callback. Since button
+        // isn't an object it isn't a reference either so re-assign it
+        button = buttons[key] = {
+          callback: button
+        };
+      }
+
+      // before any further checks make sure by now button is the correct type
+      if ($.type(button) !== "object") {
+        throw new Error("button with key " + key + " must be an object");
+      }
+
+      if (!button.label) {
+        // the lack of an explicit label means we'll assume the key is good enough
+        button.label = key;
+      }
+
+      if (!button.className) {
+        if (total <= 2 && index === total-1) {
+          // always add a primary to the main option in a two-button dialog
+          button.className = "btn-primary";
+        } else {
+          button.className = "btn-default";
+        }
+      }
+    });
+
+    return options;
+  }
+
+  /**
+   * map a flexible set of arguments into a single returned object
+   * if args.length is already one just return it, otherwise
+   * use the properties argument to map the unnamed args to
+   * object properties
+   * so in the latter case:
+   * mapArguments(["foo", $.noop], ["message", "callback"])
+   * -> { message: "foo", callback: $.noop }
+   */
+  function mapArguments(args, properties) {
+    var argn = args.length;
+    var options = {};
+
+    if (argn < 1 || argn > 2) {
+      throw new Error("Invalid argument length");
+    }
+
+    if (argn === 2 || typeof args[0] === "string") {
+      options[properties[0]] = args[0];
+      options[properties[1]] = args[1];
+    } else {
+      options = args[0];
+    }
+
+    return options;
+  }
+
+  /**
+   * merge a set of default dialog options with user supplied arguments
+   */
+  function mergeArguments(defaults, args, properties) {
+    return $.extend(
+      // deep merge
+      true,
+      // ensure the target is an empty, unreferenced object
+      {},
+      // the base options object for this type of dialog (often just buttons)
+      defaults,
+      // args could be an object or array; if it's an array properties will
+      // map it to a proper options object
+      mapArguments(
+        args,
+        properties
+      )
+    );
+  }
+
+  /**
+   * this entry-level method makes heavy use of composition to take a simple
+   * range of inputs and return valid options suitable for passing to bootbox.dialog
+   */
+  function mergeDialogOptions(className, labels, properties, args) {
+    //  build up a base set of dialog properties
+    var baseOptions = {
+      className: "bootbox-" + className,
+      buttons: createLabels.apply(null, labels)
+    };
+
+    // ensure the buttons properties generated, *after* merging
+    // with user args are still valid against the supplied labels
+    return validateButtons(
+      // merge the generated base properties with user supplied arguments
+      mergeArguments(
+        baseOptions,
+        args,
+        // if args.length > 1, properties specify how each arg maps to an object key
+        properties
+      ),
+      labels
+    );
+  }
+
+  /**
+   * from a given list of arguments return a suitable object of button labels
+   * all this does is normalise the given labels and translate them where possible
+   * e.g. "ok", "confirm" -> { ok: "OK, cancel: "Annuleren" }
+   */
+  function createLabels() {
+    var buttons = {};
+
+    for (var i = 0, j = arguments.length; i < j; i++) {
+      var argument = arguments[i];
+      var key = argument.toLowerCase();
+      var value = argument.toUpperCase();
+
+      buttons[key] = {
+        label: _t(value)
+      };
+    }
+
+    return buttons;
+  }
+
+  function validateButtons(options, buttons) {
+    var allowedButtons = {};
+    each(buttons, function(key, value) {
+      allowedButtons[value] = true;
+    });
+
+    each(options.buttons, function(key) {
+      if (allowedButtons[key] === undefined) {
+        throw new Error("button key " + key + " is not allowed (options are " + buttons.join("\n") + ")");
+      }
+    });
+
+    return options;
+  }
+
+  exports.alert = function() {
+    var options;
+
+    options = mergeDialogOptions("alert", ["ok"], ["message", "callback"], arguments);
+
+    if (options.callback && !$.isFunction(options.callback)) {
+      throw new Error("alert requires callback property to be a function when provided");
+    }
+
+    /**
+     * overrides
+     */
+    options.buttons.ok.callback = options.onEscape = function() {
+      if ($.isFunction(options.callback)) {
+        return options.callback.call(this);
+      }
+      return true;
+    };
+
+    return exports.dialog(options);
+  };
+
+  exports.confirm = function() {
+    var options;
+
+    options = mergeDialogOptions("confirm", ["cancel", "confirm"], ["message", "callback"], arguments);
+
+    /**
+     * overrides; undo anything the user tried to set they shouldn't have
+     */
+    options.buttons.cancel.callback = options.onEscape = function() {
+      return options.callback.call(this, false);
+    };
+
+    options.buttons.confirm.callback = function() {
+      return options.callback.call(this, true);
+    };
+
+    // confirm specific validation
+    if (!$.isFunction(options.callback)) {
+      throw new Error("confirm requires a callback");
+    }
+
+    return exports.dialog(options);
+  };
+
+  exports.prompt = function() {
+    var options;
+    var defaults;
+    var dialog;
+    var form;
+    var input;
+    var shouldShow;
+    var inputOptions;
+
+    // we have to create our form first otherwise
+    // its value is undefined when gearing up our options
+    // @TODO this could be solved by allowing message to
+    // be a function instead...
+    form = $(templates.form);
+
+    // prompt defaults are more complex than others in that
+    // users can override more defaults
+    // @TODO I don't like that prompt has to do a lot of heavy
+    // lifting which mergeDialogOptions can *almost* support already
+    // just because of 'value' and 'inputType' - can we refactor?
+    defaults = {
+      className: "bootbox-prompt",
+      buttons: createLabels("cancel", "confirm"),
+      value: "",
+      inputType: "text"
+    };
+
+    options = validateButtons(
+      mergeArguments(defaults, arguments, ["title", "callback"]),
+      ["cancel", "confirm"]
+    );
+
+    // capture the user's show value; we always set this to false before
+    // spawning the dialog to give us a chance to attach some handlers to
+    // it, but we need to make sure we respect a preference not to show it
+    shouldShow = (options.show === undefined) ? true : options.show;
+
+    /**
+     * overrides; undo anything the user tried to set they shouldn't have
+     */
+    options.message = form;
+
+    options.buttons.cancel.callback = options.onEscape = function() {
+      return options.callback.call(this, null);
+    };
+
+    options.buttons.confirm.callback = function() {
+      var value;
+
+      switch (options.inputType) {
+        case "text":
+        case "textarea":
+        case "email":
+        case "select":
+        case "date":
+        case "time":
+        case "number":
+        case "password":
+          value = input.val();
+          break;
+
+        case "checkbox":
+          var checkedItems = input.find("input:checked");
+
+          // we assume that checkboxes are always multiple,
+          // hence we default to an empty array
+          value = [];
+
+          each(checkedItems, function(_, item) {
+            value.push($(item).val());
+          });
+          break;
+      }
+
+      return options.callback.call(this, value);
+    };
+
+    options.show = false;
+
+    // prompt specific validation
+    if (!options.title) {
+      throw new Error("prompt requires a title");
+    }
+
+    if (!$.isFunction(options.callback)) {
+      throw new Error("prompt requires a callback");
+    }
+
+    if (!templates.inputs[options.inputType]) {
+      throw new Error("invalid prompt type");
+    }
+
+    // create the input based on the supplied type
+    input = $(templates.inputs[options.inputType]);
+
+    switch (options.inputType) {
+      case "text":
+      case "textarea":
+      case "email":
+      case "date":
+      case "time":
+      case "number":
+      case "password":
+        input.val(options.value);
+        break;
+
+      case "select":
+        var groups = {};
+        inputOptions = options.inputOptions || [];
+
+        if (!$.isArray(inputOptions)) {
+          throw new Error("Please pass an array of input options");
+        }
+
+        if (!inputOptions.length) {
+          throw new Error("prompt with select requires options");
+        }
+
+        each(inputOptions, function(_, option) {
+
+          // assume the element to attach to is the input...
+          var elem = input;
+
+          if (option.value === undefined || option.text === undefined) {
+            throw new Error("given options in wrong format");
+          }
+
+          // ... but override that element if this option sits in a group
+
+          if (option.group) {
+            // initialise group if necessary
+            if (!groups[option.group]) {
+              groups[option.group] = $("<optgroup/>").attr("label", option.group);
+            }
+
+            elem = groups[option.group];
+          }
+
+          elem.append("<option value='" + option.value + "'>" + option.text + "</option>");
+        });
+
+        each(groups, function(_, group) {
+          input.append(group);
+        });
+
+        // safe to set a select's value as per a normal input
+        input.val(options.value);
+        break;
+
+      case "checkbox":
+        var values   = $.isArray(options.value) ? options.value : [options.value];
+        inputOptions = options.inputOptions || [];
+
+        if (!inputOptions.length) {
+          throw new Error("prompt with checkbox requires options");
+        }
+
+        if (!inputOptions[0].value || !inputOptions[0].text) {
+          throw new Error("given options in wrong format");
+        }
+
+        // checkboxes have to nest within a containing element, so
+        // they break the rules a bit and we end up re-assigning
+        // our 'input' element to this container instead
+        input = $("<div/>");
+
+        each(inputOptions, function(_, option) {
+          var checkbox = $(templates.inputs[options.inputType]);
+
+          checkbox.find("input").attr("value", option.value);
+          checkbox.find("label").append(option.text);
+
+          // we've ensured values is an array so we can always iterate over it
+          each(values, function(_, value) {
+            if (value === option.value) {
+              checkbox.find("input").prop("checked", true);
+            }
+          });
+
+          input.append(checkbox);
+        });
+        break;
+    }
+
+    // @TODO provide an attributes option instead
+    // and simply map that as keys: vals
+    if (options.placeholder) {
+      input.attr("placeholder", options.placeholder);
+    }
+
+    if (options.pattern) {
+      input.attr("pattern", options.pattern);
+    }
+
+    if (options.maxlength) {
+      input.attr("maxlength", options.maxlength);
+    }
+
+    // now place it in our form
+    form.append(input);
+
+    form.on("submit", function(e) {
+      e.preventDefault();
+      // Fix for SammyJS (or similar JS routing library) hijacking the form post.
+      e.stopPropagation();
+      // @TODO can we actually click *the* button object instead?
+      // e.g. buttons.confirm.click() or similar
+      dialog.find(".btn-primary").click();
+    });
+
+    dialog = exports.dialog(options);
+
+    // clear the existing handler focusing the submit button...
+    dialog.off("shown.bs.modal");
+
+    // ...and replace it with one focusing our input, if possible
+    dialog.on("shown.bs.modal", function() {
+      // need the closure here since input isn't
+      // an object otherwise
+      input.focus();
+    });
+
+    if (shouldShow === true) {
+      dialog.modal("show");
+    }
+
+    return dialog;
+  };
+
+  exports.dialog = function(options) {
+    options = sanitize(options);
+
+    var dialog = $(templates.dialog);
+    var innerDialog = dialog.find(".modal-dialog");
+    var body = dialog.find(".modal-body");
+    var buttons = options.buttons;
+    var buttonStr = "";
+    var callbacks = {
+      onEscape: options.onEscape
+    };
+
+    if ($.fn.modal === undefined) {
+      throw new Error(
+        "$.fn.modal is not defined; please double check you have included " +
+        "the Bootstrap JavaScript library. See http://getbootstrap.com/javascript/ " +
+        "for more details."
+      );
+    }
+
+    each(buttons, function(key, button) {
+
+      // @TODO I don't like this string appending to itself; bit dirty. Needs reworking
+      // can we just build up button elements instead? slower but neater. Then button
+      // can just become a template too
+      buttonStr += "<button data-bb-handler='" + key + "' type='button' class='btn " + button.className + "'>" + button.label + "</button>";
+      callbacks[key] = button.callback;
+    });
+
+    body.find(".bootbox-body").html(options.message);
+
+    if (options.animate === true) {
+      dialog.addClass("fade");
+    }
+
+    if (options.className) {
+      dialog.addClass(options.className);
+    }
+
+    if (options.size === "large") {
+      innerDialog.addClass("modal-lg");
+    } else if (options.size === "small") {
+      innerDialog.addClass("modal-sm");
+    }
+
+    if (options.title) {
+      body.before(templates.header);
+    }
+
+    if (options.closeButton) {
+      var closeButton = $(templates.closeButton);
+
+      if (options.title) {
+        dialog.find(".modal-header").prepend(closeButton);
+      } else {
+        closeButton.css("margin-top", "-10px").prependTo(body);
+      }
+    }
+
+    if (options.title) {
+      dialog.find(".modal-title").html(options.title);
+    }
+
+    if (buttonStr.length) {
+      body.after(templates.footer);
+      dialog.find(".modal-footer").html(buttonStr);
+    }
+
+
+    /**
+     * Bootstrap event listeners; used handle extra
+     * setup & teardown required after the underlying
+     * modal has performed certain actions
+     */
+
+    dialog.on("hidden.bs.modal", function(e) {
+      // ensure we don't accidentally intercept hidden events triggered
+      // by children of the current dialog. We shouldn't anymore now BS
+      // namespaces its events; but still worth doing
+      if (e.target === this) {
+        dialog.remove();
+      }
+    });
+
+    /*
+    dialog.on("show.bs.modal", function() {
+      // sadly this doesn't work; show is called *just* before
+      // the backdrop is added so we'd need a setTimeout hack or
+      // otherwise... leaving in as would be nice
+      if (options.backdrop) {
+        dialog.next(".modal-backdrop").addClass("bootbox-backdrop");
+      }
+    });
+    */
+
+    dialog.on("shown.bs.modal", function() {
+      dialog.find(".btn-primary:first").focus();
+    });
+
+    /**
+     * Bootbox event listeners; experimental and may not last
+     * just an attempt to decouple some behaviours from their
+     * respective triggers
+     */
+
+    if (options.backdrop !== "static") {
+      // A boolean true/false according to the Bootstrap docs
+      // should show a dialog the user can dismiss by clicking on
+      // the background.
+      // We always only ever pass static/false to the actual
+      // $.modal function because with `true` we can't trap
+      // this event (the .modal-backdrop swallows it)
+      // However, we still want to sort of respect true
+      // and invoke the escape mechanism instead
+      dialog.on("click.dismiss.bs.modal", function(e) {
+        // @NOTE: the target varies in >= 3.3.x releases since the modal backdrop
+        // moved *inside* the outer dialog rather than *alongside* it
+        if (dialog.children(".modal-backdrop").length) {
+          e.currentTarget = dialog.children(".modal-backdrop").get(0);
+        }
+
+        if (e.target !== e.currentTarget) {
+          return;
+        }
+
+        dialog.trigger("escape.close.bb");
+      });
+    }
+
+    dialog.on("escape.close.bb", function(e) {
+      if (callbacks.onEscape) {
+        processCallback(e, dialog, callbacks.onEscape);
+      }
+    });
+
+    /**
+     * Standard jQuery event listeners; used to handle user
+     * interaction with our dialog
+     */
+
+    dialog.on("click", ".modal-footer button", function(e) {
+      var callbackKey = $(this).data("bb-handler");
+
+      processCallback(e, dialog, callbacks[callbackKey]);
+    });
+
+    dialog.on("click", ".bootbox-close-button", function(e) {
+      // onEscape might be falsy but that's fine; the fact is
+      // if the user has managed to click the close button we
+      // have to close the dialog, callback or not
+      processCallback(e, dialog, callbacks.onEscape);
+    });
+
+    dialog.on("keyup", function(e) {
+      if (e.which === 27) {
+        dialog.trigger("escape.close.bb");
+      }
+    });
+
+    // the remainder of this method simply deals with adding our
+    // dialogent to the DOM, augmenting it with Bootstrap's modal
+    // functionality and then giving the resulting object back
+    // to our caller
+
+    $(options.container).append(dialog);
+
+    dialog.modal({
+      backdrop: options.backdrop ? "static": false,
+      keyboard: false,
+      show: false
+    });
+
+    if (options.show) {
+      dialog.modal("show");
+    }
+
+    // @TODO should we return the raw element here or should
+    // we wrap it in an object on which we can expose some neater
+    // methods, e.g. var d = bootbox.alert(); d.hide(); instead
+    // of d.modal("hide");
+
+   /*
+    function BBDialog(elem) {
+      this.elem = elem;
+    }
+
+    BBDialog.prototype = {
+      hide: function() {
+        return this.elem.modal("hide");
+      },
+      show: function() {
+        return this.elem.modal("show");
+      }
+    };
+    */
+
+    return dialog;
+
+  };
+
+  exports.setDefaults = function() {
+    var values = {};
+
+    if (arguments.length === 2) {
+      // allow passing of single key/value...
+      values[arguments[0]] = arguments[1];
+    } else {
+      // ... and as an object too
+      values = arguments[0];
+    }
+
+    $.extend(defaults, values);
+  };
+
+  exports.hideAll = function() {
+    $(".bootbox").modal("hide");
+
+    return exports;
+  };
+
+
+  /**
+   * standard locales. Please add more according to ISO 639-1 standard. Multiple language variants are
+   * unlikely to be required. If this gets too large it can be split out into separate JS files.
+   */
+  var locales = {
+    bg_BG : {
+      OK      : "Ок",
+      CANCEL  : "Отказ",
+      CONFIRM : "Потвърждавам"
+    },
+    br : {
+      OK      : "OK",
+      CANCEL  : "Cancelar",
+      CONFIRM : "Sim"
+    },
+    cs : {
+      OK      : "OK",
+      CANCEL  : "Zrušit",
+      CONFIRM : "Potvrdit"
+    },
+    da : {
+      OK      : "OK",
+      CANCEL  : "Annuller",
+      CONFIRM : "Accepter"
+    },
+    de : {
+      OK      : "OK",
+      CANCEL  : "Abbrechen",
+      CONFIRM : "Akzeptieren"
+    },
+    el : {
+      OK      : "Εντάξει",
+      CANCEL  : "Ακύρωση",
+      CONFIRM : "Επιβεβαίωση"
+    },
+    en : {
+      OK      : "OK",
+      CANCEL  : "Cancel",
+      CONFIRM : "OK"
+    },
+    es : {
+      OK      : "OK",
+      CANCEL  : "Cancelar",
+      CONFIRM : "Aceptar"
+    },
+    et : {
+      OK      : "OK",
+      CANCEL  : "Katkesta",
+      CONFIRM : "OK"
+    },
+    fa : {
+      OK      : "قبول",
+      CANCEL  : "لغو",
+      CONFIRM : "تایید"
+    },
+    fi : {
+      OK      : "OK",
+      CANCEL  : "Peruuta",
+      CONFIRM : "OK"
+    },
+    fr : {
+      OK      : "OK",
+      CANCEL  : "Annuler",
+      CONFIRM : "D'accord"
+    },
+    he : {
+      OK      : "אישור",
+      CANCEL  : "ביטול",
+      CONFIRM : "אישור"
+    },
+    hu : {
+      OK      : "OK",
+      CANCEL  : "Mégsem",
+      CONFIRM : "Megerősít"
+    },
+    hr : {
+      OK      : "OK",
+      CANCEL  : "Odustani",
+      CONFIRM : "Potvrdi"
+    },
+    id : {
+      OK      : "OK",
+      CANCEL  : "Batal",
+      CONFIRM : "OK"
+    },
+    it : {
+      OK      : "OK",
+      CANCEL  : "Annulla",
+      CONFIRM : "Conferma"
+    },
+    ja : {
+      OK      : "OK",
+      CANCEL  : "キャンセル",
+      CONFIRM : "確認"
+    },
+    lt : {
+      OK      : "Gerai",
+      CANCEL  : "Atšaukti",
+      CONFIRM : "Patvirtinti"
+    },
+    lv : {
+      OK      : "Labi",
+      CANCEL  : "Atcelt",
+      CONFIRM : "Apstiprināt"
+    },
+    nl : {
+      OK      : "OK",
+      CANCEL  : "Annuleren",
+      CONFIRM : "Accepteren"
+    },
+    no : {
+      OK      : "OK",
+      CANCEL  : "Avbryt",
+      CONFIRM : "OK"
+    },
+    pl : {
+      OK      : "OK",
+      CANCEL  : "Anuluj",
+      CONFIRM : "Potwierdź"
+    },
+    pt : {
+      OK      : "OK",
+      CANCEL  : "Cancelar",
+      CONFIRM : "Confirmar"
+    },
+    ru : {
+      OK      : "OK",
+      CANCEL  : "Отмена",
+      CONFIRM : "Применить"
+    },
+    sq : {
+      OK : "OK",
+      CANCEL : "Anulo",
+      CONFIRM : "Prano"
+    },
+    sv : {
+      OK      : "OK",
+      CANCEL  : "Avbryt",
+      CONFIRM : "OK"
+    },
+    th : {
+      OK      : "ตกลง",
+      CANCEL  : "ยกเลิก",
+      CONFIRM : "ยืนยัน"
+    },
+    tr : {
+      OK      : "Tamam",
+      CANCEL  : "İptal",
+      CONFIRM : "Onayla"
+    },
+    zh_CN : {
+      OK      : "OK",
+      CANCEL  : "取消",
+      CONFIRM : "确认"
+    },
+    zh_TW : {
+      OK      : "OK",
+      CANCEL  : "取消",
+      CONFIRM : "確認"
+    }
+  };
+
+  exports.addLocale = function(name, values) {
+    $.each(["OK", "CANCEL", "CONFIRM"], function(_, v) {
+      if (!values[v]) {
+        throw new Error("Please supply a translation for '" + v + "'");
+      }
+    });
+
+    locales[name] = {
+      OK: values.OK,
+      CANCEL: values.CANCEL,
+      CONFIRM: values.CONFIRM
+    };
+
+    return exports;
+  };
+
+  exports.removeLocale = function(name) {
+    delete locales[name];
+
+    return exports;
+  };
+
+  exports.setLocale = function(name) {
+    return exports.setDefaults("locale", name);
+  };
+
+  exports.init = function(_$) {
+    return init(_$ || $);
+  };
+
+  return exports;
+}));
+;
+/* OriginalFileName : public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js */ 
+
+/*!
+ * Datepicker for Bootstrap v1.5.1 (https://github.com/eternicode/bootstrap-datepicker)
+ *
  * Copyright 2012 Stefan Petre
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================= */
- 
-!function( $ ) {
-	
+ * Improvements by Andrew Rowls
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */(function(factory){
+    if (typeof define === "function" && define.amd) {
+        define(["jquery"], factory);
+    } else if (typeof exports === 'object') {
+        factory(require('jquery'));
+    } else {
+        factory(jQuery);
+    }
+}(function($, undefined){
+
+	function UTCDate(){
+		return new Date(Date.UTC.apply(Date, arguments));
+	}
+	function UTCToday(){
+		var today = new Date();
+		return UTCDate(today.getFullYear(), today.getMonth(), today.getDate());
+	}
+	function isUTCEquals(date1, date2) {
+		return (
+			date1.getUTCFullYear() === date2.getUTCFullYear() &&
+			date1.getUTCMonth() === date2.getUTCMonth() &&
+			date1.getUTCDate() === date2.getUTCDate()
+		);
+	}
+	function alias(method){
+		return function(){
+			return this[method].apply(this, arguments);
+		};
+	}
+	function isValidDate(d) {
+		return d && !isNaN(d.getTime());
+	}
+
+	var DateArray = (function(){
+		var extras = {
+			get: function(i){
+				return this.slice(i)[0];
+			},
+			contains: function(d){
+				// Array.indexOf is not cross-browser;
+				// $.inArray doesn't work with Dates
+				var val = d && d.valueOf();
+				for (var i=0, l=this.length; i < l; i++)
+					if (this[i].valueOf() === val)
+						return i;
+				return -1;
+			},
+			remove: function(i){
+				this.splice(i,1);
+			},
+			replace: function(new_array){
+				if (!new_array)
+					return;
+				if (!$.isArray(new_array))
+					new_array = [new_array];
+				this.clear();
+				this.push.apply(this, new_array);
+			},
+			clear: function(){
+				this.length = 0;
+			},
+			copy: function(){
+				var a = new DateArray();
+				a.replace(this);
+				return a;
+			}
+		};
+
+		return function(){
+			var a = [];
+			a.push.apply(a, arguments);
+			$.extend(a, extras);
+			return a;
+		};
+	})();
+
+
 	// Picker object
-	
+
 	var Datepicker = function(element, options){
+		$(element).data('datepicker', this);
+		this._process_options(options);
+
+		this.dates = new DateArray();
+		this.viewDate = this.o.defaultViewDate;
+		this.focusDate = null;
+
 		this.element = $(element);
-		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||'mm/dd/yyyy');
-		this.picker = $(DPGlobal.template)
-							.appendTo('body')
-							.on({
-								click: $.proxy(this.click, this)//,
-								//mousedown: $.proxy(this.mousedown, this)
-							});
+		this.isInline = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
-		
-		if (this.isInput) {
-			this.element.on({
-				focus: $.proxy(this.show, this),
-				//blur: $.proxy(this.hide, this),
-				keyup: $.proxy(this.update, this)
-			});
-		} else {
-			if (this.component){
-				this.component.on('click', $.proxy(this.show, this));
-			} else {
-				this.element.on('click', $.proxy(this.show, this));
-			}
+		this.component = this.element.hasClass('date') ? this.element.find('.add-on, .input-group-addon, .btn') : false;
+		this.hasInput = this.component && this.element.find('input').length;
+		if (this.component && this.component.length === 0)
+			this.component = false;
+
+		this.picker = $(DPGlobal.template);
+		this._buildEvents();
+		this._attachEvents();
+
+		if (this.isInline){
+			this.picker.addClass('datepicker-inline').appendTo(this.element);
 		}
-	
-		this.minViewMode = options.minViewMode||this.element.data('date-minviewmode')||0;
-		if (typeof this.minViewMode === 'string') {
-			switch (this.minViewMode) {
-				case 'months':
-					this.minViewMode = 1;
-					break;
-				case 'years':
-					this.minViewMode = 2;
-					break;
-				default:
-					this.minViewMode = 0;
-					break;
-			}
+		else {
+			this.picker.addClass('datepicker-dropdown dropdown-menu');
 		}
-		this.viewMode = options.viewMode||this.element.data('date-viewmode')||0;
-		if (typeof this.viewMode === 'string') {
-			switch (this.viewMode) {
-				case 'months':
-					this.viewMode = 1;
-					break;
-				case 'years':
-					this.viewMode = 2;
-					break;
-				default:
-					this.viewMode = 0;
-					break;
-			}
+
+		if (this.o.rtl){
+			this.picker.addClass('datepicker-rtl');
 		}
-		this.startViewMode = this.viewMode;
-		this.weekStart = options.weekStart||this.element.data('date-weekstart')||0;
-		this.weekEnd = this.weekStart === 0 ? 6 : this.weekStart - 1;
-		this.onRender = options.onRender;
+
+		this.viewMode = this.o.startView;
+
+		if (this.o.calendarWeeks)
+			this.picker.find('thead .datepicker-title, tfoot .today, tfoot .clear')
+						.attr('colspan', function(i, val){
+							return parseInt(val) + 1;
+						});
+
+		this._allow_update = false;
+
+		this.setStartDate(this._o.startDate);
+		this.setEndDate(this._o.endDate);
+		this.setDaysOfWeekDisabled(this.o.daysOfWeekDisabled);
+		this.setDaysOfWeekHighlighted(this.o.daysOfWeekHighlighted);
+		this.setDatesDisabled(this.o.datesDisabled);
+
 		this.fillDow();
 		this.fillMonths();
+
+		this._allow_update = true;
+
 		this.update();
 		this.showMode();
+
+		if (this.isInline){
+			this.show();
+		}
 	};
-	
+
 	Datepicker.prototype = {
 		constructor: Datepicker,
-		
-		show: function(e) {
-			this.picker.show();
-			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
-			this.place();
-			$(window).on('resize', $.proxy(this.place, this));
-			if (e ) {
-				e.stopPropagation();
-				e.preventDefault();
+
+		_process_options: function(opts){
+			// Store raw options for reference
+			this._o = $.extend({}, this._o, opts);
+			// Processed options
+			var o = this.o = $.extend({}, this._o);
+
+			// Check if "de-DE" style date is available, if not language should
+			// fallback to 2 letter code eg "de"
+			var lang = o.language;
+			if (!dates[lang]){
+				lang = lang.split('-')[0];
+				if (!dates[lang])
+					lang = defaults.language;
 			}
-			if (!this.isInput) {
+			o.language = lang;
+
+			switch (o.startView){
+				case 2:
+				case 'decade':
+					o.startView = 2;
+					break;
+				case 1:
+				case 'year':
+					o.startView = 1;
+					break;
+				default:
+					o.startView = 0;
 			}
-			var that = this;
-			$(document).on('mousedown', function(ev){
-				if ($(ev.target).closest('.datepicker').length == 0) {
-					that.hide();
+
+			switch (o.minViewMode){
+				case 1:
+				case 'months':
+					o.minViewMode = 1;
+					break;
+				case 2:
+				case 'years':
+					o.minViewMode = 2;
+					break;
+				default:
+					o.minViewMode = 0;
+			}
+
+			switch (o.maxViewMode) {
+				case 0:
+				case 'days':
+					o.maxViewMode = 0;
+					break;
+				case 1:
+				case 'months':
+					o.maxViewMode = 1;
+					break;
+				default:
+					o.maxViewMode = 2;
+			}
+
+			o.startView = Math.min(o.startView, o.maxViewMode);
+			o.startView = Math.max(o.startView, o.minViewMode);
+
+			// true, false, or Number > 0
+			if (o.multidate !== true){
+				o.multidate = Number(o.multidate) || false;
+				if (o.multidate !== false)
+					o.multidate = Math.max(0, o.multidate);
+			}
+			o.multidateSeparator = String(o.multidateSeparator);
+
+			o.weekStart %= 7;
+			o.weekEnd = (o.weekStart + 6) % 7;
+
+			var format = DPGlobal.parseFormat(o.format);
+			if (o.startDate !== -Infinity){
+				if (!!o.startDate){
+					if (o.startDate instanceof Date)
+						o.startDate = this._local_to_utc(this._zero_time(o.startDate));
+					else
+						o.startDate = DPGlobal.parseDate(o.startDate, format, o.language);
 				}
-			});
-			this.element.trigger({
-				type: 'show',
-				date: this.date
-			});
-		},
-		
-		hide: function(){
-			this.picker.hide();
-			$(window).off('resize', this.place);
-			this.viewMode = this.startViewMode;
-			this.showMode();
-			if (!this.isInput) {
-				$(document).off('mousedown', this.hide);
-			}
-			//this.set();
-			this.element.trigger({
-				type: 'hide',
-				date: this.date
-			});
-		},
-		
-		set: function() {
-			var formated = DPGlobal.formatDate(this.date, this.format);
-			if (!this.isInput) {
-				if (this.component){
-					this.element.find('input').prop('value', formated);
+				else {
+					o.startDate = -Infinity;
 				}
-				this.element.data('date', formated);
-			} else {
-				this.element.prop('value', formated);
 			}
-		},
-		
-		setValue: function(newDate) {
-			if (typeof newDate === 'string') {
-				this.date = DPGlobal.parseDate(newDate, this.format);
-			} else {
-				this.date = new Date(newDate);
+			if (o.endDate !== Infinity){
+				if (!!o.endDate){
+					if (o.endDate instanceof Date)
+						o.endDate = this._local_to_utc(this._zero_time(o.endDate));
+					else
+						o.endDate = DPGlobal.parseDate(o.endDate, format, o.language);
+				}
+				else {
+					o.endDate = Infinity;
+				}
 			}
-			this.set();
-			this.viewDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0, 0);
-			this.fill();
-		},
-		
-		place: function(){
-			var offset = this.component ? this.component.offset() : this.element.offset();
-			this.picker.css({
-				top: offset.top + this.height,
-				left: offset.left
+
+			o.daysOfWeekDisabled = o.daysOfWeekDisabled||[];
+			if (!$.isArray(o.daysOfWeekDisabled))
+				o.daysOfWeekDisabled = o.daysOfWeekDisabled.split(/[,\s]*/);
+			o.daysOfWeekDisabled = $.map(o.daysOfWeekDisabled, function(d){
+				return parseInt(d, 10);
 			});
+
+			o.daysOfWeekHighlighted = o.daysOfWeekHighlighted||[];
+			if (!$.isArray(o.daysOfWeekHighlighted))
+				o.daysOfWeekHighlighted = o.daysOfWeekHighlighted.split(/[,\s]*/);
+			o.daysOfWeekHighlighted = $.map(o.daysOfWeekHighlighted, function(d){
+				return parseInt(d, 10);
+			});
+
+			o.datesDisabled = o.datesDisabled||[];
+			if (!$.isArray(o.datesDisabled)) {
+				var datesDisabled = [];
+				datesDisabled.push(DPGlobal.parseDate(o.datesDisabled, format, o.language));
+				o.datesDisabled = datesDisabled;
+			}
+			o.datesDisabled = $.map(o.datesDisabled,function(d){
+				return DPGlobal.parseDate(d, format, o.language);
+			});
+
+			var plc = String(o.orientation).toLowerCase().split(/\s+/g),
+				_plc = o.orientation.toLowerCase();
+			plc = $.grep(plc, function(word){
+				return /^auto|left|right|top|bottom$/.test(word);
+			});
+			o.orientation = {x: 'auto', y: 'auto'};
+			if (!_plc || _plc === 'auto')
+				; // no action
+			else if (plc.length === 1){
+				switch (plc[0]){
+					case 'top':
+					case 'bottom':
+						o.orientation.y = plc[0];
+						break;
+					case 'left':
+					case 'right':
+						o.orientation.x = plc[0];
+						break;
+				}
+			}
+			else {
+				_plc = $.grep(plc, function(word){
+					return /^left|right$/.test(word);
+				});
+				o.orientation.x = _plc[0] || 'auto';
+
+				_plc = $.grep(plc, function(word){
+					return /^top|bottom$/.test(word);
+				});
+				o.orientation.y = _plc[0] || 'auto';
+			}
+			if (o.defaultViewDate) {
+				var year = o.defaultViewDate.year || new Date().getFullYear();
+				var month = o.defaultViewDate.month || 0;
+				var day = o.defaultViewDate.day || 1;
+				o.defaultViewDate = UTCDate(year, month, day);
+			} else {
+				o.defaultViewDate = UTCToday();
+			}
 		},
-		
-		update: function(newDate){
-			this.date = DPGlobal.parseDate(
-				typeof newDate === 'string' ? newDate : (this.isInput ? this.element.prop('value') : this.element.data('date')),
-				this.format
+		_events: [],
+		_secondaryEvents: [],
+		_applyEvents: function(evs){
+			for (var i=0, el, ch, ev; i < evs.length; i++){
+				el = evs[i][0];
+				if (evs[i].length === 2){
+					ch = undefined;
+					ev = evs[i][1];
+				}
+				else if (evs[i].length === 3){
+					ch = evs[i][1];
+					ev = evs[i][2];
+				}
+				el.on(ev, ch);
+			}
+		},
+		_unapplyEvents: function(evs){
+			for (var i=0, el, ev, ch; i < evs.length; i++){
+				el = evs[i][0];
+				if (evs[i].length === 2){
+					ch = undefined;
+					ev = evs[i][1];
+				}
+				else if (evs[i].length === 3){
+					ch = evs[i][1];
+					ev = evs[i][2];
+				}
+				el.off(ev, ch);
+			}
+		},
+		_buildEvents: function(){
+            var events = {
+                keyup: $.proxy(function(e){
+                    if ($.inArray(e.keyCode, [27, 37, 39, 38, 40, 32, 13, 9]) === -1)
+                        this.update();
+                }, this),
+                keydown: $.proxy(this.keydown, this),
+                paste: $.proxy(this.paste, this)
+            };
+
+            if (this.o.showOnFocus === true) {
+                events.focus = $.proxy(this.show, this);
+            }
+
+            if (this.isInput) { // single input
+                this._events = [
+                    [this.element, events]
+                ];
+            }
+            else if (this.component && this.hasInput) { // component: input + button
+                this._events = [
+                    // For components that are not readonly, allow keyboard nav
+                    [this.element.find('input'), events],
+                    [this.component, {
+                        click: $.proxy(this.show, this)
+                    }]
+                ];
+            }
+			else if (this.element.is('div')){  // inline datepicker
+				this.isInline = true;
+			}
+			else {
+				this._events = [
+					[this.element, {
+						click: $.proxy(this.show, this)
+					}]
+				];
+			}
+			this._events.push(
+				// Component: listen for blur on element descendants
+				[this.element, '*', {
+					blur: $.proxy(function(e){
+						this._focused_from = e.target;
+					}, this)
+				}],
+				// Input: listen for blur on element
+				[this.element, {
+					blur: $.proxy(function(e){
+						this._focused_from = e.target;
+					}, this)
+				}]
 			);
-			this.viewDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0, 0);
-			this.fill();
+
+			if (this.o.immediateUpdates) {
+				// Trigger input updates immediately on changed year/month
+				this._events.push([this.element, {
+					'changeYear changeMonth': $.proxy(function(e){
+						this.update(e.date);
+					}, this)
+				}]);
+			}
+
+			this._secondaryEvents = [
+				[this.picker, {
+					click: $.proxy(this.click, this)
+				}],
+				[$(window), {
+					resize: $.proxy(this.place, this)
+				}],
+				[$(document), {
+					mousedown: $.proxy(function(e){
+						// Clicked outside the datepicker, hide it
+						if (!(
+							this.element.is(e.target) ||
+							this.element.find(e.target).length ||
+							this.picker.is(e.target) ||
+							this.picker.find(e.target).length ||
+							this.picker.hasClass('datepicker-inline')
+						)){
+							this.hide();
+						}
+					}, this)
+				}]
+			];
 		},
-		
+		_attachEvents: function(){
+			this._detachEvents();
+			this._applyEvents(this._events);
+		},
+		_detachEvents: function(){
+			this._unapplyEvents(this._events);
+		},
+		_attachSecondaryEvents: function(){
+			this._detachSecondaryEvents();
+			this._applyEvents(this._secondaryEvents);
+		},
+		_detachSecondaryEvents: function(){
+			this._unapplyEvents(this._secondaryEvents);
+		},
+		_trigger: function(event, altdate){
+			var date = altdate || this.dates.get(-1),
+				local_date = this._utc_to_local(date);
+
+			this.element.trigger({
+				type: event,
+				date: local_date,
+				dates: $.map(this.dates, this._utc_to_local),
+				format: $.proxy(function(ix, format){
+					if (arguments.length === 0){
+						ix = this.dates.length - 1;
+						format = this.o.format;
+					}
+					else if (typeof ix === 'string'){
+						format = ix;
+						ix = this.dates.length - 1;
+					}
+					format = format || this.o.format;
+					var date = this.dates.get(ix);
+					return DPGlobal.formatDate(date, format, this.o.language);
+				}, this)
+			});
+		},
+
+		show: function(){
+      var element = this.component ? this.element.find('input') : this.element;
+			if (element.attr('readonly') && this.o.enableOnReadonly === false)
+				return;
+			if (!this.isInline)
+				this.picker.appendTo(this.o.container);
+			this.place();
+			this.picker.show();
+			this._attachSecondaryEvents();
+			this._trigger('show');
+			if ((window.navigator.msMaxTouchPoints || 'ontouchstart' in document) && this.o.disableTouchKeyboard) {
+				$(this.element).blur();
+			}
+			return this;
+		},
+
+		hide: function(){
+			if (this.isInline)
+				return this;
+			if (!this.picker.is(':visible'))
+				return this;
+			this.focusDate = null;
+			this.picker.hide().detach();
+			this._detachSecondaryEvents();
+			this.viewMode = this.o.startView;
+			this.showMode();
+
+			if (
+				this.o.forceParse &&
+				(
+					this.isInput && this.element.val() ||
+					this.hasInput && this.element.find('input').val()
+				)
+			)
+				this.setValue();
+			this._trigger('hide');
+			return this;
+		},
+
+		remove: function(){
+			this.hide();
+			this._detachEvents();
+			this._detachSecondaryEvents();
+			this.picker.remove();
+			delete this.element.data().datepicker;
+			if (!this.isInput){
+				delete this.element.data().date;
+			}
+			return this;
+		},
+
+		paste: function(evt){
+			var dateString;
+			if (evt.originalEvent.clipboardData && evt.originalEvent.clipboardData.types
+				&& $.inArray('text/plain', evt.originalEvent.clipboardData.types) !== -1) {
+				dateString = evt.originalEvent.clipboardData.getData('text/plain');
+			}
+			else if (window.clipboardData) {
+				dateString = window.clipboardData.getData('Text');
+			}
+			else {
+				return;
+			}
+			this.setDate(dateString);
+			this.update();
+			evt.preventDefault();
+		},
+
+		_utc_to_local: function(utc){
+			return utc && new Date(utc.getTime() + (utc.getTimezoneOffset()*60000));
+		},
+		_local_to_utc: function(local){
+			return local && new Date(local.getTime() - (local.getTimezoneOffset()*60000));
+		},
+		_zero_time: function(local){
+			return local && new Date(local.getFullYear(), local.getMonth(), local.getDate());
+		},
+		_zero_utc_time: function(utc){
+			return utc && new Date(Date.UTC(utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate()));
+		},
+
+		getDates: function(){
+			return $.map(this.dates, this._utc_to_local);
+		},
+
+		getUTCDates: function(){
+			return $.map(this.dates, function(d){
+				return new Date(d);
+			});
+		},
+
+		getDate: function(){
+			return this._utc_to_local(this.getUTCDate());
+		},
+
+		getUTCDate: function(){
+			var selected_date = this.dates.get(-1);
+			if (typeof selected_date !== 'undefined') {
+				return new Date(selected_date);
+			} else {
+				return null;
+			}
+		},
+
+		clearDates: function(){
+			var element;
+			if (this.isInput) {
+				element = this.element;
+			} else if (this.component) {
+				element = this.element.find('input');
+			}
+
+			if (element) {
+				element.val('');
+			}
+
+			this.update();
+			this._trigger('changeDate');
+
+			if (this.o.autoclose) {
+				this.hide();
+			}
+		},
+		setDates: function(){
+			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
+			this.update.apply(this, args);
+			this._trigger('changeDate');
+			this.setValue();
+			return this;
+		},
+
+		setUTCDates: function(){
+			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
+			this.update.apply(this, $.map(args, this._utc_to_local));
+			this._trigger('changeDate');
+			this.setValue();
+			return this;
+		},
+
+		setDate: alias('setDates'),
+		setUTCDate: alias('setUTCDates'),
+
+		setValue: function(){
+			var formatted = this.getFormattedDate();
+			if (!this.isInput){
+				if (this.component){
+					this.element.find('input').val(formatted);
+				}
+			}
+			else {
+				this.element.val(formatted);
+			}
+			return this;
+		},
+
+		getFormattedDate: function(format){
+			if (format === undefined)
+				format = this.o.format;
+
+			var lang = this.o.language;
+			return $.map(this.dates, function(d){
+				return DPGlobal.formatDate(d, format, lang);
+			}).join(this.o.multidateSeparator);
+		},
+
+		setStartDate: function(startDate){
+			this._process_options({startDate: startDate});
+			this.update();
+			this.updateNavArrows();
+			return this;
+		},
+
+		setEndDate: function(endDate){
+			this._process_options({endDate: endDate});
+			this.update();
+			this.updateNavArrows();
+			return this;
+		},
+
+		setDaysOfWeekDisabled: function(daysOfWeekDisabled){
+			this._process_options({daysOfWeekDisabled: daysOfWeekDisabled});
+			this.update();
+			this.updateNavArrows();
+			return this;
+		},
+
+		setDaysOfWeekHighlighted: function(daysOfWeekHighlighted){
+			this._process_options({daysOfWeekHighlighted: daysOfWeekHighlighted});
+			this.update();
+			return this;
+		},
+
+		setDatesDisabled: function(datesDisabled){
+			this._process_options({datesDisabled: datesDisabled});
+			this.update();
+			this.updateNavArrows();
+		},
+
+		place: function(){
+			if (this.isInline)
+				return this;
+			var calendarWidth = this.picker.outerWidth(),
+				calendarHeight = this.picker.outerHeight(),
+				visualPadding = 10,
+				container = $(this.o.container),
+				windowWidth = container.width(),
+				scrollTop = this.o.container === 'body' ? $(document).scrollTop() : container.scrollTop(),
+				appendOffset = container.offset();
+
+			var parentsZindex = [];
+			this.element.parents().each(function(){
+				var itemZIndex = $(this).css('z-index');
+				if (itemZIndex !== 'auto' && itemZIndex !== 0) parentsZindex.push(parseInt(itemZIndex));
+			});
+			var zIndex = Math.max.apply(Math, parentsZindex) + this.o.zIndexOffset;
+			var offset = this.component ? this.component.parent().offset() : this.element.offset();
+			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
+			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
+			var left = offset.left - appendOffset.left,
+				top = offset.top - appendOffset.top;
+
+			if (this.o.container !== 'body') {
+				top += scrollTop;
+			}
+
+			this.picker.removeClass(
+				'datepicker-orient-top datepicker-orient-bottom '+
+				'datepicker-orient-right datepicker-orient-left'
+			);
+
+			if (this.o.orientation.x !== 'auto'){
+				this.picker.addClass('datepicker-orient-' + this.o.orientation.x);
+				if (this.o.orientation.x === 'right')
+					left -= calendarWidth - width;
+			}
+			// auto x orientation is best-placement: if it crosses a window
+			// edge, fudge it sideways
+			else {
+				if (offset.left < 0) {
+					// component is outside the window on the left side. Move it into visible range
+					this.picker.addClass('datepicker-orient-left');
+					left -= offset.left - visualPadding;
+				} else if (left + calendarWidth > windowWidth) {
+					// the calendar passes the widow right edge. Align it to component right side
+					this.picker.addClass('datepicker-orient-right');
+					left += width - calendarWidth;
+				} else {
+					// Default to left
+					this.picker.addClass('datepicker-orient-left');
+				}
+			}
+
+			// auto y orientation is best-situation: top or bottom, no fudging,
+			// decision based on which shows more of the calendar
+			var yorient = this.o.orientation.y,
+				top_overflow;
+			if (yorient === 'auto'){
+				top_overflow = -scrollTop + top - calendarHeight;
+				yorient = top_overflow < 0 ? 'bottom' : 'top';
+			}
+
+			this.picker.addClass('datepicker-orient-' + yorient);
+			if (yorient === 'top')
+				top -= calendarHeight + parseInt(this.picker.css('padding-top'));
+			else
+				top += height;
+
+			if (this.o.rtl) {
+				var right = windowWidth - (left + width);
+				this.picker.css({
+					top: top,
+					right: right,
+					zIndex: zIndex
+				});
+			} else {
+				this.picker.css({
+					top: top,
+					left: left,
+					zIndex: zIndex
+				});
+			}
+			return this;
+		},
+
+		_allow_update: true,
+		update: function(){
+			if (!this._allow_update)
+				return this;
+
+			var oldDates = this.dates.copy(),
+				dates = [],
+				fromArgs = false;
+			if (arguments.length){
+				$.each(arguments, $.proxy(function(i, date){
+					if (date instanceof Date)
+						date = this._local_to_utc(date);
+					dates.push(date);
+				}, this));
+				fromArgs = true;
+			}
+			else {
+				dates = this.isInput
+						? this.element.val()
+						: this.element.data('date') || this.element.find('input').val();
+				if (dates && this.o.multidate)
+					dates = dates.split(this.o.multidateSeparator);
+				else
+					dates = [dates];
+				delete this.element.data().date;
+			}
+
+			dates = $.map(dates, $.proxy(function(date){
+				return DPGlobal.parseDate(date, this.o.format, this.o.language);
+			}, this));
+			dates = $.grep(dates, $.proxy(function(date){
+				return (
+					!this.dateWithinRange(date) ||
+					!date
+				);
+			}, this), true);
+			this.dates.replace(dates);
+
+			if (this.dates.length)
+				this.viewDate = new Date(this.dates.get(-1));
+			else if (this.viewDate < this.o.startDate)
+				this.viewDate = new Date(this.o.startDate);
+			else if (this.viewDate > this.o.endDate)
+				this.viewDate = new Date(this.o.endDate);
+			else
+				this.viewDate = this.o.defaultViewDate;
+
+			if (fromArgs){
+				// setting date by clicking
+				this.setValue();
+			}
+			else if (dates.length){
+				// setting date by typing
+				if (String(oldDates) !== String(this.dates))
+					this._trigger('changeDate');
+			}
+			if (!this.dates.length && oldDates.length)
+				this._trigger('clearDate');
+
+			this.fill();
+			this.element.change();
+			return this;
+		},
+
 		fillDow: function(){
-			var dowCnt = this.weekStart;
-			var html = '<tr>';
-			while (dowCnt < this.weekStart + 7) {
-				html += '<th class="dow">'+DPGlobal.dates.daysMin[(dowCnt++)%7]+'</th>';
+			var dowCnt = this.o.weekStart,
+				html = '<tr>';
+			if (this.o.calendarWeeks){
+				this.picker.find('.datepicker-days .datepicker-switch')
+					.attr('colspan', function(i, val){
+						return parseInt(val) + 1;
+					});
+				html += '<th class="cw">&#160;</th>';
+			}
+			while (dowCnt < this.o.weekStart + 7){
+				html += '<th class="dow">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
 			}
 			html += '</tr>';
 			this.picker.find('.datepicker-days thead').append(html);
 		},
-		
+
 		fillMonths: function(){
-			var html = '';
-			var i = 0
-			while (i < 12) {
-				html += '<span class="month">'+DPGlobal.dates.monthsShort[i++]+'</span>';
+			var html = '',
+			i = 0;
+			while (i < 12){
+				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
 			}
-			this.picker.find('.datepicker-months td').append(html);
+			this.picker.find('.datepicker-months td').html(html);
 		},
-		
-		fill: function() {
+
+		setRange: function(range){
+			if (!range || !range.length)
+				delete this.range;
+			else
+				this.range = $.map(range, function(d){
+					return d.valueOf();
+				});
+			this.fill();
+		},
+
+		getClassNames: function(date){
+			var cls = [],
+				year = this.viewDate.getUTCFullYear(),
+				month = this.viewDate.getUTCMonth(),
+				today = new Date();
+			if (date.getUTCFullYear() < year || (date.getUTCFullYear() === year && date.getUTCMonth() < month)){
+				cls.push('old');
+			}
+			else if (date.getUTCFullYear() > year || (date.getUTCFullYear() === year && date.getUTCMonth() > month)){
+				cls.push('new');
+			}
+			if (this.focusDate && date.valueOf() === this.focusDate.valueOf())
+				cls.push('focused');
+			// Compare internal UTC date with local today, not UTC today
+			if (this.o.todayHighlight &&
+				date.getUTCFullYear() === today.getFullYear() &&
+				date.getUTCMonth() === today.getMonth() &&
+				date.getUTCDate() === today.getDate()){
+				cls.push('today');
+			}
+			if (this.dates.contains(date) !== -1)
+				cls.push('active');
+			if (!this.dateWithinRange(date) || this.dateIsDisabled(date)){
+				cls.push('disabled');
+			}
+			if ($.inArray(date.getUTCDay(), this.o.daysOfWeekHighlighted) !== -1){
+				cls.push('highlighted');
+			}
+
+			if (this.range){
+				if (date > this.range[0] && date < this.range[this.range.length-1]){
+					cls.push('range');
+				}
+				if ($.inArray(date.valueOf(), this.range) !== -1){
+					cls.push('selected');
+				}
+				if (date.valueOf() === this.range[0]){
+          cls.push('range-start');
+        }
+        if (date.valueOf() === this.range[this.range.length-1]){
+          cls.push('range-end');
+        }
+			}
+			return cls;
+		},
+
+		fill: function(){
 			var d = new Date(this.viewDate),
-				year = d.getFullYear(),
-				month = d.getMonth(),
-				currentDate = this.date.valueOf();
-			this.picker.find('.datepicker-days th:eq(1)')
-						.text(DPGlobal.dates.months[month]+' '+year);
-			var prevMonth = new Date(year, month-1, 28,0,0,0,0),
-				day = DPGlobal.getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
-			prevMonth.setDate(day);
-			prevMonth.setDate(day - (prevMonth.getDay() - this.weekStart + 7)%7);
+				year = d.getUTCFullYear(),
+				month = d.getUTCMonth(),
+				startYear = this.o.startDate !== -Infinity ? this.o.startDate.getUTCFullYear() : -Infinity,
+				startMonth = this.o.startDate !== -Infinity ? this.o.startDate.getUTCMonth() : -Infinity,
+				endYear = this.o.endDate !== Infinity ? this.o.endDate.getUTCFullYear() : Infinity,
+				endMonth = this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
+				todaytxt = dates[this.o.language].today || dates['en'].today || '',
+				cleartxt = dates[this.o.language].clear || dates['en'].clear || '',
+				titleFormat = dates[this.o.language].titleFormat || dates['en'].titleFormat,
+				tooltip;
+			if (isNaN(year) || isNaN(month))
+				return;
+			this.picker.find('.datepicker-days thead .datepicker-switch')
+						.text(DPGlobal.formatDate(new UTCDate(year, month), titleFormat, this.o.language));
+			this.picker.find('tfoot .today')
+						.text(todaytxt)
+						.toggle(this.o.todayBtn !== false);
+			this.picker.find('tfoot .clear')
+						.text(cleartxt)
+						.toggle(this.o.clearBtn !== false);
+			this.picker.find('thead .datepicker-title')
+						.text(this.o.title)
+						.toggle(this.o.title !== '');
+			this.updateNavArrows();
+			this.fillMonths();
+			var prevMonth = UTCDate(year, month-1, 28),
+				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+			prevMonth.setUTCDate(day);
+			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
 			var nextMonth = new Date(prevMonth);
-			nextMonth.setDate(nextMonth.getDate() + 42);
+			if (prevMonth.getUTCFullYear() < 100){
+        nextMonth.setUTCFullYear(prevMonth.getUTCFullYear());
+      }
+			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
 			nextMonth = nextMonth.valueOf();
 			var html = [];
-			var clsName,
-				prevY,
-				prevM;
-			while(prevMonth.valueOf() < nextMonth) {
-				if (prevMonth.getDay() === this.weekStart) {
+			var clsName;
+			while (prevMonth.valueOf() < nextMonth){
+				if (prevMonth.getUTCDay() === this.o.weekStart){
 					html.push('<tr>');
+					if (this.o.calendarWeeks){
+						// ISO 8601: First week contains first thursday.
+						// ISO also states week starts on Monday, but we can be more abstract here.
+						var
+							// Start of current week: based on weekstart/current date
+							ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
+							// Thursday of this week
+							th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
+							// First Thursday of year, year from thursday
+							yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
+							// Calendar week: ms between thursdays, div ms per day, div 7 days
+							calWeek =  (th - yth) / 864e5 / 7 + 1;
+						html.push('<td class="cw">'+ calWeek +'</td>');
+
+					}
 				}
-				clsName = this.onRender(prevMonth);
-				prevY = prevMonth.getFullYear();
-				prevM = prevMonth.getMonth();
-				if ((prevM < month &&  prevY === year) ||  prevY < year) {
-					clsName += ' old';
-				} else if ((prevM > month && prevY === year) || prevY > year) {
-					clsName += ' new';
+				clsName = this.getClassNames(prevMonth);
+				clsName.push('day');
+
+				if (this.o.beforeShowDay !== $.noop){
+					var before = this.o.beforeShowDay(this._utc_to_local(prevMonth));
+					if (before === undefined)
+						before = {};
+					else if (typeof(before) === 'boolean')
+						before = {enabled: before};
+					else if (typeof(before) === 'string')
+						before = {classes: before};
+					if (before.enabled === false)
+						clsName.push('disabled');
+					if (before.classes)
+						clsName = clsName.concat(before.classes.split(/\s+/));
+					if (before.tooltip)
+						tooltip = before.tooltip;
 				}
-				if (prevMonth.valueOf() === currentDate) {
-					clsName += ' active';
-				}
-				html.push('<td class="day '+clsName+'">'+prevMonth.getDate() + '</td>');
-				if (prevMonth.getDay() === this.weekEnd) {
+
+				clsName = $.unique(clsName);
+				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+prevMonth.getUTCDate() + '</td>');
+				tooltip = null;
+				if (prevMonth.getUTCDay() === this.o.weekEnd){
 					html.push('</tr>');
 				}
-				prevMonth.setDate(prevMonth.getDate()+1);
+				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
 			}
 			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
-			var currentYear = this.date.getFullYear();
-			
+
+			var monthsTitle = dates[this.o.language].monthsTitle || dates['en'].monthsTitle || 'Months';
 			var months = this.picker.find('.datepicker-months')
-						.find('th:eq(1)')
-							.text(year)
+						.find('.datepicker-switch')
+							.text(this.o.maxViewMode < 2 ? monthsTitle : year)
 							.end()
 						.find('span').removeClass('active');
-			if (currentYear === year) {
-				months.eq(this.date.getMonth()).addClass('active');
+
+			$.each(this.dates, function(i, d){
+				if (d.getUTCFullYear() === year)
+					months.eq(d.getUTCMonth()).addClass('active');
+			});
+
+			if (year < startYear || year > endYear){
+				months.addClass('disabled');
 			}
-			
+			if (year === startYear){
+				months.slice(0, startMonth).addClass('disabled');
+			}
+			if (year === endYear){
+				months.slice(endMonth+1).addClass('disabled');
+			}
+
+			if (this.o.beforeShowMonth !== $.noop){
+				var that = this;
+				$.each(months, function(i, month){
+					if (!$(month).hasClass('disabled')) {
+						var moDate = new Date(year, i, 1);
+						var before = that.o.beforeShowMonth(moDate);
+						if (before === false)
+							$(month).addClass('disabled');
+					}
+				});
+			}
+
 			html = '';
 			year = parseInt(year/10, 10) * 10;
 			var yearCont = this.picker.find('.datepicker-years')
-								.find('th:eq(1)')
+								.find('.datepicker-switch')
 									.text(year + '-' + (year + 9))
 									.end()
 								.find('td');
 			year -= 1;
-			for (var i = -1; i < 11; i++) {
-				html += '<span class="year'+(i === -1 || i === 10 ? ' old' : '')+(currentYear === year ? ' active' : '')+'">'+year+'</span>';
+			var years = $.map(this.dates, function(d){
+					return d.getUTCFullYear();
+				}),
+				classes;
+			for (var i = -1; i < 11; i++){
+				classes = ['year'];
+				tooltip = null;
+
+				if (i === -1)
+					classes.push('old');
+				else if (i === 10)
+					classes.push('new');
+				if ($.inArray(year, years) !== -1)
+					classes.push('active');
+				if (year < startYear || year > endYear)
+					classes.push('disabled');
+
+				if (this.o.beforeShowYear !== $.noop) {
+					var yrBefore = this.o.beforeShowYear(new Date(year, 0, 1));
+					if (yrBefore === undefined)
+						yrBefore = {};
+					else if (typeof(yrBefore) === 'boolean')
+						yrBefore = {enabled: yrBefore};
+					else if (typeof(yrBefore) === 'string')
+						yrBefore = {classes: yrBefore};
+					if (yrBefore.enabled === false)
+						classes.push('disabled');
+					if (yrBefore.classes)
+						classes = classes.concat(yrBefore.classes.split(/\s+/));
+					if (yrBefore.tooltip)
+						tooltip = yrBefore.tooltip;
+				}
+
+				html += '<span class="' + classes.join(' ') + '"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>' + year + '</span>';
 				year += 1;
 			}
 			yearCont.html(html);
 		},
-		
-		click: function(e) {
-			e.stopPropagation();
+
+		updateNavArrows: function(){
+			if (!this._allow_update)
+				return;
+
+			var d = new Date(this.viewDate),
+				year = d.getUTCFullYear(),
+				month = d.getUTCMonth();
+			switch (this.viewMode){
+				case 0:
+					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth()){
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					}
+					else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()){
+						this.picker.find('.next').css({visibility: 'hidden'});
+					}
+					else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+				case 1:
+				case 2:
+					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() || this.o.maxViewMode < 2){
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					}
+					else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() || this.o.maxViewMode < 2){
+						this.picker.find('.next').css({visibility: 'hidden'});
+					}
+					else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+			}
+		},
+
+		click: function(e){
 			e.preventDefault();
-			var target = $(e.target).closest('span, td, th');
-			if (target.length === 1) {
-				switch(target[0].nodeName.toLowerCase()) {
+			e.stopPropagation();
+			var target = $(e.target).closest('span, td, th'),
+				year, month, day;
+			if (target.length === 1){
+				switch (target[0].nodeName.toLowerCase()){
 					case 'th':
-						switch(target[0].className) {
-							case 'switch':
+						switch (target[0].className){
+							case 'datepicker-switch':
 								this.showMode(1);
 								break;
 							case 'prev':
 							case 'next':
-								this.viewDate['set'+DPGlobal.modes[this.viewMode].navFnc].call(
-									this.viewDate,
-									this.viewDate['get'+DPGlobal.modes[this.viewMode].navFnc].call(this.viewDate) + 
-									DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1)
-								);
+								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1);
+								switch (this.viewMode){
+									case 0:
+										this.viewDate = this.moveMonth(this.viewDate, dir);
+										this._trigger('changeMonth', this.viewDate);
+										break;
+									case 1:
+									case 2:
+										this.viewDate = this.moveYear(this.viewDate, dir);
+										if (this.viewMode === 1)
+											this._trigger('changeYear', this.viewDate);
+										break;
+								}
 								this.fill();
-								this.set();
+								break;
+							case 'today':
+								this.showMode(-2);
+								var which = this.o.todayBtn === 'linked' ? null : 'view';
+								this._setDate(UTCToday(), which);
+								break;
+							case 'clear':
+								this.clearDates();
 								break;
 						}
 						break;
 					case 'span':
-						if (target.is('.month')) {
-							var month = target.parent().find('span').index(target);
-							this.viewDate.setMonth(month);
-						} else {
-							var year = parseInt(target.text(), 10)||0;
-							this.viewDate.setFullYear(year);
+						if (!target.hasClass('disabled')){
+							this.viewDate.setUTCDate(1);
+							if (target.hasClass('month')){
+								day = 1;
+								month = target.parent().find('span').index(target);
+								year = this.viewDate.getUTCFullYear();
+								this.viewDate.setUTCMonth(month);
+								this._trigger('changeMonth', this.viewDate);
+								if (this.o.minViewMode === 1){
+									this._setDate(UTCDate(year, month, day));
+									this.showMode();
+								} else {
+									this.showMode(-1);
+								}
+							}
+							else {
+								day = 1;
+								month = 0;
+								year = parseInt(target.text(), 10)||0;
+								this.viewDate.setUTCFullYear(year);
+								this._trigger('changeYear', this.viewDate);
+								if (this.o.minViewMode === 2){
+									this._setDate(UTCDate(year, month, day));
+								}
+								this.showMode(-1);
+							}
+							this.fill();
 						}
-						if (this.viewMode !== 0) {
-							this.date = new Date(this.viewDate);
-							this.element.trigger({
-								type: 'changeDate',
-								date: this.date,
-								viewMode: DPGlobal.modes[this.viewMode].clsName
-							});
-						}
-						this.showMode(-1);
-						this.fill();
-						this.set();
 						break;
 					case 'td':
-						if (target.is('.day') && !target.is('.disabled')){
-							var day = parseInt(target.text(), 10)||1;
-							var month = this.viewDate.getMonth();
-							if (target.is('.old')) {
-								month -= 1;
-							} else if (target.is('.new')) {
-								month += 1;
+						if (target.hasClass('day') && !target.hasClass('disabled')){
+							day = parseInt(target.text(), 10)||1;
+							year = this.viewDate.getUTCFullYear();
+							month = this.viewDate.getUTCMonth();
+							if (target.hasClass('old')){
+								if (month === 0){
+									month = 11;
+									year -= 1;
+								}
+								else {
+									month -= 1;
+								}
 							}
-							var year = this.viewDate.getFullYear();
-							this.date = new Date(year, month, day,0,0,0,0);
-							this.viewDate = new Date(year, month, Math.min(28, day),0,0,0,0);
-							this.fill();
-							this.set();
-							this.element.trigger({
-								type: 'changeDate',
-								date: this.date,
-								viewMode: DPGlobal.modes[this.viewMode].clsName
-							});
+							else if (target.hasClass('new')){
+								if (month === 11){
+									month = 0;
+									year += 1;
+								}
+								else {
+									month += 1;
+								}
+							}
+							this._setDate(UTCDate(year, month, day));
 						}
 						break;
 				}
 			}
-		},
-		
-		mousedown: function(e){
-			e.stopPropagation();
-			e.preventDefault();
-		},
-		
-		showMode: function(dir) {
-			if (dir) {
-				this.viewMode = Math.max(this.minViewMode, Math.min(2, this.viewMode + dir));
+			if (this.picker.is(':visible') && this._focused_from){
+				$(this._focused_from).focus();
 			}
-			this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
+			delete this._focused_from;
+		},
+
+		_toggle_multidate: function(date){
+			var ix = this.dates.contains(date);
+			if (!date){
+				this.dates.clear();
+			}
+
+			if (ix !== -1){
+				if (this.o.multidate === true || this.o.multidate > 1 || this.o.toggleActive){
+					this.dates.remove(ix);
+				}
+			} else if (this.o.multidate === false) {
+				this.dates.clear();
+				this.dates.push(date);
+			}
+			else {
+				this.dates.push(date);
+			}
+
+			if (typeof this.o.multidate === 'number')
+				while (this.dates.length > this.o.multidate)
+					this.dates.remove(0);
+		},
+
+		_setDate: function(date, which){
+			if (!which || which === 'date')
+				this._toggle_multidate(date && new Date(date));
+			if (!which || which === 'view')
+				this.viewDate = date && new Date(date);
+
+			this.fill();
+			this.setValue();
+			if (!which || which !== 'view') {
+				this._trigger('changeDate');
+			}
+			var element;
+			if (this.isInput){
+				element = this.element;
+			}
+			else if (this.component){
+				element = this.element.find('input');
+			}
+			if (element){
+				element.change();
+			}
+			if (this.o.autoclose && (!which || which === 'date')){
+				this.hide();
+			}
+		},
+
+		moveDay: function(date, dir){
+			var newDate = new Date(date);
+			newDate.setUTCDate(date.getUTCDate() + dir);
+
+			return newDate;
+		},
+
+		moveWeek: function(date, dir){
+			return this.moveDay(date, dir * 7);
+		},
+
+		moveMonth: function(date, dir){
+			if (!isValidDate(date))
+				return this.o.defaultViewDate;
+			if (!dir)
+				return date;
+			var new_date = new Date(date.valueOf()),
+				day = new_date.getUTCDate(),
+				month = new_date.getUTCMonth(),
+				mag = Math.abs(dir),
+				new_month, test;
+			dir = dir > 0 ? 1 : -1;
+			if (mag === 1){
+				test = dir === -1
+					// If going back one month, make sure month is not current month
+					// (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
+					? function(){
+						return new_date.getUTCMonth() === month;
+					}
+					// If going forward one month, make sure month is as expected
+					// (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
+					: function(){
+						return new_date.getUTCMonth() !== new_month;
+					};
+				new_month = month + dir;
+				new_date.setUTCMonth(new_month);
+				// Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
+				if (new_month < 0 || new_month > 11)
+					new_month = (new_month + 12) % 12;
+			}
+			else {
+				// For magnitudes >1, move one month at a time...
+				for (var i=0; i < mag; i++)
+					// ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+					new_date = this.moveMonth(new_date, dir);
+				// ...then reset the day, keeping it in the new month
+				new_month = new_date.getUTCMonth();
+				new_date.setUTCDate(day);
+				test = function(){
+					return new_month !== new_date.getUTCMonth();
+				};
+			}
+			// Common date-resetting loop -- if date is beyond end of month, make it
+			// end of month
+			while (test()){
+				new_date.setUTCDate(--day);
+				new_date.setUTCMonth(new_month);
+			}
+			return new_date;
+		},
+
+		moveYear: function(date, dir){
+			return this.moveMonth(date, dir*12);
+		},
+
+		moveAvailableDate: function(date, dir, fn){
+			do {
+				date = this[fn](date, dir);
+
+				if (!this.dateWithinRange(date))
+					return false;
+
+				fn = 'moveDay';
+			}
+			while (this.dateIsDisabled(date));
+
+			return date;
+		},
+
+		weekOfDateIsDisabled: function(date){
+			return $.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1;
+		},
+
+		dateIsDisabled: function(date){
+			return (
+				this.weekOfDateIsDisabled(date) ||
+				$.grep(this.o.datesDisabled, function(d){
+					return isUTCEquals(date, d);
+				}).length > 0
+			);
+		},
+
+		dateWithinRange: function(date){
+			return date >= this.o.startDate && date <= this.o.endDate;
+		},
+
+		keydown: function(e){
+			if (!this.picker.is(':visible')){
+				if (e.keyCode === 40 || e.keyCode === 27) { // allow down to re-show picker
+					this.show();
+					e.stopPropagation();
+        }
+				return;
+			}
+			var dateChanged = false,
+				dir, newViewDate,
+				focusDate = this.focusDate || this.viewDate;
+			switch (e.keyCode){
+				case 27: // escape
+					if (this.focusDate){
+						this.focusDate = null;
+						this.viewDate = this.dates.get(-1) || this.viewDate;
+						this.fill();
+					}
+					else
+						this.hide();
+					e.preventDefault();
+					e.stopPropagation();
+					break;
+				case 37: // left
+				case 38: // up
+				case 39: // right
+				case 40: // down
+					if (!this.o.keyboardNavigation || this.o.daysOfWeekDisabled.length === 7)
+						break;
+					dir = e.keyCode === 37 || e.keyCode === 38 ? -1 : 1;
+					if (e.ctrlKey){
+						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveYear');
+
+						if (newViewDate)
+							this._trigger('changeYear', this.viewDate);
+					}
+					else if (e.shiftKey){
+						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveMonth');
+
+						if (newViewDate)
+							this._trigger('changeMonth', this.viewDate);
+					}
+					else if (e.keyCode === 37 || e.keyCode === 39){
+						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveDay');
+					}
+					else if (!this.weekOfDateIsDisabled(focusDate)){
+						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveWeek');
+					}
+					if (newViewDate){
+						this.focusDate = this.viewDate = newViewDate;
+						this.setValue();
+						this.fill();
+						e.preventDefault();
+					}
+					break;
+				case 13: // enter
+					if (!this.o.forceParse)
+						break;
+					focusDate = this.focusDate || this.dates.get(-1) || this.viewDate;
+					if (this.o.keyboardNavigation) {
+						this._toggle_multidate(focusDate);
+						dateChanged = true;
+					}
+					this.focusDate = null;
+					this.viewDate = this.dates.get(-1) || this.viewDate;
+					this.setValue();
+					this.fill();
+					if (this.picker.is(':visible')){
+						e.preventDefault();
+						e.stopPropagation();
+						if (this.o.autoclose)
+							this.hide();
+					}
+					break;
+				case 9: // tab
+					this.focusDate = null;
+					this.viewDate = this.dates.get(-1) || this.viewDate;
+					this.fill();
+					this.hide();
+					break;
+			}
+			if (dateChanged){
+				if (this.dates.length)
+					this._trigger('changeDate');
+				else
+					this._trigger('clearDate');
+				var element;
+				if (this.isInput){
+					element = this.element;
+				}
+				else if (this.component){
+					element = this.element.find('input');
+				}
+				if (element){
+					element.change();
+				}
+			}
+		},
+
+		showMode: function(dir){
+			if (dir){
+				this.viewMode = Math.max(this.o.minViewMode, Math.min(this.o.maxViewMode, this.viewMode + dir));
+			}
+			this.picker
+				.children('div')
+				.hide()
+				.filter('.datepicker-' + DPGlobal.modes[this.viewMode].clsName)
+					.show();
+			this.updateNavArrows();
 		}
 	};
-	
-	$.fn.datepicker = function ( option, val ) {
-		return this.each(function () {
+
+	var DateRangePicker = function(element, options){
+		$(element).data('datepicker', this);
+		this.element = $(element);
+		this.inputs = $.map(options.inputs, function(i){
+			return i.jquery ? i[0] : i;
+		});
+		delete options.inputs;
+
+		datepickerPlugin.call($(this.inputs), options)
+			.on('changeDate', $.proxy(this.dateUpdated, this));
+
+		this.pickers = $.map(this.inputs, function(i){
+			return $(i).data('datepicker');
+		});
+		this.updateDates();
+	};
+	DateRangePicker.prototype = {
+		updateDates: function(){
+			this.dates = $.map(this.pickers, function(i){
+				return i.getUTCDate();
+			});
+			this.updateRanges();
+		},
+		updateRanges: function(){
+			var range = $.map(this.dates, function(d){
+				return d.valueOf();
+			});
+			$.each(this.pickers, function(i, p){
+				p.setRange(range);
+			});
+		},
+		dateUpdated: function(e){
+			// `this.updating` is a workaround for preventing infinite recursion
+			// between `changeDate` triggering and `setUTCDate` calling.  Until
+			// there is a better mechanism.
+			if (this.updating)
+				return;
+			this.updating = true;
+
+			var dp = $(e.target).data('datepicker');
+
+			if (typeof(dp) === "undefined") {
+				return;
+			}
+
+			var new_date = dp.getUTCDate(),
+				i = $.inArray(e.target, this.inputs),
+				j = i - 1,
+				k = i + 1,
+				l = this.inputs.length;
+			if (i === -1)
+				return;
+
+			$.each(this.pickers, function(i, p){
+				if (!p.getUTCDate())
+					p.setUTCDate(new_date);
+			});
+
+			if (new_date < this.dates[j]){
+				// Date being moved earlier/left
+				while (j >= 0 && new_date < this.dates[j]){
+					this.pickers[j--].setUTCDate(new_date);
+				}
+			}
+			else if (new_date > this.dates[k]){
+				// Date being moved later/right
+				while (k < l && new_date > this.dates[k]){
+					this.pickers[k++].setUTCDate(new_date);
+				}
+			}
+			this.updateDates();
+
+			delete this.updating;
+		},
+		remove: function(){
+			$.map(this.pickers, function(p){ p.remove(); });
+			delete this.element.data().datepicker;
+		}
+	};
+
+	function opts_from_el(el, prefix){
+		// Derive options from element data-attrs
+		var data = $(el).data(),
+			out = {}, inkey,
+			replace = new RegExp('^' + prefix.toLowerCase() + '([A-Z])');
+		prefix = new RegExp('^' + prefix.toLowerCase());
+		function re_lower(_,a){
+			return a.toLowerCase();
+		}
+		for (var key in data)
+			if (prefix.test(key)){
+				inkey = key.replace(replace, re_lower);
+				out[inkey] = data[key];
+			}
+		return out;
+	}
+
+	function opts_from_locale(lang){
+		// Derive options from locale plugins
+		var out = {};
+		// Check if "de-DE" style date is available, if not language should
+		// fallback to 2 letter code eg "de"
+		if (!dates[lang]){
+			lang = lang.split('-')[0];
+			if (!dates[lang])
+				return;
+		}
+		var d = dates[lang];
+		$.each(locale_opts, function(i,k){
+			if (k in d)
+				out[k] = d[k];
+		});
+		return out;
+	}
+
+	var old = $.fn.datepicker;
+	var datepickerPlugin = function(option){
+		var args = Array.apply(null, arguments);
+		args.shift();
+		var internal_return;
+		this.each(function(){
 			var $this = $(this),
 				data = $this.data('datepicker'),
 				options = typeof option === 'object' && option;
-			if (!data) {
-				$this.data('datepicker', (data = new Datepicker(this, $.extend({}, $.fn.datepicker.defaults,options))));
+			if (!data){
+				var elopts = opts_from_el(this, 'date'),
+					// Preliminary otions
+					xopts = $.extend({}, defaults, elopts, options),
+					locopts = opts_from_locale(xopts.language),
+					// Options priority: js args, data-attrs, locales, defaults
+					opts = $.extend({}, defaults, locopts, elopts, options);
+				if ($this.hasClass('input-daterange') || opts.inputs){
+					$.extend(opts, {
+						inputs: opts.inputs || $this.find('input').toArray()
+					});
+					data = new DateRangePicker(this, opts);
+				}
+				else {
+					data = new Datepicker(this, opts);
+				}
+				$this.data('datepicker', data);
 			}
-			if (typeof option === 'string') data[option](val);
+			if (typeof option === 'string' && typeof data[option] === 'function'){
+				internal_return = data[option].apply(data, args);
+			}
 		});
-	};
 
-	$.fn.datepicker.defaults = {
-		onRender: function(date) {
-			return '';
+		if (
+			internal_return === undefined ||
+			internal_return instanceof Datepicker ||
+			internal_return instanceof DateRangePicker
+		)
+			return this;
+
+		if (this.length > 1)
+			throw new Error('Using only allowed for the collection of a single element (' + option + ' function)');
+		else
+			return internal_return;
+	};
+	$.fn.datepicker = datepickerPlugin;
+
+	var defaults = $.fn.datepicker.defaults = {
+		autoclose: false,
+		beforeShowDay: $.noop,
+		beforeShowMonth: $.noop,
+		beforeShowYear: $.noop,
+		calendarWeeks: false,
+		clearBtn: false,
+		toggleActive: false,
+		daysOfWeekDisabled: [],
+		daysOfWeekHighlighted: [],
+		datesDisabled: [],
+		endDate: Infinity,
+		forceParse: true,
+		format: 'mm/dd/yyyy',
+		keyboardNavigation: true,
+		language: 'en',
+		minViewMode: 0,
+		maxViewMode: 2,
+		multidate: false,
+		multidateSeparator: ',',
+		orientation: "auto",
+		rtl: false,
+		startDate: -Infinity,
+		startView: 0,
+		todayBtn: false,
+		todayHighlight: false,
+		weekStart: 0,
+		disableTouchKeyboard: false,
+		enableOnReadonly: true,
+		showOnFocus: true,
+		zIndexOffset: 10,
+		container: 'body',
+		immediateUpdates: false,
+		title: ''
+	};
+	var locale_opts = $.fn.datepicker.locale_opts = [
+		'format',
+		'rtl',
+		'weekStart'
+	];
+	$.fn.datepicker.Constructor = Datepicker;
+	var dates = $.fn.datepicker.dates = {
+		en: {
+			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			today: "Today",
+			clear: "Clear",
+			titleFormat: "MM yyyy"
 		}
 	};
-	$.fn.datepicker.Constructor = Datepicker;
-	
+
 	var DPGlobal = {
 		modes: [
 			{
@@ -12583,110 +14876,341 @@ $(document).ready(function () {
 				navFnc: 'FullYear',
 				navStep: 10
 		}],
-		dates:{
-			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+		isLeapYear: function(year){
+			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
 		},
-		isLeapYear: function (year) {
-			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
+		getDaysInMonth: function(year, month){
+			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 		},
-		getDaysInMonth: function (year, month) {
-			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
-		},
+		validParts: /dd?|DD?|mm?|MM?|yy(?:yy)?/g,
+		nonpunctuation: /[^ -\/:-@\[\u3400-\u9fff-`{-~\t\n\r]+/g,
 		parseFormat: function(format){
-			var separator = format.match(/[.\/\-\s].*?/),
-				parts = format.split(/\W+/);
-			if (!separator || !parts || parts.length === 0){
+			if (typeof format.toValue === 'function' && typeof format.toDisplay === 'function')
+                return format;
+            // IE treats \0 as a string end in inputs (truncating the value),
+			// so it's a bad format delimiter, anyway
+			var separators = format.replace(this.validParts, '\0').split('\0'),
+				parts = format.match(this.validParts);
+			if (!separators || !separators.length || !parts || parts.length === 0){
 				throw new Error("Invalid date format.");
 			}
-			return {separator: separator, parts: parts};
+			return {separators: separators, parts: parts};
 		},
-		parseDate: function(date, format) {
-			var parts = date.split(format.separator),
-				date = new Date(),
-				val;
-			date.setHours(0);
-			date.setMinutes(0);
-			date.setSeconds(0);
-			date.setMilliseconds(0);
-			if (parts.length === format.parts.length) {
-				var year = date.getFullYear(), day = date.getDate(), month = date.getMonth();
-				for (var i=0, cnt = format.parts.length; i < cnt; i++) {
-					val = parseInt(parts[i], 10)||1;
-					switch(format.parts[i]) {
-						case 'dd':
-						case 'd':
-							day = val;
-							date.setDate(val);
-							break;
-						case 'mm':
-						case 'm':
-							month = val - 1;
-							date.setMonth(val - 1);
-							break;
-						case 'yy':
-							year = 2000 + val;
-							date.setFullYear(2000 + val);
-							break;
-						case 'yyyy':
-							year = val;
-							date.setFullYear(val);
-							break;
+		parseDate: function(date, format, language){
+			if (!date)
+				return undefined;
+			if (date instanceof Date)
+				return date;
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
+			if (format.toValue)
+                return format.toValue(date, format, language);
+            var part_re = /([\-+]\d+)([dmwy])/,
+				parts = date.match(/([\-+]\d+)([dmwy])/g),
+				fn_map = {
+					d: 'moveDay',
+					m: 'moveMonth',
+					w: 'moveWeek',
+					y: 'moveYear'
+				},
+				part, dir, i, fn;
+			if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)){
+				date = new Date();
+				for (i=0; i < parts.length; i++){
+					part = part_re.exec(parts[i]);
+					dir = parseInt(part[1]);
+					fn = fn_map[part[2]];
+					date = Datepicker.prototype[fn](date, dir);
+				}
+				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+			}
+			parts = date && date.match(this.nonpunctuation) || [];
+			date = new Date();
+			var parsed = {},
+				setters_order = ['yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
+				setters_map = {
+					yyyy: function(d,v){
+						return d.setUTCFullYear(v);
+					},
+					yy: function(d,v){
+						return d.setUTCFullYear(2000+v);
+					},
+					m: function(d,v){
+						if (isNaN(d))
+							return d;
+						v -= 1;
+						while (v < 0) v += 12;
+						v %= 12;
+						d.setUTCMonth(v);
+						while (d.getUTCMonth() !== v)
+							d.setUTCDate(d.getUTCDate()-1);
+						return d;
+					},
+					d: function(d,v){
+						return d.setUTCDate(v);
+					}
+				},
+				val, filtered;
+			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
+			setters_map['dd'] = setters_map['d'];
+			date = UTCToday();
+			var fparts = format.parts.slice();
+			// Remove noop parts
+			if (parts.length !== fparts.length){
+				fparts = $(fparts).filter(function(i,p){
+					return $.inArray(p, setters_order) !== -1;
+				}).toArray();
+			}
+			// Process remainder
+			function match_part(){
+				var m = this.slice(0, parts[i].length),
+					p = parts[i].slice(0, m.length);
+				return m.toLowerCase() === p.toLowerCase();
+			}
+			if (parts.length === fparts.length){
+				var cnt;
+				for (i=0, cnt = fparts.length; i < cnt; i++){
+					val = parseInt(parts[i], 10);
+					part = fparts[i];
+					if (isNaN(val)){
+						switch (part){
+							case 'MM':
+								filtered = $(dates[language].months).filter(match_part);
+								val = $.inArray(filtered[0], dates[language].months) + 1;
+								break;
+							case 'M':
+								filtered = $(dates[language].monthsShort).filter(match_part);
+								val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
+								break;
+						}
+					}
+					parsed[part] = val;
+				}
+				var _date, s;
+				for (i=0; i < setters_order.length; i++){
+					s = setters_order[i];
+					if (s in parsed && !isNaN(parsed[s])){
+						_date = new Date(date);
+						setters_map[s](_date, parsed[s]);
+						if (!isNaN(_date))
+							date = _date;
 					}
 				}
-				date = new Date(year, month, day, 0 ,0 ,0);
 			}
 			return date;
 		},
-		formatDate: function(date, format){
-			var val = {
-				d: date.getDate(),
-				m: date.getMonth() + 1,
-				yy: date.getFullYear().toString().substring(2),
-				yyyy: date.getFullYear()
+		formatDate: function(date, format, language){
+			if (!date)
+				return '';
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
+			if (format.toDisplay)
+                return format.toDisplay(date, format, language);
+            var val = {
+				d: date.getUTCDate(),
+				D: dates[language].daysShort[date.getUTCDay()],
+				DD: dates[language].days[date.getUTCDay()],
+				m: date.getUTCMonth() + 1,
+				M: dates[language].monthsShort[date.getUTCMonth()],
+				MM: dates[language].months[date.getUTCMonth()],
+				yy: date.getUTCFullYear().toString().substring(2),
+				yyyy: date.getUTCFullYear()
 			};
 			val.dd = (val.d < 10 ? '0' : '') + val.d;
 			val.mm = (val.m < 10 ? '0' : '') + val.m;
-			var date = [];
-			for (var i=0, cnt = format.parts.length; i < cnt; i++) {
+			date = [];
+			var seps = $.extend([], format.separators);
+			for (var i=0, cnt = format.parts.length; i <= cnt; i++){
+				if (seps.length)
+					date.push(seps.shift());
 				date.push(val[format.parts[i]]);
 			}
-			return date.join(format.separator);
+			return date.join('');
 		},
 		headTemplate: '<thead>'+
+			              '<tr>'+
+			                '<th colspan="7" class="datepicker-title"></th>'+
+			              '</tr>'+
 							'<tr>'+
-								'<th class="prev">&lsaquo;</th>'+
-								'<th colspan="5" class="switch"></th>'+
-								'<th class="next">&rsaquo;</th>'+
+								'<th class="prev">&#171;</th>'+
+								'<th colspan="5" class="datepicker-switch"></th>'+
+								'<th class="next">&#187;</th>'+
 							'</tr>'+
 						'</thead>',
-		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>'
+		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
+		footTemplate: '<tfoot>'+
+							'<tr>'+
+								'<th colspan="7" class="today"></th>'+
+							'</tr>'+
+							'<tr>'+
+								'<th colspan="7" class="clear"></th>'+
+							'</tr>'+
+						'</tfoot>'
 	};
-	DPGlobal.template = '<div class="datepicker dropdown-menu">'+
+	DPGlobal.template = '<div class="datepicker">'+
 							'<div class="datepicker-days">'+
 								'<table class=" table-condensed">'+
 									DPGlobal.headTemplate+
 									'<tbody></tbody>'+
+									DPGlobal.footTemplate+
 								'</table>'+
 							'</div>'+
 							'<div class="datepicker-months">'+
 								'<table class="table-condensed">'+
 									DPGlobal.headTemplate+
 									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
 								'</table>'+
 							'</div>'+
 							'<div class="datepicker-years">'+
 								'<table class="table-condensed">'+
 									DPGlobal.headTemplate+
 									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
 								'</table>'+
 							'</div>'+
 						'</div>';
 
-}( window.jQuery );;
+	$.fn.datepicker.DPGlobal = DPGlobal;
+
+
+	/* DATEPICKER NO CONFLICT
+	* =================== */
+
+	$.fn.datepicker.noConflict = function(){
+		$.fn.datepicker = old;
+		return this;
+	};
+
+	/* DATEPICKER VERSION
+	 * =================== */
+	$.fn.datepicker.version = '1.5.1';
+
+	/* DATEPICKER DATA-API
+	* ================== */
+
+	$(document).on(
+		'focus.datepicker.data-api click.datepicker.data-api',
+		'[data-provide="datepicker"]',
+		function(e){
+			var $this = $(this);
+			if ($this.data('datepicker'))
+				return;
+			e.preventDefault();
+			// component click requires us to explicitly show it
+			datepickerPlugin.call($this, 'show');
+		}
+	);
+	$(function(){
+		datepickerPlugin.call($('[data-provide="datepicker-inline"]'));
+	});
+
+}));
+;
+/* OriginalFileName : public/js/datepicker.js */ 
+
+$('.date').datepicker({
+    'format': 'mm/dd/yyyy',
+    'autoclose': true,
+    'orientation': 'bottom',
+    changeMonth: true,
+    changeYear: true
+});;
+/* OriginalFileName : public/js/reset.js */ 
+
+$(document).ready(function () {
+    $(".resetButton").click(function () {
+        var closestForm = $(this).closest('form');
+        closestForm.find(":input")
+                .not(':button, :submit, :reset, :hidden')
+                .removeAttr('checked').removeAttr('selected')
+                .not(':checkbox, :radio, select')
+                .val('').removeAttr('value');
+        closestForm.find("select").prop('selectedIndex',0);
+    });
+});;
+/* OriginalFileName : public/js/userCRUD.js */ 
+
+/**
+ * Generate checkbox sentence with proper modal to display statement
+ * Statement agreement action affect checkbox value
+ * 
+ * @param {string} checkboxId
+ * @param {string} title statement title
+ * @param {string} sentence checkbox sentence
+ * @param {string} content whole statement content
+ * @param {string} role statement related user role
+ * @returns {undefined}
+ */
+function generateStatementCheckboxContent(checkboxId, title, sentence, content, role) {
+    var divId = checkboxId + "Div";
+    var checkboxSelector = "#" + checkboxId;
+    var divSelector = "#" + divId;
+    $(checkboxSelector).attr('data-role', role).after("<div id='" + divId + "'></div>")
+    $(checkboxSelector).appendTo(divSelector);
+    $(divSelector).append("<p >" + sentence + "</p>");
+    $(divSelector + ' a').click(function () {
+        bootbox.dialog({
+            message: content,
+            title: title,
+            buttons: {
+                success: {
+                    label: "Agree",
+                    className: "btn-success",
+                    callback: function () {
+                        $(checkboxSelector).attr('checked', true);
+                    }
+                },
+                cancel: {
+                    label: "Disagree",
+                    className: "btn-primary",
+                    callback: function () {
+                        $(checkboxSelector).attr('checked', false);
+                    }
+                }
+            }
+        });
+    });
+    if (role !== '') {
+        $(divSelector).parent("dd").hide();
+    }
+}
+
+/**
+ * Display statement checkbox according to selected roles
+ * 
+ * @param {string} roleSelector
+ * @returns {undefined}
+ */
+function displayStatementCheckbox(roleSelector) {
+    var value, checkboxSelector;
+    $(roleSelector + ' option:selected').each(function (i, selected) {
+        value = $(selected).text();
+        checkboxSelector = $("[data-role='" + value + "']");
+        if (checkboxSelector.length) {
+            checkboxSelector.parent("div").parent("dd").show();
+        }
+    });
+    $(roleSelector).change(function () {
+        $(roleSelector + ' option:selected').each(function (i, selected) {
+            value = $(selected).text();
+            checkboxSelector = $("[data-role='" + value + "']");
+            if (checkboxSelector.length) {
+                checkboxSelector.parent("div").parent("dd").show();
+            }
+        });
+        $(roleSelector + ' option:not(:selected)').each(function (i, notSelected) {
+            value = $(notSelected).text();
+            checkboxSelector = $("[data-role='" + value + "']");
+            if (checkboxSelector.length) {
+                checkboxSelector.parent("div").parent("dd").hide();
+            }
+        });
+    });
+}
+
+
+;
 /* OriginalFileName : public/js/menuItemCRUD.js */ 
 
 if ($('#menu_item_form_parent').length) {
@@ -12722,9 +15246,10 @@ if ($('#menu_item_form_parent').length) {
 /* OriginalFileName : public/js/organizationReg.js */ 
 
 $(document).ready(function () {
-//    Note: need to check if user selected any type of organizations before submit
 // enabling datepicker lib
     $('.datepicker').datepicker();
+    // prepare organization checkboxes
+    prepareCheckBoxes();
     // intial state for the form
     showOrganizationFieldSet();
     // on change in Organization Type
@@ -12735,7 +15260,8 @@ $(document).ready(function () {
     $('#submit').click(function () {
 //add validation method before submit
         $('#orgReg').submit();
-    })
+    });
+
 
 
 
@@ -12755,7 +15281,7 @@ $(document).ready(function () {
                 $('#atpLicenseAttachment').attr('required', 'false');
 
                 break;
-            // atp    
+                // atp    
             case '2':
                 $('#atpLicenseNo').attr('required', 'true');
                 $('#atpLicenseExpiration').attr('required', 'true');
@@ -12765,7 +15291,7 @@ $(document).ready(function () {
                 $('#atcLicenseAttachment').attr('required', 'false');
 
                 break;
-            // both    
+                // both    
             case '3':
                 $('#atcLicenseNo').attr('required', 'true');
                 $('#atcLicenseExpiration').attr('required', 'true');
@@ -12784,53 +15310,99 @@ $(document).ready(function () {
 
 
 
+    function prepareCheckBoxes() {
+        $orgType = urlParam('org');
+
+        switch ($orgType) {
+            case "atp":
+                $('#type-1').attr('checked', 'checked');
+                $('#hiddenType').val('2');
+                break;
+            case "atc":
+                $('#type-0').attr('checked', 'checked');
+                $('#hiddenType').val('1');
+                break;
+            default :
+                window.history.back();
+                break;
+        }
+    }
 
 
 
-
-
-
-
-
-        // handling organization type change
+    // handling organization type change
     function showOrganizationFieldSet() {
-
         $atcBox = $('input:checkbox[id=type-0]').is(":checked");
         $atpBox = $('input:checkbox[id=type-1]').is(":checked");
-        if ($atcBox) {
-            $('#atcSet').show();
-            $('#hiddenType').val("");
-            $('#hiddenType').val(1);
-            checkTypeValidations();
-        } else {
-            $('#atcSet').hide();
-            $('#atcLicenseNo').val("");
-            $('#atcLicenseExpiration').val("");
-            $('#atcLicenseAttachment').val("");
-        }
 
-        if ($atpBox) {
-        // still need to add required
+        // BOTH SELECTED
+        if ($atcBox && $atpBox) {
+            $('#hiddenType').val('');
+            $('#hiddenType').val('3');
+
             $('#atpSet').show();
-            $('#hiddenType').val("");
-            $('#hiddenType').val(2);
-            checkTypeValidations();
-        } else {
+            $('#atcSet').show();
+
+        }
+
+        //ATC ONLY
+        if ($atcBox && !$atpBox) {
+            $('#hiddenType').val('');
+            $('#hiddenType').val('1');
+
+            $('#atcSet').show();
             $('#atpSet').hide();
-            $('#atpLicenseNo').val("");
-            $('#atpLicenseExpiration').val("");
-            $('#atpLicenseAttachment').val("");
+
+            clearAtpInputs();
+
+        }
+
+        //ATP ONLY
+        if ($atpBox && !$atcBox) {
+            $('#hiddenType').val('');
+            $('#hiddenType').val('2');
+
+            $('#atpSet').show();
+//            $('#atcSet').hide();
+            clearAtcInputs();
+        }
+
+        //ALERT NOTHING SELECTED
+        if (!$atcBox && !$atpBox) {
+            location.reload();
         }
 
 
-        if ($atpBox && $atcBox) {
-            $('#hiddenType').val("");
-            $('#hiddenType').val(3);
-            checkTypeValidations();
-        }
 
 
+    }
 
+    function clearAtpInputs() {
+
+        $('#atpLicenseNo').val('');
+        $('#atpLicenseAttachment').val('');
+        $('#atpLicenseExpiration').val('');
+        $('#labsNo').val('');
+        $('#pcsNo_lab').val('');
+        $('#internetSpeed_lab').val('');
+        $('#operatingSystem').val('');
+        $('#operatingSystemLang').val('');
+        $('#officeLang').val('');
+        $('#officeVersion').val('');
+    }
+
+    function clearAtcInputs() {
+        $('#atcLicenseNo').val('');
+        $('#atcLicenseAttachment').val('');
+        $('#atcLicenseExpiration').val('');
+        $('#classesNo').val('');
+        $('#pcsNo_class').val('');
+
+    }
+
+    function urlParam(name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results[1] || 0;
     }
 
 

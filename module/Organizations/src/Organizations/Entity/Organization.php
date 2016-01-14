@@ -245,7 +245,7 @@ class Organization
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $fax;
@@ -290,63 +290,63 @@ class Organization
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" , nullable=true)
      * @var int
      */
     public $labsNo;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $pcsNo_lab;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $classesNo;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $pcsNo_class;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $internetSpeed_lab;
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $operatingSystem;
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $operatingSystemLang;
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $officeVersion;
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $officeLang;
@@ -545,7 +545,7 @@ class Organization
     {
         $this->id = $id;
     }
-    
+
     function setType($type)
     {
         $this->type = $type;
@@ -752,42 +752,42 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-        $this->type = (int)$data['type'];
+        $this->type = (int) $data['type'];
         $this->commercialName = $data['commercialName'];
         $this->ownerName = $data['ownerName'];
         $this->ownerNationalId = $data['ownerNationalId'];
         $this->CRNo = $data['CRNo'];
         $this->CRExpiration = $data['CRExpiration'];
-        $this->CRAttachment = (!empty($data['CRAttachment'])) ? $data['CRAttachment']:null;
-        $this->atpLicenseNo = $data['atpLicenseNo'];
-        $this->atpLicenseExpiration = $data['atpLicenseExpiration'];
-        $this->atpLicenseAttachment = (!empty($data['atpLicenseAttachment'])) ? $data['atpLicenseAttachment']:null;
-        $this->atcLicenseNo = $data['atcLicenseNo'];
-        $this->atcLicenseExpiration = $data['atcLicenseExpiration'];
-        $this->atcLicenseAttachment =(!empty($data['atcLicenseAttachment'])) ? $data['atcLicenseAttachment']:null; 
+        $this->CRAttachment = $data['CRAttachment'];
+        $this->atpLicenseNo = (!empty($data['atpLicenseNo'])) ?  (int)$data['atpLicenseNo'] : null;
+        $this->atpLicenseExpiration = (!empty($data['atpLicenseExpiration'])) ? $data['atpLicenseExpiration'] : null;
+        $this->atpLicenseAttachment = (!empty($data['atpLicenseAttachment'])) ? $data['atpLicenseAttachment'] : null;
+        $this->atcLicenseNo = (!empty($data['atcLicenseNo'])) ? $data['atcLicenseNo'] : null;
+        $this->atcLicenseExpiration =(!empty($data['atcLicenseExpiration'])) ? $data['atcLicenseExpiration'] : null;
+        $this->atcLicenseAttachment = (!empty($data['atcLicenseAttachment'])) ? $data['atcLicenseAttachment'] : null;
         $this->addressLine1 = $data['addressLine1'];
-        $this->addressLine2 = $data['addressLine2'];
+        $this->addressLine2 = (!empty($data['addressLine2'])) ? $data['addressLine2'] : null;
         $this->city = $data['city'];
         $this->zipCode = $data['zipCode'];
         $this->phone1 = $data['phone1'];
-        $this->phone2 = $data['phone2'];
-        $this->phone3 = $data['phone3'];
-        $this->fax = $data['fax'];
+        $this->phone2 = (!empty($data['phone2'])) ? $data['phone2'] : null;
+        $this->phone3 = (!empty($data['phone3'])) ? $data['phone3'] : null;
+        $this->fax = (!empty($data['fax'])) ? $data['fax'] : null;
         $this->website = $data['website'];
         $this->email = $data['email'];
-        $this->trainingManager = (!empty($data['trainingManager_id'])) ? $data['trainingManager_id']:null; 
-        $this->testCenterAdmin = (!empty($data['testCenterAdmin_id'])) ? $data['testCenterAdmin_id']:null; 
-        $this->focalContactPerson = (!empty($data['focalContactPerson_id'])) ? $data['focalContactPerson_id']:null; 
-        $this->labsNo = (int)$data['labsNo'];
-        $this->classesNo = (int)$data['classesNo'];
-        $this->pcsNo_lab = (int)$data['pcsNo_lab'];
-        $this->pcsNo_class = (int)$data['pcsNo_class'];
-        $this->internetSpeed_lab = (int)$data['internetSpeed_lab'];
-        $this->operatingSystem = $data['operatingSystem'];
-        $this->operatingSystemLang = $data['operatingSystemLang'];
-        $this->officeVersion = $data['officeVersion'];
-        $this->officeLang = $data['officeLang'];
-        $this->longtitude =(double) $data['long'];
+        $this->trainingManager = $data['trainingManager_id'] != 0 ? $data['trainingManager_id'] : null;
+        $this->testCenterAdmin = $data['testCenterAdmin_id'] != 0 ? $data['testCenterAdmin_id'] : null;
+        $this->focalContactPerson = $data['focalContactPerson_id'];
+        $this->labsNo = (!empty($data['labsNo'])) ? (int) $data['labsNo'] : null;
+        $this->classesNo = (!empty($data['classesNo'])) ? (int) $data['classesNo'] : null;
+        $this->pcsNo_lab = (!empty($data['pcsNo_lab'])) ? (int) $data['pcsNo_lab'] : null;
+        $this->pcsNo_class = (!empty($data['pcsNo_class'])) ? (int) $data['pcsNo_class'] : null;
+        $this->internetSpeed_lab = (!empty($data['internetSpeed_lab'])) ? (int) $data['internetSpeed_lab'] : null;
+        $this->operatingSystem = (!empty($data['operatingSystem'])) ? $data['operatingSystem'] : null;
+        $this->operatingSystemLang = (!empty($data['operatingSystemLang'])) ? $data['operatingSystemLang'] : null;
+        $this->officeVersion = (!empty($data['officeVersion'])) ? $data['officeVersion'] : null;
+        $this->officeLang = (!empty($data['officeLang'])) ? $data['officeLang'] : null;
+        $this->longtitude = (double) $data['long'];
         $this->latitude = (double) $data['lat'];
     }
 
@@ -831,7 +831,7 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'type',
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'longtitude',
             ));
@@ -895,7 +895,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atcLicenseNo',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -905,7 +904,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atcLicenseAttachment',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -915,7 +913,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atcLicenseExpiration',
-                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -928,7 +925,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseNo',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -938,7 +934,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseAttachment',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -948,7 +943,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseExpiration',
-                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -1028,7 +1022,6 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'fax',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',

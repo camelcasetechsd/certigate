@@ -28,9 +28,9 @@ use Utilities\Service\Query\Query;
 class Organization
 {
 
-    protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
-    protected $ATP_ATTACHMENT_PATH = 'public/upload/attachments/atpAttachments/';
-    protected $ATC_ATTACHMENT_PATH = 'public/upload/attachments/atcAttachments/';
+    protected $CR_ATTACHMENT_PATH = '/upload/attachments/crAttachments/';
+    protected $ATP_ATTACHMENT_PATH = '/upload/attachments/atpAttachments/';
+    protected $ATC_ATTACHMENT_PATH = '/upload/attachments/atcAttachments/';
 
     /*
      *
@@ -92,6 +92,7 @@ class Organization
             $entity = $orgObj;
         }
 
+//       
         /**
          * Handling convert string date to datetime object
          */
@@ -99,12 +100,12 @@ class Organization
             $date = new DateTime($orgInfo['CRExpiration']);
             $orgInfo['CRExpiration'] = $date;
         }
-        if (!empty($orgInfo['atcLicenseExpiration'])&& $orgInfo['atcLicenseExpiration'] != "") {
-            $date = new DateTime($orgInfo['atcLicenseExpiration'] );
+        if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
+            $date = new DateTime($orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
         else {
-            $orgInfo['atpLicenseExpiration'] = null;
+            $orgInfo['atcLicenseExpiration'] = null;
         }
         if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
             $date = new DateTime($orgInfo['atpLicenseExpiration']);
@@ -142,14 +143,23 @@ class Organization
         /**
          * Handling transfered Files
          */
-        if (!empty($orgInfo['CRAttachment']['name'])) {
+        if (!empty($orgInfo['CRAttachment']['name'])&&  $orgInfo['atcLicenseAttachment']['name'] != '') {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
-        if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
+        else {
+            $orgInfo['CRAttachment'] = null;
+        }
+        if (!empty($orgInfo['atpLicenseAttachment'])&&  $orgInfo['atcLicenseAttachment']['name'] != '') {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
-        if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
+        else {
+            $orgInfo['atpLicenseAttachment'] = null;
+        }
+        if (!empty($orgInfo['atcLicenseAttachment']) &&  $orgInfo['atcLicenseAttachment']['name'] != '') {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
+        }
+        else {
+            $orgInfo['atcLicenseAttachment'] = null;
         }
 
         /**
@@ -180,13 +190,14 @@ class Organization
         $uploadResult = null;
         $upload = new Http();
 
-        $upload->setDestination($attachmentPath);
+        $upload->setDestination('public/upload/attachments/');
 
         try {
             // upload received file(s)
             $upload->receive();
         } catch (\Exception $e) {
-            
+            var_dump($e);
+            exit;
         }
         //This method will return the real file name of a transferred file.
         $name = $upload->getFileName($filename);
@@ -197,7 +208,7 @@ class Organization
         // rename
         rename($name, $attachmentPath . $newName . '.' . $extention);
 
-        $uploadResult = '/upload/attachments/' . $newName . '.' . $extention;
+        $uploadResult = '/public/upload/attachments/crAttachments/' . $newName . '.' . $extention;
 
         return $uploadResult;
     }
