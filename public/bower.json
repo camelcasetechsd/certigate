@@ -5,6 +5,7 @@
     "license": "MIT",
     "dependencies": {
         "bootstrap": "~3.x",
+        "bootstrap-datepicker" : "~1.x",
         "ckeditor": "#full/stable"
     }
 }
