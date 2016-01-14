@@ -8,7 +8,7 @@ use Zend\InputFilter\InputFilter;
 
 /**
  * Role Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Users\Entity\RoleRepository")
  * @ORM\Table(name="role")
  * 
  * 
@@ -21,6 +21,10 @@ use Zend\InputFilter\InputFilter;
 class Role
 {
 
+    /**
+     * Anonymous role
+     */
+    const ANONYMOUS_ROLE = "Anonymous";
     /**
      * User role
      */

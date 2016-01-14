@@ -6,86 +6,108 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Permissions\Acl\Acl as ZendAcl;
 use Zend\Permissions\Acl\Role\GenericRole as ZendRole;
 use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
-class CertigateAclPlugin extends AbstractPlugin
-{
+class CertigateAclPlugin extends AbstractPlugin {
 
-    public function doAuthorization( \Zend\Mvc\MvcEvent $e )
-    {
-        $controller = $e->getTarget();
-        $controllerClass = get_class( $controller );
-        $moduleName = substr( $controllerClass, 0, strpos( $controllerClass, '\\' ) ) ;
-        $routeMatch = $e->getRouteMatch()->getMatchedRouteName();
-        
-        $manager = $this->getController()->getServiceLocator()->get( 'ModuleManager' );
+    public function doAuthorization(\Zend\Mvc\MvcEvent $event) {
+        $controller = $event->getTarget();
+        $controllerClass = get_class($controller);
+        $moduleName = substr($controllerClass, 0, strpos($controllerClass, '\\'));
+        $routeMatch = $event->getRouteMatch()->getMatchedRouteName();
+
+        $manager = $this->getController()->getServiceLocator()->get('ModuleManager');
         $loadedModules = $manager->getLoadedModules();
-        $excludedModules = $loadedModules['CertigateAcl']->getConfig()['roles_management']['excluded_modules'];
+        $certigateAclConfig = $loadedModules['CertigateAcl']->getConfig()['roles_management'];
+        $excludedModules = $certigateAclConfig['excluded_modules'];
+        $anonymousRoutes = $certigateAclConfig['anonymous_routes'];
+
+        $signInController = 'DefaultModule\Controller\SignController';
+        $router = $event->getRouter();
         
         // return if the target is in excluded modules 
-        if(in_array( $moduleName, $excludedModules)){
-            return ;
+        if (in_array($moduleName, $excludedModules)) {
+            return;
         }
-        
+
         // return if not logged in
         $auth = new AuthenticationService();
+        $authenticated = true;
         if (!$auth->hasIdentity()) {
-            return;
+            $authenticated = false;
         }
 
         // set ACL
         $acl = new ZendAcl();
         $acl->deny();
-        
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getController()->getServiceLocator()->get( 'Doctrine\ORM\EntityManager' );
-
-        // Roles 
-        $roles = $em->getRepository( 'Users\Entity\Role' )->findAll();
-
-        foreach ($roles as $r) {
-            $acl->addRole( new ZendRole( $r->getName() ) );
-        }
-        
-        // Fetching Privileges
-        $privileges = $em->getRepository( 'Users\Entity\Acl' )->findAll();
-        $allRolesPriveleges = [];
-
-        foreach ($privileges as $p) {
-            $allRolesPriveleges[$p->getRole()->getName()][$p->getModule()][] = $p->getRoute();
-        }
 
         // Defining Resources
         foreach ($loadedModules as $k => $v) {
-            if (!in_array( $k, $excludedModules )) {
+            if (!in_array($k, $excludedModules)) {
                 $acl->addResource($k);
             }
         }
-        
-        // Defining Permissions
-        $acl->allow('Admin'); // allow everything for Admin 
-        foreach ($allRolesPriveleges as $role => $modules) {
-            foreach ($modules as $module => $routes) {
-                foreach ($routes as $r) {
-                    $acl->allow( $role, $module, $r );
+
+        if (count($anonymousRoutes) > 0) {
+            $acl->addRole(new ZendRole(Role::ANONYMOUS_ROLE));
+            foreach ($anonymousRoutes as $anonymousRoute) {
+                $acl->allow(/* $roles = */ Role::ANONYMOUS_ROLE, $anonymousRoute['resource'], $anonymousRoute['privileges']);
+            }
+        }
+
+        if ($authenticated === true) {
+            /* @var $em \Doctrine\ORM\EntityManager */
+            $em = $this->getController()->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+
+            // Roles 
+            $roles = $em->getRepository('Users\Entity\Role')->findAll();
+
+            foreach ($roles as $r) {
+                $acl->addRole(new ZendRole($r->getName()));
+            }
+
+            // Fetching Privileges
+            $privileges = $em->getRepository('Users\Entity\Acl')->findAll();
+            $allRolesPriveleges = [];
+
+            foreach ($privileges as $p) {
+                $allRolesPriveleges[$p->getRole()->getName()][$p->getModule()][] = $p->getRoute();
+            }
+
+            // Defining Permissions
+            $acl->allow('Admin'); // allow everything for Admin 
+            foreach ($allRolesPriveleges as $role => $modules) {
+                foreach ($modules as $module => $routes) {
+                    foreach ($routes as $r) {
+                        $acl->allow($role, $module, $r);
+                    }
+                }
+            }
+            // get logged in user roles
+            $userRoles = $em->find('\Users\Entity\User', $auth->getIdentity()['id'])->getRoles();
+            foreach ($userRoles as $userRole) {
+                if (!$acl->isAllowed($userRole->getName(), $moduleName, $routeMatch)) {
+                    $url = $router->assemble(array(), array('name' => 'noaccess'));
+                    $status = 302;
                 }
             }
         }
-        
-        // get logged in user roles
-        $userRoles = $em->find( '\Users\Entity\User', $auth->getIdentity()['id'])->getRoles();
 
-        foreach ($userRoles as $role) {
-            if (!$acl->isAllowed( $role->getName(), $moduleName, $routeMatch )) {
-                $router = $e->getRouter();
-                $url = $router->assemble( array(), array('name' => 'noaccess') );
-                
-                $response = $e->getResponse();
-                $response->setStatusCode( 302 );
-                
-                // redirect to login page or other page.
-                $response->getHeaders()->addHeaderLine( 'Location', $url );
-                $e->stopPropagation();
+        if ($authenticated === false && $controller != $signInController) {
+            if (!$acl->isAllowed(Role::ANONYMOUS_ROLE, $moduleName, $routeMatch)) {
+                // redirect to sign/in
+                $url = $router->assemble(array('action' => 'in'), array('name' => 'defaultSign'));
+                $status = 200;
             }
+        }
+
+        if (isset($url) && isset($status)) {
+            $response = $event->getResponse();
+            $response->setStatusCode(302);
+
+            // redirect to login page or other page.
+            $response->getHeaders()->addHeaderLine('Location', $url);
+            $event->stopPropagation();
         }
     }
 
