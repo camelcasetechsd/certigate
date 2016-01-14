@@ -116,7 +116,7 @@ $(document).ready(function () {
             $('#hiddenType').val('2');
 
             $('#atpSet').show();
-//            $('#atcSet').hide();
+            $('#atcSet').hide();
             clearAtcInputs();
         }
 
