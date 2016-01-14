@@ -1,6 +1,6 @@
 <?php
 
-namespace Directories;
+namespace Organizations;
 
 return array(
     'view_manager' => array(
@@ -10,8 +10,10 @@ return array(
     ),
     'service_manager' => array(
         'aliases' => array(
-            'atps' => 'Directories\Controller\AtpsController',
-            'atcs' => 'Directories\Controller\AtcsController'
+            'orgs' => 'Organizations\Controller\orgsController',
+        ),
+        'factories' => array(
+            'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory'
         ),
     ),
     'doctrine' => array(
@@ -30,8 +32,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Directories\Controller\Atps' => 'Directories\Controller\AtpsController',
-            'Directories\Controller\Atcs' => 'Directories\Controller\AtcsController',
+            'Organizations\Controller\Orgs' => 'Organizations\Controller\OrganizationsController',
         ),
     ),
     'router' => array(
@@ -39,55 +40,29 @@ return array(
             'list_atps' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/directories/atps',
+                    'route' => '/organizations/atps',
                     'defaults' => array(
-                        'controller' => 'Directories\Controller\Atps',
-                        'action' => 'index'
-                    ),
-                )
-            ),
-            'more_atp' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/directories/atps/more[/:id]',
-                    'defaults' => array(
-                        'controller' => 'Directories\Controller\Atps',
-                        'action' => 'more'
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]*'
-                    ),
-                )
-            ),
-            'new_atp' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/directories/atps/new',
-                    'defaults' => array(
-                        'controller' => 'Directories\Controller\Atps',
-                        'action' => 'new'
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]*'
+                        'controller' => 'Organizations\Controller\Orgs',
+                        'action' => 'atps'
                     ),
                 )
             ),
             'list_atcs' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/directories/atcs',
+                    'route' => '/organizations/atcs',
                     'defaults' => array(
-                        'controller' => 'Directories\Controller\Atcs',
-                        'action' => 'index'
+                        'controller' => 'Organizations\Controller\Orgs',
+                        'action' => 'atcs'
                     ),
                 )
             ),
-            'more_atc' => array(
+            'more' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/directories/atcs/more[/:id]',
+                    'route' => '/organizations/more[/:id]',
                     'defaults' => array(
-                        'controller' => 'Directories\Controller\Atcs',
+                        'controller' => 'Organizations\Controller\Orgs',
                         'action' => 'more'
                     ),
                     'constraints' => array(
@@ -95,19 +70,29 @@ return array(
                     ),
                 )
             ),
-            'new_atc' => array(
+            'new_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/directories/atcs/new',
+                    'route' => '/organizations/new',
                     'defaults' => array(
-                        'controller' => 'Directories\Controller\Atcs',
+                        'controller' => 'Organizations\Controller\Orgs',
                         'action' => 'new'
+                    )
+                )
+            ),
+            'edit_org' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/edit[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Orgs',
+                        'action' => 'edit'
                     ),
                     'constraints' => array(
                         'id' => '[0-9]*'
-                    ),
+                    )
                 )
-            ),
+            )
         )
     )
 );
