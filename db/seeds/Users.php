@@ -61,11 +61,16 @@ class Users extends AbstractSeed {
                 "securityAnswer" => $faker->sentence,
                 "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
+                "privacyStatement" => true,
+                "studentStatement" => false,
+                "proctorStatement" => false,
+                "instructorStatement" => false,
+                "testCenterAdministratorStatement" => false,
+                "trainingManagerStatement" => false,
                 "status" => true
             );
         $this->insert('user', $adminUser);
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        
         $normalUser = array(
                 "firstName" => $faker->firstName,
                 "middleName" => $faker->name,
@@ -89,6 +94,12 @@ class Users extends AbstractSeed {
                 "securityAnswer" => $faker->sentence,
                 "dateOfBirth" => date('Y-m-d H:i:s'),
                 "photo" => '/upload/images/userdefault.png',
+                "privacyStatement" => true,
+                "studentStatement" => false,
+                "proctorStatement" => false,
+                "instructorStatement" => false,
+                "testCenterAdministratorStatement" => false,
+                "trainingManagerStatement" => false,
                 "status" => true
             );
         $this->insert('user', $normalUser);
