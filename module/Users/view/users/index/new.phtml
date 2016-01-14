@@ -12,4 +12,14 @@
 </div>
 {{/content}}
 
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        {{#statements}}
+                generateStatementCheckboxContent('user_form_' + '{{type}}', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
+        {{/statements}}
+        displayStatementCheckbox('#user_form_roles');
+    });
+</script>
+{{/scripts}}
 {{/layout}}
