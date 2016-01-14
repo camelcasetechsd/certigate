@@ -53,32 +53,32 @@ class Users extends AbstractSeed {
         $userEditRoute = "userEdit";
         $acls = array(
             array(
-                'role' => $instructorRoleId,
+                'role_id' => $instructorRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),
             array(
-                'role' => $proctorRoleId,
+                'role_id' => $proctorRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),
             array(
-                'role' => $studentRoleId,
+                'role_id' => $studentRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),
             array(
-                'role' => $testCenterAdminRoleId,
+                'role_id' => $testCenterAdminRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),
             array(
-                'role' => $trainingManagerRoleId,
+                'role_id' => $trainingManagerRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),
             array(
-                'role' => $normalUserRoleId,
+                'role_id' => $normalUserRoleId,
                 'module' => $userModule,
                 'route' => $userEditRoute,
                 ),

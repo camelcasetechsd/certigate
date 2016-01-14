@@ -32,8 +32,8 @@ class IndexController extends ActionController {
     public function indexAction() {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $objectUtilities = $this->getServiceLocator()->get( 'objectUtilities' );
-        
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+
         $data = $query->findAll('Users\Entity\User');
         // process data that will be displayed later
         $processedData = $objectUtilities->prepareForDisplay($data);
@@ -61,14 +61,22 @@ class IndexController extends ActionController {
         $userObj = $query->find('Users\Entity\User', $id);
         $photo = $userObj->photo;
 
+        // allow access for admins for all users
+        // restrict access for current user only for non-admin users
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (!in_array(Role::ADMIN_ROLE, $storage['roles']) && $id != $storage['id']) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
+        }
+
         $options = array();
         $options['query'] = $query;
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
         $options['excludedRoles'] = array();
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
@@ -94,25 +102,25 @@ class IndexController extends ActionController {
                 $input = $inputFilter->get('photo');
                 $input->setRequired(false);
             }
-            
+
             if (empty($data['email']) || trim($data['email']) == $userObj->getEmail()) {
                 $email = $inputFilter->get('email');
                 $email->setRequired(false);
                 $confirmEmail = $inputFilter->get('confirmEmail');
                 $confirmEmail->setRequired(false);
-            }elseif ($data['email'] != $data['confirmEmail']) {
+            } elseif ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
             }
-            
+
             if (empty($data['password'])) {
                 $password = $inputFilter->get('password');
                 $password->setRequired(false);
                 $confirmPassword = $inputFilter->get('confirmPassword');
                 $confirmPassword->setRequired(false);
-            }elseif ($data['password'] != $data['confirmPassword']) {
+            } elseif ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
             }
-            
+
             if ($form->isValid()) {
                 $userModel->saveUser($data, $userObj);
 
