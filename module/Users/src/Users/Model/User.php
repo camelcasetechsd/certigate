@@ -44,7 +44,8 @@ class User {
      * 
      * @param Utilities\Service\Query\Query $query
      */
-    public function __construct($query) {
+    public function __construct($query)
+    {
         $this->query = $query;
         $this->random = new Random();
     }
@@ -127,4 +128,4 @@ class User {
         $this->query->entityManager->flush($user);
     }
 
-}
+    }

@@ -26,7 +26,10 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
                     '<%= dirs.jsSrc %>/reset.js',
+                    '<%= dirs.jsSrc %>/bootstrap-datepicker.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/organizationReg.js',
+                    
                 ]
 
             },
@@ -37,6 +40,7 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/form.css',
+                    '<%= dirs.cssSrc %>/datepicker.css',
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                 ]

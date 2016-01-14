@@ -21,7 +21,7 @@ return array(
         'Mustache',
         'CustomMustache',
         'CertigateAcl',
-        'Directories'
+        'Organizations'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

@@ -1,5 +1,5 @@
 <?php
-namespace Directories ;
+namespace Organizations ;
 
 /**
  * Directories Module
