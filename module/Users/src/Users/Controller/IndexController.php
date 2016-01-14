@@ -6,6 +6,7 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Users\Form\UserForm;
 use Users\Entity\User;
+use Users\Service\Statement;
 
 /**
  * Index Controller
@@ -114,6 +115,8 @@ class IndexController extends ActionController {
 
         $variables['photo'] = $photo;
         $variables['userForm'] = $this->getFormView($form);
+        $statement = new Statement();
+        $variables['statements'] = $statement->statements;
         return new ViewModel($variables);
     }
 
@@ -169,6 +172,8 @@ class IndexController extends ActionController {
         }
 
         $variables['userForm'] = $this->getFormView($form);
+        $statement = new Statement();
+        $variables['statements'] = $statement->statements;
         return new ViewModel($variables);
     }
 
