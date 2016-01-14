@@ -20,15 +20,26 @@ class Users extends AbstractSeed {
      */
     public function run() {
         $faker = Faker\Factory::create();
+               
+        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
+        $this->insert('role', $instructorRole);
+        $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
         
-        $roles = array(
-            array('name' => Role::INSTRUCTOR_ROLE),
-            array('name' => Role::PROCTOR_ROLE),
-            array('name' => Role::STUDENT_ROLE),
-            array('name' => Role::TEST_CENTER_ADMIN_ROLE),
-            array('name' => Role::TRAINING_MANAGER_ROLE),
-            );
-        $this->insert('role', $roles);
+        $proctorRole = array('name' => Role::PROCTOR_ROLE);
+        $this->insert('role', $proctorRole);
+        $proctorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+        
+        $studentRole = array('name' => Role::STUDENT_ROLE);
+        $this->insert('role', $studentRole);
+        $studentRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+        
+        $testCenterAdminRole = array('name' => Role::TEST_CENTER_ADMIN_ROLE);
+        $this->insert('role', $testCenterAdminRole);
+        $testCenterAdminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+        
+        $trainingManagerRole = array('name' => Role::TRAINING_MANAGER_ROLE);
+        $this->insert('role', $trainingManagerRole);
+        $trainingManagerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
         
         $userRole = array('name' => Role::USER_ROLE);
         $this->insert('role', $userRole);
@@ -38,6 +49,42 @@ class Users extends AbstractSeed {
         $this->insert('role', $adminRole);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        $userModule = "Users";
+        $userEditRoute = "userEdit";
+        $acls = array(
+            array(
+                'role' => $instructorRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            array(
+                'role' => $proctorRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            array(
+                'role' => $studentRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            array(
+                'role' => $testCenterAdminRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            array(
+                'role' => $trainingManagerRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            array(
+                'role' => $normalUserRoleId,
+                'module' => $userModule,
+                'route' => $userEditRoute,
+                ),
+            );
+        $this->insert('acl', $acls);
+        
         $adminUser = array(
                 "firstName" => $faker->firstName,
                 "middleName" => $faker->name,
