@@ -4,6 +4,7 @@ namespace Users\Form;
 
 use Utilities\Form\Form;
 use Zend\Form\FormInterface;
+use Users\Service\Statement;
 
 /**
  * User Form
@@ -355,6 +356,85 @@ class UserForm extends Form {
             ),
         ));
         
+        $this->add(array(
+            'name' => 'privacyStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Privacy Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'studentStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Student Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'proctorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Proctor Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'instructorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Instructor Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'testCenterAdministratorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Test Center Administrator Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'trainingManagerStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Training Manager Statement',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Captcha',
             'name' => 'captcha',

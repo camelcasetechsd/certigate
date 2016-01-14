@@ -11,7 +11,7 @@ use Utilities\Form\Form;
  * Handles Role form setup
  * 
  * 
- * @package cms
+ * @package users
  * @subpackage form
  */
 class RoleForm extends Form {

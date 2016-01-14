@@ -5,7 +5,6 @@ namespace Users\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\Regex;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -39,6 +38,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $securityAnswer
  * @property string $photo
  * @property array $roles
+ * @property int $privacyStatement
+ * @property int $studentStatement
+ * @property int $proctorStatement
+ * @property int $instructorStatement
+ * @property int $testCenterAdministratorStatement
+ * @property int $trainingManagerStatement
  * @property int $status
  * 
  * @package users
@@ -226,6 +231,48 @@ class User {
      * @ORM\Column(type="integer")
      * @var int
      */
+    public $privacyStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $studentStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $proctorStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $instructorStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $testCenterAdministratorStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $trainingManagerStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var int
+     */
     public $status;
 
     /**
@@ -406,6 +453,72 @@ class User {
      */
     public function getStatus() {
         return $this->status;
+    }
+
+    /**
+     * Get privacyStatement
+     * 
+     * 
+     * @access public
+     * @return int privacyStatement
+     */
+    public function getPrivacyStatement() {
+        return $this->privacyStatement;
+    }
+
+    /**
+     * Get studentStatement
+     * 
+     * 
+     * @access public
+     * @return int studentStatement
+     */
+    public function getStudentStatement() {
+        return $this->studentStatement;
+    }
+
+    /**
+     * Get proctorStatement
+     * 
+     * 
+     * @access public
+     * @return int proctorStatement
+     */
+    public function getProctorStatement() {
+        return $this->proctorStatement;
+    }
+
+    /**
+     * Get instructorStatement
+     * 
+     * 
+     * @access public
+     * @return int instructorStatement
+     */
+    public function getInstructorStatement() {
+        return $this->instructorStatement;
+    }
+
+    /**
+     * Get testCenterAdministratorStatement
+     * 
+     * 
+     * @access public
+     * @return int testCenterAdministratorStatement
+     */
+    public function getTestCenterAdministratorStatement() {
+        return $this->testCenterAdministratorStatement;
+    }
+
+    /**
+     * Get trainingManagerStatement
+     * 
+     * 
+     * @access public
+     * @return int trainingManagerStatement
+     */
+    public function getTrainingManagerStatement() {
+        return $this->trainingManagerStatement;
     }
 
     /**
@@ -706,6 +819,84 @@ class User {
         $this->status = $status;
         return $this;
     }
+    
+    /**
+     * Set privacyStatement
+     * 
+     * 
+     * @access public
+     * @param int $privacyStatement
+     * @return User current entity
+     */
+    public function setPrivacyStatement($privacyStatement) {
+        $this->privacyStatement = $privacyStatement;
+        return $this;
+    }
+    
+    /**
+     * Set studentStatement
+     * 
+     * 
+     * @access public
+     * @param int $studentStatement
+     * @return User current entity
+     */
+    public function setStudentStatement($studentStatement) {
+        $this->studentStatement = $studentStatement;
+        return $this;
+    }
+    
+    /**
+     * Set proctorStatement
+     * 
+     * 
+     * @access public
+     * @param int $proctorStatement
+     * @return User current entity
+     */
+    public function setProctorStatement($proctorStatement) {
+        $this->proctorStatement = $proctorStatement;
+        return $this;
+    }
+    
+    /**
+     * Set instructorStatement
+     * 
+     * 
+     * @access public
+     * @param int $instructorStatement
+     * @return User current entity
+     */
+    public function setInstructorStatement($instructorStatement) {
+        $this->instructorStatement = $instructorStatement;
+        return $this;
+    }
+    
+    /**
+     * Set testCenterAdministratorStatement
+     * 
+     * 
+     * @access public
+     * @param int $testCenterAdministratorStatement
+     * @return User current entity
+     */
+    public function setTestCenterAdministratorStatement($testCenterAdministratorStatement) {
+        $this->testCenterAdministratorStatement = $testCenterAdministratorStatement;
+        return $this;
+    }
+    
+    /**
+     * Set trainingManagerStatement
+     * 
+     * 
+     * @access public
+     * @param int $trainingManagerStatement
+     * @return User current entity
+     */
+    public function setTrainingManagerStatement($trainingManagerStatement) {
+        $this->trainingManagerStatement = $trainingManagerStatement;
+        return $this;
+    }
 
     /**
      * Set username
@@ -927,6 +1118,12 @@ class User {
                 ->setSecurityAnswer($data["securityAnswer"])
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
+                ->setPrivacyStatement($data["privacyStatement"])
+                ->setStudentStatement($data["studentStatement"])
+                ->setProctorStatement($data["proctorStatement"])
+                ->setInstructorStatement($data["instructorStatement"])
+                ->setTestCenterAdministratorStatement($data["testCenterAdministratorStatement"])
+                ->setTrainingManagerStatement($data["trainingManagerStatement"])
                 ;
     }
 
@@ -1120,6 +1317,11 @@ class User {
           
             $inputFilter->add(array(
                 'name' => 'roles',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'privacyStatement',
                 'required' => true,
             ));
 
