@@ -76,7 +76,7 @@ $(document).ready(function () {
                 $('#hiddenType').val('1');
                 break;
             default :
-                window.history.back();
+//                window.history.back();
                 break;
         }
     }

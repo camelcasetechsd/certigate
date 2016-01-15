@@ -34,8 +34,9 @@ class OrganizationsController extends ActionController
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('Y-m-d');
         }
-
+        
         return new ViewModel($variables);
+//        return new ViewModel();
     }
 
     /**
