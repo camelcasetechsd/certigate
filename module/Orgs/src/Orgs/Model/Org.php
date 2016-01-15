@@ -1,8 +1,7 @@
 <?php
 
-namespace Organizations\Model;
+namespace Orgs\Model;
 
-use Organizations\Entity\Organization as OrganizationEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
 use DateTime;
@@ -10,22 +9,22 @@ use Utilities\Service\Status;
 use Utilities\Service\Query\Query;
 
 /**
- * Organization Model
+ * Org Model
  * 
- * Handles Organization Entity related business
+ * Handles Org Entity related business
  * 
  * 
  * 
  * @property Utilities\Service\Query\Query $query
  * @property Utilities\Service\Random $random
  * 
- * @package organizations
+ * @package orgs
  * @subpackage model
  * 
  * 
  * 
  */
-class Organization
+class Org
 {
 
     protected $CR_ATTACHMENT_PATH = '/upload/attachments/crAttachments/';
@@ -71,14 +70,19 @@ class Organization
         ));
     }
 
+    public function checkOrgExistance($commericalName)
+    {
+        return $this->getOrganizationby('commercialName', $commericalName);
+    }
+
     public function getOrganizations()
     {
-        return $this->query->findAll(/* $entityName = */ 'Organizations\Entity\Organization');
+        return $this->query->findAll(/* $entityName = */ 'Orgs\Entity\Org');
     }
 
     public function getOrganizationby($targetColumn, $value)
     {
-        return $this->query->findBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
+        return $this->query->findBy(/* $entityName = */ 'Orgs\Entity\Org', array(
                     $targetColumn => $value
         ));
     }
@@ -151,11 +155,6 @@ class Organization
             $orgInfo['CRAttachment'] = null;
         }
 
-//
-//        echo'<pre>';
-//        var_dump($orgInfo['atcLicenseAttachment']);
-//        exit;
-//
 
         if (!empty($orgInfo['atpLicenseAttachment'])) {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
@@ -169,7 +168,7 @@ class Organization
 
 
 
-        if (!empty($orgInfo['atcLicenseAttachment']) ) {
+        if (!empty($orgInfo['atcLicenseAttachment'])) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
         else {
@@ -179,7 +178,7 @@ class Organization
         /**
          * Save Organization
          */
-        $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
+        $this->query->setEntity('Orgs\Entity\Org')->save($entity, $orgInfo);
     }
 
     private function saveAttachment($filename, $type)
