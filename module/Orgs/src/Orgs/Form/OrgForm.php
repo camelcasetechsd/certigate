@@ -59,6 +59,20 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'options' => array(
                 'label' => 'Commercial Name',
             ),
+            'validators' => array(
+                array(
+                    'name' => 'DoctrineModule\Validator\UniqueObject',
+                    'options' => array(
+                        'use_context' => true,
+//                        'object_repository' => $om->getRepository('Orgs\Entity\Org'),
+//                        'object_manager' => $om,
+//                        'fields' => 'commercialName',
+//                        'messages' => array(
+//                            'objectNotUnique' => 'CommercialName already exists!'
+//                        ),
+                    ),
+                )
+            ),
         ));
 
         $this->add(array(
@@ -280,7 +294,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control ',
             ),
             'options' => array(
                 'label' => 'ATP Licesne No',
@@ -293,7 +307,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control datepicker ',
             ),
             'options' => array(
                 'label' => 'ATP Licesne Expiration Date',
@@ -422,7 +436,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'ATC Licesne No',

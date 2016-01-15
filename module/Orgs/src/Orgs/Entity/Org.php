@@ -752,40 +752,111 @@ class Org
      */
     public function exchangeArray($data = array())
     {
-
-        $this->setType(1);
+        $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
         $this->setCRNo($data['CRNo']);
         $this->setCRExpiration($data['CRExpiration']);
         $this->setCRAttachment($data['CRAttachment']);
-        $this->addressLine1 = $data['addressLine1'];
-        $this->setAddressLine2((!empty($data['addressLine2'])) ? $data['addressLine2'] : null);
-        $this->city = $data['city'];
-        $this->zipCode = $data['zipCode'];
-        $this->phone1 = $data['phone1'];
-        $this->setPhone2((!empty($data['phone2'])) ? $data['phone2'] : null);
-        $this->setPhone3((!empty($data['phone3'])) ? $data['phone3'] : null);
-        $this->setFax((!empty($data['fax'])) ? $data['fax'] : null);
-        $this->website = $data['website'];
-        $this->email = $data['email'];
-        $this->trainingManager = $data['trainingManager_id'] != 0 ? $data['trainingManager_id'] : null;
-        $this->testCenterAdmin = $data['testCenterAdmin_id'] != 0 ? $data['testCenterAdmin_id'] : null;
+        $this->setAddressLine1($data['addressLine1']);
+        $this->setCity($data['city']);
+        $this->setZipCode($data['zipCode']);
+        $this->setPhone1($data['phone1']);
+        $this->setWebsite($data['website']);
+        $this->setEmail($data['email']);
+//        echo '<pre>';
+//        var_dump($data['focalContactPerson_id']);
+//        exit;
+//        $this->setFocalContactPerson($data['focalContactPerson_id']);
         $this->focalContactPerson = $data['focalContactPerson_id'];
-        $this->labsNo = (!empty($data['labsNo'])) ? (int) $data['labsNo'] : null;
-        $this->classesNo = (!empty($data['classesNo'])) ? (int) $data['classesNo'] : null;
-        $this->pcsNo_lab = (!empty($data['pcsNo_lab'])) ? (int) $data['pcsNo_lab'] : null;
-        $this->pcsNo_class = (!empty($data['pcsNo_class'])) ? (int) $data['pcsNo_class'] : null;
-        $this->internetSpeed_lab = (!empty($data['internetSpeed_lab'])) ? (int) $data['internetSpeed_lab'] : null;
-        $this->operatingSystem = (!empty($data['operatingSystem'])) ? $data['operatingSystem'] : null;
-        $this->operatingSystemLang = (!empty($data['operatingSystemLang'])) ? $data['operatingSystemLang'] : null;
-        $this->officeVersion = (!empty($data['officeVersion'])) ? $data['officeVersion'] : null;
-        $this->officeLang = (!empty($data['officeLang'])) ? $data['officeLang'] : null;
-    
-        // Map Data *
-        $this->setLongtitude((double) $data['longtitude']);
-        $this->setLongtitude((double) $data['latitude']);
+
+        if (array_key_exists('phone2', $data)) {
+            $this->setPhone2($data["phone2"]);
+        }
+        if (array_key_exists('phone3', $data)) {
+            $this->setPhone3($data["phone3"]);
+        }
+        if (array_key_exists('fax', $data)) {
+            $this->setFax($data["fax"]);
+        }
+        if (array_key_exists('addressLine2', $data)) {
+            $this->setAddressLine2($data["addressLine2"]);
+        }
+        if (array_key_exists('longtitude', $data)) {
+            $this->setLongtitude($data["longtitude"]);
+        }
+        if (array_key_exists('latitude', $data)) {
+            $this->setLat($data["latitude"]);
+        }
+        if (array_key_exists('trainingManager_id', $data)) {
+            $this->trainingManager = $data["trainingManager_id"];
+        }
+        if (array_key_exists('testCenterAdmin_id', $data)) {
+            $this->testCenterAdmin = $data["testCenterAdmin_id"];
+        }
+        if (array_key_exists('labsNo', $data)) {
+            $this->setLabsNo($data["labsNo"]);
+        }
+        if (array_key_exists('pcsNo_lab', $data)) {
+            $this->setPcsNo_lab($data["pcsNo_lab"]);
+        }
+        if (array_key_exists('classesNo', $data)) {
+            $this->setClassesNo($data["classesNo"]);
+        }
+        if (array_key_exists('pcsNo_class', $data)) {
+            $this->setPcsNo_class($data["pcsNo_class"]);
+        }
+        if (array_key_exists('internetSpeed_lab', $data)) {
+            $this->setInternetSpeed_lab($data["internetSpeed_lab"]);
+        }
+        if (array_key_exists('operatingSystem', $data)) {
+            $this->setOperatingSystem($data["operatingSystem"]);
+        }
+        if (array_key_exists('operatingSystemLang', $data)) {
+            $this->setOperatingSystemLang($data["operatingSystemLang"]);
+        }
+        if (array_key_exists('officeVersion', $data)) {
+            $this->setOfficeVersion($data["officeVersion"]);
+        }
+        if (array_key_exists('officeLang', $data)) {
+            $this->setOfficeLang($data["officeLang"]);
+        }
+
+        if (array_key_exists('atcLicenseAttachment', $data)) {
+            $this->setAtcLicenseAttachment($data["atcLicenseAttachment"]);
+        }
+        if (array_key_exists('atcLicenseNo', $data)) {
+            $this->setAtcLicenseNo($data["atcLicenseNo"]);
+        }
+        if (array_key_exists('atcLicenseExpiration', $data)) {
+            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
+        }
+        
+        if (array_key_exists('atpLicenseAttachment', $data)) {
+            $this->setAtpLicenseAttachment($data["atpLicenseAttachment"]);
+        }
+        if (array_key_exists('atpLicenseNo', $data)) {
+            $this->setAtpLicenseNo($data["atpLicenseNo"]);
+        }
+        if (array_key_exists('atpLicenseExpiration', $data)) {
+            $this->setAtpLicenseExpiration($data["atpLicenseExpiration"]);
+        }
+//        if (array_key_exists('', $data)) {
+//            $this->setRoles($data[""]);
+//        }
+//        if (array_key_exists('', $data)) {
+//            $this->setRoles($data[""]);
+//        }
+//        if (array_key_exists('', $data)) {
+//            $this->setRoles($data[""]);
+//        }
+//        if (array_key_exists('', $data)) {
+//            $this->setRoles($data[""]);
+//        }
+//        if (array_key_exists('', $data)) {
+//            $this->setRoles($data[""]);
+//        }
     }
 
     /**

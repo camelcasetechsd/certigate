@@ -32,7 +32,13 @@ class OrgsController extends ActionController
     public function atcsAction()
     {
 
-        return new ViewModel();
+        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
+        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATC, \Orgs\Entity\Org::TYPE_BOTH));
+
+        foreach ($variables['userList'] as $user) {
+            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
+        }
+        return new ViewModel($variables);
     }
 
     /**
@@ -46,7 +52,14 @@ class OrgsController extends ActionController
     public function atpsAction()
     {
 
-        return new ViewModel();
+
+        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
+        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATP, \Orgas\Entity\Org::TYPE_BOTH));
+
+        foreach ($variables['userList'] as $user) {
+            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
+        }
+        return new ViewModel($variables);
     }
 
     /**
@@ -60,7 +73,21 @@ class OrgsController extends ActionController
     public function moreAction()
     {
 
-        return new ViewModel();
+        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $variables['userData'] = $organizationModel->getOrganizationby('id', $id)[0];
+
+
+        $variables['userData']->CRExpiration = $variables['userData']->getCRExpiration()->format('Y-m-d');
+        // skip atc expiration if atp
+        if ($variables['userData']->atcLicenseExpiration != null) {
+            $variables['userData']->atcLicenseExpiration = $variables['userData']->getAtcLicenseExpiration()->format('Y-m-d');
+        }
+        // skip atp expiration if atc
+        if ($variables['userData']->atpLicenseExpiration != null) {
+            $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
+        }
+        return new ViewModel($variables);
     }
 
     /**
@@ -100,17 +127,25 @@ class OrgsController extends ActionController
             }
 
 
+
+
+
+
+            /*
+             * Add inputs validations here
+             */
+
             if ($form->isValid()) {
 
                 $orgModel->saveOrganization($data);
-                
-                
+
+
 
 
 
 
                 // redirecting
-                
+
                 if ($data['type'] == 1) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
                 }

@@ -28,9 +28,9 @@ use Utilities\Service\Query\Query;
 class Organization
 {
 
-    protected $CR_ATTACHMENT_PATH = '/upload/attachments/crAttachments/';
-    protected $ATP_ATTACHMENT_PATH = '/upload/attachments/atpAttachments/';
-    protected $ATC_ATTACHMENT_PATH = '/upload/attachments/atcAttachments/';
+    protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
+    protected $ATP_ATTACHMENT_PATH = 'public/upload/attachments/atpAttachments/';
+    protected $ATC_ATTACHMENT_PATH = 'public/upload/attachments/atcAttachments/';
 
     /*
      *
@@ -144,44 +144,32 @@ class Organization
         /**
          * Handling transfered Files
          */
-        if (!empty($orgInfo['CRAttachment']['name'])) {
+        /**
+         * Handling transfered Files
+         */
+        if (!empty($orgInfo['CRAttachment']['name'])&&  $orgInfo['CRAttachment']['name'] != '') {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
         else {
             $orgInfo['CRAttachment'] = null;
         }
-
-//
-//        echo'<pre>';
-//        var_dump($orgInfo['atcLicenseAttachment']);
-//        exit;
-//
-
-        if (!empty($orgInfo['atpLicenseAttachment'])) {
+        if (!empty($orgInfo['atpLicenseAttachment'])&&  $orgInfo['atpLicenseAttachment']['name'] != '') {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
         else {
             $orgInfo['atpLicenseAttachment'] = null;
         }
-
-
-
-
-
-
-        if (!empty($orgInfo['atcLicenseAttachment']) ) {
+        if (!empty($orgInfo['atcLicenseAttachment']) &&  $orgInfo['atcLicenseAttachment']['name'] != '') {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
         else {
             $orgInfo['atcLicenseAttachment'] = null;
         }
-
         /**
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
     }
-
     private function saveAttachment($filename, $type)
     {
         switch ($type) {
@@ -195,20 +183,16 @@ class Organization
                 $uploadResult = $this->uploadAttachment($filename, $this->ATC_ATTACHMENT_PATH);
                 break;
         }
-
         return $uploadResult;
     }
-
     private function uploadAttachment($filename, $attachmentPath)
     {
         $uploadResult = null;
         $upload = new Http();
-
-        $upload->setDestination('public/upload/attachments/');
-
+        $upload->setDestination($attachmentPath);
         try {
             // upload received file(s)
-            $upload->receive();
+            $upload->receive($filename);
         } catch (\Exception $e) {
             var_dump($e);
             exit;
@@ -219,12 +203,10 @@ class Organization
         $extention = pathinfo($name, PATHINFO_EXTENSION);
         //get random new name
         $newName = $this->random->getRandomUniqueName() . '_' . date('Y.m.d_h:i:sa');
+        $newFullName = $attachmentPath . $newName . '.' . $extention;
         // rename
-        rename($name, $attachmentPath . $newName . '.' . $extention);
-
-        $uploadResult = '/public/upload/attachments/crAttachments/' . $newName . '.' . $extention;
-
+        rename($name, $newFullName);
+        $uploadResult = $newFullName;
         return $uploadResult;
     }
-
 }
