@@ -4,7 +4,6 @@ namespace Organizations\Controller;
 
 use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
-use \Zend\InputFilter\InputFilterInterface;
 
 /**
  * Atps Controller
@@ -151,9 +150,10 @@ class OrganizationsController extends ActionController
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         $variables['userData'] = $organizationModel->getOrganizationby('id', $id)[0];
+//        var_dump($variables['userData']->officeLang);exit;
         $variables['userData']->CRExpiration = $variables['userData']->getCRExpiration()->format('d/m/Y');
-        $variables['userData']->atcLicenseExpiration = $variables['userData']->getAtcLicenseExpiration()->format('d/m/Y');
-        $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('d/m/Y');
+        $variables['userData']->atcLicenseExpiration != null ? $variables['userData']->getAtcLicenseExpiration()->format('d/m/Y'):$variables['userData']->atpLicenseExpiration="";
+        $variables['userData']->atpLicenseExpiration != null ? $variables['userData']->getAtpLicenseExpiration()->format('d/m/Y'):$variables['userData']->atpLicenseExpiration="";
 
         $variables['userList'] = $organizationModel->getUsers();
 
@@ -169,7 +169,7 @@ class OrganizationsController extends ActionController
 
             $organizationModel->saveOrganization($data, $organizationModel->getOrganizationby('id', $id)[0]);
         }
-
+        
         return new ViewModel($variables);
     }
 
