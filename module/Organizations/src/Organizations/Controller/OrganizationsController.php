@@ -4,6 +4,7 @@ namespace Organizations\Controller;
 
 use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
+use \Zend\InputFilter\InputFilterInterface;
 
 /**
  * Atps Controller
@@ -34,7 +35,7 @@ class OrganizationsController extends ActionController
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('Y-m-d');
         }
-        
+
         return new ViewModel($variables);
 //        return new ViewModel();
     }
@@ -113,14 +114,23 @@ class OrganizationsController extends ActionController
                     $request->getPost()->toArray(), $fileData
             );
 
-            $organizationModel->saveOrganization($data);
-            if ($data['type'] == \Organizations\Entity\Organization::TYPE_ATC) {
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atcs'));
-                $this->redirect()->toUrl($url);
+            $messages = $this->validateOrg($data);
+
+            if (empty($messages)) {
+
+                $organizationModel->saveOrganization($data);
+
+                if ($data['type'] == \Organizations\Entity\Organization::TYPE_ATC) {
+                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atcs'));
+                    $this->redirect()->toUrl($url);
+                }
+                else {
+                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atps'));
+                    $this->redirect()->toUrl($url);
+                }
             }
             else {
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atps'));
-                $this->redirect()->toUrl($url);
+                $variables['messages'] = $messages;
             }
         }
         return new ViewModel($variables);
@@ -161,6 +171,64 @@ class OrganizationsController extends ActionController
         }
 
         return new ViewModel($variables);
+    }
+
+    function validateOrg($data)
+    {
+        $messages = array();
+        if ($data['type'] == 1) {
+            $messages = $this->validateAtcData($messages, $data);
+        }
+        else if ($data['type'] == 2) {
+            $messages = $this->validateAtpData($messages, $data);
+        }
+        else {
+            $messages = $this->validateAtcData($messages, $data);
+            $messages = $this->validateAtpData($messages, $data);
+        }
+
+        return ($messages);
+    }
+
+    function validateAtpData($messages, $data)
+    {
+        if ($data['atpLicenseNo'] == "" || $data['atpLicenseNo'] == null) {
+            array_push($messages, "please insert proper ATP License No");
+        }
+        if ($data['atpLicenseExpiration'] == "" || $data['atpLicenseExpiration'] == null) {
+            array_push($messages, "please insert proper ATP Expiration Date");
+        }
+        if ($data['atpLicenseAttachment'] == "" || $data['atpLicenseAttachment'] == null) {
+            array_push($messages, "please insert proper ATP License (pdf , jpg ,jpeg) only");
+        }
+        if ($data['labsNo'] == "" || $data['labsNo'] == null) {
+            array_push($messages, "please insert proper labs number");
+        }
+        if ($data['pcsNo_lab'] == "" || $data['pcsNo_lab'] == null) {
+            array_push($messages, "please insert proper pcs per lab");
+        }
+
+        return $messages;
+    }
+
+    function validateAtcData($messages, $data)
+    {
+        if ($data['atcLicenseNo'] == "" || $data['atcLicenseNo'] == null) {
+            array_push($messages, "please insert proper ATC License No");
+        }
+        if ($data['atcLicenseExpiration'] == "" || $data['atcLicenseExpiration'] == null) {
+            array_push($messages, "please insert proper ATC Expiration Date");
+        }
+        if ($data['atcLicenseAttachment'] == "" || $data['atcLicenseAttachment'] == null) {
+            array_push($messages, "please insert proper ATC License (pdf , jpg ,jpeg) only");
+        }
+        if ($data['classesNo'] == "" || $data['classesNo'] == null) {
+            array_push($messages, "please insert proper classes number");
+        }
+        if ($data['pcsNo_class'] == "" || $data['pcsNo_class'] == null) {
+            array_push($messages, "please insert proper pcs per class");
+        }
+        return $messages;
     }
 
 }

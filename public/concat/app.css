@@ -7371,6 +7371,9 @@ input[type="checkbox"].form-control{
 .input-error{
     border: 1px solid red;
 }
+.error{
+    color: RED;
+}
 /* OriginalFileName : public/css/inactive.css */ 
 
 .container-inactive{
