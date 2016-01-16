@@ -32,6 +32,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/orgReg.js',
                     '<%= dirs.jsSrc %>/organizationReg.js',
                     
                 ]

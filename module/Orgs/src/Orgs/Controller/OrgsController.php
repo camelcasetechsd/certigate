@@ -54,7 +54,7 @@ class OrgsController extends ActionController
 
 
         $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATP, \Orgas\Entity\Org::TYPE_BOTH));
+        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATP, \Orgs\Entity\Org::TYPE_BOTH));
 
         foreach ($variables['userList'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
@@ -118,15 +118,56 @@ class OrgsController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-//
-            $form->setInputFilter($orgObj->getInputFilter());
-            $form->setData($data);
 
-            if (!empty($orgModel->checkOrgExistance($data['commercialName']))) {
-                $form->get('commercialName')->setMessages(array("Organization already Exists"));
+            // Handling Empty Fields
+//            $data = $this->mockInputFilter($data);
+//            var_dump($data['latitude']);
+//            exit;
+
+            switch ($data['hiddenType']) {
+                case '1':
+                    $skippedParams = array(
+                        'atpLicenseNo',
+                        'atpLicenseExpiration',
+                        'atpLicenseAttachment',
+                        'labsNo',
+                        'pcsNo_lab',
+                        'internetSpeed_lab',
+                        'operatingSystem',
+                        'operatingSystemLang',
+                        'officeVersion',
+                        'officeLang'
+                    );
+
+                    foreach ($skippedParams as $param) {
+                        $this->skipParam($form, $data, $param);
+                        $data[$param] = null;
+                    }
+
+                    break;
+
+                case '2':
+
+                    $skippedParams = array(
+                        'atcLicenseNo',
+                        'atcLicenseExpiration',
+                        'atcLicenseAttachment',
+                        'classesNo',
+                        'pcsNo_class'
+                    );
+
+                    foreach ($skippedParams as $param) {
+                        $this->skipParam($form, $data, $param);
+                        $data[$param] = null;
+                    }
+
+                    break;
             }
 
 
+
+            $form->setInputFilter($orgObj->getInputFilter());
+            $form->setData($data);
 
 
 
@@ -146,19 +187,19 @@ class OrgsController extends ActionController
 
                 // redirecting
 
-                if ($data['type'] == 1) {
+                if ($data['hiddenType'] == 1) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
                 }
-                else if ($data['type'] == 2) {
+                else if ($data['hiddenType'] == 2 || $data['hiddenType'] == 3) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
                 }
 
                 $this->redirect()->toUrl($url);
             }
             else {
-
+                $form->getMessages();
                 var_dump("invalid");
-                exit;
+//                exit;
             }
         }
 
@@ -178,6 +219,40 @@ class OrgsController extends ActionController
     {
 
         return new ViewModel();
+    }
+
+    public function skipParam($form, $data, $param)
+    {
+        $form->getInputFilter()->get($param)->setRequired(FALSE);
+        $form->getInputFilter()->get($param)->setAllowEmpty(TRUE);
+    }
+
+//    public function mockInputFilter($data)
+//    {
+//        if ($data['longtitude'] == "") {
+//            $data['longtitude'] == "#####";
+//        }
+//        if ($data['latitude'] == "") {
+//            $data['latitude'] == "#####";
+//        }
+//        if ($data['addressLine2'] == "") {
+//            $data['addressLine2'] == "#####";
+//        }
+//        if ($data['phone2'] == "") {
+//            $data['phone2'] == "#####";
+//        }
+//        if ($data['phone3'] == "") {
+//            $data['phone3'] == "#####";
+//        }
+//        if ($data['fax'] == "") {
+//            $data['fax'] == "#####";
+//        }
+//
+//        return $data;
+//    }
+    function preValidation()
+    {
+        
     }
 
 }

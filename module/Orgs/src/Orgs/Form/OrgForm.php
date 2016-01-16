@@ -80,6 +80,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Owner Name',
+                'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -88,11 +89,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
         $this->add(array(
             'name' => 'longtitude',
+            'continue_if_empty' => true,
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Longtitude',
-                'required' => 'required',
                 'class' => 'form-control',
+                'allow_empty' => true,
+                'continue_if_empty' => false
             ),
             'options' => array(
                 'label' => 'Longtitude',
@@ -102,13 +105,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'latitude',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'required' => 'required',
                 'placeholder' => 'Latitude',
                 'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Latitude',
             ),
+            'validators' => array(
+                'Empty' => true
+            )
         ));
 
         $this->add(array(
@@ -224,7 +229,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Address',
-                'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -285,6 +289,41 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
+        $this->add(array(
+            'type' => 'Zend\Form\Element\MultiCheckbox',
+            'name' => 'type',
+            'options' => array(
+                'label' => 'Organization Type',
+                'value_options' => array(
+                    array(
+                        'value' => '1',
+                        'label' => '    ATC Organization',
+                        'selected' => false,
+                        'disabled' => false,
+                        'attributes' => array(
+                            'id' => 'type-1',
+                        ),
+                    ),
+                    array(
+                        'value' => '2',
+                        'label' => '    ATP Organization',
+                        'selected' => false,
+                        'disabled' => false,
+                        'attributes' => array(
+                            'id' => 'type-2',
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'hiddenType',
+            'type' => 'Zend\Form\Element\Text',
+        ));
+
+
 //////////////////////////////////////////////////////////////////////
         /////////// ATP Data ///////////////
 
@@ -294,10 +333,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control ',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'ATP Licesne No',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -307,18 +349,27 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control datepicker ',
+                'class' => 'form-control datepicker atpSet ',
             ),
             'options' => array(
                 'label' => 'ATP Licesne Expiration Date',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             )
         ));
 
         $this->add(array(
             'name' => 'atpLicenseAttachment',
             'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+                'class' => 'atpSet',
+            ),
             'options' => array(
                 'label' => 'ATP License Attachment',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -328,10 +379,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Labs No',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -341,10 +395,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Pcs No / Lab',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -354,10 +411,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Internet Speed / Lab',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -367,10 +427,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Operating System',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -380,10 +443,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'OperatingSystemLang',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -393,10 +459,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
+                'label_attributes' => array(
+                    'class' => 'atpLicenseNo atpSet',
+                ),
             ),
         ));
 
@@ -406,10 +475,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
-                'label' => 'Microsoft office language',
+                'label' => 'Microsoft office Language',
+                'label_attributes' => array(
+                    'class' => 'atpSet',
+                ),
             ),
         ));
 
@@ -424,10 +496,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control datepicker atcSet',
             ),
             'options' => array(
                 'label' => 'ATC Licesne Expiration Date',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
             ),
         ));
         $this->add(array(
@@ -436,18 +511,27 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atcSet',
             ),
             'options' => array(
                 'label' => 'ATC Licesne No',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
             ),
         ));
 
         $this->add(array(
             'name' => 'atcLicenseAttachment',
             'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+                'class' => 'atcSet',
+            ),
             'options' => array(
                 'label' => 'ATC License Attachment',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
             ),
         ));
 
@@ -457,10 +541,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atcSet',
             ),
             'options' => array(
                 'label' => 'Classes No.',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
             ),
         ));
 
@@ -470,10 +557,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control atcSet',
             ),
             'options' => array(
                 'label' => 'Pcs No / Class',
+                'label_attributes' => array(
+                    'class' => ' atcSet',
+                ),
             ),
         ));
 
@@ -535,28 +625,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             )
         ));
 
-        $this->add(array(
-            'name' => 'type',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-                'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Organization',
-                'checked_value' => null,
-            ),
-        ));
 
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
-        $this->add(array(
-            'name' => 'hiddenType',
-            'type' => 'Zend\Form\Element\Hidden',
-        ));
 
         $this->add(array(
             'name' => 'submit',
@@ -588,7 +662,11 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         foreach ($userRoles as $r) {
             $userRolesValues[] = $r->getId();
         }
-        $this->get('roles')->setValue($userRolesValues);
+        $this->get('roles
+
+        
+
+        ')->setValue($userRolesValues);
     }
 
     public function setObjectManager(ObjectManager $objectManager)

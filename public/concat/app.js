@@ -15243,167 +15243,332 @@ if ($('#menu_item_form_parent').length) {
         $('#menu_item_form_menu').val(menuId);
     });
 };
-/* OriginalFileName : public/js/organizationReg.js */ 
+/* OriginalFileName : public/js/orgReg.js */ 
 
 $(document).ready(function () {
-// enabling datepicker lib
+
+    // hide both atc & atp sets
+    hideSet('atc');
+    hideSet('atp')
+    // enabling datepicker lib
     $('.datepicker').datepicker();
     // prepare organization checkboxes
     prepareCheckBoxes();
-    // intial state for the form
-    showOrganizationFieldSet();
-    // on change in Organization Type
-    $('.type').change(function () {
-        showOrganizationFieldSet();
+
+
+
+    $('#type-1').change(function () {
+        $atcBox = $('input:checkbox[id=type-1]').is(":checked");
+        $atpBox = $('input:checkbox[id=type-2]').is(":checked");
+
+        if ($atcBox) {
+            addRequired('atc');
+            // show atc fields
+            showSet('atc');
+            if ($atpBox) {
+                // both checked
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("3");
+            } else {                
+                //only atc 
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("1");
+            }
+
+        } else {
+            removeRequired('atc');
+            // hide atc fields
+            hideSet('atc');
+            if ($atpBox) {
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("2");
+            } else {
+                $('#org_form_hiddenType').val("");
+            }
+        }
     });
-    //submit organization registeration form
-    $('#submit').click(function () {
-//add validation method before submit
-        $('#orgReg').submit();
+
+    $('#type-2').change(function () {
+        $atpBox = $('input:checkbox[id=type-2]').is(":checked");
+        $atcBox = $('input:checkbox[id=type-1]').is(":checked");
+        // atp Box is chicked 
+        if ($atpBox) {
+            addRequired('atp');
+            //show atp fields
+            showSet('atp');
+            if ($atcBox) {
+                // if both chicked 
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("3");
+            } else {
+                // if only atp chicked 
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("2");
+            }
+        } else {
+            removeRequired('atp');
+            // hide atp fields
+            hideSet('atp');
+            if ($atcBox) {
+                //if atc only
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("1");
+            } else {
+                // if both unchecked
+                $('#org_form_hiddenType').val("");
+            }
+        }
     });
 
-
-
-
-
-
-
-
-    function checkTypeValidations() {
-        switch ($('#hiddenType').val()) {
-            // atc
-            case '1':
-                $('#atcLicenseNo').attr('required', 'true');
-                $('#atcLicenseExpiration').attr('required', 'true');
-                $('#atcLicenseAttachment').attr('required', 'true');
-                $('#atpLicenseNo').attr('required', 'false');
-                $('#atpLicenseExpiration').attr('required', 'false');
-                $('#atpLicenseAttachment').attr('required', 'false');
-
+    function hideSet($set) {
+        switch ($set) {
+            case 'atc':
+                //hiding atc fields
+                $('.atcSet').hide()
                 break;
-                // atp    
-            case '2':
-                $('#atpLicenseNo').attr('required', 'true');
-                $('#atpLicenseExpiration').attr('required', 'true');
-                $('#atpLicenseAttachment').attr('required', 'true');
-                $('#atcLicenseNo').attr('required', 'false');
-                $('#atcLicenseExpiration').attr('required', 'false');
-                $('#atcLicenseAttachment').attr('required', 'false');
 
-                break;
-                // both    
-            case '3':
-                $('#atcLicenseNo').attr('required', 'true');
-                $('#atcLicenseExpiration').attr('required', 'true');
-                $('#atcLicenseAttachment').attr('required', 'true');
-                $('#atpLicenseNo').attr('required', 'true');
-                $('#atpLicenseExpiration').attr('required', 'true');
-                $('#atpLicenseAttachment').attr('required', 'true');
+            case 'atp':
+                // hiding atp fields 
+                $('.atpSet').hide()
                 break;
         }
-
     }
 
+    function showSet($set) {
+        switch ($set) {
+            case 'atc':
+                //showing atc fields
+                $('.atcSet').show();
+                break;
 
+            case 'atp':
+                //showing atp fields 
+                $('.atpSet').show();
+                break;
+        }
+    }
 
+    function removeRequired($set) {
+        switch ($set) {
+            case 'atc':
+                //showing atc fields
+                $('.atcSet').removeAttr('required');
+                break;
 
+            case 'atp':
+                //showing atp fields 
+                $('.atpSet').removeAttr('required');
+                break;
+        }
+    }
+    function addRequired($set) {
+        switch ($set) {
+            case 'atc':
+                //showing atc fields
+                $('.atcSet').prop('required', true);
+                break;
 
-
+            case 'atp':
+                //showing atp fields 
+                $('.atpSet').prop('required', true);
+                break;
+        }
+    }
 
     function prepareCheckBoxes() {
-        $orgType = urlParam('org');
-
-        switch ($orgType) {
-            case "atp":
-                $('#type-1').attr('checked', 'checked');
-                $('#hiddenType').val('2');
+        $type = getParameterByName('type');
+        switch ($type) {
+            case 'atc':
+                $('#type-1').prop('checked', true);
+                showSet('atc');
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("1");
                 break;
-            case "atc":
-                $('#type-0').attr('checked', 'checked');
-                $('#hiddenType').val('1');
+
+            case 'atp':
+                $('#type-2').prop('checked', true);
+                showSet('atp');
+                $('#org_form_hiddenType').val("");
+                $('#org_form_hiddenType').val("2");
                 break;
-            default :
-                window.history.back();
+
+            default:
+                // consider atp as default 
+                $('#type-2').prop('checked', true);
+                showSet('atp');
                 break;
         }
     }
 
-
-
-    // handling organization type change
-    function showOrganizationFieldSet() {
-        $atcBox = $('input:checkbox[id=type-0]').is(":checked");
-        $atpBox = $('input:checkbox[id=type-1]').is(":checked");
-
-        // BOTH SELECTED
-        if ($atcBox && $atpBox) {
-            $('#hiddenType').val('');
-            $('#hiddenType').val('3');
-
-            $('#atpSet').show();
-            $('#atcSet').show();
-
-        }
-
-        //ATC ONLY
-        if ($atcBox && !$atpBox) {
-            $('#hiddenType').val('');
-            $('#hiddenType').val('1');
-
-            $('#atcSet').show();
-            $('#atpSet').hide();
-
-            clearAtpInputs();
-
-        }
-
-        //ATP ONLY
-        if ($atpBox && !$atcBox) {
-            $('#hiddenType').val('');
-            $('#hiddenType').val('2');
-
-            $('#atpSet').show();
-            $('#atcSet').hide();
-            clearAtcInputs();
-        }
-
-        //ALERT NOTHING SELECTED
-        if (!$atcBox && !$atpBox) {
-            location.reload();
-        }
-
-
-
-
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-
-    function clearAtpInputs() {
-
-        $('#atpLicenseNo').val('');
-        $('#atpLicenseAttachment').val('');
-        $('#atpLicenseExpiration').val('');
-        $('#labsNo').val('');
-        $('#pcsNo_lab').val('');
-        $('#internetSpeed_lab').val('');
-        $('#operatingSystem').val('');
-        $('#operatingSystemLang').val('');
-        $('#officeLang').val('');
-        $('#officeVersion').val('');
-    }
-
-    function clearAtcInputs() {
-        $('#atcLicenseNo').val('');
-        $('#atcLicenseAttachment').val('');
-        $('#atcLicenseExpiration').val('');
-        $('#classesNo').val('');
-        $('#pcsNo_class').val('');
-
-    }
-
-    function urlParam(name) {
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        return results[1] || 0;
-    }
-
-
 });
+;
+/* OriginalFileName : public/js/organizationReg.js */ 
+
+//$(document).ready(function () {
+//// enabling datepicker lib
+//    $('.datepicker').datepicker();
+//    // prepare organization checkboxes
+//    prepareCheckBoxes();
+//    // intial state for the form
+//    showOrganizationFieldSet();
+//    // on change in Organization Type
+//    $('.type').change(function () {
+//        showOrganizationFieldSet();
+//    });
+//    //submit organization registeration form
+//    $('#submit').click(function () {
+////add validation method before submit
+//        $('#orgReg').submit();
+//    });
+//
+//
+//
+//
+//
+//
+//
+//
+//    function checkTypeValidations() {
+//        switch ($('#hiddenType').val()) {
+//            // atc
+//            case '1':
+//                $('#atcLicenseNo').attr('required', 'true');
+//                $('#atcLicenseExpiration').attr('required', 'true');
+//                $('#atcLicenseAttachment').attr('required', 'true');
+//                $('#atpLicenseNo').attr('required', 'false');
+//                $('#atpLicenseExpiration').attr('required', 'false');
+//                $('#atpLicenseAttachment').attr('required', 'false');
+//
+//                break;
+//                // atp    
+//            case '2':
+//                $('#atpLicenseNo').attr('required', 'true');
+//                $('#atpLicenseExpiration').attr('required', 'true');
+//                $('#atpLicenseAttachment').attr('required', 'true');
+//                $('#atcLicenseNo').attr('required', 'false');
+//                $('#atcLicenseExpiration').attr('required', 'false');
+//                $('#atcLicenseAttachment').attr('required', 'false');
+//
+//                break;
+//                // both    
+//            case '3':
+//                $('#atcLicenseNo').attr('required', 'true');
+//                $('#atcLicenseExpiration').attr('required', 'true');
+//                $('#atcLicenseAttachment').attr('required', 'true');
+//                $('#atpLicenseNo').attr('required', 'true');
+//                $('#atpLicenseExpiration').attr('required', 'true');
+//                $('#atpLicenseAttachment').attr('required', 'true');
+//                break;
+//        }
+//
+//    }
+//
+//
+//
+//
+//
+//
+//
+//    function prepareCheckBoxes() {
+//        $orgType = urlParam('org');
+//
+//        switch ($orgType) {
+//            case "atp":
+//                $('#type-1').attr('checked', 'checked');
+//                $('#hiddenType').val('2');
+//                break;
+//            case "atc":
+//                $('#type-0').attr('checked', 'checked');
+//                $('#hiddenType').val('1');
+//                break;
+//            default :
+//                window.history.back();
+//                break;
+//        }
+//    }
+//
+//
+//
+//    // handling organization type change
+//    function showOrganizationFieldSet() {
+//        $atcBox = $('input:checkbox[id=type-0]').is(":checked");
+//        $atpBox = $('input:checkbox[id=type-1]').is(":checked");
+//
+//        // BOTH SELECTED
+//        if ($atcBox && $atpBox) {
+//            $('#hiddenType').val('');
+//            $('#hiddenType').val('3');
+//
+//            $('#atpSet').show();
+//            $('#atcSet').show();
+//
+//        }
+//
+//        //ATC ONLY
+//        if ($atcBox && !$atpBox) {
+//            $('#hiddenType').val('');
+//            $('#hiddenType').val('1');
+//
+//            $('#atcSet').show();
+//            $('#atpSet').hide();
+//
+//            clearAtpInputs();
+//
+//        }
+//
+//        //ATP ONLY
+//        if ($atpBox && !$atcBox) {
+//            $('#hiddenType').val('');
+//            $('#hiddenType').val('2');
+//
+//            $('#atpSet').show();
+//            $('#atcSet').hide();
+//            clearAtcInputs();
+//        }
+//
+//        //ALERT NOTHING SELECTED
+//        if (!$atcBox && !$atpBox) {
+//            location.reload();
+//        }
+//
+//
+//
+//
+//    }
+//
+//    function clearAtpInputs() {
+//
+//        $('#atpLicenseNo').val('');
+//        $('#atpLicenseAttachment').val('');
+//        $('#atpLicenseExpiration').val('');
+//        $('#labsNo').val('');
+//        $('#pcsNo_lab').val('');
+//        $('#internetSpeed_lab').val('');
+//        $('#operatingSystem').val('');
+//        $('#operatingSystemLang').val('');
+//        $('#officeLang').val('');
+//        $('#officeVersion').val('');
+//    }
+//
+//    function clearAtcInputs() {
+//        $('#atcLicenseNo').val('');
+//        $('#atcLicenseAttachment').val('');
+//        $('#atcLicenseExpiration').val('');
+//        $('#classesNo').val('');
+//        $('#pcsNo_class').val('');
+//
+//    }
+//
+//    function urlParam(name) {
+//        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+//        return results[1] || 0;
+//    }
+//
+//
+//});

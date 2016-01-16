@@ -752,7 +752,7 @@ class Org
      */
     public function exchangeArray($data = array())
     {
-        $this->setType($data['type']);
+        $this->setType($data['hiddenType']);
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
@@ -830,7 +830,9 @@ class Org
             $this->setAtcLicenseNo($data["atcLicenseNo"]);
         }
         if (array_key_exists('atcLicenseExpiration', $data)) {
-            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
+//            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
+            $this->atpLicenseExpiration = $data["atcLicenseExpiration"];
+            
         }
         
         if (array_key_exists('atpLicenseAttachment', $data)) {
@@ -840,23 +842,8 @@ class Org
             $this->setAtpLicenseNo($data["atpLicenseNo"]);
         }
         if (array_key_exists('atpLicenseExpiration', $data)) {
-            $this->setAtpLicenseExpiration($data["atpLicenseExpiration"]);
+            $this->atpLicenseExpiration = $data["atpLicenseExpiration"];
         }
-//        if (array_key_exists('', $data)) {
-//            $this->setRoles($data[""]);
-//        }
-//        if (array_key_exists('', $data)) {
-//            $this->setRoles($data[""]);
-//        }
-//        if (array_key_exists('', $data)) {
-//            $this->setRoles($data[""]);
-//        }
-//        if (array_key_exists('', $data)) {
-//            $this->setRoles($data[""]);
-//        }
-//        if (array_key_exists('', $data)) {
-//            $this->setRoles($data[""]);
-//        }
     }
 
     /**
@@ -902,12 +889,10 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'longtitude',
-                'required' => true,
             ));
 
             $inputFilter->add(array(
                 'name' => 'latitude',
-                'required' => true,
             ));
 
             $inputFilter->add(array(
@@ -1036,7 +1021,6 @@ class Org
             ));
             $inputFilter->add(array(
                 'name' => 'addressLine2',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1095,11 +1079,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'fax',
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                    )
-                )
+                
             ));
 
             $inputFilter->add(array(
