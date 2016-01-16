@@ -15260,10 +15260,9 @@ $(document).ready(function () {
     });
 
 
-    
+
 
     function formValidation() {
-
 
         $('#orgReg').validate({
             rules: {
@@ -15337,7 +15336,8 @@ $(document).ready(function () {
                 },
                 website: {
                     requited: true,
-                    maxlength: 30
+                    maxlength: 30,
+                    url: true
                 },
                 email: {
                     required: true,
@@ -15348,6 +15348,38 @@ $(document).ready(function () {
                     required: true
 
                 },
+                atcLicenseNo: {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 30,
+                },
+                atpLicenseNo: {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 30,
+                },
+                labsNo: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                classesNo: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                pcsNo_lab: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                pcsNo_class: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                }
+
+
             },
             massages: {
                 commercialName: {
@@ -15429,15 +15461,7 @@ $(document).ready(function () {
                 focalContactPerson_id: {
                     required: "Focal Contact Person is mandatory for organizations",
                 }
-
             }
-
-
-
-
-
-
-
         });
 
 
