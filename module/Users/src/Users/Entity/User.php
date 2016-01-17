@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Users\Entity\UserRepository")
  * @ORM\Table(name="user",uniqueConstraints={
  * @ORM\UniqueConstraint(name="username_idx", columns={"username"}),
  * @ORM\UniqueConstraint(name="email_idx", columns={"email"})
