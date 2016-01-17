@@ -49,7 +49,7 @@ class TypeForm extends Form
         $this->add(array(
             'name' => 'type',
             'required' => true,
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
             'options' => array(
                 'messages' => array(
                     \Zend\Validator\NotEmpty::IS_EMPTY => "you have to choose organization type"

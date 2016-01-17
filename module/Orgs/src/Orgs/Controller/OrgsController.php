@@ -34,7 +34,8 @@ class OrgsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'), array('type' => $data['type']));
-                $this->redirect()->toUrl($url);
+                $this->redirect()->toUrl($url.'?t='.$data['type']);
+
             }
         }
 
