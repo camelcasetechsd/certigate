@@ -38,7 +38,45 @@ class CourseController extends ActionController
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
+    
+    /**
+     * Calendar courses
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function calendarAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        
+        $data = $query->findAll(/*$entityName =*/null);
+        $courseModel->setCanEnroll($data);
+        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
+        return new ViewModel($variables);
+    }
 
+    /**
+     * More course
+     *
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function moreAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $courseObj = $query->find('Courses\Entity\Course', $id);
+        $variables['course'] = $courseObj;
+        return new ViewModel($variables);
+    }
+    
     /**
      * Create new course
      * 

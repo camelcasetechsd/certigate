@@ -12,6 +12,9 @@ return array(
         'aliases' => array(
             'courses' => 'Courses\Controller\CourseController'
         ),
+        'factories' => array(
+            'Courses\Model\Course' => 'Courses\Model\CourseFactory',
+        )
     ),
     'doctrine' => array(
         'driver' => array(
@@ -34,6 +37,55 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'courses' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'coursesCalendar' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/calendar',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'calendar',
+                    ),
+                )
+            ),
+            'coursesMore' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/more/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'more',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'coursesEnroll' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/enroll/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'enroll',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'coursesEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -57,19 +109,6 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
-                    ),
-                )
-            ),
-            'courses' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses[/:action]',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'index'
-                    ),
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
                 )
             ),
