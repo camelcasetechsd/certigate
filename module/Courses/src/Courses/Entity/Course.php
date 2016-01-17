@@ -66,12 +66,12 @@ class Course
      * @var int
      */
     public $studentsNo;
-    
+
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization")
      * @ORM\JoinColumn(name="atp_id", referencedColumnName="id")
-     * @var Users\Entity\User
+     * @var Organizations\Entity\Organization
      */
     public $atp;
     
