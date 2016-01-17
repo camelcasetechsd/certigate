@@ -87,8 +87,8 @@ class Org
     }
 
     public function saveOrganization($orgInfo, $orgObj = null)
-    {            
-        
+    {
+
         if (is_null($orgObj)) {
 
             $entity = new \Orgs\Entity\Org();
@@ -129,7 +129,7 @@ class Org
         if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
             $orgInfo['trainingManager_id'] = $this->getUserby('id', $orgInfo['trainingManager_id'])[0];
         }
-        else if (isset ($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] == 0) {
+        else if (isset($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] == 0) {
             $orgInfo['trainingManager_id'] = null;
         }
 
@@ -138,7 +138,7 @@ class Org
         if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
             $orgInfo['testCenterAdmin_id'] = $this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0];
         }
-        else if (isset ($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] == 0) {
+        else if (isset($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] == 0) {
             $orgInfo['testCenterAdmin_id'] = null;
         }
 
@@ -216,6 +216,21 @@ class Org
         rename($name, $newFullName);
         $uploadResult = $newFullName;
         return $uploadResult;
+    }
+
+    /**
+     * Delete orhanization
+     * 
+     * 
+     * @access public
+     * @param int $id
+     */
+    public function deleteOrganization($id)
+    {
+        $org = $this->query->find(/* $entityName = */ 'Orgs\Entity\Org', $id);
+        $org->active = \Orgs\Entity\Org::NOT_ACTIVE;
+        $this->query->entityManager->merge($org);
+        $this->query->entityManager->flush($org);
     }
 
 }

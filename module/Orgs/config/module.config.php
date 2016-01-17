@@ -102,6 +102,19 @@ return array(
                         'id' => '[0-9]*'
                     )
                 )
+            ),
+            'delete_org' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/orgs/delete[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Orgs\Controller\Orgs',
+                        'action' => 'delete'
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    )
+                )
             )
         )
     )

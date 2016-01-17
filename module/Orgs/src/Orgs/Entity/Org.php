@@ -7,16 +7,16 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Regex;
 
-
 /**
  * Orgs Entity
  * @ORM\Entity
- * @ORM\Table(name="orgs",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
+ * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
  * 
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
+ * @property int    $active
  * @property int    $type 
  * @property string $commertialName
  * @property float  $longtitude
@@ -78,6 +78,16 @@ class Org
     const TYPE_BOTH = 3;
 
     /**
+     * inActive organization
+     */
+    const ACTIVE = 1;
+
+    /**
+     * Active organization
+     */
+    const NOT_ACTIVE = 0;
+
+    /**
      *
      * @var InputFilter validation constraints 
      */
@@ -98,6 +108,12 @@ class Org
      */
     public $type;
 
+    /**
+     *
+     * @ORM\Column(type="integer")
+     * @var string
+     */
+    public $active;
     /**
      *
      * @ORM\Column(type="string", unique=true)
@@ -598,7 +614,7 @@ class Org
         $this->atpLicenseNo = $atpLicenseNo;
     }
 
-    function setAtpLicenseExpiration( $atpLicenseExpiration)
+    function setAtpLicenseExpiration($atpLicenseExpiration)
     {
         $this->atpLicenseExpiration = $atpLicenseExpiration;
     }
@@ -613,7 +629,7 @@ class Org
         $this->atcLicenseNo = $atcLicenseNo;
     }
 
-    function setAtcLicenseExpiration( $atcLicenseExpiration)
+    function setAtcLicenseExpiration($atcLicenseExpiration)
     {
         $this->atcLicenseExpiration = $atcLicenseExpiration;
     }
@@ -732,6 +748,10 @@ class Org
     {
         $this->officeLang = $officeLang;
     }
+    function setActive($active)
+    {
+        $this->active = $active;
+    }
 
     /**
      * Convert the object to an array.
@@ -754,13 +774,14 @@ class Org
      */
     public function exchangeArray($data = array())
     {
+        $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
         $this->setCRNo($data['CRNo']);
 //        var_dump($data['CRExpiration']);exit;
-        $this->setCRExpiration( $data['CRExpiration']);
+        $this->setCRExpiration($data['CRExpiration']);
         $this->setCRAttachment($data['CRAttachment']);
         $this->setAddressLine1($data['addressLine1']);
         $this->setCity($data['city']);

@@ -184,7 +184,7 @@ class OrgsController extends ActionController
                     break;
             }
 
-
+            $data['active'] = 1;
 
             if ($form->isValid()) {
 
@@ -325,6 +325,28 @@ class OrgsController extends ActionController
 
         $variables['userForm'] = $this->getFormView($form);
         return new ViewModel($variables);
+    }
+
+    public function deleteAction()
+    {
+
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+//        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
+        $orgObj = $query->find('Orgs\Entity\Org', $id);
+
+        $orgModel  = $this ->getServiceLocator()->get('Orgs\Model\Org');
+        $orgModel->deleteOrganization($id);
+
+
+
+        if ($orgObj->type == 1) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+        }
+        else if ($orgObj->type == 2 || $data['type'] == 3) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
+        }
+        $this->redirect()->toUrl($url);
     }
 
 }

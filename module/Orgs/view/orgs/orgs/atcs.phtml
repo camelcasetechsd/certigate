@@ -32,7 +32,9 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a data-toggle="tooltip" data-placement="left" title="Edit" href="/orgs/edit/{{id}}?o=1"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#active}}
                     <a data-toggle="tooltip" data-placement="left" title="Delete" href="/orgs/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/active}}
                 </td>
             </tr>
             {{/userList}}
