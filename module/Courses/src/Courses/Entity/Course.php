@@ -102,7 +102,7 @@ class Course
     
     /**
      *
-     * @ORM\Column(type="tinytext")
+     * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
