@@ -5,14 +5,239 @@ $(document).ready(function () {
     prepareCheckBoxes();
     // intial state for the form
     showOrganizationFieldSet();
+
+    formValidation();
     // on change in Organization Type
     $('.type').change(function () {
         showOrganizationFieldSet();
     });
+
+
+
+
+    function formValidation() {
+
+        $('#orgReg').validate({
+            rules: {
+                commercialName: {
+                    required: true,
+                    minlength: 8
+                },
+                long: {
+                    minlength: 3,
+                },
+                lat: {
+                    minlength: 3
+                },
+                ownerName: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 15
+                },
+                ownerNationalId: {
+                    required: true,
+                    digits: true,
+                    minlength: 5,
+                    maxlength: 15
+                },
+                CRNo: {
+                    required: true,
+                    digits: true,
+                    minlength: 5,
+                    maxlength: 15
+                },
+                CRExpiration: {
+                    required: true
+                },
+                CRAttachment: {
+                    required: true
+
+                },
+                phone1: {
+                    required: true,
+                    minlength: 7,
+                    maxlength: 20
+                },
+                phone2: {
+                    minlength: 7,
+                    maxlength: 20
+                },
+                phone3: {
+                    minlength: 7,
+                    maxlength: 20
+                },
+                fax: {
+                    maxlength: 20
+                },
+                addressLine1: {
+                    required: true,
+                    minlength: 7,
+                    maxlength: 50
+                },
+                addressLine2: {
+                    minlength: 7,
+                    maxlength: 50
+
+                },
+                city: {
+                    required: true,
+                    maxlength: 20
+                },
+                zipCode: {
+                    required: true,
+                    maxlength: 20
+                },
+                website: {
+                    requited: true,
+                    maxlength: 30,
+                    url: true
+                },
+                email: {
+                    required: true,
+                    maxlength: 30,
+                    email: true
+                },
+                focalContactPerson_id: {
+                    required: true
+
+                },
+                atcLicenseNo: {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 30,
+                },
+                atpLicenseNo: {
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 30,
+                },
+                labsNo: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                classesNo: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                pcsNo_lab: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                },
+                pcsNo_class: {
+                    digits: true,
+                    minlength: 1,
+                    maxlength: 3,
+                }
+
+
+            },
+            massages: {
+                commercialName: {
+                    required: "Commercial name is mandatory for organizations",
+                    minlength: "Commercial name must not be less than 8 characters long "
+                },
+                long: {
+                    minlength: "Longtitude must not be less than 3 characters long "
+                },
+                lat: {
+                    minlength: "Latitude must not be less than 3 characters long "
+                },
+                ownerName: {
+                    required: "Owner name is mandatory for organizations",
+                    minlength: "Owner name must not be less than 5 characters long",
+                    maxlength: "Owner name must not be more than 15 characters long"
+                },
+                ownerNationalId: {
+                    required: "Owner national ID is mandatory for organizations",
+                    digits: "National Id must be set of integers",
+                    minlength: "National Id  must not be less than 5 characters long",
+                    maxlength: "National Id must not be more than 15 characters long"
+                },
+                CRNo: {
+                    required: "CR No is mandatory for organizations",
+                    digits: "CR No must be set of integers",
+                    minlength: "CR No  must not be less than 5 characters long",
+                    maxlength: "CR No must not be more than 15 characters long"
+                },
+                CRExpiration: {
+                    required: "CR Expiration Date is mandatory for organizations",
+                },
+                CRAttachment: {
+                    required: "CR Licesne Attachment is mandatory for organizations"
+                },
+                //messages
+                phone1: {
+                    required: "At least one phone number is required for organizations",
+                    minlength: "Phone Number must be shorter than 7 digits",
+                    maxlength: "Phone Number must not be longer than 20 digits"
+                },
+                phone2: {
+                    minlength: "Phone Number must be shorter than 7 digits",
+                    maxlength: "Phone Number must not be longer than 20 digits"
+                },
+                phone3: {
+                    minlength: "Phone Number must not be shorter than 7 digits",
+                    maxlength: "Phone Number must not be longer than 20 digits"
+                },
+                addressLine1: {
+                    required: "At least one Address is mandatory for organizations ",
+                    minlength: "Address must not be shorter than 7 digits",
+                    maxlength: "Address must not be longer than 20 digits"
+                },
+                addressLine2: {
+                    minlength: "Address must not be shorter than 7 digits",
+                    maxlength: "Address must not be longer than 20 digits"
+                },
+                city: {
+                    required: "City is mandatory for organizations",
+                },
+                fax: {
+                    maxlength: "fax Number must not be longer than 20 digits"
+
+                },
+                zipCode: {
+                    required: "zipCode is mandatory for organizations",
+                    maxlength: "zipCode must not be longer than 20 digits"
+                },
+                website: {
+                    requited: "Website is mandatory for organizations",
+                    maxlength: "Website must not be longer than 30 digits"
+                },
+                email: {
+                    required: "email is mandatory for organizations",
+                    maxlength: "email must not be longer than 30 digits",
+                    email: "please insert a valid emial"
+                },
+                focalContactPerson_id: {
+                    required: "Focal Contact Person is mandatory for organizations",
+                }
+            }
+        });
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
     //submit organization registeration form
     $('#submit').click(function () {
+
+
+
 //add validation method before submit
-        $('#orgReg').submit();
+//        $('#orgReg').submit();
     });
 
 
@@ -76,7 +301,7 @@ $(document).ready(function () {
                 $('#hiddenType').val('1');
                 break;
             default :
-                window.history.back();
+//                window.history.back();
                 break;
         }
     }
@@ -122,7 +347,7 @@ $(document).ready(function () {
 
         //ALERT NOTHING SELECTED
         if (!$atcBox && !$atpBox) {
-            location.reload();
+//            location.reload();
         }
 
 
@@ -153,10 +378,20 @@ $(document).ready(function () {
 
     }
 
-    function urlParam(name) {
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        return results[1] || 0;
+    function urlParam(param) {
+        location.search.substr(1)
+                .split("&")
+                .some(function (item) { // returns first occurence and stops
+                    return item.split("=")[0] == param && (param = item.split("=")[1])
+                })
+        return param
     }
+
+
+
+
+
+
 
 
 });

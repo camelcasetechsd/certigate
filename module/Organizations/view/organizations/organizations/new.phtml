@@ -1,7 +1,11 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-
+<ul>
+{{#messages}}
+<li>{{.}}</li>
+{{/messages}}
+</ul>
 <div class="panel panel-default">
     <div class="panel-body">
         <form id="orgReg" class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
@@ -12,7 +16,7 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="commercialName">Commercial Name</label>  
+                    <label class="col-md-4 control-label" for="commercialName">Commercial Name <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
                         <input id="commercialName" name="commercialName" type="text" placeholder="Commercial Name" class="form-control input-md" required="
                                ">
@@ -40,44 +44,43 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="ownerName">Owner Name</label>  
+                    <label class="col-md-4 control-label" for="ownerName">Owner Name <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="ownerName" name="ownerName" type="text" placeholder="Owner Name" class="form-control input-md" required="required">
+                        <input id="ownerName" name="ownerName" type="text" placeholder="Owner Name" class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="ownerNationalId">Owner National Id</label>  
+                    <label class="col-md-4 control-label" for="ownerNationalId">Owner National Id <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="ownerNationalId" name="ownerNationalId" type="text" placeholder="Owner National Id" class="form-control input-md" required="true
-                               ">
+                        <input id="ownerNationalId" name="ownerNationalId" type="text" placeholder="Owner National Id" class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="CRNo">CR No.</label>  
+                    <label class="col-md-4 control-label" for="CRNo">CR No. <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="CRNo" name="CRNo" type="text" placeholder="CR No." class="form-control input-md" required="required">
+                        <input id="CRNo" name="CRNo" type="text" placeholder="CR No." class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="CRExpiration">CR Expiration Date</label>  
+                    <label class="col-md-4 control-label" for="CRExpiration">CR Expiration Date <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="CRExpiration" name="CRExpiration" type="text" placeholder="CR Expiration Date" class="form-control input-md datepicker" required="required">
+                        <input id="CRExpiration" name="CRExpiration" type="text" placeholder="CR Expiration Date" class="form-control input-md datepicker" >
 
                     </div>
                 </div>
 
                 <!-- File Button --> 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="CRAttachment">CR Attachment</label>
+                    <label class="col-md-4 control-label" for="CRAttachment">CR Attachment <abbr class="req" title="required">*</abbr></label>
                     <div class="col-md-4">
                         <input id="CRAttachment" name="CRAttachment" class="input-file" type="file">
                     </div>
@@ -109,7 +112,7 @@
                 <div id="atpSet">
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atpLicenseNo">ATP License Number</label>  
+                        <label class="col-md-4 control-label" for="atpLicenseNo">ATP License Number <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="atpLicenseNo" name="atpLicenseNo" type="text" placeholder="LicenseATP License Number" class="form-control input-md">
 
@@ -118,7 +121,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atpLicenseExpiration">ATP License Expiration Date</label>  
+                        <label class="col-md-4 control-label" for="atpLicenseExpiration">ATP License Expiration Date <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="atpLicenseExpiration" name="atpLicenseExpiration" type="text" placeholder="ATP License Expiration Date" class="datepicker form-control input-md">
 
@@ -127,7 +130,7 @@
 
                     <!-- File Button --> 
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atpLicenseAttachment">ATP License Attachment</label>
+                        <label class="col-md-4 control-label" for="atpLicenseAttachment">ATP License Attachment <abbr class="req" title="required">*</abbr></label>
                         <div class="col-md-4">
                             <input id="atpLicenseAttachment" name="atpLicenseAttachment" class="input-file" type="file">
                         </div>
@@ -139,7 +142,7 @@
                     <div id="atp_resource">
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class=" col-md-4 control-label" for="labsNo">Labs No</label>  
+                            <label class=" col-md-4 control-label" for="labsNo">Labs No <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="labsNo" name="labsNo" type="text" placeholder="Labs No" class=" form-control input-md" required="false">
 
@@ -150,7 +153,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="pcsNo_lab">PCs / Lab</label>  
+                            <label class="col-md-4 control-label" for="pcsNo_lab">PCs / Lab <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="pcsNo_lab" name="pcsNo_lab" type="text" placeholder="PCs / Lab" class=" form-control input-md" required="false">
 
@@ -159,7 +162,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class=" col-md-4 control-label" for="internetSpeed_lab">Internet Speed / L</label>  
+                            <label class=" col-md-4 control-label" for="internetSpeed_lab">Internet Speed / L <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="internetSpeed_lab" name="internetSpeed_lab" type="text" placeholder="InternetSpeed / L" class=" form-control input-md" required="false">
 
@@ -168,7 +171,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class=" col-md-4 control-label" for="operatingSystem">Operating System</label>  
+                            <label class=" col-md-4 control-label" for="operatingSystem">Operating System <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="operatingSystem" name="operatingSystem" type="text" placeholder="Operating System" class=" form-control input-md" required="false">
 
@@ -177,7 +180,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class=" col-md-4 control-label" for="operatingSystemLang">Operating System Language</label>  
+                            <label class=" col-md-4 control-label" for="operatingSystemLang">Operating System Language <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="operatingSystemLang" name="operatingSystemLang" type="text" placeholder="Operating System Language" class=" form-control input-md" required="false">
 
@@ -186,7 +189,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class=" col-md-4 control-label" for="officeVersion">Microsoft Office Version</label>  
+                            <label class=" col-md-4 control-label" for="officeVersion">Microsoft Office Version <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="officeVersion" name="officeVersion" type="text" placeholder="Microsoft Office Version" class=" form-control input-md" required="false">
 
@@ -195,7 +198,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="atp_resource col-md-4 control-label" for="officeLang">Microsoft Office Language</label>  
+                            <label class="atp_resource col-md-4 control-label" for="officeLang">Microsoft Office Language <abbr class="req" title="required">*</abbr></label>  
                             <div class="col-md-4">
                                 <input id="officeLang" name="officeLang" type="text" placeholder="Microsoft Office Language" class=" form-control input-md" required="false">
 
@@ -204,21 +207,21 @@
                     </div>
 
                 </div>
-                
+
                 <hr>
                 <!-- Text input-->
                 <div id="atcSet">
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atcLicenseNo">ATC License Number</label>  
+                        <label class="col-md-4 control-label" for="atcLicenseNo">ATC License Number <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="atcLicenseNo" name="atcLicenseNo" type="text" placeholder="ATC License Number" class="form-control input-md">
-
+                       
                         </div>
                     </div>
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atcLicenseExpiration">ATC License Expiration Date</label>  
+                        <label class="col-md-4 control-label" for="atcLicenseExpiration">ATC License Expiration Date <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="atcLicenseExpiration" name="atcLicenseExpiration" type="text" placeholder="ATC License Expiration Date" class="datepicker form-control input-md">
 
@@ -227,7 +230,7 @@
 
                     <!-- File Button --> 
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="atcLicenseAttachment">ATC License Attachment</label>
+                        <label class="col-md-4 control-label" for="atcLicenseAttachment">ATC License Attachment <abbr class="req" title="required">*</abbr></label>
                         <div class="col-md-4">
                             <input id="atcLicenseAttachment" name="atcLicenseAttachment" class="input-file" type="file">
                         </div>
@@ -236,7 +239,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class=" col-md-4 control-label" for="classesNo">Classes No.</label>  
+                        <label class=" col-md-4 control-label" for="classesNo">Classes No. <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="classesNo" name="classesNo" type="text" placeholder="Classes No." class=" form-control input-md" required="false">
 
@@ -245,7 +248,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class=" col-md-4 control-label" for="pcsNo_class">PCs / Class </label>  
+                        <label class=" col-md-4 control-label" for="pcsNo_class">PCs / Class  <abbr class="req" title="required">*</abbr></label>  
                         <div class="col-md-4">
                             <input id="pcsNo_class" name="pcsNo_class" type="text" placeholder="PCs / Class " class=" form-control input-md" required="false">
 
@@ -253,13 +256,13 @@
                     </div>
 
                 </div>
-                
+
                 <hr>
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="addressline1">Address 1</label>  
+                    <label class="col-md-4 control-label" for="addressline1">Address 1 <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="addressLine1" name="addressLine1" type="text" placeholder="Address 1" class="form-control input-md" required="required">
+                        <input id="addressLine1" name="addressLine1" type="text" placeholder="Address 1" class="form-control input-md" >
 
                     </div>
                 </div>
@@ -275,27 +278,27 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="city">City</label>  
+                    <label class="col-md-4 control-label" for="city">City <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="city" name="city" type="text" placeholder="City" class="form-control input-md" required="required">
+                        <input id="city" name="city" type="text" placeholder="City" class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="zipCode">ZipCode</label>  
+                    <label class="col-md-4 control-label" for="zipCode">ZipCode <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="zipCode" name="zipCode" type="text" placeholder="ZipCode" class="form-control input-md" required="required">
+                        <input id="zipCode" name="zipCode" type="text" placeholder="ZipCode" class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="phone1">Phone 1</label>  
+                    <label class="col-md-4 control-label" for="phone1">Phone 1 <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="phone1" name="phone1" type="text" placeholder="Phone 1" class="form-control input-md" required="required">
+                        <input id="phone1" name="phone1" type="text" placeholder="Phone 1" class="form-control input-md" >
 
                     </div>
                 </div>
@@ -329,18 +332,18 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="website">Website</label>  
+                    <label class="col-md-4 control-label" for="website">Website <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="website" name="website" type="text" placeholder="Website" class="form-control input-md" required="required">
+                        <input id="website" name="website" type="text" placeholder="Website" class="form-control input-md" >
 
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="email">Official Email</label>  
+                    <label class="col-md-4 control-label" for="email">Official Email <abbr class="req" title="required">*</abbr></label>  
                     <div class="col-md-4">
-                        <input id="email" name="email" type="text" placeholder="Official Email" class="form-control input-md" required="required">
+                        <input id="email" type="email" name="email" type="text" placeholder="Official Email" class="form-control input-md" >
 
                     </div>
                 </div>
@@ -373,9 +376,9 @@
 
                 <!-- Select Basic -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="focalContactPerson">Focal Contact Person</label>
+                    <label class="col-md-4 control-label" for="focalContactPerson">Focal Contact Person <abbr class="req" title="required">*</abbr></label>
                     <div class="col-md-4">
-                        <select id="focalContactPerson" name="focalContactPerson_id" class="form-control" required="required">
+                        <select id="focalContactPerson" name="focalContactPerson_id" class="form-control" >
                             <option value="0">__Select__</option>
                             {{#userList}}
                             <option value="{{id}}">{{firstName}} {{middleName}} {{lastName}}</option>
@@ -384,15 +387,13 @@
                     </div>
                 </div>
 
-
-
-
             </fieldset>
             <!-- Button (Double) -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-8">
-                    <a data-toggle="modal" href="#agreementModal" class="btn btn-success">Submit</a>
+                    <!--<a data-toggle="modal"  id="checkValidity" href="#agreementModal" class="btn btn-success">Submit</a>-->
+                    <button id="submit"type="submit" name="submit" class="btn btn-success">Submit</button>
                     <button id="reset" type="reset" name="reset" class="btn btn-danger">Reset</button>
                 </div>
             </div>    
@@ -402,7 +403,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal 
 <div class="modal fade" id="agreementModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -417,9 +418,9 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button"  name="submit" id="submit" class="btn btn-primary">Save Organization</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div> /.modal-content 
+    </div> /.modal-dialog 
+</div> /.modal -->
 
 
 
