@@ -77,7 +77,7 @@ class User {
         if(!in_array($userRole->getId(), $userInfo['roles'])){
             $userInfo['roles'][] = $userRole->getId();
         }
-        
+
         $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
     }
 

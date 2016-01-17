@@ -1219,6 +1219,7 @@ class User {
             ));
             $inputFilter->add(array(
                 'name' => 'middleName',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1275,6 +1276,18 @@ class User {
             $inputFilter->add(array(
                 'name' => 'addressOne',
                 'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'addressTwo',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'zipCode',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'phone',
+                'required' => false,
             ));
             $inputFilter->add(array(
                 'name' => 'city',
