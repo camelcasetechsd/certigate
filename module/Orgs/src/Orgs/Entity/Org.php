@@ -10,7 +10,8 @@ use Zend\Validator\Regex;
 /**
  * Orgs Entity
  * @ORM\Entity
- * @ORM\Table(name="orgs")
+ * @ORM\Table(name="orgs",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
+ * 
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
@@ -832,9 +833,8 @@ class Org
         if (array_key_exists('atcLicenseExpiration', $data)) {
 //            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
             $this->atpLicenseExpiration = $data["atcLicenseExpiration"];
-            
         }
-        
+
         if (array_key_exists('atpLicenseAttachment', $data)) {
             $this->setAtpLicenseAttachment($data["atpLicenseAttachment"]);
         }
@@ -868,7 +868,7 @@ class Org
      * @access public
      * @return InputFilter validation constraints
      */
-    public function getInputFilter()
+    public function getInputFilter($query)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
@@ -876,10 +876,18 @@ class Org
             $inputFilter->add(array(
                 'name' => 'commercialName',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                    )
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\NoObjectExists',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(
+                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            ),
+                        )
+                    ),
                 )
             ));
 
@@ -1079,7 +1087,6 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'fax',
-                
             ));
 
             $inputFilter->add(array(
@@ -1107,27 +1114,22 @@ class Org
 //
             $inputFilter->add(array(
                 'name' => 'labsNo',
-                'required' => true
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_lab',
-                'required' => true
             ));
 
             $inputFilter->add(array(
                 'name' => 'classesNo',
-                'required' => true
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_class',
-                'required' => true
             ));
 
             $inputFilter->add(array(
                 'name' => 'operatingSystem',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1137,7 +1139,6 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'operatingSystemLang',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1147,7 +1148,6 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'officeVersion',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1157,7 +1157,6 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'officeLang',
-                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1167,7 +1166,6 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'internetSpeed_lab',
-                'required' => true
             ));
 
             $this->inputFilter = $inputFilter;

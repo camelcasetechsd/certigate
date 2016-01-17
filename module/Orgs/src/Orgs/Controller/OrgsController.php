@@ -102,6 +102,7 @@ class OrgsController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
+        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
         $orgModel = $this->getServiceLocator()->get('Orgs\Model\Org');
         $orgObj = new OrgEntity();
         $options = array();
@@ -166,7 +167,7 @@ class OrgsController extends ActionController
 
 
 
-            $form->setInputFilter($orgObj->getInputFilter());
+            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $form->setData($data);
 
 
