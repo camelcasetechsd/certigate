@@ -50,6 +50,14 @@ return array(
                     )
                 )
             ),
+            "Courses" => array(
+                'depth' => 0,
+                'path' => "/courses",
+                'weight' => 3,
+                'title_underscored' => "courses",
+                'children' => array(
+                )
+            ),
             "Users" => array(
                 'depth' => 0,
                 'path' => "/users",
@@ -58,7 +66,7 @@ return array(
                 'children' => array(
                     array(
                         "Roles" => array(
-                            'depth' => 0,
+                            'depth' => 1,
                             'path' => "/roles",
                             'weight' => 1,
                             'title_underscored' => "roles",
