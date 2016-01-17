@@ -24,7 +24,7 @@ class CertigateAclPlugin extends AbstractPlugin {
 
         $signInController = 'DefaultModule\Controller\SignController';
         $router = $event->getRouter();
-        
+
         // return if the target is in excluded modules 
         if (in_array($moduleName, $excludedModules)) {
             return;
@@ -85,11 +85,16 @@ class CertigateAclPlugin extends AbstractPlugin {
             }
             // get logged in user roles
             $userRoles = $em->find('\Users\Entity\User', $auth->getIdentity()['id'])->getRoles();
+            $isAllowed = false;
             foreach ($userRoles as $userRole) {
-                if (!$acl->isAllowed($userRole->getName(), $moduleName, $routeMatch)) {
-                    $url = $router->assemble(array(), array('name' => 'noaccess'));
-                    $status = 302;
+                if ($acl->isAllowed($userRole->getName(), $moduleName, $routeMatch)) {
+                    $isAllowed = true;
+                    break;
                 }
+            }
+            if ($isAllowed === false) {
+                $url = $router->assemble(array(), array('name' => 'noaccess'));
+                $status = 302;
             }
         }
 
