@@ -143,8 +143,8 @@ class OrgsController extends ActionController
             $inputFilter = $orgObj->getInputFilter($query);
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $form->setData($data);
-            
-            
+
+
             switch ($data['type']) {
                 case '1':
                     $skippedParams = array(
@@ -216,42 +216,115 @@ class OrgsController extends ActionController
      */
     public function editAction()
     {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
+        $orgObj = $query->find('Orgs\Entity\Org', $id);
+        // for checking on attachments 
+        $crAttachment = $orgObj->CRAttachment;
+        $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
+        $atpLicenseAttachment = $orgObj->atpLicenseAttachment;
 
-        return new ViewModel();
-    }
+        // allow access for admins for all users
+        // restrict access for current user only for non-admin users
 
-    public function skipParam($form, $data, $param)
-    {
-        $form->getInputFilter()->get($param)->setRequired(FALSE);
-        $form->getInputFilter()->get($param)->setAllowEmpty(TRUE);
-    }
+        $options = array();
+        $options['query'] = $query;
+        $form = new orgForm(/* $name = */ null, $options);
 
-//    public function mockInputFilter($data)
-//    {
-//        if ($data['longtitude'] == "") {
-//            $data['longtitude'] == "#####";
-//        }
-//        if ($data['latitude'] == "") {
-//            $data['latitude'] == "#####";
-//        }
-//        if ($data['addressLine2'] == "") {
-//            $data['addressLine2'] == "#####";
-//        }
-//        if ($data['phone2'] == "") {
-//            $data['phone2'] == "#####";
-//        }
-//        if ($data['phone3'] == "") {
-//            $data['phone3'] == "#####";
-//        }
-//        if ($data['fax'] == "") {
-//            $data['fax'] == "#####";
-//        }
+        $form->bind($orgObj);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+//            // Make certain to merge the files info!
+//            $fileData = $request->getFiles()->toArray();
 //
-//        return $data;
-//    }
-    function preValidation()
-    {
-        
+            $fileData = $request->getFiles()->toArray();
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
+
+            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
+            $inputFilter = $form->getInputFilter();
+            $form->setData($data);
+            // file not updated
+            if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('CRAttachment');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['atcLicenseAttachment']['name']) && empty($fileData['atcLicenseAttachment']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('atcLicenseAttachment');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['atpLicenseAttachment']['name']) && empty($fileData['atpLicenseAttachment']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('atpLicenseAttachment');
+                $input->setRequired(false);
+            }
+
+            switch ($data['type']) {
+                case '1':
+                    $skippedParams = array(
+                        'atpLicenseNo',
+                        'atpLicenseExpiration',
+                        'atpLicenseAttachment',
+                        'labsNo',
+                        'pcsNo_lab',
+                        'internetSpeed_lab',
+                        'operatingSystem',
+                        'operatingSystemLang',
+                        'officeVersion',
+                        'officeLang'
+                    );
+                    foreach ($skippedParams as $param) {
+                        $inputFilter->get($param)->setRequired(false);
+                        $data[$param] = null;
+                    }
+
+                    break;
+
+                case '2':
+
+                    $skippedParams = array(
+                        'atcLicenseNo',
+                        'atcLicenseExpiration',
+                        'atcLicenseAttachment',
+                        'classesNo',
+                        'pcsNo_class'
+                    );
+
+                    foreach ($skippedParams as $param) {
+                        $inputFilter->get($param)->setRequired(false);
+                        $data[$param] = null;
+                    }
+
+                    break;
+            }
+
+
+            if ($form->isValid()) {
+                $orgModel = new OrgModel($query);
+
+//              
+                $orgModel->saveOrganization($data, $orgObj);
+
+                // redirecting
+                if ($data['type'] == 1) {
+                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+                }
+                else if ($data['type'] == 2 || $data['type'] == 3) {
+                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
+                }
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['userForm'] = $this->getFormView($form);
+        return new ViewModel($variables);
     }
 
 }

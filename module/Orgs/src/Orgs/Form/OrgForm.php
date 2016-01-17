@@ -2,6 +2,7 @@
 
 namespace Orgs\Form;
 
+use Zend\Form\FormInterface;
 use Utilities\Form\Form;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -136,7 +137,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'CRExpiration',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
@@ -308,7 +309,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'atpLicenseExpiration',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
@@ -455,7 +456,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'atcLicenseExpiration',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
@@ -618,18 +619,19 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
     {
         parent::bind($object, $flags);
-
-        $userRoles = $object->getRoles();
-
-        $userRolesValues = [];
-        foreach ($userRoles as $r) {
-            $userRolesValues[] = $r->getId();
+//        if()
+        $trainingManagerId = $object->getTrainingManager();
+        if (isset($trainingManagerId->id) && $trainingManagerId != null) {
+            $this->get('trainingManager_id')->setValue($trainingManagerId->id);
         }
-        $this->get('roles
-
-        
-
-        ')->setValue($userRolesValues);
+        $testCenterAdminId = $object->getTestCenterAdmin();
+        if (isset($testCenterAdminId->id) && $testCenterAdminId != null) {
+            $this->get('testCenterAdmin_id')->setValue($testCenterAdminId->id);
+        }
+        $focalContactPerson = $object->getFocalContactPerson();
+        if (isset($focalContactPerson->id) && $focalContactPerson != null) {
+            $this->get('focalContactPerson_id')->setValue($focalContactPerson->id);
+        }
     }
 
     public function setObjectManager(ObjectManager $objectManager)

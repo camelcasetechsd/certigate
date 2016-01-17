@@ -87,11 +87,14 @@ class Org
     }
 
     public function saveOrganization($orgInfo, $orgObj = null)
-    {
+    {            
+        
         if (is_null($orgObj)) {
+
             $entity = new \Orgs\Entity\Org();
         }
         else {
+
             $entity = $orgObj;
         }
 
@@ -126,7 +129,7 @@ class Org
         if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
             $orgInfo['trainingManager_id'] = $this->getUserby('id', $orgInfo['trainingManager_id'])[0];
         }
-        else if ($orgInfo['trainingManager_id'] == 0) {
+        else if (isset ($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] == 0) {
             $orgInfo['trainingManager_id'] = null;
         }
 
@@ -135,7 +138,7 @@ class Org
         if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
             $orgInfo['testCenterAdmin_id'] = $this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0];
         }
-        else if ($orgInfo['testCenterAdmin_id'] == 0) {
+        else if (isset ($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] == 0) {
             $orgInfo['testCenterAdmin_id'] = null;
         }
 

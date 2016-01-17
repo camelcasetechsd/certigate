@@ -2,8 +2,69 @@
 {{<layout}}
 {{$content}}
 
+{{{userForm}}}
 
 <script src="/concat/app.js" type="text/javascript"></script>
+<script>
+$(document).ready(function () {
+
+    $orgType = getParameterByName('o');
+    switch ($orgType) {
+        case '1' :
+            $('#org_form_type').val("1");
+            $('.atpSet').hide();
+            $('.atpSet').removeAttr('required');
+            
+            break;
+        case '2' :
+            $('#org_form_type').val("2");
+            $('.atcSet').hide();
+            $('.atcSet').removeAttr('required');
+            break;
+        case '3' :
+            $('#org_form_type').val("3");
+            break;
+        default:
+            //for hacking
+            alert('please select organization type');
+            window.location.replace("/orgs/type");
+            break;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+});
+</script>
 {{/content}}
 
 {{/layout}}

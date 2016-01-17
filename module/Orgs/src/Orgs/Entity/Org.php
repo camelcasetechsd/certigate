@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Regex;
 
+
 /**
  * Orgs Entity
  * @ORM\Entity
@@ -582,7 +583,7 @@ class Org
         $this->CRNo = $CRNo;
     }
 
-    function setCRExpiration(\DateTime $CRExpiration)
+    function setCRExpiration($CRExpiration)
     {
         $this->CRExpiration = $CRExpiration;
     }
@@ -597,7 +598,7 @@ class Org
         $this->atpLicenseNo = $atpLicenseNo;
     }
 
-    function setAtpLicenseExpiration(\DateTime $atpLicenseExpiration)
+    function setAtpLicenseExpiration( $atpLicenseExpiration)
     {
         $this->atpLicenseExpiration = $atpLicenseExpiration;
     }
@@ -612,7 +613,7 @@ class Org
         $this->atcLicenseNo = $atcLicenseNo;
     }
 
-    function setAtcLicenseExpiration(\DateTime $atcLicenseExpiration)
+    function setAtcLicenseExpiration( $atcLicenseExpiration)
     {
         $this->atcLicenseExpiration = $atcLicenseExpiration;
     }
@@ -758,7 +759,8 @@ class Org
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
         $this->setCRNo($data['CRNo']);
-        $this->setCRExpiration($data['CRExpiration']);
+//        var_dump($data['CRExpiration']);exit;
+        $this->setCRExpiration( $data['CRExpiration']);
         $this->setCRAttachment($data['CRAttachment']);
         $this->setAddressLine1($data['addressLine1']);
         $this->setCity($data['city']);
@@ -876,14 +878,14 @@ class Org
                 'name' => 'commercialName',
                 'required' => true,
                 'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\NoObjectExists',
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
                             'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields' => array('commercialName'),
                             'messages' => array(
-                                'objectFound' => 'Sorry, This commercial name already exists !'
+//                                'objectFound' => 'Sorry, This commercial name already exists !'
                             ),
                         )
                     ),
@@ -938,9 +940,9 @@ class Org
                 'validators' => array(
                     array(
                         'name' => 'date',
-                        'options' => array(
-                            'format' => 'm/d/Y',
-                        )
+//                        'options' => array(
+//                            'format' => 'm/d/Y',
+//                        )
                     )
                 )
             ));
@@ -977,9 +979,9 @@ class Org
                 'validators' => array(
                     array(
                         'name' => 'date',
-                        'options' => array(
-                            'format' => 'm/d/Y',
-                        )
+//                        'options' => array(
+//                            'format' => 'm/d/Y',
+//                        )
                     )
                 )
             ));
@@ -1045,9 +1047,9 @@ class Org
                 'validators' => array(
                     array(
                         'name' => 'date',
-                        'options' => array(
-                            'format' => 'm/d/Y',
-                        )
+//                        'options' => array(
+//                            'format' => 'm/d/Y',
+//                        )
                     )
                 )
             ));
