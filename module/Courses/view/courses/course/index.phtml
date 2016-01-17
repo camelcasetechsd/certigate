@@ -4,7 +4,7 @@
 <br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Courses Calendar</div>
+    <div class="panel-heading">Courses</div>
 
     <!-- Table -->
     <table class="table">
@@ -13,6 +13,13 @@
                 <th>Course name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Authorized Instructor</th>
+                <th>Authorized Training Partner</th>
+                <th>Students No.</th>
+                <th>Capacity</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Status</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -22,12 +29,20 @@
                 <td>{{name}}</td>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
+                <td>{{ai.fullName}}</td>
+                <td>{{atp.commercialName}}</td>
+                <td>{{studentsNo}}</td>
+                <td>{{capacity}}</td>
+                <td>{{time}}</td>
+                <td>{{duration}} Day(s)</td>
+                <td>{{statusText}}</td>
+                
                 <td>
-                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-expand"></span></a>
-                    {{#canEnroll}}
+                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><span class="glyphicon glyphicon-plus"></span></a>
-                    {{/canEnroll}}
+                        <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
                 </td>
             </tr>
             {{/courses}}
