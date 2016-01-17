@@ -93,7 +93,8 @@ class IndexController extends ActionController {
                     $request->getPost()->toArray(), $fileData
             );
 
-            $form->setInputFilter($userObj->getInputFilter());
+            $query->setEntity('Users\Entity\User');
+            $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             // file not updated
@@ -177,7 +178,8 @@ class IndexController extends ActionController {
                     $request->getPost()->toArray(), $fileData
             );
 
-            $form->setInputFilter($userObj->getInputFilter());
+            $query->setEntity('Users\Entity\User');
+            $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
             if ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));

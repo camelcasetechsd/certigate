@@ -10,7 +10,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User Entity
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name="user",uniqueConstraints={
+ * @ORM\UniqueConstraint(name="username_idx", columns={"username"}),
+ * @ORM\UniqueConstraint(name="email_idx", columns={"email"})
+ * })
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
@@ -186,7 +189,7 @@ class User {
     
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , unique=true)
      * @var string
      */
     public $email;
@@ -1146,15 +1149,26 @@ class User {
      * @uses InputFilter
      * 
      * @access public
+     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter($query) {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
                 'name' => 'username',
                 'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'   => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('username')
+                        )
+                    ),
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1304,6 +1318,19 @@ class User {
                 'validators' => array(
                     array('name' => 'EmailAddress',
                     ),
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'   => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('email')
+                        )
+                    ),
+                ),
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
                 )
             ));
             $inputFilter->add(array(
