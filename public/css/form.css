@@ -8,3 +8,9 @@ input[type="checkbox"].form-control{
     margin: 4px 4px;
     float: left;
 }
+.legendLabel{
+    font-size: 14px;
+}
+label{
+    display: block;
+}
