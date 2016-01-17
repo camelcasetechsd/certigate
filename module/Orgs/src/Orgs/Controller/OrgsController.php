@@ -21,6 +21,27 @@ use Orgs\Model\Org as OrgModel;
 class OrgsController extends ActionController
 {
 
+    public function typeAction()
+    {
+        $variables = array();
+        $form = new \Orgs\Form\TypeForm(/* $name = */ null);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray()
+            );
+            $form->setData($data);
+            if ($form->isValid()) {
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'), array('type' => $data['type']));
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['TypeForm'] = $this->getFormView($form);
+        return new ViewModel($variables);
+    }
+
     /**
      * List ATCs
      * 
@@ -79,11 +100,11 @@ class OrgsController extends ActionController
 
 
         $variables['userData']->CRExpiration = $variables['userData']->getCRExpiration()->format('Y-m-d');
-        // skip atc expiration if atp
+// skip atc expiration if atp
         if ($variables['userData']->atcLicenseExpiration != null) {
             $variables['userData']->atcLicenseExpiration = $variables['userData']->getAtcLicenseExpiration()->format('Y-m-d');
         }
-        // skip atp expiration if atc
+// skip atp expiration if atc
         if ($variables['userData']->atpLicenseExpiration != null) {
             $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
         }
@@ -113,14 +134,14 @@ class OrgsController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
 
-            // Make certain to merge the files info!
+// Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 //
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
 
-            // Handling Empty Fields
+// Handling Empty Fields
 //            $data = $this->mockInputFilter($data);
 //            var_dump($data['latitude']);
 //            exit;
@@ -186,7 +207,7 @@ class OrgsController extends ActionController
 
 
 
-                // redirecting
+// redirecting
 
                 if ($data['hiddenType'] == 1) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));

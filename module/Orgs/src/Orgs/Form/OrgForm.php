@@ -49,6 +49,45 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
+            'name' => 'type',
+            'type' => 'Zend\Form\Element\Text',
+        ));
+
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\MultiCheckbox',
+            'name' => 'orgType',
+            'required' => true,
+            'options' => array(
+                'label' => 'Organization Type',
+                'value_options' => array(
+                    array(
+                        'value' => '1',
+                        'label' => '    ATC Organization',
+                        'selected' => false,
+                        'disabled' => false,
+                        'attributes' => array(
+                            'id' => 'type-1',
+                        ),
+                    ),
+                    array(
+                        'value' => '2',
+                        'label' => '    ATP Organization',
+                        'selected' => false,
+                        'disabled' => false,
+                        'attributes' => array(
+                            'id' => 'type-2',
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+
+
+
+
+        $this->add(array(
             'name' => 'commercialName',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -59,21 +98,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'options' => array(
                 'label' => 'Commercial Name',
             ),
-            'validators' => array(
-                array(
-                    'name' => 'DoctrineModule\Validator\UniqueObject',
-                    'options' => array(
-                        'use_context' => true,
-//                        'object_repository' => $om->getRepository('Orgs\Entity\Org'),
-//                        'object_manager' => $om,
-//                        'fields' => 'commercialName',
-//                        'messages' => array(
-//                            'objectNotUnique' => 'CommercialName already exists!'
-//                        ),
-                    ),
                 )
-            ),
-        ));
+        );
 
         $this->add(array(
             'name' => 'ownerName',
@@ -289,39 +315,10 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
-        $this->add(array(
-            'type' => 'Zend\Form\Element\MultiCheckbox',
-            'name' => 'type',
-            'options' => array(
-                'label' => 'Organization Type',
-                'value_options' => array(
-                    array(
-                        'value' => '1',
-                        'label' => '    ATC Organization',
-                        'selected' => false,
-                        'disabled' => false,
-                        'attributes' => array(
-                            'id' => 'type-1',
-                        ),
-                    ),
-                    array(
-                        'value' => '2',
-                        'label' => '    ATP Organization',
-                        'selected' => false,
-                        'disabled' => false,
-                        'attributes' => array(
-                            'id' => 'type-2',
-                        ),
-                    ),
-                ),
-            ),
-        ));
 
 
-        $this->add(array(
-            'name' => 'hiddenType',
-            'type' => 'Zend\Form\Element\Text',
-        ));
+
+
 
 
 //////////////////////////////////////////////////////////////////////

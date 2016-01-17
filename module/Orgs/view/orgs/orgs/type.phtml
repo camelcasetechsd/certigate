@@ -1,0 +1,64 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+{{{TypeForm}}}
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+$(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    $orgType = getParameterByName('t');
+    switch ($orgType) {
+        case '1' :
+            $('#type-1').prop("checked", "checked");
+            $('#type_form_type').val("1");
+            break;
+        case '2' :
+            $('#type-2').prop("checked", "checked");
+            $('#type_form_type').val("2");
+            break;
+        default:
+            //for hacking
+            window.location.replace("/sign/out");
+            break;
+    }
+
+    $('.orgType').change(function () {
+        $atcBox = $('input:checkbox[id=type-1]').is(":checked");
+        $atpBox = $('input:checkbox[id=type-2]').is(":checked");
+        if ($atcBox && !$atpBox) {
+            $('#type_form_type').val("1");
+        } else if (!$atcBox && $atpBox) {
+            $('#type_form_type').val("2");
+        }
+        else if ($atcBox && $atpBox) {
+            $('#type_form_type').val("3");
+        }
+        else if (!$atcBox && !$atpBox) {
+            alert("you need to choose type");
+            $('#type_form_type').val("");
+        }
+    });
+});
+
+</script>
+{{/content}}
+
+{{/layout}}

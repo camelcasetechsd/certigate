@@ -37,6 +37,16 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'org_type' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/orgs/type',
+                    'defaults' => array(
+                        'controller' => 'Orgs\Controller\Orgs',
+                        'action' => 'type'
+                    ),
+                )
+            ),
             'list_atp_orgs' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
