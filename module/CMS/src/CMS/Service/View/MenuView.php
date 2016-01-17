@@ -89,7 +89,7 @@ class MenuView {
      */
     protected $primaryMenuAttributes = array(
         self::DIV_CLASS => "primarymenu navbar-collapse collapse",
-        self::UL_CLASS => "primarymenu nav navbar-nav navbar-right",
+        self::UL_CLASS => "primarymenu nav navbar-nav ",
     );
 
     /**
@@ -125,7 +125,7 @@ class MenuView {
                 $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $menuItemTitleUnderscored, $depthLevel);
                 $menuView .= sprintf($this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle);
                 if (count($menuItemArray["children"]) > 0) {
-                    $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divClass = */ '', /* $ulClass = */ '', ++$depthLevel));
+                    $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divClass = */ '', /* $ulClass = */ '', $depthLevel+1));
                 }
                 $menuView .= $this->menuItemCloseString;
             }

@@ -20,6 +20,10 @@ return array(
             'userCreate' => array(
                 'resource' => 'Users',
                 'privileges' => 'userCreate',
+            ),
+            'cmsPageView' => array(
+                'resource' => 'CMS',
+                'privileges' => 'cmsPageView',
             )
         )
     )

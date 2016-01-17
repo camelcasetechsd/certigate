@@ -1,54 +1,62 @@
 <?php
 
 /**
- * Global Configuration Override
+ * Static menu items to be merged with the items created from the admin module 
  *
  */
 return array(
     'static_menus' => array(
-        'primary_menu' => array(
-            "Overview" => array(
+        'admin_menu' => array(
+            "CMS" => array(
                 'depth' => 0,
-                'path' => "/overview/",
+                'path' => "#",
                 'weight' => 1,
-                'title_underscored' => "overview",
-                'children' => array()
-            ),
-            "Reports" => array(
-                'depth' => 0,
-                'path' => "/reports/",
-                'weight' => 2,
-                'title_underscored' => "reports",
-                'children' => array()
-            ),
-            "Analytics" => array(
-                'depth' => 0,
-                'path' => "/analytics/",
-                'weight' => 3,
-                'title_underscored' => "analytics",
-                'children' => array()
-            ),
-            "Export" => array(
-                'depth' => 0,
-                'path' => "/export/",
-                'weight' => 4,
-                'title_underscored' => "export",
+                'title_underscored' => "cms",
                 'children' => array(
                     array(
-                        "Excel" => array(
+                        "Pages" => array(
                             'depth' => 1,
-                            'path' => "/export/excel/",
+                            'path' => "/cms/page",
                             'weight' => 1,
-                            'title_underscored' => "excel",
-                            'children' => array()
+                            'title_underscored' => "cms_page",
+                            'children' => array(
+                            )
                         ),
-                        "Pdf" => array(
+                        "Menus" => array(
                             'depth' => 1,
-                            'path' => "/export/pdf/",
-                            'weight' => 2,
-                            'title_underscored' => "pdf",
-                            'children' => array()
-                        ),)
+                            'path' => "/cms/menu",
+                            'weight' => 1,
+                            'title_underscored' => "cms_menu",
+                            'children' => array(
+                            )
+                        ),
+                        "Menu Items" => array(
+                            'depth' => 1,
+                            'path' => "/cms/menuitem",
+                            'weight' => 1,
+                            'title_underscored' => "cms_menuitem",
+                            'children' => array(
+                            )
+                        ),
+                    )
+                )
+            ),
+            "Users" => array(
+                'depth' => 0,
+                'path' => "/users",
+                'weight' => 2,
+                'title_underscored' => "users",
+                'children' => array(
+                    array(
+                        "Roles" => array(
+                            'depth' => 0,
+                            'path' => "/roles",
+                            'weight' => 1,
+                            'title_underscored' => "roles",
+                            'children' => array(
+                            )
+                        ),
+                    )
                 )
             ),
         )
