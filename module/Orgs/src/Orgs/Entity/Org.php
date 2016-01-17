@@ -893,14 +893,17 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'type',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
                 'name' => 'longtitude',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
                 'name' => 'latitude',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
@@ -965,6 +968,7 @@ class Org
 //
             $inputFilter->add(array(
                 'name' => 'atcLicenseNo',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -973,6 +977,7 @@ class Org
             ));
             $inputFilter->add(array(
                 'name' => 'city',
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -983,6 +988,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseNo',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -992,6 +998,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseAttachment',
+                'required' => false,
                 'validators' => array(
                     array('name' => 'Filesize',
                         'options' => array(
@@ -1008,6 +1015,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseExpiration',
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -1029,6 +1037,7 @@ class Org
             ));
             $inputFilter->add(array(
                 'name' => 'addressLine2',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1059,6 +1068,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'phone2',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1087,24 +1097,27 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'fax',
+                'required' => false,
             ));
+
 
             $inputFilter->add(array(
                 'name' => 'email',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                    )
+                'validators' => array(
+                    array('name' => 'EmailAddress',
+                    ),
                 )
             ));
 //
             $inputFilter->add(array(
                 'name' => 'trainingManager_id',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
                 'name' => 'testCenterAdmin_id',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
@@ -1114,22 +1127,27 @@ class Org
 //
             $inputFilter->add(array(
                 'name' => 'labsNo',
+                'required' => true,
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_lab',
+                'required' => true,
             ));
 
             $inputFilter->add(array(
                 'name' => 'classesNo',
+                'required' => true,
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_class',
+                'required' => false,
             ));
 
             $inputFilter->add(array(
                 'name' => 'operatingSystem',
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1139,6 +1157,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'operatingSystemLang',
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1148,6 +1167,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'officeVersion',
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1157,6 +1177,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'officeLang',
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1166,6 +1187,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'internetSpeed_lab',
+                'required' => true
             ));
 
             $this->inputFilter = $inputFilter;
