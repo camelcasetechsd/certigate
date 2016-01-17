@@ -104,6 +104,9 @@ class Object {
                 case Status::STATUS_DELETED:
                     $object->statusText = Status::STATUS_DELETED_TEXT;
                     break;
+                case Status::STATUS_NOT_APPROVED:
+                    $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
+                    break;
                 default:
                     break;
             }
