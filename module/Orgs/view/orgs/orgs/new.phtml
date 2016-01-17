@@ -8,22 +8,29 @@
 <script>
 $(document).ready(function () {
 
-    $orgType = getParameterByName('t');
+    $orgType = getParameterByName('o');
     switch ($orgType) {
         case '1' :
             $('#org_form_type').val("1");
+            $('.atpSet').hide();
+            $('.atpSet').removeAttr('required');
+            
             break;
         case '2' :
             $('#org_form_type').val("2");
+            $('.atcSet').hide();
+            $('.atcSet').removeAttr('required');
             break;
         case '3' :
             $('#org_form_type').val("3");
             break;
         default:
             //for hacking
-//            window.location.replace("/sign/out");
+            alert('please select organization type');
+            window.location.replace("/orgs/type");
             break;
     }
+
 
 
 

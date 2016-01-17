@@ -50,42 +50,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'type',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
         ));
-
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\MultiCheckbox',
-            'name' => 'orgType',
-            'required' => true,
-            'options' => array(
-                'label' => 'Organization Type',
-                'value_options' => array(
-                    array(
-                        'value' => '1',
-                        'label' => '    ATC Organization',
-                        'selected' => false,
-                        'disabled' => false,
-                        'attributes' => array(
-                            'id' => 'type-1',
-                        ),
-                    ),
-                    array(
-                        'value' => '2',
-                        'label' => '    ATP Organization',
-                        'selected' => false,
-                        'disabled' => false,
-                        'attributes' => array(
-                            'id' => 'type-2',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-
-
-
 
         $this->add(array(
             'name' => 'commercialName',
@@ -157,7 +123,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'CRNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter CR Number',
                 'required' => 'required',
@@ -278,7 +244,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'zipCode',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ZipCode',
                 'required' => 'required',
@@ -326,7 +292,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'atpLicenseNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
@@ -372,7 +338,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'labsNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -388,7 +354,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'pcsNo_lab',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -404,7 +370,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'internetSpeed_lab',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -420,7 +386,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'operatingSystem',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',

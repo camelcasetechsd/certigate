@@ -753,7 +753,7 @@ class Org
      */
     public function exchangeArray($data = array())
     {
-        $this->setType($data['hiddenType']);
+        $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
@@ -766,10 +766,7 @@ class Org
         $this->setPhone1($data['phone1']);
         $this->setWebsite($data['website']);
         $this->setEmail($data['email']);
-//        echo '<pre>';
-//        var_dump($data['focalContactPerson_id']);
-//        exit;
-//        $this->setFocalContactPerson($data['focalContactPerson_id']);
+
         $this->focalContactPerson = $data['focalContactPerson_id'];
 
         if (array_key_exists('phone2', $data)) {
@@ -823,26 +820,23 @@ class Org
         if (array_key_exists('officeLang', $data)) {
             $this->setOfficeLang($data["officeLang"]);
         }
-
         if (array_key_exists('atcLicenseAttachment', $data)) {
-            $this->setAtcLicenseAttachment($data["atcLicenseAttachment"]);
+            $this->setAtcLicenseAttachment($data['atcLicenseAttachment']);
         }
         if (array_key_exists('atcLicenseNo', $data)) {
             $this->setAtcLicenseNo($data["atcLicenseNo"]);
         }
-        if (array_key_exists('atcLicenseExpiration', $data)) {
-//            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
-            $this->atpLicenseExpiration = $data["atcLicenseExpiration"];
+        if (array_key_exists('atcLicenseExpiration', $data) && !empty($data['atcLicenseExpiration'])) {
+            $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
         }
-
         if (array_key_exists('atpLicenseAttachment', $data)) {
             $this->setAtpLicenseAttachment($data["atpLicenseAttachment"]);
         }
         if (array_key_exists('atpLicenseNo', $data)) {
             $this->setAtpLicenseNo($data["atpLicenseNo"]);
         }
-        if (array_key_exists('atpLicenseExpiration', $data)) {
-            $this->atpLicenseExpiration = $data["atpLicenseExpiration"];
+        if (array_key_exists('atpLicenseExpiration', $data) && !empty($data['atpLicenseExpiration'])) {
+            $this->setAtpLicenseExpiration($data["atpLicenseExpiration"]);
         }
     }
 
@@ -874,6 +868,11 @@ class Org
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
+                'name' => 'type',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
                 'name' => 'commercialName',
                 'required' => true,
                 'validators' => array(
@@ -891,19 +890,21 @@ class Org
                 )
             ));
 
-            $inputFilter->add(array(
-                'name' => 'type',
-                'required' => false,
-            ));
 
             $inputFilter->add(array(
                 'name' => 'longtitude',
                 'required' => false,
+//                'validators' => array(
+//                    'name' => 'Float'
+//                )
             ));
 
             $inputFilter->add(array(
                 'name' => 'latitude',
                 'required' => false,
+//                'validators' => array(
+//                    'name' => 'Float'
+//                )
             ));
 
             $inputFilter->add(array(
@@ -919,11 +920,6 @@ class Org
             $inputFilter->add(array(
                 'name' => 'CRNo',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                    )
-                )
             ));
 //
             $inputFilter->add(array(
@@ -976,6 +972,36 @@ class Org
                 )
             ));
             $inputFilter->add(array(
+                'name' => 'atcLicenseExpiration',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'm/d/Y',
+                        )
+                    )
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'atcLicenseAttachment',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Filesize',
+                        'options' => array(
+                            'max' => 2097152
+                        )
+                    ),
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'gif,jpg,png,pdf,docx'
+                        )
+                    ),
+                )
+            ));
+
+            $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,
                 'filters' => array(
@@ -988,7 +1014,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseNo',
-                'required' => false,
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1078,6 +1104,7 @@ class Org
 
             $inputFilter->add(array(
                 'name' => 'phone3',
+                'required' => false,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',

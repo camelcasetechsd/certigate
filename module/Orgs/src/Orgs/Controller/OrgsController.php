@@ -34,8 +34,7 @@ class OrgsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'), array('type' => $data['type']));
-                $this->redirect()->toUrl($url.'?t='.$data['type']);
-
+                $this->redirect()->toUrl($url . '?o=' . $data['type']);
             }
         }
 
@@ -135,19 +134,18 @@ class OrgsController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
 
-// Make certain to merge the files info!
+            // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
-//
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
 
-// Handling Empty Fields
-//            $data = $this->mockInputFilter($data);
-//            var_dump($data['latitude']);
-//            exit;
-
-            switch ($data['hiddenType']) {
+            $inputFilter = $orgObj->getInputFilter($query);
+            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
+            $form->setData($data);
+            
+            
+            switch ($data['type']) {
                 case '1':
                     $skippedParams = array(
                         'atpLicenseNo',
@@ -161,9 +159,8 @@ class OrgsController extends ActionController
                         'officeVersion',
                         'officeLang'
                     );
-
                     foreach ($skippedParams as $param) {
-                        $this->skipParam($form, $data, $param);
+                        $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
 
@@ -180,7 +177,7 @@ class OrgsController extends ActionController
                     );
 
                     foreach ($skippedParams as $param) {
-                        $this->skipParam($form, $data, $param);
+                        $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
 
@@ -189,40 +186,19 @@ class OrgsController extends ActionController
 
 
 
-            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
-            $form->setData($data);
-
-
-
-
-            /*
-             * Add inputs validations here
-             */
-
             if ($form->isValid()) {
 
                 $orgModel->saveOrganization($data);
 
-
-
-
-
-
-// redirecting
-
-                if ($data['hiddenType'] == 1) {
+                // redirecting
+                if ($data['type'] == 1) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
                 }
-                else if ($data['hiddenType'] == 2 || $data['hiddenType'] == 3) {
+                else if ($data['type'] == 2 || $data['type'] == 3) {
                     $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
                 }
 
                 $this->redirect()->toUrl($url);
-            }
-            else {
-                $form->getMessages();
-                var_dump("invalid");
-//                exit;
             }
         }
 
