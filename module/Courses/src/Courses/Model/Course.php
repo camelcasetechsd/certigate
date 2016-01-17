@@ -4,6 +4,7 @@ namespace Courses\Model;
 
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Utilities\Service\Status;
 
 /**
  * Course Model
@@ -50,7 +51,7 @@ class Course {
         }  
         foreach($courses as $course){
             $canEnroll = true;
-            if($nonAuthorizedEnroll === true && $course->getStudentsNo() >= $course->getCapacity()){
+            if($nonAuthorizedEnroll === true || $course->getStudentsNo() >= $course->getCapacity()){
                 $canEnroll = false;
             }
             $course->canEnroll = $canEnroll;
@@ -58,5 +59,20 @@ class Course {
         return $courses;
     }
 
+    /**
+     * Save course
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @param array $data ,default is empty array
+     * @param bool $isAdminUser ,default is bool false
+     */
+    public function save($course, $data = array(), $isAdminUser = false) {
+        
+        if($isAdminUser === false){
+            $course->setStatus(Status::STATUS_NOT_APPROVED);
+        }
+        $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
+    }
 
 }
