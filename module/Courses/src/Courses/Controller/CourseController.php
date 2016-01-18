@@ -8,6 +8,7 @@ use Courses\Form\CourseForm;
 use Courses\Entity\Course;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Utilities\Service\Status;
 
 /**
  * Course Controller
