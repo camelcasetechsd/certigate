@@ -172,7 +172,7 @@ class CourseForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'endDate',
+            'name' => 'time',
             'type' => 'Zend\Form\Element\Time',
             'attributes' => array(
                 'placeholder' => 'Example: 10:10',
@@ -181,6 +181,7 @@ class CourseForm extends Form {
             ),
             'options' => array(
                 'label' => 'Time',
+                'format' => 'H:i'
             ),
         ));
 

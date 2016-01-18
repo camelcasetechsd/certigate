@@ -109,7 +109,7 @@ class Course
     
     /**
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="time")
      * @var \DateTime
      */
     public $time;
