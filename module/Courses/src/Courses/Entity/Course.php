@@ -5,13 +5,15 @@ namespace Courses\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Menu Entity
+ * Course Entity
  * @ORM\Entity
  * @ORM\Table(name="course")
  * @ORM\HasLifecycleCallbacks
- * 
+ * @Gedmo\Loggable
+ *  
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $name
@@ -50,28 +52,28 @@ class Course
     public $id;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $name;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $startDate;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $endDate;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -85,7 +87,7 @@ class Course
     public $studentsNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization")
      * @ORM\JoinColumn(name="atp_id", referencedColumnName="id")
      * @var Organizations\Entity\Organization
@@ -93,7 +95,7 @@ class Course
     public $atp;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @var Users\Entity\User
@@ -101,28 +103,28 @@ class Course
     public $ai;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="time")
      * @var \DateTime
      */
     public $time;
     
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
     public $duration;
 
     /**
-     *
+     * 
      * @ORM\Column(type="integer")
      * @var int
      */
