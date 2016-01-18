@@ -14,13 +14,13 @@ class UserRepository extends EntityRepository
 {
 
     /**
-     * Filter roles
+     * list all users
      * 
      * @access public
      * @param array $excludedRoles ,default is empty array
-     * @return array roles array
+     * @return array users array
      */
-    public function getUsers()
+    public function listUsers()
     {
         $repository = $this->getEntityManager();
         $queryBuilder = $repository->createQueryBuilder("r");
