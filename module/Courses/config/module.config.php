@@ -86,6 +86,19 @@ return array(
                     ),
                 )
             ),
+            'coursesLeave' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/leave/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'leave',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'coursesEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
