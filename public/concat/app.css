@@ -7361,7 +7361,9 @@ label{
     display: block;
 }
 
-
+.checkboxAgreement{
+    display: inline-block;
+}
 /* OriginalFileName : public/css/userForm.css */ 
 
 #user_form input[type="checkbox"].form-control{

@@ -14,3 +14,6 @@ label{
     display: block;
 }
 
+.checkboxAgreement{
+    display: inline-block;
+}
