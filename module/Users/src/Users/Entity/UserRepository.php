@@ -34,6 +34,8 @@ class UserRepository extends EntityRepository
                     ->andWhere($queryBuilder->expr()->in('r.name', ":roles"));
         }
         $queryBuilder->setParameters($parameters);
+        $users = $queryBuilder->getQuery()->getResult();
+        return $users;
     }
 
     /**
