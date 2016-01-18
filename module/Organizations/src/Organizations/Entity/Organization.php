@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Regex;
+use Users\Entity\User;
 
 /**
  * Organisation Entity
@@ -671,17 +672,17 @@ class Organization
         $this->email = $email;
     }
 
-    function setTrainingManager(Users\Entity\User $trainingManager)
+    function setTrainingManager(User $trainingManager)
     {
         $this->trainingManager = $trainingManager;
     }
 
-    function setTestCenterAdmin(Users\Entity\User $testCenterAdmin)
+    function setTestCenterAdmin(User $testCenterAdmin)
     {
         $this->testCenterAdmin = $testCenterAdmin;
     }
 
-    function setFocalContactPerson(Users\Entity\User $focalContactPerson)
+    function setFocalContactPerson(User $focalContactPerson)
     {
         $this->focalContactPerson = $focalContactPerson;
     }
