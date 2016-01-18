@@ -89,6 +89,7 @@ class Users extends AbstractSeed {
         $coursesCalendarRoute = "coursesCalendar";
         $coursesMoreRoute = "coursesMore";
         $coursesEnrollRoute = "coursesEnroll";
+        $coursesLeaveRoute = "coursesLeave";
         $coursesEditRoute = "coursesEdit";
         $coursesDeleteRoute = "coursesDelete";
         $coursesMainRoute = "courses";
@@ -147,6 +148,21 @@ class Users extends AbstractSeed {
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $coursesEnrollRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $coursesLeaveRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $coursesLeaveRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $coursesLeaveRoute,
                 ),
             array(
                 'role_id' => $trainingManagerRoleId,
