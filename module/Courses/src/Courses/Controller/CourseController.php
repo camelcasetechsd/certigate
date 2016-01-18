@@ -74,8 +74,12 @@ class CourseController extends ActionController
     {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseObj = $query->find('Courses\Entity\Course', $id);
-        $variables['course'] = $courseObj;
+        
+        $courseObjArray = array($courseObj);
+        $preparedCourseObjArray = $objectUtilities->prepareForDisplay($courseObjArray);
+        $variables['course'] = reset($preparedCourseObjArray);
         return new ViewModel($variables);
     }
     
