@@ -275,9 +275,19 @@ class Organization
             '5' => 'Chinese',
         );
 
+        $staticVersions = array(
+                    '0' => 'Office 2000',
+                    '1' => 'Office XP (2002)',
+                    '2' => 'Office 2003',
+                    '3' => 'Office 2007',
+                    '4' => 'Office 2010',
+                    '5' => 'Office 2013',
+                    '6' => 'Office 2016',
+                );
         $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
         $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
+        $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
         
         return $variables;
     }

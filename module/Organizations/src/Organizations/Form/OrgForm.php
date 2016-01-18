@@ -444,7 +444,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'officeVersion',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -452,6 +452,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
+                'value_options' => array(
+                    '0' => 'Office 2000',
+                    '1' => 'Office XP (2002)',
+                    '2' => 'Office 2003',
+                    '3' => 'Office 2007',
+                    '4' => 'Office 2010',
+                    '5' => 'Office 2013',
+                    '6' => 'Office 2016',
+                ),
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
                 ),
