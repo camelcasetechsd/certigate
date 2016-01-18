@@ -272,6 +272,11 @@ class User {
     public $trainingManagerStatement;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="users")
+     */
+    public $courses;
+    
+    /**
      *
      * @ORM\Column(type="integer")
      * @var int
@@ -310,7 +315,7 @@ class User {
             return crypt($givenPassword, $savedPassword) == $savedPassword;
         }
     }
-
+    
     /**
      * Prepare user entity
      * 
@@ -318,6 +323,7 @@ class User {
      * @access public
      */
     public function __construct() {
+        $this->courses = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
     
@@ -1067,6 +1073,43 @@ class User {
      */
     public function setSecurityAnswer($securityAnswer) {
         $this->securityAnswer = $securityAnswer;
+        return $this;
+    }
+    
+    /**
+     * Get Courses
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection courses
+     */
+    public function getCourses() {
+        return $this->courses;
+    }    
+
+    /**
+     * Add Courses
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @return User
+     */
+    public function addCourses($course) {
+        $this->courses[] = $course;
+        return $this;
+    }
+    
+    /**
+     * Set Courses
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $courses
+     * @return User
+     */
+    public function setCourses($courses) {
+        $this->courses = $courses;
         return $this;
     }
     

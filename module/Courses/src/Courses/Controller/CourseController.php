@@ -83,11 +83,11 @@ class CourseController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $courseObj = $query->find('Courses\Entity\Course', $id);
+        $course = $query->find('Courses\Entity\Course', $id);
         
-        $courseObjArray = array($courseObj);
-        $preparedCourseObjArray = $objectUtilities->prepareForDisplay($courseObjArray);
-        $variables['course'] = reset($preparedCourseObjArray);
+        $courseArray = array($course);
+        $preparedCourseArray = $objectUtilities->prepareForDisplay($courseArray);
+        $variables['course'] = reset($preparedCourseArray);
         return new ViewModel($variables);
     }
     
@@ -106,7 +106,7 @@ class CourseController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseObj = new Course();
+        $course = new Course();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -122,10 +122,10 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($courseObj->getInputFilter($query));
+            $form->setInputFilter($course->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
-                $courseModel->save($courseObj, $data, $isAdminUser);
+                $courseModel->save($course, $data, $isAdminUser);
                 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
@@ -151,7 +151,7 @@ class CourseController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseObj = $query->find('Courses\Entity\Course', $id);
+        $course = $query->find('Courses\Entity\Course', $id);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -163,15 +163,15 @@ class CourseController extends ActionController
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
         $form = new CourseForm(/* $name = */ null, $options);
-        $form->bind($courseObj);
+        $form->bind($course);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter($courseObj->getInputFilter());
+            $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
             if ($form->isValid()) {
-                $courseModel->save($courseObj,/*$data =*/array() , $isAdminUser);
+                $courseModel->save($course,/*$data =*/array() , $isAdminUser);
                 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
@@ -192,13 +192,56 @@ class CourseController extends ActionController
     {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $courseObj = $query->find('Courses\Entity\Course', $id);
+        $course = $query->find('Courses\Entity\Course', $id);
         
-        $courseObj->setStatus(Status::STATUS_INACTIVE);
+        $course->setStatus(Status::STATUS_INACTIVE);
 
-        $query->save($courseObj);
+        $query->save($course);
         
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $this->redirect()->toUrl($url);
+    }
+    
+    /**
+     * Enroll course
+     *
+     * 
+     * @access public
+     */
+    public function enrollAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $course = $query->find('Courses\Entity\Course', $id);
+        
+        $currentUser = $query->find('Users\Entity\User', $storage['id']);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $courseModel->enrollCourse($course, /*$user =*/ $currentUser);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+        $this->redirect()->toUrl($url);
+    }
+    
+    /**
+     * Leave course
+     *
+     * 
+     * @access public
+     */
+    public function leaveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $course = $query->find('Courses\Entity\Course', $id);
+        $currentUser = $query->find('Users\Entity\User', $storage['id']);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $courseModel->leaveCourse($course, /*$user =*/ $currentUser);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
     }
 

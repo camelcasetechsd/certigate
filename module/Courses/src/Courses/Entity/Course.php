@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Course Entity
@@ -143,6 +144,25 @@ class Course
      * @var \DateTime
      */
     public $modified = null;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="courses")
+     * @ORM\JoinTable(name="courses_users",
+     *      joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
+     */
+    public $users;
+
+    /**
+     * Prepare entity
+     * 
+     * 
+     * @access public
+     */
+    public function __construct() {
+        $this->users = new ArrayCollection();
+    }
     
     /**
      * Get id
@@ -462,6 +482,43 @@ class Course
      */
     public function setModified() {
         $this->modified = new \DateTime();
+        return $this;
+    }
+    
+    /**
+     * Get Users
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection users
+     */
+    public function getUsers() {
+        return $this->users;
+    }    
+
+    /**
+     * Add Users
+     * 
+     * 
+     * @access public
+     * @param Users\Entity\User $user
+     * @return Course
+     */
+    public function addUser($user) {
+        $this->users[] = $user;
+        return $this;
+    }
+    
+    /**
+     * Set Users
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $users
+     * @return Course
+     */
+    public function setUsers($users) {
+        $this->users = $users;
         return $this;
     }
 
