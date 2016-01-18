@@ -10,7 +10,8 @@
         "robmorgan/phinx": "^0.5.1",
         "los/losi18n-data": "1.*",
         "los/losi18n": "1.*",
-        "fzaninotto/faker": "^1.5"
+        "fzaninotto/faker": "^1.5",
+        "gedmo/doctrine-extensions": "^2.4"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",

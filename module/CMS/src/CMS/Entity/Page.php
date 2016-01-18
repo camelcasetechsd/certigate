@@ -3,6 +3,7 @@
 namespace CMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 
@@ -11,6 +12,7 @@ use Zend\InputFilter\InputFilter;
  * @ORM\Entity(repositoryClass="CMS\Entity\PageRepository")
  * @ORM\Table(name="page",uniqueConstraints={@ORM\UniqueConstraint(name="menuitem_idx", columns={"menuitem_id"})})
  * @ORM\HasLifecycleCallbacks
+ * @Gedmo\Loggable
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
@@ -42,6 +44,7 @@ class Page {
     /**
      *
      * @ORM\Column(type="string")
+     * @Gedmo\Versioned
      * @var string
      */
     public $title;
@@ -49,6 +52,7 @@ class Page {
     /**
      *
      * @ORM\Column(type="text")
+     * @Gedmo\Versioned
      * @var string
      */
     public $body;
