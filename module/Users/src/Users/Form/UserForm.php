@@ -340,14 +340,12 @@ class UserForm extends Form {
 
         $this->add(array(
             'name' => 'roles',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => 'required',
-                'multiple' => true,
             ),
             'options' => array(
-                'label' => 'Roles',
+                'label' => '<label class="required legendLabel">Roles</label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
                 'property' => 'name',
@@ -356,6 +354,9 @@ class UserForm extends Form {
                     'params' => array(
                         'excludedRoles' => $excludedRoles
                     )
+                ),
+                'label_options' => array(
+                    'disable_html_escape' => true,
                 )
             ),
         ));
@@ -483,18 +484,6 @@ class UserForm extends Form {
                 'type' => 'button',
             )
         ));
-    }
-
-    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED) {
-        parent::bind($object, $flags);
-
-        $userRoles = $object->getRoles();
-
-        $userRolesValues = [];
-        foreach ($userRoles as $r) {
-            $userRolesValues[] = $r->getId();
-        }
-        $this->get('roles')->setValue($userRolesValues);
     }
 
 }

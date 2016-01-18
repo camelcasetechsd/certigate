@@ -25,6 +25,13 @@ class Menus extends AbstractSeed
         ];
 
         $this->insert( 'menu', $menu );
+        
+        $menu = [
+            "title" => "Admin Menu",
+            "status" => true
+        ];
+
+        $this->insert( 'menu', $menu );
     }
 
 }

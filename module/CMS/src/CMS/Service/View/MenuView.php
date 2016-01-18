@@ -89,7 +89,7 @@ class MenuView {
      */
     protected $primaryMenuAttributes = array(
         self::DIV_CLASS => "primarymenu navbar-collapse collapse",
-        self::UL_CLASS => "primarymenu nav navbar-nav navbar-right",
+        self::UL_CLASS => "primarymenu nav navbar-nav ",
     );
 
     /**
@@ -113,9 +113,9 @@ class MenuView {
         }
         $menuViewArray = array();
         foreach ($menusArray as $menuTitleUnderscored => $menuItemsArray) {
-            if ($depthLevel === 0) {
+            if ($depthLevel === 0 && $menuItemsArray == reset($menusArray)) {
                 $menuView = sprintf($this->menuOpenString, $divClass, $ulClass);
-            } else {
+            } elseif($depthLevel !== 0) {
                 $menuView = sprintf($this->subMenuOpenString, $ulClass);
             }
             foreach ($menuItemsArray as $menuItemTitle => $menuItemArray) {
@@ -129,9 +129,10 @@ class MenuView {
                 }
                 $menuView .= $this->menuItemCloseString;
             }
-            if ($depthLevel === 0) {
+            
+            if ($depthLevel === 0 && $menuItemsArray == end($menusArray)) {
                 $menuView .= $this->menuCloseString;
-            } else {
+            } elseif($depthLevel !== 0) {
                 $menuView .= $this->subMenuCloseString;
             }
             $menuViewArray[$menuTitleUnderscored] = $menuView;

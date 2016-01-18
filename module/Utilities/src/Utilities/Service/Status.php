@@ -43,5 +43,15 @@ class Status {
      * Entity is deleted text
      */
     const STATUS_DELETED_TEXT = "Deleted";
+    
+    /**
+     * Entity is not approved
+     */
+    const STATUS_NOT_APPROVED = 3;
+    
+    /**
+     * Entity is not approved text
+     */
+    const STATUS_NOT_APPROVED_TEXT = "Not Approved";
 
 }

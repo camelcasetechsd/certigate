@@ -7353,6 +7353,18 @@ input[type="checkbox"].form-control{
     width: auto;
     height: auto;
     margin: 4px 4px;
+}
+.legendLabel{
+    font-size: 14px;
+}
+label{
+    display: block;
+}
+
+
+/* OriginalFileName : public/css/userForm.css */ 
+
+#user_form input[type="checkbox"].form-control{
     float: left;
 }
 /* OriginalFileName : public/css/errors.css */ 
@@ -7370,6 +7382,9 @@ input[type="checkbox"].form-control{
 }
 .input-error{
     border: 1px solid red;
+}
+.error{
+    color: RED;
 }
 /* OriginalFileName : public/css/inactive.css */ 
 

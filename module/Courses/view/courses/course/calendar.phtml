@@ -1,0 +1,40 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Courses Calendar</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courses}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>
+                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-expand"></span></a>
+                    {{#canEnroll}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><span class="glyphicon glyphicon-plus"></span></a>
+                    {{/canEnroll}}
+                </td>
+            </tr>
+            {{/courses}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

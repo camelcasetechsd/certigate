@@ -6,5 +6,11 @@ input[type="checkbox"].form-control{
     width: auto;
     height: auto;
     margin: 4px 4px;
-    float: left;
 }
+.legendLabel{
+    font-size: 14px;
+}
+label{
+    display: block;
+}
+

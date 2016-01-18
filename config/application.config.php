@@ -22,7 +22,8 @@ return array(
         'CustomMustache',
         'CertigateAcl',
         'Organizations',
-//        'Orgs'
+        'Courses',
+        'Versioning'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

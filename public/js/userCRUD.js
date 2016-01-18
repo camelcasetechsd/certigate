@@ -51,28 +51,27 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
  */
 function displayStatementCheckbox(roleSelector) {
     var value, checkboxSelector;
-    $(roleSelector + ' option:selected').each(function (i, selected) {
-        value = $(selected).text();
+    $(roleSelector + ':checked').each(function (i, selected) {
+        value = $(selected).parent('label').text();
         checkboxSelector = $("[data-role='" + value + "']");
         if (checkboxSelector.length) {
             checkboxSelector.parent("div").parent("dd").show();
         }
     });
     $(roleSelector).change(function () {
-        $(roleSelector + ' option:selected').each(function (i, selected) {
-            value = $(selected).text();
+        if($(this).is(":checked")){
+            value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
                 checkboxSelector.parent("div").parent("dd").show();
             }
-        });
-        $(roleSelector + ' option:not(:selected)').each(function (i, notSelected) {
-            value = $(notSelected).text();
+        }else{
+            value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
                 checkboxSelector.parent("div").parent("dd").hide();
             }
-        });
+        }
     });
 }
 

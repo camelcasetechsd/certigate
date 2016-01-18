@@ -30,6 +30,11 @@ class Menu {
     const PRIMARY_MENU_UNDERSCORED = "primary_menu";
     
     /**
+     * Admin menu
+     */
+    const ADMIN_MENU_UNDERSCORED = "admin_menu";
+    
+    /**
      *
      * @var InputFilter validation constraints 
      */
