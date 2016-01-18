@@ -1,0 +1,29 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/courses/calendar"><button class="btn btn-small btn-success"><span class="glyphicon glyphicon-arrow-left"></span></button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Course Info</div>
+
+    <!-- Table -->
+    <table class="table">
+        <tbody>
+            {{#course}}
+            <tr>
+                <td>Name</td><td>{{name}}</td>
+                <td>Brief</td><td>{{brief}}</td>
+                <td>Authorized Instructor</td><td>{{ai.fullName}}</td>
+                <td>Start Date</td><td>{{startDate}}</td>
+                <td>End Date</td><td>{{endDate}}</td>
+                <td>Time</td><td>{{time}}</td>
+                <td>Duration</td><td>{{duration}} Day(s)</td>
+                <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
+            </tr>
+            {{/course}}
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

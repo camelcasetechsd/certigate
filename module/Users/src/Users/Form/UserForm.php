@@ -486,16 +486,4 @@ class UserForm extends Form {
         ));
     }
 
-    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED) {
-        parent::bind($object, $flags);
-
-        $userRoles = $object->getRoles();
-
-        $userRolesValues = [];
-        foreach ($userRoles as $r) {
-            $userRolesValues[] = $r->getId();
-        }
-        $this->get('roles')->setValue($userRolesValues);
-    }
-
 }

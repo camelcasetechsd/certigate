@@ -10,6 +10,23 @@ use Zend\InputFilter\InputFilter;
  * Menu Entity
  * @ORM\Entity
  * @ORM\Table(name="course")
+ * @ORM\HasLifecycleCallbacks
+ * 
+ * @property InputFilter $inputFilter validation constraints 
+ * @property int $id
+ * @property string $name
+ * @property \DateTime $startDate
+ * @property \DateTime $endDate
+ * @property int $capacity
+ * @property int $studentsNo
+ * @property Organizations\Entity\Organization $atp
+ * @property Users\Entity\User $ai
+ * @property string $brief
+ * @property \DateTime $time
+ * @property int $duration
+ * @property int $status
+ * @property \DateTime $created
+ * @property \DateTime $modified
  * 
  * @package courses
  * @subpackage entity
@@ -34,7 +51,7 @@ class Course
 
     /**
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      * @var string
      */
     public $name;
@@ -66,12 +83,12 @@ class Course
      * @var int
      */
     public $studentsNo;
-    
+
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization")
      * @ORM\JoinColumn(name="atp_id", referencedColumnName="id")
-     * @var Users\Entity\User
+     * @var Organizations\Entity\Organization
      */
     public $atp;
     
@@ -85,7 +102,7 @@ class Course
     
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
@@ -157,6 +174,222 @@ class Course
      */
     public function setName($name) {
         $this->name = $name;
+        return $this;
+    }
+    
+    /**
+     * Get Start Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime startDate
+     */
+    public function getStartDate() {
+        return $this->startDate;
+    }    
+
+    /**
+     * Set Start Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $startDate
+     * @return Course
+     */
+    public function setStartDate($startDate) {
+        $this->startDate = new \DateTime($startDate);
+        return $this;
+    }
+    
+    /**
+     * Get End Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime endDate
+     */
+    public function getEndDate() {
+        return $this->endDate;
+    }    
+
+    /**
+     * Set End Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $endDate
+     * @return Course
+     */
+    public function setEndDate($endDate) {
+        $this->endDate = new \DateTime($endDate);
+        return $this;
+    }
+
+    /**
+     * Get capacity
+     * 
+     * 
+     * @access public
+     * @return int capacity
+     */
+    public function getCapacity() {
+        return $this->capacity;
+    }
+    
+    /**
+     * Set capacity
+     * 
+     * 
+     * @access public
+     * @param int $capacity
+     * @return Course
+     */
+    public function setCapacity($capacity) {
+        $this->capacity = (int)$capacity;
+        return $this;
+    }
+
+    /**
+     * Get Students No
+     * 
+     * 
+     * @access public
+     * @return int studentsNo
+     */
+    public function getStudentsNo() {
+        return $this->studentsNo;
+    }
+    
+    /**
+     * Set Students No
+     * 
+     * 
+     * @access public
+     * @param int $studentsNo
+     * @return Course
+     */
+    public function setStudentsNo($studentsNo) {
+        $this->studentsNo = (int)$studentsNo;
+        return $this;
+    }
+
+    /**
+     * Get Atp
+     * 
+     * 
+     * @access public
+     * @return Organizations\Entity\Organization atp
+     */
+    public function getAtp() {
+        return $this->atp;
+    }
+    
+    /**
+     * Set Atp
+     * 
+     * 
+     * @access public
+     * @param Organizations\Entity\Organization $atp
+     * @return Course
+     */
+    public function setAtp($atp) {
+        $this->atp = $atp;
+        return $this;
+    }
+    
+    /**
+     * Get Ai
+     * 
+     * 
+     * @access public
+     * @return Users\Entity\User Ai
+     */
+    public function getAi() {
+        return $this->ai;
+    }
+    
+    /**
+     * Set Ai
+     * 
+     * 
+     * @access public
+     * @param Users\Entity\User $ai
+     * @return Course
+     */
+    public function setAi($ai) {
+        $this->ai = $ai;
+        return $this;
+    }
+    
+    /**
+     * Get Brief
+     * 
+     * 
+     * @access public
+     * @return string brief
+     */
+    public function getBrief() {
+        return $this->brief;
+    }    
+
+    /**
+     * Set brief
+     * 
+     * 
+     * @access public
+     * @param string $brief
+     * @return Course
+     */
+    public function setBrief($brief) {
+        $this->brief = $brief;
+        return $this;
+    }
+    
+    /**
+     * Get Time
+     * 
+     * 
+     * @access public
+     * @return \DateTime time
+     */
+    public function getTime() {
+        return $this->time;
+    }    
+
+    /**
+     * Set Time
+     * 
+     * 
+     * @access public
+     * @param \DateTime $time
+     * @return Course
+     */
+    public function setTime($time) {
+        $this->time = new \DateTime($time);
+        return $this;
+    }
+         
+    /**
+     * Get duration
+     * 
+     * 
+     * @access public
+     * @return int duration
+     */
+    public function getDuration() {
+        return $this->duration;
+    }
+    
+    /**
+     * Set duration
+     * 
+     * 
+     * @access public
+     * @param int $duration
+     * @return Course
+     */
+    public function setDuration($duration) {
+        $this->duration = (int)$duration;
         return $this;
     }
     
@@ -249,12 +482,22 @@ class Course
      * @param array $data ,default is empty array
      */
     public function exchangeArray($data = array()) {
-        if(array_key_exists('title', $data)){
-            $this->setTitle($data["title"]);
+        if(array_key_exists('name', $data)){
+            $this->setName($data["name"]);
         }
         if(array_key_exists('status', $data)){
             $this->setStatus($data["status"]);
         }
+        $this->setAi($data["ai"])
+                ->setAtp($data["atp"])
+                ->setBrief($data["brief"])
+                ->setCapacity($data["capacity"])
+                ->setDuration($data["duration"])
+                ->setEndDate($data["endDate"])
+                ->setStartDate($data["startDate"])
+                ->setStudentsNo($data["studentsNo"])
+                ->setTime($data["time"])
+                ;
     }
 
     /**
@@ -276,27 +519,54 @@ class Course
      * @uses InputFilter
      * 
      * @access public
-     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query) {
+    public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'title',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context'   => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('title')
-                        )
-                    ),
-                )
+                'name' => 'name',
+                'required' => true
             ));
+            
+            $inputFilter->add(array(
+                'name' => 'startDate',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'endDate',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'capacity',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'studentsNo',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'atp',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'ai',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'brief',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'time',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'duration',
+                'required' => true,
+            ));
+            
             $this->inputFilter = $inputFilter;
         }
 
