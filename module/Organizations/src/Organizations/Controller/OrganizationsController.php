@@ -108,6 +108,7 @@ class OrganizationsController extends ActionController
         if ($variables['userData']->atpLicenseExpiration != null) {
             $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
         }
+        $variables = $organizationModel->prepareStatics($variables);
         return new ViewModel($variables);
     }
 
@@ -151,13 +152,9 @@ class OrganizationsController extends ActionController
                         'atpLicenseNo',
                         'atpLicenseExpiration',
                         'atpLicenseAttachment',
-                        'labsNo',
-                        'pcsNo_lab',
-                        'internetSpeed_lab',
-                        'operatingSystem',
-                        'operatingSystemLang',
-                        'officeVersion',
-                        'officeLang'
+                        'classesNo',
+                        'pcsNo_class',
+                        'trainingManager_id'
                     );
                     foreach ($skippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
@@ -167,13 +164,18 @@ class OrganizationsController extends ActionController
                     break;
 
                 case '2':
-
                     $skippedParams = array(
                         'atcLicenseNo',
                         'atcLicenseExpiration',
                         'atcLicenseAttachment',
-                        'classesNo',
-                        'pcsNo_class'
+                        'labsNo',
+                        'pcsNo_lab',
+                        'internetSpeed_lab',
+                        'operatingSystem',
+                        'operatingSystemLang',
+                        'officeVersion',
+                        'officeLang',
+                        'testCenterAdmin_id'
                     );
 
                     foreach ($skippedParams as $param) {
@@ -267,20 +269,16 @@ class OrganizationsController extends ActionController
             }
 
             $data['active'] = 1;
-            
+
             switch ($data['type']) {
                 case '1':
                     $skippedParams = array(
                         'atpLicenseNo',
                         'atpLicenseExpiration',
                         'atpLicenseAttachment',
-                        'labsNo',
-                        'pcsNo_lab',
-                        'internetSpeed_lab',
-                        'operatingSystem',
-                        'operatingSystemLang',
-                        'officeVersion',
-                        'officeLang'
+                        'classesNo',
+                        'pcsNo_class',
+                        'atpPrivacyStatement'
                     );
                     foreach ($skippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
@@ -290,13 +288,18 @@ class OrganizationsController extends ActionController
                     break;
 
                 case '2':
-
                     $skippedParams = array(
                         'atcLicenseNo',
                         'atcLicenseExpiration',
                         'atcLicenseAttachment',
-                        'classesNo',
-                        'pcsNo_class'
+                        'labsNo',
+                        'pcsNo_lab',
+                        'internetSpeed_lab',
+                        'operatingSystem',
+                        'operatingSystemLang',
+                        'officeVersion',
+                        'officeLang',
+                        'atcPrivacyStatement'
                     );
 
                     foreach ($skippedParams as $param) {
@@ -339,7 +342,7 @@ class OrganizationsController extends ActionController
 //        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Org');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
 
-        $orgModel  = $this ->getServiceLocator()->get('Organizations\Model\Organization');
+        $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $orgModel->deleteOrganization($id);
 
 

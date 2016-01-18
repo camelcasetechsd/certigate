@@ -294,7 +294,198 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
 //////////////////////////////////////////////////////////////////////
         /////////// ATP Data ///////////////
+        $this->add(array(
+            'name' => 'atcLicenseNo',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Enter Phone Number',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'ATC Licesne No',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
+        $this->add(array(
+            'name' => 'atcLicenseExpiration',
+            'type' => 'Zend\Form\Element\Date',
+            'attributes' => array(
+                'placeholder' => 'Enter Phone Number',
+                'required' => 'required',
+                'class' => 'form-control datepicker atcSet',
+            ),
+            'options' => array(
+                'label' => 'ATC Licesne Expiration Date',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
 
+        $this->add(array(
+            'name' => 'atcLicenseAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+                'class' => 'atcSet',
+            ),
+            'options' => array(
+                'label' => 'ATC License Attachment',
+                'required' => 'required',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'labsNo',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Labs No',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'pcsNo_lab',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Pcs No / Lab',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'internetSpeed_lab',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Internet Speed / Lab',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'operatingSystem',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Operating System',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+                'value_options' => array(
+                    '0' => 'Microsoft Windows XP',
+                    '1' => 'Microsoft Windows Vista',
+                    '2' => 'Microsoft Windows 7',
+                    '3' => 'Microsoft Windows 8',
+                    '4' => 'Microsoft Windows 8.1',
+                    '5' => 'Microsoft Windows 10',
+                    '6' => 'Ubuntu Linux 13.04 LTS',
+                    '7' => 'Ubuntu Linux 14.04 LTS',
+                    '8' => 'Red Hat Enterprise Linux 5',
+                    '9' => 'Red Hat Enterprise Linux 6',
+                    '10' => 'Red Hat Enterprise Linux 7',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'operatingSystemLang',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'OperatingSystemLang',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+                'value_options' => array(
+                    '0' => 'Arabic',
+                    '1' => 'English',
+                    '2' => 'Deutsch',
+                    '3' => 'French',
+                    '4' => 'Japanese',
+                    '5' => 'Chinese',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'officeVersion',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter ',
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Microseft Office Version',
+                'label_attributes' => array(
+                    'class' => 'atpLicenseNo atcSet',
+                ),
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'officeLang',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control atcSet',
+            ),
+            'options' => array(
+                'label' => 'Microsoft office Language',
+                'label_attributes' => array(
+                    'class' => 'atcSet',
+                ),
+                'value_options' => array(
+                    '0' => 'Arabic',
+                    '1' => 'English',
+                    '2' => 'Deutsch',
+                    '3' => 'French',
+                    '4' => 'Japanese',
+                    '5' => 'Chinese',
+                ),
+            ),
+        ));
+
+
+//            END OF ATP
+///////////////////////////////////////////////////////////////
+        //////////// ATC DATA /////////////
         $this->add(array(
             'name' => 'atpLicenseNo',
             'type' => 'Zend\Form\Element\Number',
@@ -343,180 +534,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'labsNo',
-            'type' => 'Zend\Form\Element\Number',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Labs No',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'pcsNo_lab',
-            'type' => 'Zend\Form\Element\Number',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Pcs No / Lab',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'internetSpeed_lab',
-            'type' => 'Zend\Form\Element\Number',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Internet Speed / Lab',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'operatingSystem',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Operating System',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'operatingSystemLang',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'OperatingSystemLang',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'officeVersion',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Microseft Office Version',
-                'label_attributes' => array(
-                    'class' => 'atpLicenseNo atpSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'officeLang',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Enter ',
-                'required' => 'required',
-                'class' => 'form-control atpSet',
-            ),
-            'options' => array(
-                'label' => 'Microsoft office Language',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
-                ),
-            ),
-        ));
-
-
-//            END OF ATP
-///////////////////////////////////////////////////////////////
-        //////////// ATC DATA /////////////
-
-        $this->add(array(
-            'name' => 'atcLicenseExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
-                'required' => 'required',
-                'class' => 'form-control datepicker atcSet',
-            ),
-            'options' => array(
-                'label' => 'ATC Licesne Expiration Date',
-                'label_attributes' => array(
-                    'class' => 'atcSet',
-                ),
-            ),
-        ));
-        $this->add(array(
-            'name' => 'atcLicenseNo',
-            'type' => 'Zend\Form\Element\Number',
-            'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
-                'required' => 'required',
-                'class' => 'form-control atcSet',
-            ),
-            'options' => array(
-                'label' => 'ATC Licesne No',
-                'label_attributes' => array(
-                    'class' => 'atcSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'atcLicenseAttachment',
-            'type' => 'Zend\Form\Element\File',
-            'attributes' => array(
-                'class' => 'atcSet',
-            ),
-            'options' => array(
-                'label' => 'ATC License Attachment',
-                'required' => 'required',
-                'label_attributes' => array(
-                    'class' => 'atcSet',
-                ),
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'classesNo',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control atcSet',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Classes No.',
                 'label_attributes' => array(
-                    'class' => 'atcSet',
+                    'class' => 'atpSet',
                 ),
             ),
         ));
@@ -527,12 +555,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
-                'class' => 'form-control atcSet',
+                'class' => 'form-control atpSet',
             ),
             'options' => array(
                 'label' => 'Pcs No / Class',
                 'label_attributes' => array(
-                    'class' => ' atcSet',
+                    'class' => ' atpSet',
                 ),
             ),
         ));
@@ -544,11 +572,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'trainingManager_id',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control atpSet',
                 'multiple' => true,
             ),
             'options' => array(
                 'label' => 'Training Manager',
+                'label_attributes' => array(
+                    'class' => ' atpSet',
+                ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
@@ -562,11 +593,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'testCenterAdmin_id',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control atcSet',
                 'multiple' => true,
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
+                'label_attributes' => array(
+                    'class' => ' atcSet',
+                ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
@@ -602,14 +636,32 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'privacyStatement',
+            'name' => 'atpPrivacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
-                'required' => 'required',
+                'class' => 'form-control atpSet',
+                'required' => true,
             ),
             'options' => array(
-                'label' => 'Privacy Statement',
+                'label' => 'ATP Privacy Statement',
+                'label_attributes' => array(
+                    'class' => ' atpSet',
+                ),
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'atcPrivacyStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control atcSet',
+                'required' => true,
+            ),
+            'options' => array(
+                'label' => 'ATC Privacy Statement',
+                'label_attributes' => array(
+                    'class' => ' atcSet',
+                ),
             ),
         ));
 

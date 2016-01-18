@@ -154,22 +154,22 @@ class Organization
          * Handling transfered Files
          */
         if (!empty($orgInfo['CRAttachment']['name'])) {
-            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment','cr');
+            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
         if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
-            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment','atp');
+            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
         if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
-            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment','atc');
+            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
-                
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
 //        
 //        if (!empty($orgInfo['CRAttachment']['name']) && $orgInfo['CRAttachment']['name'] != '') {
 //            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
@@ -249,6 +249,37 @@ class Organization
         $org->active = \Organizations\Entity\Organization::NOT_ACTIVE;
         $this->query->entityManager->merge($org);
         $this->query->entityManager->flush($org);
+    }
+
+    public function prepareStatics($variables)
+    {
+        $staticOs = array(
+            '0' => 'Microsoft Windows XP',
+            '1' => 'Microsoft Windows Vista',
+            '2' => 'Microsoft Windows 7',
+            '3' => 'Microsoft Windows 8',
+            '4' => 'Microsoft Windows 8.1',
+            '5' => 'Microsoft Windows 10',
+            '6' => 'Ubuntu Linux 13.04 LTS',
+            '7' => 'Ubuntu Linux 14.04 LTS',
+            '8' => 'Red Hat Enterprise Linux 5',
+            '9' => 'Red Hat Enterprise Linux 6',
+            '10' => 'Red Hat Enterprise Linux 7'
+        );
+        $staticLangs = array(
+            '0' => 'Arabic',
+            '1' => 'English',
+            '2' => 'Deutsch',
+            '3' => 'French',
+            '4' => 'Japanese',
+            '5' => 'Chinese',
+        );
+
+        $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
+        $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
+        $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
+        
+        return $variables;
     }
 
 }
