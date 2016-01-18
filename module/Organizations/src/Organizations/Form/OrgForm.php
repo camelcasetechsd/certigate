@@ -595,6 +595,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
+        $this->add(array(
+            'name' => 'privacyStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Privacy Statement',
+            ),
+        ));
 
         $this->add(array(
             'name' => 'submit',
