@@ -74,5 +74,42 @@ class Course {
         }
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
+    
+    /**
+     * Leave course
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @param int $userId
+     */
+    public function leaveCourse($course, $userId) {
+        $users = $course->getUsers();
+        $users->remove(/*$key=*/$userId);
+        $course->setUsers($users);
+        
+        $studentsNo = $course->getStudentsNo();
+        $studentsNo--;
+        $course->setStudentsNo($studentsNo);
+        $this->query->setEntity('Courses\Entity\Course')->save($course);
+    }
+    
+    /**
+     * Enroll course
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @param int $userId
+     */
+    public function enrollCourse($course, $userId) {
+        $currentUser = $this->query->find('Users\Entity\User', $userId);
+        $users = $course->getUsers();
+        $users->set(/*$key=*/$userId, /*$value=*/$currentUser);
+        $course->setUsers($users);
+        
+        $studentsNo = $course->getStudentsNo();
+        $studentsNo++;
+        $course->setStudentsNo($studentsNo);
+        $this->query->setEntity('Courses\Entity\Course')->save($course);
+    }
 
 }
