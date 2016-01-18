@@ -46,9 +46,9 @@ class Course {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $nonAuthorizedEnroll = false;
-        $currentUserId = 0;
+        $currentUser = NULL;
         if ($auth->hasIdentity()) {
-            $currentUserId = $storage['id'];
+            $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
             if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])) {
                 $nonAuthorizedEnroll = true;
             }
@@ -56,7 +56,10 @@ class Course {
         foreach ($courses as $course) {
             $canEnroll = true;
             $users = $course->getUsers();
-            $canLeave = $users->containsKey($currentUserId);
+            $canLeave = false;
+            if (!is_null($currentUser)) {
+                $canLeave = $users->contains($currentUser);
+            }
             if ($canLeave === true || $nonAuthorizedEnroll === true || $course->getStudentsNo() >= $course->getCapacity()) {
                 $canEnroll = false;
             }
@@ -87,11 +90,11 @@ class Course {
      * 
      * @access public
      * @param Courses\Entity\Course $course
-     * @param int $userId
+     * @param Users\Entity\User $user
      */
-    public function leaveCourse($course, $userId) {
+    public function leaveCourse($course, $user) {
         $users = $course->getUsers();
-        $users->remove(/* $key= */$userId);
+        $users->removeElement($user);
         $course->setUsers($users);
 
         $studentsNo = $course->getStudentsNo();
@@ -105,17 +108,20 @@ class Course {
      * 
      * @access public
      * @param Courses\Entity\Course $course
-     * @param int $userId
+     * @param Users\Entity\User $user
+     * @throws \Exception Capacity exceeded
      */
-    public function enrollCourse($course, $userId) {
-        $currentUser = $this->query->find('Users\Entity\User', $userId);
-        $users = $course->getUsers();
-        $users->set(/* $key= */$userId, /* $value= */ $currentUser);
-        $course->setUsers($users);
-
+    public function enrollCourse($course, $user) {
         $studentsNo = $course->getStudentsNo();
         $studentsNo++;
+        
+        $capacity = $course->getCapacity();
+        if($capacity < $studentsNo){
+            throw new \Exception("Capacity exceeded");
+        }
+        
         $course->setStudentsNo($studentsNo);
+        $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
     }
 

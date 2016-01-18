@@ -216,10 +216,11 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         $course = $query->find('Courses\Entity\Course', $id);
         
+        $currentUser = $query->find('Users\Entity\User', $storage['id']);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->enrollCourse($course, /*$userId =*/ $storage['id']);
+        $courseModel->enrollCourse($course, /*$user =*/ $currentUser);
         
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
     }
     
@@ -236,11 +237,11 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $course = $query->find('Courses\Entity\Course', $id);
-        
+        $currentUser = $query->find('Users\Entity\User', $storage['id']);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->leaveCourse($course, /*$userId =*/ $storage['id']);
+        $courseModel->leaveCourse($course, /*$user =*/ $currentUser);
         
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
     }
 
