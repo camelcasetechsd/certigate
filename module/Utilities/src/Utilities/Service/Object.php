@@ -5,6 +5,7 @@ namespace Utilities\Service;
 use Utilities\Service\Status;
 use LosI18n\Service\CountryService;
 use LosI18n\Service\LanguageService;
+use Utilities\Service\Time;
 
 /**
  * Object
@@ -69,7 +70,11 @@ class Object {
                     }
                     
                 } elseif ($objectPropertyValue instanceof \DateTime) {
-                    $object->$objectPropertyName = $objectPropertyValue->format("D, d M Y H:i");
+                    $formattedString = $objectPropertyValue->format("D, d M Y");
+                    if($formattedString == Time::UNIX_DATE_STRING){
+                        $formattedString = $objectPropertyValue->format("H:i");
+                    }
+                    $object->$objectPropertyName = $formattedString;
                 } elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel) {
                     $objectsPropertyValue = $this->prepareForDisplay(array($objectPropertyValue), $depthLevel, $maxDepthLevel);
                     $object->$objectPropertyName = reset($objectsPropertyValue);
