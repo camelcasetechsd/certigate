@@ -14,6 +14,11 @@ namespace Utilities\Service;
 class Time {
 
     /**
+     * UNIX date string
+     */
+    const UNIX_DATE_STRING = "Thu, 01 Jan 1970";
+    
+    /**
      * Get hour difference
      * 
      * 
