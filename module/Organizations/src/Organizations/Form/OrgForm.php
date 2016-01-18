@@ -111,7 +111,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'ownerNationalId',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Owner National Id',
                 'required' => 'required',
@@ -387,7 +387,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'operatingSystem',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -471,7 +471,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
         $this->add(array(
             'name' => 'atcLicenseNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number',
                 'required' => 'required',
@@ -501,7 +501,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'classesNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
@@ -517,7 +517,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'pcsNo_class',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter ',
                 'required' => 'required',
