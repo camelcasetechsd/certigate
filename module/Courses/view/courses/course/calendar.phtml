@@ -28,6 +28,10 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><span class="glyphicon glyphicon-plus"></span></a>
                     {{/canEnroll}}
+                    {{#canLeave}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="Leave"><span class="glyphicon glyphicon-minus"></span></a>
+                    {{/canLeave}}
                 </td>
             </tr>
             {{/courses}}

@@ -34,7 +34,7 @@ class Course {
     public function __construct($query) {
         $this->query = $query;
     }
-    
+
     /**
      * Set can enroll property
      * 
@@ -46,15 +46,22 @@ class Course {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $nonAuthorizedEnroll = false;
-        if ($auth->hasIdentity() && in_array( Role::INSTRUCTOR_ROLE, $storage['roles'] )) {
-            $nonAuthorizedEnroll = true;
-        }  
-        foreach($courses as $course){
+        $currentUserId = 0;
+        if ($auth->hasIdentity()) {
+            $currentUserId = $storage['id'];
+            if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])) {
+                $nonAuthorizedEnroll = true;
+            }
+        }
+        foreach ($courses as $course) {
             $canEnroll = true;
-            if($nonAuthorizedEnroll === true || $course->getStudentsNo() >= $course->getCapacity()){
+            $users = $course->getUsers();
+            $canLeave = $users->containsKey($currentUserId);
+            if ($canLeave === true || $nonAuthorizedEnroll === true || $course->getStudentsNo() >= $course->getCapacity()) {
                 $canEnroll = false;
             }
             $course->canEnroll = $canEnroll;
+            $course->canLeave = $canLeave;
         }
         return $courses;
     }
@@ -68,13 +75,13 @@ class Course {
      * @param bool $isAdminUser ,default is bool false
      */
     public function save($course, $data = array(), $isAdminUser = false) {
-        
-        if($isAdminUser === false){
+
+        if ($isAdminUser === false) {
             $course->setStatus(Status::STATUS_NOT_APPROVED);
         }
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
-    
+
     /**
      * Leave course
      * 
@@ -84,15 +91,15 @@ class Course {
      */
     public function leaveCourse($course, $userId) {
         $users = $course->getUsers();
-        $users->remove(/*$key=*/$userId);
+        $users->remove(/* $key= */$userId);
         $course->setUsers($users);
-        
+
         $studentsNo = $course->getStudentsNo();
         $studentsNo--;
         $course->setStudentsNo($studentsNo);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
     }
-    
+
     /**
      * Enroll course
      * 
@@ -103,9 +110,9 @@ class Course {
     public function enrollCourse($course, $userId) {
         $currentUser = $this->query->find('Users\Entity\User', $userId);
         $users = $course->getUsers();
-        $users->set(/*$key=*/$userId, /*$value=*/$currentUser);
+        $users->set(/* $key= */$userId, /* $value= */ $currentUser);
         $course->setUsers($users);
-        
+
         $studentsNo = $course->getStudentsNo();
         $studentsNo++;
         $course->setStudentsNo($studentsNo);
