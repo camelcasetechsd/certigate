@@ -21,8 +21,8 @@ return array(
         'Mustache',
         'CustomMustache',
         'CertigateAcl',
-//        'Organizations',
-        'Orgs'
+        'Organizations',
+//        'Orgs'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

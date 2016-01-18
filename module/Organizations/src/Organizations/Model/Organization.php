@@ -1,6 +1,6 @@
 <?php
 
-namespace Orgs\Model;
+namespace Organizations\Model;
 
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
@@ -24,7 +24,7 @@ use Utilities\Service\Query\Query;
  * 
  * 
  */
-class Org
+class Organization
 {
 
     protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
@@ -76,12 +76,12 @@ class Org
 
     public function getOrganizations()
     {
-        return $this->query->findAll(/* $entityName = */ 'Orgs\Entity\Org');
+        return $this->query->findAll(/* $entityName = */ 'Organizations\Entity\Organization');
     }
 
     public function getOrganizationby($targetColumn, $value)
     {
-        return $this->query->findBy(/* $entityName = */ 'Orgs\Entity\Org', array(
+        return $this->query->findBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
                     $targetColumn => $value
         ));
     }
@@ -91,7 +91,7 @@ class Org
 
         if (is_null($orgObj)) {
 
-            $entity = new \Orgs\Entity\Org();
+            $entity = new \Organizations\Entity\Organization();
         }
         else {
 
@@ -174,7 +174,7 @@ class Org
         /**
          * Save Organization
          */
-        $this->query->setEntity('Orgs\Entity\Org')->save($entity, $orgInfo);
+        $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
     }
 
     private function saveAttachment($filename, $type)
@@ -227,8 +227,8 @@ class Org
      */
     public function deleteOrganization($id)
     {
-        $org = $this->query->find(/* $entityName = */ 'Orgs\Entity\Org', $id);
-        $org->active = \Orgs\Entity\Org::NOT_ACTIVE;
+        $org = $this->query->find(/* $entityName = */ 'Organizations\Entity\Organization', $id);
+        $org->active = \Organizations\Entity\Organization::NOT_ACTIVE;
         $this->query->entityManager->merge($org);
         $this->query->entityManager->flush($org);
     }

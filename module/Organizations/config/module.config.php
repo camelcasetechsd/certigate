@@ -1,6 +1,6 @@
 <?php
 
-namespace Orgs;
+namespace Organizations;
 
 return array(
     'view_manager' => array(
@@ -9,11 +9,11 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'aliases' => array(
-            'orgs' => 'Orgs\Controller\orgsController',
-        ),
+//        'aliases' => array(
+//            'organizations' => 'Organizations\Controller\OrganizationsController',
+//        ),
         'factories' => array(
-            'Orgs\Model\Org' => 'Orgs\Model\OrgFactory'
+            'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory'
         ),
     ),
     'doctrine' => array(
@@ -32,7 +32,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Orgs\Controller\Orgs' => 'Orgs\Controller\OrgsController',
+            'Organizations\Controller\Organizations' => 'Organizations\Controller\OrganizationsController',
         ),
     ),
     'router' => array(
@@ -40,19 +40,19 @@ return array(
             'org_type' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/type',
+                    'route' => '/organizations/type',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'type'
                     ),
                 )
             ),
-            'list_atp_orgs' => array(
+            'list_atp_organizations' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/atps',
+                    'route' => '/organizations/atps',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'atps'
                     ),
                 )
@@ -60,9 +60,9 @@ return array(
             'list_atc_orgs' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/atcs',
+                    'route' => '/organizations/atcs',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'atcs'
                     ),
                 )
@@ -70,9 +70,9 @@ return array(
             'more' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/more[/:id]',
+                    'route' => '/organizations/more[/:id]',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'more'
                     ),
                     'constraints' => array(
@@ -83,9 +83,9 @@ return array(
             'new_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/new',
+                    'route' => '/organizations/new',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'new'
                     )
                 )
@@ -93,9 +93,9 @@ return array(
             'edit_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/edit[/:id]',
+                    'route' => '/organizations/edit[/:id]',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'edit'
                     ),
                     'constraints' => array(
@@ -106,9 +106,9 @@ return array(
             'delete_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/orgs/delete[/:id]',
+                    'route' => '/organizations/delete[/:id]',
                     'defaults' => array(
-                        'controller' => 'Orgs\Controller\Orgs',
+                        'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'delete'
                     ),
                     'constraints' => array(

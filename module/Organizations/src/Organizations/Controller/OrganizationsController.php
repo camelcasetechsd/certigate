@@ -1,12 +1,12 @@
 <?php
 
-namespace Orgs\Controller;
+namespace Organizations\Controller;
 
 use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
-use Orgs\Form\OrgForm;
-use Orgs\Entity\Org as OrgEntity;
-use Orgs\Model\Org as OrgModel;
+use Organizations\Form\OrgForm as OrgForm;
+use Organizations\Entity\Organization as OrgEntity;
+use Organizations\Model\Organization as OrgModel;
 
 /**
  * Atps Controller
@@ -15,16 +15,16 @@ use Orgs\Model\Org as OrgModel;
  * 
  * 
  * 
- * @package directories
+ * @package organizations
  * @subpackage controller
  */
-class OrgsController extends ActionController
+class OrganizationsController extends ActionController
 {
 
     public function typeAction()
     {
         $variables = array();
-        $form = new \Orgs\Form\TypeForm(/* $name = */ null);
+        $form = new \Organizations\Form\TypeForm(/* $name = */ null);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -33,8 +33,8 @@ class OrgsController extends ActionController
             );
             $form->setData($data);
             if ($form->isValid()) {
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'), array('type' => $data['type']));
-                $this->redirect()->toUrl($url . '?o=' . $data['type']);
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'));
+                $this->redirect()->toUrl($url . '?organization=' . $data['type']);
             }
         }
 
@@ -53,8 +53,8 @@ class OrgsController extends ActionController
     public function atcsAction()
     {
 
-        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATC, \Orgs\Entity\Org::TYPE_BOTH));
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATC, \Organizations\Entity\Organization::TYPE_BOTH));
 
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
@@ -74,8 +74,8 @@ class OrgsController extends ActionController
     {
 
 
-        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Orgs\Entity\Org::TYPE_ATP, \Orgs\Entity\Org::TYPE_BOTH));
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATP, \Organizations\Entity\Organization::TYPE_BOTH));
 
         foreach ($variables['userList'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
@@ -94,7 +94,7 @@ class OrgsController extends ActionController
     public function moreAction()
     {
 
-        $organizationModel = $this->getServiceLocator()->get('Orgs\Model\Org');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
         $variables['userData'] = $organizationModel->getOrganizationby('id', $id)[0];
 
@@ -123,8 +123,8 @@ class OrgsController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
-        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
-        $orgModel = $this->getServiceLocator()->get('Orgs\Model\Org');
+        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $orgObj = new OrgEntity();
         $options = array();
         $options['query'] = $query;
@@ -219,8 +219,8 @@ class OrgsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
-        $orgObj = $query->find('Orgs\Entity\Org', $id);
+        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $orgObj = $query->find('Organizations\Entity\Organization', $id);
         // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
@@ -332,10 +332,10 @@ class OrgsController extends ActionController
 
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-//        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Orgs\Entity\Org');
-        $orgObj = $query->find('Orgs\Entity\Org', $id);
+//        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Org');
+        $orgObj = $query->find('Organizations\Entity\Organization', $id);
 
-        $orgModel  = $this ->getServiceLocator()->get('Orgs\Model\Org');
+        $orgModel  = $this ->getServiceLocator()->get('Organizations\Model\Organization');
         $orgModel->deleteOrganization($id);
 
 

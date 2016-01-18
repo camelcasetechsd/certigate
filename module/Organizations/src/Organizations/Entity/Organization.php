@@ -1,14 +1,13 @@
 <?php
 
-namespace Orgs\Entity;
+namespace Organizations\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
-use Zend\Validator\Regex;
 
 /**
- * Orgs Entity
+ * Organziation Entity
  * @ORM\Entity
  * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
  * 
@@ -59,7 +58,7 @@ use Zend\Validator\Regex;
  * @package orgs
  * @subpackage entity
  */
-class Org
+class Organization
 {
 
     /**

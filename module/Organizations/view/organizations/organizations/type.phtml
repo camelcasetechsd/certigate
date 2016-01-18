@@ -14,7 +14,7 @@ $(document).ready(function () {
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    $orgType = getParameterByName('t');
+    $orgType = getParameterByName('type');
     switch ($orgType) {
         case '1' :
             $('#type-1').prop("checked", "checked");

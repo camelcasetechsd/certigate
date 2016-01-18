@@ -2,7 +2,7 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/orgs/new?o=1"><button class="btn btn-small btn-success create-new">Create new ATC</button></a>
+<a href="/orgs/new?organization=1"><button class="btn btn-small btn-success create-new">Create new ATC</button></a>
 <br/>
 <div class="panel panel-default atcs-list">
     <div class="panel-heading">ATCs</div>
@@ -28,12 +28,12 @@
                 <td>{{website}}</td>
                 <td>{{atcLicenseExpiration}}</td>
                 <td>
-                    <a href="/orgs/more/{{id}}">More</a>     
+                    <a href="/organizations/more/{{id}}">More</a>     
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/orgs/edit/{{id}}?o=1"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization=1"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#active}}
-                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/orgs/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/active}}
                 </td>
             </tr>

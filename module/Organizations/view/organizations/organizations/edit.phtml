@@ -2,13 +2,13 @@
 {{<layout}}
 {{$content}}
 
-{{{orgForm}}}
+{{{userForm}}}
 
 <script src="/concat/app.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
 
-    $orgType = getParameterByName('o');
+    $orgType = getParameterByName('organization');
     switch ($orgType) {
         case '1' :
             $('#org_form_type').val("1");
@@ -27,34 +27,9 @@ $(document).ready(function () {
         default:
             //for hacking
             alert('please select organization type');
-            window.location.replace("/orgs/type");
+            window.location.replace("/organizations/type");
             break;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     function getParameterByName(name) {
