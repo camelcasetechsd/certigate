@@ -41,8 +41,10 @@
                 <td>
                     <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{#isAdminUser}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{/isAdminUser}}
                     {{/status}}
                 </td>
             </tr>
