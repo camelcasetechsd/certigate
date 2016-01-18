@@ -266,6 +266,8 @@ class OrganizationsController extends ActionController
                 $input->setRequired(false);
             }
 
+            $data['active'] = 1;
+            
             switch ($data['type']) {
                 case '1':
                     $skippedParams = array(
@@ -322,7 +324,9 @@ class OrganizationsController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
+        $variables['CRAttachment'] = $crAttachment;
+        $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
+        $variables['atcLicenseAttachment'] = $atcLicenseAttachment;
         $variables['userForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }

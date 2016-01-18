@@ -153,7 +153,11 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\File',
             'options' => array(
                 'label' => 'CR Attachment',
+                'required' => 'required',
             ),
+            'attributes' => array(
+                'required' => true,
+            )
         ));
 
         $this->add(array(
@@ -328,6 +332,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
                 'class' => 'atpSet',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'ATP License Attachment',
@@ -493,6 +498,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'ATC License Attachment',
+                'required' => 'required',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),

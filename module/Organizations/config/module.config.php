@@ -47,7 +47,7 @@ return array(
                     ),
                 )
             ),
-            'list_atp_organizations' => array(
+            'list_atp_orgs' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/organizations/atps',

@@ -153,24 +153,42 @@ class Organization
         /**
          * Handling transfered Files
          */
-        if (!empty($orgInfo['CRAttachment']['name']) && $orgInfo['CRAttachment']['name'] != '') {
-            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
+        if (!empty($orgInfo['CRAttachment']['name'])) {
+            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment','cr');
         }
-        else {
-            $orgInfo['CRAttachment'] = null;
+        if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
+            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment','atp');
         }
-        if (!empty($orgInfo['atpLicenseAttachment']) && $orgInfo['atpLicenseAttachment']['name'] != '') {
-            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
+        if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
+            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment','atc');
         }
-        else {
-            $orgInfo['atpLicenseAttachment'] = null;
-        }
-        if (!empty($orgInfo['atcLicenseAttachment']) && $orgInfo['atcLicenseAttachment']['name'] != '') {
-            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
-        }
-        else {
-            $orgInfo['atcLicenseAttachment'] = null;
-        }
+                
+        
+        
+        
+        
+        
+        
+        
+//        
+//        if (!empty($orgInfo['CRAttachment']['name']) && $orgInfo['CRAttachment']['name'] != '') {
+//            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
+//        }
+//        else {
+//            $orgInfo['CRAttachment'] = null;
+//        }
+//        if (!empty($orgInfo['atpLicenseAttachment']) && $orgInfo['atpLicenseAttachment']['name'] != '') {
+//            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
+//        }
+//        else {
+//            $orgInfo['atpLicenseAttachment'] = null;
+//        }
+//        if (!empty($orgInfo['atcLicenseAttachment']) && $orgInfo['atcLicenseAttachment']['name'] != '') {
+//            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
+//        }
+//        else {
+//            $orgInfo['atcLicenseAttachment'] = null;
+//        }
         /**
          * Save Organization
          */
