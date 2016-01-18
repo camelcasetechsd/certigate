@@ -36,9 +36,16 @@ class CourseController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array( Role::ADMIN_ROLE, $storage['roles'] )) {
+            $isAdminUser = true;
+        }  
         
         $data = $query->findAll(/*$entityName =*/null);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
+        $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
     
@@ -57,7 +64,7 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         
-        $data = $query->findAll(/*$entityName =*/null);
+        $data = $query->findBy(/*$entityName =*/null, /*$criteria =*/array("status" => Status::STATUS_ACTIVE));
         $courseModel->setCanEnroll($data);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
