@@ -34,10 +34,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package courses
  * @subpackage entity
  */
-class Course 
+class Course
 {
 
-    
     /**
      *
      * @var InputFilter validation constraints 
@@ -58,28 +57,28 @@ class Course
      * @var string
      */
     public $name;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $startDate;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $endDate;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
     public $capacity;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
@@ -94,7 +93,7 @@ class Course
      * @var Organizations\Entity\Organization
      */
     public $atp;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
@@ -102,21 +101,21 @@ class Course
      * @var Users\Entity\User
      */
     public $ai;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="time")
      * @var \DateTime
      */
     public $time;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
@@ -130,21 +129,21 @@ class Course
      * @var int
      */
     public $status;
-    
+
     /**
      *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $created;
-    
+
     /**
      *
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $modified = null;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="courses")
      * @ORM\JoinTable(name="courses_users",
@@ -155,15 +154,26 @@ class Course
     public $users;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Courses\Entity\Evaluation", inversedBy="courses")
+     * @ORM\JoinTable(name="courses_evaluations",
+     *      joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="evaluation_id", referencedColumnName="id")}
+     *      )
+     */
+    public $evaluations;
+
+    /**
      * Prepare entity
      * 
      * 
      * @access public
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->users = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      * 
@@ -171,10 +181,11 @@ class Course
      * @access public
      * @return int id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }  
-    
+    }
+
     /**
      * Get Name
      * 
@@ -182,9 +193,10 @@ class Course
      * @access public
      * @return string name
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
-    }    
+    }
 
     /**
      * Set name
@@ -194,11 +206,12 @@ class Course
      * @param string $name
      * @return Course
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Get Start Date
      * 
@@ -206,9 +219,10 @@ class Course
      * @access public
      * @return \DateTime startDate
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDate;
-    }    
+    }
 
     /**
      * Set Start Date
@@ -218,11 +232,12 @@ class Course
      * @param \DateTime $startDate
      * @return Course
      */
-    public function setStartDate($startDate) {
+    public function setStartDate($startDate)
+    {
         $this->startDate = new \DateTime($startDate);
         return $this;
     }
-    
+
     /**
      * Get End Date
      * 
@@ -230,9 +245,10 @@ class Course
      * @access public
      * @return \DateTime endDate
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDate;
-    }    
+    }
 
     /**
      * Set End Date
@@ -242,7 +258,8 @@ class Course
      * @param \DateTime $endDate
      * @return Course
      */
-    public function setEndDate($endDate) {
+    public function setEndDate($endDate)
+    {
         $this->endDate = new \DateTime($endDate);
         return $this;
     }
@@ -254,10 +271,11 @@ class Course
      * @access public
      * @return int capacity
      */
-    public function getCapacity() {
+    public function getCapacity()
+    {
         return $this->capacity;
     }
-    
+
     /**
      * Set capacity
      * 
@@ -266,8 +284,9 @@ class Course
      * @param int $capacity
      * @return Course
      */
-    public function setCapacity($capacity) {
-        $this->capacity = (int)$capacity;
+    public function setCapacity($capacity)
+    {
+        $this->capacity = (int) $capacity;
         return $this;
     }
 
@@ -278,10 +297,11 @@ class Course
      * @access public
      * @return int studentsNo
      */
-    public function getStudentsNo() {
+    public function getStudentsNo()
+    {
         return $this->studentsNo;
     }
-    
+
     /**
      * Set Students No
      * 
@@ -290,8 +310,9 @@ class Course
      * @param int $studentsNo
      * @return Course
      */
-    public function setStudentsNo($studentsNo) {
-        $this->studentsNo = (int)$studentsNo;
+    public function setStudentsNo($studentsNo)
+    {
+        $this->studentsNo = (int) $studentsNo;
         return $this;
     }
 
@@ -302,10 +323,11 @@ class Course
      * @access public
      * @return Organizations\Entity\Organization atp
      */
-    public function getAtp() {
+    public function getAtp()
+    {
         return $this->atp;
     }
-    
+
     /**
      * Set Atp
      * 
@@ -314,11 +336,12 @@ class Course
      * @param Organizations\Entity\Organization $atp
      * @return Course
      */
-    public function setAtp($atp) {
+    public function setAtp($atp)
+    {
         $this->atp = $atp;
         return $this;
     }
-    
+
     /**
      * Get Ai
      * 
@@ -326,10 +349,11 @@ class Course
      * @access public
      * @return Users\Entity\User Ai
      */
-    public function getAi() {
+    public function getAi()
+    {
         return $this->ai;
     }
-    
+
     /**
      * Set Ai
      * 
@@ -338,11 +362,12 @@ class Course
      * @param Users\Entity\User $ai
      * @return Course
      */
-    public function setAi($ai) {
+    public function setAi($ai)
+    {
         $this->ai = $ai;
         return $this;
     }
-    
+
     /**
      * Get Brief
      * 
@@ -350,9 +375,10 @@ class Course
      * @access public
      * @return string brief
      */
-    public function getBrief() {
+    public function getBrief()
+    {
         return $this->brief;
-    }    
+    }
 
     /**
      * Set brief
@@ -362,11 +388,12 @@ class Course
      * @param string $brief
      * @return Course
      */
-    public function setBrief($brief) {
+    public function setBrief($brief)
+    {
         $this->brief = $brief;
         return $this;
     }
-    
+
     /**
      * Get Time
      * 
@@ -374,9 +401,10 @@ class Course
      * @access public
      * @return \DateTime time
      */
-    public function getTime() {
+    public function getTime()
+    {
         return $this->time;
-    }    
+    }
 
     /**
      * Set Time
@@ -386,11 +414,12 @@ class Course
      * @param \DateTime $time
      * @return Course
      */
-    public function setTime($time) {
+    public function setTime($time)
+    {
         $this->time = new \DateTime($time);
         return $this;
     }
-         
+
     /**
      * Get duration
      * 
@@ -398,10 +427,11 @@ class Course
      * @access public
      * @return int duration
      */
-    public function getDuration() {
+    public function getDuration()
+    {
         return $this->duration;
     }
-    
+
     /**
      * Set duration
      * 
@@ -410,11 +440,12 @@ class Course
      * @param int $duration
      * @return Course
      */
-    public function setDuration($duration) {
-        $this->duration = (int)$duration;
+    public function setDuration($duration)
+    {
+        $this->duration = (int) $duration;
         return $this;
     }
-    
+
     /**
      * Get status
      * 
@@ -422,10 +453,11 @@ class Course
      * @access public
      * @return int status
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
-    
+
     /**
      * Set status
      * 
@@ -434,11 +466,12 @@ class Course
      * @param int $status
      * @return Course
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -446,10 +479,11 @@ class Course
      * @access public
      * @return \DateTime created
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
-    
+
     /**
      * Set created
      * 
@@ -457,11 +491,12 @@ class Course
      * @access public
      * @return Course
      */
-    public function setCreated() {
+    public function setCreated()
+    {
         $this->created = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get modified
      * 
@@ -469,10 +504,11 @@ class Course
      * @access public
      * @return \DateTime modified
      */
-    public function getModified() {
+    public function getModified()
+    {
         return $this->modified;
     }
-    
+
     /**
      * Set modified
      * 
@@ -480,11 +516,12 @@ class Course
      * @access public
      * @return Course
      */
-    public function setModified() {
+    public function setModified()
+    {
         $this->modified = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get Users
      * 
@@ -492,9 +529,10 @@ class Course
      * @access public
      * @return ArrayCollection users
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         return $this->users;
-    }    
+    }
 
     /**
      * Add Users
@@ -504,11 +542,12 @@ class Course
      * @param Users\Entity\User $user
      * @return Course
      */
-    public function addUser($user) {
+    public function addUser($user)
+    {
         $this->users[] = $user;
         return $this;
     }
-    
+
     /**
      * Set Users
      * 
@@ -517,9 +556,50 @@ class Course
      * @param ArrayCollection $users
      * @return Course
      */
-    public function setUsers($users) {
+    public function setUsers($users)
+    {
         $this->users = $users;
         return $this;
+    }
+
+    /**
+     * Add Users
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Evaluation $evaluation
+     * @return Course
+     */
+    public function setEvaluation($evaluation)
+    {
+        $this->evaluation = $evaluation;
+        return $this;
+    }
+
+    /**
+     * Set Evaluations
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $evaluations
+     * @return Course
+     */
+    public function setEvaluations($evaluations)
+    {
+        $this->evaluations[] = $evaluations;
+        return $this;
+    }
+
+    /**
+     * Get evaluations
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection evaluations
+     */
+    public function getEvaluations()
+    {
+        return $this->evaluations;
     }
 
     /**
@@ -529,7 +609,8 @@ class Course
      * @access public
      * @return array current entity properties
      */
-    public function getArrayCopy() {
+    public function getArrayCopy()
+    {
         return get_object_vars($this);
     }
 
@@ -540,11 +621,12 @@ class Course
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray($data = array()) {
-        if(array_key_exists('name', $data)){
+    public function exchangeArray($data = array())
+    {
+        if (array_key_exists('name', $data)) {
             $this->setName($data["name"]);
         }
-        if(array_key_exists('status', $data)){
+        if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
         $this->setAi($data["ai"])
@@ -556,7 +638,7 @@ class Course
                 ->setStartDate($data["startDate"])
                 ->setStudentsNo($data["studentsNo"])
                 ->setTime($data["time"])
-                ;
+        ;
     }
 
     /**
@@ -567,7 +649,8 @@ class Course
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter) {
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
         throw new \Exception("Not used");
     }
 
@@ -580,7 +663,8 @@ class Course
      * @access public
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter()
+    {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -588,7 +672,7 @@ class Course
                 'name' => 'name',
                 'required' => true
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'startDate',
                 'required' => true,
@@ -625,7 +709,7 @@ class Course
                 'name' => 'duration',
                 'required' => true,
             ));
-            
+
             $this->inputFilter = $inputFilter;
         }
 

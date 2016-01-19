@@ -17,7 +17,8 @@ use Utilities\Service\Status;
  * @package courses
  * @subpackage model
  */
-class Course {
+class Course
+{
 
     /**
      *
@@ -31,7 +32,8 @@ class Course {
      * @access public
      * @param Utilities\Service\Query\Query $query
      */
-    public function __construct($query) {
+    public function __construct($query)
+    {
         $this->query = $query;
     }
 
@@ -42,7 +44,8 @@ class Course {
      * @param array $courses
      * @return array courses with canRoll property added
      */
-    public function setCanEnroll($courses) {
+    public function setCanEnroll($courses)
+    {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $nonAuthorizedEnroll = false;
@@ -77,11 +80,22 @@ class Course {
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
      */
-    public function save($course, $data = array(), $isAdminUser = false) {
+    public function save($course, $data = array(), $isAdminUser = false)
+    {
 
         if ($isAdminUser === false) {
             $course->setStatus(Status::STATUS_NOT_APPROVED);
         }
+      
+        /////////////////
+        $adminEvaluations = $this->query->findBy('Courses\Entity\Evaluation', array(
+            'isAdmin' => 1
+        ));
+      
+        foreach ($adminEvaluations as $eval){
+        $course->setEvaluation($eval);
+        }
+        ////////////////////////
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
 
@@ -92,7 +106,8 @@ class Course {
      * @param Courses\Entity\Course $course
      * @param Users\Entity\User $user
      */
-    public function leaveCourse($course, $user) {
+    public function leaveCourse($course, $user)
+    {
         $users = $course->getUsers();
         $users->removeElement($user);
         $course->setUsers($users);
@@ -111,18 +126,36 @@ class Course {
      * @param Users\Entity\User $user
      * @throws \Exception Capacity exceeded
      */
-    public function enrollCourse($course, $user) {
+    public function enrollCourse($course, $user)
+    {
         $studentsNo = $course->getStudentsNo();
         $studentsNo++;
-        
+
         $capacity = $course->getCapacity();
-        if($capacity < $studentsNo){
+        if ($capacity < $studentsNo) {
             throw new \Exception("Capacity exceeded");
         }
-        
+
         $course->setStudentsNo($studentsNo);
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
+    }
+
+    public function saveEvaluation($evalObj, $data, $isAdmin)
+    {
+        if ($isAdmin) {
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::ADMIN_CREATED);
+            $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj, $data);
+            $courses = $this->query->findAll("Courses\Entity\Course");
+            $eval = $this->query->findBy("Courses\Entity\Evaluation", array('questionTitle' => $evalObj->getQuestionTitle()));
+            foreach ($courses as $course) {
+                $course->setEvaluation($eval[0]);
+            }
+        }
+        else {
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::USER_CREATED);
+            $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
+        }
     }
 
 }
