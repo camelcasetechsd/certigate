@@ -1,0 +1,53 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Pages History</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Data</th>
+                <th>Taken Action</th>
+                <th>Version</th>
+                <th>Stored at</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#logs}}
+                <tr>
+                    <td>{{username}}</td>
+                    <td>
+                    {{#data}}
+                    <table class="table">
+                        <tr>
+                            <td>Title</td><td>{{title}}</td>
+                        </tr>
+                        <tr>
+                            <td>Body</td><td>{{{body}}}</td>
+                        </tr>
+                        </table>
+                    {{/data}}
+                    </td>
+                    <td>{{action}}</td>
+                    <td>{{version}}</td>
+                    <td>{{loggedAt}}</td>
+                    <td>
+                        {{^isLast}}
+                            <a href="/version/restore/cmsPageHistory/{{id}}" data-toggle="tooltip" data-placement="left" title="Restore"><span class="glyphicon glyphicon-save"></span></a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a href="/version/delete/cmsPageHistory/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                        {{/isLast}}
+                    </td>
+                </tr>
+            {{/logs}}
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
