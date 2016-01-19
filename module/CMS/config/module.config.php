@@ -75,6 +75,19 @@ return array(
                     ),
                 )
             ),
+            'cmsPageHistory' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/page/history/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'history',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'cmsPageEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

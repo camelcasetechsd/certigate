@@ -73,6 +73,20 @@ return array(
                     ),
                 )
             ),
+            'coursesResourceDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/download/:resource/:id/:name',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'resource' => '[a-zA-Z]+',
+                    ),
+                )
+            ),
             'coursesEnroll' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

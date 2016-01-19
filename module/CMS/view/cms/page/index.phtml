@@ -44,6 +44,10 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/menuItem.status}}
+                    {{#isAdminUser}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="History"><span class="glyphicon glyphicon-time"></span></a>
+                    {{/isAdminUser}}
                 </td>
             </tr>
             {{/pages}}

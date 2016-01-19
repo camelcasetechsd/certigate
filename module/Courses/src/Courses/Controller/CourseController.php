@@ -9,6 +9,9 @@ use Courses\Entity\Course;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Zend\Form\FormInterface;
+use Zend\Http\Response\Stream;
+use Zend\Http\Headers;
 
 /**
  * Course Controller
@@ -20,8 +23,7 @@ use Utilities\Service\Status;
  * @package courses
  * @subpackage controller
  */
-class CourseController extends ActionController
-{
+class CourseController extends ActionController {
 
     /**
      * List courses
@@ -31,8 +33,7 @@ class CourseController extends ActionController
      * 
      * @return ViewModel
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -57,8 +58,7 @@ class CourseController extends ActionController
      * 
      * @return ViewModel
      */
-    public function calendarAction()
-    {
+    public function calendarAction() {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -78,16 +78,25 @@ class CourseController extends ActionController
      * 
      * @return ViewModel
      */
-    public function moreAction()
-    {
+    public function moreAction() {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
 
         $courseArray = array($course);
-        $preparedCourseArray = $objectUtilities->prepareForDisplay($courseArray);
-        $variables['course'] = reset($preparedCourseArray);
+        $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
+        $preparedCourse = reset($preparedCourseArray);
+        $variables['course'] = $preparedCourse;
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $canDownloadResources = true;
+        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+            $canDownloadResources = false;
+        }
+        $variables['canDownloadResources'] = $canDownloadResources;
         return new ViewModel($variables);
     }
 
@@ -101,8 +110,7 @@ class CourseController extends ActionController
      * 
      * @return ViewModel
      */
-    public function newAction()
-    {
+    public function newAction() {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
@@ -121,10 +129,16 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-            $form->setInputFilter($course->getInputFilter($query));
+            // Make certain to merge the files info!
+            $fileData = $request->getFiles()->toArray();
+
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
+            $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
             if ($form->isValid()) {
+                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $courseModel->save($course, $data, $isAdminUser);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
@@ -145,8 +159,7 @@ class CourseController extends ActionController
      * 
      * @return ViewModel
      */
-    public function editAction()
-    {
+    public function editAction() {
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -167,9 +180,32 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
+            // Make certain to merge the files info!
+            $fileData = $request->getFiles()->toArray();
+
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
             $form->setInputFilter($course->getInputFilter());
+
+            $inputFilter = $form->getInputFilter();
             $form->setData($data);
+            // file not updated
+            if (isset(reset($fileData['presentations'])['name']) && empty(reset($fileData['presentations'])['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('presentations');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['activities']['name']) && empty($fileData['activities']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('activities');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['exams']['name']) && empty($fileData['exams']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('exams');
+                $input->setRequired(false);
+            }
             if ($form->isValid()) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser);
 
@@ -188,8 +224,7 @@ class CourseController extends ActionController
      * 
      * @access public
      */
-    public function deleteAction()
-    {
+    public function deleteAction() {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $course = $query->find('Courses\Entity\Course', $id);
@@ -208,8 +243,7 @@ class CourseController extends ActionController
      * 
      * @access public
      */
-    public function enrollAction()
-    {
+    public function enrollAction() {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
@@ -230,8 +264,7 @@ class CourseController extends ActionController
      * 
      * @access public
      */
-    public function leaveAction()
-    {
+    public function leaveAction() {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
@@ -243,6 +276,51 @@ class CourseController extends ActionController
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * Download resource
+     *
+     * 
+     * @access public
+     */
+    public function downloadAction() {
+        $id = $this->params('id');
+        $resource = $this->params('resource');
+        $name = $this->params('name');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $course = $query->find('Courses\Entity\Course', $id);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+
+
+        $courseArray = array($course);
+        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
+        $preparedCourse = reset($preparedCourseArray);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
+        } else {
+
+            $file = $courseModel->getResource($course, $resource, $name);
+            $response = new Stream();
+            $response->setStream(fopen($file, 'r'));
+            $response->setStatusCode(200);
+            $response->setStreamName(basename($file));
+            $headers = new Headers();
+            $headers->addHeaders(array(
+                'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
+                'Content-Type' => 'application/octet-stream',
+                'Content-Length' => filesize($file),
+                'Expires' => '@0', // @0, because zf2 parses date as string to \DateTime() object
+                'Cache-Control' => 'must-revalidate',
+                'Pragma' => 'public'
+            ));
+            $response->setHeaders($headers);
+            return $response;
+        }
     }
 
     public function evTemplatesAction()

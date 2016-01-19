@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Random;
 
 /**
  * Course Entity
@@ -27,6 +28,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
+ * @property array $presentations
+ * @property array $activities
+ * @property array $exams
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -122,6 +126,27 @@ class Course
      * @var int
      */
     public $duration;
+
+    /**
+     * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $presentations;
+
+    /**
+     * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $activities;
+
+    /**
+     * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $exams;
 
     /**
      * 
@@ -283,8 +308,7 @@ class Course
      * @param int $capacity
      * @return Course
      */
-    public function setCapacity($capacity)
-    {
+    public function setCapacity($capacity) {
         $this->capacity = (int) $capacity;
         return $this;
     }
@@ -309,8 +333,7 @@ class Course
      * @param int $studentsNo
      * @return Course
      */
-    public function setStudentsNo($studentsNo)
-    {
+    public function setStudentsNo($studentsNo) {
         $this->studentsNo = (int) $studentsNo;
         return $this;
     }
@@ -439,9 +462,80 @@ class Course
      * @param int $duration
      * @return Course
      */
-    public function setDuration($duration)
-    {
+    public function setDuration($duration) {
         $this->duration = (int) $duration;
+        return $this;
+    }
+
+    /**
+     * Get presentations
+     * 
+     * 
+     * @access public
+     * @return array presentations
+     */
+    public function getPresentations() {
+        return $this->presentations;
+    }
+
+    /**
+     * Set presentations
+     * 
+     * 
+     * @access public
+     * @param array $presentations
+     * @return Course
+     */
+    public function setPresentations($presentations) {
+        $this->presentations = $presentations;
+        return $this;
+    }
+
+    /**
+     * Get activities
+     * 
+     * 
+     * @access public
+     * @return array activities
+     */
+    public function getActivities() {
+        return $this->activities;
+    }
+
+    /**
+     * Set activities
+     * 
+     * 
+     * @access public
+     * @param array $activities
+     * @return Course
+     */
+    public function setActivities($activities) {
+        $this->activities = $activities;
+        return $this;
+    }
+
+    /**
+     * Get exams
+     * 
+     * 
+     * @access public
+     * @return array exams
+     */
+    public function getExams() {
+        return $this->exams;
+    }
+
+    /**
+     * Set activities
+     * 
+     * 
+     * @access public
+     * @param array $exams
+     * @return Course
+     */
+    public function setExams($exams) {
+        $this->exams = $exams;
         return $this;
     }
 
@@ -628,6 +722,15 @@ class Course
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
+        if (array_key_exists('presentations', $data) && !empty(reset($data["presentations"])["name"])) {
+            $this->setPresentations($data["presentations"]);
+        }
+        if (array_key_exists('activities', $data) && !empty($data["activities"]["name"])) {
+            $this->setActivities($data["activities"]);
+        }
+        if (array_key_exists('exams', $data) && !empty($data["exams"]["name"])) {
+            $this->setExams($data["exams"]);
+        }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])
                 ->setBrief($data["brief"])
@@ -707,6 +810,72 @@ class Course
             $inputFilter->add(array(
                 'name' => 'duration',
                 'required' => true,
+            ));
+
+            $random = new Random();
+            $unique = $random->getRandomUniqueName();
+            $DirSep = DIRECTORY_SEPARATOR;
+            $target = APPLICATION_PATH . $DirSep .'upload'. $DirSep .'courseResources'. $DirSep . $unique . $DirSep;
+            
+            if (!file_exists($target)) {
+                mkdir($target, 0777);
+            }
+            $fileUploadOptions = array(
+                "target" => $target,
+                "overwrite" => true,
+                "use_upload_name" => true,
+                "use_upload_extension" => true
+            );
+            $inputFilter->add(array(
+                'name' => 'presentations',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'pdf,ppt,pot,pps,pptx,potx,ppsx,thmx'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'activities',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'zip'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'exams',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'zip'
+                        )
+                    ),
+                )
             ));
 
             $this->inputFilter = $inputFilter;
