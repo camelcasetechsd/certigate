@@ -114,12 +114,12 @@ class Course {
     public function enrollCourse($course, $user) {
         $studentsNo = $course->getStudentsNo();
         $studentsNo++;
-        
+
         $capacity = $course->getCapacity();
-        if($capacity < $studentsNo){
+        if ($capacity < $studentsNo) {
             throw new \Exception("Capacity exceeded");
         }
-        
+
         $course->setStudentsNo($studentsNo);
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
