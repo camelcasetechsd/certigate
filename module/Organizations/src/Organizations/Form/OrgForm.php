@@ -648,7 +648,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'atpPrivacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control atpSet',
+                'class' => 'form-control atpSet checkboxAgreement',
                 'required' => true,
             ),
             'options' => array(
@@ -663,7 +663,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'atcPrivacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control atcSet',
+                'class' => 'form-control atcSet checkboxAgreement',
                 'required' => true,
             ),
             'options' => array(
