@@ -199,6 +199,37 @@ class CourseForm extends Form {
             ),
         ));
 
+        $this->add(array(
+            'name' => 'presentations',
+            'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+              'multiple' => true,  
+            ),
+            'options' => array(
+                'label' => 'Presentations',
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'activities',
+            'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Activities',
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'exams',
+            'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Exams',
+            ),
+        ));
+        
         if ($this->isAdminUser === true) {
             $this->add(array(
                 'name' => 'status',

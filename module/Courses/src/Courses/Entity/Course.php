@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Random;
 
 /**
  * Course Entity
@@ -27,6 +28,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
+ * @property array $presentations
+ * @property array $activities
+ * @property array $exams
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -34,10 +38,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package courses
  * @subpackage entity
  */
-class Course 
-{
+class Course {
 
-    
     /**
      *
      * @var InputFilter validation constraints 
@@ -58,28 +60,28 @@ class Course
      * @var string
      */
     public $name;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $startDate;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $endDate;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
     public $capacity;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
@@ -94,7 +96,7 @@ class Course
      * @var Organizations\Entity\Organization
      */
     public $atp;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
@@ -102,21 +104,21 @@ class Course
      * @var Users\Entity\User
      */
     public $ai;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="time")
      * @var \DateTime
      */
     public $time;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
@@ -126,25 +128,46 @@ class Course
 
     /**
      * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $presentations;
+
+    /**
+     * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $activities;
+
+    /**
+     * 
+     * @ORM\Column(type="array")
+     * @var array
+     */
+    public $exams;
+
+    /**
+     * 
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
-    
+
     /**
      *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $created;
-    
+
     /**
      *
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $modified = null;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="courses")
      * @ORM\JoinTable(name="courses_users",
@@ -163,7 +186,7 @@ class Course
     public function __construct() {
         $this->users = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      * 
@@ -173,8 +196,8 @@ class Course
      */
     public function getId() {
         return $this->id;
-    }  
-    
+    }
+
     /**
      * Get Name
      * 
@@ -184,7 +207,7 @@ class Course
      */
     public function getName() {
         return $this->name;
-    }    
+    }
 
     /**
      * Set name
@@ -198,7 +221,7 @@ class Course
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Get Start Date
      * 
@@ -208,7 +231,7 @@ class Course
      */
     public function getStartDate() {
         return $this->startDate;
-    }    
+    }
 
     /**
      * Set Start Date
@@ -222,7 +245,7 @@ class Course
         $this->startDate = new \DateTime($startDate);
         return $this;
     }
-    
+
     /**
      * Get End Date
      * 
@@ -232,7 +255,7 @@ class Course
      */
     public function getEndDate() {
         return $this->endDate;
-    }    
+    }
 
     /**
      * Set End Date
@@ -257,7 +280,7 @@ class Course
     public function getCapacity() {
         return $this->capacity;
     }
-    
+
     /**
      * Set capacity
      * 
@@ -267,7 +290,7 @@ class Course
      * @return Course
      */
     public function setCapacity($capacity) {
-        $this->capacity = (int)$capacity;
+        $this->capacity = (int) $capacity;
         return $this;
     }
 
@@ -281,7 +304,7 @@ class Course
     public function getStudentsNo() {
         return $this->studentsNo;
     }
-    
+
     /**
      * Set Students No
      * 
@@ -291,7 +314,7 @@ class Course
      * @return Course
      */
     public function setStudentsNo($studentsNo) {
-        $this->studentsNo = (int)$studentsNo;
+        $this->studentsNo = (int) $studentsNo;
         return $this;
     }
 
@@ -305,7 +328,7 @@ class Course
     public function getAtp() {
         return $this->atp;
     }
-    
+
     /**
      * Set Atp
      * 
@@ -318,7 +341,7 @@ class Course
         $this->atp = $atp;
         return $this;
     }
-    
+
     /**
      * Get Ai
      * 
@@ -329,7 +352,7 @@ class Course
     public function getAi() {
         return $this->ai;
     }
-    
+
     /**
      * Set Ai
      * 
@@ -342,7 +365,7 @@ class Course
         $this->ai = $ai;
         return $this;
     }
-    
+
     /**
      * Get Brief
      * 
@@ -352,7 +375,7 @@ class Course
      */
     public function getBrief() {
         return $this->brief;
-    }    
+    }
 
     /**
      * Set brief
@@ -366,7 +389,7 @@ class Course
         $this->brief = $brief;
         return $this;
     }
-    
+
     /**
      * Get Time
      * 
@@ -376,7 +399,7 @@ class Course
      */
     public function getTime() {
         return $this->time;
-    }    
+    }
 
     /**
      * Set Time
@@ -390,7 +413,7 @@ class Course
         $this->time = new \DateTime($time);
         return $this;
     }
-         
+
     /**
      * Get duration
      * 
@@ -401,7 +424,7 @@ class Course
     public function getDuration() {
         return $this->duration;
     }
-    
+
     /**
      * Set duration
      * 
@@ -411,10 +434,82 @@ class Course
      * @return Course
      */
     public function setDuration($duration) {
-        $this->duration = (int)$duration;
+        $this->duration = (int) $duration;
         return $this;
     }
-    
+
+    /**
+     * Get presentations
+     * 
+     * 
+     * @access public
+     * @return array presentations
+     */
+    public function getPresentations() {
+        return $this->presentations;
+    }
+
+    /**
+     * Set presentations
+     * 
+     * 
+     * @access public
+     * @param array $presentations
+     * @return Course
+     */
+    public function setPresentations($presentations) {
+        $this->presentations = $presentations;
+        return $this;
+    }
+
+    /**
+     * Get activities
+     * 
+     * 
+     * @access public
+     * @return array activities
+     */
+    public function getActivities() {
+        return $this->activities;
+    }
+
+    /**
+     * Set activities
+     * 
+     * 
+     * @access public
+     * @param array $activities
+     * @return Course
+     */
+    public function setActivities($activities) {
+        $this->activities = $activities;
+        return $this;
+    }
+
+    /**
+     * Get exams
+     * 
+     * 
+     * @access public
+     * @return array exams
+     */
+    public function getExams() {
+        return $this->exams;
+    }
+
+    /**
+     * Set activities
+     * 
+     * 
+     * @access public
+     * @param array $exams
+     * @return Course
+     */
+    public function setExams($exams) {
+        $this->exams = $exams;
+        return $this;
+    }
+
     /**
      * Get status
      * 
@@ -425,7 +520,7 @@ class Course
     public function getStatus() {
         return $this->status;
     }
-    
+
     /**
      * Set status
      * 
@@ -438,7 +533,7 @@ class Course
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -449,7 +544,7 @@ class Course
     public function getCreated() {
         return $this->created;
     }
-    
+
     /**
      * Set created
      * 
@@ -461,7 +556,7 @@ class Course
         $this->created = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get modified
      * 
@@ -472,7 +567,7 @@ class Course
     public function getModified() {
         return $this->modified;
     }
-    
+
     /**
      * Set modified
      * 
@@ -484,7 +579,7 @@ class Course
         $this->modified = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get Users
      * 
@@ -494,7 +589,7 @@ class Course
      */
     public function getUsers() {
         return $this->users;
-    }    
+    }
 
     /**
      * Add Users
@@ -508,7 +603,7 @@ class Course
         $this->users[] = $user;
         return $this;
     }
-    
+
     /**
      * Set Users
      * 
@@ -541,11 +636,20 @@ class Course
      * @param array $data ,default is empty array
      */
     public function exchangeArray($data = array()) {
-        if(array_key_exists('name', $data)){
+        if (array_key_exists('name', $data)) {
             $this->setName($data["name"]);
         }
-        if(array_key_exists('status', $data)){
+        if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
+        }
+        if (array_key_exists('presentations', $data) && !empty(reset($data["presentations"])["name"])) {
+            $this->setPresentations($data["presentations"]);
+        }
+        if (array_key_exists('activities', $data) && !empty($data["activities"]["name"])) {
+            $this->setActivities($data["activities"]);
+        }
+        if (array_key_exists('exams', $data) && !empty($data["exams"]["name"])) {
+            $this->setExams($data["exams"]);
         }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])
@@ -556,7 +660,7 @@ class Course
                 ->setStartDate($data["startDate"])
                 ->setStudentsNo($data["studentsNo"])
                 ->setTime($data["time"])
-                ;
+        ;
     }
 
     /**
@@ -588,7 +692,7 @@ class Course
                 'name' => 'name',
                 'required' => true
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'startDate',
                 'required' => true,
@@ -625,7 +729,73 @@ class Course
                 'name' => 'duration',
                 'required' => true,
             ));
+
+            $random = new Random();
+            $unique = $random->getRandomUniqueName();
+            $DirSep = DIRECTORY_SEPARATOR;
+            $target = APPLICATION_PATH . $DirSep .'upload'. $DirSep .'courseResources'. $DirSep . $unique . $DirSep;
             
+            if (!file_exists($target)) {
+                mkdir($target, 0777);
+            }
+            $fileUploadOptions = array(
+                "target" => $target,
+                "overwrite" => true,
+                "use_upload_name" => true,
+                "use_upload_extension" => true
+            );
+            $inputFilter->add(array(
+                'name' => 'presentations',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'pdf,ppt,pot,pps,pptx,potx,ppsx,thmx'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'activities',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'zip'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'exams',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'zip'
+                        )
+                    ),
+                )
+            ));
+
             $this->inputFilter = $inputFilter;
         }
 

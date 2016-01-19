@@ -9,6 +9,7 @@ use Courses\Entity\Course;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Zend\Form\FormInterface;
 
 /**
  * Course Controller
@@ -121,10 +122,16 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-            $form->setInputFilter($course->getInputFilter($query));
+            // Make certain to merge the files info!
+            $fileData = $request->getFiles()->toArray();
+
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
+            $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
             if ($form->isValid()) {
+                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $courseModel->save($course, $data, $isAdminUser);
                 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
@@ -167,9 +174,32 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
+            // Make certain to merge the files info!
+            $fileData = $request->getFiles()->toArray();
+
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
             $form->setInputFilter($course->getInputFilter());
+            
+            $inputFilter = $form->getInputFilter();
             $form->setData($data);
+            // file not updated
+            if (isset(reset($fileData['presentations'])['name']) && empty(reset($fileData['presentations'])['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('presentations');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['activities']['name']) && empty($fileData['activities']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('activities');
+                $input->setRequired(false);
+            }
+            if (isset($fileData['exams']['name']) && empty($fileData['exams']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('exams');
+                $input->setRequired(false);
+            }
             if ($form->isValid()) {
                 $courseModel->save($course,/*$data =*/array() , $isAdminUser);
                 
