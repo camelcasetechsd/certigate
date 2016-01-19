@@ -27,6 +27,16 @@
                 <td>Duration</td><td>{{duration}} Day(s)</td>
             </tr><tr>
                 <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
+            </tr><tr>
+                <td>Presentations</td><td>
+                    {{#presentations}}
+                        <a target="_blank" href="/courses/download/presentations/{{id}}/{{name}}" >{{name}}</a> <br>
+                    {{/presentations}}
+                </td>
+            </tr><tr>
+                <td>Activities</td><td><a target="_blank" href="/courses/download/activities/{{id}}/{{activities.name}}" >{{activities.name}}</a></td>
+            </tr><tr>
+                <td>Exams</td><td><a target="_blank" href="/courses/download/exams/{{id}}/{{exams.name}}" >{{exams.name}}</a></td>
             </tr>
             {{/course}}
         </tbody>
