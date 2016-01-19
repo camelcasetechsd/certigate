@@ -124,5 +124,34 @@ class Course {
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
     }
+    
+    /**
+     * Get course resource
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @param string $resource resource name
+     * @param string $name file name
+     * 
+     * @return string file path
+     * @throws \Exception File not found
+     */
+    public function getResource($course, $resource, $name) {
+        $resourceGetter = "get" . ucfirst($resource);
+        $resources = $course->$resourceGetter();
+        if (!isset($resources["tmp_name"])) {
+            foreach ($resources as $resource) {
+                if ($resource["name"] == $name) {
+                    $file = $resource["tmp_name"];
+                }
+            }
+        } else {
+            $file = $resources["tmp_name"];
+        }
+        if(! isset($file)){
+            throw new \Exception("File not found");
+        }
+        return $file;
+    }
 
 }
