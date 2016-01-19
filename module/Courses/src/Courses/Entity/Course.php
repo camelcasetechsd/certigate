@@ -154,11 +154,10 @@ class Course
     public $users;
 
     /**
+     * 
      * @ORM\ManyToMany(targetEntity="Courses\Entity\Evaluation", inversedBy="courses")
-     * @ORM\JoinTable(name="courses_evaluations",
-     *      joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="evaluation_id", referencedColumnName="id")}
-     *      )
+     * @ORM\JoinTable(name="courses_evaluations")
+
      */
     public $evaluations;
 
@@ -572,7 +571,7 @@ class Course
      */
     public function setEvaluation($evaluation)
     {
-        $this->evaluation = $evaluation;
+        $this->evaluations[] = $evaluation;
         return $this;
     }
 
@@ -586,7 +585,7 @@ class Course
      */
     public function setEvaluations($evaluations)
     {
-        $this->evaluations[] = $evaluations;
+        $this->evaluations = $evaluations;
         return $this;
     }
 

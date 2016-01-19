@@ -65,14 +65,13 @@ class Evaluation
     public $isAdmin;
 
     /**
-     * 
      * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="evaluations")
      */
     public $courses;
 
     public function __construct()
     {
-        $this->courses =  new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     function getId()
@@ -109,7 +108,7 @@ class Evaluation
      * @return Course
      */
     public function addCourse($course)
-    {      
+    {
         $this->courses = $course;
         return $this;
     }

@@ -155,7 +155,7 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array( Role::ADMIN_ROLE, $storage['roles'] )) {
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
             $isAdminUser = true;
         }
 
@@ -218,7 +218,7 @@ class CourseController extends ActionController
 
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->enrollCourse($course, /*$user =*/ $currentUser);
+        $courseModel->enrollCourse($course, /* $user = */ $currentUser);
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
@@ -239,7 +239,7 @@ class CourseController extends ActionController
         $course = $query->find('Courses\Entity\Course', $id);
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->leaveCourse($course, /*$user =*/ $currentUser);
+        $courseModel->leaveCourse($course, /* $user = */ $currentUser);
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
@@ -292,7 +292,7 @@ class CourseController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $courseModel->saveEvaluation($evaluation, $data, $isAdminUser);
-
+                
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
@@ -315,7 +315,7 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array( Role::ADMIN_ROLE, $storage['roles'] )) {
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
             $isAdminUser = true;
         }
 
@@ -328,8 +328,8 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            if($isAdminUser){
-                $data['isAdmin']=1;
+            if ($isAdminUser) {
+                $data['isAdmin'] = 1;
             }
             $form->setInputFilter($eval->getInputFilter());
             $form->setData($data);
