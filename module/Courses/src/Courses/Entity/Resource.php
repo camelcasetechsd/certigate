@@ -32,6 +32,19 @@ class Resource
 {
 
     /**
+     * Presentations resource type
+     */
+    const TYPE_PRESENTATIONS = "Presentations";
+    /**
+     * Activities resource type
+     */
+    const TYPE_ACTIVITIES = "Activities";
+    /**
+     * Exams resource type
+     */
+    const TYPE_EXAMS = "Exams";
+    
+    /**
      *
      * @var InputFilter validation constraints 
      */
