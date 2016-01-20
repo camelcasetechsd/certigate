@@ -34,34 +34,28 @@ class Resource
     }
 
     /**
-     * Get course resource
+     * Save course
      * 
      * @access public
-     * @param Courses\Entity\Course $course
-     * @param string $resource resource name
-     * @param string $name file name
-     * 
-     * @return string file path
-     * @throws \Exception File not found
+     * @param Courses\Entity\Resource $resource
+     * @param array $data ,default is empty array
+     * @param bool $isAdminUser ,default is bool false
+     * @param bool $oldStatus ,default is null
      */
-    public function getResource($course, $resource, $name)
+    public function save($resource, $data = array(), $isAdminUser = false, $oldStatus = null)
     {
-        $resourceGetter = "get" . ucfirst($resource);
-        $resources = $course->$resourceGetter();
-        if (!isset($resources["tmp_name"])) {
-            foreach ($resources as $resource) {
-                if ($resource["name"] == $name) {
-                    $file = $resource["tmp_name"];
-                }
+
+        if ($isAdminUser === false) {
+            // edit case where data is empty array
+            if (count($data) == 0) {
+                $resource->setStatus($oldStatus);
+            }
+            else {
+                $resource->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        else {
-            $file = $resources["tmp_name"];
-        }
-        if (!isset($file)) {
-            throw new \Exception("File not found");
-        }
-        return $file;
+
+        $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);
     }
 
 }
