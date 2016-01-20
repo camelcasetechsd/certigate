@@ -56,13 +56,26 @@ return array(
             'resourcesListPerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/:id',
+                    'route' => '/resources/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index',
                     ),
                     'constraints' => array(
-                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesNewPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/new/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
                     ),
                 )
             ),
