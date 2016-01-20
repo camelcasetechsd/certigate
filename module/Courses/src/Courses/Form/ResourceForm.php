@@ -84,6 +84,7 @@ class ResourceForm extends Form {
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Course',
