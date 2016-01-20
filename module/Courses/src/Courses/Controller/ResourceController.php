@@ -40,7 +40,7 @@ class ResourceController extends ActionController
 
         $courseId = $this->params('courseId', /* $default = */ null);
 
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
