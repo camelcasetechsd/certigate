@@ -203,17 +203,11 @@ class ResourceController extends ActionController
      */
     public function downloadAction()
     {
-        $courseId = $this->params('courseId');
-        $type = $this->params('type');
-        $name = $this->params('name');
+        $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
-        $criteria = array(
-            'course' => $courseId,
-            'type' => $type,
-            'name' => $name,
-        );
-        $course = $query->find('Courses\Entity\Course', $courseId);
+        $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
+        $course = $resource->getCourse();
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
 
 
@@ -228,15 +222,7 @@ class ResourceController extends ActionController
             $this->redirect()->toUrl($url);
         }
         else {
-
-            $criteria = array(
-                'course' => $courseId,
-                'type' => $type,
-                'name' => $name,
-            );
-            $resource = $query->findOneBy('Courses\Entity\Resource', /* $criteria = */ $criteria);
             $file = $resource->getFile()["tmp_name"];
-            ;
             $response = new Stream();
             $response->setStream(fopen($file, 'r'));
             $response->setStatusCode(200);
