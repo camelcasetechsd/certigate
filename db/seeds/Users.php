@@ -187,6 +187,7 @@ class Users extends AbstractSeed {
         $resourcesResourceDownloadRoute = "resourcesResourceDownload";
         $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
         $resourcesEditPerCourseRoute = "resourcesEditPerCourse";
+        $resourcesDeletePerCourseRoute = "resourcesDeletePerCourse";
         $resourcesAcls = array(
             array(
                 'role_id' => $trainingManagerRoleId,
@@ -202,6 +203,11 @@ class Users extends AbstractSeed {
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $resourcesEditPerCourseRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesDeletePerCourseRoute,
                 ),
             array(
                 'role_id' => $studentRoleId,
