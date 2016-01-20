@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Utilities\Service\Random;
 
 /**
  * Resource Entity
@@ -35,15 +34,17 @@ class Resource
      * Presentations resource type
      */
     const TYPE_PRESENTATIONS = "Presentations";
+
     /**
      * Activities resource type
      */
     const TYPE_ACTIVITIES = "Activities";
+
     /**
      * Exams resource type
      */
     const TYPE_EXAMS = "Exams";
-    
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -145,7 +146,7 @@ class Resource
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Get Type
      * 
@@ -205,7 +206,8 @@ class Resource
      * @access public
      * @return array file
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
@@ -217,7 +219,8 @@ class Resource
      * @param array $file
      * @return Resource
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
         return $this;
     }
@@ -323,7 +326,7 @@ class Resource
             $this->setStatus($data["status"]);
         }
         if (array_key_exists('file', $data) && !empty($data["file"]["name"])) {
-            $this->setActivities($data["file"]);
+            $this->setFile($data["file"]);
         }
         $this->setName($data["name"])
                 ->setType($data["type"])
@@ -352,10 +355,12 @@ class Resource
      * 
      * @access public
      * 
+     * @param int $courseId
      * @param string $name
+     * 
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($name)
+    public function getInputFilter($courseId, $name)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
@@ -373,17 +378,18 @@ class Resource
                 'name' => 'course',
                 'required' => true,
             ));
-           
-            $random = new Random();
-            $unique = $random->getRandomUniqueName();
+
             $DirSep = DIRECTORY_SEPARATOR;
-            $target = APPLICATION_PATH . $DirSep .'upload'. $DirSep .'courseResources'. $DirSep . $unique . $DirSep;
+            $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
-            if(is_string($name) && strlen($name) > 0){
+            if (!file_exists($target)) {
+                mkdir($target, 0777);
+            }
+            if (is_string($name) && strlen($name) > 0) {
                 $target .= $name;
                 $useUploadName = false;
             }
-            
+
             $fileUploadOptions = array(
                 "target" => $target,
                 "overwrite" => true,

@@ -97,7 +97,7 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter());
+            $form->setInputFilter($resource->getInputFilter(/*$courseId =*/$data["course"],/*$name =*/$data["name"]));
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
@@ -152,7 +152,7 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter());
+            $form->setInputFilter($resource->getInputFilter(/*$courseId =*/$data["course"],/*$name =*/$data["name"]));
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
@@ -258,16 +258,16 @@ class ResourceController extends ActionController
      * Get resources index url
      * 
      * @access private
-     * @param int $id ,default is null
+     * @param int $courseId ,default is null
      * 
      * @return string url
      */
-    private function getResourcesUrl($id = null)
+    private function getResourcesUrl($courseId = null)
     {
         $routeName = "resources";
         $params = array('action' => 'index');
-        if (!empty($id)) {
-            $params['id'] = $id;
+        if (!empty($courseId)) {
+            $params['courseId'] = $courseId;
             $routeName = "resourcesListPerCourse";
         }
         return $this->getEvent()->getRouter()->assemble($params, array('name' => $routeName));
