@@ -27,11 +27,11 @@
                 <td>{{statusText}}</td>
                 
                 <td>
-                    <a href="/resources/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                         {{#isAdminUser}}
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="/resources/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                         {{/isAdminUser}}
                     {{/status}}
                 </td>
