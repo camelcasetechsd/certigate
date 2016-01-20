@@ -79,6 +79,20 @@ return array(
                     ),
                 )
             ),
+            'resourcesEditPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/edit/:id/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
             'courses' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
