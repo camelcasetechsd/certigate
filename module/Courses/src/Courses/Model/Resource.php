@@ -2,6 +2,8 @@
 
 namespace Courses\Model;
 
+use Utilities\Service\Status;
+
 /**
  * Resource Model
  * 
@@ -70,6 +72,9 @@ class Resource
     {
         $preparedResources = array();
         foreach ($resources as $resource) {
+            if($resource->getStatus() != Status::STATUS_ACTIVE){
+                continue;
+            }
             $preparedResources[$resource->getType()]["files"][] = array(
                 "name" => $resource->getName(),
                 "id" => $resource->getId(),
