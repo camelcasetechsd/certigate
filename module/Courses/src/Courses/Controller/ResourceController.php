@@ -38,7 +38,7 @@ class ResourceController extends ActionController
     {
         $variables = array();
 
-        $id = $this->params('id', /* $default = */ null);
+        $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -49,33 +49,34 @@ class ResourceController extends ActionController
             $isAdminUser = true;
         }
 
-        if (!empty($id)) {
-            $data = $query->findBy(/* $entityName = */null, /* $criteria = */ array('id' => $id));
+        $criteria = array();
+        if (!empty($courseId)) {
+            $criteria['course'] = $variables['courseId'] = $courseId;
         }
-        else {
-            $data = $query->findAll(/* $entityName = */null);
-        }
+        $data = $query->findBy(/* $entityName = */null, $criteria);
         $variables['resources'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
 
     /**
-     * Create new course
+     * Create new resource
      * 
      * 
      * @access public
-     * @uses Course
-     * @uses CourseForm
+     * @uses Resource
+     * @uses ResourceForm
      * 
      * @return ViewModel
      */
     public function newAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $course = new Course();
+        $courseId = $this->params('courseId', /* $default = */ null);
+
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+        $resource = new Resource();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -86,7 +87,7 @@ class ResourceController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
-        $form = new CourseForm(/* $name = */ null, $options);
+        $form = new ResourceForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -96,18 +97,18 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($course->getInputFilter());
+            $form->setInputFilter($resource->getInputFilter());
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $courseModel->save($course, $data, $isAdminUser);
+                $resourceModel->save($resource, $data, $isAdminUser);
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
             }
         }
 
-        $variables['courseForm'] = $this->getFormView($form);
+        $variables['resourceForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
 
@@ -202,49 +203,6 @@ class ResourceController extends ActionController
     }
 
     /**
-     * Enroll course
-     *
-     * 
-     * @access public
-     */
-    public function enrollAction()
-    {
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $course = $query->find('Courses\Entity\Course', $id);
-
-        $currentUser = $query->find('Users\Entity\User', $storage['id']);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->enrollCourse($course, /* $user = */ $currentUser);
-
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
-        $this->redirect()->toUrl($url);
-    }
-
-    /**
-     * Leave course
-     *
-     * 
-     * @access public
-     */
-    public function leaveAction()
-    {
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $course = $query->find('Courses\Entity\Course', $id);
-        $currentUser = $query->find('Users\Entity\User', $storage['id']);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->leaveCourse($course, /* $user = */ $currentUser);
-
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
-        $this->redirect()->toUrl($url);
-    }
-
-    /**
      * Download resource
      *
      * 
@@ -291,116 +249,23 @@ class ResourceController extends ActionController
         }
     }
 
-    public function evTemplatesAction()
+    /**
+     * Get resources index url
+     * 
+     * @access private
+     * @param int $id ,default is null
+     * 
+     * @return string url
+     */
+    private function getResourcesUrl($id = null)
     {
-        $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        $routeName = "resources";
+        $params = array('action' => 'index');
+        if (!empty($id)) {
+            $params['id'] = $id;
+            $routeName = "resourcesListPerCourse";
         }
-
-        $data = $query->findAll(/* $entityName = */null);
-        $variables['questions'] = $objectUtilities->prepareForDisplay($data);
-        return new ViewModel($variables);
-    }
-
-    public function newEvTemplateAction()
-    {
-        $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $evaluation = new \Courses\Entity\Evaluation();
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
-
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
-        $form = new \Courses\Form\EvaluationTemplateForm(/* $name = */ null, $options);
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-
-            if ($isAdminUser) {
-                $data["isAdmin"] = 1;
-            }
-
-            $form->setInputFilter($evaluation->getInputFilter($query));
-            $form->setData($data);
-            if ($form->isValid()) {
-                $courseModel->saveEvaluation($evaluation, $data, $isAdminUser);
-
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
-                $this->redirect()->toUrl($url);
-            }
-        }
-
-        $variables['evaluationForm'] = $this->getFormView($form);
-
-
-        return new ViewModel($variables);
-    }
-
-    public function editEvTemplateAction()
-    {
-
-        $variables = array();
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $eval = $query->find('Courses\Entity\Evaluation', $id);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
-
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
-        $form = new \Courses\Form\EvaluationTemplateForm(/* $name = */ null, $options);
-        $form->bind($eval);
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-            if ($isAdminUser) {
-                $data['isAdmin'] = 1;
-            }
-            $form->setInputFilter($eval->getInputFilter());
-            $form->setData($data);
-            if ($form->isValid()) {
-                $courseModel->saveEvaluation($eval, /* $data = */ array(), $isAdminUser);
-
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
-                $this->redirect()->toUrl($url);
-            }
-        }
-
-        $variables['evaluationForm'] = $this->getFormView($form);
-        return new ViewModel($variables);
-    }
-
-    public function deleteEvTemplateAction()
-    {
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $eval = $query->find('Courses\Entity\Evaluation', $id);
-
-        $query->remove($eval);
-
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'evTemplates'), array('name' => 'EvTemplates'));
-        $this->redirect()->toUrl($url);
+        return $this->getEvent()->getRouter()->assemble($params, array('name' => $routeName));
     }
 
 }
