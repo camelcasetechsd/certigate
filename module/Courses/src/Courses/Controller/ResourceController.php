@@ -170,7 +170,7 @@ class ResourceController extends ActionController
             }
         }
 
-        $variables['courseForm'] = $this->getFormView($form);
+        $variables['resourceForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
 
