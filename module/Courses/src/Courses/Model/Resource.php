@@ -34,7 +34,7 @@ class Resource
     }
 
     /**
-     * Save course
+     * Save resource
      * 
      * @access public
      * @param Courses\Entity\Resource $resource
@@ -56,6 +56,27 @@ class Resource
         }
 
         $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);
+    }
+
+    /**
+     * Prepare resources for display
+     * 
+     * @access public
+     * @param array $resources
+     * 
+     * @return array prepared resources
+     */
+    public function prepareResourcesForDisplay($resources)
+    {
+        $preparedResources = array();
+        foreach ($resources as $resource) {
+            $preparedResources[$resource->getType()]["files"][] = array(
+                "name" => $resource->getName(),
+                "id" => $resource->getId(),
+            );
+            $preparedResources[$resource->getType()]["type"] = $resource->getType();
+        }
+        return array_values($preparedResources);
     }
 
 }
