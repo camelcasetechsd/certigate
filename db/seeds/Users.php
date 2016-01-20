@@ -88,7 +88,7 @@ class Users extends AbstractSeed {
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $coursesMoreRoute = "coursesMore";
-        $coursesResourceDownloadRoute = "coursesResourceDownload";
+        
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
         $coursesEditRoute = "coursesEdit";
@@ -134,26 +134,6 @@ class Users extends AbstractSeed {
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
                 'route' => $coursesMoreRoute,
-                ),
-            array(
-                'role_id' => $studentRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $instructorRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
                 ),
             array(
                 'role_id' => $studentRoleId,
@@ -204,11 +184,32 @@ class Users extends AbstractSeed {
         $this->insert('acl', $coursesAcls);
         
         $resourcesListPerCourseRoute = "resourcesListPerCourse";
+        $resourcesResourceDownloadRoute = "resourcesResourceDownload";
         $resourcesAcls = array(
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $resourcesListPerCourseRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
                 ),
             );
         $this->insert('acl', $resourcesAcls);
