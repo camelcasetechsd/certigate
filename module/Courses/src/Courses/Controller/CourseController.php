@@ -324,4 +324,116 @@ class CourseController extends ActionController {
         }
     }
 
+    public function evTemplatesAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $data = $query->findAll(/* $entityName = */null);
+        $variables['questions'] = $objectUtilities->prepareForDisplay($data);
+        return new ViewModel($variables);
+    }
+
+    public function newEvTemplateAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $evaluation = new \Courses\Entity\Evaluation();
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $options = array();
+        $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
+        $form = new \Courses\Form\EvaluationTemplateForm(/* $name = */ null, $options);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+
+            if ($isAdminUser) {
+                $data["isAdmin"] = 1;
+            }
+
+            $form->setInputFilter($evaluation->getInputFilter($query));
+            $form->setData($data);
+            if ($form->isValid()) {
+                $courseModel->saveEvaluation($evaluation, $data, $isAdminUser);
+                
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['evaluationForm'] = $this->getFormView($form);
+
+
+        return new ViewModel($variables);
+    }
+
+    public function editEvTemplateAction()
+    {
+
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $eval = $query->find('Courses\Entity\Evaluation', $id);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $options = array();
+        $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
+        $form = new \Courses\Form\EvaluationTemplateForm(/* $name = */ null, $options);
+        $form->bind($eval);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            if ($isAdminUser) {
+                $data['isAdmin'] = 1;
+            }
+            $form->setInputFilter($eval->getInputFilter());
+            $form->setData($data);
+            if ($form->isValid()) {
+                $courseModel->saveEvaluation($eval, /* $data = */ array(), $isAdminUser);
+
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['evaluationForm'] = $this->getFormView($form);
+        return new ViewModel($variables);
+    }
+
+    public function deleteEvTemplateAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $eval = $query->find('Courses\Entity\Evaluation', $id);
+
+        $query->remove($eval);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'evTemplates'), array('name' => 'EvTemplates'));
+        $this->redirect()->toUrl($url);
+    }
+
 }

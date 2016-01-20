@@ -93,6 +93,14 @@ class Course
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
+        /////////////////
+        $adminEvaluations = $this->query->findBy('Courses\Entity\Evaluation', array(
+            'isAdmin' => 1
+        ));
+        foreach ($adminEvaluations as $eval) {
+            $course->setEvaluation($eval);
+        }
+        ////////////////////////
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
 
@@ -167,6 +175,24 @@ class Course
             throw new \Exception("File not found");
         }
         return $file;
+    }
+
+    public function saveEvaluation($evalObj, $data, $isAdmin)
+    {
+        if ($isAdmin) {
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::ADMIN_CREATED);
+            $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj, $data);
+            $courses = $this->query->findAll("Courses\Entity\Course");
+            $eval = $this->query->findBy("Courses\Entity\Evaluation", array('questionTitle' => $evalObj->getQuestionTitle()));
+            foreach ($courses as $course) {
+                $course->setEvaluation($eval[0]);
+                $this->query->setEntity("Courses\Entity\Course")->save($course);
+            }
+        }
+        else {
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::USER_CREATED);
+            $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
+        }
     }
 
 }
