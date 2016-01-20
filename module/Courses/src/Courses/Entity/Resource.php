@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Utilities\Service\Random;
 
 /**
  * Resource Entity
@@ -367,9 +368,9 @@ class Resource
 
             $inputFilter->add(array(
                 'name' => 'name',
-                'required' => true
+                'required' => true,
             ));
-
+            
             $inputFilter->add(array(
                 'name' => 'type',
                 'required' => true,
@@ -379,6 +380,8 @@ class Resource
                 'required' => true,
             ));
 
+            $random = new Random();
+            $unique = $random->getRandomUniqueName();
             $DirSep = DIRECTORY_SEPARATOR;
             $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
@@ -386,7 +389,7 @@ class Resource
                 mkdir($target, 0777);
             }
             if (is_string($name) && strlen($name) > 0) {
-                $target .= $name;
+                $target .= $name."_".$unique;
                 $useUploadName = false;
             }
 
