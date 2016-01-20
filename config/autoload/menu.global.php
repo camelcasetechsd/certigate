@@ -56,7 +56,8 @@ return array(
                 'weight' => 3,
                 'title_underscored' => "courses",
                 'children' => array(
-                    "Resources" => array(
+                    array(
+                        "Resources" => array(
                             'depth' => 1,
                             'path' => "/resources",
                             'weight' => 1,
@@ -64,6 +65,7 @@ return array(
                             'children' => array(
                             )
                         ),
+                    )
                 )
             ),
             "Users" => array(
