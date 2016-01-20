@@ -10,8 +10,6 @@ use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
-use Zend\Http\Response\Stream;
-use Zend\Http\Headers;
 
 /**
  * Course Controller
@@ -277,51 +275,6 @@ class CourseController extends ActionController {
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
         $this->redirect()->toUrl($url);
-    }
-
-    /**
-     * Download resource
-     *
-     * 
-     * @access public
-     */
-    public function downloadAction() {
-        $id = $this->params('id');
-        $resource = $this->params('resource');
-        $name = $this->params('name');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $course = $query->find('Courses\Entity\Course', $id);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
-
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
-        $preparedCourse = reset($preparedCourseArray);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
-        } else {
-
-            $file = $courseModel->getResource($course, $resource, $name);
-            $response = new Stream();
-            $response->setStream(fopen($file, 'r'));
-            $response->setStatusCode(200);
-            $response->setStreamName(basename($file));
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
-                'Content-Type' => 'application/octet-stream',
-                'Content-Length' => filesize($file),
-                'Expires' => '@0', // @0, because zf2 parses date as string to \DateTime() object
-                'Cache-Control' => 'must-revalidate',
-                'Pragma' => 'public'
-            ));
-            $response->setHeaders($headers);
-            return $response;
-        }
     }
 
     public function evTemplatesAction()
