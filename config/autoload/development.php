@@ -12,4 +12,18 @@
  * file.
  */
 return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'camelcasetech',
+                    'password' => 'c@m31C@$3T3c4',
+                    'dbname'   => 'certigate',
+                )
+            )
+        )
+    ),
 );
