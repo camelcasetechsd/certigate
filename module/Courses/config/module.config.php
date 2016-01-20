@@ -10,7 +10,8 @@ return array(
     ),
     'service_manager' => array(
         'aliases' => array(
-            'courses' => 'Courses\Controller\CourseController'
+            'courses' => 'Courses\Controller\CourseController',
+            'resources' => 'Courses\Controller\ResourceController'
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
@@ -33,6 +34,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Courses\Controller\Course' => 'Courses\Controller\CourseController',
+            'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
         ),
     ),
     'router' => array(
