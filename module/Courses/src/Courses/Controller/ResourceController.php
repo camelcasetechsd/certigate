@@ -61,58 +61,6 @@ class ResourceController extends ActionController
     }
 
     /**
-     * Calendar courses
-     * 
-     * 
-     * @access public
-     * 
-     * @return ViewModel
-     */
-    public function calendarAction()
-    {
-        $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
-        $data = $query->findBy(/* $entityName = */null, /* $criteria = */ array("status" => Status::STATUS_ACTIVE));
-        $courseModel->setCanEnroll($data);
-        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
-        return new ViewModel($variables);
-    }
-
-    /**
-     * More course
-     *
-     * 
-     * @access public
-     * 
-     * @return ViewModel
-     */
-    public function moreAction()
-    {
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $course = $query->find('Courses\Entity\Course', $id);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
-        $preparedCourse = reset($preparedCourseArray);
-        $variables['course'] = $preparedCourse;
-
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $canDownloadResources = true;
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-            $canDownloadResources = false;
-        }
-        $variables['canDownloadResources'] = $canDownloadResources;
-        return new ViewModel($variables);
-    }
-
-    /**
      * Create new course
      * 
      * 
