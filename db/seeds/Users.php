@@ -203,6 +203,16 @@ class Users extends AbstractSeed {
             );
         $this->insert('acl', $coursesAcls);
         
+        $resourcesListPerCourseRoute = "resourcesListPerCourse";
+        $resourcesAcls = array(
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesListPerCourseRoute,
+                ),
+            );
+        $this->insert('acl', $resourcesAcls);
+        
         $adminUser = array(
                 "firstName" => $faker->firstName,
                 "middleName" => $faker->name,
