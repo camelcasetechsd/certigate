@@ -126,7 +126,7 @@ class ResourceController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $courseId = $this->params('courseId', /* $default = */ null);
-        
+
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = $query->find('Courses\Entity\Resource', $id);
@@ -175,7 +175,7 @@ class ResourceController extends ActionController
     }
 
     /**
-     * Delete course
+     * Delete resource
      *
      * 
      * @access public
@@ -183,14 +183,15 @@ class ResourceController extends ActionController
     public function deleteAction()
     {
         $id = $this->params('id');
+        $courseId = $this->params('courseId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $course = $query->find('Courses\Entity\Course', $id);
+        $resource = $query->find('Courses\Entity\Resource', $id);
 
-        $course->setStatus(Status::STATUS_INACTIVE);
+        $resource->setStatus(Status::STATUS_INACTIVE);
 
-        $query->save($course);
+        $query->save($resource);
 
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $url = $this->getResourcesUrl($courseId);
         $this->redirect()->toUrl($url);
     }
 
