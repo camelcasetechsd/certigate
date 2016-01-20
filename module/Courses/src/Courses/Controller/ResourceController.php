@@ -113,11 +113,11 @@ class ResourceController extends ActionController
     }
 
     /**
-     * Edit course
+     * Edit resource
      * 
      * 
      * @access public
-     * @uses CourseForm
+     * @uses ResourceForm
      * 
      * @return ViewModel
      */
@@ -125,10 +125,12 @@ class ResourceController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
+        $courseId = $this->params('courseId', /* $default = */ null);
+        
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $course = $query->find('Courses\Entity\Course', $id);
-        $oldStatus = $course->getStatus();
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+        $resource = $query->find('Courses\Entity\Resource', $id);
+        $oldStatus = $resource->getStatus();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -139,8 +141,8 @@ class ResourceController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
-        $form = new CourseForm(/* $name = */ null, $options);
-        $form->bind($course);
+        $form = new ResourceForm(/* $name = */ null, $options);
+        $form->bind($resource);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -150,30 +152,20 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($course->getInputFilter());
+            $form->setInputFilter($resource->getInputFilter());
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             // file not updated
-            if (isset(reset($fileData['presentations'])['name']) && empty(reset($fileData['presentations'])['name'])) {
+            if (isset($fileData['file']['name']) && empty($fileData['file']['name'])) {
                 // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('presentations');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['activities']['name']) && empty($fileData['activities']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('activities');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['exams']['name']) && empty($fileData['exams']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('exams');
+                $input = $inputFilter->get('file');
                 $input->setRequired(false);
             }
             if ($form->isValid()) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
+                $resourceModel->save($resource, /* $data = */ array(), $isAdminUser, $oldStatus);
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
             }
         }
