@@ -8,9 +8,10 @@
     <div class="panel-heading">Course Info</div>
 
     <!-- Table -->
+
+    {{#course}}
     <table class="table">
         <tbody>
-            {{#course}}
             <tr>
                 <td>Name</td><td>{{name}}</td>
             </tr><tr>
@@ -28,22 +29,24 @@
             </tr><tr>
                 <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
             </tr>
-                {{#canDownloadResources}}
-                <tr>
-                    <td>Presentations</td><td>
-                        {{#presentations}}
-                            <a target="_blank" href="/courses/download/presentations/{{id}}/{{name}}" >{{name}}</a> <br>
-                        {{/presentations}}
-                    </td>
-                </tr><tr>
-                    <td>Activities</td><td><a target="_blank" href="/courses/download/activities/{{id}}/{{activities.name}}" >{{activities.name}}</a></td>
-                </tr><tr>
-                    <td>Exams</td><td><a target="_blank" href="/courses/download/exams/{{id}}/{{exams.name}}" >{{exams.name}}</a></td>
-                </tr>
-                {{/canDownloadResources}}
-            {{/course}}
+            {{#canDownloadResources}}
+
+        <td>Resources</td><td></td>
+        {{#resources}}
+        <tr>
+            <td>&ensp; {{type}}</td>
+            <td>
+                {{#files}}
+                    <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                {{/files}}
+            </td>
+        </tr>
+        {{/resources}} 
+        {{/canDownloadResources}}
         </tbody>
     </table>
+    {{/course}}
+
 </div>
 {{/content}}
 {{/layout}}

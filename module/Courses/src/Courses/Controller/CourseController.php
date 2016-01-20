@@ -21,7 +21,8 @@ use Zend\Form\FormInterface;
  * @package courses
  * @subpackage controller
  */
-class CourseController extends ActionController {
+class CourseController extends ActionController
+{
 
     /**
      * List courses
@@ -31,7 +32,8 @@ class CourseController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -56,7 +58,8 @@ class CourseController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function calendarAction() {
+    public function calendarAction()
+    {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -76,16 +79,23 @@ class CourseController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function moreAction() {
+    public function moreAction()
+    {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
         $courseArray = array($course);
         $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
         $preparedCourse = reset($preparedCourseArray);
+
+        $resources = $preparedCourse->getResources();
+        $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+        $preparedCourse->setResources($preparedResources);
+
         $variables['course'] = $preparedCourse;
 
         $auth = new AuthenticationService();
@@ -108,7 +118,8 @@ class CourseController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function newAction() {
+    public function newAction()
+    {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
@@ -157,7 +168,8 @@ class CourseController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function editAction() {
+    public function editAction()
+    {
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -223,7 +235,8 @@ class CourseController extends ActionController {
      * 
      * @access public
      */
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $course = $query->find('Courses\Entity\Course', $id);
@@ -242,7 +255,8 @@ class CourseController extends ActionController {
      * 
      * @access public
      */
-    public function enrollAction() {
+    public function enrollAction()
+    {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
@@ -263,7 +277,8 @@ class CourseController extends ActionController {
      * 
      * @access public
      */
-    public function leaveAction() {
+    public function leaveAction()
+    {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
@@ -324,7 +339,7 @@ class CourseController extends ActionController {
             $form->setData($data);
             if ($form->isValid()) {
                 $courseModel->saveEvaluation($evaluation, $data, $isAdminUser);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
