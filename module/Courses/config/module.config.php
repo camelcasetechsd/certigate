@@ -37,6 +37,32 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'resources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'resourcesListPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'courses' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
