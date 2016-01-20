@@ -99,12 +99,12 @@ return array(
                     ),
                 )
             ),
-            'coursesResourceDownload' => array(
+            'resourcesResourceDownload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/download/:resource/:id/:name',
+                    'route' => '/resources/download/:resource/:id/:name',
                     'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
+                        'controller' => 'Courses\Controller\Resource',
                         'action' => 'download',
                     ),
                     'constraints' => array(
