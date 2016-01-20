@@ -107,6 +107,20 @@ return array(
                     ),
                 )
             ),
+            'resourcesResourceDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/download/:type/:courseId/:name',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                        'type' => '[a-zA-Z]+',
+                    ),
+                )
+            ),
             'courses' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -140,20 +154,6 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
-                    ),
-                )
-            ),
-            'resourcesResourceDownload' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/resources/download/:resource/:id/:name',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Resource',
-                        'action' => 'download',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                        'resource' => '[a-zA-Z]+',
                     ),
                 )
             ),
