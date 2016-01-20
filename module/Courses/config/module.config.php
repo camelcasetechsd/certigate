@@ -93,6 +93,20 @@ return array(
                     ),
                 )
             ),
+            'resourcesDeletePerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/delete/:id/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
             'courses' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
