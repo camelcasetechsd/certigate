@@ -165,6 +165,7 @@ class CourseController extends ActionController {
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = $query->find('Courses\Entity\Course', $id);
+        $oldStatus = $course->getStatus();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -207,7 +208,7 @@ class CourseController extends ActionController {
                 $input->setRequired(false);
             }
             if ($form->isValid()) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser);
+                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);

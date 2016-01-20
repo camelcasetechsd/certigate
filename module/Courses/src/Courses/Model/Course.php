@@ -17,7 +17,8 @@ use Utilities\Service\Status;
  * @package courses
  * @subpackage model
  */
-class Course {
+class Course
+{
 
     /**
      *
@@ -31,7 +32,8 @@ class Course {
      * @access public
      * @param Utilities\Service\Query\Query $query
      */
-    public function __construct($query) {
+    public function __construct($query)
+    {
         $this->query = $query;
     }
 
@@ -42,7 +44,8 @@ class Course {
      * @param array $courses
      * @return array courses with canRoll property added
      */
-    public function setCanEnroll($courses) {
+    public function setCanEnroll($courses)
+    {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $nonAuthorizedEnroll = false;
@@ -76,11 +79,19 @@ class Course {
      * @param Courses\Entity\Course $course
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
+     * @param bool $oldStatus ,default is null
      */
-    public function save($course, $data = array(), $isAdminUser = false) {
+    public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null)
+    {
 
         if ($isAdminUser === false) {
-            $course->setStatus(Status::STATUS_NOT_APPROVED);
+            // edit case where data is empty array
+            if (count($data) == 0) {
+                $course->setStatus($oldStatus);
+            }
+            else {
+                $course->setStatus(Status::STATUS_NOT_APPROVED);
+            }
         }
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
@@ -92,7 +103,8 @@ class Course {
      * @param Courses\Entity\Course $course
      * @param Users\Entity\User $user
      */
-    public function leaveCourse($course, $user) {
+    public function leaveCourse($course, $user)
+    {
         $users = $course->getUsers();
         $users->removeElement($user);
         $course->setUsers($users);
@@ -111,7 +123,8 @@ class Course {
      * @param Users\Entity\User $user
      * @throws \Exception Capacity exceeded
      */
-    public function enrollCourse($course, $user) {
+    public function enrollCourse($course, $user)
+    {
         $studentsNo = $course->getStudentsNo();
         $studentsNo++;
 
@@ -124,7 +137,7 @@ class Course {
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
     }
-    
+
     /**
      * Get course resource
      * 
@@ -136,7 +149,8 @@ class Course {
      * @return string file path
      * @throws \Exception File not found
      */
-    public function getResource($course, $resource, $name) {
+    public function getResource($course, $resource, $name)
+    {
         $resourceGetter = "get" . ucfirst($resource);
         $resources = $course->$resourceGetter();
         if (!isset($resources["tmp_name"])) {
@@ -145,10 +159,11 @@ class Course {
                     $file = $resource["tmp_name"];
                 }
             }
-        } else {
+        }
+        else {
             $file = $resources["tmp_name"];
         }
-        if(! isset($file)){
+        if (!isset($file)) {
             throw new \Exception("File not found");
         }
         return $file;
