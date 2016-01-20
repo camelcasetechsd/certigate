@@ -85,7 +85,7 @@ class ResourceController extends ActionController
         }
 
         $options = array();
-        $options['query'] = $query;
+        $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
         $form = new ResourceForm(/* $name = */ null, $options);
 
@@ -97,7 +97,7 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/*$courseId =*/$data["course"],/*$name =*/$data["name"]));
+            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
@@ -139,7 +139,7 @@ class ResourceController extends ActionController
         }
 
         $options = array();
-        $options['query'] = $query;
+        $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
         $form = new ResourceForm(/* $name = */ null, $options);
         $form->bind($resource);
@@ -152,7 +152,7 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/*$courseId =*/$data["course"],/*$name =*/$data["name"]));
+            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
@@ -207,7 +207,7 @@ class ResourceController extends ActionController
         $type = $this->params('type');
         $name = $this->params('name');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        
+
         $criteria = array(
             'course' => $courseId,
             'type' => $type,
@@ -234,8 +234,9 @@ class ResourceController extends ActionController
                 'type' => $type,
                 'name' => $name,
             );
-            $resource = $query->findOneBy('Courses\Entity\Resource', /*$criteria =*/$criteria);
-            $file = $resource->getFile()["tmp_name"];;
+            $resource = $query->findOneBy('Courses\Entity\Resource', /* $criteria = */ $criteria);
+            $file = $resource->getFile()["tmp_name"];
+            ;
             $response = new Stream();
             $response->setStream(fopen($file, 'r'));
             $response->setStatusCode(200);
