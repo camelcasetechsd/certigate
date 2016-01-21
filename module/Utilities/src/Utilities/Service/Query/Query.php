@@ -21,7 +21,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package utilities
  * @subpackage query
  */
-class Query {
+class Query
+{
 
     /**
      *
@@ -48,7 +49,8 @@ class Query {
      * @access public
      * @param ObjectManager $entityManager
      */
-    public function __construct(ObjectManager $entityManager) {
+    public function __construct(ObjectManager $entityManager)
+    {
         $this->entityManager = $entityManager;
     }
 
@@ -60,7 +62,8 @@ class Query {
      * @param string $entityName
      * @return \Utilities\Service\Query\Query
      */
-    public function setEntity($entityName) {
+    public function setEntity($entityName)
+    {
         if (!empty($entityName)) {
             $this->entityName = $entityName;
             $this->entityRepository = $this->entityManager->getRepository($entityName);
@@ -78,7 +81,8 @@ class Query {
      *
      * @return mixed object|null The entity instance or NULL if the entity can not be found.
      */
-    public function find($entityName, $id) {
+    public function find($entityName, $id)
+    {
         return $this->setEntity($entityName)->entityRepository->find($id);
     }
 
@@ -90,7 +94,8 @@ class Query {
      * @param string $entityName
      * @return array The entities.
      */
-    public function findAll($entityName) {
+    public function findAll($entityName)
+    {
         return $this->setEntity($entityName)->entityRepository->findAll();
     }
 
@@ -107,7 +112,8 @@ class Query {
      *
      * @return array The objects.
      */
-    public function findBy($entityName, array $criteria, array $orderBy = null, $limit = null, $offset = null) {
+    public function findBy($entityName, array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
         return $this->setEntity($entityName)->entityRepository->findBy($criteria, $orderBy, $limit, $offset);
     }
 
@@ -122,7 +128,8 @@ class Query {
      *
      * @return mixed object|null The entity instance or NULL if the entity can not be found.
      */
-    public function findOneBy($entityName, array $criteria, array $orderBy = null) {
+    public function findOneBy($entityName, array $criteria, array $orderBy = null)
+    {
         return $this->setEntity($entityName)->entityRepository->findOneBy($criteria, $orderBy);
     }
 
@@ -139,7 +146,8 @@ class Query {
      * @param bool $countFlag ,default is bool false
      * @return type
      */
-    public function filter($entityName, $criteria = false, $countFlag = false) {
+    public function filter($entityName, $criteria = false, $countFlag = false)
+    {
         if (!$criteria instanceof Criteria) {
             $criteria = new Criteria();
         }
@@ -162,7 +170,8 @@ class Query {
      * @param mixed $entity entity object to be persisted
      * @param array $data ,default is empty array
      */
-    public function save($entity, $data = array()) {
+    public function save($entity, $data = array())
+    {
         // if association hold id not actual object, 
         // then find that object to set the corresponding property with it
         $classMetadata = $this->entityManager->getClassMetadata($this->entityName);
@@ -170,7 +179,8 @@ class Query {
         foreach ($associationNames as $associationName) {
             if (isset($data[$associationName])) {
                 $currentValue = $data[$associationName];
-            } else {
+            }
+            else {
                 $currentValue = $entity->$associationName;
             }
             if (!is_object($currentValue)) {
@@ -190,10 +200,12 @@ class Query {
                                 $processedValueArrayCollection = new ArrayCollection();
                             }
                             $processedValueArrayCollection->add($processedValue);
-                        } else {
+                        }
+                        else {
                             if (isset($data[$associationName])) {
                                 $data[$associationName] = $processedValue;
-                            } else {
+                            }
+                            else {
                                 $entity->$associationName = $processedValue;
                             }
                         }
@@ -201,7 +213,8 @@ class Query {
                     if ($currentValueArrayFlag === true) {
                         if (isset($data[$associationName])) {
                             $data[$associationName] = $processedValueArrayCollection;
-                        } else {
+                        }
+                        else {
                             $entity->$associationName = $processedValueArrayCollection;
                         }
                     }
@@ -223,9 +236,22 @@ class Query {
      * @access public
      * @param mixed $entity entity object to be removed
      */
-    public function remove($entity) {
+    public function remove($entity)
+    {
         $this->entityManager->remove($entity);
         $this->entityManager->flush($entity);
+    }
+
+    function checkExistance($entityName, $targetColumn, $value)
+    {
+        $Entity = $this->findOneBy($entityName, array(
+            $targetColumn => $value
+        ));
+
+        if ($Entity == Null) {
+            return false;
+        }
+        return True;
     }
 
 }

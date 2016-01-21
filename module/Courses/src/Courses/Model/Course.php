@@ -83,7 +83,6 @@ class Course
      */
     public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null)
     {
-
         if ($isAdminUser === false) {
             // edit case where data is empty array
             if (count($data) == 0) {
@@ -93,14 +92,12 @@ class Course
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        /////////////////
         $adminEvaluations = $this->query->findBy('Courses\Entity\Evaluation', array(
             'isAdmin' => 1
         ));
         foreach ($adminEvaluations as $eval) {
             $course->setEvaluation($eval);
         }
-        ////////////////////////
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
 

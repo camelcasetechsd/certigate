@@ -16,8 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
- * @property string $questionTitle
- * @property int $isAdmin
+ * @property int $isTemplate
+ * @property int $Approved
  * 
 
  * 
@@ -26,15 +26,26 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Evaluation
 {
-    /*
+
+    /**
      * question created by user
      */
+    const NOT_TEMPLATE = 0;
 
-    const USER_CREATED = 0;
-    /*
+    /**
      * question created by admin
      */
-    const ADMIN_CREATED = 1;
+    const IS_TEMPLATE = 1;
+
+    /**
+     * not approved by admin
+     */
+    const NOT_APPROVED = 0;
+
+    /**
+     * approved by admin
+     */
+    const APPROVED = 1;
 
     /**
      *
@@ -52,26 +63,32 @@ class Evaluation
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
-     * @var string
+     * @ORM\Column(type="integer")
+     * @var int
      */
-    public $questionTitle;
+    public $isTemplate;
 
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
-    public $isAdmin;
+    public $isApproved;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="evaluations")
+     * @ORM\OneToOne(targetEntity="Course", inversedBy="evaluation")
+     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
      */
-    public $courses;
+    public $course;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove"})
+     */
+    public $questions;
 
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     function getId()
@@ -79,64 +96,66 @@ class Evaluation
         return $this->id;
     }
 
-    function getQuestionTitle()
+    function getCourse()
     {
-        return $this->questionTitle;
+        return $this->course;
     }
 
-    function getIsAdmin()
+    function setIsTemplate()
     {
-        return $this->isAdmin;
+        $this->isTemplate = self::IS_TEMPLATE;
     }
 
-    function setQuestionTitle($questionTitle)
+    function setIsUserEval()
     {
-        $this->questionTitle = $questionTitle;
+        $this->isTemplate = self::NOT_TEMPLATE;
     }
 
-    function setIsAdmin($isAdmin)
+    function isTemplate()
     {
-        $this->isAdmin = $isAdmin;
+        if ($this->isTemplate == self::IS_TEMPLATE) {
+            return TRUE;
+        }
+        return False;
     }
 
-    /**
-     * Add Courses
-     * 
-     * 
-     * @access public
-     * @param Courses\Entity\Course $courses
-     * @return Course
-     */
-    public function addCourse($course)
+    function isApproved()
     {
-        $this->courses = $course;
-        return $this;
+        if ($this->isApproved == self::APPROVED) {
+            return TRUE;
+        }
+        return False;
     }
 
-    /**
-     * Set Courses
-     * 
-     * 
-     * @access public
-     * @param ArrayCollection $courses
-     * @return Course
-     */
-    public function setCourses($courses)
+    function setIsApproved()
     {
-        $this->courses[] = $courses;
-        return $this;
+        $this->isApproved = self::APPROVED;
     }
 
-    /**
-     * Get evaluations
-     * 
-     * 
-     * @access public
-     * @return ArrayCollection evaluations
-     */
-    public function getCourses()
+    function setIsDeclined()
     {
-        return $this->courses;
+        $this->isApproved = self::NOT_APPROVED;
+    }
+
+    function setCourse($course)
+    {
+        $this->course = $course;
+    }
+
+    function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    function setQuestions($questions)
+    {
+        $this->questions = $questions;
+    }
+
+    public function addQuestion(Question $question)
+    {
+
+        $this->questions[] = $question;
     }
 
     /**
@@ -161,8 +180,6 @@ class Evaluation
     public function exchangeArray($data = array())
     {
         $this->setQuestionTitle($data['questionTitle']);
-        $this->setIsAdmin($data['isAdmin']);
-//        $this->addCourses($data['courses']);
     }
 
     /**

@@ -154,12 +154,9 @@ class Course
     public $users;
 
     /**
-     * 
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\Evaluation", inversedBy="courses")
-     * @ORM\JoinTable(name="courses_evaluations")
-
+     * @ORM\OneToOne(targetEntity="Evaluation", mappedBy="course")
      */
-    public $evaluations;
+    public $evaluation;
 
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Resource", mappedBy="course")
@@ -289,7 +286,8 @@ class Course
      * @param int $capacity
      * @return Course
      */
-    public function setCapacity($capacity) {
+    public function setCapacity($capacity)
+    {
         $this->capacity = (int) $capacity;
         return $this;
     }
@@ -314,7 +312,8 @@ class Course
      * @param int $studentsNo
      * @return Course
      */
-    public function setStudentsNo($studentsNo) {
+    public function setStudentsNo($studentsNo)
+    {
         $this->studentsNo = (int) $studentsNo;
         return $this;
     }
@@ -443,7 +442,8 @@ class Course
      * @param int $duration
      * @return Course
      */
-    public function setDuration($duration) {
+    public function setDuration($duration)
+    {
         $this->duration = (int) $duration;
         return $this;
     }

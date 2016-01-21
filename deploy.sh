@@ -10,7 +10,8 @@ npm install
 ./vendor/bin/doctrine-module orm:schema-tool:update --force;
 
 # seeding data
-./vendor/bin/phinx seed:run
+app_env=${APPLICATION_ENV:-'vagrant'}
+./vendor/bin/phinx seed:run -e $app_env
 
 ## prepare public resources
 cd public
