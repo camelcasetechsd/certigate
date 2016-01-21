@@ -76,6 +76,14 @@ return array(
                     )
                 )
             ),
+            "Evaluation Template"=>array(
+                'depth' => 0,
+                'path' => "/courses/ev-templates",
+                'weight' => 4,
+                'title_underscored' => "Evaluation_Template",
+                'children' => array(
+                            )
+                ),
         )
     ),
 );

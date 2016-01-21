@@ -179,12 +179,9 @@ class Course
     public $users;
 
     /**
-     * 
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\Evaluation", inversedBy="courses")
-     * @ORM\JoinTable(name="courses_evaluations")
-
+     * @ORM\OneToOne(targetEntity="Evaluation", mappedBy="course")
      */
-    public $evaluations;
+    public $evaluation;
 
     /**
      * Prepare entity
@@ -308,7 +305,8 @@ class Course
      * @param int $capacity
      * @return Course
      */
-    public function setCapacity($capacity) {
+    public function setCapacity($capacity)
+    {
         $this->capacity = (int) $capacity;
         return $this;
     }
@@ -333,7 +331,8 @@ class Course
      * @param int $studentsNo
      * @return Course
      */
-    public function setStudentsNo($studentsNo) {
+    public function setStudentsNo($studentsNo)
+    {
         $this->studentsNo = (int) $studentsNo;
         return $this;
     }
@@ -462,7 +461,8 @@ class Course
      * @param int $duration
      * @return Course
      */
-    public function setDuration($duration) {
+    public function setDuration($duration)
+    {
         $this->duration = (int) $duration;
         return $this;
     }
@@ -474,7 +474,8 @@ class Course
      * @access public
      * @return array presentations
      */
-    public function getPresentations() {
+    public function getPresentations()
+    {
         return $this->presentations;
     }
 
@@ -486,7 +487,8 @@ class Course
      * @param array $presentations
      * @return Course
      */
-    public function setPresentations($presentations) {
+    public function setPresentations($presentations)
+    {
         $this->presentations = $presentations;
         return $this;
     }
@@ -498,7 +500,8 @@ class Course
      * @access public
      * @return array activities
      */
-    public function getActivities() {
+    public function getActivities()
+    {
         return $this->activities;
     }
 
@@ -510,7 +513,8 @@ class Course
      * @param array $activities
      * @return Course
      */
-    public function setActivities($activities) {
+    public function setActivities($activities)
+    {
         $this->activities = $activities;
         return $this;
     }
@@ -522,7 +526,8 @@ class Course
      * @access public
      * @return array exams
      */
-    public function getExams() {
+    public function getExams()
+    {
         return $this->exams;
     }
 
@@ -534,7 +539,8 @@ class Course
      * @param array $exams
      * @return Course
      */
-    public function setExams($exams) {
+    public function setExams($exams)
+    {
         $this->exams = $exams;
         return $this;
     }
@@ -815,8 +821,8 @@ class Course
             $random = new Random();
             $unique = $random->getRandomUniqueName();
             $DirSep = DIRECTORY_SEPARATOR;
-            $target = APPLICATION_PATH . $DirSep .'upload'. $DirSep .'courseResources'. $DirSep . $unique . $DirSep;
-            
+            $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $unique . $DirSep;
+
             if (!file_exists($target)) {
                 mkdir($target, 0777);
             }
