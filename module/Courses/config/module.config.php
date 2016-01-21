@@ -43,26 +43,28 @@ return array(
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources[/:action]',
+                    'route' => '/resources[[/:action]/:processResult]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index'
                     ),
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'processResult' => '(false|true)'
                     ),
                 )
             ),
             'resourcesListPerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/:courseId',
+                    'route' => '/resources/:courseId[/:processResult]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index',
                     ),
                     'constraints' => array(
                         'courseId' => '[0-9]+',
+                        'processResult' => '(false|true)'
                     ),
                 )
             ),

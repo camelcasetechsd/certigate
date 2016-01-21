@@ -39,7 +39,13 @@ class ResourceController extends ActionController
         $variables = array();
 
         $courseId = $this->params('courseId', /* $default = */ null);
-
+        $processResult = $this->params('processResult', /* $default = */ "true");
+        if($processResult === "true"){
+            $processResult = true;
+        }else{
+            $processResult = false;
+        }
+        
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
@@ -56,6 +62,7 @@ class ResourceController extends ActionController
         $data = $query->findBy(/* $entityName = */null, $criteria);
         $variables['resources'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
+        $variables['processResult'] = $processResult;
         return new ViewModel($variables);
     }
 
@@ -185,13 +192,14 @@ class ResourceController extends ActionController
         $id = $this->params('id');
         $courseId = $this->params('courseId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = $query->find('Courses\Entity\Resource', $id);
 
-        $resource->setStatus(Status::STATUS_INACTIVE);
+        $processResult = $resourceModel->remove($resource);
 
-        $query->save($resource);
 
         $url = $this->getResourcesUrl($courseId);
+        $url .= "/".$processResult;
         $this->redirect()->toUrl($url);
     }
 
