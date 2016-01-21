@@ -89,10 +89,16 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
         $courseArray = array($course);
         $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
         $preparedCourse = reset($preparedCourseArray);
+
+        $resources = $preparedCourse->getResources();
+        $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+        $preparedCourse->setResources($preparedResources);
+
         $variables['course'] = $preparedCourse;
 
         $auth = new AuthenticationService();
@@ -172,6 +178,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = $query->find('Courses\Entity\Course', $id);
+        $oldStatus = $course->getStatus();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -214,7 +221,7 @@ class CourseController extends ActionController
                 $input->setRequired(false);
             }
             if ($form->isValid()) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser);
+                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
@@ -288,58 +295,6 @@ class CourseController extends ActionController
         $this->redirect()->toUrl($url);
     }
 
-    /**
-     * Download resource
-     *
-     * 
-     * @access public
-     */
-    public function downloadAction()
-    {
-        $id = $this->params('id');
-        $resource = $this->params('resource');
-        $name = $this->params('name');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $course = $query->find('Courses\Entity\Course', $id);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $evaluationModel = $this->getServiceLocator()->get('Courses\Model\Evaluation');
-
-
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
-        $preparedCourse = reset($preparedCourseArray);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
-        }
-        else {
-
-            $file = $courseModel->getResource($course, $resource, $name);
-            $response = new Stream();
-            $response->setStream(fopen($file, 'r'));
-            $response->setStatusCode(200);
-            $response->setStreamName(basename($file));
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
-                'Content-Type' => 'application/octet-stream',
-                'Content-Length' => filesize($file),
-                'Expires' => '@0', // @0, because zf2 parses date as string to \DateTime() object
-                'Cache-Control' => 'must-revalidate',
-                'Pragma' => 'public'
-            ));
-            $response->setHeaders($headers);
-            return $response;
-        }
-    }
-
-    /**
-     * This function meant to redirect Admin to create if there's no evaluation template 
-     * or to edit if there's already created evaluation template
-     */
     public function evTemplatesAction()
     {
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -463,9 +418,7 @@ class CourseController extends ActionController
                 }
             }
 
-
-
-            //delete deleted questions
+            //edit without validation
             if (isset($data['editedQuestion']) && isset($data['original'])) {
 
                 for ($i = 0; $i < count($data['editedQuestion']); $i++) {
@@ -475,6 +428,7 @@ class CourseController extends ActionController
                 }
             }
 
+            //insert without validation
             if (isset($data['newQuestion'])) {
                 foreach ($data['newQuestion'] as $new) {
                     $evaluationModel->assignQuestionToEvaluation($new);

@@ -88,7 +88,7 @@ class Users extends AbstractSeed {
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $coursesMoreRoute = "coursesMore";
-        $coursesResourceDownloadRoute = "coursesResourceDownload";
+        
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
         $coursesEditRoute = "coursesEdit";
@@ -138,26 +138,6 @@ class Users extends AbstractSeed {
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $instructorRoleId,
-                'module' => $courseModule,
-                'route' => $coursesResourceDownloadRoute,
-                ),
-            array(
-                'role_id' => $studentRoleId,
-                'module' => $courseModule,
                 'route' => $coursesEnrollRoute,
                 ),
             array(
@@ -202,6 +182,55 @@ class Users extends AbstractSeed {
                 ),
             );
         $this->insert('acl', $coursesAcls);
+        
+        $resourcesListPerCourseRoute = "resourcesListPerCourse";
+        $resourcesResourceDownloadRoute = "resourcesResourceDownload";
+        $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
+        $resourcesEditPerCourseRoute = "resourcesEditPerCourse";
+        $resourcesDeletePerCourseRoute = "resourcesDeletePerCourse";
+        $resourcesAcls = array(
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesListPerCourseRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesNewPerCourseRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesEditPerCourseRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesDeletePerCourseRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $resourcesResourceDownloadRoute,
+                ),
+            );
+        $this->insert('acl', $resourcesAcls);
         
         $adminUser = array(
                 "firstName" => $faker->firstName,

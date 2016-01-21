@@ -79,11 +79,18 @@ class Course
      * @param Courses\Entity\Course $course
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
+     * @param bool $oldStatus ,default is null
      */
-    public function save($course, $data = array(), $isAdminUser = false)
+    public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null)
     {
         if ($isAdminUser === false) {
-            $course->setStatus(Status::STATUS_NOT_APPROVED);
+            // edit case where data is empty array
+            if (count($data) == 0) {
+                $course->setStatus($oldStatus);
+            }
+            else {
+                $course->setStatus(Status::STATUS_NOT_APPROVED);
+            }
         }
         $adminEvaluations = $this->query->findBy('Courses\Entity\Evaluation', array(
             'isAdmin' => 1

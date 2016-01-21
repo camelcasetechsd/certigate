@@ -1,0 +1,46 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Create new Resource</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Resources</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Course</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#resources}}
+            <tr>
+                <td><a target="_blank" href="/resources/download/{{id}}" >{{name}}</a></td>
+                <td>{{type}}</td>
+                <td>{{course.name}}</td>
+                <td>{{statusText}}</td>
+                
+                <td>
+                    <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
+                        {{#isAdminUser}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{/isAdminUser}}
+                    {{/status}}
+                </td>
+            </tr>
+            {{/resources}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

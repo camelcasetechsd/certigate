@@ -10,10 +10,12 @@ return array(
     ),
     'service_manager' => array(
         'aliases' => array(
-            'courses' => 'Courses\Controller\CourseController'
+            'courses' => 'Courses\Controller\CourseController',
+            'resources' => 'Courses\Controller\ResourceController'
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
+            'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
         )
     ),
     'doctrine' => array(
@@ -33,10 +35,117 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Courses\Controller\Course' => 'Courses\Controller\CourseController',
+            'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'resources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'resourcesListPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesNewPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/new/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesEditPerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/edit/:id/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/delete/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesDeletePerCourse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/delete/:id/:courseId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'resourcesResourceDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources/download/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'courses' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -70,20 +179,6 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
-                    ),
-                )
-            ),
-            'coursesResourceDownload' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/download/:resource/:id/:name',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'download',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                        'resource' => '[a-zA-Z]+',
                     ),
                 )
             ),

@@ -84,7 +84,7 @@ class Course
     public $capacity;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -128,28 +128,28 @@ class Course
     public $duration;
 
     /**
-     * 
+     * @Gedmo\Versioned
      * @ORM\Column(type="array")
      * @var array
      */
     public $presentations;
 
     /**
-     * 
+     * @Gedmo\Versioned
      * @ORM\Column(type="array")
      * @var array
      */
     public $activities;
 
     /**
-     * 
+     * @Gedmo\Versioned
      * @ORM\Column(type="array")
      * @var array
      */
     public $exams;
 
     /**
-     * 
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
@@ -184,6 +184,11 @@ class Course
     public $evaluation;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Resource", mappedBy="course")
+     */
+    public $resources;
+    
+    /**
      * Prepare entity
      * 
      * 
@@ -193,6 +198,7 @@ class Course
     {
         $this->users = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
+        $this->resources = new ArrayCollection();
     }
 
     /**
@@ -532,7 +538,7 @@ class Course
     }
 
     /**
-     * Set activities
+     * Set exams
      * 
      * 
      * @access public
@@ -660,9 +666,49 @@ class Course
         $this->users = $users;
         return $this;
     }
+    
+    /**
+     * Get Resources
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection resources
+     */
+    public function getResources()
+    {
+        return $this->resources;
+    }
 
     /**
-     * Add Users
+     * Add Resources
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Resource $resource
+     * @return Course
+     */
+    public function addResource($resource)
+    {
+        $this->resources[] = $resource;
+        return $this;
+    }
+
+    /**
+     * Set Resources
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $resources
+     * @return Course
+     */
+    public function setResources($resources)
+    {
+        $this->resources = $resources;
+        return $this;
+    }
+
+    /**
+     * Add Evaluation
      * 
      * 
      * @access public
