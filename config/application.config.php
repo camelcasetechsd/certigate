@@ -1,4 +1,5 @@
 <?php
+use Zend\Console\Console;
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
@@ -9,7 +10,7 @@ $env = APPLICATION_ENV;
  *
  * @see https://github.com/zendframework/ZFTool
  */
-return array(
+$config = array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
@@ -35,3 +36,10 @@ return array(
         )
     )
 );
+
+if(Console::isConsole()){
+    $key = array_search('CustomMustache', $config['modules']);
+    unset($config['modules'][$key]);
+}
+
+return $config;

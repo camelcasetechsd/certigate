@@ -31,3 +31,12 @@ environments:
         pass: testpass
         port: 3306
         charset: utf8
+    
+    development:
+        adapter: mysql
+        host: localhost
+        name: certigate
+        user: camelcasetech
+        pass: c@m31C@$3T3c4
+        port: 3306
+        charset: utf8
