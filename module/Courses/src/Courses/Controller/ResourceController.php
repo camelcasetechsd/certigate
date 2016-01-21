@@ -115,6 +115,8 @@ class ResourceController extends ActionController
 
                 $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
+            }else{
+                $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
 

@@ -113,10 +113,12 @@ class Resource
                         "messages" => '',
                         "errorsMarkup" => '',
                         "errorClass" => '',
+                        "value" => '',
                     );
                 }
                 // manipulate data passed to form as if added resource is the original one
                 $data["name"] = $nameValue;
+                $validationOutput["addedResources"][$nameKey]["name"]["value"] = $nameValue;
                 $data["file"] = $data["fileAdded"][$nameKey];
                 $data["fileAdded"][$nameKey]["uploadOptions"] = array();
                 // update input filter after changing input values
@@ -139,7 +141,9 @@ class Resource
         // reset Form data
         $form->setData($originalData);
         $form->setInputFilter($originalFilter);
-        
+        foreach ($validatedFields as $validatedField) {
+            $form->get($validatedField)->setMessages(array());
+        }
         // validate original resource
         $isValid &= $form->isValid();
         
