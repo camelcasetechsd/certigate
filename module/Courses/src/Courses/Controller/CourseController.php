@@ -390,10 +390,10 @@ class CourseController extends ActionController
             // initialize validation values
             $isStringValid = false;
             $isLengthValid = false;
-            $messages = array();
+//            $messages = array();
             //string and length validators
             $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
-            $lengthValidator = new \Zend\Validator\StringLength(array('min' => 15));
+            $lengthValidator = new \Zend\Validator\StringLength(array('min' => 10));
 
             //loop over all questions
             foreach ($data['questionTitle'] as $question) {
@@ -440,8 +440,8 @@ class CourseController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $eval = $query->find('Courses\Entity\Evaluation', $id);
+        $evaluationModel = new \Courses\Model\Evaluation($query);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -452,26 +452,37 @@ class CourseController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
-        $form = new \Courses\Form\EvaluationTemplateForm(/* $name = */ null, $options);
-        $form->bind($eval);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            if ($isAdminUser) {
-                $data['isAdmin'] = 1;
+            //delete deleted questions
+            if (isset($data['deleted'])) {
+                foreach ($data['deleted'] as $deletedQuestion) {
+                    $evaluationModel->removeQuestion($deletedQuestion);
+                }
             }
-            $form->setInputFilter($eval->getInputFilter());
-            $form->setData($data);
-            if ($form->isValid()) {
-                $courseModel->saveEvaluation($eval, /* $data = */ array());
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
-                $this->redirect()->toUrl($url);
+
+
+            //delete deleted questions
+            if (isset($data['editedQuestion']) && isset($data['original'])) {
+
+                for ($i = 0; $i < count($data['editedQuestion']); $i++) {
+                    if (empty($evaluationModel->validateQuestion($data['editedQuestion'][$i]))) {
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i]);
+                    }
+                }
+            }
+
+            if (isset($data['newQuestion'])) {
+                foreach ($data['newQuestion'] as $new) {
+                    $evaluationModel->assignQuestionToEvaluation($new);
+                }
             }
         }
 
-        $variables['evaluationForm'] = $this->getFormView($form);
+        $variables['questions'] = $eval->getQuestions();
         return new ViewModel($variables);
     }
 

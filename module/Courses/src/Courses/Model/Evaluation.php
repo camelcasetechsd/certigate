@@ -26,7 +26,7 @@ class Evaluation
         $this->query = $query;
     }
 
-    public function saveQuestion($questionObject, $data, $evaluation)
+    public function saveQuestion($questionObject, $data = 0 , $evaluation = null)
     {
         $questionObject->setToEvaluation($evaluation);
         $this->query->setEntity("Courses\Entity\Question")->save($questionObject, $data);
@@ -58,6 +58,43 @@ class Evaluation
         ));
         $questionEntity = new \Courses\Entity\Question();
         $this->saveQuestion($questionEntity, $question, $evaluation);
+    }
+
+    public function removeQuestion($questionTitle)
+    {
+        $question = $this->query->findOneBy("Courses\Entity\Question", array(
+            'questionTitle' => $questionTitle
+        ));
+        $this->query->remove($question);
+    }
+
+    public function updateQuestion($oldQuestionTitle, $newQuestionTitle)
+    {
+        $question = $this->query->findOneBy("Courses\Entity\Question", array(
+            'questionTitle' => $oldQuestionTitle
+        ));
+        $question->setQuestionTitle($newQuestionTitle);
+        $this->query->save($question);
+    }
+
+    public function validateQuestion($question)
+    {
+        $messages = array();
+        $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
+        $lengthValidator = new \Zend\Validator\StringLength(array('min' => 10));
+        // start question validation
+        $isStringValid = $stringValidator->isValid($question);
+        $isLengthValid = $lengthValidator->isValid($question);
+        // check if string
+        if (!$isStringValid) {
+            array_push($messages, "Please insert valid questions");
+        }
+        // check on length
+        if (!$isLengthValid) {
+            array_push($messages, "question must not be less than 10 charachters");
+        }
+        
+        return $messages;
     }
 
 }
