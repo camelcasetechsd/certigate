@@ -3,6 +3,8 @@
 namespace Courses\Model;
 
 use Utilities\Service\Status;
+use Zend\Filter\File\RenameUpload;
+use Utilities\Form\FormElementErrors;
 
 /**
  * Resource Model
@@ -65,8 +67,84 @@ class Resource
                 $resource->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-
+        
         $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);
+        // save added resources
+        foreach ($data["fileAdded"] as $fileKey => $fileValue) {
+            
+                $filter = new RenameUpload($fileValue["uploadOptions"]);
+                $resource = clone $resource;
+                $uploadedFile = $filter->filter($fileValue);
+                $resource->setFile($uploadedFile);
+                $resource->setName($data["nameAdded"][$fileKey]);
+                $this->query->setEntity('Courses\Entity\Resource')->save($resource);
+        }
+    }
+
+    /**
+     * Validate resources
+     * 
+     * @access public
+     * @param Courses\Form\ResourceForm $form
+     * @param Courses\Entity\Resource $resource
+     * @param array $data ,passed by reference
+     * 
+     * @return array validation output
+     */
+    public function validateResources($form, $resource, &$data)
+    {
+        $formErrors = new FormElementErrors();
+        
+        $validationOutput = array();
+        // prepare data for validation
+        $courseId = $data["course"];
+        $validatedFields = array("name", "file");
+        // store data needed to reset form
+        $originalData = $data;
+        $originalFilter = $form->getInputFilter();
+        $isValid = true;
+        // validate each added resource
+        if (isset($data["nameAdded"]) && isset($data["fileAdded"]) &&
+                is_array($data["nameAdded"]) && is_array($data["fileAdded"]) &&
+                count($data["nameAdded"]) == count($data["fileAdded"])) {
+            foreach ($data["nameAdded"] as $nameKey => $nameValue) {
+                foreach ($validatedFields as $validatedField) {
+                    $validationOutput["addedResources"][$nameKey][$validatedField] = array(
+                        "messages" => '',
+                        "errorsMarkup" => '',
+                        "errorClass" => '',
+                    );
+                }
+                // manipulate data passed to form as if added resource is the original one
+                $data["name"] = $nameValue;
+                $data["file"] = $data["fileAdded"][$nameKey];
+                $data["fileAdded"][$nameKey]["uploadOptions"] = array();
+                // update input filter after changing input values
+                $form->setInputFilter($resource->getInputFilter($courseId, $nameValue, /*$overrideFilterFlag =*/ true, /*$fileUploadOptions =*/ $data["fileAdded"][$nameKey]["uploadOptions"]));
+                $form->setData($data);
+                // validate added resource
+                $isValid &= $form->isValid();
+                $messages = $form->getMessages();
+                foreach ($validatedFields as $validatedField) {
+                    // add error messages -if exist-
+                    // generate errors markup to be used in display directly
+                    if (array_key_exists($validatedField, $messages)) {
+                        $validationOutput["addedResources"][$nameKey][$validatedField]["messages"] = $messages[$validatedField];
+                        $validationOutput["addedResources"][$nameKey][$validatedField]["errorsMarkup"] = $formErrors->render($form->get($validatedField));
+                        $validationOutput["addedResources"][$nameKey][$validatedField]["errorClass"] = "input-error";
+                    }
+                }
+            }
+        }
+        // reset Form data
+        $form->setData($originalData);
+        $form->setInputFilter($originalFilter);
+        
+        // validate original resource
+        $isValid &= $form->isValid();
+        
+        $validationOutput["isValid"] = $isValid;
+        return $validationOutput;
     }
 
     /**

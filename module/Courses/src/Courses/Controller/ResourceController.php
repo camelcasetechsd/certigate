@@ -106,9 +106,12 @@ class ResourceController extends ActionController
             );
             $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
             $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $resourceModel->save($resource, $data, $isAdminUser);
+            $validationOutput = $resourceModel->validateResources($form, $resource, $data);
+            if ($validationOutput["isValid"]) {
+                $formData = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $formData["nameAdded"] = isset($data["nameAdded"]) ? $data["nameAdded"] : array();
+                $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
+                $resourceModel->save($resource, $formData, $isAdminUser);
 
                 $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
