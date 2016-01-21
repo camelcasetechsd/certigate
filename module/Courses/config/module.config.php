@@ -43,7 +43,7 @@ return array(
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources[[/:action]/:processResult]',
+                    'route' => '/resources[/:action[/:processResult]]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index'
