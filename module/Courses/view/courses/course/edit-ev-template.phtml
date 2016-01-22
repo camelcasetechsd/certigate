@@ -73,6 +73,8 @@ $(document).ready(function () {
         $(this).prev().prop("name", 'deleted[]');
         // hide deleted input
         $(this).parent().parent().hide();
+        //remove original value no longer needed
+        $(this).next().remove();
 //        editInputNames();
     });
 
