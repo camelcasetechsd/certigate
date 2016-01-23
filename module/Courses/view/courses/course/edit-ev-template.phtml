@@ -26,11 +26,20 @@
             <div class=" col-md-4">
                 <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
                 <a href="#" class="deleteQuestion" >X</a>
-                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"
+                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
             </div>
         </div>
-        </div>
         {{/questions}}
+        {{#unvalidQuestions}}
+        <div class="form-group" >
+            <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
+            <div class=" col-md-4">
+                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                <a href="#" class="deleteInvalidQuestion" >X</a>
+            </div>
+        </div>
+        {{/unvalidQuestions}}
+
         <span id="endOfText"></span>
         <!-- button -->
         <div class=" row form-group">
@@ -62,7 +71,7 @@ $(document).ready(function () {
 
     }
 
-    
+
     /**
      * This action is meant to delete 
      */
@@ -76,6 +85,11 @@ $(document).ready(function () {
         //remove original value no longer needed
         $(this).next().remove();
 //        editInputNames();
+    });
+    
+     $('.deleteInvalidQuestion').click(function () {
+        //delete input
+        $(this).parent().parent().remove();
     });
 
 });

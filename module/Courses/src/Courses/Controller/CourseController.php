@@ -337,54 +337,27 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
+            // validate questions
+            $errors = $evaluationModle->validateQuestion($data['newQuestion']);
 
-            // creating the one and only template Evaluation
-            $evalEntity->setIsTemplate();
-            $evalEntity->setIsApproved();
-            $evaluationModle->saveEvaluation($evalEntity);
-
-            // initialize validation values
-            $isStringValid = false;
-            $isLengthValid = false;
-//            $messages = array();
-            //string and length validators
-            $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
-            $lengthValidator = new \Zend\Validator\StringLength(array('min' => 10));
-
-            //loop over all questions
-            foreach ($data['questionTitle'] as $question) {
-                // if question does not exist in DB
-                if (!$query->checkExistance("Courses\Entity\Question", "questionTitle", $question)) {
-                    // start question validation
-                    $isStringValid = $stringValidator->isValid($question);
-                    $isLengthValid = $lengthValidator->isValid($question);
-                    // check if string
-                    if (!$isStringValid) {
-                        array_push($messages, "Please insert valid questions");
-                    }
-                    // check on length
-                    if (!$isLengthValid) {
-                        array_push($messages, "question must not be less than 10 charachters");
-                    }
-                    /**
-                     * we save questions one by one to be able to validate uniquness
-                     */
-                    if ($isStringValid && $isLengthValid && empty($messages)) {
-                        $evaluationModle->assignQuestionToEvaluation($question);
-                    }
+            if (empty($errors)) {
+                //creating empty user template for this course
+                $evalEntity = new \Courses\Entity\Evaluation();
+                $evalEntity->setIsTemplate();
+                $evalEntity->setIsApproved();
+                $evaluationModle->saveEvaluation($evalEntity);
+                // save questions
+                foreach ($data['newQuestion'] as $new) {
+                    $evaluationModle->assignQuestionToEvaluation($new);
                 }
-                else {
-                    array_push($messages, "One of your questions already existed.");
-                }
-            }
-            // if there are error
-            if (!empty($messages)) {
-                $variables['validationError'] = $messages;
-            }
-            // if there's no error
-            else {
+                //redirect to course page
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
                 $this->redirect()->toUrl($url);
+            }
+            else {
+                $variables['validationError'] = $errors;
+                // unvalid questions
+                $variables['oldQuestions'] = $data['newQuestion'];
             }
         }
         return new ViewModel($variables);
@@ -392,7 +365,6 @@ class CourseController extends ActionController
 
     public function editEvTemplateAction()
     {
-
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -412,28 +384,45 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            //delete deleted questions
-            if (isset($data['deleted'])) {
-                foreach ($data['deleted'] as $deletedQuestion) {
-                    $evaluationModel->removeQuestion($deletedQuestion);
-                }
+            $error1 = array();
+            $error2 = array();
+            if (isset($data['editedQuestion'])) {
+                $error1 = $evaluationModel->validateQuestion($data['editedQuestion']);
             }
-
-            //edit without validation
-            if (isset($data['editedQuestion']) && isset($data['original'])) {
-
-                for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                    if (empty($evaluationModel->validateQuestion($data['editedQuestion'][$i]))) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i]);
+            if (isset($data['newQuestion'])) {
+                $error2 = $evaluationModel->validateQuestion($data['newQuestion']);
+            }
+            $errors = array_merge($error1, $error2);
+            if (empty($errors)) {
+                // saving new Questions
+                if (isset($data['newQuestion'])) {
+                    foreach ($data['newQuestion'] as $new) {
+                        $evaluationModel->assignQuestionToEvaluation($new, $eval->getId());
                     }
                 }
-            }
-
-            //insert without validation
-            if (isset($data['newQuestion'])) {
-                foreach ($data['newQuestion'] as $new) {
-                    $evaluationModel->assignQuestionToEvaluation($new);
+                // updating old questions
+                if (isset($data['editedQuestion']) && isset($data['original'])) {
+                    for ($i = 0; $i < count($data['editedQuestion']); $i++) {
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval->getId());
+                    }
                 }
+
+                //delete deleted questions
+                if (isset($data['deleted'])) {
+                    foreach ($data['deleted'] as $deletedQuestion) {
+                        $evaluationModel->removeQuestion($deletedQuestion);
+                    }
+                }
+
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $this->redirect()->toUrl($url);
+            }
+            else {
+
+                // errors
+                $variables['validationError'] = $errors;
+                $unValidQuestions = array_merge($data['newQuestion']);
+                $variables['unvalidQuestions'] = $unValidQuestions;
             }
         }
 
@@ -588,18 +577,17 @@ class CourseController extends ActionController
         return new ViewModel($variables);
     }
 
-    /**
-     * delete course evaluation
-     */
-    public function deleteEvaluationAction()
-    {
-        $evalId = $this->params('evalId');
-        $courseId = $this->params('courseId');
-
-
-
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'evTemplates'), array('name' => 'EvTemplates'));
-        $this->redirect()->toUrl($url);
-    }
-
+//    /**
+//     * delete course evaluation
+//     */
+//    public function deleteEvaluationAction()
+//    {
+//        $evalId = $this->params('evalId');
+//        $courseId = $this->params('courseId');
+//
+//
+//
+//        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'evTemplates'), array('name' => 'EvTemplates'));
+//        $this->redirect()->toUrl($url);
+//    }
 }
