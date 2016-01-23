@@ -26,12 +26,24 @@ class Evaluation
         $this->query = $query;
     }
 
-    public function saveQuestion($questionObject, $data = 0 , $evaluation = null)
+    /**
+     * this function to save & update question 
+     * @param Question $questionObject
+     * @param array $data
+     * @param Evaluation $evaluation
+     */
+    public function saveQuestion($questionObject, $data = 0, $evaluation = null)
     {
         $questionObject->setToEvaluation($evaluation);
         $this->query->setEntity("Courses\Entity\Question")->save($questionObject, $data);
     }
 
+    /**
+     * this function is meant to save evaluation no matters it's type 
+     * template or course evaluation
+     * @param Evaluation $evalObj
+     * @param int $courseId not required if template
+     */
     public function saveEvaluation($evalObj, $courseId = 0)
     {
         // if evaluation is admin template
@@ -41,21 +53,39 @@ class Evaluation
         // id evaluation is user's (atp)
         else {
             $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj);
-            //the only evaluation that has no course_id
-            $course = $this->query->findOneBy("Courses\Entity\Evaluation", array(
-                'course_id' => null
+            //find the course to assign it to the evaluation
+            $course = $this->query->findOneBy("Courses\Entity\Course", array(
+                'id' => $courseId
             ));
-            var_dump("inestigate Here if object will get the id after presist");
-            exit;
-            $course->setEvaluation();
+            //assign course to evaluation
+            $evalObj->setCourse($course);
+            $this->query->save($evalObj);
         }
     }
 
-    public function assignQuestionToEvaluation($question)
+    /**
+     * this function is meant to assign questions to an specific evaluation
+     * if they are questions for admin template or course evaluation 
+     * 
+     * @param string $question question title
+     * @param int $evaluationId not required if saving admin template
+     */
+    public function assignQuestionToEvaluation($question, $evaluationId = 0)
     {
-        $evaluation = $this->query->findOneBy("Courses\Entity\Evaluation", array(
-            'isTemplate' => 1
-        ));
+        // for admin evaluation ... note admin evaaluation will not be 0
+        // but for sake of useing generic functions
+        if ($evaluationId == 0) {
+            // getting the only template with property isTemplate = 1
+            // which is admin template
+            $evaluation = $this->query->findOneBy("Courses\Entity\Evaluation", array(
+                'isTemplate' => 1
+            ));
+        }
+        else {
+            $evaluation = $this->query->findOneBy("Courses\Entity\Evaluation", array(
+                'id' => $evaluationId
+            ));
+        }
         $questionEntity = new \Courses\Entity\Question();
         $this->saveQuestion($questionEntity, $question, $evaluation);
     }
@@ -87,14 +117,32 @@ class Evaluation
         $isLengthValid = $lengthValidator->isValid($question);
         // check if string
         if (!$isStringValid) {
-            array_push($messages, "Please insert valid questions");
+            array_push($messages, $question.": is not a valid question ... please insert a valid one");
         }
         // check on length
         if (!$isLengthValid) {
-            array_push($messages, "question must not be less than 10 charachters");
+            array_push($messages, $question.": is too short minimum question length is 10 characters");
         }
-        
+
         return $messages;
     }
 
+    /**
+     * function meant to check question title existance in specific 
+     * evaluation because question can not be unique for all evaluations
+     *  
+     * @param type $evaluation  evaluation object
+     * @param type $questionTitle  string of questionTitle wanted to be saved
+     * @return boolean  true if not exists  /  false if exists
+     */
+    public function checkQuestionExistanceInEvalautaion($evaluation, $questionTitle)
+    {
+        $questions = $evaluation->getQuestions();
+        foreach ($questions as $question) {
+            if ($question->questionTitle === $questionTitle) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
 }

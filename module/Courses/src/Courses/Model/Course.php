@@ -92,12 +92,6 @@ class Course
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        $adminEvaluations = $this->query->findBy('Courses\Entity\Evaluation', array(
-            'isAdmin' => 1
-        ));
-        foreach ($adminEvaluations as $eval) {
-            $course->setEvaluation($eval);
-        }
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
     }
 

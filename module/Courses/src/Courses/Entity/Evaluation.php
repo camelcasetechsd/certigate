@@ -48,6 +48,11 @@ class Evaluation
     const APPROVED = 1;
 
     /**
+     * approved by admin
+     */
+    const DECLINED = 2;
+
+    /**
      *
      * @var InputFilter validation constraints 
      */
@@ -133,6 +138,11 @@ class Evaluation
     }
 
     function setIsDeclined()
+    {
+        $this->isApproved = self::DECLINED;
+    }
+
+    function setIsNotApproved()
     {
         $this->isApproved = self::NOT_APPROVED;
     }

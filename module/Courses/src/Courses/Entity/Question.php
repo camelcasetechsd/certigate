@@ -11,8 +11,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
  * @ORM\Entity
- * @ORM\Table(name="question",uniqueConstraints={@ORM\UniqueConstraint(name="questionTitle_idx", columns={"questionTitle"})}) * @Gedmo\Loggable
-
+ * @ORM\Table(name="question")
+ * @Gedmo\Loggable
+ * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property int $questionTitle
@@ -126,27 +127,13 @@ class Question
             $inputFilter->add(array(
                 'name' => 'questionTitle',
                 'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('questionTitle'),
-                            'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
+                    )
+            );
 
             $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
     }
-    
-    
 
 }

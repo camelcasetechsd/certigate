@@ -3,6 +3,17 @@
 {{$content}}
 <a href="/courses/calendar"><button class="btn btn-small btn-success"><span class="glyphicon glyphicon-arrow-left"></span></button></a>
 <br><br>
+
+{{#evaluation}}
+<a class="btn btn-info" href="/courses/evaluation/edit/{{course.id}}/{{evaluation.id}}" >Edit Course Evaluation</a> 
+{{/evaluation}}
+{{^evaluation}}
+<a class="btn btn-info" href="/courses/evaluation/new/{{course.id}}" >Create Course Evaluation</a>
+{{/evaluation}}
+<br><br>
+
+
+
 <div class="panel panel-default">
 
     <div class="panel-heading">Course Info</div>
@@ -37,7 +48,7 @@
             <td>&ensp; {{type}}</td>
             <td>
                 {{#files}}
-                    <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
                 {{/files}}
             </td>
         </tr>

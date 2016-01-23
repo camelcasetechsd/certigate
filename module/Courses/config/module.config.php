@@ -271,28 +271,14 @@ return array(
                     ),
                 )
             ),
-            // delete evaluation template created by admin
-            'deleteEvTemplate' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/ev-templates/delete[/:id]',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'deleteEvTemplate',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                    ),
-                )
-            ),
             //list evaluations created by atp
             'courseEvaluations' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/evaluations[/:courseId]',
+                    'route' => '/courses/evaluation[/:courseId]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
-                        'action' => 'evaluations',
+                        'action' => 'evaluation',
                     ), 'constraints' => array(
                         'courseId' => '[0-9]+',
                     ),
@@ -315,32 +301,16 @@ return array(
             'editCourseEvaluation' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/evaluation/edit[/:courseId[/:evalId]]',
+                    'route' => '/courses/evaluation/edit[/:courseId]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'editEvaluation',
                     ),
                     'constraints' => array(
-                        'evalId' => '[0-9]+',
                         'courseId' => '[0-9]+',
                     ),
                 )
-            ),
-            // delete evaluation template created by atp
-            'deleteCourseEvaluation' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/evaluation/delete[/:id]',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'deleteEvaluation',
-                    ),
-                    'constraints' => array(
-                        'evalId' => '[0-9]+',
-                        'courseId' => '[0-9]+',
-                    ),
-                )
-            ),
+            )
         )
     ),
 );

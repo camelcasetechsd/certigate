@@ -666,7 +666,7 @@ class Course
         $this->users = $users;
         return $this;
     }
-    
+
     /**
      * Get Resources
      * 
@@ -708,7 +708,7 @@ class Course
     }
 
     /**
-     * Add Evaluation
+     * Add Evaluation to course
      * 
      * 
      * @access public
@@ -717,34 +717,20 @@ class Course
      */
     public function setEvaluation($evaluation)
     {
-        $this->evaluations[] = $evaluation;
+        $this->evaluation = $evaluation;
         return $this;
     }
 
     /**
-     * Set Evaluations
-     * 
+     * get Course Evaluation     * 
      * 
      * @access public
-     * @param ArrayCollection $evaluations
+     * @param Courses\Entity\Evaluation $evaluation
      * @return Course
      */
-    public function setEvaluations($evaluations)
+    public function getEvaluation()
     {
-        $this->evaluations = $evaluations;
-        return $this;
-    }
-
-    /**
-     * Get evaluations
-     * 
-     * 
-     * @access public
-     * @return ArrayCollection evaluations
-     */
-    public function getEvaluations()
-    {
-        return $this->evaluations;
+        return $this->evaluation;
     }
 
     /**

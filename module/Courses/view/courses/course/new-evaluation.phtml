@@ -3,7 +3,54 @@
 
 {{$content}}
 
-{{{evaluationForm}}}
+<ul>    
+    {{#validationError}}
+    <li>{{.}}</li>
+    {{/validationError}}
+</ul>
+<form id="questions" class="form-horizontal" method="POST" action="">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Evaluation Template</legend>
+
+        <!-- Text input-->
+        <div class="form-group questionDiv" >
+            <label class="col-md-4 control-label">Question Title</label>  
+            <div class="col-md-4">
+                <input name="questionTitle[]" type="text" placeholder="Add Your Question Here" class="form-control sameLine input-md" required="">
+            </div>
+        </div>
+        <span id="endOfText"></span>
+        <!-- button -->
+        <div class=" row form-group">
+            <div class="col-md-4">
+                <button id="singlebutton" name="submit" class="btn btn-success">Submit Evaluation Template</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+<button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+$(document).ready(function () {
+
+    $('#addmore').click(function () {
+        getMeNewInput();
+    });
+
+    function getMeNewInput() {
+        window.template = '<div class="form-group questionDiv" > <label class="col-md-4 control-label">Question Title</label> <div class="col-md-4"> <input name="questionTitle[]" type="text" placeholder="Add Your Question Here" class="form-control sameLine input-md" required=""></div> </div>';
+        $('#endOfText').before(window.template);
+    }
+});
+
+</script>
+
 
 {{/content}}
 
