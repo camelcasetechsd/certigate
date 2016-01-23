@@ -1,1 +1,99 @@
-edit ev
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<style>
+    .deleteQuestion{
+        margin-top: -28px;
+        float: right;
+        margin-right: -28px;
+    } 
+</style>
+<ul>    
+    {{#validationError}}
+    <li class="error">{{.}}</li>
+    {{/validationError}}
+</ul>
+<form id="editForm" class="form-horizontal" method="POST" action="">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Evaluation Template</legend>
+        {{#oldQuestions}}
+        <!-- Text input-->
+        <div class="form-group" >
+            <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
+            <div class=" col-md-4">
+                <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
+                <a href="#" class="deleteQuestion" >X</a>
+                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+            </div>
+        </div>
+        {{/oldQuestions}}
+        {{#unvalidQuestions}}
+        <div class="form-group" >
+            <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
+            <div class=" col-md-4">
+                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                <a href="#" class="deleteInvalidQuestion" >X</a>
+            </div>
+        </div>
+        {{/unvalidQuestions}}
+        <span id="endOfText"></span>
+        <!-- button -->
+        <div class=" row form-group">
+            <div class="col-md-4">
+                <button id="singlebutton" name="submit" class="btn btn-success">Submit Evaluation Template</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+<button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    //
+//    window.index = 1000;
+
+    $('#addmore').click(function () {
+        getMeNewInput();
+    });
+
+    function getMeNewInput() {
+        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> </div> </div>';
+        $('#endOfText').before(window.template);
+    }
+
+    
+    /**
+     * This action is meant to delete 
+     */
+    $('.deleteQuestion').click(function () {
+        // remove questionInputs class and replace it with deletedQuestion class
+        $(this).prev().attr("class", "deletedquestion form-control input-md");
+        // change input name 
+        $(this).prev().prop("name", 'deleted[]');
+        // hide deleted input
+        $(this).parent().parent().hide();
+        //remove original value no longer needed
+        $(this).next().remove();
+//        editInputNames();
+    });
+    $('.deleteInvalidQuestion').click(function () {
+        //delete input
+        $(this).parent().parent().remove();
+    });
+
+
+});
+
+</script>
+
+
+{{/content}}
+
+{{/layout}}

@@ -2,25 +2,44 @@
 {{<layout}}
 
 {{$content}}
-
+<style>
+    .deleteQuestion{
+        margin-top: -28px;
+        float: right;
+        margin-right: -28px;
+    } 
+</style>
 <ul>    
     {{#validationError}}
-    <li>{{.}}</li>
+    <li class="error">{{.}}</li>
     {{/validationError}}
 </ul>
-<form id="questions" class="form-horizontal" method="POST" action="">
+<form id="editForm" class="form-horizontal" method="POST" action="">
     <fieldset>
 
         <!-- Form Name -->
-        <legend>Evaluation Template</legend>
-
+        <legend>Course Evaluation</legend>
+        {{#templateQuestions}}
         <!-- Text input-->
-        <div class="form-group questionDiv" >
-            <label class="col-md-4 control-label">Question Title</label>  
-            <div class="col-md-4">
-                <input name="questionTitle[]" type="text" placeholder="Add Your Question Here" class="form-control sameLine input-md" required="">
+        <div class="form-group" >
+            <label class="col-md-4 control-label" for="template[]">Question Title</label>  
+            <div class=" col-md-4">
+                <input name="template[]" type="text" placeholder="Add Your Question Here" class="form-control templateQuestion input-md" required=""value="{{questionTitle}}">
+                <a href="#" class="deleteQuestion" >X</a>
             </div>
         </div>
+        {{/templateQuestions}}
+        {{#oldQuestions}}
+        <!-- Text input-->
+        <div class="form-group" >
+            <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
+            <div class=" col-md-4">
+                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                <a href="#" class="deleteQuestion" >X</a>
+            </div>
+        </div>
+        {{/oldQuestions}}
+        
         <span id="endOfText"></span>
         <!-- button -->
         <div class=" row form-group">
@@ -38,15 +57,36 @@
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script>
 $(document).ready(function () {
+    //
+//    window.index = 1000;
 
     $('#addmore').click(function () {
         getMeNewInput();
     });
 
     function getMeNewInput() {
-        window.template = '<div class="form-group questionDiv" > <label class="col-md-4 control-label">Question Title</label> <div class="col-md-4"> <input name="questionTitle[]" type="text" placeholder="Add Your Question Here" class="form-control sameLine input-md" required=""></div> </div>';
+        window.template = '<div class="form-group" > <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class=" col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""></div> </div>';
         $('#endOfText').before(window.template);
+//        editInputNames();
+
     }
+
+
+    /**
+     * This action is meant to delete 
+     */
+    $('.deleteQuestion').click(function () {
+        // delete template 
+        $(this).parent().parent().hide();
+    });
+
+    $('.templateQuestion').keyup(function () {
+        // remove questionInputs class and replace it with deletedQuestion class
+        $(this).attr("class", "questionInputs form-control input-md");
+        // change input name 
+        $(this).prop("name", 'newQuestion[]');
+    });
+
 });
 
 </script>

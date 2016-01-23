@@ -442,27 +442,6 @@ class CourseController extends ActionController
     }
 
     /**
-     * List Course Evaluations (admin's default evaluation templates & atp's course evaluations)
-     * 
-     * 
-     * @return ViewModel
-     */
-//    public function evaluationAction()
-//    {
-//        $variables = array();
-//        $courseId = $this->params('courseId');
-//        $query = $this->getServiceLocator()->get('wrapperQuery');
-//        $course = $query->find('Courses\Entity\Course', $courseId);
-//
-//        $eval = $course->getEvaluation();
-//
-//        $questions = $eval->getQuestions();
-//
-//        $variables['questions'] = $questions;
-//        return new ViewModel($variables);
-//    }
-
-    /**
      * Create new Course evaluation
      * 
      * @return ViewModel
@@ -470,16 +449,19 @@ class CourseController extends ActionController
     public function newEvaluationAction()
     {
         $variables = array();
-        $courseId = $this->params('courseId');
-
-        /*         * *         * *
-         * need to get admin template if exist and set it with the questions
-         */
-
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
-        $evalEntity = new \Courses\Entity\Evaluation();
+        $courseId = $this->params('courseId');
         $evaluationModle = new \Courses\Model\Evaluation($query);
 
+        // getting template evalutaion
+        $evaluationTemplate = $query->findOneBy("Courses\Entity\Evaluation", array(
+            "isTemplate" => 1
+        ));
+
+        if ($evaluationTemplate !== null) {
+            // populate form with template questions
+            $variables['templateQuestions'] = $evaluationTemplate->getQuestions();
+        }
         // authentication
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -494,41 +476,33 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $data = $request->getPost()->toArray();
+            $errors = $evaluationModle->validateQuestion($data['newQuestion']);
 
-            $messages = array();
-            //loop over all questions
-            foreach ($data['questionTitle'] as $question) {
-                // if question does not exist in DB
-                if ($evaluationModle->checkQuestionExistanceInEvalautaion($evalEntity, $question)) {
-
-                    $errors = $evaluationModle->validateQuestion($question);
-                    if (empty($errors)) {
-                        //creating empty user template for this course
-                        $evalEntity->setIsUserEval();
-                        $evalEntity->setIsNotApproved();
-                        $evaluationModle->saveEvaluation($evalEntity, $courseId);
-                        //assign a question to an evaluation 
-                        $evaluationModle->assignQuestionToEvaluation($question, $evalEntity->getId());
-                    }
-                    else {
-                        $messages = array_merge($messages,$errors);
-                    }
+            if (empty($errors)) {
+                //creating empty user template for this course
+                $evalEntity = new \Courses\Entity\Evaluation();
+                $evalEntity->setIsUserEval();
+                $evalEntity->setIsNotApproved();
+                $evaluationModle->saveEvaluation($evalEntity, $courseId);
+                // save templates and newQuestions
+                foreach ($data['template'] as $temp) {
+                    $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
-                else {
-                    array_push($messages, "One of your questions already existed.");
+                foreach ($data['newQuestion'] as $new) {
+                    $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
                 }
+                //redirect to course page
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                $this->redirect()->toUrl($url);
             }
-            // if there are error
-            if (!empty($messages)) {
-                $variables['validationError'] = $messages;
-            }
-             //if there's no error
             else {
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more'), array('name' => 'coursesMore'));
-                $this->redirect()->toUrl($url.'/'.$courseId);
+                $variables['validationError'] = $errors;
+                // unvalid questions
+                $variables['oldQuestions'] = $data['newQuestion'];
             }
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+            $this->redirect()->toUrl($url);
         }
 
         return new ViewModel($variables);
@@ -541,10 +515,74 @@ class CourseController extends ActionController
      */
     public function editEvaluationAction()
     {
-
         $variables = array();
-        $evalId = $this->params('evalId');
         $courseId = $this->params('courseId');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        // getting the course
+        $course = $query->find('Courses\Entity\Course', $courseId);
+        // getting course evaluation
+        $eval = $course->getEvaluation();
+        // getting course evaluation questions
+        $variables['oldQuestions'] = $eval->getQuestions();
+        // evaluation model
+        $evaluationModel = new \Courses\Model\Evaluation($query);
+
+        //authentication
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(array(Role::ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE), $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $options = array();
+        $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
+
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $error1 = array();
+            $error2 = array();
+            if (isset($data['editedQuestion'])) {
+                $error1 = $evaluationModel->validateQuestion($data['editedQuestion']);
+            }
+            if (isset($data['newQuestion'])) {
+                $error2 = $evaluationModel->validateQuestion($data['newQuestion']);
+            }
+            $errors = array_merge($error1, $error2);
+            if (empty($errors)) {
+                // saving new Questions
+                if (isset($data['newQuestion'])) {
+                    foreach ($data['newQuestion'] as $new) {
+                        $evaluationModel->assignQuestionToEvaluation($new, $eval->getId());
+                    }
+                }
+                // updating old questions
+                if (isset($data['editedQuestion']) && isset($data['original'])) {
+                    for ($i = 0; $i < count($data['editedQuestion']); $i++) {
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval->getId());
+                    }
+                }
+
+                //delete deleted questions
+                if (isset($data['deleted'])) {
+                    foreach ($data['deleted'] as $deletedQuestion) {
+                        $evaluationModel->removeQuestion($deletedQuestion);
+                    }
+                }
+
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $this->redirect()->toUrl($url);
+            }
+            else {
+                // errors
+                $variables['validationError'] = $errors;
+                $unValidQuestions = array_merge($data['newQuestion']);
+                $variables['unvalidQuestions'] = $unValidQuestions;
+            }
+        }
 
 
         return new ViewModel($variables);

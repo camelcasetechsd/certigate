@@ -98,32 +98,29 @@ class Evaluation
         $this->query->remove($question);
     }
 
-    public function updateQuestion($oldQuestionTitle, $newQuestionTitle)
+    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$evaluationId)
     {
         $question = $this->query->findOneBy("Courses\Entity\Question", array(
-            'questionTitle' => $oldQuestionTitle
+            'questionTitle' => $oldQuestionTitle,
+            'evaluation' => $evaluationId
         ));
         $question->setQuestionTitle($newQuestionTitle);
         $this->query->save($question);
     }
 
-    public function validateQuestion($question)
+    public function validateQuestion($questions)
     {
         $messages = array();
         $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
-        $lengthValidator = new \Zend\Validator\StringLength(array('min' => 10));
-        // start question validation
-        $isStringValid = $stringValidator->isValid($question);
-        $isLengthValid = $lengthValidator->isValid($question);
-        // check if string
-        if (!$isStringValid) {
-            array_push($messages, $question.": is not a valid question ... please insert a valid one");
-        }
-        // check on length
-        if (!$isLengthValid) {
-            array_push($messages, $question.": is too short minimum question length is 10 characters");
-        }
 
+        foreach ($questions as $question) {
+            // start question validation
+            $isStringValid = $stringValidator->isValid($question);
+            // check if string
+            if (!$isStringValid) {
+                array_push($messages, $question." : is not a valid question ... please insert a valid one");
+            }
+        }
         return $messages;
     }
 
@@ -145,4 +142,5 @@ class Evaluation
         }
         return TRUE;
     }
+
 }
