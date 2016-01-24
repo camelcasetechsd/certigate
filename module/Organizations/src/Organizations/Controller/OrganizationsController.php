@@ -250,6 +250,7 @@ class OrganizationsController extends ActionController
 
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $inputFilter = $form->getInputFilter();
+            $data['active'] = 1;
             $form->setData($data);
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
@@ -267,8 +268,6 @@ class OrganizationsController extends ActionController
                 $input = $inputFilter->get('atpLicenseAttachment');
                 $input->setRequired(false);
             }
-
-            $data['active'] = 1;
 
             switch ($data['type']) {
                 case '1':

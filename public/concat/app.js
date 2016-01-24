@@ -15242,11 +15242,96 @@ if ($('#menu_item_form_parent').length) {
         $('#menu_item_form_menu').val(menuId);
     });
 };
+/* OriginalFileName : public/js/resourceCRUD.js */ 
+
+/**
+ * Add more resource above add more button
+ * 
+ * @param {string} addMoreSelector
+ * @param {string} nameInputSelector
+ * @param {string} fileInputSelector
+ * @param {string} nameValue
+ * @param {string} nameClass
+ * @param {string} nameErrors
+ * @param {string} fileClass
+ * @param {string} fileErrors
+ * @returns {Boolean} false in case any field does not exist
+ */
+function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, nameValue, nameClass, nameErrors, fileClass, fileErrors){
+    if(! $(addMoreSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+        return false;
+    }
+    // determine new fields iteration value
+    var fileInputsCount = $(".addedResources").length;
+    var newElementIdExtension = "Added_" + fileInputsCount;
+    var newElementNameExtension = "Added[" + fileInputsCount + "]";
+    
+    // This is a way to "htmlDecode" your string...  
+    nameErrors = $("<div />").html(nameErrors).text();
+    fileErrors = $("<div />").html(fileErrors).text();
+    
+    // prepare new name field
+    var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
+    var newNameInputName = $(nameInputSelector).attr("name") + newElementNameExtension;
+    var oldNameInputClass = $(nameInputSelector).attr("class");
+    if(typeof oldNameInputClass !== "undefined"){
+        oldNameInputClass.replace('input-error', '')
+    }else{
+        oldNameInputClass = '';
+    }
+    var newNameInputClass = oldNameInputClass + " " + nameClass;
+    var newNameInput = $(nameInputSelector).clone().attr('class', newNameInputClass).attr('value', nameValue).attr("id", newNameInputId).attr("name", newNameInputName);
+    var newNameLabel = $(nameInputSelector).prev("label").clone();
+    var newNameField = $("<dd></dd>").append(newNameLabel).append(newNameInput).append(nameErrors);
+    // prepare new file field
+    var newFileInputId = $(fileInputSelector).attr("id") + newElementIdExtension;
+    var newFileInputName = $(fileInputSelector).attr("name") + newElementNameExtension;
+    var oldFileInputClass = $(fileInputSelector).attr("class");
+    if(typeof oldFileInputClass !== "undefined"){
+        oldFileInputClass.replace('input-error', '')
+    }else{
+        oldFileInputClass = '';
+    }
+    var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
+    var newFileInput = $(fileInputSelector).clone().attr("class", newFileInputClass).attr("id", newFileInputId).attr("name", newFileInputName);
+    var newFileLabel = $(fileInputSelector).prev("label").clone();
+    var newFileField = $("<dd></dd>").append(newFileLabel).append(newFileInput).append(fileErrors);
+    // prepare new remove button
+    var newRemoveButtonId = "removeButton" + newElementIdExtension;
+    var newRemoveButtonName = "removeButton" + newElementNameExtension;
+    var newRemoveButtonSpacer = $(addMoreSelector).prev("dt").clone();
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
+    
+    
+    
+    // prepare full new resource
+    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    // add new resource before add button
+    $(addMoreSelector).prev("dt").before(newResource);
+}
+
+/**
+ * Remove resource
+ * 
+ * @param {string} removeButtonSelector
+ * @param {string} nameInputSelector
+ * @param {string} fileInputSelector
+ * @returns {Boolean} false in case any field does not exist
+ */
+function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector){
+    if(! $(removeButtonSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+        return false;
+    }
+    $(nameInputSelector).parent("dd").parent("div").remove();
+}
+
+
+;
 /* OriginalFileName : public/js/orgReg.js */ 
 
 $(document).ready(function () {
-    // in organization create & delete
-    if (window.location.href.indexOf("new?organization=") > -1) {
+// in organization create & delete
+    if (window.location.href.indexOf("?organization=") > -1) {
 
         $orgType = getParameterByName('organization');
         switch ($orgType) {
@@ -15276,11 +15361,10 @@ $(document).ready(function () {
                 alert('please select organization type');
                 window.location.replace("/organizations/type");
                 break;
-
         }
 
     }
-    // in type page
+// in type page
     if (window.location.href.indexOf("type?type=") > -1) {
 
         $orgType = getParameterByName('type');
@@ -15299,6 +15383,13 @@ $(document).ready(function () {
                 break;
         }
     }
+    // remove required for attachments on edit
+    if (window.location.href.indexOf("/organizations/edit/") > -1) {
+        $('#org_form_CRAttachment').removeAttr('required');
+        $('#org_form_atpLicenseAttachment').removeAttr('required');
+        $('#org_form_atcLicenseAttachment').removeAttr('required');
+    }
+
 
     $('.orgType').change(function () {
         $atcBox = $('input:checkbox[id=type-1]').is(":checked");
@@ -15316,9 +15407,6 @@ $(document).ready(function () {
             $('#type_form_type').val("");
         }
     });
-
-
-
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
