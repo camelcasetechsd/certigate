@@ -205,22 +205,7 @@ class CourseController extends ActionController
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
-            // file not updated
-            if (isset(reset($fileData['presentations'])['name']) && empty(reset($fileData['presentations'])['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('presentations');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['activities']['name']) && empty($fileData['activities']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('activities');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['exams']['name']) && empty($fileData['exams']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('exams');
-                $input->setRequired(false);
-            }
+            
             if ($form->isValid()) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 

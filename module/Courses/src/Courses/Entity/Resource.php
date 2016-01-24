@@ -358,12 +358,14 @@ class Resource
      * 
      * @param int $courseId
      * @param string $name
+     * @param bool $overrideFilterFlag ,default is bool false
+     * @param array $fileUploadOptions ,default is empty array
      * 
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($courseId, $name)
+    public function getInputFilter($courseId, $name, $overrideFilterFlag = false, &$fileUploadOptions = array())
     {
-        if (!$this->inputFilter) {
+        if (!$this->inputFilter || $overrideFilterFlag === true) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(

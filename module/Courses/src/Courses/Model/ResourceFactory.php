@@ -28,7 +28,8 @@ class ResourceFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
-        return new Resource($query);
+        $logger = $serviceLocator->get('loggerUtilities');
+        return new Resource($query, $logger);
     }
 
 }

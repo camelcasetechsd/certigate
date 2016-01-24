@@ -137,36 +137,22 @@ class Course
         $this->query->setEntity('Courses\Entity\Course')->save($course);
     }
 
-    /**
-     * Get course resource
-     * 
-     * @access public
-     * @param Courses\Entity\Course $course
-     * @param string $resource resource name
-     * @param string $name file name
-     * 
-     * @return string file path
-     * @throws \Exception File not found
-     */
-    public function getResource($course, $resource, $name)
+    public function saveEvaluation($evalObj, $data, $isAdmin)
     {
-        $resourceGetter = "get" . ucfirst($resource);
-        $resources = $course->$resourceGetter();
-        if (!isset($resources["tmp_name"])) {
-            foreach ($resources as $resource) {
-                if ($resource["name"] == $name) {
-                    $file = $resource["tmp_name"];
-                }
+        if ($isAdmin) {
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::ADMIN_CREATED);
+            $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj, $data);
+            $courses = $this->query->findAll("Courses\Entity\Course");
+            $eval = $this->query->findBy("Courses\Entity\Evaluation", array('questionTitle' => $evalObj->getQuestionTitle()));
+            foreach ($courses as $course) {
+                $course->setEvaluation($eval[0]);
+                $this->query->setEntity("Courses\Entity\Course")->save($course);
             }
         }
         else {
-            $file = $resources["tmp_name"];
+            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::USER_CREATED);
+            $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
         }
-        if (!isset($file)) {
-            throw new \Exception("File not found");
-        }
-        return $file;
     }
 
-   
 }

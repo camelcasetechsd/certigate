@@ -42,7 +42,9 @@
             </tr>
             {{#canDownloadResources}}
 
-        <td>Resources</td><td></td>
+        {{#resources}}
+            <td>Resources</td><td></td>
+        {{/resources}}
         {{#resources}}
         <tr>
             <td>&ensp; {{type}}</td>

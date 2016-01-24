@@ -5,6 +5,7 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Courses\Entity\Resource;
+use Zend\Form\FormInterface;
 
 /**
  * Resource Form
@@ -47,7 +48,28 @@ class ResourceForm extends Form {
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
-
+        
+        $this->add(array(
+            'name' => 'course',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Course',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Courses\Entity\Course',
+                'property' => 'name',
+                'is_method' => false,
+                'find_method' => array(
+                    'name' => 'findAll',
+                    'params' => array(
+                    )
+                ),
+            ),
+        ));
+        
         $types = array(
             Resource::TYPE_PRESENTATIONS,
             Resource::TYPE_ACTIVITIES,
@@ -78,27 +100,6 @@ class ResourceForm extends Form {
                 'label' => 'Name',
             ),
         ));
-
-        $this->add(array(
-            'name' => 'course',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'attributes' => array(
-                'class' => 'form-control',
-                'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Course',
-                'object_manager' => $this->query->entityManager,
-                'target_class' => 'Courses\Entity\Course',
-                'property' => 'name',
-                'is_method' => false,
-                'find_method' => array(
-                    'name' => 'findAll',
-                    'params' => array(
-                    )
-                ),
-            ),
-        ));
         
         $this->add(array(
             'name' => 'file',
@@ -108,6 +109,17 @@ class ResourceForm extends Form {
             'options' => array(
                 'label' => 'File',
             ),
+        ));
+        
+        $this->add(array(
+            'name' => 'addMore',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-primary',
+                'value' => 'Add More',
+                'type' => 'button',
+                'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_file', '', '', '', '', '')"
+            )
         ));
         
         if ($this->isAdminUser === true) {
@@ -149,4 +161,20 @@ class ResourceForm extends Form {
         ));
     }
 
+    /**
+     * Bind an object to the form
+     *
+     * Ensures the object is populated with validated values.
+     * 
+     * @param  object $object
+     * @param  int $flags ,default value is FormInterface::VALUES_NORMALIZED
+     * @return mixed|void
+     * @throws Exception\InvalidArgumentException
+     */
+    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
+    {
+        parent::bind($object, $flags);
+        // remove addMore button from edit form
+        $this->remove("addMore");
+    }
 }
