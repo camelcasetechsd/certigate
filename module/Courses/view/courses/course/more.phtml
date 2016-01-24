@@ -40,10 +40,27 @@
             </tr><tr>
                 <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
             </tr>
-            {{#canDownloadResources}}
+
+            {{#outlines.count}}
+            <td>Outlines</td><td></td>
+            <tr>
+                <td>&ensp; Title</td>
+                <td>Duration (minutes)</td>
+            </tr>
+            {{/outlines.count}}
+            {{#outlines}}
+                {{#status}}
+                <tr>
+                    <td>&ensp; {{name}}</td>
+                    <td>{{duration}}</td>
+                </tr>
+                {{/status}}
+            {{/outlines}} 
+
+        {{#canDownloadResources}}
 
         {{#resources}}
-            <td>Resources</td><td></td>
+        <td>Resources</td><td></td>
         {{/resources}}
         {{#resources}}
         <tr>
