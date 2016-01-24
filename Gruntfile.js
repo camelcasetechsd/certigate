@@ -32,6 +32,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/courseCRUD.js',
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
                     '<%= dirs.jsSrc %>/orgReg.js'
                     
@@ -47,6 +48,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/userForm.css',
+                    '<%= dirs.cssSrc %>/courseForm.css',
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                 ]
