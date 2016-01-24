@@ -138,6 +138,7 @@ class CourseController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
+        $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -190,6 +191,7 @@ class CourseController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
+        $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
         $form->bind($course);
 
