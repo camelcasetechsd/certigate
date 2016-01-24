@@ -40,13 +40,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-//        $excludedRoles = $options['excludedRoles'];
         unset($options['query']);
-//        unset($options['countries']);
-//        unset($options['languages']);
-//        unset($options['excludedRoles']);
         parent::__construct($name, $options);
-
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
@@ -388,7 +383,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-
         $this->add(array(
             'name' => 'operatingSystem',
             'type' => 'Zend\Form\Element\Select',
@@ -402,19 +396,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Microsoft Windows XP',
-                    '1' => 'Microsoft Windows Vista',
-                    '2' => 'Microsoft Windows 7',
-                    '3' => 'Microsoft Windows 8',
-                    '4' => 'Microsoft Windows 8.1',
-                    '5' => 'Microsoft Windows 10',
-                    '6' => 'Ubuntu Linux 13.04 LTS',
-                    '7' => 'Ubuntu Linux 14.04 LTS',
-                    '8' => 'Red Hat Enterprise Linux 5',
-                    '9' => 'Red Hat Enterprise Linux 6',
-                    '10' => 'Red Hat Enterprise Linux 7',
-                ),
+                'value_options' => $options['staticOfficeVersions']
             ),
         ));
 
@@ -431,14 +413,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Arabic',
-                    '1' => 'English',
-                    '2' => 'Deutsch',
-                    '3' => 'French',
-                    '4' => 'Japanese',
-                    '5' => 'Chinese',
-                ),
+                'value_options' => $options['staticLangs']
             ),
         ));
 
@@ -452,15 +427,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
-                'value_options' => array(
-                    '0' => 'Office 2000',
-                    '1' => 'Office XP (2002)',
-                    '2' => 'Office 2003',
-                    '3' => 'Office 2007',
-                    '4' => 'Office 2010',
-                    '5' => 'Office 2013',
-                    '6' => 'Office 2016',
-                ),
+                'value_options' => $options['staticOss'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
                 ),
@@ -480,14 +447,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Arabic',
-                    '1' => 'English',
-                    '2' => 'Deutsch',
-                    '3' => 'French',
-                    '4' => 'Japanese',
-                    '5' => 'Chinese',
-                ),
+                'value_options' => $options['staticLangs']
             ),
         ));
 
@@ -593,8 +553,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'label_generator' => function($targetEntity) {
-                    return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
-                },
+            return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+        },
             )
         ));
 
@@ -614,8 +574,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'label_generator' => function($targetEntity) {
-                    return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
-                },
+            return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+        },
             )
         ));
 
@@ -658,7 +618,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'atcPrivacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
