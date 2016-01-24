@@ -144,14 +144,14 @@ class Query
      * @param string $entityName
      * @param mixed $criteria Criteria instance ,default is bool false
      * @param bool $countFlag ,default is bool false
-     * @return type
+     * @return mixed array of results or just int if count is required
      */
     public function filter($entityName, $criteria = false, $countFlag = false)
     {
         if (!$criteria instanceof Criteria) {
             $criteria = new Criteria();
         }
-        $return = $this->setEntity($entityName)->entityRepository->matching($criteria);
+        $return = $this->setEntity($entityName)->entityRepository->matching($criteria)->toArray();
         if ($countFlag === true) {
             $return = (int) $return->count();
         }
