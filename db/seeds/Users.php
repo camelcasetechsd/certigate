@@ -91,9 +91,9 @@ class Users extends AbstractSeed {
         
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
-        $coursesEditRoute = "coursesEdit";
-        $coursesDeleteRoute = "coursesDelete";
-        $coursesMainRoute = "courses";
+        $coursesEditPerTrainingManagerRoute = "coursesEditPerTrainingManager";
+        $coursesNewPerTrainingManagerRoute = "coursesNewPerTrainingManager";
+        $coursesListPerTrainingManagerRoute = "coursesListPerTrainingManager";
         $coursesAcls = array(
             array(
                 'role_id' => $studentRoleId,
@@ -168,17 +168,17 @@ class Users extends AbstractSeed {
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
-                'route' => $coursesDeleteRoute,
+                'route' => $coursesNewPerTrainingManagerRoute,
                 ),
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
-                'route' => $coursesEditRoute,
+                'route' => $coursesEditPerTrainingManagerRoute,
                 ),
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
-                'route' => $coursesMainRoute,
+                'route' => $coursesListPerTrainingManagerRoute,
                 ),
             );
         $this->insert('acl', $coursesAcls);
@@ -187,7 +187,6 @@ class Users extends AbstractSeed {
         $resourcesResourceDownloadRoute = "resourcesResourceDownload";
         $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
         $resourcesEditPerCourseRoute = "resourcesEditPerCourse";
-        $resourcesDeletePerCourseRoute = "resourcesDeletePerCourse";
         $resourcesAcls = array(
             array(
                 'role_id' => $trainingManagerRoleId,
@@ -203,11 +202,6 @@ class Users extends AbstractSeed {
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $resourcesEditPerCourseRoute,
-                ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesDeletePerCourseRoute,
                 ),
             array(
                 'role_id' => $studentRoleId,
