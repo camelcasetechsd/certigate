@@ -220,8 +220,7 @@ class Organization
             // upload received file(s)
             $upload->receive($filename);
         } catch (\Exception $e) {
-            var_dump($e);
-            exit;
+            return $uploadResult;
         }
         //This method will return the real file name of a transferred file.
         $name = $upload->getFileName($filename);
@@ -253,42 +252,16 @@ class Organization
 
     public function prepareStatics($variables)
     {
-        $staticOs = array(
-            '0' => 'Microsoft Windows XP',
-            '1' => 'Microsoft Windows Vista',
-            '2' => 'Microsoft Windows 7',
-            '3' => 'Microsoft Windows 8',
-            '4' => 'Microsoft Windows 8.1',
-            '5' => 'Microsoft Windows 10',
-            '6' => 'Ubuntu Linux 13.04 LTS',
-            '7' => 'Ubuntu Linux 14.04 LTS',
-            '8' => 'Red Hat Enterprise Linux 5',
-            '9' => 'Red Hat Enterprise Linux 6',
-            '10' => 'Red Hat Enterprise Linux 7'
-        );
-        $staticLangs = array(
-            '0' => 'Arabic',
-            '1' => 'English',
-            '2' => 'Deutsch',
-            '3' => 'French',
-            '4' => 'Japanese',
-            '5' => 'Chinese',
-        );
 
-        $staticVersions = array(
-                    '0' => 'Office 2000',
-                    '1' => 'Office XP (2002)',
-                    '2' => 'Office 2003',
-                    '3' => 'Office 2007',
-                    '4' => 'Office 2010',
-                    '5' => 'Office 2013',
-                    '6' => 'Office 2016',
-                );
+        $staticOs = \Organizations\Entity\Organization::getOSs();
+        $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
+        $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
+        
         $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
         $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
         $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
-        
+
         return $variables;
     }
 

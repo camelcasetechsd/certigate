@@ -129,9 +129,12 @@ class OrganizationsController extends ActionController
         $orgObj = new OrgEntity();
         $options = array();
         $options['query'] = $query;
-
+        $options['staticLangs'] = OrgEntity::getStaticLangs();
+        $options['staticOss'] = OrgEntity::getOSs();
+        $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
         $form = new OrgForm(/* $name = */ null, $options);
-
+        $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
+        $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $request = $this->getRequest();
         if ($request->isPost()) {
 
@@ -140,7 +143,6 @@ class OrganizationsController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-
             $inputFilter = $orgObj->getInputFilter($query);
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $form->setData($data);
@@ -148,41 +150,18 @@ class OrganizationsController extends ActionController
 
             switch ($data['type']) {
                 case '1':
-                    $skippedParams = array(
-                        'atpLicenseNo',
-                        'atpLicenseExpiration',
-                        'atpLicenseAttachment',
-                        'classesNo',
-                        'pcsNo_class',
-                        'trainingManager_id'
-                    );
-                    foreach ($skippedParams as $param) {
+                    foreach ($atcSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
-
                     break;
 
                 case '2':
-                    $skippedParams = array(
-                        'atcLicenseNo',
-                        'atcLicenseExpiration',
-                        'atcLicenseAttachment',
-                        'labsNo',
-                        'pcsNo_lab',
-                        'internetSpeed_lab',
-                        'operatingSystem',
-                        'operatingSystemLang',
-                        'officeVersion',
-                        'officeLang',
-                        'testCenterAdmin_id'
-                    );
 
-                    foreach ($skippedParams as $param) {
+                    foreach ($atpSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
-
                     break;
             }
 
@@ -233,6 +212,11 @@ class OrganizationsController extends ActionController
 
         $options = array();
         $options['query'] = $query;
+        $options['staticLangs'] = OrgEntity::getStaticLangs();
+        $options['staticOss'] = OrgEntity::getOSs();
+        $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
+        $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
+        $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $form = new orgForm(/* $name = */ null, $options);
 
         $form->bind($orgObj);
@@ -271,44 +255,20 @@ class OrganizationsController extends ActionController
 
             switch ($data['type']) {
                 case '1':
-                    $skippedParams = array(
-                        'atpLicenseNo',
-                        'atpLicenseExpiration',
-                        'atpLicenseAttachment',
-                        'classesNo',
-                        'pcsNo_class',
-                        'atpPrivacyStatement'
-                    );
-                    foreach ($skippedParams as $param) {
+                    foreach ($atcSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
-
                     break;
 
                 case '2':
-                    $skippedParams = array(
-                        'atcLicenseNo',
-                        'atcLicenseExpiration',
-                        'atcLicenseAttachment',
-                        'labsNo',
-                        'pcsNo_lab',
-                        'internetSpeed_lab',
-                        'operatingSystem',
-                        'operatingSystemLang',
-                        'officeVersion',
-                        'officeLang',
-                        'atcPrivacyStatement'
-                    );
 
-                    foreach ($skippedParams as $param) {
+                    foreach ($atpSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
                     }
-
                     break;
             }
-
 
             if ($form->isValid()) {
                 $orgModel = new OrgModel($query);

@@ -117,5 +117,26 @@ return array(
                 )
             )
         )
+    ),
+    'atcSkippedParams' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+        'classesNo',
+        'pcsNo_class',
+        'trainingManager_id'
+    ),
+    'atpSkippedParams' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+        'labsNo',
+        'pcsNo_lab',
+        'internetSpeed_lab',
+        'operatingSystem',
+        'operatingSystemLang',
+        'officeVersion',
+        'officeLang',
+        'testCenterAdmin_id'
     )
 );

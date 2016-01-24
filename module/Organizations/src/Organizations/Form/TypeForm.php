@@ -18,8 +18,6 @@ use Utilities\Form\Form;
 class TypeForm extends Form
 {
 
-    protected $objectManager;
-
     /**
      *
      * @var Utilities\Service\Query\Query 
