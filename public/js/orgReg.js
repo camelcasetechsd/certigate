@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // in organization create & delete
-    if (window.location.href.indexOf("new?organization=") > -1) {
+    if (window.location.href.indexOf("?organization=") > -1) {
 
         $orgType = getParameterByName('organization');
         switch ($orgType) {
