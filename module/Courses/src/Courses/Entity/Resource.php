@@ -191,7 +191,7 @@ class Resource
      * 
      * 
      * @access public
-     * @param Users\Entity\User $course
+     * @param Courses\Entity\Course $course
      * @return Resource
      */
     public function setCourse($course)
