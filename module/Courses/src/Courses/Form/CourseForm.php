@@ -5,6 +5,8 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Users\Entity\Role;
+use Doctrine\Common\Collections\Criteria;
+use Organizations\Entity\Organization;
 
 /**
  * Course Form
@@ -13,11 +15,13 @@ use Users\Entity\Role;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property bool $isAdminUser
+ * @property int $userId
  * 
  * @package courses
  * @subpackage form
  */
-class CourseForm extends Form {
+class CourseForm extends Form
+{
 
     /**
      *
@@ -32,6 +36,12 @@ class CourseForm extends Form {
     protected $isAdminUser;
 
     /**
+     *
+     * @var int
+     */
+    protected $userId;
+
+    /**
      * setup form
      * 
      * 
@@ -39,11 +49,14 @@ class CourseForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct($name = null, $options = null)
+    {
         $this->query = $options['query'];
         unset($options['query']);
         $this->isAdminUser = $options['isAdminUser'];
+        $this->userId = $options['userId'];
         unset($options['isAdminUser']);
+        unset($options['userId']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -115,6 +128,15 @@ class CourseForm extends Form {
             ),
         ));
 
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
+        $criteria->andWhere($expr->eq("active", Status::STATUS_ACTIVE))
+                ->andWhere($expr->in("type", $types));
+        if ($this->isAdminUser === false) {
+            $trainingManager = $this->query->find("Users\Entity\User", $this->userId);
+            $criteria->andWhere($expr->eq("trainingManager", $trainingManager));
+        }
         $this->add(array(
             'name' => 'atp',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
@@ -128,8 +150,9 @@ class CourseForm extends Form {
                 'property' => 'commercialName',
                 'is_method' => false,
                 'find_method' => array(
-                    'name' => 'findAll',
+                    'name' => 'matching',
                     'params' => array(
+                        'criteria' => $criteria
                     )
                 ),
             ),
@@ -149,10 +172,8 @@ class CourseForm extends Form {
                 'find_method' => array(
                     'name' => 'getUsers',
                     'params' => array(
-                        'criteria' => array(
-                            "roles" => array(
-                                Role::INSTRUCTOR_ROLE
-                            )
+                        "roles" => array(
+                            Role::INSTRUCTOR_ROLE
                         )
                     )
                 ),
@@ -198,7 +219,7 @@ class CourseForm extends Form {
                 'label' => 'Duration',
             ),
         ));
-        
+
         if ($this->isAdminUser === true) {
             $this->add(array(
                 'name' => 'status',

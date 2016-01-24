@@ -43,13 +43,25 @@ return array(
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources[/:action[/:processResult]]',
+                    'route' => '/resources[/:action]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index'
                     ),
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[^(false|true)][a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                )
+            ),
+            'resourcesList' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/resources[/:processResult]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Resource',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
                         'processResult' => '(false|true)'
                     ),
                 )
@@ -233,6 +245,46 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'coursesListPerTrainingManager' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/:trainingManagerId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'trainingManagerId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'coursesNewPerTrainingManager' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/new/:trainingManagerId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'trainingManagerId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'coursesEditPerTrainingManager' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/edit/:id/:trainingManagerId',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'trainingManagerId' => '[0-9]+',
                     ),
                 )
             ),

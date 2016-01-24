@@ -9,7 +9,8 @@ nbproject
 composer.lock
 vendor/
 /.vagrant
-/logs
+/logs/*
+!logs/.gitignore
 public/upload/images/*
 !public/upload/images/.gitignore
 public/bower_components/

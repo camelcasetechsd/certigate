@@ -10,9 +10,7 @@ use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
-use Zend\Http\Response\Stream;
-use Zend\Http\Headers;
-use Zend\I18n\Validator\Alpha;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Course Controller
@@ -38,18 +36,33 @@ class CourseController extends ActionController
     public function indexAction()
     {
         $variables = array();
+        $trainingManagerId = $this->params('trainingManagerId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $trainingManagerId != $storage['id']) {
+                $this->getResponse()->setStatusCode(302);
+                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                $this->redirect()->toUrl($url);
+            }
+        }
+        $criteria = Criteria::create();
+        if (!empty($trainingManagerId)) {
+            $expr = Criteria::expr();
+            $atpsArray = $query->findBy(/* $entityName = */'Organizations\Entity\Organization', array("trainingManager" => $trainingManagerId));
+            $criteria->andWhere($expr->in("atp", $atpsArray));
         }
 
-        $data = $query->findAll(/* $entityName = */null);
+        $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
+        $variables['trainingManagerId'] = $trainingManagerId;
         return new ViewModel($variables);
     }
 
@@ -125,6 +138,7 @@ class CourseController extends ActionController
     public function newAction()
     {
         $variables = array();
+        $trainingManagerId = $this->params('trainingManagerId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
@@ -138,6 +152,7 @@ class CourseController extends ActionController
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
+        $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -154,7 +169,7 @@ class CourseController extends ActionController
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $courseModel->save($course, $data, $isAdminUser);
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getCoursesUrl($trainingManagerId);
                 $this->redirect()->toUrl($url);
             }
         }
@@ -176,6 +191,7 @@ class CourseController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
+        $trainingManagerId = $this->params('trainingManagerId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = $query->find('Courses\Entity\Course', $id);
@@ -183,13 +199,23 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $trainingManagerId != $storage['id']) {
+                $this->getResponse()->setStatusCode(302);
+                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                $this->redirect()->toUrl($url);
+            }
         }
+
+
 
         $options = array();
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
+        $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
         $form->bind($course);
 
@@ -205,11 +231,11 @@ class CourseController extends ActionController
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
-            
+
             if ($form->isValid()) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getCoursesUrl($trainingManagerId);
                 $this->redirect()->toUrl($url);
             }
         }
@@ -560,6 +586,25 @@ class CourseController extends ActionController
 
 
         return new ViewModel($variables);
+    }
+
+    /**
+     * Get courses index url
+     * 
+     * @access private
+     * @param int $trainingManagerId ,default is null
+     * 
+     * @return string url
+     */
+    private function getCoursesUrl($trainingManagerId = null)
+    {
+        $routeName = "courses";
+        $params = array('action' => 'index');
+        if (!empty($trainingManagerId)) {
+            $params['trainingManagerId'] = $trainingManagerId;
+            $routeName = "coursesListPerTrainingManager";
+        }
+        return $this->getEvent()->getRouter()->assemble($params, array('name' => $routeName));
     }
 
 //    /**

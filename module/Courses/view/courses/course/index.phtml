@@ -1,7 +1,7 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/courses/new"><button class="btn btn-small btn-success">Create new Course</button></a>
+<a href="/courses/new{{#trainingManagerId}}/{{trainingManagerId}}{{/trainingManagerId}}"><button class="btn btn-small btn-success">Create new Course</button></a>
 <br><br>
 <div class="panel panel-default">
 
@@ -41,7 +41,7 @@
                 <td>
                     <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon-folder-close"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/courses/edit/{{id}}{{#trainingManagerId}}/{{trainingManagerId}}{{/trainingManagerId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                         {{#isAdminUser}}
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

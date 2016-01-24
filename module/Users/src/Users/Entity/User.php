@@ -328,6 +328,18 @@ class User {
     }
     
     /**
+     * Get id
+     * 
+     * 
+     * @access public
+     * @return int id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
      * Get dateOfBirth
      * 
      * 
