@@ -81,7 +81,7 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
 
-        $data = $query->findBy(/* $entityName = */null, /* $criteria = */ array("status" => Status::STATUS_ACTIVE));
+        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("status" => Status::STATUS_ACTIVE));
         $courseModel->setCanEnroll($data);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
@@ -154,15 +154,11 @@ class CourseController extends ActionController
         $options['isAdminUser'] = $isAdminUser;
         $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
-
+        $form->bind($course, /*$flags =*/ FormInterface::VALUES_NORMALIZED, /*$isEditForm =*/ false);
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
-            // Make certain to merge the files info!
-            $fileData = $request->getFiles()->toArray();
-
-            $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
-            );
+            $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
             if ($form->isValid()) {
@@ -221,15 +217,11 @@ class CourseController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            // Make certain to merge the files info!
-            $fileData = $request->getFiles()->toArray();
-
-            $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
-            );
+            // bind with empty entity to allow adding new outlines
+            $form->bind(new Course());
+            $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
-
-            $inputFilter = $form->getInputFilter();
+            
             $form->setData($data);
 
             if ($form->isValid()) {
