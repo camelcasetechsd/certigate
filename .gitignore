@@ -15,6 +15,3 @@ public/upload/images/*
 public/bower_components/
 *~
 /node_modules
-public/upload/attachments/atcAttachments/*
-public/upload/attachments/atpAttachments/*
-public/upload/attachments/crAttachments/*
