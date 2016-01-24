@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // in organization create & delete
+// in organization create & delete
     if (window.location.href.indexOf("?organization=") > -1) {
 
         $orgType = getParameterByName('organization');
@@ -30,11 +30,10 @@ $(document).ready(function () {
                 alert('please select organization type');
                 window.location.replace("/organizations/type");
                 break;
-
         }
 
     }
-    // in type page
+// in type page
     if (window.location.href.indexOf("type?type=") > -1) {
 
         $orgType = getParameterByName('type');
@@ -53,6 +52,13 @@ $(document).ready(function () {
                 break;
         }
     }
+    // remove required for attachments on edit
+    if (window.location.href.indexOf("/organizations/edit/") > -1) {
+        $('#org_form_CRAttachment').removeAttr('required');
+        $('#org_form_atpLicenseAttachment').removeAttr('required');
+        $('#org_form_atcLicenseAttachment').removeAttr('required');
+    }
+
 
     $('.orgType').change(function () {
         $atcBox = $('input:checkbox[id=type-1]').is(":checked");
@@ -70,9 +76,6 @@ $(document).ready(function () {
             $('#type_form_type').val("");
         }
     });
-
-
-
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
