@@ -28,7 +28,8 @@ class CourseFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        return new Course($query);
+        $outlineModel = $serviceLocator->get('Courses\Model\Outline');
+        return new Course($query, $outlineModel);
     }
 
 }

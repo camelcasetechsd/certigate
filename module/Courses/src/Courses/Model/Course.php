@@ -13,6 +13,7 @@ use Utilities\Service\Status;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Courses\Model\Outline $outlineModel
  * 
  * @package courses
  * @subpackage model
@@ -27,14 +28,22 @@ class Course
     protected $query;
 
     /**
+     *
+     * @var Courses\Model\Outline
+     */
+    protected $outlineModel;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Courses\Model\Outline $outlineModel
      */
-    public function __construct($query)
+    public function __construct($query, $outlineModel)
     {
         $this->query = $query;
+        $this->outlineModel = $outlineModel;
     }
 
     /**
@@ -92,7 +101,11 @@ class Course
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
+        unset($data["outlines"]);
+        $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /*$flushAll =*/ true);
+        
+        // remove not needed outlines        
+        $this->outlineModel->cleanUpOutlines();
     }
 
     /**
