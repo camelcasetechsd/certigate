@@ -54,12 +54,15 @@ class Form extends ZendForm {
      * 
      * @param  object $object
      * @param  int $flags ,default value is FormInterface::VALUES_NORMALIZED
+     * @param  bool $isEditForm ,default value is true
      * @return mixed|void
      * @throws Exception\InvalidArgumentException
      */
-    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
+    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED, $isEditForm = true)
     {
-        $this->isEditForm = true;
+        if($isEditForm === true){
+            $this->isEditForm = true;
+        }
         parent::bind($object, $flags);
     }
 
