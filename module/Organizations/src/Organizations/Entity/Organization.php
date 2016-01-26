@@ -6,12 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Organziation Entity
  * @ORM\Entity
  * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
- * 
+ * @Gedmo\Loggable
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
@@ -102,188 +103,189 @@ class Organization
     public $id;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer" )
      * @var int
      */
     public $type;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var string
      */
     public $active;
+
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", unique=true)
      * @var string
      */
     public $commercialName;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="float" , nullable=true )
      * @var string
      */
     public $longtitude;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="float" , nullable=true)
      * @var float
      */
     public $latitude;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $ownerName;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $ownerNationalId;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $CRNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $CRExpiration;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $CRAttachment;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $atpLicenseNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $atpLicenseExpiration;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $atpLicenseAttachment;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $atcLicenseNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $atcLicenseExpiration;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $atcLicenseAttachment;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $addressLine1;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $addressLine2;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $city;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $zipCode;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $phone1;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $phone2;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $phone3;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $fax;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $website;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string")
      * @var string
      */
     public $email;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="trainingManager_id", referencedColumnName="id")
      * @var Users\Entity\User
@@ -291,7 +293,7 @@ class Organization
     public $trainingManager;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="testCenterAdmin_id", referencedColumnName="id")
      * @var Users\Entity\User
@@ -299,7 +301,7 @@ class Organization
     public $testCenterAdmin;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="focalContactPerson_id", referencedColumnName="id")
      * @var Users\Entity\User
@@ -307,63 +309,63 @@ class Organization
     public $focalContactPerson;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer" , nullable=true)
      * @var int
      */
     public $labsNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $pcsNo_lab;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $classesNo;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $pcsNo_class;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $internetSpeed_lab;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $operatingSystem;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $operatingSystemLang;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     public $officeVersion;
 
     /**
-     *
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
@@ -748,9 +750,52 @@ class Organization
     {
         $this->officeLang = $officeLang;
     }
+
     function setActive($active)
     {
         $this->active = $active;
+    }
+
+    static function getStaticLangs()
+    {
+        return array(
+            '0' => 'Arabic',
+            '1' => 'English',
+            '2' => 'Deutsch',
+            '3' => 'French',
+            '4' => 'Japanese',
+            '5' => 'Chinese',
+        );
+    }
+
+    static function getOSs()
+    {
+        return array(
+            '0' => 'Microsoft Windows XP',
+            '1' => 'Microsoft Windows Vista',
+            '2' => 'Microsoft Windows 7',
+            '3' => 'Microsoft Windows 8',
+            '4' => 'Microsoft Windows 8.1',
+            '5' => 'Microsoft Windows 10',
+            '6' => 'Ubuntu Linux 13.04 LTS',
+            '7' => 'Ubuntu Linux 14.04 LTS',
+            '8' => 'Red Hat Enterprise Linux 5',
+            '9' => 'Red Hat Enterprise Linux 6',
+            '10' => 'Red Hat Enterprise Linux 7',
+        );
+    }
+
+    static function getOfficeVersions()
+    {
+        return array(
+            '0' => 'Office 2000',
+            '1' => 'Office XP (2002)',
+            '2' => 'Office 2003',
+            '3' => 'Office 2007',
+            '4' => 'Office 2010',
+            '5' => 'Office 2013',
+            '6' => 'Office 2016',
+        );
     }
 
     /**
@@ -774,6 +819,7 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
+//        echo '<pre>';var_dump($data);exit;
         $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
@@ -782,7 +828,10 @@ class Organization
         $this->setCRNo($data['CRNo']);
 //        var_dump($data['CRExpiration']);exit;
         $this->setCRExpiration($data['CRExpiration']);
-        $this->setCRAttachment($data['CRAttachment']);
+//        $this->setCRAttachment($data['CRAttachment']);
+        if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
+            $this->setCRAttachment($data["CRAttachment"]);
+        }
         $this->setAddressLine1($data['addressLine1']);
         $this->setCity($data['city']);
         $this->setZipCode($data['zipCode']);
@@ -843,16 +892,19 @@ class Organization
         if (array_key_exists('officeLang', $data)) {
             $this->setOfficeLang($data["officeLang"]);
         }
-        if (array_key_exists('atcLicenseAttachment', $data)) {
-            $this->setAtcLicenseAttachment($data['atcLicenseAttachment']);
+        if (array_key_exists('atcLicenseAttachment', $data) && is_string($data['atcLicenseAttachment'])) {
+            $this->setAtcLicenseAttachment($data["atcLicenseAttachment"]);
         }
+//        if (array_key_exists('atcLicenseAttachment', $data)) {
+//            $this->setAtcLicenseAttachment($data['atcLicenseAttachment']);
+//        }
         if (array_key_exists('atcLicenseNo', $data)) {
             $this->setAtcLicenseNo($data["atcLicenseNo"]);
         }
         if (array_key_exists('atcLicenseExpiration', $data) && !empty($data['atcLicenseExpiration'])) {
             $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
         }
-        if (array_key_exists('atpLicenseAttachment', $data)) {
+        if (array_key_exists('atpLicenseAttachment', $data) && is_string($data['atpLicenseAttachment'])) {
             $this->setAtpLicenseAttachment($data["atpLicenseAttachment"]);
         }
         if (array_key_exists('atpLicenseNo', $data)) {
