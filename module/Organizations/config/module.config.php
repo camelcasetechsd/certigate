@@ -7,11 +7,11 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ),
     'service_manager' => array(
-//        'aliases' => array(
-//            'organizations' => 'Organizations\Controller\OrganizationsController',
-//        ),
         'factories' => array(
             'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory'
         ),
@@ -113,6 +113,16 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]*'
+                    )
+                )
+            ),
+            'saveState' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/savestate',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'saveState'
                     )
                 )
             )

@@ -1,4 +1,21 @@
 $(document).ready(function () {
+
+    $('#org_form_saveState').click(function (e) {
+
+        if ($('#org_form_commercialName').val() !== "") {
+            $state = $('#org_form').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/organizations/savestate",
+                data: {
+                    saveState: $state
+                },
+                dataType: "json"
+            });
+            window.location.replace("/organizations/atps");
+        }
+    });
+
     // in organization create & delete
     if (window.location.href.indexOf("new?organization=") > -1) {
 
@@ -70,6 +87,7 @@ $(document).ready(function () {
             $('#type_form_type').val("");
         }
     });
+
 
 
 

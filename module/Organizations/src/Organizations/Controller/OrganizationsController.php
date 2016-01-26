@@ -7,6 +7,7 @@ use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
+use Zend\View\Model\JsonModel;
 
 /**
  * Atps Controller
@@ -52,9 +53,9 @@ class OrganizationsController extends ActionController
      */
     public function atcsAction()
     {
-
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATC, \Organizations\Entity\Organization::TYPE_BOTH));
+        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
@@ -74,11 +75,12 @@ class OrganizationsController extends ActionController
     {
 
 
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATP, \Organizations\Entity\Organization::TYPE_BOTH));
+        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
+            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('d/m/Y');
         }
         return new ViewModel($variables);
     }
@@ -100,11 +102,11 @@ class OrganizationsController extends ActionController
 
 
         $variables['userData']->CRExpiration = $variables['userData']->getCRExpiration()->format('Y-m-d');
-// skip atc expiration if atp
+        // skip atc expiration if atp
         if ($variables['userData']->atcLicenseExpiration != null) {
             $variables['userData']->atcLicenseExpiration = $variables['userData']->getAtcLicenseExpiration()->format('Y-m-d');
         }
-// skip atp expiration if atc
+        // skip atp expiration if atc
         if ($variables['userData']->atpLicenseExpiration != null) {
             $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
         }
@@ -114,7 +116,7 @@ class OrganizationsController extends ActionController
 
     /**
      * create new ATC
-     * 
+     *
      * 
      * @access public
      * 
@@ -240,9 +242,9 @@ class OrganizationsController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
 
-//            // Make certain to merge the files info!
+//            Make certain to merge the files info!
 //            $fileData = $request->getFiles()->toArray();
-//
+
             $fileData = $request->getFiles()->toArray();
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
@@ -310,11 +312,9 @@ class OrganizationsController extends ActionController
                     break;
             }
 
-
             if ($form->isValid()) {
                 $orgModel = new OrgModel($query);
 
-//              
                 $orgModel->saveOrganization($data, $orgObj);
 
                 // redirecting
@@ -339,7 +339,6 @@ class OrganizationsController extends ActionController
 
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-//        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Org');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
 
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -354,6 +353,42 @@ class OrganizationsController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
         }
         $this->redirect()->toUrl($url);
+    }
+
+    public function saveStateAction()
+    {
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $orgObj = new \Organizations\Entity\Organization();
+        $orgModel = new \Organizations\Model\Organization($query);
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            parse_str($_POST['saveState'], $stateArray);
+            // prepare dates 
+            $stateArray['CRExpiration'] = null;
+            $stateArray['atpLicenseExpiration'] = null;
+            $stateArray['atcLicenseExpiration'] = null;
+            if (!isset($stateArray['focalContactPerson_id'])) {
+                $stateArray['focalContactPerson_id'] = null;
+            }
+            if (!isset($stateArray['testCenterAdmin_id'])) {
+                $stateArray['testCenterAdmin_id'] = null;
+            }
+            if (!isset($stateArray['trainingManager_id'])) {
+                $stateArray['trainingManager_id'] = null;
+            }
+
+            $isUniqe = $orgModel->checkExistance($stateArray['commercialName']);
+            // check commercial name existance in DB
+            if (!$isUniqe) {
+                // saving organizations as inactive organization
+                $stateArray['active'] = 0;
+                $orgModel->saveOrganization($stateArray);
+            }
+            //uniqness error does not completed yet
+            else {
+                return new \Zend\View\Model\JsonModel(array("error" => "Commercial Name already exists"));
+            }
+        }
     }
 
 }

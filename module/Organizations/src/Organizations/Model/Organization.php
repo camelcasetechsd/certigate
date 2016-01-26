@@ -86,6 +86,25 @@ class Organization
         ));
     }
 
+    /**
+     * this function is meant to list organizations by type
+     * its alrady list organizations with type 3 in the same time with
+     * type wanted to be listed  for example if we wanted to list atps it
+     * will post both atps and organizations which is both atp and atc 
+     * at the same time
+     * 
+     * @param type $query
+     * @param type $type
+     * @return type
+     */
+    public function listOrganizations($query, $type)
+    {
+        $em = $query->entityManager;
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 1 and u.type =?1 or u.type = 3');
+        $dqlQuery->setParameter(1, $type);
+        return $dqlQuery->getResult();
+    }
+
     public function saveOrganization($orgInfo, $orgObj = null)
     {
 
@@ -162,33 +181,6 @@ class Organization
         if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
-
-
-
-
-
-
-
-
-//        
-//        if (!empty($orgInfo['CRAttachment']['name']) && $orgInfo['CRAttachment']['name'] != '') {
-//            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
-//        }
-//        else {
-//            $orgInfo['CRAttachment'] = null;
-//        }
-//        if (!empty($orgInfo['atpLicenseAttachment']) && $orgInfo['atpLicenseAttachment']['name'] != '') {
-//            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
-//        }
-//        else {
-//            $orgInfo['atpLicenseAttachment'] = null;
-//        }
-//        if (!empty($orgInfo['atcLicenseAttachment']) && $orgInfo['atcLicenseAttachment']['name'] != '') {
-//            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
-//        }
-//        else {
-//            $orgInfo['atcLicenseAttachment'] = null;
-//        }
         /**
          * Save Organization
          */
@@ -276,20 +268,31 @@ class Organization
         );
 
         $staticVersions = array(
-                    '0' => 'Office 2000',
-                    '1' => 'Office XP (2002)',
-                    '2' => 'Office 2003',
-                    '3' => 'Office 2007',
-                    '4' => 'Office 2010',
-                    '5' => 'Office 2013',
-                    '6' => 'Office 2016',
-                );
+            '0' => 'Office 2000',
+            '1' => 'Office XP (2002)',
+            '2' => 'Office 2003',
+            '3' => 'Office 2007',
+            '4' => 'Office 2010',
+            '5' => 'Office 2013',
+            '6' => 'Office 2016',
+        );
         $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
         $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
         $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
-        
+
         return $variables;
+    }
+
+    public function checkExistance($commercialName)
+    {
+        $organization = $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
+            'commercialName' => $commercialName
+        ));
+        if ($organization == null) {
+            return false;
+        }
+        return true;
     }
 
 }

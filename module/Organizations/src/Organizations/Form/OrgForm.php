@@ -593,8 +593,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'label_generator' => function($targetEntity) {
-                    return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
-                },
+            return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+        },
             )
         ));
 
@@ -614,8 +614,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'label_generator' => function($targetEntity) {
-                    return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
-                },
+            return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+        },
             )
         ));
 
@@ -658,7 +658,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'atcPrivacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -680,6 +680,16 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => 'Create',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'saveState',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-info',
+                'value' => 'Save State',
+                'type' => 'button',
             )
         ));
 
