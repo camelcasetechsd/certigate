@@ -102,8 +102,8 @@ class Course
             }
         }
         unset($data["outlines"]);
-        $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /*$flushAll =*/ true);
-        
+        $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /* $flushAll = */ true);
+
         // remove not needed outlines        
         $this->outlineModel->cleanUpOutlines();
     }
@@ -148,6 +148,30 @@ class Course
         $course->setStudentsNo($studentsNo);
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
+    }
+
+    /**
+     * Validate course form
+     * 
+     * @access public
+     * @param Courses\Form\CourseForm $form
+     * @param array $data
+     * @return bool custom validation result
+     */
+    public function validateForm($form, $data)
+    {
+        $isCustomValidationValid = true;
+        if ((int) $data['capacity'] < (int) $data['studentsNo']) {
+            $form->get('capacity')->setMessages(array("Capacity should be higher than enrolled students number"));
+            $isCustomValidationValid = false;
+        }
+        $endDate = strtotime($data['endDate']);
+        $startDate = strtotime($data['startDate']);
+        if ($endDate < $startDate) {
+            $form->get('endDate')->setMessages(array("End date should be after Start date"));
+            $isCustomValidationValid = false;
+        }
+        return $isCustomValidationValid;
     }
 
     public function saveEvaluation($evalObj, $data, $isAdmin)

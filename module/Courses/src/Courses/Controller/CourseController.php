@@ -161,7 +161,8 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
-            if ($form->isValid()) {
+            $isCustomValidationValid = $courseModel->validateForm($form, $data);
+            if ($form->isValid() && $isCustomValidationValid === true) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $courseModel->save($course, $data, $isAdminUser);
 
@@ -224,7 +225,8 @@ class CourseController extends ActionController
             
             $form->setData($data);
 
-            if ($form->isValid()) {
+            $isCustomValidationValid = $courseModel->validateForm($form, $data);
+            if ($form->isValid() && $isCustomValidationValid === true) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 
                 $url = $this->getCoursesUrl($trainingManagerId);
