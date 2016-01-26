@@ -79,14 +79,19 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * inActive organization
+     * Active organization
      */
-    const ACTIVE = 1;
+    const NOT_APPROVED = 1;
 
     /**
      * Active organization
      */
-    const NOT_ACTIVE = 0;
+    const ACTIVE = 2;
+
+    /**
+     * edited organization
+     */
+    const EDITED = 3;
 
     /**
      *

@@ -42,7 +42,8 @@ class OrganizationsController extends ActionController
         return new ViewModel($variables);
     }
 
-    /**
+    
+ /**
      * List ATCs
      * 
      * 
@@ -52,9 +53,9 @@ class OrganizationsController extends ActionController
      */
     public function atcsAction()
     {
-
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATC, \Organizations\Entity\Organization::TYPE_BOTH));
+        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
@@ -74,11 +75,12 @@ class OrganizationsController extends ActionController
     {
 
 
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->getOrganizationBy('type', array(\Organizations\Entity\Organization::TYPE_ATP, \Organizations\Entity\Organization::TYPE_BOTH));
+        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('Y-m-d');
+            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('d/m/Y');
         }
         return new ViewModel($variables);
     }
@@ -164,8 +166,8 @@ class OrganizationsController extends ActionController
                     }
                     break;
             }
-
-            $data['active'] = 1;
+            // not approved
+            $data['active'] = OrgEntity::NOT_APPROVED;
 
             if ($form->isValid()) {
 
@@ -234,7 +236,8 @@ class OrganizationsController extends ActionController
 
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $inputFilter = $form->getInputFilter();
-            $data['active'] = 1;
+            // edited
+            $data['active'] = OrgEntity::EDITED;
             $form->setData($data);
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {

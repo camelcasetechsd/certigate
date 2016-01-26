@@ -542,7 +542,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atpSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Training Manager',
@@ -563,7 +563,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atcSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
@@ -585,7 +585,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Focal Contact Person',

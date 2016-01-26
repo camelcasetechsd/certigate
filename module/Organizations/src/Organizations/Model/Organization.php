@@ -86,6 +86,25 @@ class Organization
         ));
     }
 
+    /**
+     * this function is meant to list organizations by type
+     * its alrady list organizations with type 3 in the same time with
+     * type wanted to be listed  for example if we wanted to list atps it
+     * will post both atps and organizations which is both atp and atc 
+     * at the same time
+     * 
+     * @param type $query
+     * @param type $type
+     * @return type
+     */
+    public function listOrganizations($query, $type)
+    {
+        $em = $query->entityManager;
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and u.type =?1 or u.type = 3');
+        $dqlQuery->setParameter(1, $type);
+        return $dqlQuery->getResult();
+    }
+
     public function saveOrganization($orgInfo, $orgObj = null)
     {
 
@@ -256,7 +275,7 @@ class Organization
         $staticOs = \Organizations\Entity\Organization::getOSs();
         $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
         $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
-        
+
         $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
         $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
