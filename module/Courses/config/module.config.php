@@ -16,6 +16,7 @@ return array(
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
+            'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
         )
     ),
     'doctrine' => array(

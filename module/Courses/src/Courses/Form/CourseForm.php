@@ -7,6 +7,8 @@ use Utilities\Service\Status;
 use Users\Entity\Role;
 use Doctrine\Common\Collections\Criteria;
 use Organizations\Entity\Organization;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Courses\Form\OutlineFieldset;
 
 /**
  * Course Form
@@ -59,6 +61,9 @@ class CourseForm extends Form
         unset($options['userId']);
         parent::__construct($name, $options);
 
+        // The form will hydrate an object of type "BlogPost"
+        $this->setHydrator(new DoctrineHydrator($this->query->entityManager));
+
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
@@ -71,6 +76,32 @@ class CourseForm extends Form
             'options' => array(
                 'label' => 'Name',
             ),
+        ));
+
+        // Add the outline fieldset
+        $outlineFieldset = new OutlineFieldset($this->query, $this->isAdminUser);
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Collection',
+            'name' => 'outlines',
+            'options' => array(
+                'count' => 1,
+                'label' => "Outline",
+                'should_create_template' => true,
+                'allow_add' => true,
+                'allow_remove' => true,
+                'template_placeholder' => '__outlineNumber__',
+                'target_element' => $outlineFieldset,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'addMore',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-primary addMoreButton',
+                'value' => 'Add More',
+                'type' => 'button',
+                'onclick' => "addMoreOutline('#course_form_addMore')"
+            )
         ));
 
         $this->add(array(
