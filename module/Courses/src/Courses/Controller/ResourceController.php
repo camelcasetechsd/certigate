@@ -47,7 +47,9 @@ class ResourceController extends ActionController
         }
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        if(!is_null($courseId)){
+            $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        }
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -56,7 +58,7 @@ class ResourceController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -91,7 +93,9 @@ class ResourceController extends ActionController
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        if(!is_null($courseId)){
+            $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        }
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = new Resource();
         $auth = new AuthenticationService();
@@ -101,7 +105,7 @@ class ResourceController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
