@@ -287,7 +287,7 @@ class User
     /**
      * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="user")
      */
-    protected $organizationUser;
+    public $organizationUser;
 
     /**
      * hash password

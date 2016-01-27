@@ -154,8 +154,8 @@ class CourseController extends ActionController
         $options['isAdminUser'] = $isAdminUser;
         $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
-        $form->bind($course, /*$flags =*/ FormInterface::VALUES_NORMALIZED, /*$isEditForm =*/ false);
-        
+        $form->bind($course, /* $flags = */ FormInterface::VALUES_NORMALIZED, /* $isEditForm = */ false);
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -222,7 +222,7 @@ class CourseController extends ActionController
             $form->bind(new Course());
             $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
-            
+
             $form->setData($data);
 
             $isCustomValidationValid = $courseModel->validateForm($form, $data);
@@ -426,8 +426,11 @@ class CourseController extends ActionController
 
                 // errors
                 $variables['validationError'] = $errors;
-                $unValidQuestions = array_merge($data['newQuestion']);
-                $variables['unvalidQuestions'] = $unValidQuestions;
+                
+                if (isset($newQuestion)) {
+                    $unValidQuestions = array_merge($data['newQuestion']);
+                    $variables['unvalidQuestions'] = $unValidQuestions;
+                }
             }
         }
 
@@ -487,7 +490,7 @@ class CourseController extends ActionController
                     $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
                 $this->redirect()->toUrl($url);
             }
             else {
@@ -495,8 +498,6 @@ class CourseController extends ActionController
                 // unvalid questions
                 $variables['oldQuestions'] = $data['newQuestion'];
             }
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
-            $this->redirect()->toUrl($url);
         }
 
         return new ViewModel($variables);

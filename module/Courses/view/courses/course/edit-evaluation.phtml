@@ -18,7 +18,7 @@
     <fieldset>
 
         <!-- Form Name -->
-        <legend>Evaluation Template</legend>
+        <legend>Course Evaluation</legend>
         {{#oldQuestions}}
         <!-- Text input-->
         <div class="form-group" >
@@ -58,6 +58,7 @@
 $(document).ready(function () {
     //
 //    window.index = 1000;
+    numerateLabels();
 
     $('#addmore').click(function () {
         getMeNewInput();
@@ -66,9 +67,19 @@ $(document).ready(function () {
     function getMeNewInput() {
         window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> </div> </div>';
         $('#endOfText').before(window.template);
+        numerateLabels();
     }
 
-    
+    function numerateLabels() {
+        window.index = 1
+        $('.control-label').each(function () {
+            if ($(this).parent().is(":visible")) {
+                $(this).text('Question Title ' + window.index)
+                window.index++;
+            }
+        });
+    }
+
     /**
      * This action is meant to delete 
      */
@@ -81,11 +92,15 @@ $(document).ready(function () {
         $(this).parent().parent().hide();
         //remove original value no longer needed
         $(this).next().remove();
+
+        numerateLabels();
 //        editInputNames();
     });
     $('.deleteInvalidQuestion').click(function () {
         //delete input
         $(this).parent().parent().remove();
+
+        numerateLabels();
     });
 
 

@@ -111,7 +111,7 @@ class Evaluation
     public function validateQuestion($questions)
     {
         $messages = array();
-        $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
+        $stringValidator = new \Zend\Validator\Regex('/^a-zA-Z0-9 \?|\s/');
 
         foreach ($questions as $question) {
             // start question validation

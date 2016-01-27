@@ -25,7 +25,7 @@
             <label class="col-md-4 control-label" for="template[]">Question Title</label>  
             <div class=" col-md-4">
                 <input name="template[]" type="text" placeholder="Add Your Question Here" class="form-control templateQuestion input-md" required=""value="{{questionTitle}}">
-                <a href="#" class="deleteQuestion" >X</a>
+                <a href="#" class="deleteTemplateQuestion" >X</a>
             </div>
         </div>
         {{/templateQuestions}}
@@ -39,7 +39,7 @@
             </div>
         </div>
         {{/oldQuestions}}
-        
+
         <span id="endOfText"></span>
         <!-- button -->
         <div class=" row form-group">
@@ -58,7 +58,7 @@
 <script>
 $(document).ready(function () {
     //
-//    window.index = 1000;
+    numerateLabels();
 
     $('#addmore').click(function () {
         getMeNewInput();
@@ -67,10 +67,18 @@ $(document).ready(function () {
     function getMeNewInput() {
         window.template = '<div class="form-group" > <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class=" col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""></div> </div>';
         $('#endOfText').before(window.template);
-//        editInputNames();
-
+        numerateLabels();
     }
 
+    function numerateLabels() {
+        window.index = 1
+        $('.control-label').each(function () {
+            if ($(this).parent().is(":visible")) {
+                $(this).text('Question Title ' + window.index)
+                window.index++;
+            }
+        });
+    }
 
     /**
      * This action is meant to delete 
@@ -78,6 +86,7 @@ $(document).ready(function () {
     $('.deleteQuestion').click(function () {
         // delete template 
         $(this).parent().parent().hide();
+        numerateLabels();
     });
 
     $('.templateQuestion').keyup(function () {
@@ -85,6 +94,12 @@ $(document).ready(function () {
         $(this).attr("class", "questionInputs form-control input-md");
         // change input name 
         $(this).prop("name", 'newQuestion[]');
+    });
+
+    $('.deleteTemplateQuestion').click(function () {
+        $(this).parent().parent().remove();
+        numerateLabels();
+
     });
 
 });
