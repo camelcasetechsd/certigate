@@ -12,6 +12,7 @@ npm install
 # seeding data
 app_env=${APPLICATION_ENV:-'vagrant'}
 ./vendor/bin/phinx seed:run -e $app_env
+php public/q2a/updateDB.php
 
 ## prepare public resources
 cd public
