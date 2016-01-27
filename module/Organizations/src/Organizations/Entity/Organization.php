@@ -507,10 +507,10 @@ class Organization
         return $this->organizationUser;
     }
 
-    function getTestCenterAdmin()
-    {
-        return $this->testCenterAdmin;
-    }
+//    function getTestCenterAdmin()
+//    {
+//        return $this->testCenterAdmin;
+//    }
 
     function getFocalContactPerson()
     {
