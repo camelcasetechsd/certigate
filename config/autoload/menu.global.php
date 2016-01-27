@@ -88,7 +88,7 @@ return array(
             ),
             "Organizations" => array(
                 'depth' => 0,
-                'path' => "",
+                'path' => "#",
                 'weight' => 2,
                 'title_underscored' => "organizations",
                 'children' => array(
