@@ -2,6 +2,11 @@
 
 namespace Utilities;
 
+// Our main imports that we want to use
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\Mvc\MvcEvent;
+
 /**
  * Utilities Module
  * 
@@ -11,8 +16,22 @@ namespace Utilities;
  * 
  * @package utilities
  */
-class Module {
+class Module implements ConfigProviderInterface,AutoloaderProviderInterface {
 
+    /**
+     * on Bootstrap application, Accept enum field type
+     * 
+     * 
+     * @access public
+     * @param MvcEvent $event
+     */
+    public function onBootstrap(MvcEvent $event)
+    {
+        $entityManager = $event->getApplication()->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $platform = $entityManager->getConnection()->getDatabasePlatform();
+        $platform->registerDoctrineTypeMapping('enum', 'string');
+    }
+    
     /**
      * Get config array
      * 
