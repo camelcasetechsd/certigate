@@ -159,14 +159,11 @@ class CourseForm extends Form
             ),
         ));
 
-        $criteria = Criteria::create();
-        $expr = Criteria::expr();
         $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
-        $criteria->andWhere($expr->eq("active", Status::STATUS_ACTIVE))
-                ->andWhere($expr->in("type", $types));
+        $status = Organization::ACTIVE;
+        $userIds = array();
         if ($this->isAdminUser === false) {
-            $trainingManager = $this->query->find("Users\Entity\User", $this->userId);
-            $criteria->andWhere($expr->eq("trainingManager", $trainingManager));
+            $userIds[] = $this->userId;
         }
         $this->add(array(
             'name' => 'atp',
@@ -181,9 +178,11 @@ class CourseForm extends Form
                 'property' => 'commercialName',
                 'is_method' => false,
                 'find_method' => array(
-                    'name' => 'matching',
+                    'name' => 'getOrganizationsBy',
                     'params' => array(
-                        'criteria' => $criteria
+                        'userIds' => $userIds,
+                        'types' => $types,
+                        'status' => $status,
                     )
                 ),
             ),

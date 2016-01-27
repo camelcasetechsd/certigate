@@ -705,6 +705,9 @@ class Course
     {
         foreach ($outlines as $outline) {
             $outline->setCourse($this);
+            if(is_null($outline->getStatus())){
+                $outline->setStatus();
+            }
             $this->outlines->add($outline);
         }
         return $this;

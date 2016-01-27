@@ -47,8 +47,8 @@ class ResourceController extends ActionController
         }
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        if(!is_null($courseId)){
-            $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        if (!is_null($courseId)) {
+            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
         }
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
@@ -58,10 +58,13 @@ class ResourceController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
-                $this->getResponse()->setStatusCode(302);
-                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-                $this->redirect()->toUrl($url);
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course)) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
             }
         }
 
@@ -93,8 +96,8 @@ class ResourceController extends ActionController
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        if(!is_null($courseId)){
-            $course = $query->find(/*$entityName =*/'Courses\Entity\Course' ,$courseId);
+        if (!is_null($courseId)) {
+            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
         }
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = new Resource();
@@ -105,13 +108,16 @@ class ResourceController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course) && $course->getAtp()->getTrainingManager()->getId() != $storage['id']) {
-                $this->getResponse()->setStatusCode(302);
-                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-                $this->redirect()->toUrl($url);
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course)) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
             }
         }
-        
+
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
@@ -173,10 +179,18 @@ class ResourceController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $resource->getCourse()->getAtp()->getTrainingManager()->getId() != $storage['id']) {
-                $this->getResponse()->setStatusCode(302);
-                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-                $this->redirect()->toUrl($url);
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                if ($resource->getCourse()->getId() != $courseId) {
+                    $url = $this->getEvent()->getRouter()->assemble(array("id" => $resource->getId(), "courseId" => $resource->getCourse()->getId()), array('name' => 'resourcesEditPerCourse'));
+                    $this->redirect()->toUrl($url);
+                }
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($resource->getCourse()->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
+                
             }
         }
 
@@ -260,9 +274,20 @@ class ResourceController extends ActionController
         $preparedCourse = reset($preparedCourseArray);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if ($auth->hasIdentity() 
-                && ((in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) 
-                || (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $preparedCourse->getAtp()->getTrainingManager()->getId() != $storage['id']) )) {
+        $canDownload = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownload = false;
+            }
+            if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $canDownload = false;
+                }
+            }
+        }
+
+        if ($canDownload === false) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
             $this->redirect()->toUrl($url);

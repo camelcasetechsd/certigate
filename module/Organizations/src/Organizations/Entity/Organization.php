@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Organziation Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Organizations\Entity\OrganizationRepository")
  * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
  * @Gedmo\Loggable
  * 

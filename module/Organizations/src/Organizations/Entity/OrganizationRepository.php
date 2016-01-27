@@ -5,12 +5,12 @@ namespace Organizations\Entity;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Role Repository
+ * Organization Repository
  * 
- * @package users
+ * @package organizations
  * @subpackage entity
  */
-class OrgRepository extends EntityRepository
+class OrganizationRepository extends EntityRepository
 {
 
     /**
@@ -29,5 +29,44 @@ class OrgRepository extends EntityRepository
                 ->from("Users\Entity\User", "r");
         $users = $queryBuilder->getQuery()->getResult();
         return $users;
+    }
+    
+    /**
+     * Filter organizations
+     * 
+     * @param array $userIds ,default is empty array
+     * @param array $types ,default is empty array
+     * @param int $status ,default is false
+     * @param array $ids ,default is empty array
+     * @return array organizations
+     */
+    public function getOrganizationsBy($userIds = array(), $types = array(), $status = false, $ids = array())
+    {
+        $parameters = array();
+        $repository = $this->getEntityManager();
+        $queryBuilder = $repository->createQueryBuilder("o");
+
+        $queryBuilder->select("o")
+                ->from("Organizations\Entity\Organization", "o");
+        if (count($userIds) > 0) {
+            $parameters['users'] = $userIds;
+            $queryBuilder->join("o.organizationUser", "ou");
+            $queryBuilder->join("ou.user", "u");
+            $queryBuilder->andWhere($queryBuilder->expr()->in('u.id', ":users"));
+        }
+        if (count($types) > 0) {
+            $parameters['types'] = $types;
+            $queryBuilder->andWhere($queryBuilder->expr()->in('o.type', ":types"));
+        }
+        if (count($ids) > 0) {
+            $parameters['ids'] = $ids;
+            $queryBuilder->andWhere($queryBuilder->expr()->in('o.id', ":ids"));
+        }
+        if ($status !== false) {
+            $parameters['status'] = $status;
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('o.active', ":status"));
+        }
+        $organizations = $queryBuilder->getQuery()->setParameters($parameters)->getResult();
+        return $organizations;
     }
 }
