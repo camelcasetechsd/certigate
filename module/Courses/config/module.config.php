@@ -249,46 +249,6 @@ return array(
                     ),
                 )
             ),
-            'coursesListPerTrainingManager' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/:trainingManagerId',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'index',
-                    ),
-                    'constraints' => array(
-                        'trainingManagerId' => '[0-9]+',
-                    ),
-                )
-            ),
-            'coursesNewPerTrainingManager' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/new/:trainingManagerId',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'new',
-                    ),
-                    'constraints' => array(
-                        'trainingManagerId' => '[0-9]+',
-                    ),
-                )
-            ),
-            'coursesEditPerTrainingManager' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/courses/edit/:id/:trainingManagerId',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Course',
-                        'action' => 'edit',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                        'trainingManagerId' => '[0-9]+',
-                    ),
-                )
-            ),
             //list evaluation templates created by admin
             'EvTemplates' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
