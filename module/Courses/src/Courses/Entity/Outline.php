@@ -4,6 +4,7 @@ namespace Courses\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Utilities\Service\Status;
 
 /**
  * Outline Entity
@@ -161,8 +162,11 @@ class Outline
      * @param int $status
      * @return Outline
      */
-    public function setStatus($status)
+    public function setStatus($status = null)
     {
+        if(is_null($status)){
+            $status = Status::STATUS_NOT_APPROVED;
+        }
         $this->status = $status;
         return $this;
     }
@@ -267,8 +271,10 @@ class Outline
         if(isset($data["course"])){
             $this->setCourse($data["course"]);
         }
+        if(isset($data["status"])){
+            $this->setStatus($data["status"]);
+        }
         $this->setTitle($data["title"])
-                ->setStatus($data["status"])
                 ->setDuration($data["duration"])
         ;
     }
