@@ -98,8 +98,6 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => null,
             'officeLang' => null,
             'officeVersion' => null,
-            'trainingManager_id' => $normalUserId,
-            'testCenterAdmin_id' => null,
             'focalContactPerson_id' => $normalUserId
         );
 
@@ -142,8 +140,6 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'trainingManager_id' => null,
-            'testCenterAdmin_id' => $normalUserId,
             'focalContactPerson_id' => $normalUserId
         );
 
@@ -188,8 +184,6 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'trainingManager_id' => $normalUserId,
-            'testCenterAdmin_id' => null,
             'focalContactPerson_id' => $normalUserId
         );
 

@@ -42,8 +42,7 @@ class OrganizationsController extends ActionController
         return new ViewModel($variables);
     }
 
-    
- /**
+    /**
      * List ATCs
      * 
      * 
@@ -130,6 +129,8 @@ class OrganizationsController extends ActionController
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $orgObj = new OrgEntity();
         $options = array();
+        $auth = new \Zend\Authentication\AuthenticationService();
+        $creatorId = $auth->getIdentity()['id'];
         $options['query'] = $query;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
@@ -171,7 +172,7 @@ class OrganizationsController extends ActionController
 
             if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data);
+                $orgModel->saveOrganization($data, $creatorId);
 
                 // redirecting
                 if ($data['type'] == 1) {

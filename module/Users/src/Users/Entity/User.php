@@ -52,8 +52,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package users
  * @subpackage entity
  */
-class User {
-    
+class User
+{
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -88,14 +89,14 @@ class User {
      * @var string
      */
     public $lastName;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $country;
-    
+
     /**
      *
      * @ORM\Column(type="string")
@@ -123,91 +124,91 @@ class User {
      * @var string
      */
     public $mobile;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $addressOne;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $addressTwo;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $city;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $zipCode;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $phone;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $nationality;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $identificationType;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $identificationNumber;
-    
+
     /**
      *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $identificationExpiryDate;
-    
+
     /**
      *
      * @ORM\Column(type="string" , unique=true)
      * @var string
      */
     public $email;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $securityQuestion;
-    
+
     /**
      *
      * @ORM\Column(type="string")
      * @var string
      */
     public $securityAnswer;
-    
+
     /**
      *
      * @ORM\Column(type="date")
@@ -275,13 +276,18 @@ class User {
      * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="users")
      */
     public $courses;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="user")
+     */
+    protected $organizationUser;
 
     /**
      * hash password
@@ -291,10 +297,12 @@ class User {
      * @param string $password
      * @return string hashed password
      */
-    static public function hashPassword($password) {
+    static public function hashPassword($password)
+    {
         if (function_exists("password_hash")) {
             return password_hash($password, PASSWORD_BCRYPT);
-        } else {
+        }
+        else {
             return crypt($password);
         }
     }
@@ -308,25 +316,29 @@ class User {
      * @param string $savedPassword hashed password
      * @return bool true if passwords mathced, false else
      */
-    static public function verifyPassword($givenPassword, $savedPassword) {
+    static public function verifyPassword($givenPassword, $savedPassword)
+    {
         if (function_exists('password_verify')) {
             return password_verify($givenPassword, $savedPassword);
-        } else {
+        }
+        else {
             return crypt($givenPassword, $savedPassword) == $savedPassword;
         }
     }
-    
+
     /**
      * Prepare user entity
      * 
      * 
      * @access public
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->courses = new ArrayCollection();
+        $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      * 
@@ -338,7 +350,7 @@ class User {
     {
         return $this->id;
     }
-    
+
     /**
      * Get dateOfBirth
      * 
@@ -346,7 +358,8 @@ class User {
      * @access public
      * @return \DateTime dateOfBirth
      */
-    public function getDateOfBirth() {
+    public function getDateOfBirth()
+    {
         return $this->dateOfBirth;
     }
 
@@ -357,7 +370,8 @@ class User {
      * @access public
      * @return string mobile
      */
-    public function getMobile() {
+    public function getMobile()
+    {
         return $this->mobile;
     }
 
@@ -368,10 +382,11 @@ class User {
      * @access public
      * @return string firstName
      */
-    public function getFirstName() {
+    public function getFirstName()
+    {
         return $this->firstName;
     }
-    
+
     /**
      * Get middleName
      * 
@@ -379,10 +394,11 @@ class User {
      * @access public
      * @return string middleName
      */
-    public function getMiddleName() {
+    public function getMiddleName()
+    {
         return $this->middleName;
     }
-    
+
     /**
      * Get lastName
      * 
@@ -390,10 +406,11 @@ class User {
      * @access public
      * @return string lastName
      */
-    public function getLastName() {
+    public function getLastName()
+    {
         return $this->lastName;
     }
-    
+
     /**
      * Get country
      * 
@@ -401,10 +418,11 @@ class User {
      * @access public
      * @return string country
      */
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
-    
+
     /**
      * Get language
      * 
@@ -412,10 +430,11 @@ class User {
      * @access public
      * @return string language
      */
-    public function getLanguage() {
+    public function getLanguage()
+    {
         return $this->language;
     }
-    
+
     /**
      * Get fullName
      * 
@@ -423,12 +442,13 @@ class User {
      * @access public
      * @return string fullName
      */
-    public function getFullName() {
+    public function getFullName()
+    {
         $fullName = $this->getFirstName();
-        if(! empty($this->getMiddleName())){
-            $fullName .= " ".$this->getMiddleName();
+        if (!empty($this->getMiddleName())) {
+            $fullName .= " " . $this->getMiddleName();
         }
-        $fullName .= " ".$this->getLastName();
+        $fullName .= " " . $this->getLastName();
         return $fullName;
     }
 
@@ -439,7 +459,8 @@ class User {
      * @access public
      * @return string password
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
@@ -450,7 +471,8 @@ class User {
      * @access public
      * @return string photo
      */
-    public function getPhoto() {
+    public function getPhoto()
+    {
         return $this->photo;
     }
 
@@ -461,7 +483,8 @@ class User {
      * @access public
      * @return ArrayCollection Users\Entity\Role roles
      */
-    public function getRoles() {
+    public function getRoles()
+    {
         return $this->roles;
     }
 
@@ -472,7 +495,8 @@ class User {
      * @access public
      * @return int status
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
@@ -483,7 +507,8 @@ class User {
      * @access public
      * @return int privacyStatement
      */
-    public function getPrivacyStatement() {
+    public function getPrivacyStatement()
+    {
         return $this->privacyStatement;
     }
 
@@ -494,7 +519,8 @@ class User {
      * @access public
      * @return int studentStatement
      */
-    public function getStudentStatement() {
+    public function getStudentStatement()
+    {
         return $this->studentStatement;
     }
 
@@ -505,7 +531,8 @@ class User {
      * @access public
      * @return int proctorStatement
      */
-    public function getProctorStatement() {
+    public function getProctorStatement()
+    {
         return $this->proctorStatement;
     }
 
@@ -516,7 +543,8 @@ class User {
      * @access public
      * @return int instructorStatement
      */
-    public function getInstructorStatement() {
+    public function getInstructorStatement()
+    {
         return $this->instructorStatement;
     }
 
@@ -527,7 +555,8 @@ class User {
      * @access public
      * @return int testCenterAdministratorStatement
      */
-    public function getTestCenterAdministratorStatement() {
+    public function getTestCenterAdministratorStatement()
+    {
         return $this->testCenterAdministratorStatement;
     }
 
@@ -538,7 +567,8 @@ class User {
      * @access public
      * @return int trainingManagerStatement
      */
-    public function getTrainingManagerStatement() {
+    public function getTrainingManagerStatement()
+    {
         return $this->trainingManagerStatement;
     }
 
@@ -549,7 +579,8 @@ class User {
      * @access public
      * @return string username
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
@@ -560,10 +591,11 @@ class User {
      * @access public
      * @return string addressOne
      */
-    public function getAddressOne() {
+    public function getAddressOne()
+    {
         return $this->addressOne;
     }
-    
+
     /**
      * Get addressTwo
      * 
@@ -571,10 +603,11 @@ class User {
      * @access public
      * @return string addressTwo
      */
-    public function getAddressTwo() {
+    public function getAddressTwo()
+    {
         return $this->addressTwo;
     }
-    
+
     /**
      * Get city
      * 
@@ -582,10 +615,11 @@ class User {
      * @access public
      * @return string city
      */
-    public function getCity() {
+    public function getCity()
+    {
         return $this->city;
     }
-    
+
     /**
      * Get zipCode
      * 
@@ -593,10 +627,11 @@ class User {
      * @access public
      * @return string zipCode
      */
-    public function getZipCode() {
+    public function getZipCode()
+    {
         return $this->zipCode;
     }
-    
+
     /**
      * Get phone
      * 
@@ -604,10 +639,11 @@ class User {
      * @access public
      * @return string phone
      */
-    public function getPhone() {
+    public function getPhone()
+    {
         return $this->phone;
     }
-    
+
     /**
      * Get nationality
      * 
@@ -615,10 +651,11 @@ class User {
      * @access public
      * @return string nationality
      */
-    public function getNationality() {
+    public function getNationality()
+    {
         return $this->nationality;
     }
-    
+
     /**
      * Get identificationType
      * 
@@ -626,10 +663,11 @@ class User {
      * @access public
      * @return string identificationType
      */
-    public function getIdentificationType() {
+    public function getIdentificationType()
+    {
         return $this->identificationType;
     }
-    
+
     /**
      * Get identificationNumber
      * 
@@ -637,10 +675,11 @@ class User {
      * @access public
      * @return string identificationNumber
      */
-    public function getIdentificationNumber() {
+    public function getIdentificationNumber()
+    {
         return $this->identificationNumber;
     }
-    
+
     /**
      * Get identificationExpiryDate
      * 
@@ -648,10 +687,11 @@ class User {
      * @access public
      * @return \DateTime identificationExpiryDate
      */
-    public function getIdentificationExpiryDate() {
+    public function getIdentificationExpiryDate()
+    {
         return $this->identificationExpiryDate;
     }
-    
+
     /**
      * Get email
      * 
@@ -659,10 +699,11 @@ class User {
      * @access public
      * @return string email
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
-    
+
     /**
      * Get securityQuestion
      * 
@@ -670,10 +711,11 @@ class User {
      * @access public
      * @return string securityQuestion
      */
-    public function getSecurityQuestion() {
+    public function getSecurityQuestion()
+    {
         return $this->securityQuestion;
     }
-    
+
     /**
      * Get securityAnswer
      * 
@@ -681,7 +723,8 @@ class User {
      * @access public
      * @return string securityAnswer
      */
-    public function getSecurityAnswer() {
+    public function getSecurityAnswer()
+    {
         return $this->securityAnswer;
     }
 
@@ -693,7 +736,8 @@ class User {
      * @param \DateTime $dateOfBirth
      * @return User current entity
      */
-    public function setDateOfBirth($dateOfBirth) {
+    public function setDateOfBirth($dateOfBirth)
+    {
         $this->dateOfBirth = new \DateTime($dateOfBirth);
         return $this;
     }
@@ -706,7 +750,8 @@ class User {
      * @param string $mobile
      * @return User current entity
      */
-    public function setMobile($mobile) {
+    public function setMobile($mobile)
+    {
         $this->mobile = $mobile;
         return $this;
     }
@@ -719,7 +764,8 @@ class User {
      * @param string $firstName
      * @return User current entity
      */
-    public function setFirstName($firstName) {
+    public function setFirstName($firstName)
+    {
         $this->firstName = $firstName;
         return $this;
     }
@@ -732,7 +778,8 @@ class User {
      * @param string $middleName
      * @return User current entity
      */
-    public function setMiddleName($middleName) {
+    public function setMiddleName($middleName)
+    {
         $this->middleName = $middleName;
         return $this;
     }
@@ -745,11 +792,12 @@ class User {
      * @param string $lastName
      * @return User current entity
      */
-    public function setLastName($lastName) {
+    public function setLastName($lastName)
+    {
         $this->lastName = $lastName;
         return $this;
     }
-    
+
     /**
      * Set country
      * 
@@ -758,11 +806,12 @@ class User {
      * @param string $country
      * @return User current entity
      */
-    public function setCountry($country) {
+    public function setCountry($country)
+    {
         $this->country = $country;
         return $this;
     }
-    
+
     /**
      * Set language
      * 
@@ -771,7 +820,8 @@ class User {
      * @param string $language
      * @return User current entity
      */
-    public function setLanguage($language) {
+    public function setLanguage($language)
+    {
         $this->language = $language;
         return $this;
     }
@@ -784,7 +834,8 @@ class User {
      * @param string $password
      * @return User current entity
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
         return $this;
     }
@@ -797,7 +848,8 @@ class User {
      * @param string $photo
      * @return User current entity
      */
-    public function setPhoto($photo) {
+    public function setPhoto($photo)
+    {
         $this->photo = $photo;
         return $this;
     }
@@ -810,7 +862,8 @@ class User {
      * @param Users/Entity/Role $role
      * @return User current entity
      */
-    public function addRole($role) {
+    public function addRole($role)
+    {
         $this->roles[] = $role;
         return $this;
     }
@@ -823,11 +876,12 @@ class User {
      * @param array $roles array of Users\Entity\Role instances or just ids
      * @return User current entity
      */
-    public function setRoles($roles) {
+    public function setRoles($roles)
+    {
         $this->roles = $roles;
         return $this;
     }
-    
+
     /**
      * Set status
      * 
@@ -836,11 +890,12 @@ class User {
      * @param int $status
      * @return User current entity
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Set privacyStatement
      * 
@@ -849,11 +904,12 @@ class User {
      * @param int $privacyStatement
      * @return User current entity
      */
-    public function setPrivacyStatement($privacyStatement) {
+    public function setPrivacyStatement($privacyStatement)
+    {
         $this->privacyStatement = $privacyStatement;
         return $this;
     }
-    
+
     /**
      * Set studentStatement
      * 
@@ -862,11 +918,12 @@ class User {
      * @param int $studentStatement
      * @return User current entity
      */
-    public function setStudentStatement($studentStatement) {
+    public function setStudentStatement($studentStatement)
+    {
         $this->studentStatement = $studentStatement;
         return $this;
     }
-    
+
     /**
      * Set proctorStatement
      * 
@@ -875,11 +932,12 @@ class User {
      * @param int $proctorStatement
      * @return User current entity
      */
-    public function setProctorStatement($proctorStatement) {
+    public function setProctorStatement($proctorStatement)
+    {
         $this->proctorStatement = $proctorStatement;
         return $this;
     }
-    
+
     /**
      * Set instructorStatement
      * 
@@ -888,11 +946,12 @@ class User {
      * @param int $instructorStatement
      * @return User current entity
      */
-    public function setInstructorStatement($instructorStatement) {
+    public function setInstructorStatement($instructorStatement)
+    {
         $this->instructorStatement = $instructorStatement;
         return $this;
     }
-    
+
     /**
      * Set testCenterAdministratorStatement
      * 
@@ -901,11 +960,12 @@ class User {
      * @param int $testCenterAdministratorStatement
      * @return User current entity
      */
-    public function setTestCenterAdministratorStatement($testCenterAdministratorStatement) {
+    public function setTestCenterAdministratorStatement($testCenterAdministratorStatement)
+    {
         $this->testCenterAdministratorStatement = $testCenterAdministratorStatement;
         return $this;
     }
-    
+
     /**
      * Set trainingManagerStatement
      * 
@@ -914,7 +974,8 @@ class User {
      * @param int $trainingManagerStatement
      * @return User current entity
      */
-    public function setTrainingManagerStatement($trainingManagerStatement) {
+    public function setTrainingManagerStatement($trainingManagerStatement)
+    {
         $this->trainingManagerStatement = $trainingManagerStatement;
         return $this;
     }
@@ -927,7 +988,8 @@ class User {
      * @param string $username
      * @return User current entity
      */
-    public function setUsername($username) {
+    public function setUsername($username)
+    {
         $this->username = $username;
         return $this;
     }
@@ -940,11 +1002,12 @@ class User {
      * @param string $addressOne
      * @return User current entity
      */
-    public function setAddressOne($addressOne) {
+    public function setAddressOne($addressOne)
+    {
         $this->addressOne = $addressOne;
         return $this;
     }
-    
+
     /**
      * Set addressTwo
      * 
@@ -953,11 +1016,12 @@ class User {
      * @param string $addressTwo
      * @return User current entity
      */
-    public function setAddressTwo($addressTwo) {
+    public function setAddressTwo($addressTwo)
+    {
         $this->addressTwo = $addressTwo;
         return $this;
     }
-    
+
     /**
      * Set city
      * 
@@ -966,11 +1030,12 @@ class User {
      * @param string $city
      * @return User current entity
      */
-    public function setCity($city) {
+    public function setCity($city)
+    {
         $this->city = $city;
         return $this;
     }
-    
+
     /**
      * Set zipCode
      * 
@@ -979,11 +1044,12 @@ class User {
      * @param string $zipCode
      * @return User current entity
      */
-    public function setZipCode($zipCode) {
+    public function setZipCode($zipCode)
+    {
         $this->zipCode = $zipCode;
         return $this;
     }
-    
+
     /**
      * Set phone
      * 
@@ -992,11 +1058,12 @@ class User {
      * @param string $phone
      * @return User current entity
      */
-    public function setPhone($phone) {
+    public function setPhone($phone)
+    {
         $this->phone = $phone;
         return $this;
     }
-    
+
     /**
      * Set nationality
      * 
@@ -1005,11 +1072,12 @@ class User {
      * @param string $nationality
      * @return User current entity
      */
-    public function setNationality($nationality) {
+    public function setNationality($nationality)
+    {
         $this->nationality = $nationality;
         return $this;
     }
-    
+
     /**
      * Set identificationType
      * 
@@ -1018,11 +1086,12 @@ class User {
      * @param string $identificationType
      * @return User current entity
      */
-    public function setIdentificationType($identificationType) {
+    public function setIdentificationType($identificationType)
+    {
         $this->identificationType = $identificationType;
         return $this;
     }
-    
+
     /**
      * Set identificationNumber
      * 
@@ -1031,11 +1100,12 @@ class User {
      * @param string $identificationNumber
      * @return User current entity
      */
-    public function setIdentificationNumber($identificationNumber) {
+    public function setIdentificationNumber($identificationNumber)
+    {
         $this->identificationNumber = $identificationNumber;
         return $this;
     }
-    
+
     /**
      * Set identificationExpiryDate
      * 
@@ -1044,11 +1114,12 @@ class User {
      * @param \DateTime $identificationExpiryDate
      * @return User current entity
      */
-    public function setIdentificationExpiryDate($identificationExpiryDate) {
+    public function setIdentificationExpiryDate($identificationExpiryDate)
+    {
         $this->identificationExpiryDate = new \DateTime($identificationExpiryDate);
         return $this;
     }
-    
+
     /**
      * Set email
      * 
@@ -1057,11 +1128,12 @@ class User {
      * @param string $email
      * @return User current entity
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
         return $this;
     }
-    
+
     /**
      * Set securityQuestion
      * 
@@ -1070,11 +1142,12 @@ class User {
      * @param string $securityQuestion
      * @return User current entity
      */
-    public function setSecurityQuestion($securityQuestion) {
+    public function setSecurityQuestion($securityQuestion)
+    {
         $this->securityQuestion = $securityQuestion;
         return $this;
     }
-    
+
     /**
      * Set securityAnswer
      * 
@@ -1083,11 +1156,12 @@ class User {
      * @param string $securityAnswer
      * @return User current entity
      */
-    public function setSecurityAnswer($securityAnswer) {
+    public function setSecurityAnswer($securityAnswer)
+    {
         $this->securityAnswer = $securityAnswer;
         return $this;
     }
-    
+
     /**
      * Get Courses
      * 
@@ -1095,9 +1169,10 @@ class User {
      * @access public
      * @return ArrayCollection courses
      */
-    public function getCourses() {
+    public function getCourses()
+    {
         return $this->courses;
-    }    
+    }
 
     /**
      * Add Courses
@@ -1107,11 +1182,12 @@ class User {
      * @param Courses\Entity\Course $course
      * @return User
      */
-    public function addCourses($course) {
+    public function addCourses($course)
+    {
         $this->courses[] = $course;
         return $this;
     }
-    
+
     /**
      * Set Courses
      * 
@@ -1120,11 +1196,12 @@ class User {
      * @param ArrayCollection $courses
      * @return User
      */
-    public function setCourses($courses) {
+    public function setCourses($courses)
+    {
         $this->courses = $courses;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -1132,7 +1209,8 @@ class User {
      * @access public
      * @return array current entity properties
      */
-    public function getArrayCopy() {
+    public function getArrayCopy()
+    {
         return get_object_vars($this);
     }
 
@@ -1143,17 +1221,18 @@ class User {
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray($data = array()) {
-        if(array_key_exists('roles', $data)){
+    public function exchangeArray($data = array())
+    {
+        if (array_key_exists('roles', $data)) {
             $this->setRoles($data["roles"]);
         }
-        if(array_key_exists('status', $data)){
+        if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
-        if(array_key_exists('photo', $data) && is_string($data['photo'])){
+        if (array_key_exists('photo', $data) && is_string($data['photo'])) {
             $this->setPhoto($data["photo"]);
         }
-        if(array_key_exists('password', $data) && ! empty($data['password'])){
+        if (array_key_exists('password', $data) && !empty($data['password'])) {
             $this->setPassword($data["password"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
@@ -1182,7 +1261,7 @@ class User {
                 ->setInstructorStatement($data["instructorStatement"])
                 ->setTestCenterAdministratorStatement($data["testCenterAdministratorStatement"])
                 ->setTrainingManagerStatement($data["trainingManagerStatement"])
-                ;
+        ;
     }
 
     /**
@@ -1193,7 +1272,8 @@ class User {
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter) {
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
         throw new \Exception("Not used");
     }
 
@@ -1207,7 +1287,8 @@ class User {
      * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query) {
+    public function getInputFilter($query)
+    {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -1217,7 +1298,7 @@ class User {
                 'validators' => array(
                     array('name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context'   => true,
+                            'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields' => array('username')
@@ -1310,7 +1391,7 @@ class User {
                     )
                 )
             ));
-           
+
             $inputFilter->add(array(
                 'name' => 'photo',
                 'required' => true,
@@ -1327,7 +1408,7 @@ class User {
                     ),
                 )
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'addressOne',
                 'required' => true,
@@ -1388,7 +1469,7 @@ class User {
                     ),
                     array('name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context'   => true,
+                            'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields' => array('email')
@@ -1409,12 +1490,12 @@ class User {
                     ),
                 )
             ));
-          
+
             $inputFilter->add(array(
                 'name' => 'roles',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'privacyStatement',
                 'required' => true,
