@@ -663,15 +663,11 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
     {
         parent::bind($object, $flags);
-//        if()
-        $trainingManagerId = $object->getTrainingManager();
-        if (isset($trainingManagerId->id) && $trainingManagerId != null) {
-            $this->get('trainingManager_id')->setValue($trainingManagerId->id);
-        }
-        $testCenterAdminId = $object->getTestCenterAdmin();
-        if (isset($testCenterAdminId->id) && $testCenterAdminId != null) {
-            $this->get('testCenterAdmin_id')->setValue($testCenterAdminId->id);
-        }
+//
+//        $users = $object->getOrganizationUsers();
+//
+//        
+//        
         $focalContactPerson = $object->getFocalContactPerson();
         if (isset($focalContactPerson->id) && $focalContactPerson != null) {
             $this->get('focalContactPerson_id')->setValue($focalContactPerson->id);

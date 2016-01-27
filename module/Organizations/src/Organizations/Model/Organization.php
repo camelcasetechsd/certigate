@@ -100,12 +100,12 @@ class Organization
     public function listOrganizations($query, $type)
     {
         $em = $query->entityManager;
-        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and u.type =?1 or u.type = 3');
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
         $dqlQuery->setParameter(1, $type);
         return $dqlQuery->getResult();
     }
 
-    public function saveOrganization($orgInfo, $creatorId, $orgObj = null)
+    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null)
     {
 
         if (is_null($orgObj)) {
@@ -113,7 +113,6 @@ class Organization
             $entity = new \Organizations\Entity\Organization();
         }
         else {
-
             $entity = $orgObj;
         }
 
@@ -170,34 +169,6 @@ class Organization
         if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
-
-
-
-
-
-
-
-
-//        
-//        if (!empty($orgInfo['CRAttachment']['name']) && $orgInfo['CRAttachment']['name'] != '') {
-//            $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
-//        }
-//        else {
-//            $orgInfo['CRAttachment'] = null;
-//        }
-//        if (!empty($orgInfo['atpLicenseAttachment']) && $orgInfo['atpLicenseAttachment']['name'] != '') {
-//            $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
-//        }
-//        else {
-//            $orgInfo['atpLicenseAttachment'] = null;
-//        }
-//        if (!empty($orgInfo['atcLicenseAttachment']) && $orgInfo['atcLicenseAttachment']['name'] != '') {
-//            $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
-//        }
-//        else {
-//            $orgInfo['atcLicenseAttachment'] = null;
-//        }
-
 
         /**
          * Save Organization

@@ -172,7 +172,7 @@ class OrganizationsController extends ActionController
 
             if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data, $creatorId);
+                $orgModel->saveOrganization($data, null, $creatorId);
 
                 // redirecting
                 if ($data['type'] == 1) {
@@ -277,7 +277,6 @@ class OrganizationsController extends ActionController
             if ($form->isValid()) {
                 $orgModel = new OrgModel($query);
 
-//              
                 $orgModel->saveOrganization($data, $orgObj);
 
                 // redirecting
