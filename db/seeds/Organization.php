@@ -62,7 +62,7 @@ class Organization extends AbstractSeed
         
         $atp[] = array(
             'commercialName' => $faker->userName,
-            'active' => 1,
+            'active' => 2,
             'type' => 2,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
@@ -98,15 +98,13 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => null,
             'officeLang' => null,
             'officeVersion' => null,
-            'trainingManager_id' => $normalUserId,
-            'testCenterAdmin_id' => null,
             'focalContactPerson_id' => $normalUserId
         );
 
         $this->insert('organization', $atp);
         $atc[] = array(
             'commercialName' => $faker->userName,
-            'active' => 1,
+            'active' => 2,
             'type' => 1,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
@@ -142,8 +140,6 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'trainingManager_id' => null,
-            'testCenterAdmin_id' => $normalUserId,
             'focalContactPerson_id' => $normalUserId
         );
 
@@ -152,7 +148,7 @@ class Organization extends AbstractSeed
 
         $both[] = array(
             'commercialName' => $faker->userName,
-            'active' => 1,
+            'active' => 2,
             'type' => 3,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
@@ -188,8 +184,6 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'trainingManager_id' => $normalUserId,
-            'testCenterAdmin_id' => null,
             'focalContactPerson_id' => $normalUserId
         );
 

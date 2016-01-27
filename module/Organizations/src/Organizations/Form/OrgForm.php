@@ -542,7 +542,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atpSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Training Manager',
@@ -552,6 +552,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'empty_item_label' => '--Select--',
+                'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
         },
@@ -563,7 +565,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atcSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
@@ -573,6 +575,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'display_empty_item' => true,
+                'empty_item_label' => '--Select--',
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
         },
@@ -585,13 +589,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Focal Contact Person',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'display_empty_item' => true,
+                'empty_item_label' => '--Select--',
                 'label_generator' => function($targetEntity) {
                     return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                 },

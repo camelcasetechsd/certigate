@@ -86,7 +86,26 @@ class Organization
         ));
     }
 
-    public function saveOrganization($orgInfo, $orgObj = null)
+    /**
+     * this function is meant to list organizations by type
+     * its alrady list organizations with type 3 in the same time with
+     * type wanted to be listed  for example if we wanted to list atps it
+     * will post both atps and organizations which is both atp and atc 
+     * at the same time
+     * 
+     * @param type $query
+     * @param type $type
+     * @return type
+     */
+    public function listOrganizations($query, $type)
+    {
+        $em = $query->entityManager;
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and u.type =?1 or u.type = 3');
+        $dqlQuery->setParameter(1, $type);
+        return $dqlQuery->getResult();
+    }
+
+    public function saveOrganization($orgInfo, $creatorId, $orgObj = null)
     {
 
         if (is_null($orgObj)) {
@@ -126,20 +145,9 @@ class Organization
          * Handling User Forign keys
          */
         // training manager can be null if not selected 
-        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
-            $orgInfo['trainingManager_id'] = $this->getUserby('id', $orgInfo['trainingManager_id'])[0];
-        }
-        else if (isset($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] == 0) {
-            $orgInfo['trainingManager_id'] = null;
-        }
-
-
         // test admin can be null if not selected 
         if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $orgInfo['testCenterAdmin_id'] = $this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0];
-        }
-        else if (isset($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] == 0) {
-            $orgInfo['testCenterAdmin_id'] = null;
+            $entity->setOrganizationUser($this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0]);
         }
 
         // focal can be null
@@ -189,10 +197,27 @@ class Organization
 //        else {
 //            $orgInfo['atcLicenseAttachment'] = null;
 //        }
+
+
         /**
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
+        // if there's 
+        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
+            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
+            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
+        }
+        else if ($orgInfo['trainingManager_id'] != 0) {
+            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
+        }
+        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
+            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
+            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
+        }
+        else if ($orgInfo['testCenterAdmin_id'] != 0) {
+            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
+        }
     }
 
     private function saveAttachment($filename, $type)
@@ -217,19 +242,19 @@ class Organization
         $upload = new Http();
         $upload->setDestination($attachmentPath);
         try {
-            // upload received file(s)
+// upload received file(s)
             $upload->receive($filename);
         } catch (\Exception $e) {
             return $uploadResult;
         }
-        //This method will return the real file name of a transferred file.
+//This method will return the real file name of a transferred file.
         $name = $upload->getFileName($filename);
-        //This method will return extension of the transferred file
+//This method will return extension of the transferred file
         $extention = pathinfo($name, PATHINFO_EXTENSION);
-        //get random new name
+//get random new name
         $newName = $this->random->getRandomUniqueName() . '_' . date('Y.m.d_h:i:sa');
         $newFullName = $attachmentPath . $newName . '.' . $extention;
-        // rename
+// rename
         rename($name, $newFullName);
         $uploadResult = $newFullName;
         return $uploadResult;
@@ -256,13 +281,30 @@ class Organization
         $staticOs = \Organizations\Entity\Organization::getOSs();
         $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
         $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
-        
+
         $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
         $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
         $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
 
         return $variables;
+    }
+
+    /**
+     * this function meant to assign an user to an organization with specific type
+     *  
+     * @param Organization $orgObj
+     * @param int $userId
+     * @param int $type
+     */
+    private function assignUserToOrg($orgObj, $userId, $type)
+    {
+        $orgUserObj = new \Organizations\Entity\OrganizationUser();
+        $orgUserObj->setOrganizationUser($orgObj, $this->query->findOneBy('Users\Entity\User', array(
+                    'id' => $userId
+        )));
+        $orgUserObj->setType($type);
+        $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
     }
 
 }

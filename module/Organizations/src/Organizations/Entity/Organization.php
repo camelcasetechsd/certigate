@@ -79,14 +79,19 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * inActive organization
+     * Active organization
      */
-    const ACTIVE = 1;
+    const NOT_APPROVED = 1;
 
     /**
      * Active organization
      */
-    const NOT_ACTIVE = 0;
+    const ACTIVE = 2;
+
+    /**
+     * edited organization
+     */
+    const EDITED = 3;
 
     /**
      *
@@ -285,20 +290,9 @@ class Organization
     public $email;
 
     /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="trainingManager_id", referencedColumnName="id")
-     * @var Users\Entity\User
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="organization")
      */
-    public $trainingManager;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="testCenterAdmin_id", referencedColumnName="id")
-     * @var Users\Entity\User
-     */
-    public $testCenterAdmin;
+    public $organizationUser;
 
     /**
      * @Gedmo\Versioned
@@ -370,6 +364,13 @@ class Organization
      * @var string
      */
     public $officeLang;
+
+    public function __construct()
+    {
+        $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    
 
     function getId()
     {
@@ -501,9 +502,9 @@ class Organization
         return $this->email;
     }
 
-    function getTrainingManager()
+    function getOrganizationUsers()
     {
-        return $this->trainingManager;
+        return $this->organizationUser;
     }
 
     function getTestCenterAdmin()
@@ -691,14 +692,9 @@ class Organization
         $this->email = $email;
     }
 
-    function setTrainingManager(User $trainingManager)
+    function setOrganizationUser($user)
     {
-        $this->trainingManager = $trainingManager;
-    }
-
-    function setTestCenterAdmin(User $testCenterAdmin)
-    {
-        $this->testCenterAdmin = $testCenterAdmin;
+        $this->organizationUser = $user;
     }
 
     function setFocalContactPerson(User $focalContactPerson)
