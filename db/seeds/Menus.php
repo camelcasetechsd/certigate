@@ -31,15 +31,13 @@ class Menus extends AbstractSeed
             "home" => [
                 "title" => "Home",
                 "path" => "/",
-            ],
-            "estore" => [
-                "title" => "eStore",
-                "path" => "http://estore.local-certigate.com/",
+                "weight" => 1
             ],
             "about" => [
                 "title" => "About",
                 "path" => "/about",
                 "type" => "page",
+                "weight" => 2,
                 "children" => [
                     [
                         "title" => "Corporate Profile",
@@ -72,7 +70,65 @@ class Menus extends AbstractSeed
                         "type" => "page",
                     ],
                 ]
-            ]
+            ],
+            "testing_center" => [
+                "title" => "Testing Center",
+                "path" => "3",
+                "weight" => 3,
+                "children" => [
+                    [
+                        "title" => "ATC Program",
+                        "path" => "#",
+                        "children" => [
+                            [
+                                "title" => "Overview",
+                                "path" => "/atc_overview",
+                                "type" => "page",
+                            ],
+                            [
+                                "title" => "ATC Benefits",
+                                "path" => "/atc_benefits",
+                                "type" => "page",
+                            ],
+                            [
+                                "title" => "ATC Selection Criteria",
+                                "path" => "/atc_selection_criteria",
+                                "type" => "page",
+                            ],
+                            [
+                                "title" => "ATC SOP",
+                                "path" => "/atc_overview",
+                                "type" => "page",
+                            ],
+                            [
+                                "title" => "Apply to be an ATC",
+                                "path" => "/organizations/new",
+                            ],
+                            [
+                                "title" => "Apply to be an ATC Administrator",
+                                "path" => "/organizations/new",
+                            ],
+                            [
+                                "title" => "Apply to be an ATC Proctor",
+                                "path" => "/organizations/new",
+                            ],
+                        ]
+                    ],
+                    [
+                        "title" => "ATC Login",
+                        "path" => "/sign/in",
+                    ],
+                    [
+                        "title" => "ATC Directory",
+                        "path" => "/organizations/atcs",
+                    ],
+                ]
+            ],
+            "estore" => [
+                "title" => "eStore",
+                "path" => "http://estore.local-certigate.com/",
+                "weight" => 4
+            ],
         ];
 
         foreach ($primaryMenuItems as $item) {
@@ -96,7 +152,7 @@ class Menus extends AbstractSeed
             'menu_id' => $primaryMenuId,
             'title' => $item['title'],
             'path' => $item['path'],
-            'weight' => 1,
+            'weight' => (isset( $item['weight'] )) ? $item['weight'] : 1,
             'status' => true
         ] );
         $menuItemParentId = $this->getAdapter()->getConnection()->lastInsertId();
@@ -113,13 +169,12 @@ class Menus extends AbstractSeed
     public function insertPageForMenuItem( $item, $itemId )
     {
         $faker = Faker\Factory::create();
-        
-        $this->insert('page' , [
+
+        $this->insert( 'page', [
             'menuitem_id' => $itemId,
             'title' => $item['title'],
-            'body' => base64_encode(bzcompress($faker->text))
-        ]);
-        
+            'body' => base64_encode( bzcompress( $faker->text ) )
+        ] );
     }
 
 }
