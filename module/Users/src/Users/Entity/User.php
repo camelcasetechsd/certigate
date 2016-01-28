@@ -1493,7 +1493,7 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'roles',
-                'required' => true,
+                'required' => false,
             ));
 
             $inputFilter->add(array(

@@ -76,7 +76,7 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
-        $options['excludedRoles'] = array();
+        $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
@@ -163,7 +163,7 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
-        $options['excludedRoles'] = array();
+        $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {

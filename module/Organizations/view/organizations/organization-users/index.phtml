@@ -1,0 +1,60 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/courses/new"><button class="btn btn-small btn-success">Create new Course</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Courses</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Authorized Instructor</th>
+                <th>Authorized Training Partner</th>
+                <th>Students No.</th>
+                <th>Capacity</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courses}}
+            <tr class="{{^status}}container-inactive{{/status}}">
+                <td>{{name}}</td>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>{{ai.firstName}} {{ai.lastName}}</td>
+                <td>{{atp.commercialName}}</td>
+                <td>{{studentsNo}}</td>
+                <td>{{capacity}}</td>
+                <td>{{time}}</td>
+                <td>{{duration}} Day(s)</td>
+                <td>{{statusText}}</td>
+                
+                <td>
+                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon-folder-close"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
+                        {{#isAdminUser}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{/isAdminUser}}
+                    {{/status}}
+                </td>
+            </tr>
+            {{/courses}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
