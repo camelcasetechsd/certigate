@@ -30,7 +30,7 @@ class OrganizationRepository extends EntityRepository
         $users = $queryBuilder->getQuery()->getResult();
         return $users;
     }
-    
+
     /**
      * Filter organizations
      * 
@@ -69,4 +69,13 @@ class OrganizationRepository extends EntityRepository
         $organizations = $queryBuilder->getQuery()->setParameters($parameters)->getResult();
         return $organizations;
     }
+
+    public function listOrganizations($query, $type)
+    {
+        $em = $query->entityManager;
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
+        $dqlQuery->setParameter(1, $type);
+        return $dqlQuery->getResult();
+    }
+
 }

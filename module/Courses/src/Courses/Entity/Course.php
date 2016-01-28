@@ -173,6 +173,11 @@ class Course
     public $outlines;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="course")
+     */
+    public $exambook;
+
+    /**
      * Prepare entity
      * 
      * 
@@ -648,7 +653,7 @@ class Course
         $this->outlines = $outlines;
         return $this;
     }
-    
+
     /**
      * Remove Outline
      * 

@@ -11,13 +11,19 @@ return array(
     'service_manager' => array(
         'aliases' => array(
             'courses' => 'Courses\Controller\CourseController',
-            'resources' => 'Courses\Controller\ResourceController'
+            'resources' => 'Courses\Controller\ResourceController',
+            'exams' => 'Courses\Controller\ExamController'
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
         )
+    ),
+    'contacts' => array(
+        'Admin_Email' => 'admin@armyspy.com',
+        'Operations' => 'ops@armyspy.com',
+        'TVTC' => 'tvtc@armyspy.com'
     ),
     'doctrine' => array(
         'driver' => array(
@@ -33,10 +39,28 @@ return array(
             )
         )
     ),
+    // for cron tabs to update tvtc status 
+    // from nothing to pending after 3 days
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'list-users' => array(
+                    'options' => array(
+                        'route' => 'updateTvtcStatus [--verbose|-v] ',
+                        'defaults' => array(
+                            'controller' => 'Courses\Controller\Exam',
+                            'action' => 'updateTvtcStatus'
+                        )
+                    )
+                )
+            )
+        )
+    ),
     'controllers' => array(
         'invokables' => array(
             'Courses\Controller\Course' => 'Courses\Controller\CourseController',
             'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
+            'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
         ),
     ),
     'router' => array(
@@ -320,6 +344,84 @@ return array(
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'editEvaluation',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // atc book an exam
+            'examBooking' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/courses/exam/book',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'book',
+                    ),
+                )
+            ),
+            // admin list exam requests
+            'examRequests' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/courses/exam/requests',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'requests',
+                    ),
+                )
+            ),
+            // admin list exam requests
+            'acceptRequest' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/exam/request/accept[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'accept',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // admin list exam requests
+            'declineRequest' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/exam/request/decline[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'decline',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // admin list exam requests
+            'tvtcaccept' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/exam/tvtc/accept[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'tvtcAccept',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // admin list exam requests
+            'tvtcdecline' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/exam/tvtc/decline[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'tvtcDecline',
                     ),
                     'constraints' => array(
                         'courseId' => '[0-9]+',
