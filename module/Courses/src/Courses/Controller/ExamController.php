@@ -26,12 +26,12 @@ class ExamController extends ActionController
      */
     public function updateTvtcStatusAction()
     {
-        $request = $this->getRequest();
-        // Making sure that we are running in a console and the user has not tricked our
-        // application into running this action from a public web server.
-        if (!$request instanceof ConsoleRequest) {
-            throw new \RuntimeException('You can only use this action from a console!');
-        }
+//        $request = $this->getRequest();
+//        // Making sure that we are running in a console and the user has not tricked our
+//        // application into running this action from a public web server.
+//        if (!$request instanceof ConsoleRequest) {
+//            throw new \RuntimeException('You can only use this action from a console!');
+//        }
 
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $requests = $query->findAll('Courses\Entity\ExamBook');
