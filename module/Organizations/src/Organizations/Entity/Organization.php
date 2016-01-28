@@ -365,12 +365,15 @@ class Organization
      */
     public $officeLang;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="atc")
+     */
+    public $exambook;
+
     public function __construct()
     {
         $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    
 
     function getId()
     {

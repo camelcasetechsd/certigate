@@ -10,7 +10,7 @@ use Utilities\Service\Status;
 /**
  * MenuItem Entity
  * @ORM\Entity(repositoryClass="CMS\Entity\MenuItemRepository")
- * @ORM\Table(name="menuItem",uniqueConstraints={@ORM\UniqueConstraint(name="path_idx", columns={"path"})})
+ * @ORM\Table(name="menuItem")
  * @ORM\HasLifecycleCallbacks
  * 
  * @property InputFilter $inputFilter validation constraints 
@@ -58,7 +58,7 @@ class MenuItem {
 
     /**
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      * @var string
      */
     public $path;
@@ -449,17 +449,7 @@ class MenuItem {
             ));
             $inputFilter->add(array(
                 'name' => 'path',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('path')
-                        )
-                    ),
-                )
+                'required' => true,                
             ));
             $inputFilter->add(array(
                 'name' => 'menu',

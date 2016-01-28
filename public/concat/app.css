@@ -7369,6 +7369,14 @@ label{
 #user_form input[type="checkbox"].form-control{
     float: left;
 }
+/* OriginalFileName : public/css/courseForm.css */ 
+
+#course_form fieldset label {
+    padding-left: 50px;
+}
+#course_form .addMoreButton {
+    margin-left: 50px;
+}
 /* OriginalFileName : public/css/errors.css */ 
 
 .errors{

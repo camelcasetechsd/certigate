@@ -7,6 +7,7 @@ return array(
             'cacheUtilities' => 'Utilities\Service\Cache',
             'objectUtilities' => 'Utilities\Service\Object',
             'loggerUtilities' => 'Utilities\Service\Logger',
+            'validationUtilities' => 'Utilities\Service\Validator',
         ),
         'factories' => array(
             'Utilities\Service\Query' => 'Utilities\Service\Query\QueryFactory',
@@ -14,5 +15,10 @@ return array(
             'Utilities\Service\Object' => 'Utilities\Service\ObjectFactory',
             'Utilities\Service\Logger' => 'Utilities\Service\Logger\LoggerFactory',
         )
+    ),
+    'validators' => array(
+        'invokables' => array(
+            'TenDaysAfterValidator' => 'Utilities\Service\Validator\TenDaysAfterValidator',
+        ),
     ),
 );
