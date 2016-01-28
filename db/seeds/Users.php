@@ -226,6 +226,78 @@ class Users extends AbstractSeed {
             );
         $this->insert('acl', $resourcesAcls);
         
+        $organizationModule = "Organizations";
+        $organizationUsersRoute = "organizationUsers";
+        $organizationUsersListRoute = "organizationUsersList";
+        $organizationUsersNewRoute = "organizationUsersNew";
+        $organizationUsersEditRoute = "organizationUsersEdit";
+        $organizationUsersDeleteRoute = "organizationUsersDelete";
+        $listAtcOrgsRoute = "list_atc_orgs";
+        $listAtpOrgsRoute = "list_atp_orgs";
+        $organizationAcls = array(
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersListRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersListRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersNewRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersNewRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersEditRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersEditRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersDeleteRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersDeleteRoute,
+                ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtcOrgsRoute,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtpOrgsRoute,
+                ),
+            );
+        $this->insert('acl', $organizationAcls);
+        
         $adminUser = array(
                 "firstName" => $faker->firstName,
                 "middleName" => $faker->name,

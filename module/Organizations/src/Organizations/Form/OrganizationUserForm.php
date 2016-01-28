@@ -52,16 +52,21 @@ class OrganizationUserForm extends Form
         $this->setAttribute('class', 'form form-horizontal');
 
         $types = array();
-        if ($this->organizationType === Organization::TYPE_ATC) {
-            $types = array(
+        $atcTypes = array(
                 Role::PROCTOR_ROLE,
                 Role::TEST_CENTER_ADMIN_ROLE,
             );
-        }
-        elseif ($this->organizationType === Organization::TYPE_ATP) {
-            $types = array(
+        $atpTypes = array(
                 Role::TRAINING_MANAGER_ROLE,
             );
+        if ($this->organizationType === Organization::TYPE_ATC) {
+            $types = $atcTypes;
+        }
+        elseif ($this->organizationType === Organization::TYPE_ATP) {
+            $types = $atpTypes;
+        }
+        else{
+            $types = array_merge($atpTypes, $atcTypes);
         }
 
         $this->add(array(
