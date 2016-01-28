@@ -73,7 +73,7 @@ class Menus extends AbstractSeed
             ],
             "testing_center" => [
                 "title" => "Testing Center",
-                "path" => "3",
+                "path" => "#",
                 "weight" => 3,
                 "children" => [
                     [
