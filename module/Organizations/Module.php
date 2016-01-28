@@ -8,7 +8,7 @@ namespace Organizations ;
  * 
  * 
  * 
- * @package Directories
+ * @package organizations
  */
 class Module
 {
