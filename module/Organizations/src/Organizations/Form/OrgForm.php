@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * 
  * @property Utilities\Service\Query\Query $query
  * 
- * @package users
+ * @package organizations
  * @subpackage form
  */
 class OrgForm extends Form implements ObjectManagerAwareInterface

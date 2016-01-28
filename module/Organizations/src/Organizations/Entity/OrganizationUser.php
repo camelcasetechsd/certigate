@@ -7,41 +7,28 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
-
-//use Gedmo\Mapping\Annotation as Gedmo;
+use DoctrineModule\Validator\UniqueObject;
 
 /**
  * OrganziationUser Entity
  * @ORM\Entity
- * @ORM\Table(name="organization_user")
+ * @ORM\Table(name="organization_user",uniqueConstraints={@ORM\UniqueConstraint(name="user_role_organization_idx", columns={"role_id","user_id","org_id"})})
+ * @ORM\HasLifecycleCallbacks
  * @Gedmo\Loggable
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
- * @property int    $id
- * @property int    $type 
+ * @property int $id
+ * @property Users\Entity\Role $role 
+ * @property Users\Entity\User $user 
+ * @property Organizations\Entity\Organization $organization 
  * 
  * 
- * @package orgs
+ * @package organizations
  * @subpackage entity
  */
 class OrganizationUser
 {
-
-    /**
-     * training manger
-     */
-    const TYPE_TRAINING_MANAGER = 1;
-
-    /**
-     * Test Center Admin
-     */
-    const TYPE_TEST_CENTER_ADMIN = 2;
-
-    /**
-     * Proctor
-     */
-    const TYPE_PROCTOR = 3;
 
     /**
      *
@@ -59,20 +46,25 @@ class OrganizationUser
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="integer")
-     * @var int
+     * @ORM\ManyToOne(targetEntity="Users\Entity\Role")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
+     * @var Users\Entity\Role
      */
-    public $type;
+    public $role;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User", inversedBy="organizationUser") 
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false) 
+     * @var Users\Entity\User
      */
     public $user;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization", inversedBy="organizationUser") 
      * @ORM\JoinColumn(name="org_id", referencedColumnName="id", nullable=false) 
+     * @var Organizations\Entity\Organization
      */
     public $organization;
 
@@ -88,20 +80,93 @@ class OrganizationUser
         return get_object_vars($this);
     }
 
+    /**
+     * Set Both Organization and User
+     * 
+     * @access public
+     * 
+     * @param \Organizations\Entity\Organization $organization
+     * @param User $user
+     * 
+     * @return \Organizations\Entity\OrganizationUser
+     */
     public function setOrganizationUser(Organization $organization, User $user)
     {
         $this->organization = $organization;
         $this->user = $user;
+        return $this;
     }
 
-    public function setType($type)
+    /**
+     * Set Role
+     * 
+     * @access public
+     * @param Users\Entity\Role $role
+     * @return \Organizations\Entity\OrganizationUser
+     */
+    public function setRole($role)
     {
-        $this->type = $type;
+        $this->role = $role;
+        return $this;
     }
 
-    public function getType()
+    /**
+     * Get Role
+     * 
+     * @access public
+     * @return Users\Entity\Role
+     */
+    public function getRole()
     {
-        $this->type;
+        return $this->role;
+    }
+
+    /**
+     * Set Organization
+     * 
+     * @access public
+     * @param Organizations\Entity\Organization $organization
+     * @return \Organizations\Entity\OrganizationUser
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+        return $this;
+    }
+
+    /**
+     * Get Organization
+     * 
+     * @access public
+     * @return Organizations\Entity\Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * Set User
+     * 
+     * @access public
+     * @param Users\Entity\User $user
+     * @return \Organizations\Entity\OrganizationUser
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get User
+     * 
+     * @access public
+     * @return Users\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -113,7 +178,11 @@ class OrganizationUser
      */
     public function exchangeArray($data = array())
     {
-        
+        if(array_key_exists("organization", $data)){
+            $this->setOrganization($data["organization"]);
+        }
+        $this->setRole($data["role"])
+                ->setUser($data["user"]);
     }
 
     /**
@@ -136,13 +205,35 @@ class OrganizationUser
      * @uses InputFilter
      * 
      * @access public
+     * 
+     * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
     public function getInputFilter($query)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
+            $query->setEntity("Organizations\Entity\OrganizationUser");
 
+            $inputFilter->add(array(
+                'name' => 'user',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Utilities\Service\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('user', 'organization', 'role'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "There is already another organization user with the same user and role")
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'role',
+                'required' => true,
+            ));
 
             $this->inputFilter = $inputFilter;
         }

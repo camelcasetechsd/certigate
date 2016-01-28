@@ -57,7 +57,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @property string $officeLang
  * 
  * 
- * @package orgs
+ * @package organizations
  * @subpackage entity
  */
 class Organization
