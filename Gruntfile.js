@@ -25,6 +25,7 @@ module.exports = function (grunt) {
                 dest: '<%= dirs.dest %>/app.js',
                 src: [
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
+                    '<%= dirs.bowerSrc %>/chosen/chosen.jquery.min.js',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
                     '<%= dirs.nodeSrc %>/bootbox/bootbox.js' ,
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
@@ -43,8 +44,10 @@ module.exports = function (grunt) {
                 nonull: true,
                 dest: '<%= dirs.dest %>/app.css',
                 src: [
+                    '<%= dirs.bowerSrc %>/chosen/chosen.min.css',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+                    '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/userForm.css',

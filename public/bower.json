@@ -6,6 +6,7 @@
     "dependencies": {
         "bootstrap": "~3.x",
         "bootstrap-datepicker" : "~1.x",
+        "chosen-bootstrap" : "~1.x",
         "ckeditor": "#full/stable"
     }
 }
