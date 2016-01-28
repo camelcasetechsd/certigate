@@ -1,34 +1,34 @@
 <?php
 
-namespace Courses\Model;
+namespace Organizations\Model;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Courses\Model\Outline;
+use Organizations\Model\OrganizationUser;
 
 /**
- * Outline Factory
+ * OrganizationUser Factory
  * 
- * Prepare Outline service factory
+ * Prepare OrganizationUser service factory
  * 
  * 
- * @package courses
+ * @package organizations
  * @subpackage model
  */
-class OutlineFactory implements FactoryInterface {
+class OrganizationUserFactory implements FactoryInterface {
 
     /**
-     * Prepare Outline service
+     * Prepare OrganizationUser service
      * 
-     * @uses Outline
+     * @uses OrganizationUser
      * 
      * @access public
      * @param ServiceLocatorInterface $serviceLocator
-     * @return Outline
+     * @return OrganizationUser
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\Outline');
-        return new Outline($query);
+        $query = $serviceLocator->get('wrapperQuery')->setEntity('Organizations\Entity\OrganizationUser');
+        return new OrganizationUser($query);
     }
 
 }

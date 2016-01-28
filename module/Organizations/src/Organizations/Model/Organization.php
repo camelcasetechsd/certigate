@@ -7,6 +7,7 @@ use Zend\File\Transfer\Adapter\Http;
 use DateTime;
 use Utilities\Service\Status;
 use Utilities\Service\Query\Query;
+use Users\Entity\Role;
 
 /**
  * Org Model
@@ -18,7 +19,7 @@ use Utilities\Service\Query\Query;
  * @property Utilities\Service\Query\Query $query
  * @property Utilities\Service\Random $random
  * 
- * @package orgs
+ * @package organizations
  * @subpackage model
  * 
  * 
@@ -108,6 +109,12 @@ class Organization
     public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null)
     {
 
+        $roles = $this->query->findAll('Users\Entity\Role');
+        $rolesIds = array();
+        foreach($roles as $role){
+            $rolesIds[$role->getName()] = $role->getId();
+        }
+        
         if (is_null($orgObj)) {
 
             $entity = new \Organizations\Entity\Organization();
@@ -145,9 +152,6 @@ class Organization
          */
         // training manager can be null if not selected 
         // test admin can be null if not selected 
-        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $entity->setOrganizationUser($this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0]);
-        }
 
         // focal can be null
         if (!empty($orgInfo['focalContactPerson_id']) && $orgInfo['focalContactPerson_id'] != 0) {
@@ -176,18 +180,18 @@ class Organization
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
         // if there's 
         if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
-            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
+            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
         }
         else if ($orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TRAINING_MANAGER);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
         }
         if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
-            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
+            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
         }
         else if ($orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, \Organizations\Entity\OrganizationUser::TYPE_TEST_CENTER_ADMIN);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
         }
     }
 
@@ -266,15 +270,16 @@ class Organization
      *  
      * @param Organization $orgObj
      * @param int $userId
-     * @param int $type
+     * @param int $roleId
      */
-    private function assignUserToOrg($orgObj, $userId, $type)
+    private function assignUserToOrg($orgObj, $userId, $roleId)
     {
         $orgUserObj = new \Organizations\Entity\OrganizationUser();
         $orgUserObj->setOrganizationUser($orgObj, $this->query->findOneBy('Users\Entity\User', array(
                     'id' => $userId
         )));
-        $orgUserObj->setType($type);
+        $role = $this->query->find('Users\Entity\Role', $roleId);
+        $orgUserObj->setRole($role);
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
     }
 

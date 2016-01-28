@@ -1,21 +1,19 @@
 <?php
 
-namespace Courses\Model;
-
-use Doctrine\Common\Collections\Criteria;
+namespace Organizations\Model;
 
 /**
- * Outline Model
+ * OrganizationUser Model
  * 
- * Handles Outline Entity related business
+ * Handles OrganizationUser Entity related business
  * 
  * 
  * @property Utilities\Service\Query\Query $query
  * 
- * @package courses
+ * @package organizations
  * @subpackage model
  */
-class Outline
+class OrganizationUser
 {
 
     /**
@@ -36,18 +34,27 @@ class Outline
     }
 
     /**
-     * Remove not used outlines
+     * Save OrganizationUser
+     * Add new role if user does not have it
      * 
      * @access public
+     * @param Organizations\Entity\OrganizationUser $organizationUser
+     * @param array $data ,default is empty array
      */
-    public function cleanUpOutlines()
+    public function save($organizationUser, $data = array())
     {
-        $criteria = Criteria::create();
-        $expr = Criteria::expr();
-        $criteria->andWhere($expr->isNull("course"));
-        $outlinesToBeRemoved = $this->query->filter("Courses\Entity\Outline", $criteria);
-        foreach ($outlinesToBeRemoved as $outline) {
-            $this->query->remove($outline);
+        $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($organizationUser, $data);
+        $roleExists = false;
+        $user = $organizationUser->getUser();
+        foreach ($user->getRoles() as $role) {
+            if ($role->getName() == $organizationUser->getRole()->getName()) {
+                $roleExists = true;
+                break;
+            }
+        }
+        if ($roleExists === false) {
+            $user->addRole($organizationUser->getRole());
+            $this->query->setEntity('Users\Entity\User')->save($user, /* $data = */ array());
         }
     }
 
