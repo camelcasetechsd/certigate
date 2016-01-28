@@ -150,8 +150,8 @@ class Exam
         ));
         // if tctv mail
         if ($adminMail != null) {
-            $html = new MimePart('<h2>Exam Request</h2> <a href="' . define('ROOT_PATH', dirname(__DIR__)) . '/courses/exam/tvtc/accept/' . $request->getId() . '"> click me if you accept </a> <br>'
-                    . ' <a href="' . define('ROOT_PATH', dirname(__DIR__)) . '/courses/exam/tvtc/decline/' . $request->getId() . '"> click me if you decline </a>');
+            $html = new MimePart('<h2>Exam Request</h2> <a href="' . getcwd() . '/courses/exam/tvtc/accept/' . $request->getId() . '"> click me if you accept </a> <br>'
+                    . ' <a href="' . getcwd() . '/courses/exam/tvtc/decline/' . $request->getId() . '"> click me if you decline </a>');
         }
         // if admin mail
         else {

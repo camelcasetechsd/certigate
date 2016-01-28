@@ -102,15 +102,15 @@ class Menus extends AbstractSeed
                             ],
                             [
                                 "title" => "Apply to be an ATC",
-                                "path" => "/organizations/new",
+                                "path" => "/organizations/new?organization=1",
                             ],
                             [
                                 "title" => "Apply to be an ATC Administrator",
-                                "path" => "/organizations/new",
+                                "path" => "/organizations/new?organization=1",
                             ],
                             [
                                 "title" => "Apply to be an ATC Proctor",
-                                "path" => "/organizations/new",
+                                "path" => "/organizations/new?organization=1",
                             ],
                         ]
                     ],
