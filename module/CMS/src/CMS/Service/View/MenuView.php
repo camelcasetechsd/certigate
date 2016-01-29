@@ -75,13 +75,19 @@ class MenuView {
      *
      * @var string 
      */
-    protected $menuItemLiAttributesString = 'class="menu-item-li %1$s menu-li-%2$s menu-%2$s"';
+    protected $menuItemLiAttributesString = 'class="menu-item-li %1$s menu-li-%2$s menu-%2$s %3$s"';
 
     /**
      *
      * @var string 
      */
     protected $menuItemAnchorAttributesString = 'class="%1$s menu-anchor-%2$s menu-%2$s"';
+
+    /**
+     *
+     * @var string 
+     */
+    protected $activeClass = 'active';
 
     /**
      *
@@ -94,6 +100,48 @@ class MenuView {
      * @var string 
      */
     protected $ulClass = 'nav';
+
+    /**
+     *
+     * @var string 
+     */
+    protected $activePath = '/';
+
+    /**
+     * Set active path (i.e. current active URL)
+     * 
+     * 
+     * @access public
+     * @param string $path
+     */
+    public function setActivePath($path) {
+        $this->activePath = $path;
+    }
+
+    /**
+     * Get active path (i.e. current active URL)
+     * 
+     * 
+     * @access public
+     * @return string
+     */
+    public function getActivePath() {
+        return $this->activePath;
+    }
+
+    /**
+     * Match active path against path provided
+     *
+     * TODO: Implement a better way to do this, allowing menu item hierarchy to be respected
+     * 
+     * 
+     * @access public
+     * @param string $path
+     * @return bool
+     */
+    public function checkActivePathMatch($path) {
+        return ($path === $this->getActivePath());
+    }
 
     /**
      * Prepare menu for view by it's title
@@ -125,7 +173,11 @@ class MenuView {
             foreach ($menuItemsArray as $menuItemTitle => $menuItemArray) {
                 $depthLevel = $menuItemArray['depth'];
                 $menuItemTitleUnderscored = $menuItemArray['title_underscored'];
-                $liAttributes = sprintf($this->menuItemLiAttributesString, $menuItemTitleUnderscored, $depthLevel);
+                $activeFlag = '';
+                if ($this->checkActivePathMatch($menuItemArray['path'])) {
+                    $activeFlag = $this->activeClass;
+                }
+                $liAttributes = sprintf($this->menuItemLiAttributesString, $menuItemTitleUnderscored, $depthLevel, $activeFlag);
                 $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $menuItemTitleUnderscored, $depthLevel);
                 $condChildIndicator = '';
                 if (count($menuItemArray["children"]) > 0) {

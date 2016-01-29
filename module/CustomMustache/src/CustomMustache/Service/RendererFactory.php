@@ -52,6 +52,11 @@ class RendererFactory implements FactoryInterface
         $forceFlush = !$config['helpers']['isProduction'];
         $cmsCacheHandler = $serviceLocator->get( 'cmsCacheHandler' );
         $menuView = $serviceLocator->get( 'cmsMenuView' );
+
+        // TODO: Implement a better way to do this, allowing menu item hierarchy to be respected
+        $path = $serviceLocator->get('request')->getUri()->getPath();
+        $menuView->setActivePath($path);
+
         $menusArray = $cmsCacheHandler->getCachedCMSData( $forceFlush );
         $menusViewArray = $menuView->prepareMenuView( $menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED );
         $config['helpers']['primaryMenu'] = isset( $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] ) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
