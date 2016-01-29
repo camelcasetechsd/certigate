@@ -88,8 +88,16 @@ class MenuView {
      * @var array 
      */
     protected $primaryMenuAttributes = array(
-        self::DIV_CLASS => "primarymenu navbar-collapse collapse",
-        self::UL_CLASS => "primarymenu nav navbar-nav ",
+        self::DIV_CLASS => "primarymenu navbar-collapse",
+        self::UL_CLASS => "nav",
+    );
+
+    /**
+     *
+     * @var array 
+     */
+    protected $subMenuAttributes = array(
+        self::UL_CLASS => "nav",
     );
 
     /**
@@ -104,14 +112,20 @@ class MenuView {
      * @return array menu HTML view for menu title underscored as the key
      */
     public function prepareMenuView($menusArray, $menuTitleUnderscored = null, $divClass = '', $ulClass = '', $depthLevel = 0) {
+        // Menu open
         if (!is_null($menuTitleUnderscored) && array_key_exists($menuTitleUnderscored, $menusArray)) {
             $menusArray = array($menuTitleUnderscored => $menusArray[$menuTitleUnderscored]);
             if ($menuTitleUnderscored === Menu::PRIMARY_MENU_UNDERSCORED) {
                 $divClass = $this->primaryMenuAttributes[self::DIV_CLASS];
                 $ulClass = $this->primaryMenuAttributes[self::UL_CLASS];
             }
+        // Sub menu
+        } else {
+            $ulClass = $this->subMenuAttributes[self::UL_CLASS];
         }
+
         $menuViewArray = array();
+
         foreach ($menusArray as $menuTitleUnderscored => $menuItemsArray) {
             if ($depthLevel === 0 && $menuItemsArray == reset($menusArray)) {
                 $menuView = sprintf($this->menuOpenString, $divClass, $ulClass);
@@ -137,6 +151,7 @@ class MenuView {
             }
             $menuViewArray[$menuTitleUnderscored] = $menuView;
         }
+
         return $menuViewArray;
     }
 
