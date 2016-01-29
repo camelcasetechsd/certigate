@@ -90,6 +90,12 @@ class Evaluation
      * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove"})
      */
     public $questions;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="evaluation")
+     */
+    public $votes;
 
     public function __construct()
     {

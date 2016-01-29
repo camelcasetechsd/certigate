@@ -290,6 +290,13 @@ class User
     public $organizationUser;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="user")
+     */
+    public $votes;
+
+    
+    
+    /**
      * hash password
      * 
      * 

@@ -11,19 +11,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
  * @ORM\Entity
- * @ORM\Table(name="question")
+ * @ORM\Table(name="vote")
  * @Gedmo\Loggable
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
- * @property int $questionTitle
+ * @property int $vote
  * 
 
  * 
  * @package courses
  * @subpackage entity
  */
-class Question
+class Vote
 {
 
     /**
@@ -42,40 +42,74 @@ class Question
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
-     * @var string
+     * @ORM\Column(type="integer")
+     * @var int
      */
-    public $questionTitle;
+    public $vote;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Evaluation", inversedBy="questions")
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\Evaluation", inversedBy="votes")
      * @ORM\JoinColumn(name="evaluation_id", referencedColumnName="id")
      */
     public $evaluation;
-    
+
     /**
-     * @ORM\OneToOne(targetEntity="Courses\Entity\Vote", mappedBy="question")
+     * any one who can vote for course 
+     * 
+     * @ORM\ManyToOne(targetEntity="Users\Entity\User", inversedBy="votes")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    public $votes;
+    public $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Courses\Entity\Question", inversedBy="votes")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     */
+    public $question;
 
     function getId()
     {
         return $this->id;
     }
 
-    function getQuestionTitle()
+    function getVote()
     {
-        return $this->questionTitle;
+        return $this->vote;
     }
 
-    function setQuestionTitle($questionTitle)
+    function getEvaluation()
     {
-        $this->questionTitle = $questionTitle;
+        return $this->evaluation;
     }
 
-    function setToEvaluation($evaluation)
+    function getUser()
+    {
+        return $this->user;
+    }
+
+    function getQuestion()
+    {
+        return $this->question;
+    }
+
+    function setVote($vote)
+    {
+        $this->vote = $vote;
+    }
+
+    function setEvaluation($evaluation)
     {
         $this->evaluation = $evaluation;
+    }
+
+    function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    function setQuestion($question)
+    {
+        $this->question = $question;
     }
 
     /**
@@ -99,7 +133,7 @@ class Question
      */
     public function exchangeArray($data = array())
     {
-        $this->setQuestionTitle($data);
+        $this->vote($data);
     }
 
     /**
@@ -130,7 +164,7 @@ class Question
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'questionTitle',
+                'name' => 'vote',
                 'required' => true,
                     )
             );

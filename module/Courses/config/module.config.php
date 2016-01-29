@@ -427,7 +427,21 @@ return array(
                         'courseId' => '[0-9]+',
                     ),
                 )
-            )
+            ),
+            // student evaluate course
+            'studentEvaluation' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/vote[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'vote',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
         )
     ),
 );
