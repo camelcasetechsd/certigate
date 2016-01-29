@@ -90,8 +90,7 @@ class Evaluation
      * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove"})
      */
     public $questions;
-    
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="evaluation")
      */
@@ -110,6 +109,11 @@ class Evaluation
     function getCourse()
     {
         return $this->course;
+    }
+
+    function getVotes()
+    {
+        return $this->votes;
     }
 
     function setIsTemplate()

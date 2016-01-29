@@ -111,12 +111,42 @@ class CourseController extends ActionController
         $variables['course'] = $preparedCourse;
         $variables['evaluation'] = $preparedCourse->getEvaluation();
 
+
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $canDownloadResources = true;
         if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
             $canDownloadResources = false;
         }
+
+        // check if course has evaluation or not
+        $hasEvaluation = false;
+        if ($course->getEvaluation() != null) {
+            $hasEvaluation = true;
+        }
+
+        // check if user is student or admin
+        $isStudent = false;
+        if ($auth->hasIdentity() && (in_array(Role::STUDENT_ROLE, $storage['roles']) || (in_array(Role::ADMIN_ROLE, $storage['roles'])))) {
+            $isStudent = true;
+        }
+        //check if student already evaluated the course before
+        $evaluatedBefore = true;
+        if ($isStudent) {
+            $userId = $auth->getIdentity()['id'];
+            $courseVotes = $course->getEvaluation()->getVotes();
+            foreach ($courseVotes as $vote) {
+                if ($vote->getUser()->getId() == $userId) {
+                    $evaluatedBefore = false;
+                }
+            }
+        }
+
+
+        
+        $variables['evaluatedBefore'] = $evaluatedBefore;
+        $variables['hasEvaluation'] = $hasEvaluation;
+        $variables['isStudent'] = $isStudent;
         $variables['canDownloadResources'] = $canDownloadResources;
         return new ViewModel($variables);
     }
@@ -583,15 +613,15 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         // user id
         $id = $auth->getIdentity()['id'];
-
         //user must be student to see this page 
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles'])) {
+        if ($auth->hasIdentity() && ( in_array(Role::STUDENT_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+
             // student must be enrolled in this course
             $course = $query->findOneBy('Courses\Entity\Course', array(
                 'id' => $courseId
             ));
-            // no course with this id (alert)
-            if ($course == null) {
+            // no course with this id (alert) OR COURSE HAS NO EVALUATION YET
+            if ($course == null || $course->getEvaluation() == null) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -622,6 +652,12 @@ class CourseController extends ActionController
                     }
                 }
             }
+        }
+        else {
+            // not a student or admin
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
         }
 
         $request = $this->getRequest();
