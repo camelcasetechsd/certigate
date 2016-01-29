@@ -91,20 +91,9 @@ class MenuView {
 
     /**
      *
-     * @var array 
+     * @var string 
      */
-    protected $primaryMenuAttributes = array(
-        self::DIV_CLASS => "primarymenu navbar-collapse",
-        self::UL_CLASS => "nav",
-    );
-
-    /**
-     *
-     * @var array 
-     */
-    protected $subMenuAttributes = array(
-        self::UL_CLASS => "nav",
-    );
+    protected $ulClass = 'nav';
 
     /**
      * Prepare menu for view by it's title
@@ -118,25 +107,20 @@ class MenuView {
      * @return array menu HTML view for menu title underscored as the key
      */
     public function prepareMenuView($menusArray, $menuTitleUnderscored = null, $divClass = '', $ulClass = '', $depthLevel = 0) {
+
         // Menu open
         if (!is_null($menuTitleUnderscored) && array_key_exists($menuTitleUnderscored, $menusArray)) {
             $menusArray = array($menuTitleUnderscored => $menusArray[$menuTitleUnderscored]);
-            if ($menuTitleUnderscored === Menu::PRIMARY_MENU_UNDERSCORED) {
-                $divClass = $this->primaryMenuAttributes[self::DIV_CLASS];
-                $ulClass = $this->primaryMenuAttributes[self::UL_CLASS];
-            }
-        // Sub menu
-        } else {
-            $ulClass = $this->subMenuAttributes[self::UL_CLASS];
+            $divClass = $menuTitleUnderscored;
         }
 
         $menuViewArray = array();
 
         foreach ($menusArray as $menuTitleUnderscored => $menuItemsArray) {
             if ($depthLevel === 0 && $menuItemsArray == reset($menusArray)) {
-                $menuView = sprintf($this->menuOpenString, $divClass, $ulClass);
+                $menuView = sprintf($this->menuOpenString, $divClass, $this->ulClass);
             } elseif($depthLevel !== 0) {
-                $menuView = sprintf($this->subMenuOpenString, $ulClass);
+                $menuView = sprintf($this->subMenuOpenString, $this->ulClass);
             }
             foreach ($menuItemsArray as $menuItemTitle => $menuItemArray) {
                 $depthLevel = $menuItemArray['depth'];
