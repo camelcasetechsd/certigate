@@ -94,6 +94,7 @@ class Users extends AbstractSeed {
         $coursesEditRoute = "coursesEdit";
         $coursesNewRoute = "coursesNew";
         $coursesListRoute = "courses";
+        $coursesVoteRoute = "studentEvaluation";
         $coursesAcls = array(
             array(
                 'role_id' => $studentRoleId,
@@ -179,6 +180,11 @@ class Users extends AbstractSeed {
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $coursesListRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $coursesVoteRoute,
                 ),
             );
         $this->insert('acl', $coursesAcls);
