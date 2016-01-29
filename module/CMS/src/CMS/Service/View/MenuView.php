@@ -63,7 +63,7 @@ class MenuView {
      *
      * @var string 
      */
-    protected $menuItemOpenString = '<li %s><a %s href="%s">%s</a>';
+    protected $menuItemOpenString = '<li %s><a %s href="%s">%s%s</a>';
     
     /**
      *
@@ -82,6 +82,12 @@ class MenuView {
      * @var string 
      */
     protected $menuItemAnchorAttributesString = 'class="%1$s menu-anchor-%2$s menu-%2$s"';
+
+    /**
+     *
+     * @var string 
+     */
+    protected $childIndicator = '<span class="fa arrow"></span>';
 
     /**
      *
@@ -137,7 +143,11 @@ class MenuView {
                 $menuItemTitleUnderscored = $menuItemArray['title_underscored'];
                 $liAttributes = sprintf($this->menuItemLiAttributesString, $menuItemTitleUnderscored, $depthLevel);
                 $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $menuItemTitleUnderscored, $depthLevel);
-                $menuView .= sprintf($this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle);
+                $condChildIndicator = '';
+                if (count($menuItemArray["children"]) > 0) {
+                    $condChildIndicator = $this->childIndicator;
+                }
+                $menuView .= sprintf($this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle, $condChildIndicator);
                 if (count($menuItemArray["children"]) > 0) {
                     $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divClass = */ '', /* $ulClass = */ '', $depthLevel + 1));
                 }
