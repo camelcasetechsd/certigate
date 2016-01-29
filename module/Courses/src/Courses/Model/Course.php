@@ -51,9 +51,10 @@ class Course
      * 
      * @access public
      * @param array $courses
+     * @param array $authorizedRoles ,default is empty array
      * @return array courses with canRoll property added
      */
-    public function setCanEnroll($courses)
+    public function setCanEnroll($courses, $authorizedRoles = array())
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -61,8 +62,12 @@ class Course
         $currentUser = NULL;
         if ($auth->hasIdentity()) {
             $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
-            if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])) {
-                $nonAuthorizedEnroll = true;
+            $notAuthorizedRoles = array(Role::INSTRUCTOR_ROLE);
+            foreach($notAuthorizedRoles as $notAuthorizedRole){
+                if (in_array($notAuthorizedRole, $storage['roles']) && !in_array($notAuthorizedRole, $authorizedRoles)) {
+                    $nonAuthorizedEnroll = true;
+                    break;
+                }
             }
         }
         foreach ($courses as $course) {

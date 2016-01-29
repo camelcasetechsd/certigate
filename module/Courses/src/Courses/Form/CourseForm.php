@@ -252,6 +252,18 @@ class CourseForm extends Form
 
         if ($this->isAdminUser === true) {
             $this->add(array(
+                'name' => 'isForInstructor',
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Is For Instructor',
+                    'checked_value' => Status::STATUS_ACTIVE,
+                    'unchecked_value' => Status::STATUS_INACTIVE
+                ),
+            ));
+            $this->add(array(
                 'name' => 'status',
                 'type' => 'Zend\Form\Element\Checkbox',
                 'attributes' => array(

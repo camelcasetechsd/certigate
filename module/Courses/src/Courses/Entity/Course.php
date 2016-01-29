@@ -29,6 +29,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
+ * @property int $isForInstructor
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -124,6 +125,13 @@ class Course
      * @var int
      */
     public $duration;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $isForInstructor;
 
     /**
      * @Gedmo\Versioned
@@ -497,6 +505,32 @@ class Course
         $this->status = $status;
         return $this;
     }
+    
+    /**
+     * Get isForInstructor
+     * 
+     * 
+     * @access public
+     * @return int isForInstructor
+     */
+    public function isForInstructor()
+    {
+        return $this->isForInstructor;
+    }
+
+    /**
+     * Set isForInstructor
+     * 
+     * 
+     * @access public
+     * @param int $isForInstructor
+     * @return Course
+     */
+    public function setIsForInstructor($isForInstructor)
+    {
+        $this->isForInstructor = $isForInstructor;
+        return $this;
+    }
 
     /**
      * Get created
@@ -770,6 +804,9 @@ class Course
         }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
+        }
+        if (array_key_exists('isForInstructor', $data)) {
+            $this->setIsForInstructor($data["isForInstructor"]);
         }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])
