@@ -7,7 +7,20 @@ use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Part as MimePart;
 use Zend\Mail\Transport\SmtpOptions;
+use System\Service\Cache\CacheHandler;
 
+/**
+ * Exam Model
+ * 
+ * Handles Exam Entity related business
+ * 
+ * 
+ * @property Utilities\Service\Query\Query $query
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * 
+ * @package courses
+ * @subpackage model
+ */
 class Exam
 {
 
@@ -18,14 +31,22 @@ class Exam
     protected $query;
 
     /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
      */
-    public function __construct($query)
+    public function __construct($query, $systemCacheHandler)
     {
         $this->query = $query;
+        $this->systemCacheHandler = $systemCacheHandler;
     }
 
     public function saveBookingRequest($data, $config)
@@ -57,12 +78,25 @@ class Exam
 
         $this->query->setEntity('Courses\Entity\ExamBook')->save($bookObj);
 
-        $tvtcMail = $config['contacts']['TVTC'];
-        $admin = $config['contacts']['Admin_Email'];
-        // send tvtc new mail
-        $this->sendMail($bookObj, $tvtcMail, $config, true);
-        // send admin new mail
-        $this->sendMail($bookObj, $admin, $config);
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists("TVTC", $settings)) {
+            $tvtcMail = $settings["TVTC"];
+        }
+        if (array_key_exists("Admin_Email", $settings)) {
+            $admin = $settings["Admin_Email"];
+        }
+
+        if (isset($tvtcMail)) {
+            // send tvtc new mail
+            $this->sendMail($bookObj, $tvtcMail, $config, true);
+        }
+        if (isset($admin)) {
+            // send admin new mail
+            $this->sendMail($bookObj, $admin, $config);
+        }
     }
 
     public function listRequests()
@@ -128,12 +162,25 @@ class Exam
      * @param int $request
      * @param string $to
      * @param array $config
+     * @param string $adminMail
+     * @throws \Exception From email is not set
      */
     private function sendMail($request, $to, $config, $adminMail)
     {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists("Operations", $settings)) {
+            $from = $settings["Operations"];
+        }
+        
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
         $message = new Message();
         $message->addTo($to)
-                ->addFrom($config['contacts']['Operations'])
+                ->addFrom($from)
                 ->setSubject('Exam Request');
 
         // Setup SMTP transport using LOGIN authentication
