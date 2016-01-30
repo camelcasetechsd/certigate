@@ -111,10 +111,10 @@ class Organization
 
         $roles = $this->query->findAll('Users\Entity\Role');
         $rolesIds = array();
-        foreach($roles as $role){
+        foreach ($roles as $role) {
             $rolesIds[$role->getName()] = $role->getId();
         }
-        
+
         if (is_null($orgObj)) {
 
             $entity = new \Organizations\Entity\Organization();
@@ -152,7 +152,6 @@ class Organization
          */
         // training manager can be null if not selected 
         // test admin can be null if not selected 
-
         // focal can be null
         if (!empty($orgInfo['focalContactPerson_id']) && $orgInfo['focalContactPerson_id'] != 0) {
             $orgInfo['focalContactPerson_id'] = $this->getUserby('id', $orgInfo['focalContactPerson_id'])[0];
@@ -256,11 +255,19 @@ class Organization
         $staticOs = \Organizations\Entity\Organization::getOSs();
         $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
         $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
-
-        $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
-        $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
-        $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
-        $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
+        
+        if (isset($variables['userData']->operatingSystem)) {
+            $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
+        }
+        if (isset($variables['userData']->operatingSystemLang)) {
+            $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
+        }
+        if (isset($variables['userData']->officeLang)) {
+            $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
+        }
+        if (isset($variables['userData']->officeVersion)) {
+            $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
+        }
 
         return $variables;
     }

@@ -129,6 +129,11 @@ class Menus extends AbstractSeed
                 "path" => "http://estore.local-certigate.com/",
                 "weight" => 4
             ],
+            "instructorCalendar" => [
+                "title" => "Instructor Training Calendar",
+                "path" => "/courses/instructor-calendar",
+                "weight" => 5
+            ],
         ];
 
         foreach ($primaryMenuItems as $item) {

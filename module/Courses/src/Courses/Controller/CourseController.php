@@ -77,10 +77,40 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
 
-        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("status" => Status::STATUS_ACTIVE));
+        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
         $courseModel->setCanEnroll($data);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
+    }
+
+    /**
+     * Instructor Calendar courses
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function instructorCalendarAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->setMaxResults($maxResults = 1)
+                ->orderBy(array("id" => Criteria::DESC))
+                ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
+                ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
+        $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
+        $authorizedRoles = array(Role::INSTRUCTOR_ROLE);
+        $courseModel->setCanEnroll($data, $authorizedRoles);
+        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
+        $view = new ViewModel($variables);
+        $view->setTemplate('courses/course/calendar');
+        return $view;
     }
 
     /**
@@ -142,8 +172,7 @@ class CourseController extends ActionController
             }
         }
 
-      
-        
+
         $variables['evaluatedBefore'] = $evaluatedBefore;
         $variables['hasEvaluation'] = $hasEvaluation;
         $variables['isStudent'] = $isStudent;
@@ -294,10 +323,28 @@ class CourseController extends ActionController
         $course = $query->find('Courses\Entity\Course', $id);
 
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->enrollCourse($course, /* $user = */ $currentUser);
 
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+        $notAuthorized = false;
+        $routeName = "coursesCalendar";
+        if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
+            $routeName = "coursesInstructorCalendar";
+            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+                $notAuthorized = true;
+            }
+        }
+        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $notAuthorized = true;
+        }
+
+        if ($notAuthorized === true) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+        }
+        else {
+            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+            $courseModel->enrollCourse($course, /* $user = */ $currentUser);
+            $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName));
+        }
         $this->redirect()->toUrl($url);
     }
 
@@ -315,10 +362,26 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         $course = $query->find('Courses\Entity\Course', $id);
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $courseModel->leaveCourse($course, /* $user = */ $currentUser);
 
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+        $routeName = "coursesCalendar";
+        if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
+            $routeName = "coursesInstructorCalendar";
+            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+                $notAuthorized = true;
+            }
+        }
+        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $notAuthorized = true;
+        }
+        if ($notAuthorized === true) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+        }
+        else {
+            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+            $courseModel->leaveCourse($course, /* $user = */ $currentUser);
+            $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName));
+        }
         $this->redirect()->toUrl($url);
     }
 

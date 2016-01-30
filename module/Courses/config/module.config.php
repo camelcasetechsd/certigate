@@ -208,6 +208,16 @@ return array(
                     ),
                 )
             ),
+            'coursesInstructorCalendar' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/instructor-calendar',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'instructorCalendar',
+                    ),
+                )
+            ),
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
