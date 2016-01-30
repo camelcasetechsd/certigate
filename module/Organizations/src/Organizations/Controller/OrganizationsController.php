@@ -140,7 +140,6 @@ class OrganizationsController extends ActionController
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
             $data = array_merge_recursive(
@@ -246,6 +245,11 @@ class OrganizationsController extends ActionController
                 $input = $inputFilter->get('CRAttachment');
                 $input->setRequired(false);
             }
+            if (isset($fileData['wireTransferAttachment']['name']) && empty($fileData['wireTransferAttachment']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $input = $inputFilter->get('wireTransferAttachment');
+                $input->setRequired(false);
+            }
             if (isset($fileData['atcLicenseAttachment']['name']) && empty($fileData['atcLicenseAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files
                 $input = $inputFilter->get('atcLicenseAttachment');
@@ -289,6 +293,7 @@ class OrganizationsController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
+        $variables['wireTransferAttachment'] = $crAttachment;
         $variables['CRAttachment'] = $crAttachment;
         $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
         $variables['atcLicenseAttachment'] = $atcLicenseAttachment;

@@ -29,6 +29,7 @@ class Organization
 {
 
     protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
+    protected $WIRE_ATTACHMENT_PATH = 'public/upload/attachments/wireAttachments/';
     protected $ATP_ATTACHMENT_PATH = 'public/upload/attachments/atpAttachments/';
     protected $ATC_ATTACHMENT_PATH = 'public/upload/attachments/atcAttachments/';
     /*
@@ -166,6 +167,9 @@ class Organization
         if (!empty($orgInfo['CRAttachment']['name'])) {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
+        if (!empty($orgInfo['wireTransferAttachment']['name'])) {
+            $orgInfo['wireTransferAttachment'] = $this->saveAttachment('wireTransferAttachment', 'wr');
+        }
         if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
@@ -199,6 +203,9 @@ class Organization
         switch ($type) {
             case 'cr':
                 $uploadResult = $this->uploadAttachment($filename, $this->CR_ATTACHMENT_PATH);
+                break;
+            case 'wr':
+                $uploadResult = $this->uploadAttachment($filename, $this->WIRE_ATTACHMENT_PATH);
                 break;
             case 'atp':
                 $uploadResult = $this->uploadAttachment($filename, $this->ATP_ATTACHMENT_PATH);

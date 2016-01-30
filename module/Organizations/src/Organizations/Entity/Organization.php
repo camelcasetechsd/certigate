@@ -27,6 +27,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @property string $CRNo
  * @property \DateTime $CRExpiration
  * @property string $CRAttachment
+ * @property string $wireTransferAttachment
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
  * @property string $atpLicenseAttachment
@@ -176,6 +177,13 @@ class Organization
      * @var string
      */
     public $CRAttachment;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $wireTransferAttachment;
 
     /**
      * @Gedmo\Versioned
@@ -424,6 +432,10 @@ class Organization
     {
         return $this->CRAttachment;
     }
+    function getWireTransferAttachment()
+    {
+        return $this->wireTransferAttachment;
+    }
 
     function getAtpLicenseNo()
     {
@@ -613,6 +625,10 @@ class Organization
     function setCRAttachment($CRAttachment)
     {
         $this->CRAttachment = $CRAttachment;
+    }
+    function setWireTransferAttachment($wireTransferAttachment)
+    {
+        $this->wireTransferAttachment = $wireTransferAttachment;
     }
 
     function setAtpLicenseNo($atpLicenseNo)
@@ -818,7 +834,7 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-//        echo '<pre>';var_dump($data);exit;
+
         $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
@@ -830,6 +846,9 @@ class Organization
 //        $this->setCRAttachment($data['CRAttachment']);
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
+        }
+        if (array_key_exists('wireTransferAttachment', $data) && is_string($data['wireTransferAttachment'])) {
+            $this->setWireTransferAttachment($data["wireTransferAttachment"]);
         }
         $this->setAddressLine1($data['addressLine1']);
         $this->setCity($data['city']);
@@ -1021,6 +1040,22 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'CRAttachment',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Filesize',
+                        'options' => array(
+                            'max' => 2097152
+                        )
+                    ),
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'gif,jpg,png,pdf,docx'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'wireTransferAttachment',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Filesize',

@@ -15780,6 +15780,7 @@ $(document).ready(function () {
     // remove required for attachments on edit
     if (window.location.href.indexOf("/organizations/edit/") > -1) {
         $('#org_form_CRAttachment').removeAttr('required');
+        $('#org_form_wireTransferAttachment').removeAttr('required');
         $('#org_form_atpLicenseAttachment').removeAttr('required');
         $('#org_form_atcLicenseAttachment').removeAttr('required');
     }
