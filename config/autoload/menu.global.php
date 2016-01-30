@@ -99,7 +99,7 @@ return array(
                             'weight' => 1,
                             'title_underscored' => "new_organization",
                             'children' => array()
-                            ),
+                        ),
                         "ATPs" => array(
                             'depth' => 1,
                             'path' => "/organizations/atps",
@@ -117,14 +117,32 @@ return array(
                     )
                 )
             ),
-            "Evaluation Template"=>array(
+            "Evaluation Template" => array(
                 'depth' => 0,
                 'path' => "/courses/ev-templates",
                 'weight' => 4,
                 'title_underscored' => "Evaluation_Template",
                 'children' => array(
+                )
+            ),
+            "System" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 5,
+                'title_underscored' => "system",
+                'children' => array(
+                    array(
+                        "Settings" => array(
+                            'depth' => 1,
+                            'path' => "/system/settings",
+                            'weight' => 1,
+                            'title_underscored' => "settings",
+                            'children' => array(
                             )
-                ),
+                        ),
+                    )
+                )
+            ),
         )
     ),
 );
