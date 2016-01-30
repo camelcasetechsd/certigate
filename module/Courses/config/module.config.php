@@ -18,12 +18,8 @@ return array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
+            'Courses\Model\Exam' => 'Courses\Model\ExamFactory',
         )
-    ),
-    'contacts' => array(
-        'Admin_Email' => 'admin@armyspy.com',
-        'Operations' => 'ops@armyspy.com',
-        'TVTC' => 'tvtc@armyspy.com'
     ),
     'doctrine' => array(
         'driver' => array(

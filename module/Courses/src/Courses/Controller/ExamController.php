@@ -54,7 +54,7 @@ class ExamController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $options['query'] = $query;
         $examBook = new \Courses\Entity\ExamBook();
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -92,8 +92,7 @@ class ExamController extends ActionController
     public function requestsAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
 
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -122,8 +121,7 @@ class ExamController extends ActionController
     public function acceptAction()
     {
         $requestId = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         // no one can fake admin approval
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -152,9 +150,8 @@ class ExamController extends ActionController
     {
         $requestId = $this->params('id');
         // no one can fake admin approval
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $auth = new AuthenticationService();
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         $storage = $auth->getIdentity();
         $isAdminUser = false;
         //checking if user is admin or test center admin
@@ -180,8 +177,7 @@ class ExamController extends ActionController
     public function tvtcAcceptAction()
     {
         $requestId = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         $examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_APPROVED, $requestId, true);
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
         $this->redirect()->toUrl($url);
@@ -193,8 +189,7 @@ class ExamController extends ActionController
     public function tvtcDeclineAction()
     {
         $requestId = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $examModel = new \Courses\Model\Exam($query);
+        $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         $examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_DECLINED, $requestId, true);
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
         $this->redirect()->toUrl($url);
