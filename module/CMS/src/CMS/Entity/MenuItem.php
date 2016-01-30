@@ -28,13 +28,14 @@ use Utilities\Service\Status;
  * @package cms
  * @subpackage entity
  */
-class MenuItem {
+class MenuItem
+{
 
     /**
      * Separator between menu and menu item titles
      */
     const MENU_ITEM_TITLE_SEPARATOR = "%^*";
-    
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -121,10 +122,11 @@ class MenuItem {
      * @access public
      * @return int id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }  
-    
+    }
+
     /**
      * Get title
      * 
@@ -132,7 +134,8 @@ class MenuItem {
      * @access public
      * @return string title
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
@@ -144,7 +147,8 @@ class MenuItem {
      * @param string $title
      * @return MenuItem current entity
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
         return $this;
     }
@@ -156,7 +160,8 @@ class MenuItem {
      * @access public
      * @return string path
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
@@ -168,7 +173,8 @@ class MenuItem {
      * @param string $path
      * @return MenuItem current entity
      */
-    public function setPath($path) {
+    public function setPath($path)
+    {
         $this->path = $path;
         return $this;
     }
@@ -180,7 +186,8 @@ class MenuItem {
      * @access public
      * @return CMS\Entity\Page page
      */
-    public function getPage() {
+    public function getPage()
+    {
         return $this->page;
     }
 
@@ -192,7 +199,8 @@ class MenuItem {
      * @param CMS\Entity\Page $page
      * @return MenuItem current entity
      */
-    public function setPage($page) {
+    public function setPage($page)
+    {
         $this->page = $page;
         return $this;
     }
@@ -204,7 +212,8 @@ class MenuItem {
      * @access public
      * @return CMS\Entity\Menu menu
      */
-    public function getMenu() {
+    public function getMenu()
+    {
         return $this->menu;
     }
 
@@ -216,7 +225,8 @@ class MenuItem {
      * @param CMS\Entity\Menu $menu
      * @return MenuItem current entity
      */
-    public function setMenu($menu) {
+    public function setMenu($menu)
+    {
         $this->menu = $menu;
         return $this;
     }
@@ -228,7 +238,8 @@ class MenuItem {
      * @access public
      * @return CMS\Entity\MenuItem parent
      */
-    public function getParent() {
+    public function getParent()
+    {
         return $this->parent;
     }
 
@@ -240,7 +251,8 @@ class MenuItem {
      * @param CMS\Entity\MenuItem $parent
      * @return MenuItem current entity
      */
-    public function setParent($parent) {
+    public function setParent($parent)
+    {
         if (empty($parent)) {
             $parent = null;
         }
@@ -255,7 +267,8 @@ class MenuItem {
      * @access public
      * @return int weight
      */
-    public function getWeight() {
+    public function getWeight()
+    {
         return $this->weight;
     }
 
@@ -267,7 +280,8 @@ class MenuItem {
      * @param int $weight
      * @return MenuItem current entity
      */
-    public function setWeight($weight) {
+    public function setWeight($weight)
+    {
         $this->weight = $weight;
         return $this;
     }
@@ -279,7 +293,8 @@ class MenuItem {
      * @access public
      * @return int status
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
@@ -291,7 +306,8 @@ class MenuItem {
      * @param int $status
      * @return MenuItem current entity
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
@@ -303,7 +319,8 @@ class MenuItem {
      * @access public
      * @return \DateTime created
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
@@ -314,7 +331,8 @@ class MenuItem {
      * @access public
      * @return MenuItem current entity
      */
-    public function setCreated() {
+    public function setCreated()
+    {
         $this->created = new \DateTime();
         return $this;
     }
@@ -326,7 +344,8 @@ class MenuItem {
      * @access public
      * @return \DateTime modified
      */
-    public function getModified() {
+    public function getModified()
+    {
         return $this->modified;
     }
 
@@ -337,7 +356,8 @@ class MenuItem {
      * @access public
      * @return MenuItem current entity
      */
-    public function setModified() {
+    public function setModified()
+    {
         $this->modified = new \DateTime();
         return $this;
     }
@@ -349,7 +369,8 @@ class MenuItem {
      * @access public
      * @return array current entity properties
      */
-    public function getArrayCopy() {
+    public function getArrayCopy()
+    {
         return get_object_vars($this);
     }
 
@@ -360,7 +381,8 @@ class MenuItem {
      * @access public
      * @return int depth level
      */
-    public function getDepthLevel() {
+    public function getDepthLevel()
+    {
         $depthLevel = 1;
         $menuItem = $this;
         while ($menuItem->getParent() instanceof MenuItem) {
@@ -377,11 +399,16 @@ class MenuItem {
      * @access public
      * @return string nested title
      */
-    public function getNestedTitle() {
+    public function getNestedTitle()
+    {
         $menu = $this->getMenu();
-        $nestedTitle = $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR . str_repeat('- ', $this->getDepthLevel()) . $this->getTitle();
-        if ($this->getStatus() === Status::STATUS_INACTIVE || $menu->getStatus() === Status::STATUS_INACTIVE) {
-            $nestedTitle .= ' ['.Status::STATUS_INACTIVE_TEXT.']';
+        $nestedTitle = '';
+        if (is_object($menu)) {
+            $nestedTitle .= $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR;
+        }
+        $nestedTitle .= str_repeat('- ', $this->getDepthLevel()) . $this->getTitle();
+        if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object($menu) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
+            $nestedTitle .= ' [' . Status::STATUS_INACTIVE_TEXT . ']';
         }
         return $nestedTitle;
     }
@@ -393,7 +420,8 @@ class MenuItem {
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray($data = array()) {
+    public function exchangeArray($data = array())
+    {
         if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
         }
@@ -425,7 +453,8 @@ class MenuItem {
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter) {
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
         throw new \Exception("Not used");
     }
 
@@ -439,7 +468,8 @@ class MenuItem {
      * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query) {
+    public function getInputFilter($query)
+    {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -449,7 +479,7 @@ class MenuItem {
             ));
             $inputFilter->add(array(
                 'name' => 'path',
-                'required' => true,                
+                'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'menu',
