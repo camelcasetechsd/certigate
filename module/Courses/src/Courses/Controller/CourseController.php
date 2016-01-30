@@ -173,7 +173,6 @@ class CourseController extends ActionController
         }
 
 
-
         $variables['evaluatedBefore'] = $evaluatedBefore;
         $variables['hasEvaluation'] = $hasEvaluation;
         $variables['isStudent'] = $isStudent;
@@ -549,7 +548,7 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         $isAdminUser = false;
         // admin or atp only
-        if ($auth->hasIdentity() && in_array(array(Role::ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE), $storage['roles'])) {
+        if ($auth->hasIdentity() && (in_array(array(Role::ADMIN_ROLE), $storage['roles']) || in_array(array(Role::TRAINING_MANAGER_ROLE), $storage['roles']))) {
             $isAdminUser = true;
         }
         $options = array();
@@ -611,7 +610,7 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(array(Role::ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE), $storage['roles'])) {
+        if ($auth->hasIdentity() && (in_array(array(Role::ADMIN_ROLE), $storage['roles']) || in_array(array(Role::TRAINING_MANAGER_ROLE), $storage['roles']))) {
             $isAdminUser = true;
         }
 

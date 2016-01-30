@@ -95,6 +95,10 @@ class Users extends AbstractSeed {
         $coursesNewRoute = "coursesNew";
         $coursesListRoute = "courses";
         $coursesVoteRoute = "studentEvaluation";
+        $courseEvaluation = "courseEvaluations";
+        $newCourseEvaluation = "newCourseEvaluation";
+        $editCcourseEvaluation = "editCourseEvaluation";
+        
         $coursesInstructorCalendarRoute = "coursesInstructorCalendar";
         $coursesAcls = array(
             array(
@@ -198,6 +202,19 @@ class Users extends AbstractSeed {
                 'route' => $coursesVoteRoute,
                 ),
             array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEvaluation,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $newCourseEvaluation,
+                ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $editCcourseEvaluation,
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
                 'route' => $coursesInstructorCalendarRoute,
