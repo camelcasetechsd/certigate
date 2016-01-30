@@ -141,7 +141,6 @@ class CourseController extends ActionController
         $variables['course'] = $preparedCourse;
         $variables['evaluation'] = $preparedCourse->getEvaluation();
 
-
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $canDownloadResources = true;
@@ -162,7 +161,8 @@ class CourseController extends ActionController
         }
         //check if student already evaluated the course before
         $evaluatedBefore = true;
-        if ($isStudent) {
+        if ($isStudent && $course->getEvaluation() != null) {
+
             $userId = $auth->getIdentity()['id'];
             $courseVotes = $course->getEvaluation()->getVotes();
             foreach ($courseVotes as $vote) {
@@ -171,7 +171,6 @@ class CourseController extends ActionController
                 }
             }
         }
-
 
         $variables['evaluatedBefore'] = $evaluatedBefore;
         $variables['hasEvaluation'] = $hasEvaluation;
