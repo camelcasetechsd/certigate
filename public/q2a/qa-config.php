@@ -35,6 +35,8 @@
 */
       
  
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 if(APPLICATION_ENV == "production"){
 	define('QA_MYSQL_HOSTNAME', 'localhost');
@@ -54,7 +56,7 @@ if(APPLICATION_ENV == "production"){
 	define('QA_MYSQL_PASSWORD', 'testpass');
 	define('QA_MYSQL_DATABASE', 'certigate');
     define('QA_MYSQL_PORT', '3306');
-} elseif(APPLICATION_ENV == "developlment"){
+} elseif(APPLICATION_ENV == "development"){
 	define('QA_MYSQL_HOSTNAME', 'localhost');
 	define('QA_MYSQL_USERNAME', 'camelcasetech');
 	define('QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4');
