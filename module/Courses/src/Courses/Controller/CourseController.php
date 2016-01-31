@@ -450,9 +450,6 @@ class CourseController extends ActionController
                 foreach ($data['newQuestion'] as $new) {
                     $evaluationModle->assignQuestionToEvaluation($new);
                 }
-                //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
-                $this->redirect()->toUrl($url);
             }
             else {
                 $variables['validationError'] = $errors;
@@ -514,8 +511,6 @@ class CourseController extends ActionController
                     }
                 }
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
-                $this->redirect()->toUrl($url);
             }
             else {
 
