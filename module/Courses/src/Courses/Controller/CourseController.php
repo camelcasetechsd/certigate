@@ -11,6 +11,7 @@ use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
+use Zend\Mvc\MvcEvent;
 
 /**
  * Course Controller
@@ -123,59 +124,70 @@ class CourseController extends ActionController
      */
     public function moreAction()
     {
+        $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+        if ($course != null) {
+            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+            $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
-        $preparedCourse = reset($preparedCourseArray);
+            $courseArray = array($course);
+            $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
+            $preparedCourse = reset($preparedCourseArray);
 
-        $resources = $preparedCourse->getResources();
-        $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
-        $preparedCourse->setResources($preparedResources);
+            $resources = $preparedCourse->getResources();
+            $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+            $preparedCourse->setResources($preparedResources);
 
-        $variables['course'] = $preparedCourse;
-        $variables['evaluation'] = $preparedCourse->getEvaluation();
+            $variables['course'] = $preparedCourse;
+            $variables['evaluation'] = $preparedCourse->getEvaluation();
 
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $canDownloadResources = true;
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-            $canDownloadResources = false;
-        }
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+            $canDownloadResources = true;
+            if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownloadResources = false;
+            }
 
-        // check if course has evaluation or not
-        $hasEvaluation = false;
-        if ($course->getEvaluation() != null) {
-            $hasEvaluation = true;
-        }
+            // check if course has evaluation or not
+            $hasEvaluation = false;
+            if ($course->getEvaluation() != null) {
+                $hasEvaluation = true;
+            }
 
-        // check if user is student or admin
-        $isStudent = false;
-        if ($auth->hasIdentity() && (in_array(Role::STUDENT_ROLE, $storage['roles']) || (in_array(Role::ADMIN_ROLE, $storage['roles'])))) {
-            $isStudent = true;
-        }
-        //check if student already evaluated the course before
-        $evaluatedBefore = true;
-        if ($isStudent && $course->getEvaluation() != null) {
+            // check if user is student or admin
+            $isStudent = false;
+            if ($auth->hasIdentity() && (in_array(Role::STUDENT_ROLE, $storage['roles']) || (in_array(Role::ADMIN_ROLE, $storage['roles'])))) {
+                $isStudent = true;
+            }
+            //check if student already evaluated the course before
+            $evaluatedBefore = true;
+            if ($isStudent && $course->getEvaluation() != null) {
 
-            $userId = $auth->getIdentity()['id'];
-            $courseVotes = $course->getEvaluation()->getVotes();
-            foreach ($courseVotes as $vote) {
-                if ($vote->getUser()->getId() == $userId) {
-                    $evaluatedBefore = false;
+                $userId = $auth->getIdentity()['id'];
+                $courseVotes = $course->getEvaluation()->getVotes();
+                foreach ($courseVotes as $vote) {
+                    if ($vote->getUser()->getId() == $userId) {
+                        $evaluatedBefore = false;
+                    }
                 }
             }
+
+            $variables['evaluatedBefore'] = $evaluatedBefore;
+            $variables['hasEvaluation'] = $hasEvaluation;
+            $variables['isStudent'] = $isStudent;
+            $variables['canDownloadResources'] = $canDownloadResources;
+        }
+        // if course does not exist
+        else {
+
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
         }
 
-        $variables['evaluatedBefore'] = $evaluatedBefore;
-        $variables['hasEvaluation'] = $hasEvaluation;
-        $variables['isStudent'] = $isStudent;
-        $variables['canDownloadResources'] = $canDownloadResources;
         return new ViewModel($variables);
     }
 
@@ -438,9 +450,6 @@ class CourseController extends ActionController
                 foreach ($data['newQuestion'] as $new) {
                     $evaluationModle->assignQuestionToEvaluation($new);
                 }
-                //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
-                $this->redirect()->toUrl($url);
             }
             else {
                 $variables['validationError'] = $errors;
@@ -502,8 +511,6 @@ class CourseController extends ActionController
                     }
                 }
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
-                $this->redirect()->toUrl($url);
             }
             else {
 
@@ -685,7 +692,7 @@ class CourseController extends ActionController
             // no course with this id (alert) OR COURSE HAS NO EVALUATION YET
             if ($course == null || $course->getEvaluation() == null) {
                 $this->getResponse()->setStatusCode(302);
-                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
                 $this->redirect()->toUrl($url);
             }
             // course Exists
