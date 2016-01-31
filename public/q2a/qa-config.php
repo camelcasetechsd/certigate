@@ -33,11 +33,40 @@
 	To use a non-default port, add the following line to the list of defines, with the appropriate port number:
 	define('QA_MYSQL_PORT', '3306');
 */
+      
+ 
 
+if(APPLICATION_ENV == "production"){
+	define('QA_MYSQL_HOSTNAME', 'localhost');
+	define('QA_MYSQL_USERNAME', 'root');
+	define('QA_MYSQL_PASSWORD', '');
+	define('QA_MYSQL_DATABASE', 'production_db');
+    define('QA_MYSQL_PORT', '3306');
+} elseif(APPLICATION_ENV == "uat"){
+	define('QA_MYSQL_HOSTNAME', 'localhost');
+	define('QA_MYSQL_USERNAME', 'root');
+	define('QA_MYSQL_PASSWORD', '');
+	define('QA_MYSQL_DATABASE', 'development_db');
+    define('QA_MYSQL_PORT', '3306');
+} elseif(APPLICATION_ENV == "vagrant"){
 	define('QA_MYSQL_HOSTNAME', 'localhost');
 	define('QA_MYSQL_USERNAME', 'root');
 	define('QA_MYSQL_PASSWORD', 'testpass');
 	define('QA_MYSQL_DATABASE', 'certigate');
+    define('QA_MYSQL_PORT', '3306');
+} elseif(APPLICATION_ENV == "developlment"){
+	define('QA_MYSQL_HOSTNAME', 'localhost');
+	define('QA_MYSQL_USERNAME', 'camelcasetech');
+	define('QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4');
+	define('QA_MYSQL_DATABASE', 'certigate');
+    define('QA_MYSQL_PORT', '3306');
+} else {
+    define('QA_MYSQL_HOSTNAME', 'localhost');
+	define('QA_MYSQL_USERNAME', 'root');
+	define('QA_MYSQL_PASSWORD', 'testpass');
+	define('QA_MYSQL_DATABASE', 'certigate');
+}
+
 
 /*
 	Ultra-concise installation instructions:
