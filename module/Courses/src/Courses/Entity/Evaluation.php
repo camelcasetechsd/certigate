@@ -87,7 +87,7 @@ class Evaluation
     public $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove","persist"})
      */
     public $questions;
 

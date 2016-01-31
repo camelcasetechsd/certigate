@@ -510,7 +510,6 @@ class CourseController extends ActionController
                         $evaluationModel->removeQuestion($deletedQuestion);
                     }
                 }
-
             }
             else {
 
@@ -564,16 +563,21 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $errors = $evaluationModle->validateQuestion($data['newQuestion']);
-
+            $errors = array();
+            // if user didnot edited any of the template questions
+            if (isset($data['newQuestion'])) {
+                $errors = $evaluationModle->validateQuestion($data['newQuestion']);
+            }
             if (empty($errors)) {
                 //creating empty user template for this course
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsUserEval();
                 $evalEntity->setIsNotApproved();
                 $evaluationModle->saveEvaluation($evalEntity, $courseId);
+
                 // save templates and newQuestions
                 foreach ($data['template'] as $temp) {
+                    
                     $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
                 foreach ($data['newQuestion'] as $new) {
