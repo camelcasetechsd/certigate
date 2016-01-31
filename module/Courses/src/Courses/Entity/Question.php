@@ -52,6 +52,11 @@ class Question
      * @ORM\JoinColumn(name="evaluation_id", referencedColumnName="id")
      */
     public $evaluation;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Courses\Entity\Vote", mappedBy="question")
+     */
+    public $votes;
 
     function getId()
     {

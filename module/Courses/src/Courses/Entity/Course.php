@@ -24,9 +24,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property int $studentsNo
  * @property Organizations\Entity\Organization $atp
  * @property Users\Entity\User $ai
+ * @property Doctrine\Common\Collections\ArrayCollection $resources
+ * @property Doctrine\Common\Collections\ArrayCollection $outlines
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
+ * @property int $isForInstructor
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -128,6 +131,13 @@ class Course
      * @ORM\Column(type="integer")
      * @var int
      */
+    public $isForInstructor;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
     public $status;
 
     /**
@@ -160,9 +170,21 @@ class Course
 
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Resource", mappedBy="course")
+     * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $resources;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Outline", mappedBy="course",cascade={"persist"})
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $outlines;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="course")
+     */
+    public $exambook;
+
     /**
      * Prepare entity
      * 
@@ -174,6 +196,7 @@ class Course
         $this->users = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
         $this->resources = new ArrayCollection();
+        $this->outlines = new ArrayCollection();
     }
 
     /**
@@ -236,7 +259,10 @@ class Course
      */
     public function setStartDate($startDate)
     {
-        $this->startDate = new \DateTime($startDate);
+        if (!is_object($startDate)) {
+            $startDate = new \DateTime($startDate);
+        }
+        $this->startDate = $startDate;
         return $this;
     }
 
@@ -262,7 +288,10 @@ class Course
      */
     public function setEndDate($endDate)
     {
-        $this->endDate = new \DateTime($endDate);
+        if (!is_object($endDate)) {
+            $endDate = new \DateTime($endDate);
+        }
+        $this->endDate = $endDate;
         return $this;
     }
 
@@ -418,7 +447,10 @@ class Course
      */
     public function setTime($time)
     {
-        $this->time = new \DateTime($time);
+        if (!is_object($time)) {
+            $time = new \DateTime($time);
+        }
+        $this->time = $time;
         return $this;
     }
 
@@ -471,6 +503,32 @@ class Course
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
+    }
+    
+    /**
+     * Get isForInstructor
+     * 
+     * 
+     * @access public
+     * @return int isForInstructor
+     */
+    public function isForInstructor()
+    {
+        return $this->isForInstructor;
+    }
+
+    /**
+     * Set isForInstructor
+     * 
+     * 
+     * @access public
+     * @param int $isForInstructor
+     * @return Course
+     */
+    public function setIsForInstructor($isForInstructor)
+    {
+        $this->isForInstructor = $isForInstructor;
         return $this;
     }
 
@@ -605,6 +663,96 @@ class Course
     }
 
     /**
+     * Get Outlines
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection outlines
+     */
+    public function getOutlines()
+    {
+        return $this->outlines;
+    }
+
+    /**
+     * Set Outlines
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function setOutlines($outlines)
+    {
+        $this->outlines = $outlines;
+        return $this;
+    }
+
+    /**
+     * Remove Outline
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function removeOutline($outline)
+    {
+        $outline->setCourse(null);
+        $this->outlines->removeElement($outline);
+        return $this;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function addOutline($outline)
+    {
+        $this->outlines[] = $outline;
+        return $this;
+    }
+
+    /**
+     * Remove Outlines
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function removeOutlines($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setCourse(null);
+            $this->outlines->removeElement($outline);
+        }
+        return $this;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function addOutlines($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setCourse($this);
+            if(is_null($outline->getStatus())){
+                $outline->setStatus();
+            }
+            $this->outlines->add($outline);
+        }
+        return $this;
+    }
+
+    /**
      * Add Evaluation to course
      * 
      * 
@@ -656,6 +804,9 @@ class Course
         }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
+        }
+        if (array_key_exists('isForInstructor', $data)) {
+            $this->setIsForInstructor($data["isForInstructor"]);
         }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])

@@ -107,6 +107,7 @@ class Authentication {
             'lastName' => $entity->lastName,
             'name' => $entity->getFullName(),
             'username' => $entity->username,
+            'email' => $entity->email,
             'photo' => $entity->photo,
             'status' => $entity->status,
             'roles' => $rolesNames

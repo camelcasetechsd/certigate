@@ -8,6 +8,7 @@ module.exports = function (grunt) {
             cssSrc: 'public/css',
             bowerSrc: 'public/bower_components',
             nodeSrc: 'node_modules',
+            public: 'public',
             dest: 'public/concat'
         },
         concat: {
@@ -25,13 +26,17 @@ module.exports = function (grunt) {
                 dest: '<%= dirs.dest %>/app.js',
                 src: [
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
+                    '<%= dirs.bowerSrc %>/chosen/chosen.jquery.min.js',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
                     '<%= dirs.nodeSrc %>/bootbox/bootbox.js' ,
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
                     '<%= dirs.jsSrc %>/datepicker.js',
                     '<%= dirs.jsSrc %>/reset.js',
+                    '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/courseCRUD.js',
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
                     '<%= dirs.jsSrc %>/orgReg.js'
                     
@@ -42,11 +47,16 @@ module.exports = function (grunt) {
                 nonull: true,
                 dest: '<%= dirs.dest %>/app.css',
                 src: [
+                    '<%= dirs.bowerSrc %>/chosen/chosen.min.css',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+                    '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
+                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
+                    '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/userForm.css',
+                    '<%= dirs.cssSrc %>/courseForm.css',
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                 ]
@@ -76,6 +86,17 @@ module.exports = function (grunt) {
                     '<%= dirs.dest %>/app.min.css': ['<%= dirs.dest %>/app.css']
                 }
             }
+        },
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= dirs.bowerSrc %>/font-awesome',
+                    src: ['fonts/*.*'],
+                    dest: '<%= dirs.public %>'
+                }]
+            }
         }
     });
 
@@ -83,8 +104,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'copy']);
 
 };

@@ -27,7 +27,8 @@ $config = array(
         'CertigateAcl',
         'Organizations',
         'Courses',
-        'Versioning'
+        'Versioning',
+        'System'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

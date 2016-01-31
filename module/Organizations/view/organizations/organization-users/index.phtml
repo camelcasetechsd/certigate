@@ -1,0 +1,39 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/organization-users/new/{{organizationId}}"><button class="btn btn-small btn-success">Add new Organization User</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Organization Users</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#organizationUsers}}
+            <tr>
+                <td>{{user.firstName}}{{#user.middleName}} {{user.middleName}}{{/user.middleName}} {{user.lastName}}</td>
+                <td>{{role.name}}</td>
+                <td>
+                    <a href="/organization-users/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{^isCurrentUser}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/organization-users/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isCurrentUser}}
+                </td>
+            </tr>
+            {{/organizationUsers}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

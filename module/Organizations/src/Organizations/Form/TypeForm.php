@@ -12,13 +12,11 @@ use Utilities\Form\Form;
  * 
  * @property Utilities\Service\Query\Query $query
  * 
- * @package org
+ * @package organizations
  * @subpackage form
  */
 class TypeForm extends Form
 {
-
-    protected $objectManager;
 
     /**
      *

@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Organziation Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Organizations\Entity\OrganizationRepository")
  * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
  * @Gedmo\Loggable
  * 
@@ -27,6 +27,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @property string $CRNo
  * @property \DateTime $CRExpiration
  * @property string $CRAttachment
+ * @property string $wireTransferAttachment
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
  * @property string $atpLicenseAttachment
@@ -57,7 +58,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @property string $officeLang
  * 
  * 
- * @package orgs
+ * @package organizations
  * @subpackage entity
  */
 class Organization
@@ -79,14 +80,19 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * inActive organization
+     * Active organization
      */
-    const ACTIVE = 1;
+    const NOT_APPROVED = 1;
 
     /**
      * Active organization
      */
-    const NOT_ACTIVE = 0;
+    const ACTIVE = 2;
+
+    /**
+     * edited organization
+     */
+    const EDITED = 3;
 
     /**
      *
@@ -171,6 +177,13 @@ class Organization
      * @var string
      */
     public $CRAttachment;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $wireTransferAttachment;
 
     /**
      * @Gedmo\Versioned
@@ -285,20 +298,9 @@ class Organization
     public $email;
 
     /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="trainingManager_id", referencedColumnName="id")
-     * @var Users\Entity\User
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="organization")
      */
-    public $trainingManager;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="testCenterAdmin_id", referencedColumnName="id")
-     * @var Users\Entity\User
-     */
-    public $testCenterAdmin;
+    public $organizationUser;
 
     /**
      * @Gedmo\Versioned
@@ -371,6 +373,16 @@ class Organization
      */
     public $officeLang;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="atc")
+     */
+    public $exambook;
+
+    public function __construct()
+    {
+        $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     function getId()
     {
         return $this->id;
@@ -419,6 +431,10 @@ class Organization
     function getCRAttachment()
     {
         return $this->CRAttachment;
+    }
+    function getWireTransferAttachment()
+    {
+        return $this->wireTransferAttachment;
     }
 
     function getAtpLicenseNo()
@@ -501,15 +517,15 @@ class Organization
         return $this->email;
     }
 
-    function getTrainingManager()
+    function getOrganizationUsers()
     {
-        return $this->trainingManager;
+        return $this->organizationUser;
     }
 
-    function getTestCenterAdmin()
-    {
-        return $this->testCenterAdmin;
-    }
+//    function getTestCenterAdmin()
+//    {
+//        return $this->testCenterAdmin;
+//    }
 
     function getFocalContactPerson()
     {
@@ -610,6 +626,10 @@ class Organization
     {
         $this->CRAttachment = $CRAttachment;
     }
+    function setWireTransferAttachment($wireTransferAttachment)
+    {
+        $this->wireTransferAttachment = $wireTransferAttachment;
+    }
 
     function setAtpLicenseNo($atpLicenseNo)
     {
@@ -691,14 +711,9 @@ class Organization
         $this->email = $email;
     }
 
-    function setTrainingManager(User $trainingManager)
+    function setOrganizationUser($user)
     {
-        $this->trainingManager = $trainingManager;
-    }
-
-    function setTestCenterAdmin(User $testCenterAdmin)
-    {
-        $this->testCenterAdmin = $testCenterAdmin;
+        $this->organizationUser = $user;
     }
 
     function setFocalContactPerson(User $focalContactPerson)
@@ -819,7 +834,7 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-//        echo '<pre>';var_dump($data);exit;
+
         $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
@@ -831,6 +846,9 @@ class Organization
 //        $this->setCRAttachment($data['CRAttachment']);
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
+        }
+        if (array_key_exists('wireTransferAttachment', $data) && is_string($data['wireTransferAttachment'])) {
+            $this->setWireTransferAttachment($data["wireTransferAttachment"]);
         }
         $this->setAddressLine1($data['addressLine1']);
         $this->setCity($data['city']);
@@ -1022,6 +1040,22 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'CRAttachment',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Filesize',
+                        'options' => array(
+                            'max' => 2097152
+                        )
+                    ),
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'gif,jpg,png,pdf,docx'
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'wireTransferAttachment',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Filesize',

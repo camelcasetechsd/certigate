@@ -7,6 +7,7 @@ use Zend\File\Transfer\Adapter\Http;
 use DateTime;
 use Utilities\Service\Status;
 use Utilities\Service\Query\Query;
+use Users\Entity\Role;
 
 /**
  * Org Model
@@ -18,7 +19,7 @@ use Utilities\Service\Query\Query;
  * @property Utilities\Service\Query\Query $query
  * @property Utilities\Service\Random $random
  * 
- * @package orgs
+ * @package organizations
  * @subpackage model
  * 
  * 
@@ -28,6 +29,7 @@ class Organization
 {
 
     protected $CR_ATTACHMENT_PATH = 'public/upload/attachments/crAttachments/';
+    protected $WIRE_ATTACHMENT_PATH = 'public/upload/attachments/wireAttachments/';
     protected $ATP_ATTACHMENT_PATH = 'public/upload/attachments/atpAttachments/';
     protected $ATC_ATTACHMENT_PATH = 'public/upload/attachments/atcAttachments/';
     /*
@@ -100,20 +102,26 @@ class Organization
     public function listOrganizations($query, $type)
     {
         $em = $query->entityManager;
-        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 1 and u.type =?1 or u.type = 3');
+
+        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
         $dqlQuery->setParameter(1, $type);
         return $dqlQuery->getResult();
     }
 
-    public function saveOrganization($orgInfo, $orgObj = null)
+    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null)
     {
+
+        $roles = $this->query->findAll('Users\Entity\Role');
+        $rolesIds = array();
+        foreach ($roles as $role) {
+            $rolesIds[$role->getName()] = $role->getId();
+        }
 
         if (is_null($orgObj)) {
 
             $entity = new \Organizations\Entity\Organization();
         }
         else {
-
             $entity = $orgObj;
         }
 
@@ -145,22 +153,7 @@ class Organization
          * Handling User Forign keys
          */
         // training manager can be null if not selected 
-        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
-            $orgInfo['trainingManager_id'] = $this->getUserby('id', $orgInfo['trainingManager_id'])[0];
-        }
-        else if (isset($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] == 0) {
-            $orgInfo['trainingManager_id'] = null;
-        }
-
-
         // test admin can be null if not selected 
-        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $orgInfo['testCenterAdmin_id'] = $this->getUserby('id', $orgInfo['testCenterAdmin_id'])[0];
-        }
-        else if (isset($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] == 0) {
-            $orgInfo['testCenterAdmin_id'] = null;
-        }
-
         // focal can be null
         if (!empty($orgInfo['focalContactPerson_id']) && $orgInfo['focalContactPerson_id'] != 0) {
             $orgInfo['focalContactPerson_id'] = $this->getUserby('id', $orgInfo['focalContactPerson_id'])[0];
@@ -175,6 +168,9 @@ class Organization
         if (!empty($orgInfo['CRAttachment']['name'])) {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
+        if (!empty($orgInfo['wireTransferAttachment']['name'])) {
+            $orgInfo['wireTransferAttachment'] = $this->saveAttachment('wireTransferAttachment', 'wr');
+        }
         if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
@@ -185,6 +181,21 @@ class Organization
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
+        // if there's 
+        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
+            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+        }
+        else if ($orgInfo['trainingManager_id'] != 0) {
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+        }
+        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
+            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+        }
+        else if ($orgInfo['testCenterAdmin_id'] != 0) {
+            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+        }
     }
 
     private function saveAttachment($filename, $type)
@@ -192,6 +203,9 @@ class Organization
         switch ($type) {
             case 'cr':
                 $uploadResult = $this->uploadAttachment($filename, $this->CR_ATTACHMENT_PATH);
+                break;
+            case 'wr':
+                $uploadResult = $this->uploadAttachment($filename, $this->WIRE_ATTACHMENT_PATH);
                 break;
             case 'atp':
                 $uploadResult = $this->uploadAttachment($filename, $this->ATP_ATTACHMENT_PATH);
@@ -209,20 +223,19 @@ class Organization
         $upload = new Http();
         $upload->setDestination($attachmentPath);
         try {
-            // upload received file(s)
+// upload received file(s)
             $upload->receive($filename);
         } catch (\Exception $e) {
-            var_dump($e);
-            exit;
+            return $uploadResult;
         }
-        //This method will return the real file name of a transferred file.
+//This method will return the real file name of a transferred file.
         $name = $upload->getFileName($filename);
-        //This method will return extension of the transferred file
+//This method will return extension of the transferred file
         $extention = pathinfo($name, PATHINFO_EXTENSION);
-        //get random new name
+//get random new name
         $newName = $this->random->getRandomUniqueName() . '_' . date('Y.m.d_h:i:sa');
         $newFullName = $attachmentPath . $newName . '.' . $extention;
-        // rename
+// rename
         rename($name, $newFullName);
         $uploadResult = $newFullName;
         return $uploadResult;
@@ -245,41 +258,23 @@ class Organization
 
     public function prepareStatics($variables)
     {
-        $staticOs = array(
-            '0' => 'Microsoft Windows XP',
-            '1' => 'Microsoft Windows Vista',
-            '2' => 'Microsoft Windows 7',
-            '3' => 'Microsoft Windows 8',
-            '4' => 'Microsoft Windows 8.1',
-            '5' => 'Microsoft Windows 10',
-            '6' => 'Ubuntu Linux 13.04 LTS',
-            '7' => 'Ubuntu Linux 14.04 LTS',
-            '8' => 'Red Hat Enterprise Linux 5',
-            '9' => 'Red Hat Enterprise Linux 6',
-            '10' => 'Red Hat Enterprise Linux 7'
-        );
-        $staticLangs = array(
-            '0' => 'Arabic',
-            '1' => 'English',
-            '2' => 'Deutsch',
-            '3' => 'French',
-            '4' => 'Japanese',
-            '5' => 'Chinese',
-        );
 
-        $staticVersions = array(
-            '0' => 'Office 2000',
-            '1' => 'Office XP (2002)',
-            '2' => 'Office 2003',
-            '3' => 'Office 2007',
-            '4' => 'Office 2010',
-            '5' => 'Office 2013',
-            '6' => 'Office 2016',
-        );
-        $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
-        $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
-        $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
-        $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
+        $staticOs = \Organizations\Entity\Organization::getOSs();
+        $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
+        $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
+
+        if (isset($variables['userData']->operatingSystem)) {
+            $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
+        }
+        if (isset($variables['userData']->operatingSystemLang)) {
+            $variables['userData']->operatingSystemLang = $staticLangs[$variables['userData']->operatingSystemLang];
+        }
+        if (isset($variables['userData']->officeLang)) {
+            $variables['userData']->officeLang = $staticLangs[$variables['userData']->officeLang];
+        }
+        if (isset($variables['userData']->officeVersion)) {
+            $variables['userData']->officeVersion = $staticVersions[$variables['userData']->officeVersion];
+        }
 
         return $variables;
     }
@@ -293,6 +288,24 @@ class Organization
             return false;
         }
         return true;
+    }
+
+    /**
+     * this function meant to assign an user to an organization with specific type
+     *  
+     * @param Organization $orgObj
+     * @param int $userId
+     * @param int $roleId
+     */
+    private function assignUserToOrg($orgObj, $userId, $roleId)
+    {
+        $orgUserObj = new \Organizations\Entity\OrganizationUser();
+        $orgUserObj->setOrganizationUser($orgObj, $this->query->findOneBy('Users\Entity\User', array(
+                    'id' => $userId
+        )));
+        $role = $this->query->find('Users\Entity\Role', $roleId);
+        $orgUserObj->setRole($role);
+        $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
     }
 
 }

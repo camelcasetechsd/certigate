@@ -3,7 +3,7 @@
 namespace CMS\Event;
 
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\Regex;
+use Zend\Console\Request;
 
 /**
  * RouteEvent Model
@@ -16,7 +16,8 @@ use Zend\Mvc\Router\Http\Regex;
  * @package cms
  * @subpackage event
  */
-class RouteEvent {
+class RouteEvent
+{
 
     /**
      *
@@ -30,7 +31,8 @@ class RouteEvent {
      * @access public
      * @param array $staticPagePaths
      */
-    public function __construct($staticPagePaths) {
+    public function __construct($staticPagePaths)
+    {
         $this->staticPagePaths = $staticPagePaths;
     }
 
@@ -42,7 +44,8 @@ class RouteEvent {
      * @param MvcEvent $event
      * @return array route config
      */
-    public function addStaticPagesRoutes(MvcEvent $event) {
+    public function addStaticPagesRoutes(MvcEvent $event)
+    {
         // get the router
         $router = $event->getRouter();
 
@@ -51,17 +54,20 @@ class RouteEvent {
         // create route
         $routeName = "cmsPageView";
         $routeConfig = array($routeName => array(
+                'type' => 'Zend\Mvc\Router\Http\Regex',
+                'options' => array(
                     'regex' => $staticPagePathsString,
                     'spec' => "%path%",
                     'defaults' => array(
                         'module' => "CMS",
                         'controller' => "CMS\Controller\Page",
                         'action' => "view"
-                    )));
-        $route = Regex::factory($routeConfig[$routeName]);
-
-        // add it to the router
-        $router->addRoute($routeName, $route);
+        ))));
+        // if not console route
+        if (! $event->getRequest() instanceof Request) {
+            // add it to the router
+            $router->addRoute($routeName, $routeConfig[$routeName]);
+        }
         return $routeConfig;
     }
 

@@ -1,11 +1,14 @@
 {
-    "name": "Certigate",
-    "version": "1.0.0",
-    "homepage": "https://github.com/camelcasetechsd/attendance-system.git",
-    "license": "MIT",
-    "dependencies": {
-        "bootstrap": "~3.x",
-        "bootstrap-datepicker" : "~1.x",
-        "ckeditor": "#full/stable"
-    }
+  "name": "Certigate",
+  "version": "1.0.0",
+  "homepage": "https://github.com/camelcasetechsd/attendance-system.git",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.x",
+    "bootstrap-datepicker": "~1.x",
+    "chosen-bootstrap": "~1.x",
+    "ckeditor": "#full/stable",
+    "metisMenu": "^2.4.0",
+    "font-awesome": "fontawesome#^4.5.0"
+  }
 }

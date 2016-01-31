@@ -76,7 +76,7 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
-        $options['excludedRoles'] = array();
+        $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
@@ -97,6 +97,7 @@ class IndexController extends ActionController {
             $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
+            $isCustomValidationValid = true;
             // file not updated
             if (isset($fileData['photo']['name']) && empty($fileData['photo']['name'])) {
                 // Change required flag to false for any previously uploaded files
@@ -111,6 +112,7 @@ class IndexController extends ActionController {
                 $confirmEmail->setRequired(false);
             } elseif ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+                $isCustomValidationValid = false;
             }
 
             if (empty($data['password'])) {
@@ -120,9 +122,10 @@ class IndexController extends ActionController {
                 $confirmPassword->setRequired(false);
             } elseif ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
+                $isCustomValidationValid = false;
             }
 
-            if ($form->isValid()) {
+            if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, $userObj);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
@@ -160,7 +163,7 @@ class IndexController extends ActionController {
         $locale = "en";
         $options['countries'] = $countriesService->getAllCountries($locale);
         $options['languages'] = $languagesService->getAllLanguages($locale);
-        $options['excludedRoles'] = array();
+        $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
@@ -181,13 +184,16 @@ class IndexController extends ActionController {
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
+            $isCustomValidationValid = true;
             if ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+                $isCustomValidationValid = false;
             }
             if ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
+                $isCustomValidationValid = false;
             }
-            if ($form->isValid()) {
+            if ($form->isValid() && $isCustomValidationValid === true){
                 $userModel->saveUser($data);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));

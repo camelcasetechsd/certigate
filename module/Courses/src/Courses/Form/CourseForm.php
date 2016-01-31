@@ -5,6 +5,10 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Users\Entity\Role;
+use Doctrine\Common\Collections\Criteria;
+use Organizations\Entity\Organization;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Courses\Form\OutlineFieldset;
 
 /**
  * Course Form
@@ -13,11 +17,13 @@ use Users\Entity\Role;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property bool $isAdminUser
+ * @property int $userId
  * 
  * @package courses
  * @subpackage form
  */
-class CourseForm extends Form {
+class CourseForm extends Form
+{
 
     /**
      *
@@ -32,6 +38,12 @@ class CourseForm extends Form {
     protected $isAdminUser;
 
     /**
+     *
+     * @var int
+     */
+    protected $userId;
+
+    /**
      * setup form
      * 
      * 
@@ -39,12 +51,18 @@ class CourseForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct($name = null, $options = null)
+    {
         $this->query = $options['query'];
         unset($options['query']);
         $this->isAdminUser = $options['isAdminUser'];
+        $this->userId = $options['userId'];
         unset($options['isAdminUser']);
+        unset($options['userId']);
         parent::__construct($name, $options);
+
+        // The form will hydrate an object of type "BlogPost"
+        $this->setHydrator(new DoctrineHydrator($this->query->entityManager));
 
         $this->setAttribute('class', 'form form-horizontal');
 
@@ -58,6 +76,32 @@ class CourseForm extends Form {
             'options' => array(
                 'label' => 'Name',
             ),
+        ));
+
+        // Add the outline fieldset
+        $outlineFieldset = new OutlineFieldset($this->query, $this->isAdminUser);
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Collection',
+            'name' => 'outlines',
+            'options' => array(
+                'count' => 1,
+                'label' => "Outline",
+                'should_create_template' => true,
+                'allow_add' => true,
+                'allow_remove' => true,
+                'template_placeholder' => '__outlineNumber__',
+                'target_element' => $outlineFieldset,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'addMore',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-primary addMoreButton',
+                'value' => 'Add More',
+                'type' => 'button',
+                'onclick' => "addMoreOutline('#course_form_addMore')"
+            )
         ));
 
         $this->add(array(
@@ -115,6 +159,12 @@ class CourseForm extends Form {
             ),
         ));
 
+        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
+        $status = Organization::ACTIVE;
+        $userIds = array();
+        if ($this->isAdminUser === false) {
+            $userIds[] = $this->userId;
+        }
         $this->add(array(
             'name' => 'atp',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
@@ -128,8 +178,11 @@ class CourseForm extends Form {
                 'property' => 'commercialName',
                 'is_method' => false,
                 'find_method' => array(
-                    'name' => 'findAll',
+                    'name' => 'getOrganizationsBy',
                     'params' => array(
+                        'userIds' => $userIds,
+                        'types' => $types,
+                        'status' => $status,
                     )
                 ),
             ),
@@ -149,10 +202,8 @@ class CourseForm extends Form {
                 'find_method' => array(
                     'name' => 'getUsers',
                     'params' => array(
-                        'criteria' => array(
-                            "roles" => array(
-                                Role::INSTRUCTOR_ROLE
-                            )
+                        "roles" => array(
+                            Role::INSTRUCTOR_ROLE
                         )
                     )
                 ),
@@ -198,8 +249,20 @@ class CourseForm extends Form {
                 'label' => 'Duration',
             ),
         ));
-        
+
         if ($this->isAdminUser === true) {
+            $this->add(array(
+                'name' => 'isForInstructor',
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Is For Instructor',
+                    'checked_value' => Status::STATUS_ACTIVE,
+                    'unchecked_value' => Status::STATUS_INACTIVE
+                ),
+            ));
             $this->add(array(
                 'name' => 'status',
                 'type' => 'Zend\Form\Element\Checkbox',

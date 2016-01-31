@@ -7,12 +7,17 @@ use Zend\Permissions\Acl\Acl as ZendAcl;
 use Zend\Permissions\Acl\Role\GenericRole as ZendRole;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Zend\Console\Request;
 
 class CertigateAclPlugin extends AbstractPlugin
 {
 
     public function doAuthorization( \Zend\Mvc\MvcEvent $event )
     {
+        // Ignore ACL if in console
+        if ($event->getRequest() instanceof Request) {
+            return;
+        }
         $controller = $event->getTarget();
         $controllerClass = get_class( $controller );
         $moduleName = substr( $controllerClass, 0, strpos( $controllerClass, '\\' ) );

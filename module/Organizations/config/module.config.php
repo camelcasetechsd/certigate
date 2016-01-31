@@ -13,7 +13,8 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory'
+            'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory',
+            'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory'
         ),
     ),
     'doctrine' => array(
@@ -33,10 +34,76 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Organizations\Controller\Organizations' => 'Organizations\Controller\OrganizationsController',
+            'Organizations\Controller\OrganizationUsers' => 'Organizations\Controller\OrganizationUsersController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'organizationUsers' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organization-users[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\OrganizationUsers',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                )
+            ),
+            'organizationUsersList' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organization-users/:organizationId',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\OrganizationUsers',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'organizationId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'organizationUsersNew' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organization-users/new/:organizationId',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\OrganizationUsers',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'organizationId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'organizationUsersEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organization-users/edit/:id',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\OrganizationUsers',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'organizationUsersDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organization-users/delete/:id',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\OrganizationUsers',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'org_type' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -127,5 +194,26 @@ return array(
                 )
             )
         )
+    ),
+    'atcSkippedParams' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+        'classesNo',
+        'pcsNo_class',
+        'trainingManager_id'
+    ),
+    'atpSkippedParams' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+        'labsNo',
+        'pcsNo_lab',
+        'internetSpeed_lab',
+        'operatingSystem',
+        'operatingSystemLang',
+        'officeVersion',
+        'officeLang',
+        'testCenterAdmin_id'
     )
 );

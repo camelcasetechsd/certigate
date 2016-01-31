@@ -30,7 +30,9 @@
                 <td>
                     <a href="/organizations/more/{{id}}">More</a>     
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization=1"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#active}}
                     <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>

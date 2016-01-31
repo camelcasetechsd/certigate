@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * 
  * @property Utilities\Service\Query\Query $query
  * 
- * @package users
+ * @package organizations
  * @subpackage form
  */
 class OrgForm extends Form implements ObjectManagerAwareInterface
@@ -40,13 +40,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-//        $excludedRoles = $options['excludedRoles'];
         unset($options['query']);
-//        unset($options['countries']);
-//        unset($options['languages']);
-//        unset($options['excludedRoles']);
         parent::__construct($name, $options);
-
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
@@ -153,6 +148,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\File',
             'options' => array(
                 'label' => 'CR Attachment',
+                'required' => 'required',
+            ),
+            'attributes' => array(
+                'required' => true,
+            )
+        ));
+        $this->add(array(
+            'name' => 'wireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'Wire Transfer Attachment',
                 'required' => 'required',
             ),
             'attributes' => array(
@@ -388,7 +394,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-
         $this->add(array(
             'name' => 'operatingSystem',
             'type' => 'Zend\Form\Element\Select',
@@ -402,19 +407,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Microsoft Windows XP',
-                    '1' => 'Microsoft Windows Vista',
-                    '2' => 'Microsoft Windows 7',
-                    '3' => 'Microsoft Windows 8',
-                    '4' => 'Microsoft Windows 8.1',
-                    '5' => 'Microsoft Windows 10',
-                    '6' => 'Ubuntu Linux 13.04 LTS',
-                    '7' => 'Ubuntu Linux 14.04 LTS',
-                    '8' => 'Red Hat Enterprise Linux 5',
-                    '9' => 'Red Hat Enterprise Linux 6',
-                    '10' => 'Red Hat Enterprise Linux 7',
-                ),
+                'value_options' => $options['staticOfficeVersions']
             ),
         ));
 
@@ -431,14 +424,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Arabic',
-                    '1' => 'English',
-                    '2' => 'Deutsch',
-                    '3' => 'French',
-                    '4' => 'Japanese',
-                    '5' => 'Chinese',
-                ),
+                'value_options' => $options['staticLangs']
             ),
         ));
 
@@ -452,15 +438,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
-                'value_options' => array(
-                    '0' => 'Office 2000',
-                    '1' => 'Office XP (2002)',
-                    '2' => 'Office 2003',
-                    '3' => 'Office 2007',
-                    '4' => 'Office 2010',
-                    '5' => 'Office 2013',
-                    '6' => 'Office 2016',
-                ),
+                'value_options' => $options['staticOss'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
                 ),
@@ -480,14 +458,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'value_options' => array(
-                    '0' => 'Arabic',
-                    '1' => 'English',
-                    '2' => 'Deutsch',
-                    '3' => 'French',
-                    '4' => 'Japanese',
-                    '5' => 'Chinese',
-                ),
+                'value_options' => $options['staticLangs']
             ),
         ));
 
@@ -582,7 +553,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atpSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Training Manager',
@@ -592,6 +563,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'empty_item_label' => '--Select--',
+                'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
         },
@@ -603,7 +576,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control atcSet',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
@@ -613,6 +586,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'display_empty_item' => true,
+                'empty_item_label' => '--Select--',
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
         },
@@ -625,13 +600,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'multiple' => true,
+                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Focal Contact Person',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
+                'display_empty_item' => true,
+                'empty_item_label' => '--Select--',
                 'label_generator' => function($targetEntity) {
                     return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                 },
@@ -641,6 +618,10 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'id',
+            'type' => 'Zend\Form\Element\Hidden',
+        ));
+        $this->add(array(
+            'name' => 'active',
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
@@ -707,15 +688,11 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
     {
         parent::bind($object, $flags);
-//        if()
-        $trainingManagerId = $object->getTrainingManager();
-        if (isset($trainingManagerId->id) && $trainingManagerId != null) {
-            $this->get('trainingManager_id')->setValue($trainingManagerId->id);
-        }
-        $testCenterAdminId = $object->getTestCenterAdmin();
-        if (isset($testCenterAdminId->id) && $testCenterAdminId != null) {
-            $this->get('testCenterAdmin_id')->setValue($testCenterAdminId->id);
-        }
+//
+//        $users = $object->getOrganizationUsers();
+//
+//        
+//        
         $focalContactPerson = $object->getFocalContactPerson();
         if (isset($focalContactPerson->id) && $focalContactPerson != null) {
             $this->get('focalContactPerson_id')->setValue($focalContactPerson->id);

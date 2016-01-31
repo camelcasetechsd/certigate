@@ -345,7 +345,7 @@ class UserForm extends Form {
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => '<label class="required legendLabel">Roles</label>',
+                'label' => '<label class="legendLabel">Roles</label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
                 'property' => 'name',

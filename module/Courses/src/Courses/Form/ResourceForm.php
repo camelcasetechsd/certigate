@@ -14,6 +14,7 @@ use Zend\Form\FormInterface;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property bool $isAdminUser
+ * @property int $courseId
  * 
  * @package courses
  * @subpackage form
@@ -33,6 +34,12 @@ class ResourceForm extends Form {
     protected $isAdminUser;
 
     /**
+     *
+     * @var int
+     */
+    protected $courseId;
+
+    /**
      * setup form
      * 
      * 
@@ -44,11 +51,17 @@ class ResourceForm extends Form {
         $this->query = $options['query'];
         unset($options['query']);
         $this->isAdminUser = $options['isAdminUser'];
+        $this->courseId = $options['courseId'];
         unset($options['isAdminUser']);
+        unset($options['courseId']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
         
+        $criteria = array();
+        if(! empty($this->courseId)){
+            $criteria["id"] = $this->courseId;
+        }
         $this->add(array(
             'name' => 'course',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
@@ -63,8 +76,9 @@ class ResourceForm extends Form {
                 'property' => 'name',
                 'is_method' => false,
                 'find_method' => array(
-                    'name' => 'findAll',
+                    'name' => 'findBy',
                     'params' => array(
+                        "criteria" => $criteria
                     )
                 ),
             ),
@@ -105,9 +119,13 @@ class ResourceForm extends Form {
             'name' => 'file',
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
+                'accept' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/zip,application/octet-stream,application/pdf,pptx,potx,ppsx,thmx',
             ),
             'options' => array(
-                'label' => 'File',
+                'label' => '<p class="required">File</p> <p>Supported Extensions: zip,pdf,ppt,pptx</p>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
             ),
         ));
         

@@ -8,7 +8,6 @@ use Courses\Form\ResourceForm;
 use Courses\Entity\Resource;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
-use Utilities\Service\Status;
 use Zend\Form\FormInterface;
 use Zend\Http\Response\Stream;
 use Zend\Http\Headers;
@@ -40,26 +39,41 @@ class ResourceController extends ActionController
 
         $courseId = $this->params('courseId', /* $default = */ null);
         $processResult = $this->params('processResult', /* $default = */ "true");
-        if($processResult === "true"){
+        if ($processResult === "true") {
             $processResult = true;
-        }else{
+        }
+        else {
             $processResult = false;
         }
-        
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
+
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        if (!is_null($courseId)) {
+            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
+        }
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course)) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
+            }
         }
+
 
         $criteria = array();
         if (!empty($courseId)) {
             $criteria['course'] = $variables['courseId'] = $courseId;
         }
-        $data = $query->findBy(/* $entityName = */null, $criteria);
+        $data = $query->findBy(/* $entityName = */'Courses\Entity\Resource', $criteria);
         $variables['resources'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
         $variables['processResult'] = $processResult;
@@ -81,19 +95,33 @@ class ResourceController extends ActionController
         $variables = array();
         $courseId = $this->params('courseId', /* $default = */ null);
 
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Resource');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        if (!is_null($courseId)) {
+            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
+        }
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = new Resource();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && isset($course)) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
+            }
         }
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
+        $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -115,7 +143,8 @@ class ResourceController extends ActionController
 
                 $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
-            }else{
+            }
+            else {
                 $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
@@ -146,13 +175,29 @@ class ResourceController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                if ($resource->getCourse()->getId() != $courseId) {
+                    $url = $this->getEvent()->getRouter()->assemble(array("id" => $resource->getId(), "courseId" => $resource->getCourse()->getId()), array('name' => 'resourcesEditPerCourse'));
+                    $this->redirect()->toUrl($url);
+                }
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($resource->getCourse()->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $this->getResponse()->setStatusCode(302);
+                    $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+                    $this->redirect()->toUrl($url);
+                }
+                
+            }
         }
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
+        $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
         $form->bind($resource);
 
@@ -204,7 +249,7 @@ class ResourceController extends ActionController
 
 
         $url = $this->getResourcesUrl($courseId);
-        $url .= "/".$processResult;
+        $url .= "/" . $processResult;
         $this->redirect()->toUrl($url);
     }
 
@@ -229,7 +274,20 @@ class ResourceController extends ActionController
         $preparedCourse = reset($preparedCourseArray);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+        $canDownload = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownload = false;
+            }
+            if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($storage['id']), /* $types = */ array(), /* $status = */ false, /* $ids = */ array($course->getAtp()->getId()));
+                if (empty($atpsArray)) {
+                    $canDownload = false;
+                }
+            }
+        }
+
+        if ($canDownload === false) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
             $this->redirect()->toUrl($url);

@@ -44,7 +44,7 @@ class Evaluation
      * @param Evaluation $evalObj
      * @param int $courseId not required if template
      */
-    public function saveEvaluation($evalObj, $courseId = 0)
+    public function saveEvaluation($evalObj, $courseId = null)
     {
         // if evaluation is admin template
         if ($evalObj->isTemplate()) {
@@ -52,14 +52,15 @@ class Evaluation
         }
         // id evaluation is user's (atp)
         else {
-            $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj);
             //find the course to assign it to the evaluation
             $course = $this->query->findOneBy("Courses\Entity\Course", array(
                 'id' => $courseId
             ));
             //assign course to evaluation
             $evalObj->setCourse($course);
+
             $this->query->save($evalObj);
+            
         }
     }
 
@@ -87,7 +88,11 @@ class Evaluation
             ));
         }
         $questionEntity = new \Courses\Entity\Question();
-        $this->saveQuestion($questionEntity, $question, $evaluation);
+
+        $questionEntity->setQuestionTitle($question);
+        $questionEntity->setToEvaluation($evaluation);
+            $evaluation->addQuestion($questionEntity);
+        $this->query->save($evaluation);
     }
 
     public function removeQuestion($questionTitle)
@@ -111,7 +116,7 @@ class Evaluation
     public function validateQuestion($questions)
     {
         $messages = array();
-        $stringValidator = new \Zend\I18n\Validator\Alnum(array('allowWhiteSpace' => true));
+        $stringValidator = new \Zend\Validator\Regex('/^a-zA-Z0-9 \?|\s/');
 
         foreach ($questions as $question) {
             // start question validation

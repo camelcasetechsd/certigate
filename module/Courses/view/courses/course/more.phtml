@@ -11,8 +11,18 @@
 <a class="btn btn-info" href="/courses/evaluation/new/{{course.id}}" >Create Course Evaluation</a>
 {{/evaluation}}
 <br><br>
-
-
+<!--make sure that user did not evaluated the course before-->
+{{#evaluatedBefore}}
+<!--making sure that course has evaluation-->
+{{#hasEvaluation}}
+<!--making sure that user is student-->
+{{#isStudent}}
+<!--this rule is only for students-->
+<a class="btn btn-info" href="/courses/vote/{{course.id}}" >Evaluation Course</a>
+<br><br>
+{{/isStudent}}
+{{/hasEvaluation}}
+{{/evaluatedBefore}}
 
 <div class="panel panel-default">
 
@@ -40,10 +50,27 @@
             </tr><tr>
                 <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
             </tr>
-            {{#canDownloadResources}}
+
+            {{#outlines.count}}
+            <td>Outlines</td><td></td>
+            <tr>
+                <td>&ensp; Title</td>
+                <td>Duration (minutes)</td>
+            </tr>
+            {{/outlines.count}}
+            {{#outlines}}
+                {{#status}}
+                <tr>
+                    <td>&ensp; {{name}}</td>
+                    <td>{{duration}}</td>
+                </tr>
+                {{/status}}
+            {{/outlines}} 
+
+        {{#canDownloadResources}}
 
         {{#resources}}
-            <td>Resources</td><td></td>
+        <td>Resources</td><td></td>
         {{/resources}}
         {{#resources}}
         <tr>

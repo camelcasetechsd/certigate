@@ -34,7 +34,10 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
         oldNameInputClass = '';
     }
     var newNameInputClass = oldNameInputClass + " " + nameClass;
-    var newNameInput = $(nameInputSelector).clone().attr('class', newNameInputClass).attr('value', nameValue).attr("id", newNameInputId).attr("name", newNameInputName);
+    var newNameInput = $(nameInputSelector).clone().attr('class', newNameInputClass).attr("id", newNameInputId).attr("name", newNameInputName).attr('value', nameValue);
+    if(nameValue === ""){
+        newNameInput.val("");
+    }
     var newNameLabel = $(nameInputSelector).prev("label").clone();
     var newNameField = $("<dd></dd>").append(newNameLabel).append(newNameInput).append(nameErrors);
     // prepare new file field

@@ -87,9 +87,14 @@ class Evaluation
     public $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="evaluation", cascade={"remove","persist"})
      */
     public $questions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="evaluation")
+     */
+    public $votes;
 
     public function __construct()
     {
@@ -104,6 +109,11 @@ class Evaluation
     function getCourse()
     {
         return $this->course;
+    }
+
+    function getVotes()
+    {
+        return $this->votes;
     }
 
     function setIsTemplate()

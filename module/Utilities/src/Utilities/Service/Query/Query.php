@@ -144,14 +144,14 @@ class Query
      * @param string $entityName
      * @param mixed $criteria Criteria instance ,default is bool false
      * @param bool $countFlag ,default is bool false
-     * @return type
+     * @return mixed array of results or just int if count is required
      */
     public function filter($entityName, $criteria = false, $countFlag = false)
     {
         if (!$criteria instanceof Criteria) {
             $criteria = new Criteria();
         }
-        $return = $this->setEntity($entityName)->entityRepository->matching($criteria);
+        $return = $this->setEntity($entityName)->entityRepository->matching($criteria)->toArray();
         if ($countFlag === true) {
             $return = (int) $return->count();
         }
@@ -169,8 +169,9 @@ class Query
      * @access public
      * @param mixed $entity entity object to be persisted
      * @param array $data ,default is empty array
+     * @param bool $flushAll ,default is false
      */
-    public function save($entity, $data = array())
+    public function save($entity, $data = array(), $flushAll = false)
     {
         // if association hold id not actual object, 
         // then find that object to set the corresponding property with it
@@ -194,7 +195,9 @@ class Query
                     $processedValueArrayCollection = null;
                     $targetClass = $classMetadata->getAssociationTargetClass($associationName);
                     foreach ($currentValueArray as $currentValue) {
-                        $processedValue = $this->find($targetClass, $currentValue);
+                        if (is_numeric($currentValue)) {
+                            $processedValue = $this->find($targetClass, $currentValue);
+                        }
                         if ($currentValueArrayFlag === true) {
                             if (is_null($processedValueArrayCollection)) {
                                 $processedValueArrayCollection = new ArrayCollection();
@@ -226,7 +229,11 @@ class Query
             $entity->exchangeArray($data);
         }
         $this->entityManager->persist($entity);
-        $this->entityManager->flush($entity);
+        if($flushAll === true){
+            $this->entityManager->flush();
+        }else{
+            $this->entityManager->flush($entity);
+        }
     }
 
     /**

@@ -54,7 +54,7 @@
 <script>
 $(document).ready(function () {
     window.index = 1;
-
+    numerateLabels();
 
     $('#addmore').click(function () {
         getMeNewInput();
@@ -63,8 +63,15 @@ $(document).ready(function () {
     function getMeNewInput() {
         window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="Add Your Question Here" class="form-control input-md" required=""> </div> </div>';
         $('#endOfText').before(window.template);
-        window.index++;
+        numerateLabels();
+    }
 
+    function numerateLabels() {
+        window.index = 1
+        $('.control-label').each(function () {
+            $(this).text('Question Title '+window.index)
+            window.index++;
+        });
     }
 
     /**
@@ -73,6 +80,7 @@ $(document).ready(function () {
     $('.deleteQuestion').click(function () {
         // delete template 
         $(this).parent().parent().remove();
+        numerateLabels();
     });
 
 });

@@ -13,6 +13,7 @@ use Utilities\Service\Status;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Courses\Model\Outline $outlineModel
  * 
  * @package courses
  * @subpackage model
@@ -27,14 +28,22 @@ class Course
     protected $query;
 
     /**
+     *
+     * @var Courses\Model\Outline
+     */
+    protected $outlineModel;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Courses\Model\Outline $outlineModel
      */
-    public function __construct($query)
+    public function __construct($query, $outlineModel)
     {
         $this->query = $query;
+        $this->outlineModel = $outlineModel;
     }
 
     /**
@@ -42,9 +51,10 @@ class Course
      * 
      * @access public
      * @param array $courses
+     * @param array $authorizedRoles ,default is empty array
      * @return array courses with canRoll property added
      */
-    public function setCanEnroll($courses)
+    public function setCanEnroll($courses, $authorizedRoles = array())
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -52,8 +62,12 @@ class Course
         $currentUser = NULL;
         if ($auth->hasIdentity()) {
             $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
-            if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])) {
-                $nonAuthorizedEnroll = true;
+            $notAuthorizedRoles = array(Role::INSTRUCTOR_ROLE);
+            foreach($notAuthorizedRoles as $notAuthorizedRole){
+                if (in_array($notAuthorizedRole, $storage['roles']) && !in_array($notAuthorizedRole, $authorizedRoles)) {
+                    $nonAuthorizedEnroll = true;
+                    break;
+                }
             }
         }
         foreach ($courses as $course) {
@@ -92,7 +106,11 @@ class Course
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        $this->query->setEntity("Courses\Entity\Course")->save($course, $data);
+        unset($data["outlines"]);
+        $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /* $flushAll = */ true);
+
+        // remove not needed outlines        
+        $this->outlineModel->cleanUpOutlines();
     }
 
     /**
@@ -135,6 +153,38 @@ class Course
         $course->setStudentsNo($studentsNo);
         $course->addUser($user);
         $this->query->setEntity('Courses\Entity\Course')->save($course);
+    }
+
+    /**
+     * Validate course form
+     * 
+     * @access public
+     * @param Courses\Form\CourseForm $form
+     * @param array $data
+     * @param Courses\Entity\Course $course ,default is null
+     * @return bool custom validation result
+     */
+    public function validateForm($form, $data, $course = null)
+    {
+        $isCustomValidationValid = true;
+        if ((int) $data['capacity'] < (int) $data['studentsNo']) {
+            $form->get('capacity')->setMessages(array("Capacity should be higher than enrolled students number"));
+            $isCustomValidationValid = false;
+        }
+        $endDate = strtotime($data['endDate']);
+        $startDate = strtotime($data['startDate']);
+        if ($endDate < $startDate) {
+            $form->get('endDate')->setMessages(array("End date should be after Start date"));
+            $isCustomValidationValid = false;
+        }
+        // retrieve old data if custom validation failed to pass
+        if($isCustomValidationValid === false && !is_null($course)){
+            $courseOutlines = $form->getObject()->getOutlines();
+            $course->exchangeArray($data);
+            $course->setOutlines($courseOutlines);
+            $form->bind($course);
+        }
+        return $isCustomValidationValid;
     }
 
     public function saveEvaluation($evalObj, $data, $isAdmin)
