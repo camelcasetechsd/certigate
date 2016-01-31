@@ -286,7 +286,7 @@ class CourseController extends ActionController
 
             $form->setData($data);
 
-            $isCustomValidationValid = $courseModel->validateForm($form, $data);
+            $isCustomValidationValid = $courseModel->validateForm($form, $data, $course);
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
 

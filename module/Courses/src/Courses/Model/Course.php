@@ -161,9 +161,10 @@ class Course
      * @access public
      * @param Courses\Form\CourseForm $form
      * @param array $data
+     * @param Courses\Entity\Course $course ,default is null
      * @return bool custom validation result
      */
-    public function validateForm($form, $data)
+    public function validateForm($form, $data, $course = null)
     {
         $isCustomValidationValid = true;
         if ((int) $data['capacity'] < (int) $data['studentsNo']) {
@@ -175,6 +176,13 @@ class Course
         if ($endDate < $startDate) {
             $form->get('endDate')->setMessages(array("End date should be after Start date"));
             $isCustomValidationValid = false;
+        }
+        // retrieve old data if custom validation failed to pass
+        if($isCustomValidationValid === false && !is_null($course)){
+            $courseOutlines = $form->getObject()->getOutlines();
+            $course->exchangeArray($data);
+            $course->setOutlines($courseOutlines);
+            $form->bind($course);
         }
         return $isCustomValidationValid;
     }
