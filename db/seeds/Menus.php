@@ -281,7 +281,6 @@ class Menus extends AbstractSeed
                                                 "title" => "Course Outlines",
                                                 "path" => "/courses/more/1",
                                                 "weight" => 2,
-                                                "type" => "page"
                                             ],
                                             [
                                                 // course booking  not a specific course
