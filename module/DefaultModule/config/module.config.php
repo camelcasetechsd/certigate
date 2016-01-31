@@ -61,6 +61,16 @@ return array(
                     ),
                 ),
             ),
+            'resource_not_found' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/resource_not_found',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'resourceNotFound',
+                    ),
+                ),
+            ),
         )
     )
 );

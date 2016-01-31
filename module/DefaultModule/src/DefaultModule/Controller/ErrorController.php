@@ -28,4 +28,9 @@ class ErrorController extends ActionController
         return new ViewModel();
     }
 
+    public function resourceNotFoundAction()
+    {
+        return new ViewModel();
+    }
+
 }
