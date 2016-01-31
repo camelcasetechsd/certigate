@@ -7,7 +7,7 @@ use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
-use Zend\View\Model\JsonModel;
+use Zend\Json\Json;
 
 /**
  * Atps Controller
@@ -325,6 +325,7 @@ class OrganizationsController extends ActionController
 
     public function saveStateAction()
     {
+
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $orgObj = new \Organizations\Entity\Organization();
         $orgModel = new \Organizations\Model\Organization($query);
@@ -335,7 +336,8 @@ class OrganizationsController extends ActionController
             $stateArray['CRExpiration'] = null;
             $stateArray['atpLicenseExpiration'] = null;
             $stateArray['atcLicenseExpiration'] = null;
-            if (!isset($stateArray['focalContactPerson_id'])) {
+
+            if (!isset($stateArray['focalContactPerson_id']) || $stateArray['focalContactPerson_id'] == "") {
                 $stateArray['focalContactPerson_id'] = null;
             }
             if (!isset($stateArray['testCenterAdmin_id'])) {
@@ -350,13 +352,25 @@ class OrganizationsController extends ActionController
             if (!$isUniqe) {
                 // saving organizations as inactive organization
                 $stateArray['active'] = 0;
-                $orgModel->saveOrganization($stateArray);
+                /**
+                 * no need to assign users now so we used 
+                 * save state = true .. now we will skip calling
+                 * assignUserToOrg() method 
+                 */
+                $orgModel->saveOrganization($stateArray,null,null,true);
+
+                $data = array(
+                    'result' => true,
+                );
             }
             //uniqness error does not completed yet
             else {
-                return new \Zend\View\Model\JsonModel(array("error" => "Commercial Name already exists"));
+                $data = array(
+                    'result' => "Commercial Name already Exists server",
+                );
             }
         }
+        return $this->getResponse()->setContent(Json::encode($data));
     }
 
 }

@@ -108,7 +108,7 @@ class Organization
         return $dqlQuery->getResult();
     }
 
-    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null)
+    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $saveState = false)
     {
 
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -181,20 +181,23 @@ class Organization
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
-        // if there's 
-        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-        }
-        else if ($orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-        }
-        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-        }
-        else if ($orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+        if (!$saveState) {
+            // if there's 
+            if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
+                $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            }
+            else if ($orgInfo['trainingManager_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            }
+
+            if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
+                $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            }
+            else if ($orgInfo['testCenterAdmin_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            }
         }
     }
 
