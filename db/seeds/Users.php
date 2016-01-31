@@ -21,9 +21,9 @@ class Users extends AbstractSeed {
     public function run() {
         $faker = Faker\Factory::create();
                
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
-        $this->insert('role', $instructorRole);
-        $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+//        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
+//        $this->insert('role', $instructorRole);
+        $instructorRoleId = $this->fetchRow('select id from role where name = "Instructor"')['id'];
         
         $proctorRole = array('name' => Role::PROCTOR_ROLE);
         $this->insert('role', $proctorRole);
