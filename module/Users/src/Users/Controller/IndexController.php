@@ -20,7 +20,8 @@ use Zend\Authentication\AuthenticationService;
  * @package users
  * @subpackage controller
  */
-class IndexController extends ActionController {
+class IndexController extends ActionController
+{
 
     /**
      * List users paginated
@@ -29,17 +30,18 @@ class IndexController extends ActionController {
      * @access public
      * @return ViewModel
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $query = $this->getServiceLocator()->get( 'wrapperQuery' );
+        $objectUtilities = $this->getServiceLocator()->get( 'objectUtilities' );
 
-        $data = $query->findAll('Users\Entity\User');
+        $data = $query->findAll( 'Users\Entity\User' );
         // process data that will be displayed later
-        $processedData = $objectUtilities->prepareForDisplay($data);
+        $processedData = $objectUtilities->prepareForDisplay( $data );
 
         $variables['userList'] = $processedData;
-        return new ViewModel($variables);
+        return new ViewModel( $variables );
     }
 
     /**
@@ -51,37 +53,38 @@ class IndexController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function editAction() {
+    public function editAction()
+    {
         $variables = array();
-        $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
-        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
-        $userModel = $this->getServiceLocator()->get('Users\Model\User');
-        $userObj = $query->find('Users\Entity\User', $id);
+        $id = $this->params( 'id' );
+        $query = $this->getServiceLocator()->get( 'wrapperQuery' );
+        $countriesService = $this->getServiceLocator()->get( 'losi18n-countries' );
+        $languagesService = $this->getServiceLocator()->get( 'losi18n-languages' );
+        $userModel = $this->getServiceLocator()->get( 'Users\Model\User' );
+        $userObj = $query->find( 'Users\Entity\User', $id );
         $photo = $userObj->photo;
 
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if (!in_array(Role::ADMIN_ROLE, $storage['roles']) && $id != $storage['id']) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
+        if (!in_array( Role::ADMIN_ROLE, $storage['roles'] ) && $id != $storage['id']) {
+            $this->getResponse()->setStatusCode( 302 );
+            $url = $this->getEvent()->getRouter()->assemble( array(), array('name' => 'noaccess') );
+            $this->redirect()->toUrl( $url );
         }
 
         $options = array();
         $options['query'] = $query;
         $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countries'] = $countriesService->getAllCountries( $locale );
+        $options['languages'] = $languagesService->getAllLanguages( $locale );
         $options['excludedRoles'] = array(Role::USER_ROLE);
-        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array( Role::ADMIN_ROLE, $storage['roles'] ))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
-        $form = new UserForm(/* $name = */ null, $options);
-        $form->bind($userObj);
+        $form = new UserForm( /* $name = */ null, $options );
+        $form->bind( $userObj );
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -90,54 +93,55 @@ class IndexController extends ActionController {
             $fileData = $request->getFiles()->toArray();
 
             $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
+                $request->getPost()->toArray(), $fileData
             );
 
-            $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query));
+            $query->setEntity( 'Users\Entity\User' );
+            $form->setInputFilter( $userObj->getInputFilter( $query ) );
             $inputFilter = $form->getInputFilter();
-            $form->setData($data);
+            $form->setData( $data );
             $isCustomValidationValid = true;
             // file not updated
-            if (isset($fileData['photo']['name']) && empty($fileData['photo']['name'])) {
+            if (isset( $fileData['photo']['name'] ) && empty( $fileData['photo']['name'] )) {
                 // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('photo');
-                $input->setRequired(false);
+                $input = $inputFilter->get( 'photo' );
+                $input->setRequired( false );
             }
 
-            if (empty($data['email']) || trim($data['email']) == $userObj->getEmail()) {
-                $email = $inputFilter->get('email');
-                $email->setRequired(false);
-                $confirmEmail = $inputFilter->get('confirmEmail');
-                $confirmEmail->setRequired(false);
+            if (empty( $data['email'] ) || trim( $data['email'] ) == $userObj->getEmail()) {
+                $email = $inputFilter->get( 'email' );
+                $email->setRequired( false );
+                $confirmEmail = $inputFilter->get( 'confirmEmail' );
+                $confirmEmail->setRequired( false );
             } elseif ($data['email'] != $data['confirmEmail']) {
-                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+                $form->get( 'confirmEmail' )->setMessages( array("email doesnt match") );
                 $isCustomValidationValid = false;
             }
 
-            if (empty($data['password'])) {
-                $password = $inputFilter->get('password');
-                $password->setRequired(false);
-                $confirmPassword = $inputFilter->get('confirmPassword');
-                $confirmPassword->setRequired(false);
+            if (empty( $data['password'] )) {
+                $password = $inputFilter->get( 'password' );
+                $password->setRequired( false );
+                $confirmPassword = $inputFilter->get( 'confirmPassword' );
+                $confirmPassword->setRequired( false );
             } elseif ($data['password'] != $data['confirmPassword']) {
-                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
+                $form->get( 'confirmPassword' )->setMessages( array("password doesnt match") );
                 $isCustomValidationValid = false;
             }
 
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $userModel->saveUser($data, $userObj);
+                $userModel->saveUser( $data, $userObj );
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
-                $this->redirect()->toUrl($url);
+                $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
+                    'name' => 'users') );
+                $this->redirect()->toUrl( $url );
             }
         }
 
         $variables['photo'] = $photo;
-        $variables['userForm'] = $this->getFormView($form);
+        $variables['userForm'] = $this->getFormView( $form );
         $statement = new Statement();
         $variables['statements'] = $statement->statements;
-        return new ViewModel($variables);
+        return new ViewModel( $variables );
     }
 
     /**
@@ -150,26 +154,27 @@ class IndexController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function newAction() {
+    public function newAction()
+    {
 
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
-        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
-        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
-        $userModel = $this->getServiceLocator()->get('Users\Model\User');
+        $query = $this->getServiceLocator()->get( 'wrapperQuery' )->setEntity( 'Users\Entity\User' );
+        $countriesService = $this->getServiceLocator()->get( 'losi18n-countries' );
+        $languagesService = $this->getServiceLocator()->get( 'losi18n-languages' );
+        $userModel = $this->getServiceLocator()->get( 'Users\Model\User' );
         $userObj = new User();
         $options = array();
         $options['query'] = $query;
         $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countries'] = $countriesService->getAllCountries( $locale );
+        $options['languages'] = $languagesService->getAllLanguages( $locale );
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array( Role::ADMIN_ROLE, $storage['roles'] ))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
-        $form = new UserForm(/* $name = */ null, $options);
+        $form = new UserForm( /* $name = */ null, $options );
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -178,33 +183,34 @@ class IndexController extends ActionController {
             $fileData = $request->getFiles()->toArray();
 
             $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
+                $request->getPost()->toArray(), $fileData
             );
 
-            $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query));
-            $form->setData($data);
+            $query->setEntity( 'Users\Entity\User' );
+            $form->setInputFilter( $userObj->getInputFilter( $query ) );
+            $form->setData( $data );
             $isCustomValidationValid = true;
             if ($data['email'] != $data['confirmEmail']) {
-                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+                $form->get( 'confirmEmail' )->setMessages( array("email doesnt match") );
                 $isCustomValidationValid = false;
             }
             if ($data['password'] != $data['confirmPassword']) {
-                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
+                $form->get( 'confirmPassword' )->setMessages( array("password doesnt match") );
                 $isCustomValidationValid = false;
             }
-            if ($form->isValid() && $isCustomValidationValid === true){
-                $userModel->saveUser($data);
+            if ($form->isValid() && $isCustomValidationValid === true) {
+                $userModel->saveUser( $data );
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
-                $this->redirect()->toUrl($url);
+                $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
+                    'name' => 'users') );
+                $this->redirect()->toUrl( $url );
             }
         }
 
-        $variables['userForm'] = $this->getFormView($form);
+        $variables['userForm'] = $this->getFormView( $form );
         $statement = new Statement();
         $variables['statements'] = $statement->statements;
-        return new ViewModel($variables);
+        return new ViewModel( $variables );
     }
 
     /**
@@ -213,12 +219,30 @@ class IndexController extends ActionController {
      * 
      * @access public
      */
-    public function deleteAction() {
-        $id = $this->params('id');
-        $userModel = $this->getServiceLocator()->get('Users\Model\User');
-        $userModel->deleteUser($id);
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
-        $this->redirect()->toUrl($url);
+    public function deleteAction()
+    {
+        $id = $this->params( 'id' );
+        $userModel = $this->getServiceLocator()->get( 'Users\Model\User' );
+        $userModel->deleteUser( $id );
+        $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
+            'name' => 'users') );
+        $this->redirect()->toUrl( $url );
+    }
+
+    /**
+     * Activate user
+     * 
+     * 
+     * @access public
+     */
+    public function activateAction()
+    {
+        $id = $this->params( 'id' );
+        $userModel = $this->getServiceLocator()->get( 'Users\Model\User' );
+        $userModel->activateUser( $id );
+        $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
+            'name' => 'users') );
+        $this->redirect()->toUrl( $url );
     }
 
 }

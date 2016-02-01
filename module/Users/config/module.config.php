@@ -103,6 +103,19 @@ return array(
                     ),
                 )
             ),
+            'userActivate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/activate/:id',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'activate',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'roles' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
