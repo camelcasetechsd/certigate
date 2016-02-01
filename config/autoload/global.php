@@ -48,11 +48,11 @@ return array(
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host'     => 'localhost',
-                    'port'     => '3306',
-                    'user'     => 'root',
+                    'host' => 'localhost',
+                    'port' => '3306',
+                    'user' => 'root',
                     'password' => 'testpass',
-                    'dbname'   => 'certigate',
+                    'dbname' => 'certigate',
                 )
             )
         )
@@ -76,5 +76,16 @@ return array(
             dirname(__FILE__) . '/../../layout',
             "extension" => ".phtml"
         )
+    ),
+    'mail_settings' => array(
+        'name' => '104.130.122.2',
+        'host' => 'smtp.mailgun.org',
+        'connection_class' => 'plain',
+        'connection_config' => array(
+            'ssl' => 'tls',
+            'username' => 'postmaster@sandbox2d80f78437a048b9832f621a18ce51e0.mailgun.org',
+            'password' => '74bbf394d82b6eb4c52a2cf97acf2fd3'
+        ),
+        'port' => 587,
     )
 );

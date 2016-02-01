@@ -115,6 +115,55 @@ class CourseController extends ActionController
     }
 
     /**
+     * Instructor Training course
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function instructorTrainingAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->setMaxResults($maxResults = 1)
+                ->orderBy(array("id" => Criteria::DESC))
+                ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
+                ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
+        $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
+        $authorizedRoles = array(Role::INSTRUCTOR_ROLE);
+        $courseModel->setCanEnroll($data, $authorizedRoles);
+
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+
+        $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
+        $preparedCourse = reset($preparedCourseArray);
+
+        $resources = $preparedCourse->getResources();
+        $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+        $preparedCourse->setResources($preparedResources);
+
+        $variables['course'] = $preparedCourse;
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $canDownloadResources = true;
+        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+            $canDownloadResources = false;
+        }
+
+        $variables['canDownloadResources'] = $canDownloadResources;
+
+
+        return new ViewModel($variables);
+    }
+
+    /**
      * More course
      *
      * 
@@ -338,8 +387,8 @@ class CourseController extends ActionController
         $notAuthorized = false;
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
-            $routeName = "coursesInstructorCalendar";
-            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $routeName = "coursesInstructorTraining";
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles'])) ) {
                 $notAuthorized = true;
             }
         }
@@ -376,8 +425,8 @@ class CourseController extends ActionController
 
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
-            $routeName = "coursesInstructorCalendar";
-            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $routeName = "coursesInstructorTraining";
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles'])) ) {
                 $notAuthorized = true;
             }
         }
@@ -577,7 +626,7 @@ class CourseController extends ActionController
 
                 // save templates and newQuestions
                 foreach ($data['template'] as $temp) {
-                    
+
                     $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
                 foreach ($data['newQuestion'] as $new) {
