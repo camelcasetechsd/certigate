@@ -14,7 +14,12 @@ return array(
             'Utilities',
             'Mustache',
             'CustomMustache',
-            'CertigateAcl'
+            'CertigateAcl',
+            'LosI18n',
+            'SlmQueue',
+            'SlmQueueDoctrine',
+            'Versioning',
+            'Notifications'
         ),
         'anonymous_routes' => array(
             'userCreate' => array(

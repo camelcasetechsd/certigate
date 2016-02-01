@@ -1377,15 +1377,25 @@ class User
                 'name' => 'language',
                 'required' => true,
             ));
-            $inputFilter->add(array(
+            $inputFilter->add( array(
                 'name' => 'mobile',
                 'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
                     )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile number!'
+                            )
+                        ))
                 )
-            ));
+            ) );
             $inputFilter->add(array(
                 'name' => 'dateOfBirth',
                 'required' => true,
@@ -1428,10 +1438,25 @@ class User
                 'name' => 'zipCode',
                 'required' => false,
             ));
-            $inputFilter->add(array(
+            $inputFilter->add( array(
                 'name' => 'phone',
                 'required' => false,
-            ));
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid phone number!'
+                            )
+                        ))
+                )
+            ) );
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,

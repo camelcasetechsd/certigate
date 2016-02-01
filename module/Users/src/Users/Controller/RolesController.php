@@ -159,14 +159,16 @@ class RolesController extends ActionController
             // insert new privileges
             $data = $request->getPost()->toArray();
 
-            foreach ($data['privileges'] as $p) {
-                list($module, $route) = explode( "-", $p );
-                $aclEntity = new AclEntity();
-                $aclEntity->setModule( $module );
-                $aclEntity->setRoute( $route );
-                $aclEntity->setRole( $roleObj );
+            if (isset( $data['privileges'] )) {
+                foreach ($data['privileges'] as $p) {
+                    list($module, $route) = explode( "-", $p );
+                    $aclEntity = new AclEntity();
+                    $aclEntity->setModule( $module );
+                    $aclEntity->setRoute( $route );
+                    $aclEntity->setRole( $roleObj );
 
-                $em->persist( $aclEntity );
+                    $em->persist( $aclEntity );
+                }
             }
             $em->flush();
 
@@ -184,19 +186,19 @@ class RolesController extends ActionController
                 $filtereModules[$k] = $v;
             }
         }
-        
+
         $roleRoutes = [];
-        
-        foreach($rolePrivileges as $p){
-           $roleRoutes[] = implode("-", [$p->getModule(),$p->getRoute()]);
+
+        foreach ($rolePrivileges as $p) {
+            $roleRoutes[] = implode( "-", [$p->getModule(), $p->getRoute()] );
         }
-        
+
         foreach ($filtereModules as $module => $object) {
             $routes = array_keys( $object->getConfig()['router']['routes'] );
             $newRoutes = [];
             foreach ($routes as $r) {
 
-                if (in_array( implode( "-", [$module,$r]), $roleRoutes )) {
+                if (in_array( implode( "-", [$module, $r] ), $roleRoutes )) {
                     $newRoutes[] = [
                         'name' => $r,
                         'checked' => true
@@ -208,7 +210,7 @@ class RolesController extends ActionController
                     ];
                 }
             }
-            
+
             $modulesRoutes[] = [
                 'module' => $module,
                 'routes' => $newRoutes
