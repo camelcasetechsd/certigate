@@ -110,18 +110,19 @@ class Organization
 
     public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $saveState = false)
     {
-
+        $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
         $rolesIds = array();
         foreach ($roles as $role) {
             $rolesIds[$role->getName()] = $role->getId();
         }
-
+        // at create
         if (is_null($orgObj)) {
-
             $entity = new \Organizations\Entity\Organization();
         }
+        // at edit
         else {
+            $editFlag = true;
             $entity = $orgObj;
         }
 
@@ -181,9 +182,12 @@ class Organization
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
+
+        // does not work in case of savestate or edit
         if (!$saveState) {
             // if there's 
-            if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
+            if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != $creatorId) {
+
                 $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
@@ -191,7 +195,7 @@ class Organization
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
 
-            if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
+            if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != $creatorId) {
                 $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
             }
@@ -293,6 +297,24 @@ class Organization
         return true;
     }
 
+    public function checkSavedBefore($commercialName)
+    {
+        $organization = $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
+            'commercialName' => $commercialName
+        ));
+        // if there's no organization with this commerical name
+        if ($organization == null) {
+            return false;
+        }
+        // existed but type saved state
+        if ($organization->active == 0) {
+            $this->query->remove($organization);
+            return false;
+        }
+        // if existed with nactive = 1 or 2
+        return true;
+    }
+
     /**
      * this function meant to assign an user to an organization with specific type
      *  
@@ -309,6 +331,21 @@ class Organization
         $role = $this->query->find('Users\Entity\Role', $roleId);
         $orgUserObj->setRole($role);
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
+    }
+
+    public function hasSavedState($orgType, $creatorId)
+    {
+        $savedState = $this->query->findOneBy('Organizations\Entity\Organization', array(
+            'creatorId' => $creatorId,
+            'active' => \Organizations\Entity\Organization::SAVE_STATE,
+            'type' => $orgType
+        ));
+
+        if ($savedState != null) {
+            return $savedState->id;
+        }
+
+        return null;
     }
 
 }

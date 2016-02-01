@@ -56,6 +56,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @property string $operatingSystemLang
  * @property string $officeVersion
  * @property string $officeLang
+ * @property string $creatorId
  * 
  * 
  * @package organizations
@@ -78,6 +79,11 @@ class Organization
      * both ATP & ATC
      */
     const TYPE_BOTH = 3;
+
+    /**
+     * Active organization
+     */
+    const SAVE_STATE = 0;
 
     /**
      * Active organization
@@ -378,6 +384,13 @@ class Organization
      */
     public $exambook;
 
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $creatorId;
+
     public function __construct()
     {
         $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
@@ -386,6 +399,10 @@ class Organization
     function getId()
     {
         return $this->id;
+    }
+    function getCreatorId()
+    {
+        return $this->creatorId;
     }
 
     function getType()
@@ -432,6 +449,7 @@ class Organization
     {
         return $this->CRAttachment;
     }
+
     function getWireTransferAttachment()
     {
         return $this->wireTransferAttachment;
@@ -582,6 +600,11 @@ class Organization
         $this->id = $id;
     }
 
+    function setCreatorId($creatorId)
+    {
+        $this->creatorId= $creatorId;
+    }
+
     function setType($type)
     {
         $this->type = $type;
@@ -626,6 +649,7 @@ class Organization
     {
         $this->CRAttachment = $CRAttachment;
     }
+
     function setWireTransferAttachment($wireTransferAttachment)
     {
         $this->wireTransferAttachment = $wireTransferAttachment;
@@ -834,7 +858,7 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-
+        $this->setCreatorId($data['creatorId']);
         $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);

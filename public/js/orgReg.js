@@ -17,7 +17,7 @@ $(document).ready(function () {
 //    });
 
     // in organization create & delete
-    if (window.location.href.indexOf("new?organization=") > -1) {
+    if (window.location.href.indexOf("?organization=") > -1) {
 
         $orgType = getParameterByName('organization');
         switch ($orgType) {
@@ -49,6 +49,12 @@ $(document).ready(function () {
                 break;
         }
 
+    }
+
+    if (window.location.href.indexOf("/organizations/edit") > -1) {
+        $('.notReqOnEdit').hide();
+        $('.notReqOnEdit').removeAttr('required');
+        $('#org_form_saveState').hide();
     }
 // in type page
     if (window.location.href.indexOf("type?type=") > -1) {

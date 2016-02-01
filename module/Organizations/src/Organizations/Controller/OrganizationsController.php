@@ -125,13 +125,25 @@ class OrganizationsController extends ActionController
     public function newAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
-        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
+        $query = $cleanQuery->setEntity('Users\Entity\User');
+        $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $orgObj = new OrgEntity();
         $options = array();
         $auth = new \Zend\Authentication\AuthenticationService();
         $creatorId = $auth->getIdentity()['id'];
+        // organization type
+        $orgType = $_GET['organization'];
+        $savedState = $orgModel->hasSavedState($orgType, $creatorId);
+//        var_dump($orgType);
+//        exit;
+
+        if ($savedState != null) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'id' => $savedState), array('name' => 'edit_org'));
+            $this->redirect()->toUrl($url . '?organization=' . $orgType);
+        }
+
         $options['query'] = $query;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
@@ -169,7 +181,7 @@ class OrganizationsController extends ActionController
             }
             // not approved
             $data['active'] = OrgEntity::NOT_APPROVED;
-
+            $data['creatorId'] = $creatorId;
             if ($form->isValid()) {
 
                 $orgModel->saveOrganization($data, null, $creatorId);
@@ -238,7 +250,7 @@ class OrganizationsController extends ActionController
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $inputFilter = $form->getInputFilter();
             // edited
-            $data['active'] = OrgEntity::EDITED;
+            $data['active'] = OrgEntity::NOT_APPROVED;
             $form->setData($data);
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
@@ -264,6 +276,7 @@ class OrganizationsController extends ActionController
 
             switch ($data['type']) {
                 case '1':
+                    array_push($atcSkippedParams, 'testCenterAdmin_id');
                     foreach ($atcSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
@@ -271,7 +284,7 @@ class OrganizationsController extends ActionController
                     break;
 
                 case '2':
-
+                    array_push($atcSkippedParams, 'trainingManager_id');
                     foreach ($atpSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
@@ -325,7 +338,8 @@ class OrganizationsController extends ActionController
 
     public function saveStateAction()
     {
-
+        $auth = new \Zend\Authentication\AuthenticationService();
+        $creatorId = $auth->getIdentity()['id'];
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $orgObj = new \Organizations\Entity\Organization();
         $orgModel = new \Organizations\Model\Organization($query);
@@ -347,17 +361,19 @@ class OrganizationsController extends ActionController
                 $stateArray['trainingManager_id'] = null;
             }
 
-            $isUniqe = $orgModel->checkExistance($stateArray['commercialName']);
+            $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
             // check commercial name existance in DB
             if (!$isUniqe) {
                 // saving organizations as inactive organization
-                $stateArray['active'] = 0;
+                $stateArray['active'] = OrgEntity::SAVE_STATE;
+                $stateArray['creatorId'] = $creatorId;
+
                 /**
                  * no need to assign users now so we used 
                  * save state = true .. now we will skip calling
                  * assignUserToOrg() method 
                  */
-                $orgModel->saveOrganization($stateArray,null,null,true);
+                $orgModel->saveOrganization($stateArray, null, null, true);
 
                 $data = array(
                     'result' => true,
@@ -366,7 +382,7 @@ class OrganizationsController extends ActionController
             //uniqness error does not completed yet
             else {
                 $data = array(
-                    'result' => "Commercial Name already Exists server",
+                    'result' => "Commercial Name already Exists",
                 );
             }
         }
