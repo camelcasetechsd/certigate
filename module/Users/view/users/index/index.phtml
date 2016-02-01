@@ -42,10 +42,16 @@
                 <td>
 
                     <a data-toggle="tooltip" data-placement="left" title="Edit" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
-                    {{#status}}
+                    {{#statusActive}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a data-toggle="tooltip" data-placement="left" title="Delete" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
-                    {{/status}}
+                    {{/statusActive}}
+                    
+                    {{#statusDeleted}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a data-toggle="tooltip" data-placement="left" title="Activate" href="/users/activate/{{id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    {{/statusDeleted}}
+                    
                 </td>
             </tr>
             {{/userList}}
