@@ -214,6 +214,16 @@ return array(
                     ),
                 )
             ),
+            'coursesInstructorTraining' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/instructor-training',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'instructorTraining',
+                    ),
+                )
+            ),
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
