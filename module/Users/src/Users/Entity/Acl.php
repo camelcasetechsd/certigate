@@ -34,7 +34,7 @@ class Acl
     /**
      *
      * @ORM\ManyToOne(targetEntity="Users\Entity\Role")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id" , onDelete="CASCADE")
      * @var Users\Entity\Role
      */
     public $role;
