@@ -51,29 +51,26 @@ class Course
      * 
      * @access public
      * @param array $courses
-     * @param array $authorizedRoles ,default is empty array
      * @return array courses with canRoll property added
      */
-    public function setCanEnroll($courses, $authorizedRoles = array())
+    public function setCanEnroll($courses)
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $nonAuthorizedEnroll = false;
         $currentUser = NULL;
         if ($auth->hasIdentity()) {
             $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
-            $notAuthorizedRoles = array(Role::INSTRUCTOR_ROLE);
-            foreach($notAuthorizedRoles as $notAuthorizedRole){
-                if (in_array($notAuthorizedRole, $storage['roles']) && !in_array($notAuthorizedRole, $authorizedRoles)) {
-                    $nonAuthorizedEnroll = true;
-                    break;
-                }
-            }
         }
         foreach ($courses as $course) {
+            $nonAuthorizedEnroll = false;
             $canEnroll = true;
             $users = $course->getUsers();
             $canLeave = false;
+            if ($auth->hasIdentity()) {
+                if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId()) {
+                    $nonAuthorizedEnroll = true;
+                }
+            }
             if (!is_null($currentUser)) {
                 $canLeave = $users->contains($currentUser);
             }
@@ -178,7 +175,7 @@ class Course
             $isCustomValidationValid = false;
         }
         // retrieve old data if custom validation failed to pass
-        if($isCustomValidationValid === false && !is_null($course)){
+        if ($isCustomValidationValid === false && !is_null($course)) {
             $courseOutlines = $form->getObject()->getOutlines();
             $course->exchangeArray($data);
             $course->setOutlines($courseOutlines);
