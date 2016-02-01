@@ -1401,7 +1401,7 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'photo',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array('name' => 'Filesize',
                         'options' => array(
