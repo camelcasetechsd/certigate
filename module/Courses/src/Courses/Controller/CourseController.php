@@ -127,8 +127,7 @@ class CourseController extends ActionController
                 ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
                 ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
         $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
-        $authorizedRoles = array(Role::INSTRUCTOR_ROLE);
-        $courseModel->setCanEnroll($data, $authorizedRoles);
+        $courseModel->setCanEnroll($data);
 
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
@@ -383,7 +382,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
             $notAuthorized = true;
         }
 
@@ -421,7 +420,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
             $notAuthorized = true;
         }
         if ($notAuthorized === true) {

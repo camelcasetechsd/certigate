@@ -80,7 +80,12 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * Active organization
+     * not active organization
+     */
+    const NOT_ACTIVE = 0;
+
+    /**
+     * not approved organization
      */
     const NOT_APPROVED = 1;
 

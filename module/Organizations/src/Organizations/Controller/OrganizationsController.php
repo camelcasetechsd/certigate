@@ -7,6 +7,7 @@ use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Atps Controller
@@ -21,6 +22,29 @@ use Organizations\Model\Organization as OrgModel;
 class OrganizationsController extends ActionController
 {
 
+    /**
+     * List organizations
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function indexAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+
+        $criteria = Criteria::create();
+            $expr = Criteria::expr();
+            $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
+
+        $data = $query->filter(/* $entityName = */'Organizations\Entity\Organization', $criteria);
+        $variables['organizations'] = $organizationModel->prepareForDisplay($data);
+        return new ViewModel($variables);
+    }
+    
     public function typeAction()
     {
         $variables = array();
@@ -237,7 +261,7 @@ class OrganizationsController extends ActionController
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $inputFilter = $form->getInputFilter();
             // edited
-            $data['active'] = OrgEntity::EDITED;
+            $data['active'] = OrgEntity::NOT_APPROVED;
             $form->setData($data);
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {

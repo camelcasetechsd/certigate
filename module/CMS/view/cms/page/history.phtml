@@ -1,7 +1,11 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<br>
+{{#page}}
+    <a href="/cms/page" data-toggle="tooltip" data-placement="left" title="Pages"><button class="btn btn-small btn-primary"><span class="glyphicon glyphicon-arrow-left"></span></button></a>
+    <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit Page"><button class="btn btn-small btn-success">Edit Page</button></a>
+{{/page}}
+<br><br>
 <div class="panel panel-default">
 
     <div class="panel-heading">Pages History</div>
