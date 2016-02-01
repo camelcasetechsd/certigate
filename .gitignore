@@ -12,7 +12,6 @@ vendor/
 /logs/*
 !logs/.gitignore
 public/upload/images/*
-public/concat/*
 !public/upload/images/.gitignore
 public/bower_components/
 *~
