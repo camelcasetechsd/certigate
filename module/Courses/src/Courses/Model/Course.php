@@ -63,7 +63,7 @@ class Course
         if ($auth->hasIdentity()) {
             $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
             $notAuthorizedRoles = array(Role::INSTRUCTOR_ROLE);
-            foreach($notAuthorizedRoles as $notAuthorizedRole){
+            foreach ($notAuthorizedRoles as $notAuthorizedRole) {
                 if (in_array($notAuthorizedRole, $storage['roles']) && !in_array($notAuthorizedRole, $authorizedRoles)) {
                     $nonAuthorizedEnroll = true;
                     break;
@@ -178,7 +178,7 @@ class Course
             $isCustomValidationValid = false;
         }
         // retrieve old data if custom validation failed to pass
-        if($isCustomValidationValid === false && !is_null($course)){
+        if ($isCustomValidationValid === false && !is_null($course)) {
             $courseOutlines = $form->getObject()->getOutlines();
             $course->exchangeArray($data);
             $course->setOutlines($courseOutlines);
@@ -203,6 +203,23 @@ class Course
             $evalObj->setIsAdmin(\Courses\Entity\Evaluation::USER_CREATED);
             $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
         }
+    }
+
+    /**
+     * this function meant to list all courses assigned to user if instructor
+     */
+    public function prepareInstructorCourses($userId)
+    {
+        //desired courses which user is assigned to
+        $courses = array();
+        $allCourses = $this->query->findAll('Courses\Entity\Course');
+        foreach ($allCourses as $course) {
+            if ($course->getAi()->id == $userId) {
+                var_dump('here');
+                array_push($courses, $course);
+            }
+        }
+        return $courses;
     }
 
 }

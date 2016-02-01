@@ -100,7 +100,7 @@ class Course
     /**
      * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="ai_id", referencedColumnName="id")
      * @var Users\Entity\User
      */
     public $ai;

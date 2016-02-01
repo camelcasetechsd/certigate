@@ -95,23 +95,14 @@ class CourseController extends ActionController
     public function instructorCalendarAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+//        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity()["id"];
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
-        $criteria = Criteria::create();
-        $expr = Criteria::expr();
-        $criteria->setMaxResults($maxResults = 1)
-                ->orderBy(array("id" => Criteria::DESC))
-                ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
-                ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
-        $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
-        $authorizedRoles = array(Role::INSTRUCTOR_ROLE);
-        $courseModel->setCanEnroll($data, $authorizedRoles);
-        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
-        $view = new ViewModel($variables);
-        $view->setTemplate('courses/course/calendar');
-        return $view;
+        $instructorCourses = $courseModel->prepareInstructorCourses($storage);
+        $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourses);
+        return new ViewModel($variables);
     }
 
     /**
@@ -388,7 +379,7 @@ class CourseController extends ActionController
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
             $routeName = "coursesInstructorTraining";
-            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles'])) ) {
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
                 $notAuthorized = true;
             }
         }
@@ -426,7 +417,7 @@ class CourseController extends ActionController
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
             $routeName = "coursesInstructorTraining";
-            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles'])) ) {
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
                 $notAuthorized = true;
             }
         }
