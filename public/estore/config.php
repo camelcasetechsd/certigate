@@ -1,28 +1,6 @@
 <?php
-// HTTP
-define('HTTP_SERVER', 'http://local-certigate.com/estore/');
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'vagrant'));
+$env = APPLICATION_ENV;
 
-// HTTPS
-define('HTTPS_SERVER', 'http://local-certigate.com/estore/');
-
-// DIR
-define('DIR_APPLICATION', '/var/www/html/public/estore/catalog/');
-define('DIR_SYSTEM', '/var/www/html/public/estore/system/');
-define('DIR_LANGUAGE', '/var/www/html/public/estore/catalog/language/');
-define('DIR_TEMPLATE', '/var/www/html/public/estore/catalog/view/theme/');
-define('DIR_CONFIG', '/var/www/html/public/estore/system/config/');
-define('DIR_IMAGE', '/var/www/html/public/estore/image/');
-define('DIR_CACHE', '/var/www/html/public/estore/system/storage/cache/');
-define('DIR_DOWNLOAD', '/var/www/html/public/estore/system/storage/download/');
-define('DIR_LOGS', '/var/www/html/public/estore/system/storage/logs/');
-define('DIR_MODIFICATION', '/var/www/html/public/estore/system/storage/modification/');
-define('DIR_UPLOAD', '/var/www/html/public/estore/system/storage/upload/');
-
-// DB
-define('DB_DRIVER', 'mysqli');
-define('DB_HOSTNAME', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'testpass');
-define('DB_DATABASE', 'certigate_estore');
-define('DB_PORT', '3306');
-define('DB_PREFIX', 'oc_');
+require_once 'config/' . $env . '.php';
