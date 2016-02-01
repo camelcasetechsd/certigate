@@ -19,8 +19,7 @@
         "estore": {
             "name": "certigate_estore",
             "environment": "vagrant",
-            "host": "estore.local-certigate.com",
-            "public_path": "/var/www/html/eStore",
+            "public_path": "/var/www/html/public/estore",
             "db": {
                 "name": "certigate_estore",
                 "username": "root",
