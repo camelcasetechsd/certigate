@@ -164,7 +164,8 @@ class PageController extends ActionController {
         $logs = $versionModel->prepareLogs($page);
                 
         $variables = array(
-            "logs" => $pageModel->prepareHistory($logs)
+            "logs" => $pageModel->prepareHistory($logs),
+            "page" => $page
         );
         return new ViewModel($variables);
     }
