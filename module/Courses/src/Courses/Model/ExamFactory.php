@@ -29,7 +29,8 @@ class ExamFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\ExamBook');
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
-        return new Exam($query, $systemCacheHandler);
+        $notification = $serviceLocator->get('Notifications\Service\Notification');
+        return new Exam($query, $systemCacheHandler, $notification);
     }
 
 }
