@@ -36,7 +36,8 @@ class NotificationFactory implements FactoryInterface {
         $jobPluginManager = $defaultQueue->getJobPluginManager();
         $sendEmailJob = $jobPluginManager->get('Notifications\Service\Job\SendEmailJob');
         
-        $notification = new Notification($defaultQueue, $sendEmailJob);
+        $viewRenderer = $serviceLocator->get('Mustache\View\Renderer');
+        $notification = new Notification($defaultQueue, $sendEmailJob, $viewRenderer);
         return $notification;
     }
 
