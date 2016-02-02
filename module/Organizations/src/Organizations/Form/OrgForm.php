@@ -53,7 +53,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'commercialName',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Commercial Name',
+                'placeholder' => 'Enter Commercial Name',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -67,7 +67,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'ownerName',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Owner Name',
+                'placeholder' => 'Enter Owner Name',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -80,7 +80,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'continue_if_empty' => true,
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Longtitude',
+                'placeholder' => 'Enter Longtitude',
                 'class' => 'form-control',
                 'allow_empty' => true,
                 'continue_if_empty' => false
@@ -93,7 +93,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'latitude',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Latitude',
+                'placeholder' => 'Enter Latitude',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -108,7 +108,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'ownerNationalId',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Owner National Id',
+                'placeholder' => 'Enter Owner National Id',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -119,14 +119,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'CRNo',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter CR Number',
+                'placeholder' => 'Enter CR',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'CR Number',
+                'label' => 'CR',
             ),
         ));
 
@@ -134,12 +134,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'CRExpiration',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter CR Expiration Date',
                 'required' => 'required',
-                'class' => 'form-control datepicker',
+                'class' => 'form-control date',
+                'type' => 'text',
             ),
             'options' => array(
                 'label' => 'CR Expiration Date',
+                'format' => 'm/d/Y',
             ),
         ));
 
@@ -244,7 +246,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'city',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter your city',
+                'placeholder' => 'Enter City',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -255,14 +257,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'zipCode',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter ZipCode',
+                'placeholder' => 'Enter Zip Code',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'ZipCode',
+                'label' => 'Zip Code',
             ),
         ));
 
@@ -270,7 +272,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'website',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter your website',
+                'placeholder' => 'Enter Website',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -302,14 +304,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         /////////// ATP Data ///////////////
         $this->add(array(
             'name' => 'atcLicenseNo',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter License',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'ATC Licesne No',
+                'label' => 'ATC License Number',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
@@ -319,15 +321,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'atcLicenseExpiration',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter License Expiration Date',
                 'required' => 'required',
-                'class' => 'form-control datepicker atcSet',
+                'class' => 'form-control date atcSet',
+                'type' => 'text',
             ),
             'options' => array(
-                'label' => 'ATC Licesne Expiration Date',
+                'label' => 'ATC License Expiration Date',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
+                'format' => 'm/d/Y',
             ),
         ));
 
@@ -351,12 +355,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'labsNo',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Labs Number',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'Labs No',
+                'label' => 'Labs Number',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
@@ -367,12 +371,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'pcsNo_lab',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter PCs Number Per Lab',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'Pcs No / Lab',
+                'label' => 'PCs Number / Lab',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
@@ -381,9 +385,9 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'internetSpeed_lab',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Internet Speed Per Lab',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
@@ -398,7 +402,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'operatingSystem',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Operating System',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
@@ -407,6 +411,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
+                'empty_option' => "--Select--",
                 'value_options' => $options['staticOfficeVersions']
             ),
         ));
@@ -415,15 +420,16 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'operatingSystemLang',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Operating System Language',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'OperatingSystemLang',
+                'label' => 'Operating System Language',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
+                'empty_option' => "--Select--",
                 'value_options' => $options['staticLangs']
             ),
         ));
@@ -432,12 +438,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'officeVersion',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Microseft Office Version',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
+                'empty_option' => "--Select--",
                 'value_options' => $options['staticOss'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
@@ -458,6 +465,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
+                'empty_option' => "--Select--",
                 'value_options' => $options['staticLangs']
             ),
         ));
@@ -468,14 +476,14 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         //////////// ATC DATA /////////////
         $this->add(array(
             'name' => 'atpLicenseNo',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter License',
                 'required' => 'required',
                 'class' => 'form-control atpSet',
             ),
             'options' => array(
-                'label' => 'ATP Licesne No',
+                'label' => 'ATP License',
                 'label_attributes' => array(
                     'class' => 'atpSet',
                 ),
@@ -486,15 +494,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'atpLicenseExpiration',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter License Expiration Date',
                 'required' => 'required',
-                'class' => 'form-control datepicker atpSet ',
+                'class' => 'form-control date atpSet ',
+                'type' => 'text',
             ),
             'options' => array(
-                'label' => 'ATP Licesne Expiration Date',
+                'label' => 'ATP License Expiration Date',
                 'label_attributes' => array(
                     'class' => 'atpSet',
                 ),
+                'format' => 'm/d/Y',
             )
         ));
 
@@ -517,12 +527,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'classesNo',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter Classes Number',
                 'required' => 'required',
                 'class' => 'form-control atpSet',
             ),
             'options' => array(
-                'label' => 'Classes No.',
+                'label' => 'Classes Number',
                 'label_attributes' => array(
                     'class' => 'atpSet',
                 ),
@@ -533,12 +543,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'pcsNo_class',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter ',
+                'placeholder' => 'Enter PCs Number Per Class',
                 'required' => 'required',
                 'class' => 'form-control atpSet',
             ),
             'options' => array(
-                'label' => 'Pcs No / Class',
+                'label' => 'PCs Number / Class',
                 'label_attributes' => array(
                     'class' => ' atpSet',
                 ),
