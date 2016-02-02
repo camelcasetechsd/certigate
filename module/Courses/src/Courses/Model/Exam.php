@@ -2,13 +2,12 @@
 
 namespace Courses\Model;
 
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Part as MimePart;
-use Zend\Mail\Transport\SmtpOptions;
 use System\Service\Cache\CacheHandler;
 use Notifications\Service\Notification;
+use Notifications\Service\MailTempates;
+use Zend\View\Helper\ServerUrl;
 
 /**
  * Exam Model
@@ -52,7 +51,7 @@ class Exam
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $systemCacheHandler, $notification)
+    public function __construct($query, $systemCacheHandler, Notification $notification)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
@@ -184,28 +183,29 @@ class Exam
         if (array_key_exists("Operations", $settings)) {
             $from = $settings["Operations"];
         }
-        
+
         if (!isset($from)) {
             throw new \Exception("From email is not set");
         }
+        $serverUrl = new ServerUrl();
+        $serverUrlString = $serverUrl();
+        $templateParameters = array(
+            "request" => $request,
+            "serverUrl" => $serverUrlString
+        );
         // if tctv mail
-        if ($adminMail != null) {
-            $html = new MimePart('<h2>Exam Request</h2> <a href="' . getcwd() . '/courses/exam/tvtc/accept/' . $request->getId() . '"> click me if you accept </a> <br>'
-                    . ' <a href="' . getcwd() . '/courses/exam/tvtc/decline/' . $request->getId() . '"> click me if you decline </a>');
+        if (is_null($adminMail)) {
+            $templateName = MailTempates::EXAM_BOOK_TEMPLATE;
         }
         // if admin mail
         else {
-            $html = new MimePart('There\'s a new Exam Request .. created By' . $request->getAtc()->commercialName);
+            $templateName = MailTempates::EXAM_BOOK_ADMIN_TEMPLATE;
         }
-        $html->type = "text/html";
-
-        $body = new MimeMessage();
-        $body->addPart($html);
-
         $mailArray = array(
             'to' => $to,
             'from' => $from,
-            'body' => $body,
+            'templateName' => $templateName,
+            'templateParameters' => $templateParameters,
             'subject' => 'Exam Request',
         );
         $this->notification->notify($mailArray);
