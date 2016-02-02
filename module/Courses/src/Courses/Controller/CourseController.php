@@ -127,30 +127,39 @@ class CourseController extends ActionController
                 ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
                 ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
         $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
-        $courseModel->setCanEnroll($data);
 
-        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-
-        $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
-        $preparedCourse = reset($preparedCourseArray);
-
-        $resources = $preparedCourse->getResources();
-        $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
-        $preparedCourse->setResources($preparedResources);
-
-        $variables['course'] = $preparedCourse;
-
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $canDownloadResources = true;
-        if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-            $canDownloadResources = false;
+        if (count($data) == 0) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
         }
+        else {
 
-        $variables['canDownloadResources'] = $canDownloadResources;
+            $courseModel->setCanEnroll($data);
+
+            $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+
+            $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
+            $preparedCourse = reset($preparedCourseArray);
+
+            $resources = $preparedCourse->getResources();
+            $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+            $preparedCourse->setResources($preparedResources);
+
+            $variables['course'] = $preparedCourse;
+
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+            $canDownloadResources = true;
+            if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownloadResources = false;
+            }
+
+            $variables['canDownloadResources'] = $canDownloadResources;
 
 
-        return new ViewModel($variables);
+            return new ViewModel($variables);
+        }
     }
 
     /**
