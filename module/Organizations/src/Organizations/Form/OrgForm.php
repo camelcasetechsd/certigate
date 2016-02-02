@@ -6,6 +6,7 @@ use Zend\Form\FormInterface;
 use Utilities\Form\Form;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Utilities\Service\Time;
 
 /**
  * User Form
@@ -42,7 +43,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         $this->query = $options['query'];
         unset($options['query']);
         parent::__construct($name, $options);
-        $this->setAttribute('class', 'form form-horizontal');
+        $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
 
         $this->add(array(
             'name' => 'type',
@@ -75,13 +76,39 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label' => 'Owner Name',
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'mapSearch',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Search In Map',
+                'class' => 'form-control gllpSearchField',
+            ),
+            'options' => array(
+                'label' => '<div>Location</div><div class="gllpMap">Google Maps</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'mapSearchButton',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'gllpSearchButton btn btn-primary',
+                'value' => 'Search',
+                'type' => 'button',
+            )
+        ));
+    
         $this->add(array(
             'name' => 'longtitude',
             'continue_if_empty' => true,
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => 'Enter Longtitude',
-                'class' => 'form-control',
+                'class' => 'form-control gllpLongitude',
                 'allow_empty' => true,
                 'continue_if_empty' => false
             ),
@@ -91,10 +118,24 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
         $this->add(array(
             'name' => 'latitude',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => 'Enter Latitude',
-                'class' => 'form-control',
+                'class' => 'form-control gllpLatitude',
+            ),
+            'options' => array(
+                'label' => 'Latitude',
+            ),
+            'validators' => array(
+                'Empty' => true
+            )
+        ));
+        $this->add(array(
+            'name' => 'mapZoom',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'class' => 'form-control gllpZoom',
+                'value' => 3,
             ),
             'options' => array(
                 'label' => 'Latitude',
@@ -141,7 +182,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'CR Expiration Date',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
 
@@ -311,7 +352,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'ATC License Number',
+                'label' => 'ATC License',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
@@ -331,7 +372,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
 
@@ -504,7 +545,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atpSet',
                 ),
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             )
         ));
 
