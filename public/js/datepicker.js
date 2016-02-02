@@ -1,5 +1,5 @@
 $('.date').datepicker({
-    'format': 'mm/dd/yyyy',
+    'format': 'dd/mm/yyyy',
     'autoclose': true,
     'orientation': 'bottom',
     changeMonth: true,

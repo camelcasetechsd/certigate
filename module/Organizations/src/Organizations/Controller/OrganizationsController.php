@@ -8,6 +8,7 @@ use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
 use Doctrine\Common\Collections\Criteria;
+use Utilities\Service\Time;
 
 /**
  * Atps Controller
@@ -81,7 +82,7 @@ class OrganizationsController extends ActionController
         $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
-            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
+            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         return new ViewModel($variables);
     }
@@ -103,7 +104,7 @@ class OrganizationsController extends ActionController
         $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('d/m/Y');
+            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         return new ViewModel($variables);
     }

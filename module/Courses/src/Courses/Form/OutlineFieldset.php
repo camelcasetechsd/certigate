@@ -6,7 +6,7 @@ use Utilities\Service\Status;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Courses\Entity\Outline;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use CustomDoctrine\Service\DoctrineObject as DoctrineHydrator;
 
 /**
  * Outline Fieldset

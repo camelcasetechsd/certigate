@@ -3,9 +3,8 @@
 namespace Users\Form;
 
 use Utilities\Form\Form;
-use Zend\Form\FormInterface;
 use Users\Service\Statement;
-use Users\Entity\Role;
+use Utilities\Service\Time;
 
 /**
  * User Form
@@ -222,28 +221,26 @@ class UserForm extends Form {
             'name' => 'identificationExpiryDate',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Identification Expiry Date',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
         $this->add(array(
             'name' => 'dateOfBirth',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Date Of Birth',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
         $this->add(array(

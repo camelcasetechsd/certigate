@@ -77,7 +77,7 @@ class User
         // All users should always have user role
         $userRole = $this->query->findOneBy( "Users\Entity\Role", /* $criteria = */ array(
             "name" => Role::USER_ROLE) );
-        if (!in_array( $userRole->getId(), $userInfo['roles'] )) {
+        if (isset($userInfo['roles']) && !in_array( $userRole->getId(), $userInfo['roles'] )) {
             $userInfo['roles'][] = $userRole->getId();
         }
 

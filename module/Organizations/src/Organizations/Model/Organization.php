@@ -4,11 +4,10 @@ namespace Organizations\Model;
 
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
-use DateTime;
 use Utilities\Service\Status;
-use Utilities\Service\Query\Query;
 use Users\Entity\Role;
 use Organizations\Entity\Organization as OrganizationEntity;
+use Utilities\Service\Time;
 
 /**
  * Org Model
@@ -130,19 +129,19 @@ class Organization
          * Handling convert string date to datetime object
          */
         if (!empty($orgInfo['CRExpiration'])) {
-            $date = new DateTime($orgInfo['CRExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['CRExpiration']);
             $orgInfo['CRExpiration'] = $date;
         }
 
         if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
-            $date = new DateTime($orgInfo['atcLicenseExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
         else {
             $orgInfo['atcLicenseExpiration'] = null;
         }
         if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
-            $date = new DateTime($orgInfo['atpLicenseExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
         }
         else {

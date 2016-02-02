@@ -3,8 +3,7 @@
 namespace Courses\Form;
 
 use Utilities\Form\Form;
-use Utilities\Service\Status;
-use Users\Entity\Role;
+use Utilities\Service\Time;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -52,10 +51,12 @@ class BookExam extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'required' => 'required ',
-                'class' => 'form-control ',
+                'class' => 'form-control date',
+                'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Exam Date',
+                'format' => Time::DATE_FORMAT,
             ),
             'validators' => array(
                 'Courses\Form\TenDaysAfterValidator' => true

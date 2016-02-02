@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Time;
 
 /**
  * User Entity
@@ -745,7 +746,7 @@ class User
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = new \DateTime($dateOfBirth);
+        $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
         return $this;
     }
 
@@ -1123,7 +1124,7 @@ class User
      */
     public function setIdentificationExpiryDate($identificationExpiryDate)
     {
-        $this->identificationExpiryDate = new \DateTime($identificationExpiryDate);
+        $this->identificationExpiryDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDate);
         return $this;
     }
 
@@ -1403,7 +1404,7 @@ class User
                     array(
                         'name' => 'date',
                         'options' => array(
-                            'format' => 'm/d/Y',
+                            'format' => Time::DATE_FORMAT,
                         )
                     )
                 )
@@ -1480,7 +1481,7 @@ class User
                     array(
                         'name' => 'date',
                         'options' => array(
-                            'format' => 'm/d/Y',
+                            'format' => Time::DATE_FORMAT,
                         )
                     )
                 )

@@ -168,8 +168,8 @@ class Course
             $form->get('capacity')->setMessages(array("Capacity should be higher than enrolled students number"));
             $isCustomValidationValid = false;
         }
-        $endDate = strtotime($data['endDate']);
-        $startDate = strtotime($data['startDate']);
+        $endDate = strtotime(str_replace('/', '-', $data['endDate']));
+        $startDate = strtotime(str_replace('/', '-', $data['startDate']));
         if ($endDate < $startDate) {
             $form->get('endDate')->setMessages(array("End date should be after Start date"));
             $isCustomValidationValid = false;

@@ -3,6 +3,7 @@
 namespace Utilities\Service\Validator;
 
 use Zend\Validator\AbstractValidator;
+use Utilities\Service\Time;
 
 /**
  * Date Validator
@@ -55,7 +56,7 @@ class TenDaysAfterValidator extends AbstractValidator
     {
         $this->setValue($value);
         $isValid = true;
-        $dateDiff = date_diff(date_create($value), new \DateTime());
+        $dateDiff = date_diff(\DateTime::createFromFormat(Time::DATE_FORMAT, $value), new \DateTime());
         if (($dateDiff->days < 10)) {
             $this->error(self::MSG_THAN_TEN_DAYS);
             $isValid = false;

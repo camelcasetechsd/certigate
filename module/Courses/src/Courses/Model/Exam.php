@@ -2,12 +2,11 @@
 
 namespace Courses\Model;
 
-use Zend\Mime\Message as MimeMessage;
-use Zend\Mime\Part as MimePart;
 use System\Service\Cache\CacheHandler;
 use Notifications\Service\Notification;
 use Notifications\Service\MailTempates;
 use Zend\View\Helper\ServerUrl;
+use Utilities\Service\Time;
 
 /**
  * Exam Model
@@ -71,7 +70,7 @@ class Exam
             'id' => $data['atcId']
         ));
         // exam date
-        $bookObj->setDate(new \DateTime($data['date']));
+        $bookObj->setDate(\DateTime::createFromFormat(Time::DATE_FORMAT, $data['date']) );
         // creation time
         $bookObj->setCreatedAt(new \DateTime());
         // number of students
@@ -142,7 +141,7 @@ class Exam
                     $req->isAdminPending = 1;
                     break;
             }
-            $req->date = date_format($req->date, 'd/m/Y');
+            $req->date = date_format($req->date, Time::DATE_FORMAT);
         }
 
         return $requests;
