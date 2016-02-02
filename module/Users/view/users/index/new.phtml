@@ -19,6 +19,16 @@
                 generateStatementCheckboxContent('user_form_' + '{{type}}', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
         {{/statements}}
         displayStatementCheckbox('input[name="roles[]"]');
+        
+        
+            {{#success}}
+            
+            if({{success}}){
+                alert('Saved Successfully');
+            }
+            
+            {{/success}}
+            
     });
 </script>
 {{/scripts}}
