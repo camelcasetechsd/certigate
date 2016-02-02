@@ -612,6 +612,7 @@ class CourseController extends ActionController
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsUserEval();
                 $evalEntity->setIsNotApproved();
+                $evalEntity->setPercentage(0.00);
                 $evaluationModle->saveEvaluation($evalEntity, $courseId);
 
                 // save templates and newQuestions

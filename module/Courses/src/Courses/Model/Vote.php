@@ -42,7 +42,32 @@ class Vote
             $vote->setVote($values['radios_' . $questionIds[$i]]);
             // save vote
             $this->query->save($vote);
+//             update course evaluation percentage
+            $evalObj->setPercentage($this->getVotePercentage($evalObj));
+            $this->query->save($evalObj);
         }
+    }
+
+    /**
+     * 
+     * @param Evaluation $evalObj
+     */
+    private function getVotePercentage($evalObj)
+    {
+
+        $questionCount = count($evalObj->getQuestions());
+        $votes = $evalObj->getVotes();
+        $currentVotes = array();
+        $usersVoted = array();
+
+        foreach ($votes as $vote) {
+            array_push($currentVotes, $vote->getVote());
+            array_push($usersVoted, $vote->getUser()->getId());
+        }
+        $sum = array_sum($currentVotes);
+        $users = count(array_unique($usersVoted));
+
+        return (($sum / ($questionCount * 5)) * 100) / $users;
     }
 
 }
