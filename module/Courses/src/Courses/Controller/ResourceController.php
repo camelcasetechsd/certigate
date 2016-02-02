@@ -67,6 +67,10 @@ class ResourceController extends ActionController
                 }
             }
         }
+        $isInstructor = true;
+        if(in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])){
+            $isInstructor = false;
+        }
 
 
         $criteria = array();
@@ -76,6 +80,7 @@ class ResourceController extends ActionController
         $data = $query->findBy(/* $entityName = */'Courses\Entity\Resource', $criteria);
         $variables['resources'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
+        $variables['isInstructor'] = $isInstructor;
         $variables['processResult'] = $processResult;
         return new ViewModel($variables);
     }

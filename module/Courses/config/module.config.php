@@ -12,7 +12,8 @@ return array(
         'aliases' => array(
             'courses' => 'Courses\Controller\CourseController',
             'resources' => 'Courses\Controller\ResourceController',
-            'exams' => 'Courses\Controller\ExamController'
+            'exams' => 'Courses\Controller\ExamController',
+            'outline' => 'Courses\Controller\OutlineController'
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
@@ -57,6 +58,8 @@ return array(
             'Courses\Controller\Course' => 'Courses\Controller\CourseController',
             'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
             'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
+            'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
+            
         ),
     ),
     'router' => array(
@@ -452,6 +455,20 @@ return array(
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'vote',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // list Course outlines
+            'courseOutlines' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/outlines[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Outline',
+                        'action' => 'index',
                     ),
                     'constraints' => array(
                         'courseId' => '[0-9]+',

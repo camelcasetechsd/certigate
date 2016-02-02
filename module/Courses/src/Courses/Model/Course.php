@@ -202,4 +202,21 @@ class Course
         }
     }
 
+    /**
+     * this function meant to list all courses assigned to user if instructor
+     */
+    public function prepareInstructorCourses($userId)
+    {
+        //desired courses which user is assigned to
+        $courses = array();
+        $allCourses = $this->query->findAll('Courses\Entity\Course');
+        foreach ($allCourses as $course) {
+            if ($course->getAi()->id == $userId) {
+                var_dump('here');
+                array_push($courses, $course);
+            }
+        }
+        return $courses;
+    }
+
 }

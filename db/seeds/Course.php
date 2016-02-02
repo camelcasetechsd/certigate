@@ -169,9 +169,11 @@ class Course extends AbstractSeed
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
             "atp_id" => $atpId,
-            "user_id" => $instructorId
+            "ai_id" => $instructorId
         );
         $this->insert('course', $course);
+        $courseId = $this->getAdapter()->getConnection()->lastInsertId();
+
     }
 
 }

@@ -4,8 +4,8 @@
 
 {{^processResult}}
 <div class="alert alert-warning alert-dismissible" role="alert">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  Process failed to complete!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Process failed to complete!
 </div>
 {{/processResult}}
 
@@ -33,13 +33,17 @@
                 <td>{{type}}</td>
                 <td>{{course.name}}</td>
                 <td>{{statusText}}</td>
-                
-                <td>
+
+                <td>  
+                    {{#isInstructor}}
                     <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#isAdminUser}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
+                    {{/isInstructor}}
+                    
+
                 </td>
             </tr>
             {{/resources}}
