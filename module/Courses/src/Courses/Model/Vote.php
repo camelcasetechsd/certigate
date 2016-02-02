@@ -41,10 +41,10 @@ class Vote
             // each key is radios_XX  where x is question Id
             $vote->setVote($values['radios_' . $questionIds[$i]]);
             // save vote
-            $this->query->save($vote);
-//             update course evaluation percentage
+            $this->query->setEntity('Courses\Entity\Vote')->save($vote);
+            // update course evaluation percentage
             $evalObj->setPercentage($this->getVotePercentage($evalObj));
-            $this->query->save($evalObj);
+            $this->query->setEntity('Courses\Entity\Evaluation')->save($evalObj);
         }
     }
 
