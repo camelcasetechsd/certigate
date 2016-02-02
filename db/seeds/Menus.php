@@ -163,7 +163,7 @@ class Menus extends AbstractSeed
                                             ],
                                             [
                                                 "title" => "Order Material",
-                                                "path" => "http://estore.local-certigate.com/",
+                                                "path" => "/estore",
                                             ]
                                         ]
                                     ],
@@ -365,7 +365,7 @@ class Menus extends AbstractSeed
                                     ],
                                     [
                                         "title" => "Order Material",
-                                        "path" => "http://estore.local-certigate.com/",
+                                        "path" => "/estore",
                                         "weight" => 2,
                                     ],
                                     [
@@ -392,22 +392,22 @@ class Menus extends AbstractSeed
                         "children" => [
                             [
                                 "title" => "Books",
-                                "path" => "http://estore.local-certigate.com/",
+                                "path" => "/estore",
                                 "weight" => 1,
                             ],
                             [
                                 "title" => "Exams",
-                                "path" => "http://estore.local-certigate.com/",
+                                "path" => "/estore",
                                 "weight" => 2,
                             ],
                             [
                                 "title" => "Practice test",
-                                "path" => "http://estore.local-certigate.com/",
+                                "path" => "/estore",
                                 "weight" => 3,
                             ],
                             [
                                 "title" => "e-Learning",
-                                "path" => "http://estore.local-certigate.com/",
+                                "path" => "/estore",
                                 "weight" => 4,
                             ],
                         ]
