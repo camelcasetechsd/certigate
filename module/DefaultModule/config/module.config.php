@@ -71,6 +71,28 @@ return array(
                     ),
                 ),
             ),
+            'generalResources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/general-resources',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'generalResources',
+                    ),
+                ),
+            ),
+            'download_resources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/general-resources/download[/:filename]',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                    ),
+                ),
+            ),
         )
     )
 );
