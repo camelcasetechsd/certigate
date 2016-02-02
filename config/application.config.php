@@ -17,6 +17,7 @@ $config = array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
+        'CustomDoctrine',
         'SlmQueue',
         'SlmQueueDoctrine',
         'DefaultModule',
