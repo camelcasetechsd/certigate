@@ -219,7 +219,7 @@ class User
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $photo;

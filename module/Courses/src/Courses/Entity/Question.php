@@ -54,7 +54,7 @@ class Question
     public $evaluation;
     
     /**
-     * @ORM\OneToOne(targetEntity="Courses\Entity\Vote", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="question")
      */
     public $votes;
 

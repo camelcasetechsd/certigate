@@ -16,6 +16,8 @@
                 <th>End Date</th>
                 <th>Duration (Days)</th>
                 <th>Authorized Training Partner</th>
+                <th>Rating</th>
+                
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -40,6 +42,9 @@
                 </td>
                 <td>
                     {{atp.commercialName}}
+                </td>
+                <td>
+                    {{evaluation.percentage}} %
                 </td>
                 <td>
                     <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-folder-close"></span></a>

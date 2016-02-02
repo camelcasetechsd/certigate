@@ -96,6 +96,13 @@ class Evaluation
      */
     public $votes;
 
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="float")
+     * @var float
+     */
+    public $percentage;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -114,6 +121,11 @@ class Evaluation
     function getVotes()
     {
         return $this->votes;
+    }
+
+    function getPercentage()
+    {
+        return $this->percentage;
     }
 
     function setIsTemplate()
@@ -176,6 +188,11 @@ class Evaluation
     {
 
         $this->questions[] = $question;
+    }
+
+    function setPercentage($percentage)
+    {
+        $this->percentage = $percentage;
     }
 
     /**
