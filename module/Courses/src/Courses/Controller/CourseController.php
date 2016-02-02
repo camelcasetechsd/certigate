@@ -629,8 +629,10 @@ class CourseController extends ActionController
 
                     $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
-                foreach ($data['newQuestion'] as $new) {
-                    $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
+                if (isset($data['newQuestion'])) {
+                    foreach ($data['newQuestion'] as $new) {
+                        $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
+                    }
                 }
                 //redirect to course page
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
@@ -638,8 +640,10 @@ class CourseController extends ActionController
             }
             else {
                 $variables['validationError'] = $errors;
-                // unvalid questions
-                $variables['oldQuestions'] = $data['newQuestion'];
+                if (isset($data['newQuestion'])) {
+                    // unvalid questions
+                    $variables['oldQuestions'] = $data['newQuestion'];
+                }
             }
         }
 
