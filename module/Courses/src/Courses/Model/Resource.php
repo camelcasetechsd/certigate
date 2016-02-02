@@ -67,17 +67,19 @@ class Resource
                 $resource->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        
+
         $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);
-        // save added resources
-        foreach ($data["fileAdded"] as $fileKey => $fileValue) {
-            
+        if (isset($data["fileAdded"])) {
+            // save added resources
+            foreach ($data["fileAdded"] as $fileKey => $fileValue) {
+
                 $filter = new RenameUpload($fileValue["uploadOptions"]);
                 $resource = clone $resource;
                 $uploadedFile = $filter->filter($fileValue);
                 $resource->setFile($uploadedFile);
                 $resource->setName($data["nameAdded"][$fileKey]);
                 $this->query->setEntity('Courses\Entity\Resource')->save($resource);
+            }
         }
     }
 
@@ -94,7 +96,7 @@ class Resource
     public function validateResources($form, $resource, &$data)
     {
         $formErrors = new FormElementErrors();
-        
+
         $validationOutput = array();
         // prepare data for validation
         $courseId = $data["course"];
@@ -122,7 +124,7 @@ class Resource
                 $data["file"] = $data["fileAdded"][$nameKey];
                 $data["fileAdded"][$nameKey]["uploadOptions"] = array();
                 // update input filter after changing input values
-                $form->setInputFilter($resource->getInputFilter($courseId, $nameValue, /*$overrideFilterFlag =*/ true, /*$fileUploadOptions =*/ $data["fileAdded"][$nameKey]["uploadOptions"]));
+                $form->setInputFilter($resource->getInputFilter($courseId, $nameValue, /* $overrideFilterFlag = */ true, /* $fileUploadOptions = */ $data["fileAdded"][$nameKey]["uploadOptions"]));
                 $form->setData($data);
                 // validate added resource
                 $isValid &= $form->isValid();
@@ -146,7 +148,7 @@ class Resource
         }
         // validate original resource
         $isValid &= $form->isValid();
-        
+
         $validationOutput["isValid"] = $isValid;
         return $validationOutput;
     }
