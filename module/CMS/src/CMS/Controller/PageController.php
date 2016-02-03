@@ -191,7 +191,7 @@ class PageController extends ActionController
         $pageModel = $this->getServiceLocator()->get( 'CMS\Model\Page' );
         $page = $query->find( 'CMS\Entity\Page', $id );
         $logs = $versionModel->prepareLogs( $page );
-
+        
         $variables = array(
             "logs" => $pageModel->prepareHistory( $logs ),
             "page" => $page

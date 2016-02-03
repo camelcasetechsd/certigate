@@ -281,7 +281,7 @@ class Page
             $this->setTitle( $data["title"] );
         }
         if (array_key_exists( 'path', $data )) {
-            $this->setTitle( $data["path"] );
+            $this->setPath( $data["path"] );
         }
         if (array_key_exists( 'body', $data )) {
             $this->setBody( $data["body"] );
