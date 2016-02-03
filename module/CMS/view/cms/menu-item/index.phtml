@@ -45,8 +45,12 @@
                 <td>
                     <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{^status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/menuitem/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                 </td>
             </tr>
