@@ -60,7 +60,10 @@ class OutlineFieldset extends Fieldset implements InputFilterProviderInterface
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Title',
+                'label' => '<div class="required">Title</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
             ),
         ));
 
@@ -74,7 +77,10 @@ class OutlineFieldset extends Fieldset implements InputFilterProviderInterface
                 'min' => '1',
             ),
             'options' => array(
-                'label' => 'Duration',
+                'label' => '<div class="required">Duration</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
             ),
         ));
 

@@ -137,7 +137,12 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
+            if(empty($courseId)){
+                $courseId = $data["course"];
+            }else{
+                $data["course"] = $courseId;
+            }
+            $form->setInputFilter($resource->getInputFilter($courseId, /* $name = */ $data["name"]));
             $form->setData($data);
             $validationOutput = $resourceModel->validateResources($form, $resource, $data);
             if ($validationOutput["isValid"]) {
@@ -214,7 +219,12 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
+            if(empty($courseId)){
+                $courseId = $data["course"];
+            }else{
+                $data["course"] = $courseId;
+            }
+            $form->setInputFilter($resource->getInputFilter($courseId, /* $name = */ $data["name"]));
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);

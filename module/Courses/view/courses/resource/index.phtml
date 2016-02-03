@@ -9,7 +9,7 @@
 </div>
 {{/processResult}}
 
-<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Create new Resource</button></a>
+<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
 <br><br>
 <div class="panel panel-default">
 
@@ -39,7 +39,7 @@
                     <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#isAdminUser}}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="#" data-href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/isInstructor}}
                     
