@@ -19,9 +19,9 @@ return array(
                 'params' => array(
                     'host'     => 'localhost',
                     'port'     => '3306',
-                    'user'     => 'camelcasetech_acceptance',
+                    'user'     => 'camelcasetech',
                     'password' => 'c@m31C@$3T3c4',
-                    'dbname'   => 'certigate',
+                    'dbname'   => 'certigate_acceptance',
                 )
             )
         )
