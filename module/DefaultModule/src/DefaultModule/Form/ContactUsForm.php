@@ -83,6 +83,7 @@ class ContactUsForm extends Form {
                 'required' => 'required',
                 'placeholder' => 'Enter your comment here',
                 'class' => 'form-control',
+                'rows' => 5,
             ),
             'options' => array(
                 'label' => 'Message',

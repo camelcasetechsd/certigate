@@ -25,6 +25,18 @@ return array(
             'contactUs' => array(
                 'resource' => 'DefaultModule',
             ),
+            'defaultSign' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'noaccess' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'resource_not_found' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'home' => array(
+                'resource' => 'DefaultModule',
+            ),
             'userCreate' => array(
                 'resource' => 'Users',
             ),
