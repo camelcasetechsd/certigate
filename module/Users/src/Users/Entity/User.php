@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Utilities\Service\Time;
+use DoctrineModule\Validator\UniqueObject;
 
 /**
  * User Entity
@@ -1309,7 +1310,8 @@ class User
                             'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('username')
+                            'fields' => array('username'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This username is already in use")
                         )
                     ),
                 ),
@@ -1505,7 +1507,8 @@ class User
                             'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('email')
+                            'fields' => array('email'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This email address is already in use")
                         )
                     ),
                 ),
