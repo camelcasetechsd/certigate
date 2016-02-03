@@ -24,5 +24,10 @@ class MailTempates {
      */
     const EXAM_BOOK_ADMIN_TEMPLATE = "exam-book-admin";
     
+    /**
+     * Contact us Template
+     */
+    const CONTACT_US_TEMPLATE = "contact-us";
+    
     
 }
