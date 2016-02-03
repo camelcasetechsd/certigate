@@ -493,11 +493,15 @@ class CourseController extends ActionController
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsTemplate();
                 $evalEntity->setIsApproved();
+                $evalEntity->setPercentage(0.00);
                 $evaluationModle->saveEvaluation($evalEntity);
                 // save questions
                 foreach ($data['newQuestion'] as $new) {
                     $evaluationModle->assignQuestionToEvaluation($new);
                 }
+                //redirect to edit page
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvTemplate' , 'id'=>$evalEntity->getId()), array('name' => 'editEvTemplate'));
+                $this->redirect()->toUrl($url);
             }
             else {
                 $variables['validationError'] = $errors;
@@ -635,7 +639,7 @@ class CourseController extends ActionController
                     }
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
             else {
@@ -715,7 +719,7 @@ class CourseController extends ActionController
                     }
                 }
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
             else {
