@@ -19,12 +19,12 @@ $config = [
             'port' => 3306,
             'charset' => 'utf8'
         ],
-        'uat' => [
+        'acceptance' => [
             'adapter' => 'mysql',
             'host' => 'localhost',
-            'name' => 'development_db',
-            'user' => 'root',
-            'pass' => '',
+            'name' => 'certigate_acceptance',
+            'user' => 'camelcasetech',
+            'pass' => 'c@m31C@$3T3c4',
             'port' => 3306,
             'charset' => 'utf8'
         ],
