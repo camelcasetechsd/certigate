@@ -13,7 +13,8 @@
             <tr>
                 <th>Title</th>
                 <th>Menu Item Parent</th>
-                <th>Path</th>
+                <th>Page Path</th>
+                <th>Direct Url</th>
                 <th>Menu</th>
                 <th>Sort order</th>
                 <th>Status</th>
@@ -28,13 +29,14 @@
                 <td>{{title}}</td>
                 <td>
                     {{#parent}}
-                        {{parent.title}}
+                    {{parent.title}}
                     {{/parent}}
                     {{^parent}}
-                        Root
+                    Root
                     {{/parent}}
                 </td>
-                <td>{{path}}</td>
+                <td>{{page.path}}</td>
+                <td>{{directUrl}}</td>
                 <td>{{menu.title}}</td>
                 <td>{{weight}}</td>
                 <td>{{statusText}}</td>
@@ -43,8 +45,8 @@
                 <td>
                     <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                 </td>
             </tr>

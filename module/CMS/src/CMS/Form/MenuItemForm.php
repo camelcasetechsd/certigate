@@ -15,7 +15,8 @@ use Utilities\Service\Status;
  * @package cms
  * @subpackage form
  */
-class MenuItemForm extends Form {
+class MenuItemForm extends Form
+{
 
     /**
      *
@@ -31,17 +32,18 @@ class MenuItemForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct( $name = null, $options = null )
+    {
         $this->query = $options['query'];
-        unset($options['query']);
-        parent::__construct($name, $options);
+        unset( $options['query'] );
+        parent::__construct( $name, $options );
         $hiddenMenuItemsIds = array();
-        if(isset($options['hiddenMenuItemsIds'])){
+        if (isset( $options['hiddenMenuItemsIds'] )) {
             $hiddenMenuItemsIds = $options['hiddenMenuItemsIds'];
         }
-        $this->setAttribute('class', 'form form-horizontal');
+        $this->setAttribute( 'class', 'form form-horizontal' );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -51,21 +53,68 @@ class MenuItemForm extends Form {
             'options' => array(
                 'label' => 'Title',
             ),
-        ));
+        ) );
 
-        $this->add(array(
-            'name' => 'path',
+        $this->add( array(
+            'type' => 'Zend\Form\Element\Radio',
+            'name' => 'type',
+            'required' => true,
+            'options' => array(
+                'label' => 'Menu Item Type',
+                'value_options' => array(
+                    array(
+                        'value' => \CMS\Entity\MenuItem::TYPE_PAGE,
+                        'label' => 'Page',
+                        'checked' => false,
+                        'attributes' => array(
+                            'class' => 'menu_item_type',
+                            'id' => 'type-page',
+                        ),
+                    ),
+                    array(
+                        'value' => \CMS\Entity\MenuItem::TYPE_DIRECT_URL,
+                        'label' => 'Direct Url',
+                        'checked' => false,
+                        'attributes' => array(
+                            'class' => 'menu_item_type',
+                            'id' => 'type-directUrl',
+                        ),
+                    ),
+                ),
+            ),
+        ) );
+
+        $this->add( array(
+            'name' => 'directUrl',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Path',
+                'label' => 'Direct Url',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
+            'name' => 'page',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Page',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'CMS\Entity\Page',
+                'property' => 'name',
+                'empty_item_label' => '--Select--',
+                'display_empty_item' => true,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getTitle();
+                },
+            ),
+        ) );
+
+        $this->add( array(
             'name' => 'parent',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
@@ -87,9 +136,9 @@ class MenuItemForm extends Form {
                 'display_empty_item' => true,
                 'empty_item_label' => "- - ",
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'weight',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
@@ -101,9 +150,9 @@ class MenuItemForm extends Form {
             'options' => array(
                 'label' => 'Sort Order',
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'status',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
@@ -114,28 +163,28 @@ class MenuItemForm extends Form {
                 'checked_value' => Status::STATUS_ACTIVE,
                 'unchecked_value' => Status::STATUS_INACTIVE
             ),
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'menu',
             'type' => 'Zend\Form\Element\Hidden',
-        ));
-        
-        $this->add(array(
+        ) );
+
+        $this->add( array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'Create',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => 'Create',
             )
-        ));
+        ) );
 
-        $this->add(array(
+        $this->add( array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
@@ -143,7 +192,7 @@ class MenuItemForm extends Form {
                 'value' => 'Reset',
                 'type' => 'button',
             )
-        ));
+        ) );
     }
 
 }

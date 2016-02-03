@@ -19,7 +19,8 @@ use Utilities\Service\Query\Query;
  * @package cms
  * @subpackage cache
  */
-class CacheHandler {
+class CacheHandler
+{
 
     /**
      * menus key
@@ -57,7 +58,8 @@ class CacheHandler {
      * @param Query $query
      * @param CMS\Model\MenuItem $menuItem
      */
-    public function __construct(Cache $cache, Query $query, $menuItem) {
+    public function __construct( Cache $cache, Query $query, $menuItem )
+    {
         $this->cache = $cache;
         $this->query = $query;
         $this->menuItem = $menuItem;
@@ -72,32 +74,33 @@ class CacheHandler {
      * @param bool $forceFlush ,default is bool false
      * @return array cached CMS data serialized
      */
-    public function prepareCachedCMSData($forceFlush = false) {
+    public function prepareCachedCMSData( $forceFlush = false )
+    {
         if ($forceFlush === false) {
             $cachedCMSDataKeys = array(
                 self::MENUS_KEY,
                 self::MENUS_PATHS_KEY
             );
-            $existingCachedCMSDataKeys = $this->cache->cacheAdapter->hasItems($cachedCMSDataKeys);
+            $existingCachedCMSDataKeys = $this->cache->cacheAdapter->hasItems( $cachedCMSDataKeys );
         }
-        if ($forceFlush === true || ($forceFlush === false && count($existingCachedCMSDataKeys) !== count($cachedCMSDataKeys))) {
+        if ($forceFlush === true || ($forceFlush === false && count( $existingCachedCMSDataKeys ) !== count( $cachedCMSDataKeys ))) {
             $menuItems = $this->menuItem->getMenuItems();
-            
-            $menuItemsPaths = $this->query->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem')->entityRepository->getMenuItemsSorted(/* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ true, /* $select = */ "mt.path as path", /* $treeFlag = */ false);
+
+            $menuItemsPaths = $this->query->setEntity( /* $entityName = */ 'CMS\Entity\MenuItem' )->entityRepository->getMenuItemsSorted( /* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ true, /* $select = */ "p.path as path", /* $treeFlag = */ false );
             $menuItemsPathsFlat = array();
-            array_walk_recursive($menuItemsPaths, function($value) use (&$menuItemsPathsFlat) {
+            array_walk_recursive( $menuItemsPaths, function($value) use (&$menuItemsPathsFlat) {
                 $menuItemsPathsFlat[] = $value;
-            });
+            } );
             $items = array(
-                self::MENUS_KEY => serialize($menuItems),
-                self::MENUS_PATHS_KEY => serialize($menuItemsPathsFlat)
+                self::MENUS_KEY => serialize( $menuItems ),
+                self::MENUS_PATHS_KEY => serialize( $menuItemsPathsFlat )
             );
-            $this->cache->setItems($items);
+            $this->cache->setItems( $items );
         } else {
             $items = $this->getCachedCMSData();
             $items = array(
-                self::MENUS_KEY => serialize($items[self::MENUS_KEY]),
-                self::MENUS_PATHS_KEY => serialize($items[self::MENUS_PATHS_KEY])
+                self::MENUS_KEY => serialize( $items[self::MENUS_KEY] ),
+                self::MENUS_PATHS_KEY => serialize( $items[self::MENUS_PATHS_KEY] )
             );
         }
         return $items;
@@ -112,29 +115,30 @@ class CacheHandler {
      * @param bool $forceFlush ,default is bool false
      * @return array cached CMS data unserialized
      */
-    public function getCachedCMSData($forceFlush = false) {
+    public function getCachedCMSData( $forceFlush = false )
+    {
         $cachedCMSDataKeys = array(
             self::MENUS_KEY,
             self::MENUS_PATHS_KEY
         );
 
         if ($forceFlush === true) {
-            $items = $this->prepareCachedCMSData($forceFlush);
+            $items = $this->prepareCachedCMSData( $forceFlush );
         } else {
-            $existingCachedCMSDataKeys = $this->cache->cacheAdapter->hasItems($cachedCMSDataKeys);
-            if (count($existingCachedCMSDataKeys) < count($cachedCMSDataKeys)) {
+            $existingCachedCMSDataKeys = $this->cache->cacheAdapter->hasItems( $cachedCMSDataKeys );
+            if (count( $existingCachedCMSDataKeys ) < count( $cachedCMSDataKeys )) {
                 $items = $this->prepareCachedCMSData();
             } else {
                 $items = array(
-                    self::MENUS_KEY => $this->cache->cacheAdapter->getItem(self::MENUS_KEY),
-                    self::MENUS_PATHS_KEY => $this->cache->cacheAdapter->getItem(self::MENUS_PATHS_KEY)
+                    self::MENUS_KEY => $this->cache->cacheAdapter->getItem( self::MENUS_KEY ),
+                    self::MENUS_PATHS_KEY => $this->cache->cacheAdapter->getItem( self::MENUS_PATHS_KEY )
                 );
             }
         }
 
         $cachedCMSData = array(
-            self::MENUS_KEY => unserialize($items[self::MENUS_KEY]),
-            self::MENUS_PATHS_KEY => unserialize($items[self::MENUS_PATHS_KEY])
+            self::MENUS_KEY => unserialize( $items[self::MENUS_KEY] ),
+            self::MENUS_PATHS_KEY => unserialize( $items[self::MENUS_PATHS_KEY] )
         );
         return $cachedCMSData;
     }

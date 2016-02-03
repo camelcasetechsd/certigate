@@ -9896,6 +9896,11 @@ button.close {
   content: "\f295";
 }
 
+/* OriginalFileName : node_modules/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css */ 
+
+/* If the map DIV doesn't have a size set up, it won't appear on the page */
+.gllpMap	{ width: 500px; height: 250px; }
+
 /* OriginalFileName : public/css/style.css */ 
 
 /*
