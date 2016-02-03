@@ -131,6 +131,7 @@ class PageController extends ActionController
 
         $formViewHelper = new FormViewHelper();
         $this->setFormViewHelper( $formViewHelper );
+        $variables['id'] = $id;
         $variables['pageForm'] = $this->getFormView( $form );
         return new ViewModel( $variables );
     }
