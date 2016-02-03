@@ -231,6 +231,19 @@ return array(
                     ),
                 )
             ),
+            'cmsMenuItemActivate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/menuitem/activate/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\MenuItem',
+                        'action' => 'activate',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
         )
     )
 );

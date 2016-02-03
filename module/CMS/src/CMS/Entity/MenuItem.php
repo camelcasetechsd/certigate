@@ -467,10 +467,10 @@ class MenuItem
             $this->setTitle( $data["title"] );
         }
         if (array_key_exists( 'type', $data )) {
-            $this->setTitle( $data["type"] );
+            $this->setType( $data["type"] );
         }
         if (array_key_exists( 'directUrl', $data )) {
-            $this->setTitle( $data["directUrl"] );
+            $this->setDirectUrl( $data["directUrl"] );
         }
         if (array_key_exists( 'page', $data )) {
             $this->setPage( $data["page"] );
