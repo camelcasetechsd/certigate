@@ -10,9 +10,9 @@ return array(
         'excluded_modules' => array(
             'DoctrineModule',
             'DoctrineORMModule',
-            'DefaultModule',
             'Utilities',
             'Mustache',
+            'CustomDoctrine',
             'CustomMustache',
             'CertigateAcl',
             'LosI18n',
@@ -22,13 +22,14 @@ return array(
             'Notifications'
         ),
         'anonymous_routes' => array(
+            'contactUs' => array(
+                'resource' => 'DefaultModule',
+            ),
             'userCreate' => array(
                 'resource' => 'Users',
-                'privileges' => 'userCreate',
             ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
-                'privileges' => 'cmsPageView',
             )
         )
     )

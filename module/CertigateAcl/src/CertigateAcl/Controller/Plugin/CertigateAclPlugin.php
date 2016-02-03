@@ -57,8 +57,8 @@ class CertigateAclPlugin extends AbstractPlugin
 
         if (count( $anonymousRoutes ) > 0) {
             $acl->addRole( new ZendRole( Role::ANONYMOUS_ROLE ) );
-            foreach ($anonymousRoutes as $anonymousRoute) {
-                $acl->allow( /* $roles = */ Role::ANONYMOUS_ROLE, $anonymousRoute['resource'], $anonymousRoute['privileges'] );
+            foreach ($anonymousRoutes as $privilege => $anonymousRoute) {
+                $acl->allow( /* $roles = */ Role::ANONYMOUS_ROLE, $anonymousRoute['resource'], $privilege );
             }
         }
 
@@ -105,7 +105,7 @@ class CertigateAclPlugin extends AbstractPlugin
             }
         }
 
-        if ($authenticated === false && $controller != $signInController) {
+        if ($authenticated === false && $controllerClass != $signInController) {
             if (!$acl->isAllowed( Role::ANONYMOUS_ROLE, $moduleName, $routeMatch )) {
                 // redirect to sign/in
                 $url = $router->assemble( array('action' => 'in'), array('name' => 'defaultSign') );
