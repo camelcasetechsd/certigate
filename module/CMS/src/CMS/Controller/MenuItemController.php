@@ -112,7 +112,7 @@ class MenuItemController extends ActionController
             $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
-                $query->save($menuItemObj);
+                $query->save($menuItemObj,$data);
                 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
                 $this->redirect()->toUrl($url);

@@ -23,7 +23,8 @@ use CMS\Entity\Menu;
  * @package cms
  * @subpackage view
  */
-class MenuView {
+class MenuView
+{
 
     /**
      * Menu div class
@@ -64,7 +65,7 @@ class MenuView {
      * @var string 
      */
     protected $menuItemOpenString = '<li %s><a %s href="%s">%s%s</a>';
-    
+
     /**
      *
      * @var string 
@@ -114,7 +115,8 @@ class MenuView {
      * @access public
      * @param string $path
      */
-    public function setActivePath($path) {
+    public function setActivePath( $path )
+    {
         $this->activePath = $path;
     }
 
@@ -125,7 +127,8 @@ class MenuView {
      * @access public
      * @return string
      */
-    public function getActivePath() {
+    public function getActivePath()
+    {
         return $this->activePath;
     }
 
@@ -139,7 +142,8 @@ class MenuView {
      * @param string $path
      * @return bool
      */
-    public function checkActivePathMatch($path) {
+    public function checkActivePathMatch( $path )
+    {
         return ($path === $this->getActivePath());
     }
 
@@ -154,10 +158,11 @@ class MenuView {
      * @param string $ulClass ,default is empty string
      * @return array menu HTML view for menu title underscored as the key
      */
-    public function prepareMenuView($menusArray, $menuTitleUnderscored = null, $divClass = '', $ulClass = '', $depthLevel = 0) {
+    public function prepareMenuView( $menusArray, $menuTitleUnderscored = null, $divClass = '', $ulClass = '', $depthLevel = 0 )
+    {
 
         // Menu open
-        if (!is_null($menuTitleUnderscored) && array_key_exists($menuTitleUnderscored, $menusArray)) {
+        if (!is_null( $menuTitleUnderscored ) && array_key_exists( $menuTitleUnderscored, $menusArray )) {
             $menusArray = array($menuTitleUnderscored => $menusArray[$menuTitleUnderscored]);
             $divClass = $menuTitleUnderscored;
         }
@@ -165,34 +170,34 @@ class MenuView {
         $menuViewArray = array();
 
         foreach ($menusArray as $menuTitleUnderscored => $menuItemsArray) {
-            if ($depthLevel === 0 && $menuItemsArray == reset($menusArray)) {
-                $menuView = sprintf($this->menuOpenString, $divClass, $this->ulClass);
-            } elseif($depthLevel !== 0) {
-                $menuView = sprintf($this->subMenuOpenString, $this->ulClass);
+            if ($depthLevel === 0 && $menuItemsArray == reset( $menusArray )) {
+                $menuView = sprintf( $this->menuOpenString, $divClass, $this->ulClass );
+            } elseif ($depthLevel !== 0) {
+                $menuView = sprintf( $this->subMenuOpenString, $this->ulClass );
             }
             foreach ($menuItemsArray as $menuItemTitle => $menuItemArray) {
                 $depthLevel = $menuItemArray['depth'];
                 $menuItemTitleUnderscored = $menuItemArray['title_underscored'];
                 $activeFlag = '';
-                if ($this->checkActivePathMatch($menuItemArray['path'])) {
+                if ($this->checkActivePathMatch( $menuItemArray['path'] )) {
                     $activeFlag = $this->activeClass;
                 }
-                $liAttributes = sprintf($this->menuItemLiAttributesString, $menuItemTitleUnderscored, $depthLevel, $activeFlag);
-                $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $menuItemTitleUnderscored, $depthLevel);
+                $liAttributes = sprintf( $this->menuItemLiAttributesString, $menuItemTitleUnderscored, $depthLevel, $activeFlag );
+                $anchorAttributes = sprintf( $this->menuItemAnchorAttributesString, $menuItemTitleUnderscored, $depthLevel );
                 $condChildIndicator = '';
-                if (count($menuItemArray["children"]) > 0) {
+                if (count( $menuItemArray["children"] ) > 0) {
                     $condChildIndicator = $this->childIndicator;
                 }
-                $menuView .= sprintf($this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle, $condChildIndicator);
-                if (count($menuItemArray["children"]) > 0) {
-                    $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divClass = */ '', /* $ulClass = */ '', $depthLevel + 1));
+                $menuView .= sprintf( $this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle, $condChildIndicator );
+                if (count( $menuItemArray["children"] ) > 0) {
+                    $menuView .= implode( " ", $this->prepareMenuView( $menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divClass = */ '', /* $ulClass = */ '', $depthLevel + 1 ) );
                 }
                 $menuView .= $this->menuItemCloseString;
             }
-            
-            if ($depthLevel === 0 && $menuItemsArray == end($menusArray)) {
+
+            if ($depthLevel === 0 && $menuItemsArray == end( $menusArray )) {
                 $menuView .= $this->menuCloseString;
-            } elseif($depthLevel !== 0) {
+            } elseif ($depthLevel !== 0) {
                 $menuView .= $this->subMenuCloseString;
             }
             $menuViewArray[$menuTitleUnderscored] = $menuView;

@@ -2,9 +2,11 @@
 
 require_once 'init_autoloader.php';
 require_once 'module/CMS/src/CMS/Entity/Menu.php';
+require_once 'module/CMS/src/CMS/Entity/MenuItem.php';
 
 use Phinx\Seed\AbstractSeed;
 use \CMS\Entity\Menu;
+use \CMS\Entity\MenuItem;
 
 class Menus extends AbstractSeed
 {
@@ -25,7 +27,7 @@ class Menus extends AbstractSeed
             "status" => true
         ];
 
-        $this->insert('menu', $menu);
+        $this->insert( 'menu', $menu );
         $primaryMenuId = $this->getAdapter()->getConnection()->lastInsertId();
 
 
@@ -443,7 +445,7 @@ class Menus extends AbstractSeed
             ]
         ];
         foreach ($primaryMenuItems as $item) {
-            $this->insertMenuItem($item, $primaryMenuId);
+            $this->insertMenuItem( $item, $primaryMenuId );
         }
 
 
@@ -453,39 +455,50 @@ class Menus extends AbstractSeed
             "status" => true
         ];
 
-        $this->insert('menu', $menu);
+        $this->insert( 'menu', $menu );
     }
 
-    public function insertMenuItem($item, $primaryMenuId, $parentId = null)
+    public function insertMenuItem( $item, $primaryMenuId, $parentId = null )
     {
-        $this->insert('menuItem', [
-            'parent_id' => $parentId,
-            'menu_id' => $primaryMenuId,
-            'title' => $item['title'],
-            'path' => $item['path'],
-            'weight' => (isset($item['weight'])) ? $item['weight'] : 1,
-            'status' => true
-        ]);
-        $menuItemParentId = $this->getAdapter()->getConnection()->lastInsertId();
-        if (isset($item['type']) && $item['type'] == "page") {
-            $this->insertPageForMenuItem($item, $menuItemParentId);
+        $menuItem = [];
+        if (isset( $item['type'] ) && $item['type'] == "page") {
+            $pageId = $this->insertPageForMenuItem( $item );
+            $menuItem['page_id'] = $pageId;
+            $menuItem['type'] = MenuItem::TYPE_PAGE;
+        } else {
+            $menuItem['directUrl'] = $item['path'];
+            $menuItem['type'] = MenuItem::TYPE_DIRECT_URL;
         }
-        if (isset($item['children']) && count($item['children']) > 0) {
+
+        $menuItem['parent_id'] = $parentId;
+        $menuItem['menu_id'] = $primaryMenuId;
+        $menuItem['title'] = $item['title'];
+        $menuItem['weight'] = (isset( $item['weight'] )) ? $item['weight'] : 1;
+        $menuItem['status'] = true;
+
+        $this->insert( 'menuItem', $menuItem );
+
+        $menuItemParentId = $this->getAdapter()->getConnection()->lastInsertId();
+        if (isset( $item['children'] ) && count( $item['children'] ) > 0) {
             foreach ($item['children'] as $childItem) {
-                $this->insertMenuItem($childItem, $primaryMenuId, $menuItemParentId);
+                $this->insertMenuItem( $childItem, $primaryMenuId, $menuItemParentId );
             }
         }
     }
 
-    public function insertPageForMenuItem($item, $itemId)
+    public function insertPageForMenuItem( $item )
     {
         $faker = Faker\Factory::create();
 
-        $this->insert('page', [
-            'menuitem_id' => $itemId,
+        $this->insert( 'page', [
             'title' => $item['title'],
-            'body' => base64_encode(bzcompress($faker->text))
-        ]);
+            'path' => $item['path'],
+            'status' => TRUE,
+            'body' => base64_encode( bzcompress( $faker->text ) )
+        ] );
+
+        $pageId = $this->getAdapter()->getConnection()->lastInsertId();
+        return $pageId;
     }
 
 }

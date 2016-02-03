@@ -17,7 +17,8 @@ use Utilities\Service\Query\Query;
  * @package cms
  * @subpackage model
  */
-class MenuItem {
+class MenuItem
+{
 
     /**
      *
@@ -43,7 +44,8 @@ class MenuItem {
      * @param Query $query ,default is null
      * @param array $staticMenus ,default is empty array
      */
-    public function __construct($query = null, $staticMenus = array()) {
+    public function __construct( $query = null, $staticMenus = array() )
+    {
         $this->inflector = new Inflector();
         $this->query = $query;
         $this->staticMenus = $staticMenus;
@@ -60,32 +62,33 @@ class MenuItem {
      * 
      * @return array parent children with children appended under it
      */
-    public function sortMenuItemsByParents(&$menuItemsByParents, &$menuItemsPerParent, $treeFlag = false, $depthLevel = 0) {
+    public function sortMenuItemsByParents( &$menuItemsByParents, &$menuItemsPerParent, $treeFlag = false, $depthLevel = 0 )
+    {
         $tree = array();
         foreach ($menuItemsPerParent as $menuItem) {
             $menuItem->children = array();
-            if (isset($menuItemsByParents[$menuItem->getId()])) {
+            if (isset( $menuItemsByParents[$menuItem->getId()] )) {
                 $depthLevel++;
                 // get all children under menu item
-                $menuItem->children = $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$menuItem->getId()], $treeFlag, $depthLevel);
+                $menuItem->children = $this->sortMenuItemsByParents( $menuItemsByParents, $menuItemsByParents[$menuItem->getId()], $treeFlag, $depthLevel );
                 $depthLevel--;
             }
 
             if ($treeFlag === false) {
                 $tree[] = $menuItem;
                 // append children under direct parent
-                if (count($menuItem->children) > 0) {
-                    $tree = array_merge($tree, $menuItem->children);
-                    unset($menuItem->children);
+                if (count( $menuItem->children ) > 0) {
+                    $tree = array_merge( $tree, $menuItem->children );
+                    unset( $menuItem->children );
                 }
             } else {
                 $menuItemTitle = $menuItem->getTitle();
-                $menuTitle = $this->inflector->underscore($menuItem->getMenu()->getTitle());
+                $menuTitle = $this->inflector->underscore( $menuItem->getMenu()->getTitle() );
                 $menuItemArray = array(
                     'depth' => $depthLevel,
-                    'path' => $menuItem->getPath(),
+                    'path' => $menuItem->getType() == \CMS\Entity\MenuItem::TYPE_PAGE? $menuItem->getPage()->getPath() : $menuItem->getDirectUrl() ,
                     'weight' => $menuItem->getWeight(),
-                    'title_underscored' => $this->inflector->underscore($menuItemTitle),
+                    'title_underscored' => $this->inflector->underscore( $menuItemTitle ),
                     'children' => $menuItem->children
                 );
                 $tree[$menuTitle][$menuItemTitle] = $menuItemArray;
@@ -104,18 +107,19 @@ class MenuItem {
      * 
      * @return array menu items sorted
      */
-    public function getSortedMenuItems($menuItems, $root = 0, $treeFlag = false) {
+    public function getSortedMenuItems( $menuItems, $root = 0, $treeFlag = false )
+    {
         $menuItemsByParents = array(
             $root => array()
         );
         foreach ($menuItems as $menuItem) {
             $menuItemParentId = $root;
-            if (!is_null($menuItem->getParent())) {
+            if (!is_null( $menuItem->getParent() )) {
                 $menuItemParentId = $menuItem->getParent()->getId();
             }
             $menuItemsByParents[$menuItemParentId][] = $menuItem;
         }
-        return $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root], $treeFlag);
+        return $this->sortMenuItemsByParents( $menuItemsByParents, $menuItemsByParents[$root], $treeFlag );
     }
 
     /**
@@ -129,18 +133,19 @@ class MenuItem {
      * @return array all menus sorted
      * @throws Exception query must be instance of Query
      */
-    public function getMenuItems($includeStatic = true) {
-        if(! $this->query instanceof Query){
-            throw new Exception("query must be instance of Query");
+    public function getMenuItems( $includeStatic = true )
+    {
+        if (!$this->query instanceof Query) {
+            throw new Exception( "query must be instance of Query" );
         }
         // get dynamic menus
-        $menuItems = $this->query->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem')->entityRepository->getMenuItemsSorted(/* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ false, /* $select = */ null, /* $treeFlag = */ true);
+        $menuItems = $this->query->setEntity( /* $entityName = */ 'CMS\Entity\MenuItem' )->entityRepository->getMenuItemsSorted( /* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ false, /* $select = */ null, /* $treeFlag = */ true );
         if ($includeStatic === true) {
             $weight = array();
             // merge static and dynamic menus
             foreach ($this->staticMenus as $staticMenuTitle => $staticMenuArray) {
-                if (array_key_exists($staticMenuTitle, $menuItems)) {
-                    $menuItems[$staticMenuTitle] = array_merge($staticMenuArray, $menuItems[$staticMenuTitle]);
+                if (array_key_exists( $staticMenuTitle, $menuItems )) {
+                    $menuItems[$staticMenuTitle] = array_merge( $staticMenuArray, $menuItems[$staticMenuTitle] );
                 } else {
                     $menuItems[$staticMenuTitle] = $staticMenuArray;
                 }
@@ -153,11 +158,11 @@ class MenuItem {
                     $weight[$menuTitle][] = $menuItemArray['weight'];
                 }
                 // reorder weights per menu
-                asort($weight[$menuTitle]);
+                asort( $weight[$menuTitle] );
                 // reoreder Merged result according to first level menu items' weights
                 foreach ($weight[$menuTitle] as $menuItemWeight) {
                     foreach ($menuArray as $menuItemTitle => $menuItemArray) {
-                        if($menuItemArray['weight'] === $menuItemWeight){
+                        if ($menuItemArray['weight'] === $menuItemWeight) {
                             $sortedMenuArray[$menuItemTitle] = $menuItemArray;
                         }
                     }
