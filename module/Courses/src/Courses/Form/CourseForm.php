@@ -256,7 +256,7 @@ class CourseForm extends Form
                     'class' => 'form-control',
                 ),
                 'options' => array(
-                    'label' => 'Is For Instructor',
+                    'label' => 'Train the Trainer course',
                     'checked_value' => Status::STATUS_ACTIVE,
                     'unchecked_value' => Status::STATUS_INACTIVE
                 ),
