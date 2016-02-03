@@ -103,7 +103,7 @@ class UserForm extends Form
             'name' => 'mobile',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Mobile Number',
+                'placeholder' => 'Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -115,9 +115,9 @@ class UserForm extends Form
             'name' => 'phone',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'class' => 'form-control',
-            ),
+           ),
             'options' => array(
                 'label' => 'Phone',
             ),
