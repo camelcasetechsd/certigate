@@ -34,6 +34,7 @@
             <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
             <div class="col-md-4">
                 <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required="">
+                <a href="#" class="deleteQuestion" >X</a>
             </div>
         </div>
         <span id="endOfText"></span>
@@ -61,7 +62,7 @@ $(document).ready(function () {
     });
 
     function getMeNewInput() {
-        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="Add Your Question Here" class="form-control input-md" required=""> </div> </div>';
+        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="Add Your Question Here" class="form-control input-md" required=""> <a href="#" class="deleteQuestion" >X</a></div> </div>';
         $('#endOfText').before(window.template);
         numerateLabels();
     }
@@ -69,7 +70,7 @@ $(document).ready(function () {
     function numerateLabels() {
         window.index = 1
         $('.control-label').each(function () {
-            $(this).text('Question Title '+window.index)
+            $(this).text('Question Title ' + window.index)
             window.index++;
         });
     }
@@ -77,8 +78,8 @@ $(document).ready(function () {
     /**
      * This action is meant to delete 
      */
-    $('.deleteQuestion').click(function () {
-        // delete template 
+    $(document).on("click", ".deleteQuestion", function () {
+//         delete template 
         $(this).parent().parent().remove();
         numerateLabels();
     });
