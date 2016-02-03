@@ -255,6 +255,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
+        // setting default students number
+        $course->setStudentsNo(/*$studentsNo =*/ 0);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
