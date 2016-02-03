@@ -472,7 +472,7 @@ class MenuItem
         if (array_key_exists( 'directUrl', $data )) {
             $this->setDirectUrl( $data["directUrl"] );
         }
-        if (array_key_exists( 'page', $data )) {
+        if (array_key_exists( 'page', $data ) && !empty($data['page'])) {
             $this->setPage( $data["page"] );
         }
         if (array_key_exists( 'menu', $data )) {
