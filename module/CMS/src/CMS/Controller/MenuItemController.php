@@ -35,8 +35,8 @@ class MenuItemController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\MenuItem');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        
-        $data = $query->findAll(/*$entityName =*/null);
+
+        $data = $query->findAll(/* $entityName = */null);
         $variables['menuItems'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
@@ -68,7 +68,7 @@ class MenuItemController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($menuItemObj, $data);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
                 $this->redirect()->toUrl($url);
             }
@@ -112,8 +112,8 @@ class MenuItemController extends ActionController
             $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
             if ($form->isValid()) {
-                $query->save($menuItemObj,$data);
-                
+                $query->setEntity('CMS\Entity\MenuItem')->save($menuItemObj, $data);
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
                 $this->redirect()->toUrl($url);
             }
@@ -137,13 +137,13 @@ class MenuItemController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
-        
+
         $menuItemObj->setStatus(Status::STATUS_INACTIVE);
 
         $query->save($menuItemObj);
-        
+
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
         $this->redirect()->toUrl($url);
     }
-}
 
+}

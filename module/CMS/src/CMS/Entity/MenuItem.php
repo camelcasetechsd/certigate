@@ -443,10 +443,7 @@ class MenuItem
     public function getNestedTitle()
     {
         $menu = $this->getMenu();
-        $nestedTitle = '';
-        if (is_object( $menu )) {
-            $nestedTitle .= $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR;
-        }
+        $nestedTitle = $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR;
         $nestedTitle .= str_repeat( '- ', $this->getDepthLevel() ) . $this->getTitle();
         if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object( $menu ) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
             $nestedTitle .= ' [' . Status::STATUS_INACTIVE_TEXT . ']';

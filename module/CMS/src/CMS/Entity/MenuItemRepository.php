@@ -43,7 +43,7 @@ class MenuItemRepository extends EntityRepository
             ->orderBy( 'mt.menu,mt.weight', 'ASC' );
         if (count( $hiddenMenuItemsIds ) > 0) {
             $parameters['hiddenMenuItemsIds'] = $hiddenMenuItemsIds;
-            $queryBuilder->andWhere( $queryBuilder->expr()->eq( 'mt.id', ":hiddenMenuItemsIds" ) );
+            $queryBuilder->andWhere( $queryBuilder->expr()->notIn( 'mt.id', ":hiddenMenuItemsIds" ) );
         }
         if (!is_null( $menuItemStatus )) {
             $parameters['menuItemStatus'] = $menuItemStatus;

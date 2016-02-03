@@ -77,6 +77,7 @@ class FormViewHelper extends OriginalFormViewHelper {
                     }
                     $valueOption["label"] = $menuTitle;
                     $valueLabels[] = $menuTitle;
+                    
                     // append option to corresponding menu options
                     if (array_key_exists($menuTitle, $valueOptions)) {
                         $valueOptions[$menuTitle]["options"][] = $valueOption["options"][0];
