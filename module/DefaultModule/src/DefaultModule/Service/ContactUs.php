@@ -4,6 +4,8 @@ namespace DefaultModule\Service;
 
 use Notifications\Service\MailTempates;
 use System\Service\Cache\CacheHandler;
+use System\Service\Settings;
+use Notifications\Service\MailSubjects;
 
 /**
  * ContactUs
@@ -62,9 +64,9 @@ class ContactUs
         $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
 
         $toArray = array();
-        if (array_key_exists("Operations", $settings) && array_key_exists("Admin_Email", $settings)) {
-            $toArray[] = $settings["Operations"];
-            $toArray[] = $settings["Admin_Email"];
+        if (array_key_exists(Settings::OPERATIONS_EMAIL, $settings) && array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $toArray[] = $settings[Settings::OPERATIONS_EMAIL];
+            $toArray[] = $settings[Settings::ADMIN_EMAIL];
         }
         if (count($toArray) == 0) {
             throw new \Exception("To email is not set");
@@ -76,7 +78,7 @@ class ContactUs
             'templateParameters' => array(
                 "data" => $data,
             ),
-            'subject' => "New Contact-Us Message",
+            'subject' => MailSubjects::CONTACT_US_SUBJECT,
         );
         $this->notification->notify($mailArray);
 

@@ -7,6 +7,8 @@ use Notifications\Service\Notification;
 use Notifications\Service\MailTempates;
 use Zend\View\Helper\ServerUrl;
 use Utilities\Service\Time;
+use System\Service\Settings;
+use Notifications\Service\MailSubjects;
 
 /**
  * Exam Model
@@ -90,20 +92,22 @@ class Exam
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
         $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
 
-        if (array_key_exists("TVTC", $settings)) {
-            $tvtcMail = $settings["TVTC"];
+        if (array_key_exists(Settings::TVTC_EMAIL, $settings)) {
+            $tvtcMail = $settings[Settings::TVTC_EMAIL];
         }
-        if (array_key_exists("Admin_Email", $settings)) {
-            $admin = $settings["Admin_Email"];
+        $toBeNotifiedArray = array();
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings) && array_key_exists(Settings::OPERATIONS_EMAIL, $settings)) {
+            $toBeNotifiedArray[] = $settings[Settings::ADMIN_EMAIL];
+            $toBeNotifiedArray[] = $settings[Settings::OPERATIONS_EMAIL];
         }
 
         if (isset($tvtcMail)) {
             // send tvtc new mail
             $this->sendMail($bookObj, $tvtcMail, $config, true);
         }
-        if (isset($admin)) {
+        if (count($toBeNotifiedArray) > 0) {
             // send admin new mail
-            $this->sendMail($bookObj, $admin, $config);
+            $this->sendMail($bookObj, $toBeNotifiedArray, $config);
         }
     }
 
@@ -179,8 +183,8 @@ class Exam
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
         $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
 
-        if (array_key_exists("Operations", $settings)) {
-            $from = $settings["Operations"];
+        if (array_key_exists(Settings::SYSTEM_EMAIL , $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
         }
 
         if (!isset($from)) {
@@ -194,18 +198,20 @@ class Exam
         );
         // if tctv mail
         if (is_null($adminMail)) {
-            $templateName = MailTempates::EXAM_BOOK_TEMPLATE;
+            $templateName = MailTempates::EXAM_APPROVAL_REQUEST_TEMPLATE;
+            $subject = MailSubjects::EXAM_APPROVAL_REQUEST_SUBJECT;
         }
         // if admin mail
         else {
-            $templateName = MailTempates::EXAM_BOOK_ADMIN_TEMPLATE;
+            $templateName = MailTempates::NEW_EXAM_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::NEW_EXAM_NOTIFICATION_SUBJECT;
         }
         $mailArray = array(
             'to' => $to,
             'from' => $from,
             'templateName' => $templateName,
             'templateParameters' => $templateParameters,
-            'subject' => 'Exam Request',
+            'subject' => $subject,
         );
         $this->notification->notify($mailArray);
     }
