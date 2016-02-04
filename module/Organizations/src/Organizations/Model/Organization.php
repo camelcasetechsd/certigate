@@ -133,12 +133,13 @@ class Organization
      * @access public
      * @param array $orgInfo
      * @param Organizations\Entity\Organization $orgObj ,default is null
+     * @param int $oldStatus ,default is null
      * @param int $creatorId ,default is null
      * @param string $userEmail ,default is null
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $userEmail = null, $isAdminUser = true , $saveState = false)
+    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true , $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -146,21 +147,24 @@ class Organization
         foreach ($roles as $role) {
             $rolesIds[$role->getName()] = $role->getId();
         }
-        // at create
-
         $sendNotificationFlag = false;
+        // at create
         if (is_null($orgObj)) {
             $entity = new \Organizations\Entity\Organization();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
+                $entity->setActive(OrganizationEntity::NOT_APPROVED);
             }
         }
         // at edit
         else {
             $editFlag = true;
             $entity = $orgObj;
+            if ($isAdminUser === false) {
+                $entity->setActive($oldStatus);
+            }
         }
-
+        
 //       
         /**
          * Handling convert string date to datetime object

@@ -182,6 +182,7 @@ class OrganizationsController extends ActionController
         }
         
         $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
@@ -216,12 +217,10 @@ class OrganizationsController extends ActionController
                     }
                     break;
             }
-            // not approved
-            $data['active'] = OrgEntity::NOT_APPROVED;
             $data['creatorId'] = $creatorId;
             if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data, null, $creatorId, $userEmail, $isAdminUser);
+                $orgModel->saveOrganization($data, /*$orgObj =*/ null, /*$oldStatus =*/ null, $creatorId, $userEmail, $isAdminUser);
 
                 // redirecting
                 if ($data['type'] == 1) {
@@ -254,16 +253,28 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
+        $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
         $atpLicenseAttachment = $orgObj->atpLicenseAttachment;
+        $oldStatus = $orgObj->isActive();
 
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        $isAdminUser = false;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+        }
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
 
         $options = array();
         $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
@@ -286,8 +297,6 @@ class OrganizationsController extends ActionController
 
             $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
             $inputFilter = $form->getInputFilter();
-            // edited
-            $data['active'] = OrgEntity::NOT_APPROVED;
             $form->setData($data);
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
@@ -330,9 +339,7 @@ class OrganizationsController extends ActionController
             }
 
             if ($form->isValid()) {
-                $orgModel = new OrgModel($query);
-
-                $orgModel->saveOrganization($data, $orgObj);
+                $orgModel->saveOrganization($data, $orgObj, $oldStatus, /*$creatorId =*/ null, /*$userEmail =*/ null, $isAdminUser);
 
                 // redirecting
                 if ($data['type'] == 1) {
@@ -379,7 +386,7 @@ class OrganizationsController extends ActionController
         $creatorId = $auth->getIdentity()['id'];
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $orgObj = new \Organizations\Entity\Organization();
-        $orgModel = new \Organizations\Model\Organization($query);
+        $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
             parse_str($_POST['saveState'], $stateArray);
@@ -410,7 +417,7 @@ class OrganizationsController extends ActionController
                  * save state = true .. now we will skip calling
                  * assignUserToOrg() method 
                  */
-                $orgModel->saveOrganization($stateArray, null, /*$creatorId =*/ null, /*$userEmail =*/ null, /*$isAdminUser =*/ true, /*$saveState =*/ true);
+                $orgModel->saveOrganization($stateArray, /*$orgObj =*/ null,/*$oldStatus =*/ null, /*$creatorId =*/ null, /*$userEmail =*/ null, /*$isAdminUser =*/ true, /*$saveState =*/ true);
 
                 $data = array(
                     'result' => true,

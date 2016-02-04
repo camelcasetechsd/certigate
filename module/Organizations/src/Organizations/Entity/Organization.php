@@ -406,6 +406,7 @@ class Organization
     {
         return $this->id;
     }
+
     function getCreatorId()
     {
         return $this->creatorId;
@@ -608,7 +609,7 @@ class Organization
 
     function setCreatorId($creatorId)
     {
-        $this->creatorId= $creatorId;
+        $this->creatorId = $creatorId;
     }
 
     function setType($type)
@@ -801,6 +802,17 @@ class Organization
         $this->active = $active;
     }
 
+    /**
+     * is active
+     * 
+     * @access public
+     * @return int active
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
     static function getStaticLangs()
     {
         return array(
@@ -864,8 +876,12 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-        $this->setCreatorId($data['creatorId']);
-        $this->setActive($data['active']);
+        if (array_key_exists('creatorId', $data)) {
+            $this->setCreatorId($data['creatorId']);
+        }
+        if (array_key_exists('active', $data)) {
+            $this->setActive($data['active']);
+        }
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);

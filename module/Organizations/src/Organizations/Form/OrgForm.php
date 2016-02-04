@@ -7,6 +7,7 @@ use Utilities\Form\Form;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Utilities\Service\Time;
+use Organizations\Entity\Organization;
 
 /**
  * User Form
@@ -15,6 +16,7 @@ use Utilities\Service\Time;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property bool $isAdminUser
  * 
  * @package organizations
  * @subpackage form
@@ -31,6 +33,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     protected $query;
 
     /**
+     *
+     * @var bool
+     */
+    protected $isAdminUser;
+
+    /**
      * setup form
      * 
      * 
@@ -41,6 +49,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
+        $this->isAdminUser = $options['isAdminUser'];
         unset($options['query']);
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
@@ -76,7 +85,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label' => 'Owner Name',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'mapSearch',
             'type' => 'Zend\Form\Element\Text',
@@ -91,7 +100,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 )
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'mapSearchButton',
             'type' => 'Zend\Form\Element',
@@ -101,7 +110,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'type' => 'button',
             )
         ));
-    
+
         $this->add(array(
             'name' => 'longtitude',
             'continue_if_empty' => true,
@@ -671,10 +680,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
-        $this->add(array(
-            'name' => 'active',
-            'type' => 'Zend\Form\Element\Hidden',
-        ));
 
         $this->add(array(
             'name' => 'atpPrivacyStatement',
@@ -705,6 +710,21 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
+
+        if ($this->isAdminUser === true) {
+            $this->add(array(
+                'name' => 'active',
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Status',
+                    'checked_value' => Organization::ACTIVE,
+                    'unchecked_value' => Organization::NOT_ACTIVE
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'submit',
