@@ -5,6 +5,11 @@ namespace Courses\Model;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Zend\Form\FormInterface;
+use System\Service\Settings;
+use Notifications\Service\MailTempates;
+use Notifications\Service\MailSubjects;
+use System\Service\Cache\CacheHandler;
 
 /**
  * Course Model
@@ -14,6 +19,8 @@ use Utilities\Service\Status;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property Courses\Model\Outline $outlineModel
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
  * 
  * @package courses
  * @subpackage model
@@ -34,16 +41,32 @@ class Course
     protected $outlineModel;
 
     /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+    
+    /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
+    
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
      * @param Courses\Model\Outline $outlineModel
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $outlineModel)
+    public function __construct($query, $outlineModel, $systemCacheHandler, $notification)
     {
         $this->query = $query;
         $this->outlineModel = $outlineModel;
+        $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
     }
 
     /**
@@ -91,9 +114,11 @@ class Course
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
      * @param bool $oldStatus ,default is null
+     * @param string $userEmail ,default is null
      */
-    public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null)
+    public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null, $userEmail = null)
     {
+        $notifyAdminFlag = false;
         if ($isAdminUser === false) {
             // edit case where data is empty array
             if (count($data) == 0) {
@@ -101,6 +126,7 @@ class Course
             }
             else {
                 $course->setStatus(Status::STATUS_NOT_APPROVED);
+                $notifyAdminFlag = true;
             }
         }
         unset($data["outlines"]);
@@ -108,8 +134,52 @@ class Course
 
         // remove not needed outlines        
         $this->outlineModel->cleanUpOutlines();
+        
+        if($notifyAdminFlag === true){
+            $this->sendMail($userEmail);
+        }
     }
 
+    /**
+     * Send mail
+     * 
+     * @param string $userEmail
+     * @throws \Exception From email is not set
+     * @throws \Exception To email is not set
+     */
+    private function sendMail($userEmail)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $to = $settings[Settings::ADMIN_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+        if (!isset($to)) {
+            throw new \Exception("To email is not set");
+        }
+        $templateParameters = array(
+            "email" => $userEmail,
+        );
+
+        $mailArray = array(
+            'to' => $to,
+            'from' => $from,
+            'templateName' => MailTempates::NEW_COURSE_NOTIFICATION_TEMPLATE,
+            'templateParameters' => $templateParameters,
+            'subject' => MailSubjects::NEW_COURSE_NOTIFICATION_SUBJECT,
+        );
+        $this->notification->notify($mailArray);
+    }
+    
     /**
      * Leave course
      * 
@@ -159,9 +229,10 @@ class Course
      * @param Courses\Form\CourseForm $form
      * @param array $data
      * @param Courses\Entity\Course $course ,default is null
+     * @param bool $isEditForm ,default is true
      * @return bool custom validation result
      */
-    public function validateForm($form, $data, $course = null)
+    public function validateForm($form, $data, $course = null, $isEditForm = true)
     {
         $isCustomValidationValid = true;
         if ((int) $data['capacity'] < (int) $data['studentsNo']) {
@@ -179,7 +250,7 @@ class Course
             $courseOutlines = $form->getObject()->getOutlines();
             $course->exchangeArray($data);
             $course->setOutlines($courseOutlines);
-            $form->bind($course);
+            $form->bind($course,/* $flags = */ FormInterface::VALUES_NORMALIZED, $isEditForm);
         }
         return $isCustomValidationValid;
     }

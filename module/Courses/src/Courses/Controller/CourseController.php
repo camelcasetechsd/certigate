@@ -255,15 +255,18 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
-        // setting default students number
+        // setting default students number and isForInstructor
         $course->setStudentsNo(/*$studentsNo =*/ 0);
+        $course->setIsForInstructor(Status::STATUS_INACTIVE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
+        $userEmail = null;
         if ($auth->hasIdentity()) {
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
+            $userEmail = $storage['email'];
         }
 
         $options = array();
@@ -278,10 +281,10 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
-            $isCustomValidationValid = $courseModel->validateForm($form, $data);
+            $isCustomValidationValid = $courseModel->validateForm($form, $data, $course, /* $isEditForm = */ false);
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $courseModel->save($course, $data, $isAdminUser);
+                $courseModel->save($course, $data, $isAdminUser, /*$oldStatus =*/ null, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);
@@ -312,10 +315,12 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
+        $userEmail = null;
         if ($auth->hasIdentity()) {
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
+            $userEmail = $storage["email"];
         }
 
 
@@ -338,7 +343,7 @@ class CourseController extends ActionController
 
             $isCustomValidationValid = $courseModel->validateForm($form, $data, $course);
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus);
+                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);
