@@ -2,12 +2,11 @@
 
 namespace Courses\Model;
 
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mime\Message as MimeMessage;
-use Zend\Mime\Part as MimePart;
-use Zend\Mail\Transport\SmtpOptions;
 use System\Service\Cache\CacheHandler;
+use Notifications\Service\Notification;
+use Notifications\Service\MailTempates;
+use Zend\View\Helper\ServerUrl;
+use Utilities\Service\Time;
 
 /**
  * Exam Model
@@ -17,6 +16,7 @@ use System\Service\Cache\CacheHandler;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
  * 
  * @package courses
  * @subpackage model
@@ -37,16 +37,24 @@ class Exam
     protected $systemCacheHandler;
 
     /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $systemCacheHandler)
+    public function __construct($query, $systemCacheHandler, Notification $notification)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
     }
 
     public function saveBookingRequest($data, $config)
@@ -62,7 +70,7 @@ class Exam
             'id' => $data['atcId']
         ));
         // exam date
-        $bookObj->setDate(new \DateTime($data['date']));
+        $bookObj->setDate(\DateTime::createFromFormat(Time::DATE_FORMAT, $data['date']) );
         // creation time
         $bookObj->setCreatedAt(new \DateTime());
         // number of students
@@ -133,7 +141,7 @@ class Exam
                     $req->isAdminPending = 1;
                     break;
             }
-            $req->date = date_format($req->date, 'd/m/Y');
+            $req->date = date_format($req->date, Time::DATE_FORMAT);
         }
 
         return $requests;
@@ -162,10 +170,10 @@ class Exam
      * @param int $request
      * @param string $to
      * @param array $config
-     * @param string $adminMail
+     * @param string $adminMail ,default is null
      * @throws \Exception From email is not set
      */
-    private function sendMail($request, $to, $config, $adminMail)
+    private function sendMail($request, $to, $config, $adminMail = null)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -174,45 +182,32 @@ class Exam
         if (array_key_exists("Operations", $settings)) {
             $from = $settings["Operations"];
         }
-        
+
         if (!isset($from)) {
             throw new \Exception("From email is not set");
         }
-        $message = new Message();
-        $message->addTo($to)
-                ->addFrom($from)
-                ->setSubject('Exam Request');
-
-        // Setup SMTP transport using LOGIN authentication
-        $transport = new SmtpTransport();
-        $options = new SmtpOptions(array(
-            'host' => 'smtp.gmail.com',
-            'connection_class' => 'login',
-            'connection_config' => array(
-                'ssl' => 'tls',
-                'username' => '',
-                'password' => ''
-            ),
-            'port' => 587,
-        ));
+        $serverUrl = new ServerUrl();
+        $serverUrlString = $serverUrl();
+        $templateParameters = array(
+            "request" => $request,
+            "serverUrl" => $serverUrlString
+        );
         // if tctv mail
-        if ($adminMail != null) {
-            $html = new MimePart('<h2>Exam Request</h2> <a href="' . getcwd() . '/courses/exam/tvtc/accept/' . $request->getId() . '"> click me if you accept </a> <br>'
-                    . ' <a href="' . getcwd() . '/courses/exam/tvtc/decline/' . $request->getId() . '"> click me if you decline </a>');
+        if (is_null($adminMail)) {
+            $templateName = MailTempates::EXAM_BOOK_TEMPLATE;
         }
         // if admin mail
         else {
-            $html = new MimePart('There\'s a new Exam Request .. created By' . $request->getAtc->commercialName);
+            $templateName = MailTempates::EXAM_BOOK_ADMIN_TEMPLATE;
         }
-        $html->type = "text/html";
-
-        $body = new MimeMessage();
-        $body->addPart($html);
-
-        $message->setBody($body);
-
-        $transport->setOptions($options);
-        $transport->send($message);
+        $mailArray = array(
+            'to' => $to,
+            'from' => $from,
+            'templateName' => $templateName,
+            'templateParameters' => $templateParameters,
+            'subject' => 'Exam Request',
+        );
+        $this->notification->notify($mailArray);
     }
 
 }

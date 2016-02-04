@@ -5,7 +5,7 @@ namespace Utilities\Service;
 /**
  * Time
  * 
- * Handles Time-related operations
+ * Handles Date/Time-related operations
  * 
  * 
  * @package utilities
@@ -17,6 +17,10 @@ class Time {
      * UNIX date string
      */
     const UNIX_DATE_STRING = "Thu, 01 Jan 1970";
+    /**
+     * date format
+     */
+    const DATE_FORMAT = 'd/m/Y';
     
     /**
      * Get hour difference

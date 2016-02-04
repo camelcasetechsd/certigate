@@ -4,12 +4,12 @@
 
 {{^processResult}}
 <div class="alert alert-warning alert-dismissible" role="alert">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  Process failed to complete!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Process failed to complete!
 </div>
 {{/processResult}}
 
-<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Create new Resource</button></a>
+<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
 <br><br>
 <div class="panel panel-default">
 
@@ -33,13 +33,17 @@
                 <td>{{type}}</td>
                 <td>{{course.name}}</td>
                 <td>{{statusText}}</td>
-                
-                <td>
+
+                <td>  
+                    {{#isInstructor}}
                     <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#isAdminUser}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="#" data-href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
+                    {{/isInstructor}}
+                    
+
                 </td>
             </tr>
             {{/resources}}

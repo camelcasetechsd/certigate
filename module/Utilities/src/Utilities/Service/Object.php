@@ -101,15 +101,19 @@ class Object {
         if (array_key_exists("status", $objectProperties)) {
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
+                    $object->statusActive = TRUE;
                     $object->statusText = Status::STATUS_ACTIVE_TEXT;
                     break;
                 case Status::STATUS_INACTIVE:
+                    $object->statusIactive = TRUE;
                     $object->statusText = Status::STATUS_INACTIVE_TEXT;
                     break;
                 case Status::STATUS_DELETED:
+                    $object->statusDeleted = TRUE;
                     $object->statusText = Status::STATUS_DELETED_TEXT;
                     break;
                 case Status::STATUS_NOT_APPROVED:
+                    $object->statusNotApproved = TRUE;
                     $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
                     break;
                 default:

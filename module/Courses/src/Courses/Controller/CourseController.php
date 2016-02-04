@@ -95,6 +95,27 @@ class CourseController extends ActionController
     public function instructorCalendarAction()
     {
         $variables = array();
+//        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity()["id"];
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $instructorCourses = $courseModel->prepareInstructorCourses($storage);
+        $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourses);
+        return new ViewModel($variables);
+    }
+
+    /**
+     * Instructor Training course
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function instructorTrainingAction()
+    {
+        $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
@@ -106,12 +127,39 @@ class CourseController extends ActionController
                 ->andWhere($expr->eq("status", Status::STATUS_ACTIVE))
                 ->andWhere($expr->eq("isForInstructor", Status::STATUS_ACTIVE));
         $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
-        $authorizedRoles = array(Role::INSTRUCTOR_ROLE);
-        $courseModel->setCanEnroll($data, $authorizedRoles);
-        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
-        $view = new ViewModel($variables);
-        $view->setTemplate('courses/course/calendar');
-        return $view;
+
+        if (count($data) == 0) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+
+            $courseModel->setCanEnroll($data);
+
+            $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+
+            $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
+            $preparedCourse = reset($preparedCourseArray);
+
+            $resources = $preparedCourse->getResources();
+            $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+            $preparedCourse->setResources($preparedResources);
+
+            $variables['course'] = $preparedCourse;
+
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+            $canDownloadResources = true;
+            if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownloadResources = false;
+            }
+
+            $variables['canDownloadResources'] = $canDownloadResources;
+
+
+            return new ViewModel($variables);
+        }
     }
 
     /**
@@ -207,6 +255,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
+        // setting default students number
+        $course->setStudentsNo(/*$studentsNo =*/ 0);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -338,12 +388,12 @@ class CourseController extends ActionController
         $notAuthorized = false;
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
-            $routeName = "coursesInstructorCalendar";
-            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $routeName = "coursesInstructorTraining";
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
                 $notAuthorized = true;
             }
         }
-        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
             $notAuthorized = true;
         }
 
@@ -376,12 +426,12 @@ class CourseController extends ActionController
 
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
-            $routeName = "coursesInstructorCalendar";
-            if ($auth->hasIdentity() && (!in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+            $routeName = "coursesInstructorTraining";
+            if ($auth->hasIdentity() && !(in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
                 $notAuthorized = true;
             }
         }
-        elseif ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']))) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
             $notAuthorized = true;
         }
         if ($notAuthorized === true) {
@@ -445,11 +495,15 @@ class CourseController extends ActionController
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsTemplate();
                 $evalEntity->setIsApproved();
+                $evalEntity->setPercentage(0.00);
                 $evaluationModle->saveEvaluation($evalEntity);
                 // save questions
                 foreach ($data['newQuestion'] as $new) {
                     $evaluationModle->assignQuestionToEvaluation($new);
                 }
+                //redirect to edit page
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvTemplate' , 'id'=>$evalEntity->getId()), array('name' => 'editEvTemplate'));
+                $this->redirect()->toUrl($url);
             }
             else {
                 $variables['validationError'] = $errors;
@@ -573,24 +627,29 @@ class CourseController extends ActionController
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsUserEval();
                 $evalEntity->setIsNotApproved();
+                $evalEntity->setPercentage(0.00);
                 $evaluationModle->saveEvaluation($evalEntity, $courseId);
 
                 // save templates and newQuestions
                 foreach ($data['template'] as $temp) {
-                    
+
                     $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
-                foreach ($data['newQuestion'] as $new) {
-                    $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
+                if (isset($data['newQuestion'])) {
+                    foreach ($data['newQuestion'] as $new) {
+                        $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
+                    }
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
             else {
                 $variables['validationError'] = $errors;
-                // unvalid questions
-                $variables['oldQuestions'] = $data['newQuestion'];
+                if (isset($data['newQuestion'])) {
+                    // unvalid questions
+                    $variables['oldQuestions'] = $data['newQuestion'];
+                }
             }
         }
 
@@ -662,7 +721,7 @@ class CourseController extends ActionController
                     }
                 }
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'coursesCalendar'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
                 $this->redirect()->toUrl($url);
             }
             else {

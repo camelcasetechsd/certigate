@@ -1,0 +1,64 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<br><br>
+<h4 class="h4">Course You Are Assigned To ..</h4>
+
+<div class="panel panel-default">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Brief</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Duration (Days)</th>
+                <th>Authorized Training Partner</th>
+                <th>Rating</th>
+                
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courses}}
+            <tr>
+                <td>
+                    {{name}}
+                </td>
+
+                <td>
+                    {{brief}}
+                </td>
+                <td>
+                    {{startDate}}
+                </td>
+                <td>
+                    {{endDate}}
+                </td>
+                <td>
+                    {{duration}} Days
+                </td>
+                <td>
+                    {{atp.commercialName}}
+                </td>
+                <td>
+                    {{evaluation.percentage}} %
+                </td>
+                <td>
+                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-folder-close"></span></a>
+                    &nbsp;
+                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon glyphicon-film"></span></a>
+                    &nbsp;
+                    <a href="/courses/outlines/{{id}}" data-toggle="tooltip" data-placement="left" title="Outlines"><span class=" glyphicon glyphicon-list-alt"></span></a>
+                </td>
+            </tr>
+
+
+
+            {{/courses}}
+        </tbody>
+    </table>
+    {{/content}}
+    {{/layout}}

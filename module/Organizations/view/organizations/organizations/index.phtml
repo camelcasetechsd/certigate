@@ -1,0 +1,49 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/organizations/type"><button class="btn btn-small btn-success">Create new Organization</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Organizations</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Commercial name</th>
+                <th>Owner name</th>
+                <th>Type</th>
+                <th>E-mail</th>
+                <th>City</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#organizations}}
+            <tr class="{{^active}}container-inactive{{/active}}">
+                <td><a href="{{website}}" target="_blank">{{commercialName}}</a></td>
+                <td>{{ownerName}}</td>
+                <td>{{typeText}}</td>
+                <td><a href="mailto:{{email}}" target="_blank">{{email}}</a></td>
+                <td>{{city}}</td>
+                <td>{{activeText}}</td>
+                <td>
+                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/organizations/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#active}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/organizations/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/active}}
+                </td>
+            </tr>
+            {{/organizations}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

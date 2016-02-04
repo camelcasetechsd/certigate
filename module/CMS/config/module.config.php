@@ -114,6 +114,19 @@ return array(
                     ),
                 )
             ),
+            'cmsPageActivate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/page/activate/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'activate',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'cmsMenu' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -212,6 +225,19 @@ return array(
                     'defaults' => array(
                         'controller' => 'CMS\Controller\MenuItem',
                         'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'cmsMenuItemActivate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/menuitem/activate/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\MenuItem',
+                        'action' => 'activate',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',

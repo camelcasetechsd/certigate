@@ -67,6 +67,10 @@ class ResourceController extends ActionController
                 }
             }
         }
+        $isInstructor = true;
+        if(in_array(Role::INSTRUCTOR_ROLE, $storage['roles'])){
+            $isInstructor = false;
+        }
 
 
         $criteria = array();
@@ -76,6 +80,7 @@ class ResourceController extends ActionController
         $data = $query->findBy(/* $entityName = */'Courses\Entity\Resource', $criteria);
         $variables['resources'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
+        $variables['isInstructor'] = $isInstructor;
         $variables['processResult'] = $processResult;
         return new ViewModel($variables);
     }
@@ -132,7 +137,12 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
+            if(empty($courseId)){
+                $courseId = $data["course"];
+            }else{
+                $data["course"] = $courseId;
+            }
+            $form->setInputFilter($resource->getInputFilter($courseId, /* $name = */ $data["name"]));
             $form->setData($data);
             $validationOutput = $resourceModel->validateResources($form, $resource, $data);
             if ($validationOutput["isValid"]) {
@@ -209,7 +219,12 @@ class ResourceController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $form->setInputFilter($resource->getInputFilter(/* $courseId = */ $data["course"], /* $name = */ $data["name"]));
+            if(empty($courseId)){
+                $courseId = $data["course"];
+            }else{
+                $data["course"] = $courseId;
+            }
+            $form->setInputFilter($resource->getInputFilter($courseId, /* $name = */ $data["name"]));
 
             $inputFilter = $form->getInputFilter();
             $form->setData($data);

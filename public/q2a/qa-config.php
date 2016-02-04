@@ -35,46 +35,42 @@
   define('QA_MYSQL_PORT', '3306');
  */
 
-if (!defined('APPLICATION_ENV') && getenv('APPLICATION_ENV')) {
+if (!defined( 'APPLICATION_ENV' ) && getenv( 'APPLICATION_ENV' )) {
 
-    define('APPLICATION_ENV', getenv('APPLICATION_ENV'));
+    define( 'APPLICATION_ENV', getenv( 'APPLICATION_ENV' ) );
 }
-if (defined('APPLICATION_ENV')) {
+if (defined( 'APPLICATION_ENV' )) {
     if (APPLICATION_ENV == "production") {
-        define('QA_MYSQL_HOSTNAME', 'localhost');
-        define('QA_MYSQL_USERNAME', 'root');
-        define('QA_MYSQL_PASSWORD', '');
-        define('QA_MYSQL_DATABASE', 'production_db');
-        define('QA_MYSQL_PORT', '3306');
+        define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+        define( 'QA_MYSQL_USERNAME', 'root' );
+        define( 'QA_MYSQL_PASSWORD', '' );
+        define( 'QA_MYSQL_DATABASE', 'production_db' );
+        define( 'QA_MYSQL_PORT', '3306' );
+    } elseif (APPLICATION_ENV == "acceptance") {
+        define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+        define( 'QA_MYSQL_USERNAME', 'camelcasetech_acceptance' );
+        define( 'QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4' );
+        define( 'QA_MYSQL_DATABASE', 'certigate' );
+        define( 'QA_MYSQL_PORT', '3306' );
+    } elseif (APPLICATION_ENV == "vagrant") {
+        define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+        define( 'QA_MYSQL_USERNAME', 'root' );
+        define( 'QA_MYSQL_PASSWORD', 'testpass' );
+        define( 'QA_MYSQL_DATABASE', 'certigate' );
+        define( 'QA_MYSQL_PORT', '3306' );
+    } elseif (APPLICATION_ENV == "development") {
+        define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+        define( 'QA_MYSQL_USERNAME', 'camelcasetech' );
+        define( 'QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4' );
+        define( 'QA_MYSQL_DATABASE', 'certigate' );
+        define( 'QA_MYSQL_PORT', '3306' );
     }
-    elseif (APPLICATION_ENV == "uat") {
-        define('QA_MYSQL_HOSTNAME', 'localhost');
-        define('QA_MYSQL_USERNAME', 'root');
-        define('QA_MYSQL_PASSWORD', '');
-        define('QA_MYSQL_DATABASE', 'development_db');
-        define('QA_MYSQL_PORT', '3306');
-    }
-    elseif (APPLICATION_ENV == "vagrant") {
-        define('QA_MYSQL_HOSTNAME', 'localhost');
-        define('QA_MYSQL_USERNAME', 'root');
-        define('QA_MYSQL_PASSWORD', 'testpass');
-        define('QA_MYSQL_DATABASE', 'certigate');
-        define('QA_MYSQL_PORT', '3306');
-    }
-    elseif (APPLICATION_ENV == "development") {
-        define('QA_MYSQL_HOSTNAME', 'localhost');
-        define('QA_MYSQL_USERNAME', 'camelcasetech');
-        define('QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4');
-        define('QA_MYSQL_DATABASE', 'certigate');
-        define('QA_MYSQL_PORT', '3306');
-    }
-}
-else {
-    define('QA_MYSQL_HOSTNAME', 'localhost');
-    define('QA_MYSQL_USERNAME', 'root');
-    define('QA_MYSQL_PASSWORD', 'testpass');
-    define('QA_MYSQL_DATABASE', 'certigate');
-    define('QA_MYSQL_PORT', '3306');
+} else {
+    define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+    define( 'QA_MYSQL_USERNAME', 'root' );
+    define( 'QA_MYSQL_PASSWORD', 'testpass' );
+    define( 'QA_MYSQL_DATABASE', 'certigate' );
+    define( 'QA_MYSQL_PORT', '3306' );
 }
 
 
@@ -100,7 +96,7 @@ else {
   MySQL database, or to include the Question2Answer tables in an existing MySQL database.
  */
 
-define('QA_MYSQL_TABLE_PREFIX', 'qa_');
+define( 'QA_MYSQL_TABLE_PREFIX', 'qa_' );
 
 /*
   If you wish, you can define QA_MYSQL_USERS_PREFIX separately from QA_MYSQL_TABLE_PREFIX.
@@ -155,7 +151,7 @@ define('QA_MYSQL_TABLE_PREFIX', 'qa_');
   effect can now be achieved in plugins by using function overrides.
  */
 
-define('QA_EXTERNAL_USERS', true);
+define( 'QA_EXTERNAL_USERS', true );
 
 /*
   Out-of-the-box WordPress 3.x integration - to integrate with your WordPress site and user
@@ -202,14 +198,14 @@ define('QA_EXTERNAL_USERS', true);
   bottom of every Question2Answer page.
  */
 
-define('QA_HTML_COMPRESSION', true);
-define('QA_MAX_LIMIT_START', 19999);
-define('QA_IGNORED_WORDS_FREQ', 10000);
-define('QA_ALLOW_UNINDEXED_QUERIES', false);
-define('QA_OPTIMIZE_LOCAL_DB', false);
-define('QA_OPTIMIZE_DISTANT_DB', false);
-define('QA_PERSISTENT_CONN_DB', false);
-define('QA_DEBUG_PERFORMANCE', false);
+define( 'QA_HTML_COMPRESSION', true );
+define( 'QA_MAX_LIMIT_START', 19999 );
+define( 'QA_IGNORED_WORDS_FREQ', 10000 );
+define( 'QA_ALLOW_UNINDEXED_QUERIES', false );
+define( 'QA_OPTIMIZE_LOCAL_DB', false );
+define( 'QA_OPTIMIZE_DISTANT_DB', false );
+define( 'QA_PERSISTENT_CONN_DB', false );
+define( 'QA_DEBUG_PERFORMANCE', false );
 
 /*
 	And lastly... if you want to, you can predefine any constant from qa-db-maxima.php in this

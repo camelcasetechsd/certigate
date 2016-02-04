@@ -5,9 +5,9 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Users\Entity\Role;
-use Doctrine\Common\Collections\Criteria;
+use Utilities\Service\Time;
 use Organizations\Entity\Organization;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use CustomDoctrine\Service\DoctrineObject as DoctrineHydrator;
 use Courses\Form\OutlineFieldset;
 
 /**
@@ -108,28 +108,26 @@ class CourseForm extends Form
             'name' => 'startDate',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Start Date',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
         $this->add(array(
             'name' => 'endDate',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'End Date',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
 
@@ -258,7 +256,7 @@ class CourseForm extends Form
                     'class' => 'form-control',
                 ),
                 'options' => array(
-                    'label' => 'Is For Instructor',
+                    'label' => 'Train the Trainer course',
                     'checked_value' => Status::STATUS_ACTIVE,
                     'unchecked_value' => Status::STATUS_INACTIVE
                 ),

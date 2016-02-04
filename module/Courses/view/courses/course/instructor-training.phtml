@@ -1,0 +1,80 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+{{#course}}
+    {{#canEnroll}}
+        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><button class="btn btn-small btn-success">Enroll</button></a>
+    {{/canEnroll}}
+    {{#canLeave}}
+        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="Leave"><button class="btn btn-small btn-primary">Leave</button></a>
+    {{/canLeave}}
+{{/course}}
+<br><br>
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">Course Info</div>
+
+    <!-- Table -->
+
+    {{#course}}
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Name</td><td>{{name}}</td>
+            </tr><tr>
+                <td>Brief</td><td>{{brief}}</td>
+            </tr><tr>
+                <td>Authorized Instructor</td><td>{{ai.firstName}} {{ai.lastName}}</td>
+            </tr><tr>
+                <td>Start Date</td><td>{{startDate}}</td>
+            </tr><tr>
+                <td>End Date</td><td>{{endDate}}</td>
+            </tr><tr>
+                <td>Time</td><td>{{time}}</td>
+            </tr><tr>
+                <td>Duration</td><td>{{duration}} Day(s)</td>
+            </tr><tr>
+                <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
+            </tr>
+
+            {{#outlines.count}}
+        <td>Outlines</td><td></td>
+        <tr>
+            <td>&ensp; Title</td>
+            <td>Duration (minutes)</td>
+        </tr>
+        {{/outlines.count}}
+        {{#outlines}}
+        {{#status}}
+        <tr>
+            <td>&ensp; {{name}}</td>
+            <td>{{duration}}</td>
+        </tr>
+        {{/status}}
+        {{/outlines}} 
+
+        {{#canDownloadResources}}
+
+        {{#resources}}
+        <td>Resources</td><td></td>
+        {{/resources}}
+        {{#resources}}
+        <tr>
+            <td>&ensp; {{type}}</td>
+            <td>
+                {{#files}}
+                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                {{/files}}
+            </td>
+        </tr>
+        {{/resources}} 
+        {{/canDownloadResources}}
+
+        </tbody>
+    </table>
+    {{/course}}
+
+</div>
+{{/content}}
+{{/layout}}

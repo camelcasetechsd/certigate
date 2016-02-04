@@ -82,4 +82,19 @@ function removeResource(removeButtonSelector, nameInputSelector, fileInputSelect
     $(nameInputSelector).parent("dd").parent("div").remove();
 }
 
+/**
+ * Delete resource physically
+ * 
+ * @param {object} deleteAnchorTag
+ * @returns {undefined}
+ */
+function deleteResourcePhysically(deleteAnchorTag){
+    bootbox.confirm("Are you sure you want to delete the resource ?", function(result) {
+        if(result){
+            var deleteLink = deleteAnchorTag.attr("data-href");
+            window.location.href = deleteLink;
+        }
+    }); 
+}
+
 

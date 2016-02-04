@@ -20,7 +20,8 @@ use Zend\Authentication\AuthenticationService;
  * @package users
  * @subpackage controller
  */
-class IndexController extends ActionController {
+class IndexController extends ActionController
+{
 
     /**
      * List users paginated
@@ -29,7 +30,8 @@ class IndexController extends ActionController {
      * @access public
      * @return ViewModel
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
@@ -51,7 +53,8 @@ class IndexController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function editAction() {
+    public function editAction()
+    {
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -60,7 +63,6 @@ class IndexController extends ActionController {
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = $query->find('Users\Entity\User', $id);
         $photo = $userObj->photo;
-
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
         $auth = new AuthenticationService();
@@ -71,6 +73,11 @@ class IndexController extends ActionController {
             $this->redirect()->toUrl($url);
         }
 
+        $isAdmin = false;
+        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdmin = true;
+        }
+
         $options = array();
         $options['query'] = $query;
         $locale = "en";
@@ -79,6 +86,12 @@ class IndexController extends ActionController {
         $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
+
+        // remove captcha if admin
+        $options['isAdmin'] = false;
+        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $options['isAdmin'] = true;
         }
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
@@ -98,6 +111,8 @@ class IndexController extends ActionController {
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             $isCustomValidationValid = true;
+
+
             // file not updated
             if (isset($fileData['photo']['name']) && empty($fileData['photo']['name'])) {
                 // Change required flag to false for any previously uploaded files
@@ -110,7 +125,8 @@ class IndexController extends ActionController {
                 $email->setRequired(false);
                 $confirmEmail = $inputFilter->get('confirmEmail');
                 $confirmEmail->setRequired(false);
-            } elseif ($data['email'] != $data['confirmEmail']) {
+            }
+            elseif ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
                 $isCustomValidationValid = false;
             }
@@ -120,20 +136,25 @@ class IndexController extends ActionController {
                 $password->setRequired(false);
                 $confirmPassword = $inputFilter->get('confirmPassword');
                 $confirmPassword->setRequired(false);
-            } elseif ($data['password'] != $data['confirmPassword']) {
+            }
+            elseif ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
             }
 
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, $userObj);
-
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
+                
+                if($options['isAdmin']){
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => 'users'));
                 $this->redirect()->toUrl($url);
+                }else{
+                    $variables['success'] = true;
+                }
             }
         }
 
-        $variables['photo'] = $photo;
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
         $variables['statements'] = $statement->statements;
@@ -150,7 +171,8 @@ class IndexController extends ActionController {
      * 
      * @return ViewModel
      */
-    public function newAction() {
+    public function newAction()
+    {
 
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
@@ -168,6 +190,10 @@ class IndexController extends ActionController {
         $storage = $auth->getIdentity();
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
+        $options['isAdmin'] = false;
+        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $options['isAdmin'] = true;
         }
         $form = new UserForm(/* $name = */ null, $options);
 
@@ -193,11 +219,16 @@ class IndexController extends ActionController {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
             }
-            if ($form->isValid() && $isCustomValidationValid === true){
+            if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data);
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
+                if($options['isAdmin']){
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => 'users'));
                 $this->redirect()->toUrl($url);
+                }else{
+                    $variables['success'] = true;
+                }
             }
         }
 
@@ -213,11 +244,29 @@ class IndexController extends ActionController {
      * 
      * @access public
      */
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $id = $this->params('id');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userModel->deleteUser($id);
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'users'));
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+            'name' => 'users'));
+        $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * Activate user
+     * 
+     * 
+     * @access public
+     */
+    public function activateAction()
+    {
+        $id = $this->params('id');
+        $userModel = $this->getServiceLocator()->get('Users\Model\User');
+        $userModel->activateUser($id);
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+            'name' => 'users'));
         $this->redirect()->toUrl($url);
     }
 

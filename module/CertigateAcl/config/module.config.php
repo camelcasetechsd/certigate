@@ -10,20 +10,38 @@ return array(
         'excluded_modules' => array(
             'DoctrineModule',
             'DoctrineORMModule',
-            'DefaultModule',
             'Utilities',
             'Mustache',
+            'CustomDoctrine',
             'CustomMustache',
-            'CertigateAcl'
+            'CertigateAcl',
+            'LosI18n',
+            'SlmQueue',
+            'SlmQueueDoctrine',
+            'Versioning',
+            'Notifications'
         ),
         'anonymous_routes' => array(
+            'contactUs' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'defaultSign' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'noaccess' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'resource_not_found' => array(
+                'resource' => 'DefaultModule',
+            ),
+            'home' => array(
+                'resource' => 'DefaultModule',
+            ),
             'userCreate' => array(
                 'resource' => 'Users',
-                'privileges' => 'userCreate',
             ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
-                'privileges' => 'cmsPageView',
             )
         )
     )

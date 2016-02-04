@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Time;
 
 /**
  * Course Entity
@@ -100,7 +101,7 @@ class Course
     /**
      * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="ai_id", referencedColumnName="id")
      * @var Users\Entity\User
      */
     public $ai;
@@ -260,7 +261,7 @@ class Course
     public function setStartDate($startDate)
     {
         if (!is_object($startDate)) {
-            $startDate = new \DateTime($startDate);
+            $startDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDate);
         }
         $this->startDate = $startDate;
         return $this;
@@ -289,7 +290,7 @@ class Course
     public function setEndDate($endDate)
     {
         if (!is_object($endDate)) {
-            $endDate = new \DateTime($endDate);
+            $endDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDate);
         }
         $this->endDate = $endDate;
         return $this;

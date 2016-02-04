@@ -6,11 +6,17 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'service_manager' => array(
+        'factories' => array(
+            'DefaultModule\Service\ContactUs' => 'DefaultModule\Service\ContactUsFactory',
+        )
+    ),
     'controllers' => array(
         'invokables' => array(
             'DefaultModule\Controller\Index' => 'DefaultModule\Controller\IndexController',
             'DefaultModule\Controller\Sign' => 'DefaultModule\Controller\SignController',
             'DefaultModule\Controller\Error' => 'DefaultModule\Controller\ErrorController',
+            'DefaultModule\Controller\ContactUs' => 'DefaultModule\Controller\ContactUsController',
         ),
     ),
     'router' => array(
@@ -51,6 +57,16 @@ return array(
                     ),
                 )
             ),
+            'contactUs' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/contact-us',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\ContactUs',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             'noaccess' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -68,6 +84,28 @@ return array(
                     'defaults' => array(
                         'controller' => 'DefaultModule\Controller\Error',
                         'action' => 'resourceNotFound',
+                    ),
+                ),
+            ),
+            'generalResources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/general-resources',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'generalResources',
+                    ),
+                ),
+            ),
+            'download_resources' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/general-resources/download[/:filename]',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
                     ),
                 ),
             ),

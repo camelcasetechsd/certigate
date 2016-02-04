@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Utilities\Service\Time;
 
 /**
  * Organziation Entity
@@ -81,7 +82,12 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * Active organization
+     * not active organization
+     */
+    const NOT_ACTIVE = 0;
+
+    /**
+     * not approved organization
      */
     const SAVE_STATE = 0;
 
@@ -1055,9 +1061,9 @@ class Organization
                 'validators' => array(
                     array(
                         'name' => 'date',
-//                        'options' => array(
-//                            'format' => 'm/d/Y',
-//                        )
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
                     )
                 )
             ));
@@ -1110,9 +1116,9 @@ class Organization
                 'validators' => array(
                     array(
                         'name' => 'date',
-//                        'options' => array(
-//                            'format' => 'm/d/Y',
-//                        )
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
                     )
                 )
             ));
@@ -1178,9 +1184,9 @@ class Organization
                 'validators' => array(
                     array(
                         'name' => 'date',
-//                        'options' => array(
-//                            'format' => 'm/d/Y',
-//                        )
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
                     )
                 )
             ));

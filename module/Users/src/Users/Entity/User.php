@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Time;
+use DoctrineModule\Validator\UniqueObject;
 
 /**
  * User Entity
@@ -218,7 +220,7 @@ class User
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
     public $photo;
@@ -745,7 +747,7 @@ class User
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = new \DateTime($dateOfBirth);
+        $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
         return $this;
     }
 
@@ -1123,7 +1125,7 @@ class User
      */
     public function setIdentificationExpiryDate($identificationExpiryDate)
     {
-        $this->identificationExpiryDate = new \DateTime($identificationExpiryDate);
+        $this->identificationExpiryDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDate);
         return $this;
     }
 
@@ -1308,7 +1310,8 @@ class User
                             'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('username')
+                            'fields' => array('username'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This username is already in use")
                         )
                     ),
                 ),
@@ -1377,15 +1380,25 @@ class User
                 'name' => 'language',
                 'required' => true,
             ));
-            $inputFilter->add(array(
+            $inputFilter->add( array(
                 'name' => 'mobile',
                 'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
                     )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile number!'
+                            )
+                        ))
                 )
-            ));
+            ) );
             $inputFilter->add(array(
                 'name' => 'dateOfBirth',
                 'required' => true,
@@ -1393,7 +1406,7 @@ class User
                     array(
                         'name' => 'date',
                         'options' => array(
-                            'format' => 'm/d/Y',
+                            'format' => Time::DATE_FORMAT,
                         )
                     )
                 )
@@ -1401,7 +1414,7 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'photo',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array('name' => 'Filesize',
                         'options' => array(
@@ -1428,10 +1441,25 @@ class User
                 'name' => 'zipCode',
                 'required' => false,
             ));
-            $inputFilter->add(array(
+            $inputFilter->add( array(
                 'name' => 'phone',
                 'required' => false,
-            ));
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid phone number!'
+                            )
+                        ))
+                )
+            ) );
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,
@@ -1455,7 +1483,7 @@ class User
                     array(
                         'name' => 'date',
                         'options' => array(
-                            'format' => 'm/d/Y',
+                            'format' => Time::DATE_FORMAT,
                         )
                     )
                 )
@@ -1479,7 +1507,8 @@ class User
                             'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('email')
+                            'fields' => array('email'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This email address is already in use")
                         )
                     ),
                 ),

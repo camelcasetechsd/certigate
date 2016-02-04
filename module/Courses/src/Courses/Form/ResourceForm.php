@@ -59,8 +59,10 @@ class ResourceForm extends Form {
         $this->setAttribute('class', 'form form-horizontal');
         
         $criteria = array();
+        $readOnly = false;
         if(! empty($this->courseId)){
             $criteria["id"] = $this->courseId;
+            $readOnly = true;
         }
         $this->add(array(
             'name' => 'course',
@@ -68,6 +70,7 @@ class ResourceForm extends Form {
             'attributes' => array(
                 'class' => 'form-control',
                 'required' => 'required',
+                'disabled' => $readOnly,
             ),
             'options' => array(
                 'label' => 'Course',

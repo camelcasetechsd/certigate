@@ -3,9 +3,8 @@
 namespace Users\Form;
 
 use Utilities\Form\Form;
-use Zend\Form\FormInterface;
 use Users\Service\Statement;
-use Users\Entity\Role;
+use Utilities\Service\Time;
 
 /**
  * User Form
@@ -18,7 +17,8 @@ use Users\Entity\Role;
  * @package users
  * @subpackage form
  */
-class UserForm extends Form {
+class UserForm extends Form
+{
 
     /**
      *
@@ -34,15 +34,18 @@ class UserForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct($name = null, $options = null)
+    {
         $this->query = $options['query'];
         $countries = $options['countries'];
         $languages = $options['languages'];
         $excludedRoles = $options['excludedRoles'];
+        $isAdmin = $options['isAdmin'];
         unset($options['query']);
         unset($options['countries']);
         unset($options['languages']);
         unset($options['excludedRoles']);
+        unset($options['isAdmin']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -100,27 +103,27 @@ class UserForm extends Form {
             'name' => 'mobile',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Mobile Number',
+                'placeholder' => 'Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Mobile',
             ),
-        ));        
+        ));
         $this->add(array(
             'name' => 'phone',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number',
+                'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'class' => 'form-control',
-            ),
+           ),
             'options' => array(
                 'label' => 'Phone',
             ),
         ));
-        
-        
+
+
         $this->add(array(
             'name' => 'email',
             'type' => 'Zend\Form\Element\Email',
@@ -143,7 +146,7 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Confirm Email',
             ),
-        ));        
+        ));
         $this->add(array(
             'name' => 'password',
             'type' => 'Zend\Form\Element\Password',
@@ -180,7 +183,7 @@ class UserForm extends Form {
                     'disable_html_escape' => true,
                 )
             ),
-        ));        
+        ));
         $this->add(array(
             'name' => 'securityAnswer',
             'type' => 'Zend\Form\Element\Text',
@@ -192,8 +195,8 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Security Answer',
             ),
-        )); 
-        
+        ));
+
         $this->add(array(
             'name' => 'identificationType',
             'type' => 'Zend\Form\Element\Text',
@@ -205,7 +208,7 @@ class UserForm extends Form {
             'options' => array(
                 'label' => 'Identification Type',
             ),
-        ));        
+        ));
         $this->add(array(
             'name' => 'identificationNumber',
             'type' => 'Zend\Form\Element\Text',
@@ -222,28 +225,26 @@ class UserForm extends Form {
             'name' => 'identificationExpiryDate',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Identification Expiry Date',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
         $this->add(array(
             'name' => 'dateOfBirth',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Example: 10/10/2010',
                 'required' => 'required',
                 'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
                 'label' => 'Date Of Birth',
-                'format' => 'm/d/Y',
+                'format' => Time::DATE_FORMAT,
             ),
         ));
         $this->add(array(
@@ -329,7 +330,7 @@ class UserForm extends Form {
                 'value_options' => $countries,
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'photo',
             'type' => 'Zend\Form\Element\File',
@@ -360,7 +361,7 @@ class UserForm extends Form {
                 )
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'privacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -374,7 +375,7 @@ class UserForm extends Form {
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'studentStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -387,7 +388,7 @@ class UserForm extends Form {
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'proctorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -400,7 +401,7 @@ class UserForm extends Form {
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'instructorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -413,7 +414,7 @@ class UserForm extends Form {
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'testCenterAdministratorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -426,7 +427,7 @@ class UserForm extends Form {
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'trainingManagerStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -440,28 +441,32 @@ class UserForm extends Form {
             ),
         ));
 
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Captcha',
-            'name' => 'captcha',
-            'attributes' => array(
-                'class' => 'form-control',
-                'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Please verify you are human.',
-                'captcha' => array(
-                    'class' => 'Image',
-                    'options' => array(
-                        'font' => APPLICATION_PATH . '/fonts/Arctik.ttf',
-                        'width' => 200,
-                        'height' => 100,
-                        'dotNoiseLevel' => 90,
-                        'lineNoiseLevel' => 3,
+        if (!$isAdmin) {
+            $this->add(array(
+                'type' => 'Zend\Form\Element\Captcha',
+                'name' => 'captcha',
+                'attributes' => array(
+                    'class' => 'form-control classCaptcha',
+                    'required' => 'required',
+                ),
+                'options' => array(
+                    'label' => 'Please verify you are human.',
+                    'label_attributes' => array(
+                        'class' => 'classCaptcha'
+                    ),
+                    'captcha' => array(
+                        'class' => 'Image',
+                        'options' => array(
+                            'font' => APPLICATION_PATH . '/fonts/Arctik.ttf',
+                            'width' => 200,
+                            'height' => 100,
+                            'dotNoiseLevel' => 90,
+                            'lineNoiseLevel' => 3,
+                        ),
                     ),
                 ),
-            ),
-        ));
-
+            ));
+        }
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',

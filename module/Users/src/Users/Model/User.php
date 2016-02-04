@@ -21,7 +21,8 @@ use Utilities\Service\Status;
  * @package users
  * @subpackage model
  */
-class User {
+class User
+{
 
     /**
      *
@@ -44,7 +45,7 @@ class User {
      * 
      * @param Utilities\Service\Query\Query $query
      */
-    public function __construct($query)
+    public function __construct( $query )
     {
         $this->query = $query;
         $this->random = new Random();
@@ -60,25 +61,30 @@ class User {
      * @param array $userInfo
      * @param UserEntity $userObj ,default is null in case new user is being created
      */
-    public function saveUser($userInfo, $userObj = null) {
-        if (is_null($userObj)) {
+    public function saveUser( $userInfo, $userObj = null )
+    {
+        if (is_null( $userObj )) {
             $userObj = new UserEntity();
-        } 
-        if (! empty($userInfo['password'])) {
-            $userInfo['password'] = UserEntity::hashPassword($userInfo['password']);
         }
-        if (!empty($userInfo['photo']['name'])) {
+        if (!empty( $userInfo['password'] )) {
+            $userInfo['password'] = UserEntity::hashPassword( $userInfo['password'] );
+        }
+        if (!empty( $userInfo['photo']['name'] )) {
             $userInfo['photo'] = $this->savePhoto();
         }
         $userInfo['status'] = Status::STATUS_ACTIVE;
 
         // All users should always have user role
-        $userRole = $this->query->findOneBy("Users\Entity\Role", /*$criteria =*/ array("name" => Role::USER_ROLE));
-        if(!in_array($userRole->getId(), $userInfo['roles'])){
+        $userRole = $this->query->findOneBy( "Users\Entity\Role", /* $criteria = */ array(
+            "name" => Role::USER_ROLE) );
+        if(!isset($userInfo['roles'])){
+            $userInfo['roles'] = array();
+        }
+        if (!in_array( $userRole->getId(), $userInfo['roles'] )) {
             $userInfo['roles'][] = $userRole->getId();
         }
 
-        $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
+        $this->query->setEntity( "Users\Entity\User" )->save( $userObj, $userInfo );
     }
 
     /**
@@ -90,11 +96,12 @@ class User {
      * 
      * @return string new attachment file name
      */
-    protected function savePhoto() {
+    protected function savePhoto()
+    {
         $uploadResult = null;
         $upload = new Http();
         $imagesPath = 'public/upload/images/';
-        $upload->setDestination($imagesPath);
+        $upload->setDestination( $imagesPath );
 
         try {
             // upload received file(s)
@@ -103,12 +110,12 @@ class User {
             $uploadResult = '/upload/images/defaultpic.png';
         }
 
-        $name = $upload->getFileName('photo');
-        $extention = pathinfo($name, PATHINFO_EXTENSION);
+        $name = $upload->getFileName( 'photo' );
+        $extention = pathinfo( $name, PATHINFO_EXTENSION );
         //get random new name
         $newName = $this->random->getRandomUniqueName();
 
-        rename($name, 'public/upload/images/' . $newName . '.' . $extention);
+        rename( $name, 'public/upload/images/' . $newName . '.' . $extention );
 
         $uploadResult = '/upload/images/' . $newName . '.' . $extention;
         return $uploadResult;
@@ -121,11 +128,27 @@ class User {
      * @access public
      * @param int $userId
      */
-    public function deleteUser($userId) {
-        $user = $this->query->find(/* $entityName = */ 'Users\Entity\User', $userId);
+    public function deleteUser( $userId )
+    {
+        $user = $this->query->find( /* $entityName = */ 'Users\Entity\User', $userId );
         $user->status = Status::STATUS_DELETED;
-        $this->query->entityManager->merge($user);
-        $this->query->entityManager->flush($user);
+        $this->query->entityManager->merge( $user );
+        $this->query->entityManager->flush( $user );
+    }
+    
+    /**
+     * Activate User
+     * 
+     * 
+     * @access public
+     * @param int $userId
+     */
+    public function ActivateUser( $userId )
+    {
+        $user = $this->query->find( /* $entityName = */ 'Users\Entity\User', $userId );
+        $user->status = Status::STATUS_ACTIVE;
+        $this->query->entityManager->merge( $user );
+        $this->query->entityManager->flush( $user );
     }
 
-    }
+}

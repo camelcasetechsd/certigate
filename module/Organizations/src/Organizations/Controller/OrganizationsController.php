@@ -7,6 +7,8 @@ use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
+use Doctrine\Common\Collections\Criteria;
+use Utilities\Service\Time;
 use Zend\Json\Json;
 
 /**
@@ -22,6 +24,29 @@ use Zend\Json\Json;
 class OrganizationsController extends ActionController
 {
 
+    /**
+     * List organizations
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function indexAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+
+        $criteria = Criteria::create();
+            $expr = Criteria::expr();
+            $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
+
+        $data = $query->filter(/* $entityName = */'Organizations\Entity\Organization', $criteria);
+        $variables['organizations'] = $organizationModel->prepareForDisplay($data);
+        return new ViewModel($variables);
+    }
+    
     public function typeAction()
     {
         $variables = array();
@@ -58,7 +83,7 @@ class OrganizationsController extends ActionController
         $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
-            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format('d/m/Y');
+            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         return new ViewModel($variables);
     }
@@ -80,7 +105,7 @@ class OrganizationsController extends ActionController
         $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format('d/m/Y');
+            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         return new ViewModel($variables);
     }

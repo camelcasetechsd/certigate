@@ -104,6 +104,16 @@ return array(
                     ),
                 )
             ),
+            'organizationsList' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'index'
+                    ),
+                )
+            ),
             'org_type' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

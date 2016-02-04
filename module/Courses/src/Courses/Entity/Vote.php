@@ -62,7 +62,7 @@ class Vote
     public $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Courses\Entity\Question", inversedBy="votes")
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\Question", inversedBy="votes")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     public $question;

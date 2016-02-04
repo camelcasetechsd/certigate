@@ -6,15 +6,6 @@
  */
 return array(
     'static_menus' => array(
-        'primary_menu' => array(
-            'Log out &nbsp;&nbsp;<i class="glyphicon glyphicon-log-out fa-fw " ></i><span class="fa arrow"></span>' => array(
-                'depth' => 0,
-                'path' => "/sign/out",
-                'weight' => 100,
-                'title_underscored' => "logout",
-                'children' => array()
-            ),
-        ),
         'admin_menu' => array(
             "CMS" => array(
                 'depth' => 0,
@@ -88,7 +79,7 @@ return array(
             ),
             "Organizations" => array(
                 'depth' => 0,
-                'path' => "#",
+                'path' => "/organizations",
                 'weight' => 2,
                 'title_underscored' => "organizations",
                 'children' => array(

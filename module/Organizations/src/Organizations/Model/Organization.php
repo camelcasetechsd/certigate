@@ -4,10 +4,10 @@ namespace Organizations\Model;
 
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
-use DateTime;
 use Utilities\Service\Status;
-use Utilities\Service\Query\Query;
 use Users\Entity\Role;
+use Organizations\Entity\Organization as OrganizationEntity;
+use Utilities\Service\Time;
 
 /**
  * Org Model
@@ -131,19 +131,19 @@ class Organization
          * Handling convert string date to datetime object
          */
         if (!empty($orgInfo['CRExpiration'])) {
-            $date = new DateTime($orgInfo['CRExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['CRExpiration']);
             $orgInfo['CRExpiration'] = $date;
         }
 
         if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
-            $date = new DateTime($orgInfo['atcLicenseExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
         else {
             $orgInfo['atcLicenseExpiration'] = null;
         }
         if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
-            $date = new DateTime($orgInfo['atpLicenseExpiration']);
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
         }
         else {
@@ -331,6 +331,43 @@ class Organization
         $role = $this->query->find('Users\Entity\Role', $roleId);
         $orgUserObj->setRole($role);
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
+    }
+    
+    /**
+     * prepare organizations for display
+     * 
+     * 
+     * @access public
+     * @param array $organizationsArray
+     * @return array organizations prepared for display
+     */
+    public function prepareForDisplay(array $organizationsArray) {
+        foreach ($organizationsArray as $organization) {
+            
+            switch ($organization->type) {
+                case OrganizationEntity::TYPE_ATC:
+                    $organization->typeText = "ATC";
+                    break;
+                case OrganizationEntity::TYPE_ATP:
+                    $organization->typeText = "ATP";
+                    break;
+                case OrganizationEntity::TYPE_BOTH:
+                    $organization->typeText = "ATC/ATP";
+                    break;
+            }
+            switch ($organization->active) {
+                case OrganizationEntity::ACTIVE:
+                    $organization->activeText = Status::STATUS_ACTIVE_TEXT;
+                    break;
+                case OrganizationEntity::NOT_APPROVED:
+                    $organization->activeText = Status::STATUS_NOT_APPROVED_TEXT;
+                    break;
+                case OrganizationEntity::NOT_ACTIVE:
+                    $organization->activeText = Status::STATUS_INACTIVE_TEXT;
+                    break;
+            }
+        }
+        return $organizationsArray;
     }
 
     public function hasSavedState($orgType, $creatorId)

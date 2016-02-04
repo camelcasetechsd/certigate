@@ -59,7 +59,7 @@ class Evaluation
             //assign course to evaluation
             $evalObj->setCourse($course);
 
-            $this->query->save($evalObj);
+            $this->query->setEntity('Courses\Entity\Evaluation')->save($evalObj);
             
         }
     }

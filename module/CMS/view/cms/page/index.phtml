@@ -12,41 +12,32 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Menu Title</th>
-                <th>Menu Item Parent</th>
                 <th>Path</th>
                 <th>Status</th>
-                <th>Menu Status</th>
                 <th>Created</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
             {{#pages}}
-            <tr class="{{^menuItem.status}}container-inactive{{/menuItem.status}} {{^menuItem.menu.status}}container-inactive{{/menuItem.menu.status}}" >
-                <td>{{title}}</td>
-                <td>{{menuItem.title}}</td>
-                <td>
-                    {{#menuItem.parent}}
-                    {{menuItem.parent.title}}
-                    {{/menuItem.parent}}
-                    {{^menuItem.parent}}
-                    Root
-                    {{/menuItem.parent}}
-                </td>
-                <td>{{menuItem.path}}</td>
-                <td>{{menuItem.statusText}}</td>
-                <td>{{menuItem.menu.statusText}}</td>
+            <tr class="{{^status}}container-inactive{{/status}}" >
+                <td>{{title}}</td>         
+                <td>{{path}}</td>
+                <td>{{status}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                    {{#menuItem.status}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
-                    {{/menuItem.status}}
+                    {{#status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{^status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    {{/status}}
                     {{#isAdminUser}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="History"><span class="glyphicon glyphicon-time"></span></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="History"><span class="glyphicon glyphicon-time"></span></a>
                     {{/isAdminUser}}
                 </td>
             </tr>

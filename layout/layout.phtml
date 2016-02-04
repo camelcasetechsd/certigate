@@ -16,49 +16,51 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
                     <a class="navbar-brand" href="/">Certigate Pro</a>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                </div>
-            </div>
-        </nav>
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar no-padding">
-                    {{<primary_menu}}
-                    {{/primary_menu}}
-                    
-                    {{#adminMenu}}
-                        <h4>Admin Menu</h4>
-                        {{{adminMenu}}}
-                    {{/adminMenu}}
-                </div>
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <div id="page-wrapper">
-
-                        <!-- /.row -->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                {{$content}}{{/content}}  
-                            </div>
-                            <!-- /.col-lg-12 -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /#page-wrapper -->
-                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    {{^loggedInUsername}}
+                        <li><a href="/sign/in"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {{/loggedInUsername}}
+                    {{#loggedInUsername}}
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{loggedInUsername}}</a></li>
+                        <li><a href="/sign/out"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                    {{/loggedInUsername}}
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <script src="/concat/app.js" type="text/javascript"></script>
-        <!-- Additional scripts to be added to specific views -->
-        {{$scripts}}{{/scripts}}
-    </body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar no-padding">
+                {{<primary_menu}}
+                {{/primary_menu}}
+
+                {{#adminMenu}}
+                <h4>Admin Menu</h4>
+                {{{adminMenu}}}
+                {{/adminMenu}}
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id="page-wrapper">
+
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{$content}}{{/content}}  
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /#page-wrapper -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/concat/app.js" type="text/javascript"></script>
+    <!-- Additional scripts to be added to specific views -->
+    {{$scripts}}{{/scripts}}
+</body>
 </html>

@@ -17,6 +17,9 @@ $config = array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
+        'CustomDoctrine',
+        'SlmQueue',
+        'SlmQueueDoctrine',
         'DefaultModule',
         'CMS',
         'Users',
@@ -28,7 +31,8 @@ $config = array(
         'Organizations',
         'Courses',
         'Versioning',
-        'System'
+        'System',
+        'Notifications'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

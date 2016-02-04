@@ -4,12 +4,6 @@
 <a href="/courses/calendar"><button class="btn btn-small btn-success"><span class="glyphicon glyphicon-arrow-left"></span></button></a>
 <br><br>
 
-{{#evaluation}}
-<a class="btn btn-info" href="/courses/evaluation/edit/{{course.id}}" >Edit Course Evaluation</a> 
-{{/evaluation}}
-{{^evaluation}}
-<a class="btn btn-info" href="/courses/evaluation/new/{{course.id}}" >Create Course Evaluation</a>
-{{/evaluation}}
 <br><br>
 <!--make sure that user did not evaluated the course before-->
 {{#evaluatedBefore}}
