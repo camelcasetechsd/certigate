@@ -103,11 +103,11 @@ class Exam
 
         if (isset($tvtcMail)) {
             // send tvtc new mail
-            $this->sendMail($bookObj, $tvtcMail, $config, true);
+            $this->sendMail($bookObj, $tvtcMail);
         }
         if (count($toBeNotifiedArray) > 0) {
             // send admin new mail
-            $this->sendMail($bookObj, $toBeNotifiedArray, $config);
+            $this->sendMail($bookObj, $toBeNotifiedArray, /*$notificationEmailFlag =*/ true);
         }
     }
 
@@ -173,11 +173,10 @@ class Exam
      * and the other to tvtc
      * @param int $request
      * @param string $to
-     * @param array $config
-     * @param string $adminMail ,default is null
+     * @param bool $notificationEmailFlag ,default is false
      * @throws \Exception From email is not set
      */
-    private function sendMail($request, $to, $config, $adminMail = null)
+    private function sendMail($request, $to, $notificationEmailFlag = false)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -197,7 +196,7 @@ class Exam
             "serverUrl" => $serverUrlString
         );
         // if tctv mail
-        if (is_null($adminMail)) {
+        if ($notificationEmailFlag === false) {
             $templateName = MailTempates::EXAM_APPROVAL_REQUEST_TEMPLATE;
             $subject = MailSubjects::EXAM_APPROVAL_REQUEST_SUBJECT;
         }
