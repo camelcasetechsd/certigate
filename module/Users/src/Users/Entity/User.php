@@ -498,6 +498,24 @@ class User
     }
 
     /**
+     * Get roles names
+     * 
+     * 
+     * @access public
+     * @return array roles names
+     */
+    public function getRolesNames()
+    {
+        $rolesNames = array();
+        foreach($this->roles as $role){
+            if(is_object($role)){
+                $rolesNames[] = $role->getName();
+            }
+        }
+        return $rolesNames;
+    }
+
+    /**
      * Get status
      * 
      * 
