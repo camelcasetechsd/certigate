@@ -9,6 +9,7 @@ use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
+use Zend\Json\Json;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 
@@ -128,11 +129,11 @@ class OrganizationsController extends ActionController
 
 
         $variables['userData']->CRExpiration = $variables['userData']->getCRExpiration()->format('Y-m-d');
-// skip atc expiration if atp
+        // skip atc expiration if atp
         if ($variables['userData']->atcLicenseExpiration != null) {
             $variables['userData']->atcLicenseExpiration = $variables['userData']->getAtcLicenseExpiration()->format('Y-m-d');
         }
-// skip atp expiration if atc
+        // skip atp expiration if atc
         if ($variables['userData']->atpLicenseExpiration != null) {
             $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
         }
@@ -142,7 +143,7 @@ class OrganizationsController extends ActionController
 
     /**
      * create new ATC
-     * 
+     *
      * 
      * @access public
      * 
@@ -151,11 +152,11 @@ class OrganizationsController extends ActionController
     public function newAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
-        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
+        $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
+        $query = $cleanQuery->setEntity('Users\Entity\User');
+        $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $orgObj = new OrgEntity();
-        $options = array();
+        
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
 
@@ -169,6 +170,17 @@ class OrganizationsController extends ActionController
             $creatorId = $storage['id'];
             $userEmail = $storage['email'];
         }
+        
+        $orgObj = new OrgEntity();
+        $options = array();
+        // organization type
+        $orgType = $_GET['organization'];
+        $savedState = $orgModel->hasSavedState($orgType, $creatorId);
+        if ($savedState != null) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'id' => $savedState), array('name' => 'edit_org'));
+            $this->redirect()->toUrl($url . '?organization=' . $orgType);
+        }
+        
         $options['query'] = $query;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
@@ -206,7 +218,7 @@ class OrganizationsController extends ActionController
             }
             // not approved
             $data['active'] = OrgEntity::NOT_APPROVED;
-
+            $data['creatorId'] = $creatorId;
             if ($form->isValid()) {
 
                 $orgModel->saveOrganization($data, null, $creatorId, $userEmail, $isAdminUser);
@@ -264,9 +276,9 @@ class OrganizationsController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
 
-//            // Make certain to merge the files info!
+//            Make certain to merge the files info!
 //            $fileData = $request->getFiles()->toArray();
-//
+
             $fileData = $request->getFiles()->toArray();
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
@@ -301,6 +313,7 @@ class OrganizationsController extends ActionController
 
             switch ($data['type']) {
                 case '1':
+                    array_push($atcSkippedParams, 'testCenterAdmin_id');
                     foreach ($atcSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
@@ -308,7 +321,7 @@ class OrganizationsController extends ActionController
                     break;
 
                 case '2':
-
+                    array_push($atcSkippedParams, 'trainingManager_id');
                     foreach ($atpSkippedParams as $param) {
                         $inputFilter->get($param)->setRequired(false);
                         $data[$param] = null;
@@ -344,7 +357,6 @@ class OrganizationsController extends ActionController
 
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
-//        $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Org');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
 
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -359,6 +371,59 @@ class OrganizationsController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
         }
         $this->redirect()->toUrl($url);
+    }
+
+    public function saveStateAction()
+    {
+        $auth = new \Zend\Authentication\AuthenticationService();
+        $creatorId = $auth->getIdentity()['id'];
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $orgObj = new \Organizations\Entity\Organization();
+        $orgModel = new \Organizations\Model\Organization($query);
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            parse_str($_POST['saveState'], $stateArray);
+            // prepare dates 
+            $stateArray['CRExpiration'] = null;
+            $stateArray['atpLicenseExpiration'] = null;
+            $stateArray['atcLicenseExpiration'] = null;
+
+            if (!isset($stateArray['focalContactPerson_id']) || $stateArray['focalContactPerson_id'] == "") {
+                $stateArray['focalContactPerson_id'] = null;
+            }
+            if (!isset($stateArray['testCenterAdmin_id'])) {
+                $stateArray['testCenterAdmin_id'] = null;
+            }
+            if (!isset($stateArray['trainingManager_id'])) {
+                $stateArray['trainingManager_id'] = null;
+            }
+
+            $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
+            // check commercial name existance in DB
+            if (!$isUniqe) {
+                // saving organizations as inactive organization
+                $stateArray['active'] = OrgEntity::SAVE_STATE;
+                $stateArray['creatorId'] = $creatorId;
+
+                /**
+                 * no need to assign users now so we used 
+                 * save state = true .. now we will skip calling
+                 * assignUserToOrg() method 
+                 */
+                $orgModel->saveOrganization($stateArray, null, /*$creatorId =*/ null, /*$userEmail =*/ null, /*$isAdminUser =*/ true, /*$saveState =*/ true);
+
+                $data = array(
+                    'result' => true,
+                );
+            }
+            //uniqness error does not completed yet
+            else {
+                $data = array(
+                    'result' => "Commercial Name already Exists",
+                );
+            }
+        }
+        return $this->getResponse()->setContent(Json::encode($data));
     }
 
 }

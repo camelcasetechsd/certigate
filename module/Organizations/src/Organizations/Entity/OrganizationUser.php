@@ -90,7 +90,7 @@ class OrganizationUser
      * 
      * @return \Organizations\Entity\OrganizationUser
      */
-    public function setOrganizationUser(Organization $organization, User $user)
+    public function setOrganizationUser($organization, $user)
     {
         $this->organization = $organization;
         $this->user = $user;
@@ -178,7 +178,7 @@ class OrganizationUser
      */
     public function exchangeArray($data = array())
     {
-        if(array_key_exists("organization", $data)){
+        if (array_key_exists("organization", $data)) {
             $this->setOrganization($data["organization"]);
         }
         $this->setRole($data["role"])

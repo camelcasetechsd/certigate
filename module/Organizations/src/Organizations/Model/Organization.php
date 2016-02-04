@@ -121,6 +121,7 @@ class Organization
     public function listOrganizations($query, $type)
     {
         $em = $query->entityManager;
+
         $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
         $dqlQuery->setParameter(1, $type);
         return $dqlQuery->getResult();
@@ -135,25 +136,28 @@ class Organization
      * @param int $creatorId ,default is null
      * @param string $userEmail ,default is null
      * @param bool $isAdminUser ,default is true
+     * @param bool $saveState ,default is false
      */
-    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $userEmail = null, $isAdminUser = true)
+    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $userEmail = null, $isAdminUser = true , $saveState = false)
     {
-
+        $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
         $rolesIds = array();
         foreach ($roles as $role) {
             $rolesIds[$role->getName()] = $role->getId();
         }
+        // at create
 
         $sendNotificationFlag = false;
         if (is_null($orgObj)) {
-
             $entity = new \Organizations\Entity\Organization();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
             }
         }
+        // at edit
         else {
+            $editFlag = true;
             $entity = $orgObj;
         }
 
@@ -209,25 +213,30 @@ class Organization
         if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
-
         /**
          * Save Organization
          */
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
-        // if there's 
-        if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-        }
-        else if ($orgInfo['trainingManager_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-        }
-        if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-        }
-        else if ($orgInfo['testCenterAdmin_id'] != 0) {
-            $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+
+        // does not work in case of savestate or edit
+        if (!$saveState) {
+            // if there's 
+            if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != $creatorId) {
+
+                $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            }
+            else if ($orgInfo['trainingManager_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            }
+
+            if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != $creatorId) {
+                $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            }
+            else if ($orgInfo['testCenterAdmin_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            }
         }
 
         if ($sendNotificationFlag === true) {
@@ -316,6 +325,35 @@ class Organization
         return $variables;
     }
 
+    public function checkExistance($commercialName)
+    {
+        $organization = $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
+            'commercialName' => $commercialName
+        ));
+        if ($organization == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public function checkSavedBefore($commercialName)
+    {
+        $organization = $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\Organization', array(
+            'commercialName' => $commercialName
+        ));
+        // if there's no organization with this commerical name
+        if ($organization == null) {
+            return false;
+        }
+        // existed but type saved state
+        if ($organization->active == 0) {
+            $this->query->remove($organization);
+            return false;
+        }
+        // if existed with nactive = 1 or 2
+        return true;
+    }
+
     /**
      * this function meant to assign an user to an organization with specific type
      *  
@@ -372,6 +410,21 @@ class Organization
         return $organizationsArray;
     }
 
+    public function hasSavedState($orgType, $creatorId)
+    {
+        $savedState = $this->query->findOneBy('Organizations\Entity\Organization', array(
+            'creatorId' => $creatorId,
+            'active' => \Organizations\Entity\Organization::SAVE_STATE,
+            'type' => $orgType
+        ));
+
+        if ($savedState != null) {
+            return $savedState->id;
+        }
+
+        return null;
+    }
+    
     /**
      * Send mail
      * 

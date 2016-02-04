@@ -603,13 +603,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'trainingManager_id',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
-                'class' => 'form-control atpSet',
+                'class' => 'form-control atpSet notReqOnEdit',
                 'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Training Manager',
                 'label_attributes' => array(
-                    'class' => ' atpSet',
+                    'class' => ' atpSet notReqOnEdit',
                 ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
@@ -626,13 +626,13 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'testCenterAdmin_id',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
-                'class' => 'form-control atcSet',
+                'class' => 'form-control atcSet notReqOnEdit',
                 'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
                 'label_attributes' => array(
-                    'class' => ' atcSet',
+                    'class' => ' atcSet notReqOnEdit',
                 ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
@@ -712,6 +712,16 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => 'Create',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'saveState',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-info',
+                'value' => 'Save State',
+                'type' => 'button',
             )
         ));
 

@@ -15985,7 +15985,24 @@ function deleteResourcePhysically(deleteAnchorTag){
 /* OriginalFileName : public/js/orgReg.js */ 
 
 $(document).ready(function () {
-// in organization create & delete
+
+//    $('#org_form_saveState').click(function (e) {
+//
+//        if ($('#org_form_commercialName').val() !== "") {
+//            $state = $('#org_form').serialize();
+//            $.ajax({
+//                type: "POST",
+//                url: "/organizations/savestate",
+//                data: {
+//                    saveState: $state
+//                },
+//                dataType: "json"
+//            });
+//            window.location.replace("/organizations/atps");
+//        }
+//    });
+
+    // in organization create & delete
     if (window.location.href.indexOf("?organization=") > -1) {
 
         $orgType = getParameterByName('organization');
@@ -16018,6 +16035,12 @@ $(document).ready(function () {
                 break;
         }
 
+    }
+
+    if (window.location.href.indexOf("/organizations/edit") > -1) {
+        $('.notReqOnEdit').hide();
+        $('.notReqOnEdit').removeAttr('required');
+        $('#org_form_saveState').hide();
     }
 // in type page
     if (window.location.href.indexOf("type?type=") > -1) {
@@ -16063,6 +16086,10 @@ $(document).ready(function () {
             $('#type_form_type').val("");
         }
     });
+
+
+
+
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

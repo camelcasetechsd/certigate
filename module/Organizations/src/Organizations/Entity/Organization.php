@@ -57,6 +57,7 @@ use Utilities\Service\Time;
  * @property string $operatingSystemLang
  * @property string $officeVersion
  * @property string $officeLang
+ * @property string $creatorId
  * 
  * 
  * @package organizations
@@ -87,6 +88,11 @@ class Organization
 
     /**
      * not approved organization
+     */
+    const SAVE_STATE = 0;
+
+    /**
+     * Active organization
      */
     const NOT_APPROVED = 1;
 
@@ -123,7 +129,7 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true )
      * @var string
      */
     public $active;
@@ -151,42 +157,42 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $ownerName;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $ownerNationalId;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $CRNo;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true )
      * @var \DateTime
      */
     public $CRExpiration;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $CRAttachment;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string",nullable=true)
      * @var string
      */
     public $wireTransferAttachment;
@@ -235,7 +241,7 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $addressLine1;
@@ -249,21 +255,21 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $city;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $zipCode;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $phone1;
@@ -291,14 +297,14 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $website;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true )
      * @var string
      */
     public $email;
@@ -384,6 +390,13 @@ class Organization
      */
     public $exambook;
 
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $creatorId;
+
     public function __construct()
     {
         $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
@@ -392,6 +405,10 @@ class Organization
     function getId()
     {
         return $this->id;
+    }
+    function getCreatorId()
+    {
+        return $this->creatorId;
     }
 
     function getType()
@@ -438,6 +455,7 @@ class Organization
     {
         return $this->CRAttachment;
     }
+
     function getWireTransferAttachment()
     {
         return $this->wireTransferAttachment;
@@ -588,6 +606,11 @@ class Organization
         $this->id = $id;
     }
 
+    function setCreatorId($creatorId)
+    {
+        $this->creatorId= $creatorId;
+    }
+
     function setType($type)
     {
         $this->type = $type;
@@ -632,6 +655,7 @@ class Organization
     {
         $this->CRAttachment = $CRAttachment;
     }
+
     function setWireTransferAttachment($wireTransferAttachment)
     {
         $this->wireTransferAttachment = $wireTransferAttachment;
@@ -840,7 +864,7 @@ class Organization
      */
     public function exchangeArray($data = array())
     {
-
+        $this->setCreatorId($data['creatorId']);
         $this->setActive($data['active']);
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
