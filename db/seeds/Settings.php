@@ -1,10 +1,10 @@
 <?php
 
 require_once 'init_autoloader.php';
-require_once 'module/Users/src/System/Service/Settings.php';
+require_once 'module/System/src/System/Service/Settings.php';
 
 use Phinx\Seed\AbstractSeed;
-use System\Service\Settings;
+use System\Service\Settings as SettingsConstants;
 
 class Settings extends AbstractSeed {
 
@@ -22,19 +22,19 @@ class Settings extends AbstractSeed {
         
         $settings = array(
             array(
-            'name' => Settings::ADMIN_EMAIL,
+            'name' => SettingsConstants::ADMIN_EMAIL,
             'value' => $faker->freeEmail
                 ), 
             array(
-            'name' => Settings::OPERATIONS_EMAIL,
+            'name' => SettingsConstants::OPERATIONS_EMAIL,
             'value' => $faker->freeEmail
                 ), 
             array(
-            'name' => Settings::TVTC_EMAIL,
+            'name' => SettingsConstants::TVTC_EMAIL,
             'value' => $faker->freeEmail
                 ),
             array(
-            'name' => Settings::SYSTEM_EMAIL,
+            'name' => SettingsConstants::SYSTEM_EMAIL,
             'value' => $faker->freeEmail
                 ),
             );
