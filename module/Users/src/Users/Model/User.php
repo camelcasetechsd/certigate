@@ -187,6 +187,7 @@ class User
     /**
      * Send mail
      * 
+     * @access private
      * @param string $userEmail
      * @param array $userRoles
      * @throws \Exception From email is not set

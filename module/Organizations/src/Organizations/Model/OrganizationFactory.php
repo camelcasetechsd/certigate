@@ -11,7 +11,9 @@ class OrganizationFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
-        return new Organization($query);
+        $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
+        $notification = $serviceLocator->get('Notifications\Service\Notification');
+        return new Organization($query, $systemCacheHandler, $notification);
     }
 
 }

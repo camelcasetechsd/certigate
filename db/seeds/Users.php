@@ -314,6 +314,10 @@ class Users extends AbstractSeed
         $organizationUsersDeleteRoute = "organizationUsersDelete";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
+        $orgTypeRoute = "org_type";
+        $orgMoreRoute = "more";
+        $orgNewRoute = "new_org";
+        $orgEditRoute = "edit_org";
         $organizationAcls = array(
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -374,6 +378,46 @@ class Users extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $listAtpOrgsRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $orgTypeRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgTypeRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $orgEditRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgEditRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $orgNewRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgNewRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $orgMoreRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgMoreRoute,
             ),
         );
         $this->insert('acl', $organizationAcls);

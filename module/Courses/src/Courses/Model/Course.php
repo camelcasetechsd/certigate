@@ -143,6 +143,7 @@ class Course
     /**
      * Send mail
      * 
+     * @access private
      * @param string $userEmail
      * @throws \Exception From email is not set
      * @throws \Exception To email is not set

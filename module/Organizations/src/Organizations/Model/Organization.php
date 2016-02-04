@@ -8,6 +8,10 @@ use Utilities\Service\Status;
 use Users\Entity\Role;
 use Organizations\Entity\Organization as OrganizationEntity;
 use Utilities\Service\Time;
+use System\Service\Settings;
+use Notifications\Service\MailTempates;
+use Notifications\Service\MailSubjects;
+use System\Service\Cache\CacheHandler;
 
 /**
  * Org Model
@@ -18,12 +22,11 @@ use Utilities\Service\Time;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property Utilities\Service\Random $random
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
  * 
  * @package organizations
  * @subpackage model
- * 
- * 
- * 
  */
 class Organization
 {
@@ -45,6 +48,18 @@ class Organization
     protected $random;
 
     /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+
+    /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -52,10 +67,14 @@ class Organization
      * @uses Random
      * 
      * @param Utilities\Service\Query\Query $query
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query)
+    public function __construct($query, $systemCacheHandler, $notification)
     {
         $this->query = $query;
+        $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
         $this->random = new Random();
     }
 
@@ -107,7 +126,17 @@ class Organization
         return $dqlQuery->getResult();
     }
 
-    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null)
+    /**
+     * Save organization
+     * 
+     * @access public
+     * @param array $orgInfo
+     * @param Organizations\Entity\Organization $orgObj ,default is null
+     * @param int $creatorId ,default is null
+     * @param string $userEmail ,default is null
+     * @param bool $isAdminUser ,default is true
+     */
+    public function saveOrganization($orgInfo, $orgObj = null, $creatorId = null, $userEmail = null, $isAdminUser = true)
     {
 
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -116,9 +145,13 @@ class Organization
             $rolesIds[$role->getName()] = $role->getId();
         }
 
+        $sendNotificationFlag = false;
         if (is_null($orgObj)) {
 
             $entity = new \Organizations\Entity\Organization();
+            if ($isAdminUser === false) {
+                $sendNotificationFlag = true;
+            }
         }
         else {
             $entity = $orgObj;
@@ -196,6 +229,10 @@ class Organization
         else if ($orgInfo['testCenterAdmin_id'] != 0) {
             $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
         }
+
+        if ($sendNotificationFlag === true) {
+            $this->sendMail($userEmail);
+        }
     }
 
     private function saveAttachment($filename, $type)
@@ -262,7 +299,7 @@ class Organization
         $staticOs = \Organizations\Entity\Organization::getOSs();
         $staticLangs = \Organizations\Entity\Organization::getStaticLangs();
         $staticVersions = \Organizations\Entity\Organization::getOfficeVersions();
-        
+
         if (isset($variables['userData']->operatingSystem)) {
             $variables['userData']->operatingSystem = $staticOs[$variables['userData']->operatingSystem];
         }
@@ -296,7 +333,7 @@ class Organization
         $orgUserObj->setRole($role);
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($orgUserObj);
     }
-    
+
     /**
      * prepare organizations for display
      * 
@@ -305,9 +342,10 @@ class Organization
      * @param array $organizationsArray
      * @return array organizations prepared for display
      */
-    public function prepareForDisplay(array $organizationsArray) {
+    public function prepareForDisplay(array $organizationsArray)
+    {
         foreach ($organizationsArray as $organization) {
-            
+
             switch ($organization->type) {
                 case OrganizationEntity::TYPE_ATC:
                     $organization->typeText = "ATC";
@@ -332,6 +370,62 @@ class Organization
             }
         }
         return $organizationsArray;
+    }
+
+    /**
+     * Send mail
+     * 
+     * @access private
+     * @param string $userEmail
+     * @throws \Exception From email is not set
+     * @throws \Exception Admin email is not set
+     * @throws \Exception Operations email is not set
+     */
+    private function sendMail($userEmail)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $adminEmail = $settings[Settings::ADMIN_EMAIL];
+        }
+        if (array_key_exists(Settings::OPERATIONS_EMAIL, $settings)) {
+            $operationsEmail = $settings[Settings::OPERATIONS_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+        if (!isset($adminEmail)) {
+            throw new \Exception("Admin email is not set");
+        }
+        if (!isset($operationsEmail)) {
+            throw new \Exception("Operations email is not set");
+        }
+        $templateParameters = array(
+            "email" => $userEmail,
+        );
+        $notificationMailArray = array(
+            'to' => $adminEmail,
+            'from' => $from,
+            'templateName' => MailTempates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE,
+            'templateParameters' => $templateParameters,
+            'subject' => MailSubjects::NEW_ORGANIZATION_NOTIFICATION_SUBJECT,
+        );
+        $this->notification->notify($notificationMailArray);
+
+        $welcomeKitMailArray = array(
+            'to' => $operationsEmail,
+            'from' => $from,
+            'templateName' => MailTempates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
+            'templateParameters' => $templateParameters,
+            'subject' => MailSubjects::NEW_ORGANIZATION_WELCOME_KIT_SUBJECT,
+        );
+        $this->notification->notify($welcomeKitMailArray);
     }
 
 }

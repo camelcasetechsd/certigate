@@ -9,6 +9,8 @@ use Organizations\Entity\Organization as OrgEntity;
 use Organizations\Model\Organization as OrgModel;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
 /**
  * Atps Controller
@@ -38,14 +40,14 @@ class OrganizationsController extends ActionController
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         $criteria = Criteria::create();
-            $expr = Criteria::expr();
-            $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
+        $expr = Criteria::expr();
+        $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
 
         $data = $query->filter(/* $entityName = */'Organizations\Entity\Organization', $criteria);
         $variables['organizations'] = $organizationModel->prepareForDisplay($data);
         return new ViewModel($variables);
     }
-    
+
     public function typeAction()
     {
         $variables = array();
@@ -154,8 +156,19 @@ class OrganizationsController extends ActionController
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $orgObj = new OrgEntity();
         $options = array();
-        $auth = new \Zend\Authentication\AuthenticationService();
-        $creatorId = $auth->getIdentity()['id'];
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        $isAdminUser = false;
+        $creatorId = false;
+        $userEmail = false;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            $creatorId = $storage['id'];
+            $userEmail = $storage['email'];
+        }
         $options['query'] = $query;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
@@ -196,7 +209,7 @@ class OrganizationsController extends ActionController
 
             if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data, null, $creatorId);
+                $orgModel->saveOrganization($data, null, $creatorId, $userEmail, $isAdminUser);
 
                 // redirecting
                 if ($data['type'] == 1) {
