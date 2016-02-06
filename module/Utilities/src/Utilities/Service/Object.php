@@ -56,7 +56,7 @@ class Object {
      * @param int $maxDepthLevel depth level including first object level ,default is 3
      * @return array objects prepared for display
      */
-    public function prepareForDisplay(array $objectsArray, $depthLevel = 0, $maxDepthLevel = 3) {
+    public function prepareForDisplay( $objectsArray, $depthLevel = 0, $maxDepthLevel = 3) {
         $depthLevel ++;
         foreach ($objectsArray as $object) {
             $objectProperties = $this->prepareForStatusDisplay($object);

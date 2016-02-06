@@ -60,5 +60,20 @@
         </tbody>
     </table>
 </div>
+
+{{%IMPLICIT-ITERATOR}}
+<div class="pagination-bar">
+    <ul>
+        <li style="display: inline"> Pages :  </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li style="display: inline">
+            <a href="?page={{.}}">{{.}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+    </ul>
+</div>
+<br>
 {{/content}}
 {{/layout}}

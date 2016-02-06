@@ -33,11 +33,23 @@ class MenuItemController extends ActionController
     public function indexAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\MenuItem');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
 
-        $data = $query->findAll(/* $entityName = */null);
-        $variables['menuItems'] = $objectUtilities->prepareForDisplay($data);
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $menuItemModel->setPage($pageNumber);
+
+        // know the number of pages
+        $numberOfPages = $menuItemModel->getNumberOfPages();
+        //create an array of page numbers
+        if ($numberOfPages > 1) {
+            $pageNumbers = range(1, $numberOfPages);
+        }
+        else {
+            $pageNumbers = array();
+        }
+        $variables['menuItems'] = $objectUtilities->prepareForDisplay($menuItemModel->getCurrentItems());
+        $variables['pageNumbers'] = $pageNumbers;
         return new ViewModel($variables);
     }
 
