@@ -1,6 +1,14 @@
 <?php
 
 return array(
+    'service_manager' => array(
+        'aliases' => array(
+            'aclValidator' => 'CertigateAcl\Service\AclValidator',
+        ),
+        'factories' => array(
+            'CertigateAcl\Service\AclValidator' => 'CertigateAcl\Service\AclValidatorFactory',
+        )
+    ),
     'controller_plugins' => array(
         'invokables' => array(
             'CertigateAclPlugin' => 'CertigateAcl\Controller\Plugin\CertigateAclPlugin',
