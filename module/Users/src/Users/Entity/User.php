@@ -123,7 +123,7 @@ class User
 
     /**
      *
-     * @ORM\Column(type="string" , length = 11 )
+     * @ORM\Column(type="string")
      * @var string
      */
     public $mobile;
