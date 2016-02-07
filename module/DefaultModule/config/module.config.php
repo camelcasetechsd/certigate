@@ -77,6 +77,19 @@ return array(
                     ),
                 ),
             ),
+            'noAgreement' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/noagreement/:role',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'noAgreement',
+                    ),
+                    'constraints' => array(
+                        'role' => '[a-zA-Z ]*'
+                    ),
+                ),
+            ),
             'resource_not_found' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

@@ -27,6 +27,19 @@ class ErrorController extends ActionController
     {
         return new ViewModel();
     }
+    
+    /**
+     * No Agreement Action
+     * 
+     * @access public
+     * @return ViewModel
+     */
+    public function noAgreementAction()
+    {
+        $role = $this->params('role');
+        $variables = array("role" => $role);
+        return new ViewModel($variables);
+    }
 
     public function resourceNotFoundAction()
     {

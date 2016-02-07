@@ -31,6 +31,9 @@ return array(
             'noaccess' => array(
                 'resource' => 'DefaultModule',
             ),
+            'noAgreement' => array(
+                'resource' => 'DefaultModule',
+            ),
             'resource_not_found' => array(
                 'resource' => 'DefaultModule',
             ),
