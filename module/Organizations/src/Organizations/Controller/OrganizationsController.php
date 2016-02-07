@@ -51,6 +51,11 @@ class OrganizationsController extends ActionController
 
     public function typeAction()
     {
+        $rolesArray = array(Role::TEST_CENTER_ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, /* $organization = */ null, /* $atLeastOneRoleFlag = */ true);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
         $variables = array();
         $form = new \Organizations\Form\TypeForm(/* $name = */ null);
 
@@ -156,7 +161,7 @@ class OrganizationsController extends ActionController
         $query = $cleanQuery->setEntity('Users\Entity\User');
         $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        
+
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
 
@@ -170,17 +175,23 @@ class OrganizationsController extends ActionController
             $creatorId = $storage['id'];
             $userEmail = $storage['email'];
         }
-        
+
         $orgObj = new OrgEntity();
         $options = array();
         // organization type
         $orgType = $_GET['organization'];
+
+        $rolesArray = $orgModel->getRequiredRoles($orgType);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
         $savedState = $orgModel->hasSavedState($orgType, $creatorId);
         if ($savedState != null) {
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'id' => $savedState), array('name' => 'edit_org'));
             $this->redirect()->toUrl($url . '?organization=' . $orgType);
         }
-        
+
         $options['query'] = $query;
         $options['isAdminUser'] = $isAdminUser;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
@@ -220,7 +231,7 @@ class OrganizationsController extends ActionController
             $data['creatorId'] = $creatorId;
             if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data, /*$orgObj =*/ null, /*$oldStatus =*/ null, $creatorId, $userEmail, $isAdminUser);
+                $orgModel->saveOrganization($data, /* $orgObj = */ null, /* $oldStatus = */ null, $creatorId, $userEmail, $isAdminUser);
 
                 // redirecting
                 if ($data['type'] == 1) {
@@ -254,6 +265,12 @@ class OrganizationsController extends ActionController
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+
+        $rolesArray = $orgModel->getRequiredRoles($orgObj->getType());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
         // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
@@ -339,7 +356,7 @@ class OrganizationsController extends ActionController
             }
 
             if ($form->isValid()) {
-                $orgModel->saveOrganization($data, $orgObj, $oldStatus, /*$creatorId =*/ null, /*$userEmail =*/ null, $isAdminUser);
+                $orgModel->saveOrganization($data, $orgObj, $oldStatus, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
 
                 // redirecting
                 if ($data['type'] == 1) {
@@ -390,6 +407,13 @@ class OrganizationsController extends ActionController
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
             parse_str($_POST['saveState'], $stateArray);
+
+            $rolesArray = $orgModel->getRequiredRoles($stateArray["type"]);
+            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
+            if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+                return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+            }
+
             // prepare dates 
             $stateArray['CRExpiration'] = null;
             $stateArray['atpLicenseExpiration'] = null;
@@ -417,7 +441,7 @@ class OrganizationsController extends ActionController
                  * save state = true .. now we will skip calling
                  * assignUserToOrg() method 
                  */
-                $orgModel->saveOrganization($stateArray, /*$orgObj =*/ null,/*$oldStatus =*/ null, /*$creatorId =*/ null, /*$userEmail =*/ null, /*$isAdminUser =*/ true, /*$saveState =*/ true);
+                $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
 
                 $data = array(
                     'result' => true,

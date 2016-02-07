@@ -430,6 +430,32 @@ class Organization
     }
     
     /**
+     * Get required roles
+     * 
+     * @access public
+     * @param int $organizationType
+     * 
+     * @return array required roles
+     */
+    public function getRequiredRoles($organizationType)
+    {
+        $requiredRoles = array();
+        switch ((int)$organizationType) {
+            case OrganizationEntity::TYPE_ATC:
+                $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
+                break;
+            case OrganizationEntity::TYPE_ATC:
+                $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
+                break;
+            case OrganizationEntity::TYPE_BOTH:
+                $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
+                $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
+                break;
+        }
+        return $requiredRoles;
+    }
+    
+    /**
      * Send mail
      * 
      * @access private

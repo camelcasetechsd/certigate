@@ -55,6 +55,12 @@ class ExamController extends ActionController
         $options['query'] = $query;
         $examBook = new \Courses\Entity\ExamBook();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
+        
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TEST_CENTER_ADMIN_ROLE);
+        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
+        
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;

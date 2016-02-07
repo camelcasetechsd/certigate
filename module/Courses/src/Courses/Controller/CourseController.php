@@ -606,7 +606,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseId = $this->params('courseId');
         $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
         if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }

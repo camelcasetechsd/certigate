@@ -41,13 +41,12 @@ class OrganizationUsersController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
 
-        $accessValid = $this->validateAccessControl($organization);
-        if ($accessValid === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray);
+        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-
 
         $data = $query->findBy(/* $entityName = */'Organizations\Entity\OrganizationUser', /* $criteria = */ array('organization' => $organizationId));
         foreach ($data as $organizationUser) {
@@ -77,15 +76,16 @@ class OrganizationUsersController extends ActionController
         $organizationId = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\OrganizationUser');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $organizationId);
-        $organizationUser = new OrganizationUser();
-
-        $accessValid = $this->validateAccessControl($organization);
-        if ($accessValid === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
+        
+        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(),$rolesArray , $organization);
+        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
+        
+        $organizationUser = new OrganizationUser();
 
         $options = array();
         $options['query'] = $query;
@@ -125,17 +125,17 @@ class OrganizationUsersController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
         $organization = $organizationUser->getOrganization();
         $organizationId = $organization->getId();
 
-        $accessValid = $this->validateAccessControl($organization);
-        if ($accessValid === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
+        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
+        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-
+        
         $options = array();
         $options['query'] = $query;
         $options['organizationType'] = $organization->getType();
@@ -173,13 +173,19 @@ class OrganizationUsersController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $organizationUser->getOrganization();
         $organizationId = $organization->getId();
 
-        $accessValid = $this->validateAccessControl($organization);
+        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
+        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
+        
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if (($accessValid === false) || ($storage['id'] == $organizationUser->getUser()->getId())) {
+        if ($storage['id'] == $organizationUser->getUser()->getId()) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
             $this->redirect()->toUrl($url);
