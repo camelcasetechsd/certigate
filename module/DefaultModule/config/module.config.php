@@ -78,15 +78,16 @@ return array(
                 ),
             ),
             'noAgreement' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/noagreement/:role',
+                    'route' => '/noagreement/:id/:role',
                     'defaults' => array(
                         'controller' => 'DefaultModule\Controller\Error',
                         'action' => 'noAgreement',
                     ),
                     'constraints' => array(
-                        'role' => '[a-zA-Z ]*'
+                        'id' => '[0-9]+',
+                        'role' => '[a-zA-Z%20]+'
                     ),
                 ),
             ),

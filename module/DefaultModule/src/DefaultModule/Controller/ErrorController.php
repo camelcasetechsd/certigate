@@ -27,7 +27,7 @@ class ErrorController extends ActionController
     {
         return new ViewModel();
     }
-    
+
     /**
      * No Agreement Action
      * 
@@ -37,7 +37,11 @@ class ErrorController extends ActionController
     public function noAgreementAction()
     {
         $role = $this->params('role');
-        $variables = array("role" => $role);
+        $id = $this->params('id');
+        $variables = array(
+            "role" => $role,
+            "id" => $id,
+        );
         return new ViewModel($variables);
     }
 
