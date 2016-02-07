@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Utilities\Service\Time;
 use DoctrineModule\Validator\UniqueObject;
+use Utilities\Service\Inflector;
 
 /**
  * User Entity
@@ -513,6 +514,27 @@ class User
             }
         }
         return $rolesNames;
+    }
+    
+    /**
+     * Get roles agreements status
+     * 
+     * 
+     * @access public
+     * @return array agreement status per each role
+     */
+    public function getRolesAgreementsStatus()
+    {
+        $inflector = new Inflector();
+        $roles = $this->getRolesNames();
+        $rolesAgreementsStatus = array();
+        foreach($roles as $role){
+            $roleAgrementStatusMethod = "get".$inflector->camelize($role)."Statement";
+            if(method_exists($this, $roleAgrementStatusMethod)){
+                $rolesAgreementsStatus[$role] = $this->$roleAgrementStatusMethod();
+            }
+        }
+        return $rolesAgreementsStatus;
     }
 
     /**

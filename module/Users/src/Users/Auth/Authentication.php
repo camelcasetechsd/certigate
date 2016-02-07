@@ -97,16 +97,18 @@ class Authentication {
         // here to add new entries to the session
         $storage->write(array(
             'id' => $entity->id,
-            'firstName' => $entity->firstName,
-            'middleName' => $entity->middleName,
-            'lastName' => $entity->lastName,
+            'firstName' => $entity->getFirstName(),
+            'middleName' => $entity->getMiddleName(),
+            'lastName' => $entity->getLastName(),
             'name' => $entity->getFullName(),
-            'username' => $entity->username,
-            'email' => $entity->email,
-            'photo' => $entity->photo,
-            'status' => $entity->status,
-            'roles' => $entity->getRolesNames()
+            'username' => $entity->getUsername(),
+            'email' => $entity->getEmail(),
+            'photo' => $entity->getPhoto(),
+            'status' => $entity->getStatus(),
+            'roles' => $entity->getRolesNames(),
+            'agreements' => $entity->getRolesAgreementsStatus()
         ));
+        var_dump($auth->getIdentity());die;
     }
 
 }
