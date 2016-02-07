@@ -87,7 +87,7 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
-                        'role' => '[a-zA-Z%20]+'
+                        'role' => '[a-zA-Z%20,]+'
                     ),
                 ),
             ),
