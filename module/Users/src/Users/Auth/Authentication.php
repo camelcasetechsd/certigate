@@ -18,7 +18,8 @@ use Zend\Authentication\AuthenticationService;
  * @package users
  * @subpackage auth
  */
-class Authentication {
+class Authentication
+{
 
     /**
      *
@@ -39,7 +40,8 @@ class Authentication {
      * @access public
      * @param Query $query
      */
-    public function __construct(Query $query) {
+    public function __construct(Query $query)
+    {
         $this->query = $query;
     }
 
@@ -51,7 +53,8 @@ class Authentication {
      * @param Zend\Http\Request  $request
      * @return \Users\Auth\Authentication current Authentication service
      */
-    public function setRequest($request) {
+    public function setRequest($request)
+    {
         $this->request = $request;
         return $this;
     }
@@ -65,7 +68,8 @@ class Authentication {
      * 
      * @return Zend\Authentication\Result
      */
-    public function authenticateMe() {
+    public function authenticateMe()
+    {
         //get value of username from post
         $username = $this->request->getPost('username');
         // get value of password from post
@@ -85,30 +89,33 @@ class Authentication {
      * 
      * 
      * @access public
+     * @param Users/Entity/User $user ,default is null
      * @uses AuthenticationService
      */
-    public function newSession() {
-        $entity = $this->query->findOneBy(/* $entityName = */ 'Users\Entity\User', array(
-            'username' => $this->request->getPost('username'),
-        ));
+    public function newSession($user = null)
+    {
+        if (is_null($user)) {
+            $user = $this->query->findOneBy(/* $entityName = */ 'Users\Entity\User', array(
+                'username' => $this->request->getPost('username'),
+            ));
+        }
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
-        
+
         // here to add new entries to the session
         $storage->write(array(
-            'id' => $entity->id,
-            'firstName' => $entity->getFirstName(),
-            'middleName' => $entity->getMiddleName(),
-            'lastName' => $entity->getLastName(),
-            'name' => $entity->getFullName(),
-            'username' => $entity->getUsername(),
-            'email' => $entity->getEmail(),
-            'photo' => $entity->getPhoto(),
-            'status' => $entity->getStatus(),
-            'roles' => $entity->getRolesNames(),
-            'agreements' => $entity->getRolesAgreementsStatus()
+            'id' => $user->id,
+            'firstName' => $user->getFirstName(),
+            'middleName' => $user->getMiddleName(),
+            'lastName' => $user->getLastName(),
+            'name' => $user->getFullName(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'photo' => $user->getPhoto(),
+            'status' => $user->getStatus(),
+            'roles' => $user->getRolesNames(),
+            'agreements' => $user->getRolesAgreementsStatus()
         ));
-        var_dump($auth->getIdentity());die;
     }
 
 }

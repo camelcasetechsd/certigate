@@ -32,7 +32,8 @@ class UserFactory implements FactoryInterface {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Users\Entity\User');
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
-        return new User($query, $systemCacheHandler, $notification);
+        $auth = $serviceLocator->get('Users\Auth\Authentication');
+        return new User($query, $systemCacheHandler, $notification, $auth);
     }
 
 }

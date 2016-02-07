@@ -11,6 +11,7 @@ use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
+use Zend\Authentication\AuthenticationService;
 
 /**
  * User Model
@@ -23,6 +24,7 @@ use System\Service\Cache\CacheHandler;
  * @property Utilities\Service\Random $random
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
+ * @property Users\Auth\Authentication $auth
  * 
  * @package users
  * @subpackage model
@@ -55,6 +57,12 @@ class User
     protected $notification;
 
     /**
+     *
+     * @var Users\Auth\Authentication
+     */
+    protected $auth;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -64,12 +72,14 @@ class User
      * @param Utilities\Service\Query\Query $query
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
+     * @param Users\Auth\Authentication $auth
      */
-    public function __construct($query, $systemCacheHandler, $notification)
+    public function __construct($query, $systemCacheHandler, $notification, $auth)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->auth = $auth;
         $this->random = new Random();
     }
 
@@ -117,6 +127,13 @@ class User
             $userEmail = $userObj->getEmail();
             $userRoles = $userObj->getRolesNames();
             $this->sendMail($userEmail, $userRoles);
+        }
+        // update session if current logged in user is the updated one
+        $authenticationService = new AuthenticationService();
+        $storage = $authenticationService->getIdentity();
+        if($authenticationService->hasIdentity() && $storage['id'] == $userObj->getId()){
+            $authenticationService->clearIdentity();
+            $this->auth->newSession($userObj);
         }
     }
 
