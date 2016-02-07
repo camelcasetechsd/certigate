@@ -153,7 +153,7 @@ class Query
         }
         $return = $this->setEntity($entityName)->entityRepository->matching($criteria)->toArray();
         if ($countFlag === true) {
-            $return = (int) $return->count();
+            $return = count($return);
         }
         return $return;
     }
