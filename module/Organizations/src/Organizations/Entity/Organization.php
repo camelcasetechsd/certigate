@@ -649,7 +649,7 @@ class Organization
 
     function setCRExpiration($CRExpiration)
     {
-        if (!is_object($CRExpiration)) {
+        if (!is_object($CRExpiration) && !empty($CRExpiration)) {
             $CRExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $CRExpiration);
         }
         $this->CRExpiration = $CRExpiration;
@@ -672,7 +672,7 @@ class Organization
 
     function setAtpLicenseExpiration($atpLicenseExpiration)
     {
-        if (!is_object($atpLicenseExpiration)) {
+        if (!is_object($atpLicenseExpiration) && !empty($atpLicenseExpiration)) {
             $atpLicenseExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $atpLicenseExpiration);
         }
         $this->atpLicenseExpiration = $atpLicenseExpiration;
@@ -690,7 +690,7 @@ class Organization
 
     function setAtcLicenseExpiration($atcLicenseExpiration)
     {
-        if (!is_object($atcLicenseExpiration)) {
+        if (!is_object($atcLicenseExpiration) && !empty($atcLicenseExpiration)) {
             $atcLicenseExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $atcLicenseExpiration);
         }
         $this->atcLicenseExpiration = $atcLicenseExpiration;
@@ -896,9 +896,7 @@ class Organization
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
         $this->setCRNo($data['CRNo']);
-//        var_dump($data['CRExpiration']);exit;
         $this->setCRExpiration($data['CRExpiration']);
-//        $this->setCRAttachment($data['CRAttachment']);
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
         }
