@@ -151,6 +151,8 @@ class IndexController extends ActionController
                     'name' => 'users'));
                 $this->redirect()->toUrl($url);
                 }else{
+                    // bind form with latest updated object
+                    $form->bind($userObj);
                     $variables['success'] = true;
                 }
             }
