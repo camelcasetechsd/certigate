@@ -161,6 +161,7 @@ class IndexController extends ActionController
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
         $variables['statements'] = $statement->statements;
+        $variables['photo'] = $photo;
         return new ViewModel($variables);
     }
 

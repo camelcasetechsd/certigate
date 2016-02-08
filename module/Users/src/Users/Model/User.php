@@ -97,17 +97,19 @@ class User
     public function saveUser($userInfo, $userObj = null, $isAdminUser = true)
     {
         $sendNotificationFlag = false;
+        $editFormFlag = true;
         if (is_null($userObj)) {
+            $editFormFlag = false;
             $userObj = new UserEntity();
-            if($isAdminUser === false){
+            if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
             }
         }
         if (!empty($userInfo['password'])) {
             $userInfo['password'] = UserEntity::hashPassword($userInfo['password']);
         }
-        if (!empty($userInfo['photo']['name'])) {
-            $userInfo['photo'] = $this->savePhoto();
+        if (!(empty($userInfo['photo']['name']) && $editFormFlag === true)) {
+            $userInfo['photo'] = $this->savePhoto($userInfo['photo']);
         }
         $userInfo['status'] = Status::STATUS_ACTIVE;
 
@@ -122,8 +124,8 @@ class User
         }
 
         $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
-        
-        if($sendNotificationFlag === true){
+
+        if ($sendNotificationFlag === true) {
             $userEmail = $userObj->getEmail();
             $userRoles = $userObj->getRolesNames();
             $this->sendMail($userEmail, $userRoles);
@@ -131,7 +133,7 @@ class User
         // update session if current logged in user is the updated one
         $authenticationService = new AuthenticationService();
         $storage = $authenticationService->getIdentity();
-        if($authenticationService->hasIdentity() && $storage['id'] == $userObj->getId()){
+        if ($authenticationService->hasIdentity() && $storage['id'] == $userObj->getId()) {
             $authenticationService->clearIdentity();
             $this->auth->newSession($userObj);
         }
@@ -144,30 +146,36 @@ class User
      * @access protected
      * @uses Http
      * 
+     * @param array $photoData uploaded file data
      * @return string new attachment file name
      */
-    protected function savePhoto()
+    protected function savePhoto($photoData)
     {
-        $uploadResult = null;
-        $upload = new Http();
-        $imagesPath = 'public/upload/images/';
-        $upload->setDestination($imagesPath);
+        $uploadResult = '/upload/images/userdefault.png';
+        if (!empty($photoData['name'])) {
+            $upload = new Http();
+            $imagesPath = 'public/upload/images/';
+            $upload->setDestination($imagesPath);
 
-        try {
-            // upload received file(s)
-            $upload->receive();
-        } catch (\Exception $e) {
-            $uploadResult = '/upload/images/defaultpic.png';
+            try {
+                // upload received file(s)
+                $upload->receive();
+                $uploadResult = null;
+            } catch (\Exception $e) {
+                // nothing to do in case upload failed, just use default image
+            }
         }
 
-        $name = $upload->getFileName('photo');
-        $extention = pathinfo($name, PATHINFO_EXTENSION);
-        //get random new name
-        $newName = $this->random->getRandomUniqueName();
+        if (!(isset($uploadResult) && !empty($uploadResult))) {
+            $name = $upload->getFileName('photo');
+            $extention = pathinfo($name, PATHINFO_EXTENSION);
+            //get random new name
+            $newName = $this->random->getRandomUniqueName();
 
-        rename($name, 'public/upload/images/' . $newName . '.' . $extention);
+            rename($name, 'public/upload/images/' . $newName . '.' . $extention);
 
-        $uploadResult = '/upload/images/' . $newName . '.' . $extention;
+            $uploadResult = '/upload/images/' . $newName . '.' . $extention;
+        }
         return $uploadResult;
     }
 
