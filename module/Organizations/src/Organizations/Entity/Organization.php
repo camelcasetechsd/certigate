@@ -649,6 +649,9 @@ class Organization
 
     function setCRExpiration($CRExpiration)
     {
+        if (!is_object($CRExpiration)) {
+            $CRExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $CRExpiration);
+        }
         $this->CRExpiration = $CRExpiration;
     }
 
@@ -669,6 +672,9 @@ class Organization
 
     function setAtpLicenseExpiration($atpLicenseExpiration)
     {
+        if (!is_object($atpLicenseExpiration)) {
+            $atpLicenseExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $atpLicenseExpiration);
+        }
         $this->atpLicenseExpiration = $atpLicenseExpiration;
     }
 
@@ -684,6 +690,9 @@ class Organization
 
     function setAtcLicenseExpiration($atcLicenseExpiration)
     {
+        if (!is_object($atcLicenseExpiration)) {
+            $atcLicenseExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $atcLicenseExpiration);
+        }
         $this->atcLicenseExpiration = $atcLicenseExpiration;
     }
 
