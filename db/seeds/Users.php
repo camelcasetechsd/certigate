@@ -257,7 +257,7 @@ class Users extends AbstractSeed
                 'route' => $courseOutlines,
             ),
             array(
-                'role_id' => $testCenterAdminRole,
+                'role_id' => $testCenterAdminRoleId,
                 'module' => $courseModule,
                 'route' => $examBookingRoute,
             ),

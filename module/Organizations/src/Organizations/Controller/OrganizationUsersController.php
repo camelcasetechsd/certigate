@@ -43,7 +43,7 @@ class OrganizationUsersController extends ActionController
 
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
         if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }

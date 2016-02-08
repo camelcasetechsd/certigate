@@ -182,7 +182,7 @@ class OrganizationsController extends ActionController
         $orgType = $_GET['organization'];
 
         $rolesArray = $orgModel->getRequiredRoles($orgType);
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
@@ -312,7 +312,7 @@ class OrganizationsController extends ActionController
                     $request->getPost()->toArray(), $fileData
             );
 
-            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
+            $form->setInputFilter($orgObj->getInputFilter($orgsQuery->setEntity("Organizations\Entity\Organization")));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             // file not updated
@@ -411,47 +411,53 @@ class OrganizationsController extends ActionController
             $rolesArray = $orgModel->getRequiredRoles($stateArray["type"]);
             $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
             if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
-                return $this->redirect()->toUrl($validationResult["redirectUrl"]);
-            }
-
-            // prepare dates 
-            $stateArray['CRExpiration'] = null;
-            $stateArray['atpLicenseExpiration'] = null;
-            $stateArray['atcLicenseExpiration'] = null;
-
-            if (!isset($stateArray['focalContactPerson_id']) || $stateArray['focalContactPerson_id'] == "") {
-                $stateArray['focalContactPerson_id'] = null;
-            }
-            if (!isset($stateArray['testCenterAdmin_id'])) {
-                $stateArray['testCenterAdmin_id'] = null;
-            }
-            if (!isset($stateArray['trainingManager_id'])) {
-                $stateArray['trainingManager_id'] = null;
-            }
-
-            $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
-            // check commercial name existance in DB
-            if (!$isUniqe) {
-                // saving organizations as inactive organization
-                $stateArray['active'] = OrgEntity::SAVE_STATE;
-                $stateArray['creatorId'] = $creatorId;
-
-                /**
-                 * no need to assign users now so we used 
-                 * save state = true .. now we will skip calling
-                 * assignUserToOrg() method 
-                 */
-                $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
-
                 $data = array(
-                    'result' => true,
+                    'result' => $validationResult["redirectUrl"],
+                    'redirect' => true,
                 );
             }
-            //uniqness error does not completed yet
-            else {
-                $data = array(
-                    'result' => "Commercial Name already Exists",
-                );
+            
+
+            if (!isset($data)) {
+                // prepare dates 
+                $stateArray['CRExpiration'] = null;
+                $stateArray['atpLicenseExpiration'] = null;
+                $stateArray['atcLicenseExpiration'] = null;
+
+                if (!isset($stateArray['focalContactPerson_id']) || $stateArray['focalContactPerson_id'] == "") {
+                    $stateArray['focalContactPerson_id'] = null;
+                }
+                if (!isset($stateArray['testCenterAdmin_id'])) {
+                    $stateArray['testCenterAdmin_id'] = null;
+                }
+                if (!isset($stateArray['trainingManager_id'])) {
+                    $stateArray['trainingManager_id'] = null;
+                }
+
+                $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
+                // check commercial name existance in DB
+                if (!$isUniqe) {
+                    // saving organizations as inactive organization
+                    $stateArray['active'] = OrgEntity::SAVE_STATE;
+                    $stateArray['creatorId'] = $creatorId;
+
+                    /**
+                     * no need to assign users now so we used 
+                     * save state = true .. now we will skip calling
+                     * assignUserToOrg() method 
+                     */
+                    $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
+
+                    $data = array(
+                        'result' => true,
+                    );
+                }
+                //uniqness error does not completed yet
+                else {
+                    $data = array(
+                        'result' => "Commercial Name already Exists",
+                    );
+                }
             }
         }
         return $this->getResponse()->setContent(Json::encode($data));

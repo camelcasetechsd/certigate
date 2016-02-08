@@ -441,7 +441,7 @@ class Organization
     {
         $requiredRoles = array();
         switch ((int)$organizationType) {
-            case OrganizationEntity::TYPE_ATC:
+            case OrganizationEntity::TYPE_ATP:
                 $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
                 break;
             case OrganizationEntity::TYPE_ATC:

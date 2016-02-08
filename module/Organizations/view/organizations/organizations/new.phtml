@@ -41,38 +41,49 @@
 </div>
 {{/content}}
 {{$scripts}}
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 {{/scripts}}
 {{/layout}}
 
 <script>
-    $(document).ready(function () {
-        $('#org_form_saveState').click(function (e) {
+$(document).ready(function () {
+    $('#org_form_saveState').click(function (e) {
 
-            if ($('#org_form_commercialName').val() !== "") {
-                $state = $('#org_form').serialize();
-                console.log($state);
-                $.ajax({
-                    type: "POST",
-                    url: "/organizations/savestate",
-                    data: {
-                        saveState: $state
-                    },
-                    dataType: "json",
-                    success: function (data, textStatus, jqXHR) {
-                        if (data.result === "Commercial Name already Exists") {
-                            alert("Commercial Name already Exists");
-                        } else if (data.result === true) {
-                            alert("saved");
-                            window.location.replace("/organizations/atps");
+        if ($('#org_form_commercialName').val() !== "") {
+            $state = $('#org_form').serialize();
+            console.log($state);
+            $.ajax({
+                type: "POST",
+                url: "/organizations/savestate",
+                data: {
+                    saveState: $state
+                },
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    if (data.result === "Commercial Name already Exists") {
+                        alert("Commercial Name already Exists");
+                    } else if (data.result === true) {
+                        alert("saved");
+                        window.location.replace("/organizations/atps");
+                    }
+                }, error: function (ts) {
+                    try
+                    {
+                        var json = $.parseJSON(ts.responseText);
+                        if (json.redirect === true) {
+                            window.location.replace(json.result);
                         }
-                    }, error: function (ts) {
-                        alert(ts.responseText)
+                    }
+                    catch (err)
+                    {
+                        alert(ts.responseText);
                     }
 
-                });
-            }
-        });
+                }
 
+            });
+        }
     });
+
+});
 </script>
