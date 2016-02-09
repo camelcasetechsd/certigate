@@ -10,8 +10,11 @@ input[type="checkbox"].form-control{
 .legendLabel{
     font-size: 14px;
 }
-label{
+.form-horizontal label{
     display: block;
+}
+.form-inline label{
+    padding: 4px;
 }
 
 .checkboxAgreement{

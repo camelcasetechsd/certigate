@@ -61,6 +61,10 @@ class FormViewHelper extends Form
      */
     public function renderElement($form, $element)
     {
+        $inlineForm = false;
+        if (strpos($form->getAttribute('class'), "form-horizontal") === false) {
+            $inlineForm = true;
+        }
         $elementContent = '';
         // add required class to all required elements
         if (!empty($element->getAttribute('required')) && !$element->getLabelOption("disable_html_escape")) {
@@ -79,12 +83,16 @@ class FormViewHelper extends Form
         if (empty($element->getLabel()) && $element->getAttribute('type') !== "hidden") {
             $labelAbsent = true;
         }
-        if ($labelAbsent === true) {
+        if ($labelAbsent === true && $inlineForm === false) {
             $elementContent.= "<dt>&nbsp;</dt>";
         }
         else {
-            $elementContent.='<dd>';
-            $formElementAppendString = '</dd>';
+            $divAttributes = "";
+            if ($inlineForm === true) {
+                $divAttributes = "class='form-group'";
+            }
+            $elementContent.="<div $divAttributes >";
+            $formElementAppendString = '</div>';
         }
 
         // Change submit button text to edit if form is an edit form
@@ -94,7 +102,7 @@ class FormViewHelper extends Form
 
         $elementContent.= $this->getView()->formRow($element);
         $elementContent.=$formElementAppendString;
-        
+
         return $elementContent;
     }
 
