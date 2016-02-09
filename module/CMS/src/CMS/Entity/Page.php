@@ -73,7 +73,7 @@ class Page
      * @var \DateTime
      */
     public $created;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
@@ -120,12 +120,12 @@ class Page
      * @param string $title
      * @return Page current entity
      */
-    public function setTitle( $title )
+    public function setTitle($title)
     {
         $this->title = $title;
         return $this;
     }
-    
+
     /**
      * Get path
      * 
@@ -146,7 +146,7 @@ class Page
      * @param string $path
      * @return Page current entity
      */
-    public function setPath( $path )
+    public function setPath($path)
     {
         $this->path = $path;
         return $this;
@@ -161,7 +161,7 @@ class Page
      */
     public function getBody()
     {
-        return bzdecompress( base64_decode( $this->body ) );
+        return bzdecompress(base64_decode($this->body));
     }
 
     /**
@@ -172,14 +172,14 @@ class Page
      * @param string $body
      * @return Page current entity
      */
-    public function setBody( $body )
+    public function setBody($body)
     {
         // compress large page content
         // encode data, so that binary data survive transport through transport layers that are not 8-bit clean
-        $this->body = base64_encode( bzcompress( $body ) );
+        $this->body = base64_encode(bzcompress($body));
         return $this;
     }
-    
+
     /**
      * Get status
      * 
@@ -200,7 +200,7 @@ class Page
      * @param int $status
      * @return MenuItem current entity
      */
-    public function setStatus( $status )
+    public function setStatus($status)
     {
         $this->status = $status;
         return $this;
@@ -265,7 +265,7 @@ class Page
      */
     public function getArrayCopy()
     {
-        return get_object_vars( $this );
+        return get_object_vars($this);
     }
 
     /**
@@ -275,19 +275,19 @@ class Page
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray( $data = array() )
+    public function exchangeArray($data = array())
     {
-        if (array_key_exists( 'title', $data )) {
-            $this->setTitle( $data["title"] );
+        if (array_key_exists('title', $data)) {
+            $this->setTitle($data["title"]);
         }
-        if (array_key_exists( 'path', $data )) {
-            $this->setPath( $data["path"] );
+        if (array_key_exists('path', $data)) {
+            $this->setPath($data["path"]);
         }
-        if (array_key_exists( 'body', $data )) {
-            $this->setBody( $data["body"] );
+        if (array_key_exists('body', $data)) {
+            $this->setBody($data["body"]);
         }
-        if (array_key_exists( 'status', $data )) {
-            $this->setStatus( $data["status"] );
+        if (array_key_exists('status', $data)) {
+            $this->setStatus($data["status"]);
         }
     }
 
@@ -299,9 +299,9 @@ class Page
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter( InputFilterInterface $inputFilter )
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception( "Not used" );
+        throw new \Exception("Not used");
     }
 
     /**
@@ -314,23 +314,27 @@ class Page
      * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter( $query )
+    public function getInputFilter($query)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'title',
                 'required' => true
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'path',
                 'required' => true
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'body',
-                'required' => true
-            ) );
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'CMS\Service\Validator\NotEmptyTrimmed',
+                    ),
+                )
+            ));
 
             $this->inputFilter = $inputFilter;
         }
