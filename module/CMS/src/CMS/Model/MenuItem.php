@@ -6,6 +6,7 @@ use Utilities\Service\Inflector;
 use Utilities\Service\Query\Query;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * MenuItem Model
@@ -62,7 +63,7 @@ class MenuItem
     {
         $this->inflector = new Inflector();
         $this->query = $query;
-        $this->paginator = new Paginator(new PaginatorAdapter($query));
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\MenuItem"));
         $this->staticMenus = $staticMenus;
     }
 
@@ -311,6 +312,47 @@ class MenuItem
     public function getCurrentItems()
     {
         return $this->paginator;
+    }
+
+    /**
+     * Set criteria
+     * 
+     * @access public
+     * 
+     * @param Doctrine\Common\Collections\Criteria $criteria
+     */
+    public function setCriteria($criteria)
+    {
+        $this->paginator->getAdapter()->setCriteria($criteria);
+    }
+
+    /**
+     * Filter menu items
+     * 
+     * @access public
+     * @param array $data filter data
+     */
+    public function filterMenuItems($data)
+    {
+        $menuItemFilterFields = array(
+            "title",
+            "directUrl",
+            "menu",
+            "status",
+        );
+        $data = array_intersect_key($data, array_flip($menuItemFilterFields));
+        if (!empty($data["menu"])) {
+            $data["menu"] = $this->query->find('CMS\Entity\Menu', $data["menu"]);
+        }
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        foreach ($data as $fieldName => $fieldValue) {
+            // only submitted values are used in filter
+            if ($fieldValue != "") {
+                $criteria->andWhere($expr->eq($fieldName, $fieldValue));
+            }
+        }
+        $this->setCriteria($criteria);
     }
 
 }

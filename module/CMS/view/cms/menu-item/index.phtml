@@ -3,10 +3,17 @@
 {{$content}}
 <a href="/cms/menuitem/new"class="btn btn-small btn-success create-new">Create new Menu Item</a>
 <br><br>
+<div class="panel-default">
+
+    <div class="panel-heading">Filter Menu Items</div>
+    {{{filterForm}}}
+</div>
+<br>
 <div class="panel panel-default">
 
     <div class="panel-heading">Menu Items</div>
 
+    
     <!-- Table -->
     <table class="table">
         <thead>
@@ -67,19 +74,19 @@
     <ul class="pagination">
         {{#previousPageNumber}}
         <li >
-            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+            <a href="?page={{previousPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-left"></span></a>
         </li>
         {{/previousPageNumber}}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {{#pageNumbers}}
         <li {{#isCurrent}}class="active"{{/isCurrent}} >
-            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+            <a href="?page={{pageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}">{{pageNumber}}</a>
         </li>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {{/pageNumbers}}
         {{#nextPageNumber}}
         <li >
-            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+            <a href="?page={{nextPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-right"></span></a>
         </li>
         {{/nextPageNumber}}
     </ul>

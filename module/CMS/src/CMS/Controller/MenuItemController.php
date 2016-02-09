@@ -5,6 +5,7 @@ namespace CMS\Controller;
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\MenuItemForm;
+use CMS\Form\MenuItemFilterForm;
 use CMS\Entity\MenuItem;
 use Utilities\Service\Status;
 use CMS\Form\FormViewHelper;
@@ -28,6 +29,7 @@ class MenuItemController extends ActionController
      * 
      * @access public
      * 
+     * @uses MenuItemFilterForm
      * @return ViewModel
      */
     public function indexAction()
@@ -35,6 +37,11 @@ class MenuItemController extends ActionController
         $variables = array();
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+
+        $request = $this->getRequest();
+        $data = $request->getQuery()->toArray();
+        $menuItemModel->filterMenuItems($data);
 
         $pageNumber = $this->getRequest()->getQuery('page');
         $menuItemModel->setPage($pageNumber);
@@ -46,6 +53,13 @@ class MenuItemController extends ActionController
         $variables['pageNumbers'] = $pageNumbers;
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
+
+        $options = array();
+        $options['query'] = $query;
+        $form = new MenuItemFilterForm(/* $name = */ null, $options);
+        $form->setData($data);
+        $variables['filterForm'] = $this->getFormView($form);
+        $variables['filterQuery'] = preg_replace('/page=[\d]+&/i', '', $request->getUri()->getQuery());
         return new ViewModel($variables);
     }
 
