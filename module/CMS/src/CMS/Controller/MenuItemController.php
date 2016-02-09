@@ -39,17 +39,13 @@ class MenuItemController extends ActionController
         $pageNumber = $this->getRequest()->getQuery('page');
         $menuItemModel->setPage($pageNumber);
 
-        // know the number of pages
-        $numberOfPages = $menuItemModel->getNumberOfPages();
-        //create an array of page numbers
-        if ($numberOfPages > 1) {
-            $pageNumbers = range(1, $numberOfPages);
-        }
-        else {
-            $pageNumbers = array();
-        }
+        $pageNumbers = $menuItemModel->getPagesRange($pageNumber);
+        $nextPageNumber = $menuItemModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $menuItemModel->getPreviousPageNumber($pageNumber);
         $variables['menuItems'] = $objectUtilities->prepareForDisplay($menuItemModel->getCurrentItems());
         $variables['pageNumbers'] = $pageNumbers;
+        $variables['nextPageNumber'] = $nextPageNumber;
+        $variables['previousPageNumber'] = $previousPageNumber;
         return new ViewModel($variables);
     }
 

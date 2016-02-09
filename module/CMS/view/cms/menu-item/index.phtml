@@ -61,17 +61,27 @@
     </table>
 </div>
 
-{{%IMPLICIT-ITERATOR}}
 <div class="pagination-bar">
-    <ul>
-        <li style="display: inline"> Pages :  </li>
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {{#pageNumbers}}
-        <li style="display: inline">
-            <a href="?page={{.}}">{{.}}</a>
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
         </li>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
     </ul>
 </div>
 <br>
