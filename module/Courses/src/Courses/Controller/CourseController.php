@@ -291,7 +291,7 @@ class CourseController extends ActionController
             $isCustomValidationValid = $courseModel->validateForm($form, $data, $course, /* $isEditForm = */ false);
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $courseModel->save($course, $data, $isAdminUser, /* $oldStatus = */ null, $userEmail);
+                $courseModel->save($course, $data, $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);
@@ -318,7 +318,6 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = $query->find('Courses\Entity\Course', $id);
-        $oldStatus = $course->getStatus();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -352,7 +351,7 @@ class CourseController extends ActionController
 
             $isCustomValidationValid = $courseModel->validateForm($form, $data, $course);
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $oldStatus, $userEmail);
+                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);

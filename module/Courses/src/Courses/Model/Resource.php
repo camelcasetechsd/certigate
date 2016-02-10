@@ -53,19 +53,12 @@ class Resource
      * @param Courses\Entity\Resource $resource
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
-     * @param bool $oldStatus ,default is null
      */
-    public function save($resource, $data = array(), $isAdminUser = false, $oldStatus = null)
+    public function save($resource, $data = array(), $isAdminUser = false)
     {
 
         if ($isAdminUser === false) {
-            // edit case where data is empty array
-            if (count($data) == 0) {
-                $resource->setStatus($oldStatus);
-            }
-            else {
-                $resource->setStatus(Status::STATUS_NOT_APPROVED);
-            }
+            $resource->setStatus(Status::STATUS_NOT_APPROVED);
         }
 
         $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);

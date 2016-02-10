@@ -45,13 +45,13 @@ class Course
      * @var System\Service\Cache\CacheHandler
      */
     protected $systemCacheHandler;
-    
+
     /**
      *
      * @var Notifications\Service\Notification
      */
     protected $notification;
-    
+
     /**
      * Set needed properties
      * 
@@ -113,29 +113,22 @@ class Course
      * @param Courses\Entity\Course $course
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
-     * @param bool $oldStatus ,default is null
      * @param string $userEmail ,default is null
      */
-    public function save($course, $data = array(), $isAdminUser = false, $oldStatus = null, $userEmail = null)
+    public function save($course, $data = array(), $isAdminUser = false, $userEmail = null)
     {
         $notifyAdminFlag = false;
         if ($isAdminUser === false) {
-            // edit case where data is empty array
-            if (count($data) == 0) {
-                $course->setStatus($oldStatus);
-            }
-            else {
-                $course->setStatus(Status::STATUS_NOT_APPROVED);
-                $notifyAdminFlag = true;
-            }
+            $course->setStatus(Status::STATUS_NOT_APPROVED);
+            $notifyAdminFlag = true;
         }
         unset($data["outlines"]);
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /* $flushAll = */ true);
 
         // remove not needed outlines        
         $this->outlineModel->cleanUpOutlines();
-        
-        if($notifyAdminFlag === true){
+
+        if ($notifyAdminFlag === true) {
             $this->sendMail($userEmail);
         }
     }
@@ -180,7 +173,7 @@ class Course
         );
         $this->notification->notify($mailArray);
     }
-    
+
     /**
      * Leave course
      * 
@@ -251,7 +244,7 @@ class Course
             $courseOutlines = $form->getObject()->getOutlines();
             $course->exchangeArray($data);
             $course->setOutlines($courseOutlines);
-            $form->bind($course,/* $flags = */ FormInterface::VALUES_NORMALIZED, $isEditForm);
+            $form->bind($course, /* $flags = */ FormInterface::VALUES_NORMALIZED, $isEditForm);
         }
         return $isCustomValidationValid;
     }

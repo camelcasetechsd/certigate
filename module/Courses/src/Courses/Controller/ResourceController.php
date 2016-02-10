@@ -174,7 +174,6 @@ class ResourceController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = $query->find('Courses\Entity\Resource', $id);
-        $oldStatus = $resource->getStatus();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -226,7 +225,7 @@ class ResourceController extends ActionController
                 $input->setRequired(false);
             }
             if ($form->isValid()) {
-                $resourceModel->save($resource, /* $data = */ array(), $isAdminUser, $oldStatus);
+                $resourceModel->save($resource, /* $data = */ array(), $isAdminUser);
 
                 $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
