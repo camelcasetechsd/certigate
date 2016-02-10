@@ -16,3 +16,4 @@ public/upload/images/*
 public/bower_components/
 *~
 /node_modules
+!public/bower_components/ckeditor/config.js

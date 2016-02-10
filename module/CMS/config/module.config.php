@@ -127,6 +127,19 @@ return array(
                     ),
                 )
             ),
+            /**
+             * action to upload photos
+             */
+            'cmsPageUpload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/cms/page/upload',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'imgUpload',
+                    ),
+                )
+            ),
             'cmsMenu' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
