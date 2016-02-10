@@ -167,6 +167,7 @@ class CourseForm extends Form
             'name' => 'atp',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
+                'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -183,12 +184,15 @@ class CourseForm extends Form
                         'status' => $status,
                     )
                 ),
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
             ),
         ));
         $this->add(array(
             'name' => 'ai',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
+                'required' => 'required',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -205,6 +209,8 @@ class CourseForm extends Form
                         )
                     )
                 ),
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
             ),
         ));
 

@@ -257,6 +257,7 @@ class UserForm extends Form
             'options' => array(
                 'label' => 'Nationality',
                 'value_options' => $countries,
+                'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
         $this->add(array(
@@ -269,6 +270,7 @@ class UserForm extends Form
             'options' => array(
                 'label' => 'Language',
                 'value_options' => $languages,
+                'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
 
@@ -328,6 +330,7 @@ class UserForm extends Form
             'options' => array(
                 'label' => 'Country',
                 'value_options' => $countries,
+                'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
 

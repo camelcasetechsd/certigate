@@ -84,6 +84,8 @@ class ResourceForm extends Form {
                         "criteria" => $criteria
                     )
                 ),
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
             ),
         ));
         
@@ -103,6 +105,7 @@ class ResourceForm extends Form {
             'options' => array(
                 'label' => 'Type',
                 'value_options' => $typeValueOptions,
+                'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
         

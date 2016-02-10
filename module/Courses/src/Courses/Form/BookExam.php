@@ -90,7 +90,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Organizations\Entity\Organization',
                 'property' => 'type',
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getCommercialName();
@@ -121,7 +121,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Courses\Entity\Course',
                 'property' => 'name',
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getName();

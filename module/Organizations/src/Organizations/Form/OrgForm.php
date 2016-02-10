@@ -461,7 +461,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'empty_option' => "--Select--",
+                'empty_option' => self::EMPTY_SELECT_VALUE,
                 'value_options' => $options['staticOfficeVersions']
             ),
         ));
@@ -479,7 +479,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'empty_option' => "--Select--",
+                'empty_option' => self::EMPTY_SELECT_VALUE,
                 'value_options' => $options['staticLangs']
             ),
         ));
@@ -494,7 +494,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Microseft Office Version',
-                'empty_option' => "--Select--",
+                'empty_option' => self::EMPTY_SELECT_VALUE,
                 'value_options' => $options['staticOss'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
@@ -515,7 +515,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
-                'empty_option' => "--Select--",
+                'empty_option' => self::EMPTY_SELECT_VALUE,
                 'value_options' => $options['staticLangs']
             ),
         ));
@@ -623,7 +623,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
@@ -647,7 +647,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'display_empty_item' => true,
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
             return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
         },
@@ -668,7 +668,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Users\Entity\User',
                 'property' => 'firstName',
                 'display_empty_item' => true,
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
                     return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                 },
