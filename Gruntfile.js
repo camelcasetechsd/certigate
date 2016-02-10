@@ -48,7 +48,6 @@ module.exports = function (grunt) {
                 nonull: true,
                 dest: '<%= dirs.dest %>/app.css',
                 src: [
-                    '<%= dirs.bowerSrc %>/chosen/chosen.min.css',
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
                     '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
