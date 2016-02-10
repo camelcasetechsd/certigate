@@ -106,7 +106,7 @@ class MenuItemForm extends Form
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'CMS\Entity\Page',
                 'property' => 'name',
-                'empty_item_label' => '--Select--',
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
                 'label_generator' => function($targetEntity) {
                     return $targetEntity->getTitle();

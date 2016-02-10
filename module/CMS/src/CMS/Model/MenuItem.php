@@ -7,6 +7,7 @@ use Utilities\Service\Query\Query;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
 use Doctrine\Common\Collections\Criteria;
+use CMS\Entity\MenuItem as MenuItemEntity;
 
 /**
  * MenuItem Model
@@ -101,9 +102,15 @@ class MenuItem
             else {
                 $menuItemTitle = $menuItem->getTitle();
                 $menuTitle = $this->inflector->underscore($menuItem->getMenu()->getTitle());
+                if ($menuItem->getType() == MenuItemEntity::TYPE_PAGE && is_object($menuItem->getPage())) {
+                    $path = $menuItem->getPage()->getPath();
+                }
+                else {
+                    $path = $menuItem->getDirectUrl();
+                }
                 $menuItemArray = array(
                     'depth' => $depthLevel,
-                    'path' => $menuItem->getType() == \CMS\Entity\MenuItem::TYPE_PAGE ? $menuItem->getPage()->getPath() : $menuItem->getDirectUrl(),
+                    'path' => $path,
                     'weight' => $menuItem->getWeight(),
                     'title_underscored' => $this->inflector->underscore($menuItemTitle),
                     'children' => $menuItem->children

@@ -88,6 +88,8 @@ class OrganizationUserForm extends Form
                         'criteria' => array()
                     )
                 ),
+                'display_empty_item' => true,
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
             ),
         ));
 
@@ -115,6 +117,8 @@ class OrganizationUserForm extends Form
                         'criteria' => $criteria
                     )
                 ),
+                'display_empty_item' => true,
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
             ),
         ));
 

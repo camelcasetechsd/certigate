@@ -21,6 +21,11 @@ use Zend\Form\FormInterface;
 class Form extends ZendForm {
 
     /**
+     * Value appears by default in select fields
+     */
+    const EMPTY_SELECT_VALUE = "-- Select --";
+    
+    /**
      *
      * @var bool ,default is false
      */
