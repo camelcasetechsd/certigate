@@ -39,7 +39,7 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
         newNameInput.val("");
     }
     var newNameLabel = $(nameInputSelector).prev("label").clone();
-    var newNameField = $("<dd></dd>").append(newNameLabel).append(newNameInput).append(nameErrors);
+    var newNameField = $("<div></div>").append(newNameLabel).append(newNameInput).append(nameErrors);
     // prepare new file field
     var newFileInputId = $(fileInputSelector).attr("id") + newElementIdExtension;
     var newFileInputName = $(fileInputSelector).attr("name") + newElementNameExtension;
@@ -52,7 +52,7 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
     var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
     var newFileInput = $(fileInputSelector).clone().attr("class", newFileInputClass).attr("id", newFileInputId).attr("name", newFileInputName);
     var newFileLabel = $(fileInputSelector).prev("label").clone();
-    var newFileField = $("<dd></dd>").append(newFileLabel).append(newFileInput).append(fileErrors);
+    var newFileField = $("<div></div>").append(newFileLabel).append(newFileInput).append(fileErrors);
     // prepare new remove button
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
@@ -79,7 +79,7 @@ function removeResource(removeButtonSelector, nameInputSelector, fileInputSelect
     if(! $(removeButtonSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
         return false;
     }
-    $(nameInputSelector).parent("dd").parent("div").remove();
+    $(nameInputSelector).parent("div").parent("div").remove();
 }
 
 /**

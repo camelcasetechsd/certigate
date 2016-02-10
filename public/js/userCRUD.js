@@ -39,7 +39,7 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
         });
     });
     if (role !== '') {
-        $(divSelector).parent("dd").hide();
+        $(divSelector).parent("div").hide();
     }
 }
 
@@ -55,7 +55,7 @@ function displayStatementCheckbox(roleSelector) {
         value = $(selected).parent('label').text();
         checkboxSelector = $("[data-role='" + value + "']");
         if (checkboxSelector.length) {
-            checkboxSelector.parent("div").parent("dd").show();
+            checkboxSelector.parent("div").parent("div").show();
         }
     });
     $(roleSelector).change(function () {
@@ -63,13 +63,13 @@ function displayStatementCheckbox(roleSelector) {
             value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("dd").show();
+                checkboxSelector.parent("div").parent("div").show();
             }
         }else{
             value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("dd").hide();
+                checkboxSelector.parent("div").parent("div").hide();
             }
         }
     });
