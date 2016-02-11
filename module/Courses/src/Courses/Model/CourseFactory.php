@@ -31,7 +31,8 @@ class CourseFactory implements FactoryInterface {
         $outlineModel = $serviceLocator->get('Courses\Model\Outline');
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
-        return new Course($query, $outlineModel, $systemCacheHandler, $notification);
+        $objectUtilities = $serviceLocator->get('objectUtilities');
+        return new Course($query, $outlineModel, $systemCacheHandler, $notification, $objectUtilities);
     }
 
 }

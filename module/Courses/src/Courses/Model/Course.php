@@ -21,6 +21,7 @@ use System\Service\Cache\CacheHandler;
  * @property Courses\Model\Outline $outlineModel
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
+ * @property Utilities\Service\Object $objectUtilities
  * 
  * @package courses
  * @subpackage model
@@ -53,6 +54,12 @@ class Course
     protected $notification;
 
     /**
+     *
+     * @var Utilities\Service\Object 
+     */
+    protected $objectUtilities;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -60,13 +67,15 @@ class Course
      * @param Courses\Model\Outline $outlineModel
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
+     * @param Utilities\Service\Object $objectUtilities
      */
-    public function __construct($query, $outlineModel, $systemCacheHandler, $notification)
+    public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $objectUtilities)
     {
         $this->query = $query;
         $this->outlineModel = $outlineModel;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->objectUtilities = $objectUtilities;
     }
 
     /**
@@ -90,7 +99,8 @@ class Course
             $users = $course->getUsers();
             $canLeave = false;
             if ($auth->hasIdentity()) {
-                if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId()) {
+                $courseAiId = $this->objectUtilities->getId($course->getAi());
+                if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseAiId) {
                     $nonAuthorizedEnroll = true;
                 }
             }
@@ -277,7 +287,6 @@ class Course
         $allCourses = $this->query->findAll('Courses\Entity\Course');
         foreach ($allCourses as $course) {
             if ($course->getAi()->id == $userId) {
-                var_dump('here');
                 array_push($courses, $course);
             }
         }
