@@ -60,9 +60,11 @@ class ResourceForm extends Form {
         
         $criteria = array();
         $readOnly = false;
+        $displayEmptyItem = true;
         if(! empty($this->courseId)){
             $criteria["id"] = $this->courseId;
             $readOnly = true;
+            $displayEmptyItem = false;
         }
         $this->add(array(
             'name' => 'course',
@@ -85,7 +87,7 @@ class ResourceForm extends Form {
                     )
                 ),
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
-                'display_empty_item' => true,
+                'display_empty_item' => $displayEmptyItem,
             ),
         ));
         
