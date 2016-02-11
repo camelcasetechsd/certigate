@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Gedmo\Mapping\MappedEventSubscriber;
 use Utilities\Service\Status;
 use Courses\Entity\Outline;
+use Courses\Entity\Evaluation;
 
 /**
  * CourseManagement listener

@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property int $questionTitle
+ * @property int $status
  * 
 
  * 
@@ -57,6 +58,13 @@ class Question
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="question")
      */
     public $votes;
+    
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $status;
 
     function getId()
     {
@@ -78,6 +86,32 @@ class Question
         $this->evaluation = $evaluation;
     }
 
+         /**
+     * Get status
+     * 
+     * 
+     * @access public
+     * @return int status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set status
+     * 
+     * 
+     * @access public
+     * @param int $status
+     * @return Course
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
     /**
      * Convert the object to an array.
      * 

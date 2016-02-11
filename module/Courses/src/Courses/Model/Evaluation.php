@@ -90,6 +90,7 @@ class Evaluation
         $questionEntity = new \Courses\Entity\Question();
 
         $questionEntity->setQuestionTitle($question);
+        $questionEntity->setStatus($evaluation->getStatus());
         $questionEntity->setToEvaluation($evaluation);
             $evaluation->addQuestion($questionEntity);
         $this->query->save($evaluation);
@@ -103,13 +104,15 @@ class Evaluation
         $this->query->remove($question);
     }
 
-    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$evaluationId)
+    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$evaluation)
     {
+        $evaluationId = $evaluation->getId();
         $question = $this->query->findOneBy("Courses\Entity\Question", array(
             'questionTitle' => $oldQuestionTitle,
             'evaluation' => $evaluationId
         ));
         $question->setQuestionTitle($newQuestionTitle);
+        $question->setStatus($evaluation->getStatus());
         $this->query->save($question);
     }
 

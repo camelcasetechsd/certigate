@@ -41,6 +41,14 @@
         {{/oldQuestions}}
 
         <span id="endOfText"></span>
+        {{#isAdminUser}}
+        <div class="form-group">
+            <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
+            <div class=" col-md-4"> 
+                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status">
+            </div>
+        </div>
+        {{/isAdminUser}}
         <!-- button -->
         <div class=" row form-group">
             <div class="col-md-4">

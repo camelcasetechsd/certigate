@@ -25,7 +25,7 @@ class EvaluationTemplate extends AbstractSeed
         $evaluationTemplate = array(
             'course_id' => null,
             'isTemplate' => 1,
-            'isApproved' => 1
+            'status' => true
         );
 
         $this->insert('evaluation', $evaluationTemplate);

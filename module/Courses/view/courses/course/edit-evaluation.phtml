@@ -25,7 +25,7 @@
             <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
             <div class=" col-md-4">
                 <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
-                <a href="#" class="deleteQuestion" >X</a>
+                {{#isAdminUser}}<a href="#" class="deleteQuestion" >X</a>{{/isAdminUser}}
                 <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
             </div>
         </div>
@@ -35,17 +35,26 @@
             <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
             <div class=" col-md-4">
                 <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
-                <a href="#" class="deleteInvalidQuestion" >X</a>
+                {{#isAdminUser}}<a href="#" class="deleteInvalidQuestion" >X</a>{{/isAdminUser}}
             </div>
         </div>
         {{/unvalidQuestions}}
         <span id="endOfText"></span>
+        {{#isAdminUser}}
+        <div class=" row form-group">
+            <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
+            <div class=" col-md-4"> 
+                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status" {{#status}}checked="checked"{{/status}}>
+            </div>
+        </div>
+        {{/isAdminUser}}
         <!-- button -->
         <div class=" row form-group">
             <div class="col-md-4">
                 <button id="singlebutton" name="submit" class="btn btn-success">Submit Evaluation Template</button>
             </div>
         </div>
+
 
     </fieldset>
 </form>

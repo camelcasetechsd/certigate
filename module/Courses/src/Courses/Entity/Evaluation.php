@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property int $isTemplate
- * @property int $Approved
+ * @property int $status
  * 
 
  * 
@@ -36,21 +36,6 @@ class Evaluation
      * question created by admin
      */
     const IS_TEMPLATE = 1;
-
-    /**
-     * not approved by admin
-     */
-    const NOT_APPROVED = 0;
-
-    /**
-     * approved by admin
-     */
-    const APPROVED = 1;
-
-    /**
-     * approved by admin
-     */
-    const DECLINED = 2;
 
     /**
      *
@@ -78,7 +63,7 @@ class Evaluation
      * @ORM\Column(type="integer")
      * @var int
      */
-    public $isApproved;
+    public $status;
 
     /**
      * @ORM\OneToOne(targetEntity="Course", inversedBy="evaluation")
@@ -146,29 +131,32 @@ class Evaluation
         return False;
     }
 
-    function isApproved()
+     /**
+     * Get status
+     * 
+     * 
+     * @access public
+     * @return int status
+     */
+    public function getStatus()
     {
-        if ($this->isApproved == self::APPROVED) {
-            return TRUE;
-        }
-        return False;
+        return $this->status;
     }
 
-    function setIsApproved()
+    /**
+     * Set status
+     * 
+     * 
+     * @access public
+     * @param int $status
+     * @return Course
+     */
+    public function setStatus($status)
     {
-        $this->isApproved = self::APPROVED;
+        $this->status = $status;
+        return $this;
     }
-
-    function setIsDeclined()
-    {
-        $this->isApproved = self::DECLINED;
-    }
-
-    function setIsNotApproved()
-    {
-        $this->isApproved = self::NOT_APPROVED;
-    }
-
+    
     function setCourse($course)
     {
         $this->course = $course;

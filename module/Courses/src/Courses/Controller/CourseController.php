@@ -517,7 +517,6 @@ class CourseController extends ActionController
                 //creating empty user template for this course
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsTemplate();
-                $evalEntity->setIsApproved();
                 $evalEntity->setPercentage(0.00);
                 $evaluationModle->saveEvaluation($evalEntity);
                 // save questions
@@ -577,7 +576,7 @@ class CourseController extends ActionController
                 // updating old questions
                 if (isset($data['editedQuestion']) && isset($data['original'])) {
                     for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval->getId());
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval);
                     }
                 }
 
@@ -619,7 +618,7 @@ class CourseController extends ActionController
         if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        $evaluationModle = new \Courses\Model\Evaluation($query->setEntity('Courses\Entity\Evaluation'));
+        $evaluationModel = new \Courses\Model\Evaluation($query->setEntity('Courses\Entity\Evaluation'));
 
         // getting template evalutaion
         $evaluationTemplate = $query->findOneBy("Courses\Entity\Evaluation", array(
@@ -635,12 +634,10 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         $isAdminUser = false;
         // admin or atp only
-        if ($auth->hasIdentity() && (in_array(array(Role::ADMIN_ROLE), $storage['roles']) || in_array(array(Role::TRAINING_MANAGER_ROLE), $storage['roles']))) {
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
             $isAdminUser = true;
         }
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
+        $variables['isAdminUser'] = $isAdminUser;
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -648,24 +645,27 @@ class CourseController extends ActionController
             $errors = array();
             // if user didnot edited any of the template questions
             if (isset($data['newQuestion'])) {
-                $errors = $evaluationModle->validateQuestion($data['newQuestion']);
+                $errors = $evaluationModel->validateQuestion($data['newQuestion']);
             }
             if (empty($errors)) {
                 //creating empty user template for this course
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsUserEval();
-                $evalEntity->setIsNotApproved();
                 $evalEntity->setPercentage(0.00);
-                $evaluationModle->saveEvaluation($evalEntity, $courseId);
-
+                $status = Status::STATUS_NOT_APPROVED;
+                if($isAdminUser === true){
+                    $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
+                }
+                $evalEntity->setStatus($status);
+                $evaluationModel->saveEvaluation($evalEntity, $courseId);
                 // save templates and newQuestions
                 foreach ($data['template'] as $temp) {
 
-                    $evaluationModle->assignQuestionToEvaluation($temp, $evalEntity->getId());
+                    $evaluationModel->assignQuestionToEvaluation($temp, $evalEntity->getId());
                 }
                 if (isset($data['newQuestion'])) {
                     foreach ($data['newQuestion'] as $new) {
-                        $evaluationModle->assignQuestionToEvaluation($new, $evalEntity->getId());
+                        $evaluationModel->assignQuestionToEvaluation($new, $evalEntity->getId());
                     }
                 }
                 //redirect to course page
@@ -702,6 +702,7 @@ class CourseController extends ActionController
         }
         // getting course evaluation
         $eval = $course->getEvaluation();
+        $variables['status'] = ($eval->getStatus() === Status::STATUS_ACTIVE) ? true : false;
         // getting course evaluation questions
         $variables['oldQuestions'] = $eval->getQuestions();
         // evaluation model
@@ -711,14 +712,11 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && (in_array(array(Role::ADMIN_ROLE), $storage['roles']) || in_array(array(Role::TRAINING_MANAGER_ROLE), $storage['roles']))) {
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
             $isAdminUser = true;
         }
 
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
-
+        $variables['isAdminUser'] = $isAdminUser;
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -733,6 +731,12 @@ class CourseController extends ActionController
             }
             $errors = array_merge($error1, $error2);
             if (empty($errors)) {
+                $status = Status::STATUS_NOT_APPROVED;
+                if($isAdminUser === true){
+                    $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
+                }
+                $eval->setStatus($status);
+                $evaluationModel->saveEvaluation($eval, $courseId);
                 // saving new Questions
                 if (isset($data['newQuestion'])) {
                     foreach ($data['newQuestion'] as $new) {
@@ -742,12 +746,12 @@ class CourseController extends ActionController
                 // updating old questions
                 if (isset($data['editedQuestion']) && isset($data['original'])) {
                     for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval->getId());
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval);
                     }
                 }
 
                 //delete deleted questions
-                if (isset($data['deleted'])) {
+                if (isset($data['deleted']) && $isAdminUser === true) {
                     foreach ($data['deleted'] as $deletedQuestion) {
                         $evaluationModel->removeQuestion($deletedQuestion);
                     }
@@ -763,7 +767,6 @@ class CourseController extends ActionController
                 $variables['unvalidQuestions'] = $unValidQuestions;
             }
         }
-
 
         return new ViewModel($variables);
     }
