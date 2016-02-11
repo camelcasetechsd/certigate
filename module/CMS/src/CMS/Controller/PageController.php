@@ -242,4 +242,22 @@ class PageController extends ActionController
 
         return new ViewModel($variables);
     }
+
+    /**
+     * browse Images
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function browseAction()
+    {
+        $variables = array();
+        $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
+        $images = $pageModel->listImages();
+        $variables['images'] = $images;
+        return new ViewModel($variables);
+    }
+
 }

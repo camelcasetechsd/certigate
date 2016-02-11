@@ -77,9 +77,8 @@ class Page
 
             // upload received file(s)
             $upload->receive();
-            
         } catch (\Exception $e) {
-//            return $uploadResult;
+            // return $uploadResult;
         }
         //This method will return the real file name of a transferred file.
         $name = $upload->getFileName($fileData['upload']['name']);
@@ -94,5 +93,22 @@ class Page
 
         return $uploadResult;
     }
+
+    public function listImages()
+    {
+        $images = scandir(self::UPLOAD_PATH);
+        // Note : we need to unset first 3 items which (1,2) -> Parents or dir
+        // 3 -> .gitignore File which is hidden
+        unset($images[0]);
+        unset($images[1]);
+        unset($images[2]);
+        $new = array();
+        foreach ($images as $image){
+            array_push($new, $image);
+        }
+        return $new;
+    }
+
+    
 
 }

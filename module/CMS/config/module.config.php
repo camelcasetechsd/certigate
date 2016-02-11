@@ -140,6 +140,19 @@ return array(
                     ),
                 )
             ),
+            /**
+             * action to browse photos
+             */
+            'cmsPageBrowse' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/cms/page/browse',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Page',
+                        'action' => 'browse',
+                    ),
+                )
+            ),
             'cmsMenu' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
