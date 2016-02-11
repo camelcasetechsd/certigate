@@ -10,7 +10,7 @@ input[type="checkbox"].form-control{
 .legendLabel{
     font-size: 14px;
 }
-.form-horizontal label{
+.form-horizontal label:not(.inline){
     display: block;
 }
 .form-inline label{
