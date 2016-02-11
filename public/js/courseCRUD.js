@@ -1,23 +1,23 @@
-$(document).ready(function () {
-    updateOutlines("#course_form_addMore")
-});
-
 /**
  * Update outlines
  * 
  * @param {String} addMoreSelector
+ * @param {bool} isAdminUser
  */
-function updateOutlines(addMoreSelector) {
+function updateOutlines(addMoreSelector, isAdminUser) {
     var currentCount, newLabel, newRemoveButton;
     // update displayed outlines fieldsets
     if ($('#course_form > fieldset > fieldset').length) {
         $('#course_form > fieldset > fieldset').each(function (index) {
             if (index !== 0) {
-                currentCount = index - 1;
+                currentCount = index;
                 newLabel = getOutlineLabel(currentCount);
-                newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
                 $(this).before(newLabel);
-                $(this).after(newRemoveButton);
+
+                if (isAdminUser === true) {
+                    newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
+                    $(this).after(newRemoveButton);
+                }
             }
         });
     }
