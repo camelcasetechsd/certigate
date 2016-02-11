@@ -149,7 +149,7 @@ class Evaluation
      * 
      * @access public
      * @param int $status
-     * @return Course
+     * @return Evaluation
      */
     public function setStatus($status)
     {

@@ -79,11 +79,13 @@ class Question
     function setQuestionTitle($questionTitle)
     {
         $this->questionTitle = $questionTitle;
+        return $this;
     }
 
     function setToEvaluation($evaluation)
     {
         $this->evaluation = $evaluation;
+        return $this;
     }
 
          /**
@@ -104,7 +106,7 @@ class Question
      * 
      * @access public
      * @param int $status
-     * @return Course
+     * @return Question
      */
     public function setStatus($status)
     {
@@ -133,7 +135,8 @@ class Question
      */
     public function exchangeArray($data = array())
     {
-        $this->setQuestionTitle($data);
+        $this->setQuestionTitle($data["questionTitle"])
+                ->setStatus($data["status"]);
     }
 
     /**

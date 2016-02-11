@@ -36,8 +36,8 @@ class CourseController extends ActionController
      */
     public function indexAction()
     {
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $variables = array();
@@ -81,7 +81,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
 
         $notApprovedData = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_NOT_APPROVED));
         $versionModel->getApprovedDataForNotApprovedOnesWrapper($notApprovedData);
@@ -188,14 +188,14 @@ class CourseController extends ActionController
         if ($course != null) {
             $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-            $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
-            
+            $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+
             $outlines = $course->getOutlines()->toArray();
             $versionModel->getApprovedDataForNotApprovedOnesWrapper($outlines);
-            
+
             $course->setOutlines(new ArrayCollection($outlines));
             $courseArray = array($course);
-            if($course->getStatus() == Status::STATUS_NOT_APPROVED){
+            if ($course->getStatus() == Status::STATUS_NOT_APPROVED) {
                 $versionModel->getApprovedDataForNotApprovedOnesWrapper($courseArray);
             }
             $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
@@ -267,8 +267,8 @@ class CourseController extends ActionController
      */
     public function newAction()
     {
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $variables = array();
@@ -342,8 +342,8 @@ class CourseController extends ActionController
             $userEmail = $storage["email"];
         }
 
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $options = array();
@@ -618,8 +618,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseId = $this->params('courseId');
         $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $evaluationModel = new \Courses\Model\Evaluation($query->setEntity('Courses\Entity\Evaluation'));
@@ -657,7 +657,7 @@ class CourseController extends ActionController
                 $evalEntity->setIsUserEval();
                 $evalEntity->setPercentage(0.00);
                 $status = Status::STATUS_NOT_APPROVED;
-                if($isAdminUser === true){
+                if ($isAdminUser === true) {
                     $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
                 }
                 $evalEntity->setStatus($status);
@@ -700,8 +700,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         // getting the course
         $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         // getting course evaluation
@@ -736,7 +736,7 @@ class CourseController extends ActionController
             $errors = array_merge($error1, $error2);
             if (empty($errors)) {
                 $status = Status::STATUS_NOT_APPROVED;
-                if($isAdminUser === true){
+                if ($isAdminUser === true) {
                     $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
                 }
                 $eval->setStatus($status);
@@ -799,12 +799,17 @@ class CourseController extends ActionController
             }
             // course Exists
             else {
-                $enrolledUsers = $course->getUsers();
-                $enrolledStudent = null;
-                foreach ($enrolledUsers as $user) {
-                    if ($user->getId() == $id) {
-                        $enrolledStudent = $user;
+                if (!in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                    $enrolledUsers = $course->getUsers();
+                    $enrolledStudent = null;
+                    foreach ($enrolledUsers as $user) {
+                        if ($user->getId() == $id) {
+                            $enrolledStudent = $user;
+                        }
                     }
+                }
+                else {
+                    $enrolledStudent = $query->find("Users\Entity\User", $id);
                 }
                 // not enrolled student
                 if ($enrolledStudent == null) {
@@ -814,7 +819,9 @@ class CourseController extends ActionController
                 }
                 //enrolled student
                 else {
-                    $questions = $course->getEvaluation()->getQuestions();
+                    $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+                    $questions = $course->getEvaluation()->getQuestions()->toArray();
+                    $versionModel->getApprovedDataForNotApprovedOnesWrapper($questions);
                     // questions assosiated with course evaluation
                     $variables['questions'] = $questions;
                     $questionIds = array();
@@ -834,7 +841,7 @@ class CourseController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $values = $request->getPost()->toArray();
-            $questionModel = new \Courses\Model\Vote($query);
+            $questionModel = new \Courses\Model\Vote($query->setEntity("Courses\Entity\Vote"));
             $questionModel->saveCourseVotes($questionIds, $values, $enrolledStudent, $course->getEvaluation());
             // redirect to course more
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $courseId), array('name' => 'coursesMore'));
