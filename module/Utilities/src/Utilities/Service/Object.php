@@ -6,6 +6,7 @@ use Utilities\Service\Status;
 use LosI18n\Service\CountryService;
 use LosI18n\Service\LanguageService;
 use Utilities\Service\Time;
+use Gedmo\Tool\Wrapper\AbstractWrapper;
 
 /**
  * Object
@@ -14,11 +15,13 @@ use Utilities\Service\Time;
  * 
  * @property array $countries
  * @property array $languages
+ * @property Utilities\Service\Query\Query $query
  * 
  * @package utilities
  * @subpackage service
  */
-class Object {
+class Object
+{
 
     /**
      *
@@ -33,17 +36,26 @@ class Object {
     public $languages;
 
     /**
+     *
+     * @var Utilities\Service\Query\Query 
+     */
+    public $query;
+
+    /**
      * Set needed properties
      * 
      * 
      * @access public
      * @param CountryService $countriesService
      * @param LanguageService $languagesService
+     * @param Utilities\Service\Query\Query $query
      */
-    public function __construct(CountryService $countriesService, LanguageService $languagesService) {
+    public function __construct(CountryService $countriesService, LanguageService $languagesService, $query)
+    {
         $locale = "en";
         $this->countries = $countriesService->getAllCountries($locale);
         $this->languages = $languagesService->getAllLanguages($locale);
+        $this->query = $query;
     }
 
     /**
@@ -56,28 +68,38 @@ class Object {
      * @param int $maxDepthLevel depth level including first object level ,default is 3
      * @return array objects prepared for display
      */
-    public function prepareForDisplay( $objectsArray, $depthLevel = 0, $maxDepthLevel = 3) {
+    public function prepareForDisplay($objectsArray, $depthLevel = 0, $maxDepthLevel = 3)
+    {
         $depthLevel ++;
         foreach ($objectsArray as $object) {
             $objectProperties = $this->prepareForStatusDisplay($object);
+            if ($depthLevel == 1) {
+                $wrapped = AbstractWrapper::wrap($object, $this->query->entityManager);
+                $meta = $wrapped->getMetadata();
+            }
             foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
-                if(is_string($objectPropertyValue) && strlen($objectPropertyValue) <= 5 ) {
-                    $textObjectPropertyName = $objectPropertyName."Text";
-                    if(array_key_exists($objectPropertyValue, $this->languages)){
+                if (is_string($objectPropertyValue) && strlen($objectPropertyValue) <= 5) {
+                    $textObjectPropertyName = $objectPropertyName . "Text";
+                    if (array_key_exists($objectPropertyValue, $this->languages)) {
                         $object->$textObjectPropertyName = $this->languages[$objectPropertyValue];
-                    }elseif(strlen($objectPropertyValue) == 2 && array_key_exists($objectPropertyValue, $this->countries)){
+                    }
+                    elseif (strlen($objectPropertyValue) == 2 && array_key_exists($objectPropertyValue, $this->countries)) {
                         $object->$textObjectPropertyName = $this->countries[$objectPropertyValue];
                     }
-                    
-                } elseif ($objectPropertyValue instanceof \DateTime) {
+                }
+                elseif ($objectPropertyValue instanceof \DateTime) {
                     $formattedString = $objectPropertyValue->format("D, d M Y");
-                    if($formattedString == Time::UNIX_DATE_STRING){
+                    if ($formattedString == Time::UNIX_DATE_STRING) {
                         $formattedString = $objectPropertyValue->format("H:i");
                     }
                     $object->$objectPropertyName = $formattedString;
-                } elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel) {
+                }
+                elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel) {
                     $objectsPropertyValue = $this->prepareForDisplay(array($objectPropertyValue), $depthLevel, $maxDepthLevel);
                     $object->$objectPropertyName = reset($objectsPropertyValue);
+                }
+                elseif (is_array($objectPropertyValue) && array_key_exists("id", $objectPropertyValue) && isset($meta) && $meta->isSingleValuedAssociation($objectPropertyName)) {
+                    $object->$objectPropertyName = $this->query->find($meta->getAssociationMapping($objectPropertyName)["targetEntity"], $objectPropertyValue["id"]);
                 }
             }
         }
@@ -92,10 +114,12 @@ class Object {
      * @param mixed $object
      * @return array object properties array
      */
-    public function prepareForStatusDisplay($object) {
+    public function prepareForStatusDisplay($object)
+    {
         if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
             $objectProperties = $object->getArrayCopy();
-        } else {
+        }
+        else {
             $objectProperties = get_object_vars($object);
         }
         if (array_key_exists("status", $objectProperties)) {
@@ -121,6 +145,29 @@ class Object {
             }
         }
         return $objectProperties;
+    }
+
+    /**
+     * get object id
+     * 
+     * @access public
+     * @param mixed $unknownTypeObject
+     * 
+     * @return int id
+     */
+    public function getId($unknownTypeObject)
+    {
+        $id = null;
+        if (is_numeric($unknownTypeObject)) {
+            $id = $unknownTypeObject;
+        }
+        elseif (is_array($unknownTypeObject) && array_key_exists("id", $unknownTypeObject)) {
+            $id = $unknownTypeObject["id"];
+        }
+        elseif (is_object($unknownTypeObject) && method_exists($unknownTypeObject, "getId")) {
+            $id = $unknownTypeObject->getId();
+        }
+        return $id;
     }
 
 }
