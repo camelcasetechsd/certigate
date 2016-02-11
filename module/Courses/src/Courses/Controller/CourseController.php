@@ -11,6 +11,7 @@ use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Course Controller
@@ -187,22 +188,25 @@ class CourseController extends ActionController
         if ($course != null) {
             $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-
+            $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
+            
+            $outlines = $course->getOutlines()->toArray();
+            $versionModel->getApprovedDataForNotApprovedOnesWrapper($outlines);
+            
+            $course->setOutlines(new ArrayCollection($outlines));
             $courseArray = array($course);
             if($course->getStatus() == Status::STATUS_NOT_APPROVED){
-                $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
                 $versionModel->getApprovedDataForNotApprovedOnesWrapper($courseArray);
             }
-            
             $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
             $preparedCourse = reset($preparedCourseArray);
 
-            $resources = $preparedCourse->getResources();
+            $resources = $preparedCourse->getResources()->toArray();
+            $versionModel->getApprovedDataForNotApprovedOnesWrapper($resources);
             $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
             $preparedCourse->setResources($preparedResources);
 
             $variables['course'] = $preparedCourse;
-            $variables['evaluation'] = $preparedCourse->getEvaluation();
 
             $auth = new AuthenticationService();
             $storage = $auth->getIdentity();
@@ -223,19 +227,19 @@ class CourseController extends ActionController
                 $isStudent = true;
             }
             //check if student already evaluated the course before
-            $evaluatedBefore = true;
+            $notEvaluatedBefore = true;
             if ($isStudent && $course->getEvaluation() != null) {
 
                 $userId = $auth->getIdentity()['id'];
                 $courseVotes = $course->getEvaluation()->getVotes();
                 foreach ($courseVotes as $vote) {
                     if ($vote->getUser()->getId() == $userId) {
-                        $evaluatedBefore = false;
+                        $notEvaluatedBefore = false;
                     }
                 }
             }
 
-            $variables['evaluatedBefore'] = $evaluatedBefore;
+            $variables['notEvaluatedBefore'] = $notEvaluatedBefore;
             $variables['hasEvaluation'] = $hasEvaluation;
             $variables['isStudent'] = $isStudent;
             $variables['canDownloadResources'] = $canDownloadResources;

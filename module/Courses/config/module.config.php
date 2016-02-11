@@ -174,13 +174,14 @@ return array(
             'resourcesResourceDownload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/download/:id',
+                    'route' => '/resources/download/:id[/:latest]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'download',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
+                        'latest' => 'true',
                     ),
                 )
             ),

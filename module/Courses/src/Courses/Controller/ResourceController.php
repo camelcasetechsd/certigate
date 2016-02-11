@@ -147,7 +147,7 @@ class ResourceController extends ActionController
                 $url = $this->getResourcesUrl($courseId);
                 $this->redirect()->toUrl($url);
             }
-            elseif(array_key_exists("addedResources", $validationOutput)) {
+            elseif (array_key_exists("addedResources", $validationOutput)) {
                 $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
@@ -267,13 +267,18 @@ class ResourceController extends ActionController
     public function downloadAction()
     {
         $id = $this->params('id');
+        $latest = $this->params('latest', /* $default = */ false);
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
         $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
         $course = $resource->getCourse();
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
-
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        if ($latest === false) {
+            $resourcesArray = array($resource);
+            $versionModel->getApprovedDataForNotApprovedOnesWrapper($resourcesArray);
+            $resource = reset($resourcesArray);
+        }
         $courseArray = array($course);
         $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
         $preparedCourse = reset($preparedCourseArray);

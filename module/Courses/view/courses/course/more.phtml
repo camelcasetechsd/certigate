@@ -6,7 +6,7 @@
 
 <br><br>
 <!--make sure that user did not evaluated the course before-->
-{{#evaluatedBefore}}
+{{#notEvaluatedBefore}}
 <!--making sure that course has evaluation-->
 {{#hasEvaluation}}
 <!--making sure that user is student-->
@@ -16,7 +16,7 @@
 <br><br>
 {{/isStudent}}
 {{/hasEvaluation}}
-{{/evaluatedBefore}}
+{{/notEvaluatedBefore}}
 
 <div class="panel panel-default">
 
@@ -55,7 +55,7 @@
             {{#outlines}}
                 {{#status}}
                 <tr>
-                    <td>&ensp; {{name}}</td>
+                    <td>&ensp; {{title}}</td>
                     <td>{{duration}}</td>
                 </tr>
                 {{/status}}
