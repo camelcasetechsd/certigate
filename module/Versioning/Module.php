@@ -4,7 +4,7 @@ namespace Versioning;
 
 use Zend\Mvc\MvcEvent;
 use Zend\Authentication\AuthenticationService;
-use Gedmo\Loggable\LoggableListener;
+use Versioning\Listener\LoggableListener;
 
 class Module
 {
