@@ -80,8 +80,12 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
 
-        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
+        $notApprovedData = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_NOT_APPROVED));
+        $versionModel->getApprovedDataForNotApprovedOnesWrapper($notApprovedData);
+        $approvedData = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
+        $data = array_merge($notApprovedData, $approvedData);
         $courseModel->setCanEnroll($data);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
@@ -185,6 +189,11 @@ class CourseController extends ActionController
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
             $courseArray = array($course);
+            if($course->getStatus() == Status::STATUS_NOT_APPROVED){
+                $versionModel = $this->getServiceLocator()->get( 'Versioning\Model\Version' );
+                $versionModel->getApprovedDataForNotApprovedOnesWrapper($courseArray);
+            }
+            
             $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
             $preparedCourse = reset($preparedCourseArray);
 
@@ -329,7 +338,7 @@ class CourseController extends ActionController
             $userEmail = $storage["email"];
         }
 
-        $validationResult = $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
         if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
@@ -359,6 +368,7 @@ class CourseController extends ActionController
         }
 
         $variables['courseForm'] = $this->getFormView($form);
+        $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
 
@@ -686,7 +696,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         // getting the course
         $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TRAINING_MANAGER_ROLE, /*$organization =*/$course->getAtp());
         if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
