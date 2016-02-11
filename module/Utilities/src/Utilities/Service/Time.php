@@ -37,5 +37,22 @@ class Time {
         $timeDiff=$lastTime-$firstTime;//in seconds
         return $timeDiff/60/60;//in hours
     }
+    
+    /**
+     * Convert time to DateTime object
+     * ,or update it if it's already an object without right date
+     * 
+     * @access public
+     * @param \DateTime $time
+     * @return \DateTime
+     */
+    static public function objectifyTime($time){
+        if (!is_object($time)) {
+            $time = new \DateTime(Time::UNIX_DATE_STRING." ".$time);
+        }elseif($time->format("Y") != "1970"){
+            $time->modify(Time::UNIX_DATE_STRING." ".$time->format("H:s"));
+        }
+        return $time;
+    }
 
 }

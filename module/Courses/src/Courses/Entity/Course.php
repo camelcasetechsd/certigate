@@ -165,6 +165,7 @@ class Course
     public $users;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\OneToOne(targetEntity="Evaluation", mappedBy="course")
      */
     public $evaluation;
@@ -448,9 +449,7 @@ class Course
      */
     public function setTime($time)
     {
-        if (!is_object($time)) {
-            $time = new \DateTime($time);
-        }
+        $time = Time::objectifyTime($time);
         $this->time = $time;
         return $this;
     }

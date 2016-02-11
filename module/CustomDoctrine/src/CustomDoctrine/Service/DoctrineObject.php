@@ -42,7 +42,13 @@ class DoctrineObject extends OriginalDoctrineObject
                     $dateTime->setTimestamp($value);
                     $value = $dateTime;
                 } elseif (is_string($value)) {
-                    $value = \DateTime::createFromFormat(Time::DATE_FORMAT, $value);
+                    if(preg_match("#[\d]+/[\d]+/[\d]+#", $value)){
+                        $value = \DateTime::createFromFormat(Time::DATE_FORMAT, $value);
+                    }elseif(preg_match("#[\d]+\:[\d]+#", $value)){
+                        $value = new \DateTime(Time::UNIX_DATE_STRING." ".$value);
+                    }else{
+                        $value = new \DateTime($value);
+                    }
                 }
 
                 break;
