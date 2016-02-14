@@ -102,14 +102,14 @@ class Version
                 ->setParameters($parameters);
 
         $logs = $queryBuilder->getQuery()->getResult();
-        
+
         $logsGroupedByObjectId = array();
-        foreach($logs as $log){
+        foreach ($logs as $log) {
             $logsGroupedByObjectId[$log->getObjectId()][] = $log;
         }
         return $logsGroupedByObjectId;
     }
-    
+
     /**
      * Get approved versions for currently not approved entities
      * 
@@ -119,12 +119,13 @@ class Version
      * @param string $activeStatusValue ,default is active status
      * @return array approved versions
      */
-    public function getNotApprovedDataApprovedVersions($logsGroupedByObjectId, $statusProperty = "status", $activeStatusValue = Status::STATUS_ACTIVE){
+    public function getNotApprovedDataApprovedVersions($logsGroupedByObjectId, $statusProperty = "status", $activeStatusValue = Status::STATUS_ACTIVE)
+    {
         $notApprovedDataApprovedVersions = array();
-        foreach($logsGroupedByObjectId as $objectId => $logsPerObjectId){
-            foreach($logsPerObjectId as $log){
+        foreach ($logsGroupedByObjectId as $objectId => $logsPerObjectId) {
+            foreach ($logsPerObjectId as $log) {
                 $versionData = $log->getData();
-                if(isset($versionData[$statusProperty]) && $versionData[$statusProperty] == $activeStatusValue){
+                if (isset($versionData[$statusProperty]) && $versionData[$statusProperty] == $activeStatusValue) {
                     $notApprovedDataApprovedVersions[$objectId] = $versionData;
                     break;
                 }
@@ -132,7 +133,7 @@ class Version
         }
         return $notApprovedDataApprovedVersions;
     }
-    
+
     /**
      * Get approved data for not approved versions
      * 
@@ -141,10 +142,11 @@ class Version
      * @param array $notApprovedDataApprovedVersions
      * @return array approved data versions for not approved ones
      */
-    public function getApprovedDataForNotApprovedOnes(&$notApprovedData, $notApprovedDataApprovedVersions){
-        foreach($notApprovedData as $notApprovedEntityKey => $notApprovedEntity){
+    public function getApprovedDataForNotApprovedOnes(&$notApprovedData, $notApprovedDataApprovedVersions)
+    {
+        foreach ($notApprovedData as $notApprovedEntityKey => $notApprovedEntity) {
             $objectId = $notApprovedEntity->getId();
-            if(!array_key_exists($objectId, $notApprovedDataApprovedVersions)){
+            if (!array_key_exists($objectId, $notApprovedDataApprovedVersions)) {
                 unset($notApprovedData[$notApprovedEntityKey]);
                 continue;
             }
@@ -152,7 +154,7 @@ class Version
         }
         return $notApprovedData;
     }
-    
+
     /**
      * Get approved data for not approved data wrapper
      * 
@@ -160,10 +162,13 @@ class Version
      * @param array $notApprovedData
      * @return array approved data versions for not approved ones
      */
-    public function getApprovedDataForNotApprovedOnesWrapper(&$notApprovedData){
-        $logsGroupedByObjectId = $this->getLogEntriesPerEntities($notApprovedData);
-        $notApprovedDataApprovedVersions = $this->getNotApprovedDataApprovedVersions($logsGroupedByObjectId);
-        $this->getApprovedDataForNotApprovedOnes($notApprovedData,$notApprovedDataApprovedVersions);
+    public function getApprovedDataForNotApprovedOnesWrapper(&$notApprovedData)
+    {
+        if (count($notApprovedData) > 0) {
+            $logsGroupedByObjectId = $this->getLogEntriesPerEntities($notApprovedData);
+            $notApprovedDataApprovedVersions = $this->getNotApprovedDataApprovedVersions($logsGroupedByObjectId);
+            $this->getApprovedDataForNotApprovedOnes($notApprovedData, $notApprovedDataApprovedVersions);
+        }
     }
 
 }
