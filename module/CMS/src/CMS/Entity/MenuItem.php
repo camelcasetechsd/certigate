@@ -67,7 +67,7 @@ class MenuItem
     /**
      * 
      * @ORM\Column(type="integer")
-     * @var ineteger
+     * @var integer
      */
     public $type;
 

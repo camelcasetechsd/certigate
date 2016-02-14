@@ -4,6 +4,7 @@ namespace CMS\Form;
 
 use Utilities\Form\Form;
 use Utilities\Service\Status;
+use CMS\Entity\MenuItem;
 
 /**
  * MenuItemFilter Form
@@ -58,7 +59,23 @@ class MenuItemFilterForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => 'Direct Url',
+                'label' => 'Url',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'type',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Type',
+                "value_options" => array(
+                    MenuItem::TYPE_PAGE => "Page",
+                    MenuItem::TYPE_DIRECT_URL => "Direct Url",
+                ),
+                'empty_option' => "All",
             ),
         ));
 
@@ -70,7 +87,7 @@ class MenuItemFilterForm extends Form
             ),
             'options' => array(
                 'label' => 'Menu',
-                'object_manager' => $this->query->setEntity( 'CMS\Entity\Menu')->entityManager,
+                'object_manager' => $this->query->setEntity('CMS\Entity\Menu')->entityManager,
                 'target_class' => 'CMS\Entity\Menu',
                 'property' => "title",
                 'find_method' => array(

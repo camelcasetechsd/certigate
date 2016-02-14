@@ -342,10 +342,15 @@ class MenuItem
     public function filterMenuItems($data)
     {
         $menuItemFilterFields = array(
+            "type",
             "title",
             "directUrl",
             "menu",
             "status",
+        );
+        $menuItemFieldsFilterByLike = array(
+            "title",
+            "directUrl",
         );
         $data = array_intersect_key($data, array_flip($menuItemFilterFields));
         if (!empty($data["menu"])) {
@@ -356,7 +361,11 @@ class MenuItem
         foreach ($data as $fieldName => $fieldValue) {
             // only submitted values are used in filter
             if ($fieldValue != "") {
-                $criteria->andWhere($expr->eq($fieldName, $fieldValue));
+                $expressionMethod = "eq";
+                if(in_array($fieldName, $menuItemFieldsFilterByLike)){
+                    $expressionMethod = "contains";
+                }
+                $criteria->andWhere($expr->$expressionMethod($fieldName, $fieldValue));
             }
         }
         $this->setCriteria($criteria);

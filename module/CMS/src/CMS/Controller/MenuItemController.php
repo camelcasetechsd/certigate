@@ -51,6 +51,7 @@ class MenuItemController extends ActionController
         $previousPageNumber = $menuItemModel->getPreviousPageNumber($pageNumber);
         $variables['menuItems'] = $objectUtilities->prepareForDisplay($menuItemModel->getCurrentItems());
         $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 )? true : false;
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
 
