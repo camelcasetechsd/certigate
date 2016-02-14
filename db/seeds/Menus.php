@@ -27,7 +27,7 @@ class Menus extends AbstractSeed
             "status" => true
         ];
 
-        $this->insert( 'menu', $menu );
+        $this->insert('menu', $menu);
         $primaryMenuId = $this->getAdapter()->getConnection()->lastInsertId();
 
 
@@ -209,7 +209,7 @@ class Menus extends AbstractSeed
                                                 "children" => [
                                                     [
                                                         "title" => "General Resources",
-                                                        "path" => "general_resources",
+                                                        "path" => "/general_resources",
                                                         "weight" => 1,
                                                         "type" => "page"
                                                     ],
@@ -221,29 +221,8 @@ class Menus extends AbstractSeed
 
                                                             [
                                                                 "title" => "Select Course",
-                                                                "path" => "/courses",
+                                                                "path" => "/courses/instructor-calendar",
                                                                 "weight" => 1,
-                                                                "children" => [
-                                                                    [
-                                                                        /**
-                                                                         * link in the listing page to download the outlines    
-                                                                         * not implemented yet
-                                                                         * need to be specific
-                                                                         *                                                                  */
-                                                                        "title" => "Course Outlines",
-                                                                        "path" => "/",
-                                                                        "weight" => 1,
-                                                                        "children" => [
-                                                                        ]
-                                                                    ],
-                                                                    [
-                                                                        "title" => "Resources",
-                                                                        "path" => "/resources",
-                                                                        "weight" => 2,
-                                                                        "children" => [
-                                                                        ]
-                                                                    ]
-                                                                ]
                                                             ]
                                                         ]
                                                     ]
@@ -256,6 +235,7 @@ class Menus extends AbstractSeed
                                         "title" => "Certified Instructor",
                                         "path" => "/cerified_instructor/info",
                                         "weight" => 3,
+                                        "type" => "page"
                                     ],
                                     [
                                         "title" => "Apply to be an Instructor",
@@ -275,22 +255,11 @@ class Menus extends AbstractSeed
                                             ],
                                             [
                                                 /**
-                                                 * page to list course outlines 
-                                                 * 
                                                  * no specific course 
-                                                 * outlines listed in more
                                                  */
                                                 "title" => "Course Outlines",
-                                                "path" => "/courses/more/1",
+                                                "path" => '/courses/instructor-training',
                                                 "weight" => 2,
-                                            ],
-                                            [
-                                                // course booking  not a specific course
-                                                // not implemented yet
-                                                "title" => "Register",
-                                                "path" => "/course/calendar",
-                                                "weight" => 3,
-                                                "type" => "page"
                                             ],
                                         ]
                                     ],
@@ -445,7 +414,7 @@ class Menus extends AbstractSeed
             ]
         ];
         foreach ($primaryMenuItems as $item) {
-            $this->insertMenuItem( $item, $primaryMenuId );
+            $this->insertMenuItem($item, $primaryMenuId);
         }
 
 
@@ -455,17 +424,18 @@ class Menus extends AbstractSeed
             "status" => true
         ];
 
-        $this->insert( 'menu', $menu );
+        $this->insert('menu', $menu);
     }
 
-    public function insertMenuItem( $item, $primaryMenuId, $parentId = null )
+    public function insertMenuItem($item, $primaryMenuId, $parentId = null)
     {
         $menuItem = [];
-        if (isset( $item['type'] ) && $item['type'] == "page") {
-            $pageId = $this->insertPageForMenuItem( $item );
+        if (isset($item['type']) && $item['type'] == "page") {
+            $pageId = $this->insertPageForMenuItem($item);
             $menuItem['page_id'] = $pageId;
             $menuItem['type'] = MenuItem::TYPE_PAGE;
-        } else {
+        }
+        else {
             $menuItem['directUrl'] = $item['path'];
             $menuItem['type'] = MenuItem::TYPE_DIRECT_URL;
         }
@@ -473,29 +443,29 @@ class Menus extends AbstractSeed
         $menuItem['parent_id'] = $parentId;
         $menuItem['menu_id'] = $primaryMenuId;
         $menuItem['title'] = $item['title'];
-        $menuItem['weight'] = (isset( $item['weight'] )) ? $item['weight'] : 1;
+        $menuItem['weight'] = (isset($item['weight'])) ? $item['weight'] : 1;
         $menuItem['status'] = true;
 
-        $this->insert( 'menuItem', $menuItem );
+        $this->insert('menuItem', $menuItem);
 
         $menuItemParentId = $this->getAdapter()->getConnection()->lastInsertId();
-        if (isset( $item['children'] ) && count( $item['children'] ) > 0) {
+        if (isset($item['children']) && count($item['children']) > 0) {
             foreach ($item['children'] as $childItem) {
-                $this->insertMenuItem( $childItem, $primaryMenuId, $menuItemParentId );
+                $this->insertMenuItem($childItem, $primaryMenuId, $menuItemParentId);
             }
         }
     }
 
-    public function insertPageForMenuItem( $item )
+    public function insertPageForMenuItem($item)
     {
         $faker = Faker\Factory::create();
 
-        $this->insert( 'page', [
+        $this->insert('page', [
             'title' => $item['title'],
             'path' => $item['path'],
             'status' => TRUE,
-            'body' => base64_encode( bzcompress( $faker->text ) )
-        ] );
+            'body' => base64_encode(bzcompress($faker->text))
+        ]);
 
         $pageId = $this->getAdapter()->getConnection()->lastInsertId();
         return $pageId;
