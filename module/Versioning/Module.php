@@ -5,6 +5,7 @@ namespace Versioning;
 use Zend\Mvc\MvcEvent;
 use Zend\Authentication\AuthenticationService;
 use Versioning\Listener\LoggableListener;
+use Users\Entity\Role;
 
 class Module
 {
@@ -25,17 +26,29 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap( MvcEvent $e )
+    /**
+     * Initiate loggable listener on bootstrap
+     * 
+     * @access public
+     * @param MvcEvent $event
+     */
+    public function onBootstrap( MvcEvent $event )
     {
-        /* @var $evm \Doctrine\Common\EventManager */
-        $evm = $e->getApplication()->getServiceManager()->get( 'entitymanager' )->getEventManager();
+        /* @var $eventManager \Doctrine\Common\EventManager */
+        $eventManager = $event->getApplication()->getServiceManager()->get( 'entitymanager' )->getEventManager();
         $loggableListener = new LoggableListener;
         $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
         if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
             $loggableListener->setUsername( $auth->getIdentity()['username'] );
         }
-
-        $evm->addEventSubscriber( $loggableListener );
+        $loggableListener->setIsAdminUser( $isAdminUser );
+        
+        $eventManager->addEventSubscriber( $loggableListener );
     }
 
 }

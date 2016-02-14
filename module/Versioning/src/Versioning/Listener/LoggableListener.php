@@ -5,12 +5,14 @@ namespace Versioning\Listener;
 use Gedmo\Loggable\LoggableListener as OriginalLoggableListener;
 use Doctrine\Common\EventArgs;
 use Gedmo\Tool\Wrapper\AbstractWrapper;
+use Utilities\Service\Status;
 
 /**
  * Loggable listener
  * 
  * Handles Entity changes logging related business
  *
+ * @property bool $isAdminUser
  * @property Gedmo\Mapping\Event\AdapterInterface $eventAdapter
  * 
  * @package versioning
@@ -21,9 +23,26 @@ class LoggableListener extends OriginalLoggableListener
 
     /**
      *
+     * @var bool 
+     */
+    protected $isAdminUser;
+
+    /**
+     *
      * @var Gedmo\Mapping\Event\AdapterInterface 
      */
     protected $eventAdapter;
+
+    /**
+     * Set isAdminUser
+     * 
+     * @access public
+     * @param bool $isAdminUser
+     */
+    public function setIsAdminUser($isAdminUser)
+    {
+        $this->isAdminUser = $isAdminUser;
+    }
 
     /**
      * Handle any custom LogEntry functionality that needs to be performed
@@ -94,7 +113,35 @@ class LoggableListener extends OriginalLoggableListener
     public function onFlush(EventArgs $eventArgs)
     {
         $this->eventAdapter = $this->getEventAdapter($eventArgs);
-        parent::onFlush($eventArgs);
+        $entityManager = $eventArgs->getEntityManager();
+        $unitOfWork = $entityManager->getUnitOfWork();
+
+        foreach ($this->eventAdapter->getScheduledObjectInsertions($unitOfWork) as $object) {
+            $this->createLogEntry(self::ACTION_CREATE, $object, $this->eventAdapter);
+        }
+        foreach ($this->eventAdapter->getScheduledObjectDeletions($unitOfWork) as $object) {
+            $this->createLogEntry(self::ACTION_REMOVE, $object, $this->eventAdapter);
+        }
+
+        foreach ($this->eventAdapter->getScheduledObjectUpdates($unitOfWork) as $entity) {
+            $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
+            if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED) {
+                $objectClass = get_class($entity);
+                $logClass = $this->getLogEntryClass($this->eventAdapter, $objectClass);
+                $parameters = array(
+                    'objectId' => $entity->getId(),
+                    'objectClass' => $objectClass,
+                );
+                $queryBuilder = $entityManager->createQueryBuilder();
+                $queryBuilder->delete($logClass, "log")
+                        ->andWhere($queryBuilder->expr()->eq('log.objectId', ":objectId"))
+                        ->andWhere($queryBuilder->expr()->eq('log.objectClass', ":objectClass"))
+                        ->setParameters($parameters)
+                        ->getQuery()->execute();
+            }else{
+                $this->createLogEntry(self::ACTION_UPDATE, $entity, $this->eventAdapter);
+            }
+        }
     }
 
 }
