@@ -375,6 +375,66 @@ class CourseController extends ActionController
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
+    
+    /**
+     * View pending version course
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function pendingAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $course = $query->find('Courses\Entity\Course', $id);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        $userEmail = null;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            $userEmail = $storage["email"];
+        }
+
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
+        $options = array();
+        $options['query'] = $query;
+        $options['isAdminUser'] = $isAdminUser;
+        $options['userId'] = $storage['id'];
+        $form = new CourseForm(/* $name = */ null, $options);
+        $form->bind($course);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            // bind with empty entity to allow adding new outlines
+            $form->bind(new Course());
+            $data = $request->getPost()->toArray();
+            $form->setInputFilter($course->getInputFilter());
+
+            $form->setData($data);
+
+            $isCustomValidationValid = $courseModel->validateForm($form, $data, $course);
+            if ($form->isValid() && $isCustomValidationValid === true) {
+                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $userEmail);
+
+                $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['courseForm'] = $this->getFormView($form);
+        $variables['isAdminUser'] = $isAdminUser;
+        return new ViewModel($variables);
+    }
 
     /**
      * Delete course

@@ -208,6 +208,19 @@ return array(
                     ),
                 )
             ),
+            'coursesPending' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/pending/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'pendingAction',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'coursesInstructorCalendar' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
