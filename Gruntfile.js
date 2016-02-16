@@ -39,8 +39,8 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
                     '<%= dirs.jsSrc %>/courseCRUD.js',
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
-                    '<%= dirs.jsSrc %>/orgReg.js'
-                    
+                    '<%= dirs.jsSrc %>/orgReg.js',                    
+                    '<%= dirs.jsSrc %>/CKEditor_config.js',                    
                 ]
 
             },
@@ -60,6 +60,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/courseForm.css',
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
+                    '<%= dirs.cssSrc %>/CKEditor_Style.css',
                 ]
             }
         },
