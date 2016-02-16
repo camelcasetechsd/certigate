@@ -370,7 +370,7 @@ class CourseController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
+        $variables['courseId'] = $id;
         $variables['courseForm'] = $this->getFormView($form);
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
@@ -706,11 +706,16 @@ class CourseController extends ActionController
         }
         // getting course evaluation
         $eval = $course->getEvaluation();
-        $variables['status'] = ($eval->getStatus() === Status::STATUS_ACTIVE) ? true : false;
-        // getting course evaluation questions
-        $variables['oldQuestions'] = $eval->getQuestions();
-        // evaluation model
-        $evaluationModel = new \Courses\Model\Evaluation($query);
+        if ($eval == null) {
+            $variables['noEvaluation'] = true;
+        }
+        else {
+            $variables['status'] = ($eval->getStatus() === Status::STATUS_ACTIVE) ? true : false;
+            // getting course evaluation questions
+            $variables['oldQuestions'] = $eval->getQuestions();
+            // evaluation model
+            $evaluationModel = new \Courses\Model\Evaluation($query);
+        }
 
         //authentication
         $auth = new AuthenticationService();
@@ -732,8 +737,11 @@ class CourseController extends ActionController
             }
             if (isset($data['newQuestion'])) {
                 $error2 = $evaluationModel->validateQuestion($data['newQuestion']);
+                $errors = array_merge($error1, $error2);
             }
-            $errors = array_merge($error1, $error2);
+            else {
+                $errors = $error1;
+            }
             if (empty($errors)) {
                 $status = Status::STATUS_NOT_APPROVED;
                 if ($isAdminUser === true) {
@@ -767,11 +775,11 @@ class CourseController extends ActionController
             else {
                 // errors
                 $variables['validationError'] = $errors;
-                $unValidQuestions = array_merge($data['newQuestion']);
+                $unValidQuestions = isset($data['newQuestion']) ? $data['newQuestion'] : null;
                 $variables['unvalidQuestions'] = $unValidQuestions;
             }
         }
-
+        $variables['courseId'] = $courseId;
         return new ViewModel($variables);
     }
 

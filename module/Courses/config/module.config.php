@@ -120,29 +120,29 @@ return array(
             'resourcesEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/edit/:id',
+                    'route' => '/resources/edit/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'edit',
                     ),
                     'constraints' => array(
-                        'id' => '[0-9]+',
-                    ),
-                )
-            ),
-            'resourcesEditPerCourse' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/resources/edit/:id/:courseId',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Resource',
-                        'action' => 'edit',
-                    ),
-                    'constraints' => array(
-                        'id' => '[0-9]+',
                         'courseId' => '[0-9]+',
                     ),
                 )
+//            ),
+//            'resourcesEditPerCourse' => array(
+//                'type' => 'Zend\Mvc\Router\Http\Segment',
+//                'options' => array(
+//                    'route' => '/resources/edit/:id/:courseId',
+//                    'defaults' => array(
+//                        'controller' => 'Courses\Controller\Resource',
+//                        'action' => 'edit',
+//                    ),
+//                    'constraints' => array(
+//                        'id' => '[0-9]+',
+//                        'courseId' => '[0-9]+',
+//                    ),
+//                )
             ),
             'resourcesDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',

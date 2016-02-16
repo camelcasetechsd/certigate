@@ -2,20 +2,33 @@
 {{<layout}}
 
 {{$content}}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>Edit Course</h3>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#courseDetails" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
+    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">Course Evaluation</a></li>
+    <li role="presentation"><a href="/resources/edit/{{courseId}}" aria-controls="courseResources">Course Resources</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="courseDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Edit Course</h3>
+            </div>
+            <div class="panel-body">
+                {{{courseForm}}}
+            </div>
+        </div>
     </div>
-    <div class="panel-body">
-        {{{courseForm}}}
-    </div>
+    <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
+    <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
 </div>
 {{/content}}
 
 {{$scripts}}
 <script>
     $(document).ready(function () {
-        updateOutlines("#course_form_addMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
+    updateOutlines("#course_form_addMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
     });
 </script>
 {{/scripts}}
