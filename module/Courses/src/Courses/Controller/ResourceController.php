@@ -168,12 +168,12 @@ class ResourceController extends ActionController
     public function editAction()
     {
         $variables = array();
-        $id = $this->params('id');
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-        $resource = $query->find('Courses\Entity\Resource', $id);
+        $course = $query->find('Courses\Entity\Course', $courseId);
+        $resources = $course->getResources();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -197,42 +197,16 @@ class ResourceController extends ActionController
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['isAdminUser'] = $isAdminUser;
         $options['courseId'] = $courseId;
-        $form = new ResourceForm(/* $name = */ null, $options);
-        $form->bind($resource);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            // Make certain to merge the files info!
-            $fileData = $request->getFiles()->toArray();
-
-            $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
-            );
-            if (empty($courseId)) {
-                $courseId = $data["course"];
-            }
-            else {
-                $data["course"] = $courseId;
-            }
-            $form->setInputFilter($resource->getInputFilter($courseId, /* $name = */ $data["name"]));
-
-            $inputFilter = $form->getInputFilter();
-            $form->setData($data);
-            // file not updated
-            if (isset($fileData['file']['name']) && empty($fileData['file']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('file');
-                $input->setRequired(false);
-            }
-            if ($form->isValid()) {
-                $resourceModel->save($resource, /* $data = */ array(), $isAdminUser);
-
-                $url = $this->getResourcesUrl($courseId);
-                $this->redirect()->toUrl($url);
-            }
+            $data = $request->getPost()->toArray();
+//            var_dump($data);exit;
+            $resourceModel->updateListedResources($data);
+            
         }
-
-        $variables['resourceForm'] = $this->getFormView($form);
+        $variables['courseId'] = $courseId;
+        $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
         return new ViewModel($variables);
     }
 
