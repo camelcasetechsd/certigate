@@ -366,7 +366,7 @@ class CourseController extends ActionController
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $courseModel->save($course, /* $data = */ array(), $isAdminUser, $userEmail);
 
-                $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
+                $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'edit', 'id' => $id), /* $routeName = */ array('name' => "coursesEdit"));
                 $this->redirect()->toUrl($url);
             }
         }
@@ -375,7 +375,7 @@ class CourseController extends ActionController
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
-    
+
     /**
      * View pending version course
      * 
@@ -733,7 +733,7 @@ class CourseController extends ActionController
                     }
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation'), array('name' => 'editCourseEvaluation'));
                 $this->redirect()->toUrl($url);
             }
             else {
@@ -744,7 +744,7 @@ class CourseController extends ActionController
                 }
             }
         }
-
+        $variables['courseId'] = $courseId;
         return new ViewModel($variables);
     }
 
@@ -829,7 +829,7 @@ class CourseController extends ActionController
                     }
                 }
 
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation', 'courseId' => $courseId), array('name' => 'editCourseEvaluation'));
                 $this->redirect()->toUrl($url);
             }
             else {

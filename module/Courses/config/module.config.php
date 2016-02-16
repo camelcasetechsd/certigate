@@ -120,7 +120,7 @@ return array(
             'resourcesEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/edit/:courseId',
+                    'route' => '/courses/resources/edit/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'edit',

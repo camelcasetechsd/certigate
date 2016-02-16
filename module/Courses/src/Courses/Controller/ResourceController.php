@@ -144,14 +144,14 @@ class ResourceController extends ActionController
                 $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
                 $resourceModel->save($resource, $formData, $isAdminUser);
 
-                $url = $this->getResourcesUrl($courseId);
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit','courseId'=>$courseId), array('name' => 'resourcesEdit'));
                 $this->redirect()->toUrl($url);
             }
             elseif (array_key_exists("addedResources", $validationOutput)) {
                 $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
-
+        $variables['courseId'] = $courseId;
         $variables['resourceForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -201,9 +201,7 @@ class ResourceController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-//            var_dump($data);exit;
             $resourceModel->updateListedResources($data);
-            
         }
         $variables['courseId'] = $courseId;
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
