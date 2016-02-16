@@ -5,7 +5,6 @@ namespace Versioning;
 use Zend\Mvc\MvcEvent;
 use Zend\Authentication\AuthenticationService;
 use Versioning\Listener\LoggableListener;
-use Users\Entity\Role;
 
 class Module
 {
@@ -39,14 +38,10 @@ class Module
         $loggableListener = new LoggableListener;
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $isAdminUser = false;
         if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-            $loggableListener->setUsername( $auth->getIdentity()['username'] );
+            $loggableListener->setUserId( $storage['id'] );
+            $loggableListener->setUsername( $storage['username'] );
         }
-        $loggableListener->setIsAdminUser( $isAdminUser );
         
         $eventManager->addEventSubscriber( $loggableListener );
     }

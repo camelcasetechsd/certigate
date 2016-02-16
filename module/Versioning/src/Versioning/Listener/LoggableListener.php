@@ -6,13 +6,15 @@ use Gedmo\Loggable\LoggableListener as OriginalLoggableListener;
 use Doctrine\Common\EventArgs;
 use Gedmo\Tool\Wrapper\AbstractWrapper;
 use Utilities\Service\Status;
+use Gedmo\Loggable\Mapping\Event\LoggableAdapter;
+use Versioning\Entity\LogEntry;
 
 /**
  * Loggable listener
  * 
  * Handles Entity changes logging related business
  *
- * @property bool $isAdminUser
+ * @property int $userId
  * @property Gedmo\Mapping\Event\AdapterInterface $eventAdapter
  * 
  * @package versioning
@@ -23,9 +25,9 @@ class LoggableListener extends OriginalLoggableListener
 
     /**
      *
-     * @var bool 
+     * @var int 
      */
-    protected $isAdminUser;
+    protected $userId;
 
     /**
      *
@@ -34,14 +36,14 @@ class LoggableListener extends OriginalLoggableListener
     protected $eventAdapter;
 
     /**
-     * Set isAdminUser
-     * 
+     * Set userId
+     *
      * @access public
-     * @param bool $isAdminUser
+     * @param string $userId
      */
-    public function setIsAdminUser($isAdminUser)
+    public function setUserId($userId)
     {
-        $this->isAdminUser = $isAdminUser;
+        $this->userId = (int) $userId;
     }
 
     /**
@@ -71,7 +73,12 @@ class LoggableListener extends OriginalLoggableListener
         }
 
         $processedUnsetObjectData = $this->processObjectUnchangedData($unsetObjectData, $object);
-        $logEntry->setData(array_merge($processedUnsetObjectData, $loggedData));
+        $newData = array_merge($processedUnsetObjectData, $loggedData);
+        $logEntry->setData($newData);
+        if (array_key_exists("status", $newData)) {
+            $logEntry->setObjectStatus($newData["status"]);
+        }
+        $logEntry->setUserId($this->userId);
     }
 
     /**
@@ -143,11 +150,41 @@ class LoggableListener extends OriginalLoggableListener
             else {
                 // on editing by non-admin where entity is supposed to be not approved, do not update entity
                 if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED) {
-                    $entityManager->detach($entity);
+                    $oid = spl_object_hash($entity);
+                    $unitOfWork->clearEntityChangeSet($oid);
                 }
                 $this->createLogEntry(self::ACTION_UPDATE, $entity, $this->eventAdapter);
             }
         }
+    }
+
+    /**
+     * Get the LogEntry class
+     *
+     * @param LoggableAdapter $eventAdapter
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function getLogEntryClass(LoggableAdapter $eventAdapter, $class)
+    {
+        if (isset(self::$configurations[$this->name][$class]['logEntryClass'])) {
+            $class = self::$configurations[$this->name][$class]['logEntryClass'];
+        }
+        else {
+            $class = $this->getDefaultLogEntryClass();
+        }
+        return $class;
+    }
+
+    /**
+     * Get the default LogEntry class
+     *
+     * @return string
+     */
+    protected function getDefaultLogEntryClass()
+    {
+        return get_class(new LogEntry());
     }
 
 }
