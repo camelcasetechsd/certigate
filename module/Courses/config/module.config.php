@@ -214,7 +214,7 @@ return array(
                     'route' => '/courses/pending/:id',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
-                        'action' => 'pendingAction',
+                        'action' => 'pending',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',

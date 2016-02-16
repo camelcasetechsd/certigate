@@ -2,8 +2,6 @@
 
 namespace Versioning\Model;
 
-use Gedmo\Tool\Wrapper\EntityWrapper;
-use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Status;
 
 /**
@@ -47,7 +45,8 @@ class Version
      */
     public function prepareLogs($entity)
     {
-        $logs = $this->query->setEntity('Gedmo\Loggable\Entity\LogEntry')->entityRepository->getLogEntries($entity);
+        $logRepository = $this->query->setEntity('Versioning\Entity\LogEntry')->entityRepository;
+        $logs = $logRepository->getLogEntries(array($entity));
         $preparedLogs = array();
         $logsKeys = array_keys($logs);
         $firstLogKey = reset($logsKeys);
@@ -72,41 +71,25 @@ class Version
      * Get logs for entries
      * 
      * @access public
-     * @param array $entities
+     * @param array $entities ,default is empty array
+     * @param array $objectIds ,default is empty array
+     * @param string $objectClass ,default is null
+     * @param int $status ,default is null
      * 
      * @return array array of $entities' logs
      */
-    public function getLogEntriesPerEntities($entities)
+    public function getLogEntriesPerEntities($entities = array(), $objectIds = array(), $objectClass = null, $status = null)
     {
-        // assuming array of entities belong to them class
-        $entity = reset($entities);
-        $objectIds = array();
-        $wrapped = new EntityWrapper($entity, $this->query->entityManager);
-        $objectClass = $wrapped->getMetadata()->name;
-        // collect entitites ids
-        array_shift($entities);
-        $objectIds[] = $wrapped->getIdentifier();
-        foreach ($entities as $entity) {
-            $wrapped = new EntityWrapper($entity, $this->query->entityManager);
-            $objectIds[] = $wrapped->getIdentifier();
-        }
-
-        $logRepository = $this->query->setEntity('Gedmo\Loggable\Entity\LogEntry')->entityRepository;
-        $queryBuilder = $logRepository->createQueryBuilder("log");
-        $parameters = compact('objectIds', 'objectClass');
-
-        $queryBuilder->select("log")
-                ->addOrderBy('log.version', Criteria::DESC)
-                ->andWhere($queryBuilder->expr()->eq('log.objectClass', ":objectClass"))
-                ->andWhere($queryBuilder->expr()->in('log.objectId', ":objectIds"))
-                ->setParameters($parameters);
-
-        $logs = $queryBuilder->getQuery()->getResult();
-
         $logsGroupedByObjectId = array();
-        foreach ($logs as $log) {
-            $logsGroupedByObjectId[$log->getObjectId()][] = $log;
+        $logRepository = $this->query->setEntity('Versioning\Entity\LogEntry')->entityRepository;
+
+        if (!(count($entities) == 0 && count($objectIds) == 0)) {
+            $logs = $logRepository->getLogEntries($entities, $objectIds, $objectClass, $status);
+            foreach ($logs as $log) {
+                $logsGroupedByObjectId[$log->getObjectId()][] = $log;
+            }
         }
+
         return $logsGroupedByObjectId;
     }
 
@@ -169,6 +152,43 @@ class Version
             $notApprovedDataApprovedVersions = $this->getNotApprovedDataApprovedVersions($logsGroupedByObjectId);
             $this->getApprovedDataForNotApprovedOnes($notApprovedData, $notApprovedDataApprovedVersions);
         }
+    }
+
+    /**
+     * Prepare entities diffs
+     * 
+     * @access public
+     * @param array $entities
+     * @param array $entitiesLogs
+     * 
+     * @return array array of entities diff
+     */
+    public function prepareDiffs($entities, $entitiesLogs)
+    {
+        $entitiesComparisonData = array();
+        foreach ($entitiesLogs as $logsPerEntity) {
+            foreach ($logsPerEntity as $entityLog) {
+                foreach ($entities as $entity) {
+                    if ($entity->getId() == $entityLog->getObjectId()) {
+                        $entitiesComparisonData[] = array(
+                            "before" => $entity->getArrayCopy(),
+                            "after" => $entityLog->getData(),
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+        foreach ($entitiesComparisonData as &$entityComparisonData) {
+            foreach ($entityComparisonData["before"] as $objectPropertyName => $objectPropertyValue) {
+                if ($entityComparisonData["before"]["status"] != Status::STATUS_NOT_APPROVED && !(is_object($objectPropertyValue) && !$objectPropertyValue instanceof \DateTime) && !(isset($entityComparisonData["after"][$objectPropertyName]) && $objectPropertyValue != $entityComparisonData["after"][$objectPropertyName])
+                ) {
+                    unset($entityComparisonData["before"][$objectPropertyName]);
+                    unset($entityComparisonData["after"][$objectPropertyName]);
+                }
+            }
+        }
+        return new \ArrayIterator($entitiesComparisonData);
     }
 
 }

@@ -3,7 +3,6 @@
 namespace Versioning\Controller;
 
 use Utilities\Controller\ActionController;
-use Utilities\Service\Status;
 
 /**
  * Version Controller
@@ -28,7 +27,7 @@ class VersionController extends ActionController {
         $redirect = $this->params('redirect');
         
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $log = $query->find('Gedmo\Loggable\Entity\LogEntry', $id);
+        $log = $query->find('Versioning\Entity\LogEntry', $id);
         $objectId = $log->getObjectId();
         
         $query->remove($log);
@@ -48,12 +47,12 @@ class VersionController extends ActionController {
         $redirect = $this->params('redirect');
         
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $log = $query->find('Gedmo\Loggable\Entity\LogEntry', $id);
+        $log = $query->find('Versioning\Entity\LogEntry', $id);
         $objectId = $log->getObjectId();
         $object = $query->find($log->getObjectClass(), $objectId);
         
         
-        $query->setEntity('Gedmo\Loggable\Entity\LogEntry')->entityRepository->revert($object, $log->getVersion());
+        $query->setEntity('Versioning\Entity\LogEntry')->entityRepository->revert($object, $log->getVersion());
         $query->setEntity($log->getObjectClass())->save($object);
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index', 'id' => $objectId), array('name' => $redirect));
