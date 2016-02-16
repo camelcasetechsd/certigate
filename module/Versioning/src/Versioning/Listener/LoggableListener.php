@@ -125,6 +125,7 @@ class LoggableListener extends OriginalLoggableListener
 
         foreach ($this->eventAdapter->getScheduledObjectUpdates($unitOfWork) as $entity) {
             $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
+            // on approval, delete old versions
             if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED) {
                 $objectClass = get_class($entity);
                 $logClass = $this->getLogEntryClass($this->eventAdapter, $objectClass);
@@ -138,7 +139,12 @@ class LoggableListener extends OriginalLoggableListener
                         ->andWhere($queryBuilder->expr()->eq('log.objectClass', ":objectClass"))
                         ->setParameters($parameters)
                         ->getQuery()->execute();
-            }else{
+            }
+            else {
+                // on editing by non-admin where entity is supposed to be not approved, do not update entity
+                if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED) {
+                    $entityManager->detach($entity);
+                }
                 $this->createLogEntry(self::ACTION_UPDATE, $entity, $this->eventAdapter);
             }
         }
