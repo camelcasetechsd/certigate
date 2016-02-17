@@ -78,43 +78,51 @@
                         <td class="hidden changed">{{after.duration}}</td>
                         <td class="diff"></td>
                     </tr>
-<!--    public $type;
-    public $active;
-    public $commercialName;
-    public $longtitude;
-    public $latitude;
-    public $ownerName;
-    public $ownerNationalId;
-    public $CRNo;
-    public $CRExpiration;
-    public $CRAttachment;
-    public $wireTransferAttachment;
-    public $atpLicenseNo;
-    public $atpLicenseExpiration;
-    public $atpLicenseAttachment;
-    public $atcLicenseNo;
-    public $atcLicenseExpiration;
-    public $atcLicenseAttachment;
-    public $addressLine1;
-    public $addressLine2;
-    public $city;
-    public $zipCode;
-    public $phone1;
-    public $phone2;
-    public $phone3;
-    public $fax;
-    public $website;
-    public $email;
-    public $focalContactPerson;
-    public $labsNo;
-    public $pcsNo_lab;
-    public $classesNo;
-    public $pcsNo_class;
-    public $internetSpeed_lab;
-    public $operatingSystem;
-    public $operatingSystemLang;
-    public $officeVersion;
-    public $officeLang;-->
+                    <!--    public $type;
+                        public $active;
+                        public $commercialName;
+                        public $longtitude;
+                        public $latitude;
+                        public $ownerName;
+                        public $ownerNationalId;
+                        public $CRNo;
+                        public $CRExpiration;
+                        public $CRAttachment;
+                        public $wireTransferAttachment;
+                        public $atpLicenseNo;
+                        public $atpLicenseExpiration;
+                        public $atpLicenseAttachment;
+                        public $atcLicenseNo;
+                        public $atcLicenseExpiration;
+                        public $atcLicenseAttachment;
+                        public $addressLine1;
+                        public $addressLine2;
+                        public $city;
+                        public $zipCode;
+                        public $phone1;
+                        public $phone2;
+                        public $phone3;
+                        public $fax;
+                        public $website;
+                        public $email;
+                        public $focalContactPerson;
+                        public $labsNo;
+                        public $pcsNo_lab;
+                        public $classesNo;
+                        public $pcsNo_class;
+                        public $internetSpeed_lab;
+                        public $operatingSystem;
+                        public $operatingSystemLang;
+                        public $officeVersion;
+                        public $officeLang;-->
+                    {{#before.officeLang}}
+                    <tr class="diffRow">
+                        <td >Office language</td>
+                        <td class="hidden original">{{before.officeLang}}</td>
+                        <td class="hidden changed">{{after.officeLang}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    {{/before.officeLang}}
                     {{/organization}}
                 </table>
 
@@ -132,29 +140,30 @@
                 <table class="table diffTable">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Duration</th>
+                            <th>User</th>
+                            <th>Role</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{#outlines}}
+                        {{#organizationUsers}}
+
                         <tr>
                             <td>
                                 <div class="diffRow">
-                                    <div class="hidden original">{{before.title}}</div>
-                                    <div class="hidden changed">{{after.title}}</div>
+                                    <div class="hidden original">{{before.user.firstName}}{{#before.user.middleName}} {{before.user.middleName}}{{/before.user.middleName}} {{before.user.lastName}}</div>
+                                    <div class="hidden changed">{{after.user.firstName}}{{#after.user.middleName}} {{after.user.middleName}}{{/after.user.middleName}} {{after.user.lastName}}</div>
                                     <div class="diff"></div>
                                 </div>
                             </td>
                             <td> 
                                 <div class="diffRow">
-                                    <div class="hidden original">{{before.duration}}</div>
-                                    <div class="hidden changed">{{after.duration}}</div>
+                                    <div class="hidden original">{{before.role.name}}</div>
+                                    <div class="hidden changed">{{after.role.name}}</div>
                                     <div class="diff"></div>
                                 </div>
                             </td>
                         </tr>
-                        {{/outlines}}
+                        {{/organizationUsers}}
                     </tbody>
                 </table>
 
