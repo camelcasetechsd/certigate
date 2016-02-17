@@ -462,5 +462,67 @@ class OrganizationsController extends ActionController
         }
         return $this->getResponse()->setContent(Json::encode($data));
     }
+    
+    /**
+     * View pending version organization
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function pendingAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organization = $query->find('Organizations\Entity\Organization', $id);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $organizationArray = array($organization);
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $organizationComparisonData = $versionModel->prepareDiffs($organizationArray, $organizationLogs);
+
+        $organizationUsers = $organization->getOrganizationUsers()->toArray();
+        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $organizationUsersComparisonData = $versionModel->prepareDiffs($organizationUsers, $organizationUsersLogs);
+
+        $variables['organization'] = $organizationComparisonData;
+        $variables['organizationUsers'] = $organizationUsersComparisonData;
+        $variables['isAdminUser'] = $isAdminUser;
+        $variables['id'] = $id;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * Approve pending version organization
+     * 
+     * 
+     * @access public
+     */
+    public function approveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organization = $query->find('Organizations\Entity\Organization', $id);
+
+        $organizationArray = array($organization);
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($organizationArray, $organizationLogs);
+
+        $organizationUsers = $organization->getOrganizationUsers()->toArray();
+        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($organizationUsers, $organizationUsersLogs);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
+        $this->redirect()->toUrl($url);
+    }
 
 }

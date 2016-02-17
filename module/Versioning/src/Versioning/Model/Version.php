@@ -238,8 +238,10 @@ class Version
                 }
             }
         }
-        // flush all entities changes
-        $this->query->entityManager->flush();
+        if(count($entities) > 0 && count($entitiesLogs) > 0 ){
+            // flush all entities changes
+            $this->query->entityManager->flush();
+        }
         return $processResult;
     }
 
