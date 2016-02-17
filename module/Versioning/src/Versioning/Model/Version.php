@@ -191,6 +191,7 @@ class Version
                         if (method_exists($entity, /* $method_name = */ "getStatus") && $entity->getStatus() == Status::STATUS_NOT_APPROVED) {
                             // get empty object to compare after data with empty before
                             $entityBefore = new $entityBeforeClass;
+                            $entityBefore->id = $entity->getId();
                         }
                         $entitiesComparisonData[] = array(
                             "before" => $entityBefore,

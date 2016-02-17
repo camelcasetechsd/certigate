@@ -154,7 +154,6 @@ class LoggableListener extends OriginalLoggableListener
             }
             $unchangedValues[$field] = $value;
         }
-        $unchangedValues["id"] = $wrapped->getIdentifier();
         return $unchangedValues;
     }
 
