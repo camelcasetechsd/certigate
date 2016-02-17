@@ -221,6 +221,19 @@ return array(
                     ),
                 )
             ),
+            'coursesApproval' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/approve/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'approve',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'coursesInstructorCalendar' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

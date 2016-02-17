@@ -426,6 +426,43 @@ class CourseController extends ActionController
         $variables['id'] = $id;
         return new ViewModel($variables);
     }
+    
+    /**
+     * Approve pending version course
+     * 
+     * 
+     * @access public
+     */
+    public function approveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $course = $query->find('Courses\Entity\Course', $id);
+
+        $courseArray = array($course);
+        $courseLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $courseArray, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($courseArray, $courseLogs);
+        
+        $outlines = $course->getOutlines()->toArray();
+        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $outlines, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($outlines, $outlinesLogs);
+
+        $resources = $course->getResources()->toArray();
+        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $resources, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($resources, $resourcesLogs);
+        
+        $evaluation = $course->getEvaluation();
+        $questions = array();
+        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
+            $questions = $evaluation->getQuestions()->toArray();
+        }
+        $questionsLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $questions, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($questions, $questionsLogs);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $this->redirect()->toUrl($url);
+    }
 
     /**
      * Delete course
