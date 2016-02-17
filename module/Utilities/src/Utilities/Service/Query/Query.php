@@ -170,8 +170,9 @@ class Query
      * @param mixed $entity entity object to be persisted
      * @param array $data ,default is empty array
      * @param bool $flushAll ,default is false
+     * @param bool $noFlush ,default is false
      */
-    public function save($entity, $data = array(), $flushAll = false)
+    public function save($entity, $data = array(), $flushAll = false, $noFlush = false)
     {
         // if association hold id not actual object, 
         // then find that object to set the corresponding property with it
@@ -187,7 +188,11 @@ class Query
             if (!is_object($currentValue)) {
                 $currentValueArray = $currentValue;
                 $currentValueArrayFlag = true;
-                if (is_numeric($currentValue)) {
+                // handle case where current value should be object or id, but instead an array with key id holding id value is received
+                if (is_array($currentValue) && array_key_exists("id", $currentValue) && count($currentValue) == 1) {
+                    $currentValue = $currentValue["id"];
+                }
+                if (is_numeric($currentValue) ) {
                     $currentValueArray = array($currentValue);
                     $currentValueArrayFlag = false;
                 }
@@ -229,10 +234,13 @@ class Query
             $entity->exchangeArray($data);
         }
         $this->entityManager->persist($entity);
-        if($flushAll === true){
-            $this->entityManager->flush();
-        }else{
-            $this->entityManager->flush($entity);
+        if ($noFlush === false) {
+            if ($flushAll === true) {
+                $this->entityManager->flush();
+            }
+            else {
+                $this->entityManager->flush($entity);
+            }
         }
     }
 

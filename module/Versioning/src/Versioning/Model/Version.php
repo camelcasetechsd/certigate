@@ -173,7 +173,7 @@ class Version
      * @param array $entities
      * @param array $entitiesLogs
      * 
-     * @return array array of entities diff
+     * @return \ArrayIterator array of entities diff
      */
     public function prepareDiffs($entities, $entitiesLogs)
     {
@@ -210,6 +210,36 @@ class Version
             }
         }
         return new \ArrayIterator($entitiesComparisonData);
+    }
+
+    /**
+     * Approve entities changes
+     * 
+     * @access public
+     * @param array $entities
+     * @param array $entitiesLogs
+     * 
+     * @return bool process result
+     */
+    public function approveChanges($entities, $entitiesLogs)
+    {
+        $processResult = true;
+        foreach ($entities as $entity) {
+            foreach ($entitiesLogs as $logsPerEntity) {
+                foreach ($logsPerEntity as $entityLog) {
+                    if ($entity->getId() == $entityLog->getObjectId()) {
+                        $entityClass = get_class($entity);
+                        $data = $entityLog->getData();
+                        $data["status"] = Status::STATUS_ACTIVE;
+                        $this->query->setEntity($entityClass)->save($entity, $data, /*$flushAll =*/ false, /* $noFlush = */ true);
+                        break 2;
+                    }
+                }
+            }
+        }
+        // flush all entities changes
+        $this->query->entityManager->flush();
+        return $processResult;
     }
 
 }
