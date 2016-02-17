@@ -2,13 +2,6 @@
 {{<layout}}
 
 {{$content}}
-<style>
-    .deleteQuestion{
-        margin-top: -28px;
-        float: right;
-        margin-right: -28px;
-    } 
-</style>
 <ul>    
     {{#validationError}}
     <li class="error">{{.}}</li>
@@ -25,7 +18,7 @@
             <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
             <div class=" col-md-4">
                 <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
-                <a href="#" class="deleteQuestion" >X</a>
+                <a href="#" class="deleteQuestion removeQ" >X</a>
             </div>
         </div>
         {{/oldQuestions}}
@@ -34,7 +27,7 @@
             <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
             <div class="col-md-4">
                 <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required="">
-                <a href="#" class="deleteQuestion" >X</a>
+                <a href="#" class="deleteQuestion removeQ" >X</a>
             </div>
         </div>
         <span id="endOfText"></span>
@@ -62,7 +55,7 @@ $(document).ready(function () {
     });
 
     function getMeNewInput() {
-        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="Add Your Question Here" class="form-control input-md" required=""> <a href="#" class="deleteQuestion" >X</a></div> </div>';
+        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="Add Your Question Here" class="form-control input-md" required=""> <a href="#" class="deleteQuestion removeQ" >X</a></div> </div>';
         $('#endOfText').before(window.template);
         numerateLabels();
     }

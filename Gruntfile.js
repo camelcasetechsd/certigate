@@ -61,6 +61,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
+                    '<%= dirs.cssSrc %>/evaluation.css',
                 ]
             }
         },

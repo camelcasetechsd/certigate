@@ -726,7 +726,7 @@ class CourseController extends ActionController
                     }
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation'), array('name' => 'editCourseEvaluation'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation' , 'courseId'=> $courseId ), array('name' => 'editCourseEvaluation'));
                 $this->redirect()->toUrl($url);
             }
             else {
