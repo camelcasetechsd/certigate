@@ -1,0 +1,217 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
+    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">Course Outlines</a></li>
+    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">Course Resources</a></li>
+    <li role="presentation"><a href="#courseEvaluation" data-toggle="tab" aria-controls="courseEvaluation">Course Evaluation</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Details Pending Changes</h3>
+            </div>
+            <div class="panel-body">
+
+                <table class="table diffTable">
+                    {{#course}}
+                    <tr class="diffRow">
+                        <td >Name</td>
+                        <td class="hidden original">{{before.name}}</td>
+                        <td class="hidden changed">{{after.name}}</td>
+                        <td class="diff"></td>
+                    </tr> 
+                    <tr class="diffRow"> 
+                        <td >Start date</td>
+                        <td class="hidden original">{{before.startDate}}</td>
+                        <td class="hidden changed">{{after.startDate}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >End date</td>
+                        <td class="hidden original">{{before.endDate}}</td>
+                        <td class="hidden changed">{{after.endDate}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Capacity</td>
+                        <td class="hidden original">{{before.studentsNo}}</td>
+                        <td class="hidden changed">{{after.studentsNo}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Student No</td>
+                        <td class="hidden original">{{before.capacity}}</td>
+                        <td class="hidden changed">{{after.capacity}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Authorized training partner</td>
+                        <td class="hidden original">{{before.atp.commercialName}}</td>
+                        <td class="hidden changed">{{after.atp.commercialName}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Authorized instructor</td>
+                        <td class="hidden original">{{before.ai.firstName}} {{before.ai.lastName}}</td>
+                        <td class="hidden changed">{{after.ai.firstName}} {{after.ai.lastName}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Brief</td>
+                        <td class="hidden original">{{before.brief}}</td>
+                        <td class="hidden changed">{{after.brief}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Time</td>
+                        <td class="hidden original">{{before.time}}</td>
+                        <td class="hidden changed">{{after.time}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow">
+                        <td >Duration</td>
+                        <td class="hidden original">{{before.duration}}</td>
+                        <td class="hidden changed">{{after.duration}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    {{/course}}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Outlines Pending Changes</h3>
+            </div>
+            <div class="panel-body">
+
+                <table class="table diffTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#outlines}}
+                        <tr>
+                            <td>
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.title}}</div>
+                                    <div class="hidden changed">{{after.title}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                            <td> 
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.duration}}</div>
+                                    <div class="hidden changed">{{after.duration}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/outlines}}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseResources">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Resources Pending Changes</h3>
+            </div>
+            <div class="panel-body">
+                
+                <table class="table diffTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#resources}}
+                        <tr>
+                            <td>
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.name}}</div>
+                                    <div class="hidden changed">{{after.name}}</div>
+                                    <a target="_blank" href="/resources/download/{{after.id}}/true" ><div class="diff"></div></a>
+                                </div>
+                            </td>
+                            <td> 
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.type}}</div>
+                                    <div class="hidden changed">{{after.type}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/resources}}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseEvaluation">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Evaluation Pending Changes</h3>
+            </div>
+            <div class="panel-body">
+                
+                <table class="table diffTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#questions}}
+                        <tr>
+                            <td> 
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.questionTitle}}</div>
+                                    <div class="hidden changed">{{after.questionTitle}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/questions}}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+    {{#isAdminUser}}
+    <a href="/courses/approve/{{id}}"><button class="btn btn-small btn-success">Approve all changes</button></a>
+    {{/isAdminUser}}
+</div>
+{{/content}}
+
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        $(".diffTable .diffRow").prettyTextDiff({
+            // options 
+        });
+    });
+</script>
+{{/scripts}}
+{{/layout}}

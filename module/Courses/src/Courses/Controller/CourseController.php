@@ -413,7 +413,7 @@ class CourseController extends ActionController
         $evaluation = $course->getEvaluation();
         $questions = array();
         if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
-            $questions = $evaluation->getQuestions();
+            $questions = $evaluation->getQuestions()->toArray();
         }
         $questionsLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $questions, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
         $questionsComparisonData = $versionModel->prepareDiffs($questions, $questionsLogs);
@@ -423,9 +423,7 @@ class CourseController extends ActionController
         $variables['resources'] = $resourcesComparisonData;
         $variables['questions'] = $questionsComparisonData;
         $variables['isAdminUser'] = $isAdminUser;
-        var_dump($courseComparisonData->getArrayCopy());
-        var_dump($variables);
-        die;
+        $variables['id'] = $id;
         return new ViewModel($variables);
     }
 
