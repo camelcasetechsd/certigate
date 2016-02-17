@@ -12,7 +12,8 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "^0.5.1",
-    "jquery-latitude-longitude-picker-gmaps": "1.1.0"
+    "jquery-latitude-longitude-picker-gmaps": "1.1.0",
+    "jquery-prettytextdiff": "1.x.x"
   },
   "repository": {
     "type": "git",
