@@ -2,13 +2,6 @@
 {{<layout}}
 
 {{$content}}
-<style>
-    .deleteQuestion{
-        margin-top: -28px;
-        float: right;
-        margin-right: -28px;
-    } 
-</style>
 <ul>    
     {{#validationError}}
     <li class="error">{{.}}</li>
@@ -18,7 +11,7 @@
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails" >Course Details</a></li>
     <li role="presentation" class="active"><a href="#courseEvaluation" aria-controls="courseEvaluation" role="tab" data-toggle="tab">Course Evaluation</a></li>
-    <li role="presentation"><a href="/resources/edit/{{courseId}}" aria-controls="courseResources">Course Resources</a></li>
+    <li role="presentation"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">Course Resources</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -41,7 +34,7 @@
                     <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
                     <div class=" col-md-4">
                         <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
-                        {{#isAdminUser}}<a href="#" class="deleteQuestion" >X</a>{{/isAdminUser}}
+                        {{#isAdminUser}}<a href="#" class="deleteQuestion removeQ" >X</a>{{/isAdminUser}}
                         <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
                     </div>
                 </div>
@@ -51,7 +44,7 @@
                     <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
                     <div class=" col-md-4">
                         <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
-                        {{#isAdminUser}}<a href="#" class="deleteInvalidQuestion" >X</a>{{/isAdminUser}}
+                        {{#isAdminUser}}<a href="#" class="deleteInvalidQuestion removeQ" >X</a>{{/isAdminUser}}
                     </div>
                 </div>
                 {{/unvalidQuestions}}
@@ -95,7 +88,7 @@
         });
 
         function getMeNewInput() {
-            window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> </div> </div>';
+            window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> <a href="#" class="deleteQuestion removeQ">X</a></div> </div>';
             $('#endOfText').before(window.template);
             numerateLabels();
         }
@@ -133,7 +126,12 @@
             numerateLabels();
         });
 
-
+        // to delete run time created questions  
+        $(document).on("click", ".deleteQuestion", function () {
+            $(this).parent().parent().remove();
+            numerateLabels();
+        });
+        
     });
 
 </script>

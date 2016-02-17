@@ -174,6 +174,26 @@ class Course extends AbstractSeed
         $this->insert('course', $course);
         $courseId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        // creating outlines for the course
+        $outline1 = array(
+            "title" => "outline1",
+            "course_id" => $courseId,
+            "duration" => 10,
+            "status" => 1,
+            "created" => date('Y-m-d H:i:s'),
+            "modified" => null,
+        );
+        $this->insert('outline', $outline1);
+       
+        $outline2 = array(
+            "title" => "outline2",
+            "course_id" => $courseId,
+            "duration" => 10,
+            "status" => 1,
+            "created" => date('Y-m-d H:i:s'),
+            "modified" => null,
+        );
+        $this->insert('outline', $outline2);
     }
 
 }
