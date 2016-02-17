@@ -135,6 +135,10 @@ class Object
             $objectProperties = get_object_vars($object);
         }
         if (array_key_exists("status", $objectProperties)) {
+            $object->statusActive = false;
+            $object->statusIsactive = false;
+            $object->statusDeleted = false;
+            $object->statusNotApproved = false;
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
                     $object->statusActive = TRUE;
