@@ -31,8 +31,8 @@ class LogEntryRepository extends OriginalLogEntryRepository
         $queryBuilder = $this->createQueryBuilder("log");
         $queryBuilder->select("log")
                 ->addOrderBy('log.version', Criteria::DESC)
-                ->addGroupBy('log.objectId');
-
+                ->addOrderBy('log.id', Criteria::DESC);
+        
         if (count($entities) > 0) {
             // assuming array of entities belong to them class
             $entity = reset($entities);

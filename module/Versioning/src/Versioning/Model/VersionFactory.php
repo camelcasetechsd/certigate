@@ -28,7 +28,8 @@ class VersionFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Versioning\Entity\LogEntry');
-        return new Version($query);
+        $objectUtilities = $serviceLocator->get('objectUtilities');
+        return new Version($query, $objectUtilities);
     }
 
 }

@@ -45,6 +45,56 @@ class LoggableListener extends OriginalLoggableListener
     {
         $this->userId = (int) $userId;
     }
+    
+    /**
+     * Looks for loggable objects being inserted or updated
+     * for further processing
+     *
+     * @access public
+     * @param EventArgs $eventArgs
+     *
+     * @return void
+     */
+    public function onFlush(EventArgs $eventArgs)
+    {
+        $this->eventAdapter = $this->getEventAdapter($eventArgs);
+        $entityManager = $eventArgs->getEntityManager();
+        $unitOfWork = $entityManager->getUnitOfWork();
+
+        foreach ($this->eventAdapter->getScheduledObjectInsertions($unitOfWork) as $object) {
+            $this->createLogEntry(self::ACTION_CREATE, $object, $this->eventAdapter);
+        }
+        foreach ($this->eventAdapter->getScheduledObjectDeletions($unitOfWork) as $object) {
+            $this->createLogEntry(self::ACTION_REMOVE, $object, $this->eventAdapter);
+        }
+
+        foreach ($this->eventAdapter->getScheduledObjectUpdates($unitOfWork) as $entity) {
+            $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
+            // on approval, delete old versions
+            if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED) {
+                $objectClass = get_class($entity);
+                $logClass = $this->getLogEntryClass($this->eventAdapter, $objectClass);
+                $parameters = array(
+                    'objectId' => $entity->getId(),
+                    'objectClass' => $objectClass,
+                );
+                $queryBuilder = $entityManager->createQueryBuilder();
+                $queryBuilder->delete($logClass, "log")
+                        ->andWhere($queryBuilder->expr()->eq('log.objectId', ":objectId"))
+                        ->andWhere($queryBuilder->expr()->eq('log.objectClass', ":objectClass"))
+                        ->setParameters($parameters)
+                        ->getQuery()->execute();
+            }
+            else {
+                $this->createLogEntry(self::ACTION_UPDATE, $entity, $this->eventAdapter);
+                // on editing by non-admin where entity is supposed to be not approved, do not update entity
+                if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED) {
+                    $oid = spl_object_hash($entity);
+                    $unitOfWork->clearEntityChangeSet($oid);
+                }
+            }
+        }
+    }
 
     /**
      * Handle any custom LogEntry functionality that needs to be performed
@@ -104,63 +154,14 @@ class LoggableListener extends OriginalLoggableListener
             }
             $unchangedValues[$field] = $value;
         }
-
+        $unchangedValues["id"] = $wrapped->getIdentifier();
         return $unchangedValues;
-    }
-
-    /**
-     * Looks for loggable objects being inserted or updated
-     * for further processing
-     *
-     * @access public
-     * @param EventArgs $eventArgs
-     *
-     * @return void
-     */
-    public function onFlush(EventArgs $eventArgs)
-    {
-        $this->eventAdapter = $this->getEventAdapter($eventArgs);
-        $entityManager = $eventArgs->getEntityManager();
-        $unitOfWork = $entityManager->getUnitOfWork();
-
-        foreach ($this->eventAdapter->getScheduledObjectInsertions($unitOfWork) as $object) {
-            $this->createLogEntry(self::ACTION_CREATE, $object, $this->eventAdapter);
-        }
-        foreach ($this->eventAdapter->getScheduledObjectDeletions($unitOfWork) as $object) {
-            $this->createLogEntry(self::ACTION_REMOVE, $object, $this->eventAdapter);
-        }
-
-        foreach ($this->eventAdapter->getScheduledObjectUpdates($unitOfWork) as $entity) {
-            $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
-            // on approval, delete old versions
-            if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED) {
-                $objectClass = get_class($entity);
-                $logClass = $this->getLogEntryClass($this->eventAdapter, $objectClass);
-                $parameters = array(
-                    'objectId' => $entity->getId(),
-                    'objectClass' => $objectClass,
-                );
-                $queryBuilder = $entityManager->createQueryBuilder();
-                $queryBuilder->delete($logClass, "log")
-                        ->andWhere($queryBuilder->expr()->eq('log.objectId', ":objectId"))
-                        ->andWhere($queryBuilder->expr()->eq('log.objectClass', ":objectClass"))
-                        ->setParameters($parameters)
-                        ->getQuery()->execute();
-            }
-            else {
-                // on editing by non-admin where entity is supposed to be not approved, do not update entity
-                if (array_key_exists("status", $entityChangeSet) && reset($entityChangeSet["status"]) != Status::STATUS_NOT_APPROVED && end($entityChangeSet["status"]) == Status::STATUS_NOT_APPROVED) {
-                    $oid = spl_object_hash($entity);
-                    $unitOfWork->clearEntityChangeSet($oid);
-                }
-                $this->createLogEntry(self::ACTION_UPDATE, $entity, $this->eventAdapter);
-            }
-        }
     }
 
     /**
      * Get the LogEntry class
      *
+     * @access protected
      * @param LoggableAdapter $eventAdapter
      * @param string $class
      *
@@ -180,6 +181,7 @@ class LoggableListener extends OriginalLoggableListener
     /**
      * Get the default LogEntry class
      *
+     * @access protected
      * @return string
      */
     protected function getDefaultLogEntryClass()
