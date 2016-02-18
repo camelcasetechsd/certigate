@@ -488,12 +488,8 @@ class OrganizationsController extends ActionController
         $organizationComparisonData = $versionModel->prepareDiffs($organizationArray, $organizationLogs);
         $organizationComparisonPreparedData = $organizationModel->prepareOrganizationDiff($organizationComparisonData);
 
-        $organizationUsers = $organization->getOrganizationUsers()->toArray();
-        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        $organizationUsersComparisonData = $versionModel->prepareDiffs($organizationUsers, $organizationUsersLogs);
 
         $variables['organization'] = $organizationComparisonPreparedData;
-        $variables['organizationUsers'] = $organizationUsersComparisonData;
         $variables['isAdminUser'] = $isAdminUser;
         $variables['id'] = $id;
         return new ViewModel($variables);
@@ -515,10 +511,6 @@ class OrganizationsController extends ActionController
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->approveChanges($organizationArray, $organizationLogs);
-
-        $organizationUsers = $organization->getOrganizationUsers()->toArray();
-        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        $versionModel->approveChanges($organizationUsers, $organizationUsersLogs);
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);

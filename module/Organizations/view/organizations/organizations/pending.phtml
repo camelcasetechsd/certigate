@@ -2,354 +2,302 @@
 {{<layout}}
 
 {{$content}}
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#organizationDetails" data-toggle="tab" aria-controls="organizationDetails" role="tab" data-toggle="tab">Organization Details</a></li>
-    <li role="presentation"><a href="#organizationUsers" data-toggle="tab" aria-controls="organizationUsers">Organization Users</a></li>
-</ul>
-
-<!-- Tab panes -->
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="organizationDetails">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Organization Details</h3>
-            </div>
-            <div class="panel-body">
-
-                <table class="table diffTable">
-                    {{#organization}}
-                    <tr class="diffRow">
-                        <td >Commercial name</td>
-                        <td class="hidden original">{{before.commercialName}}</td>
-                        <td class="hidden changed">{{after.commercialName}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Owner name</td>
-                        <td class="hidden original">{{before.ownerName}}</td>
-                        <td class="hidden changed">{{after.ownerName}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Type</td>
-                        <td class="hidden original">{{before.typeText}}</td>
-                        <td class="hidden changed">{{after.typeText}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr>
-                        <td >Location</td>
-                        <td >
-                        <div class="gllpLatlonPicker mapDiff">
-                            <div class="gllpMap smallContainer">Google Maps</div>
-                            <input type="hidden" class="gllpLongitude" value="{{before.longtitude}}">
-                            <input type="hidden" class="gllpLatitude" value="{{before.latitude}}">
-                            <input type="hidden" class="gllpZoom" value="3">
-                        </div>
-                        {{#after.locationChanged}}
-                        <div class="col-xs-1">&nbsp;</div>
-                        <div class="gllpLatlonPicker mapDiff">
-                            <div class="gllpMap smallContainer">Google Maps</div>
-                            <input type="hidden" class="gllpLongitude" value="{{after.longtitude}}">
-                            <input type="hidden" class="gllpLatitude" value="{{after.latitude}}">
-                            <input type="hidden" class="gllpZoom" value="3">
-                        </div>
-                        </td>
-                        {{/after.locationChanged}}
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Owner national Id</td>
-                        <td class="hidden original">{{before.ownerNationalId}}</td>
-                        <td class="hidden changed">{{after.ownerNationalId}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >CR number</td>
-                        <td class="hidden original">{{before.CRNo}}</td>
-                        <td class="hidden changed">{{after.CRNo}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >CR expiration</td>
-                        <td class="hidden original">{{before.CRExpiration}}</td>
-                        <td class="hidden changed">{{after.CRExpiration}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr>
-                        <td>CR attachment</td>
-                        <td>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/CRAttachment" >Current CR attachment</a>
-                            {{#after.CRAttachmentChanged}}
-                            <div class="col-xs-1">&nbsp;</div>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/CRAttachment/true" >New CR attachment</a>
-                            {{/after.CRAttachmentChanged}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Wire transfer attachment</td>
-                        <td>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment" >Current wire transfer</a>
-                            {{#after.wireTransferAttachmentChanged}}
-                            <div class="col-xs-1">&nbsp;</div>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment/true" >New wire transfer</a>
-                            {{/after.wireTransferAttachmentChanged}}
-                        </td>
-                    </tr>
-                    <tr class="diffRow">
-                        <td >Phone 1</td>
-                        <td class="hidden original">{{before.phone1}}</td>
-                        <td class="hidden changed">{{after.phone1}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Phone 2</td>
-                        <td class="hidden original">{{before.phone2}}</td>
-                        <td class="hidden changed">{{after.phone2}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Phone 3</td>
-                        <td class="hidden original">{{before.phone3}}</td>
-                        <td class="hidden changed">{{after.phone3}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Fax</td>
-                        <td class="hidden original">{{before.fax}}</td>
-                        <td class="hidden changed">{{after.fax}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Address line 1</td>
-                        <td class="hidden original">{{before.addressLine1}}</td>
-                        <td class="hidden changed">{{after.addressLine1}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Address line 2</td>
-                        <td class="hidden original">{{before.addressLine2}}</td>
-                        <td class="hidden changed">{{after.addressLine2}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >City</td>
-                        <td class="hidden original">{{before.city}}</td>
-                        <td class="hidden changed">{{after.city}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Zip code</td>
-                        <td class="hidden original">{{before.zipCode}}</td>
-                        <td class="hidden changed">{{after.zipCode}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Website</td>
-                        <td class="hidden original">{{before.website}}</td>
-                        <td class="hidden changed">{{after.website}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Email</td>
-                        <td class="hidden original">{{before.email}}</td>
-                        <td class="hidden changed">{{after.email}}</td>
-                        <td class="diff"></td>
-                    </tr> 
-                    <tr class="diffRow">
-                        <td >Focal contact person</td>
-                        <td class="hidden original">{{before.focalContactPerson.firstName}} {{before.focalContactPerson.lastName}}</td>
-                        <td class="hidden changed">{{after.focalContactPerson.firstName}} {{after.focalContactPerson.lastName}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{#before.atpLicenseNo}}
-                    <tr class="diffRow">
-                        <td >ATP license number</td>
-                        <td class="hidden original">{{before.atpLicenseNo}}</td>
-                        <td class="hidden changed">{{after.atpLicenseNo}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.atpLicenseNo}}
-                    {{#before.atpLicenseExpiration}}
-                    <tr class="diffRow">
-                        <td >ATP license expiration</td>
-                        <td class="hidden original">{{before.atpLicenseExpiration}}</td>
-                        <td class="hidden changed">{{after.atpLicenseExpiration}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.atpLicenseExpiration}}
-                    {{#before.atpLicenseAttachment}}
-                    <tr>
-                        <td>ATP license attachment</td>
-                        <td>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment" >Current ATP license</a>
-                            {{#after.atpLicenseAttachmentChanged}}
-                            <div class="col-xs-1">&nbsp;</div>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment/true" >New ATP license</a>
-                            {{/after.atpLicenseAttachmentChanged}}
-                        </td>
-                    </tr>
-                    {{/before.atpLicenseAttachment}}
-                    {{#before.atcLicenseNo}}
-                    <tr class="diffRow">
-                        <td >ATC license number</td>
-                        <td class="hidden original">{{before.atcLicenseNo}}</td>
-                        <td class="hidden changed">{{after.atcLicenseNo}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.atcLicenseNo}}
-                    {{#before.atcLicenseExpiration}}
-                    <tr class="diffRow">
-                        <td >ATC license expiration</td>
-                        <td class="hidden original">{{before.atcLicenseExpiration}}</td>
-                        <td class="hidden changed">{{after.atcLicenseExpiration}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.atcLicenseExpiration}}
-                    {{#before.atcLicenseAttachment}}
-                    <tr>
-                        <td>ATC license attachment</td>
-                        <td>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment" >Current ATC license</a>
-                            {{#after.atcLicenseAttachmentChanged}}
-                            <div class="col-xs-1">&nbsp;</div>
-                            <a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment/true" >New ATC license</a>
-                            {{/after.atcLicenseAttachmentChanged}}
-                        </td>
-                    </tr>
-                    {{/before.atcLicenseAttachment}}
-                    {{#before.labsNo}}
-                    <tr class="diffRow">
-                        <td >Labs number</td>
-                        <td class="hidden original">{{before.labsNo}}</td>
-                        <td class="hidden changed">{{after.labsNo}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.labsNo}}
-                    {{#before.pcsNo_lab}}
-                    <tr class="diffRow">
-                        <td >PCs number / Lab</td>
-                        <td class="hidden original">{{before.pcsNo_lab}}</td>
-                        <td class="hidden changed">{{after.pcsNo_lab}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.pcsNo_lab}}
-                    {{#before.classesNo}}
-                    <tr class="diffRow">
-                        <td >Classes number</td>
-                        <td class="hidden original">{{before.classesNo}}</td>
-                        <td class="hidden changed">{{after.classesNo}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.classesNo}}
-                    {{#before.pcsNo_class}}
-                    <tr class="diffRow">
-                        <td >PCs number / Class</td>
-                        <td class="hidden original">{{before.pcsNo_class}}</td>
-                        <td class="hidden changed">{{after.pcsNo_class}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.pcsNo_class}}
-                    {{#before.internetSpeed_lab}}
-                    <tr class="diffRow">
-                        <td >Internet speed / Lab</td>
-                        <td class="hidden original">{{before.internetSpeed_lab}}</td>
-                        <td class="hidden changed">{{after.internetSpeed_lab}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.internetSpeed_lab}}
-                    {{#before.operatingSystem}}
-                    <tr class="diffRow">
-                        <td >OS</td>
-                        <td class="hidden original">{{before.operatingSystemText}}</td>
-                        <td class="hidden changed">{{after.operatingSystemText}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.operatingSystem}}
-                    {{#before.operatingSystemLang}}
-                    <tr class="diffRow">
-                        <td >OS language</td>
-                        <td class="hidden original">{{before.operatingSystemLangText}}</td>
-                        <td class="hidden changed">{{after.operatingSystemLangText}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.operatingSystemLang}}
-                    {{#before.officeVersion}}
-                    <tr class="diffRow">
-                        <td >Office version</td>
-                        <td class="hidden original">{{before.officeVersionText}}</td>
-                        <td class="hidden changed">{{after.officeVersionText}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.officeVersion}}
-                    {{#before.officeLang}}
-                    <tr class="diffRow">
-                        <td >Office language</td>
-                        <td class="hidden original">{{before.officeLangText}}</td>
-                        <td class="hidden changed">{{after.officeLangText}}</td>
-                        <td class="diff"></td>
-                    </tr>
-                    {{/before.officeLang}}
-                    {{/organization}}
-                </table>
-
-            </div>
-        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Organization Details</h3>
     </div>
+    <div class="panel-body">
 
-    <div role="tabpanel" class="tab-pane fade" id="organizationUsers">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Organization Users</h3>
-            </div>
-            <div class="panel-body">
+        <table class="table diffTable">
+            {{#organization}}
+            <tr class="diffRow">
+                <td >Commercial name</td>
+                <td class="hidden original">{{before.commercialName}}</td>
+                <td class="hidden changed">{{after.commercialName}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Owner name</td>
+                <td class="hidden original">{{before.ownerName}}</td>
+                <td class="hidden changed">{{after.ownerName}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Type</td>
+                <td class="hidden original">{{before.typeText}}</td>
+                <td class="hidden changed">{{after.typeText}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr>
+                <td >Location</td>
+                <td >
+                    <div class="gllpLatlonPicker pull-left">
+                        <div class="gllpMap smallContainer">Google Maps</div>
+                        <input type="hidden" class="gllpLongitude" value="{{before.longtitude}}">
+                        <input type="hidden" class="gllpLatitude" value="{{before.latitude}}">
+                        <input type="hidden" class="gllpZoom" value="3">
+                    </div>
+                    {{#after.locationChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="gllpLatlonPicker pull-left">
+                        <div class="gllpMap smallContainer">Google Maps</div>
+                        <input type="hidden" class="gllpLongitude" value="{{after.longtitude}}">
+                        <input type="hidden" class="gllpLatitude" value="{{after.latitude}}">
+                        <input type="hidden" class="gllpZoom" value="3">
+                    </div>
+                </td>
+                {{/after.locationChanged}}
+            </tr> 
+            <tr class="diffRow">
+                <td >Owner national Id</td>
+                <td class="hidden original">{{before.ownerNationalId}}</td>
+                <td class="hidden changed">{{after.ownerNationalId}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >CR number</td>
+                <td class="hidden original">{{before.CRNo}}</td>
+                <td class="hidden changed">{{after.CRNo}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >CR expiration</td>
+                <td class="hidden original">{{before.CRExpiration}}</td>
+                <td class="hidden changed">{{after.CRExpiration}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr>
+                <td>CR attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.CRAttachmentChanged}}<del>{{/after.CRAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/CRAttachment" >Current CR attachment</a>{{#after.CRAttachmentChanged}}</del>{{/after.CRAttachmentChanged}}</div>
+                    {{#after.CRAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/CRAttachment/true" >New CR attachment</a></ins></div>
+                    {{/after.CRAttachmentChanged}}
+                </td>
+            </tr>
+            <tr>
+                <td>Wire transfer attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.wireTransferAttachmentChanged}}<del>{{/after.wireTransferAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment" >Current wire transfer</a>{{#after.wireTransferAttachmentChanged}}</del>{{/after.wireTransferAttachmentChanged}}</div>
+                    {{#after.wireTransferAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment/true" >New wire transfer</a></ins></div>
+                    {{/after.wireTransferAttachmentChanged}}
+                </td>
+            </tr>
+            <tr class="diffRow">
+                <td >Phone 1</td>
+                <td class="hidden original">{{before.phone1}}</td>
+                <td class="hidden changed">{{after.phone1}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Phone 2</td>
+                <td class="hidden original">{{before.phone2}}</td>
+                <td class="hidden changed">{{after.phone2}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Phone 3</td>
+                <td class="hidden original">{{before.phone3}}</td>
+                <td class="hidden changed">{{after.phone3}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Fax</td>
+                <td class="hidden original">{{before.fax}}</td>
+                <td class="hidden changed">{{after.fax}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Address line 1</td>
+                <td class="hidden original">{{before.addressLine1}}</td>
+                <td class="hidden changed">{{after.addressLine1}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Address line 2</td>
+                <td class="hidden original">{{before.addressLine2}}</td>
+                <td class="hidden changed">{{after.addressLine2}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >City</td>
+                <td class="hidden original">{{before.city}}</td>
+                <td class="hidden changed">{{after.city}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Zip code</td>
+                <td class="hidden original">{{before.zipCode}}</td>
+                <td class="hidden changed">{{after.zipCode}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Website</td>
+                <td class="hidden original">{{before.website}}</td>
+                <td class="hidden changed">{{after.website}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Email</td>
+                <td class="hidden original">{{before.email}}</td>
+                <td class="hidden changed">{{after.email}}</td>
+                <td class="diff"></td>
+            </tr> 
+            <tr class="diffRow">
+                <td >Focal contact person</td>
+                <td class="hidden original">{{before.focalContactPerson.firstName}} {{before.focalContactPerson.lastName}}</td>
+                <td class="hidden changed">{{after.focalContactPerson.firstName}} {{after.focalContactPerson.lastName}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{#before.atpLicenseNo}}
+            <tr class="diffRow">
+                <td >ATP license number</td>
+                <td class="hidden original">{{before.atpLicenseNo}}</td>
+                <td class="hidden changed">{{after.atpLicenseNo}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.atpLicenseNo}}
+            {{#before.atpLicenseExpiration}}
+            <tr class="diffRow">
+                <td >ATP license expiration</td>
+                <td class="hidden original">{{before.atpLicenseExpiration}}</td>
+                <td class="hidden changed">{{after.atpLicenseExpiration}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.atpLicenseExpiration}}
+            {{#before.atpLicenseAttachment}}
+            <tr>
+                <td>ATP license attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.atpLicenseAttachmentChanged}}<del>{{/after.atpLicenseAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment" >Current ATP license</a>{{#after.atpLicenseAttachmentChanged}}</del>{{/after.atpLicenseAttachmentChanged}}</div>
+                    {{#after.atpLicenseAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment/true" >New ATP license</a></ins></div>
+                    {{/after.atpLicenseAttachmentChanged}}
+                </td>
+            </tr>
+            {{/before.atpLicenseAttachment}}
+            {{#before.atcLicenseNo}}
+            <tr class="diffRow">
+                <td >ATC license number</td>
+                <td class="hidden original">{{before.atcLicenseNo}}</td>
+                <td class="hidden changed">{{after.atcLicenseNo}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.atcLicenseNo}}
+            {{#before.atcLicenseExpiration}}
+            <tr class="diffRow">
+                <td >ATC license expiration</td>
+                <td class="hidden original">{{before.atcLicenseExpiration}}</td>
+                <td class="hidden changed">{{after.atcLicenseExpiration}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.atcLicenseExpiration}}
+            {{#before.atcLicenseAttachment}}
+            <tr>
+                <td>ATC license attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.atcLicenseAttachmentChanged}}<del>{{/after.atcLicenseAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment" >Current ATC license</a>{{#after.atcLicenseAttachmentChanged}}</del>{{/after.atcLicenseAttachmentChanged}}</div>
+                    {{#after.atcLicenseAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment/true" >New ATC license</a></ins></div>
+                    {{/after.atcLicenseAttachmentChanged}}
+                </td>
+            </tr>
+            {{/before.atcLicenseAttachment}}
+            {{#before.labsNo}}
+            <tr class="diffRow">
+                <td >Labs number</td>
+                <td class="hidden original">{{before.labsNo}}</td>
+                <td class="hidden changed">{{after.labsNo}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.labsNo}}
+            {{#before.pcsNo_lab}}
+            <tr class="diffRow">
+                <td >PCs number / Lab</td>
+                <td class="hidden original">{{before.pcsNo_lab}}</td>
+                <td class="hidden changed">{{after.pcsNo_lab}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.pcsNo_lab}}
+            {{#before.classesNo}}
+            <tr class="diffRow">
+                <td >Classes number</td>
+                <td class="hidden original">{{before.classesNo}}</td>
+                <td class="hidden changed">{{after.classesNo}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.classesNo}}
+            {{#before.pcsNo_class}}
+            <tr class="diffRow">
+                <td >PCs number / Class</td>
+                <td class="hidden original">{{before.pcsNo_class}}</td>
+                <td class="hidden changed">{{after.pcsNo_class}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.pcsNo_class}}
+            {{#before.internetSpeed_lab}}
+            <tr class="diffRow">
+                <td >Internet speed / Lab</td>
+                <td class="hidden original">{{before.internetSpeed_lab}}</td>
+                <td class="hidden changed">{{after.internetSpeed_lab}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.internetSpeed_lab}}
+            {{#before.operatingSystem}}
+            <tr class="diffRow">
+                <td >OS</td>
+                <td class="hidden original">{{before.operatingSystemText}}</td>
+                <td class="hidden changed">{{after.operatingSystemText}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.operatingSystem}}
+            {{#before.operatingSystemLang}}
+            <tr class="diffRow">
+                <td >OS language</td>
+                <td class="hidden original">{{before.operatingSystemLangText}}</td>
+                <td class="hidden changed">{{after.operatingSystemLangText}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.operatingSystemLang}}
+            {{#before.officeVersion}}
+            <tr class="diffRow">
+                <td >Office version</td>
+                <td class="hidden original">{{before.officeVersionText}}</td>
+                <td class="hidden changed">{{after.officeVersionText}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.officeVersion}}
+            {{#before.officeLang}}
+            <tr class="diffRow">
+                <td >Office language</td>
+                <td class="hidden original">{{before.officeLangText}}</td>
+                <td class="hidden changed">{{after.officeLangText}}</td>
+                <td class="diff"></td>
+            </tr>
+            {{/before.officeLang}}
+            {{/organization}}
+        </table>
 
-                <table class="table diffTable">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#organizationUsers}}
-
-                        <tr>
-                            <td>
-                                <div class="diffRow">
-                                    <div class="hidden original">{{before.user.firstName}}{{#before.user.middleName}} {{before.user.middleName}}{{/before.user.middleName}} {{before.user.lastName}}</div>
-                                    <div class="hidden changed">{{after.user.firstName}}{{#after.user.middleName}} {{after.user.middleName}}{{/after.user.middleName}} {{after.user.lastName}}</div>
-                                    <div class="diff"></div>
-                                </div>
-                            </td>
-                            <td> 
-                                <div class="diffRow">
-                                    <div class="hidden original">{{before.role.name}}</div>
-                                    <div class="hidden changed">{{after.role.name}}</div>
-                                    <div class="diff"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        {{/organizationUsers}}
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
+        {{#isAdminUser}}
+        <a href="/organizations/approve/{{id}}"><button class="btn btn-small btn-success">Approve all changes</button></a>
+        {{/isAdminUser}}
     </div>
-
-    {{#isAdminUser}}
-    <a href="/organizations/approve/{{id}}"><button class="btn btn-small btn-success">Approve all changes</button></a>
-    {{/isAdminUser}}
 </div>
 {{/content}}
 
 {{$scripts}}
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-    $(document).ready(function () {
-        $(".diffTable .diffRow").prettyTextDiff({
-            // options 
-        });
+$(document).ready(function () {
+    $(".diffTable .diffRow").prettyTextDiff({
+        // options 
     });
+});
 </script>
 {{/scripts}}
 {{/layout}}
