@@ -40,7 +40,7 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        
+
         $criteria = Criteria::create();
         $expr = Criteria::expr();
         $criteria->andWhere($expr->in("status", array(Status::STATUS_INACTIVE, Status::STATUS_ACTIVE, Status::STATUS_NOT_APPROVED)));
@@ -413,7 +413,7 @@ class OrganizationsController extends ActionController
                     'redirect' => true,
                 );
             }
-            
+
 
             if (!isset($data)) {
                 // prepare dates 
@@ -459,7 +459,7 @@ class OrganizationsController extends ActionController
         }
         return $this->getResponse()->setContent(Json::encode($data));
     }
-    
+
     /**
      * View pending version organization
      * 
@@ -474,6 +474,7 @@ class OrganizationsController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $id);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -485,12 +486,13 @@ class OrganizationsController extends ActionController
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $organizationComparisonData = $versionModel->prepareDiffs($organizationArray, $organizationLogs);
+        $organizationComparisonPreparedData = $organizationModel->prepareOrganizationDiff($organizationComparisonData);
 
         $organizationUsers = $organization->getOrganizationUsers()->toArray();
         $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $organizationUsersComparisonData = $versionModel->prepareDiffs($organizationUsers, $organizationUsersLogs);
 
-        $variables['organization'] = $organizationComparisonData;
+        $variables['organization'] = $organizationComparisonPreparedData;
         $variables['organizationUsers'] = $organizationUsersComparisonData;
         $variables['isAdminUser'] = $isAdminUser;
         $variables['id'] = $id;
@@ -520,6 +522,28 @@ class OrganizationsController extends ActionController
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * Download organization attachment
+     * 
+     * @access public
+     * @return Zend\Http\Response\Stream
+     */
+    public function downloadAction()
+    {
+        $id = $this->params('id');
+        $type = $this->params('type');
+        $notApproved = $this->params('notApproved', /* $default = */ false);
+
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        
+        $organization = $query->find('Organizations\Entity\Organization', /* $criteria = */ $id);
+        $file = $organizationModel->getFile($organization, $type, $notApproved);
+        
+        return $fileUtilities->getFileResponse($file);
     }
 
 }

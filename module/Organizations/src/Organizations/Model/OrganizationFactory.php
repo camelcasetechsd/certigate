@@ -13,7 +13,8 @@ class OrganizationFactory implements FactoryInterface
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
-        return new Organization($query, $systemCacheHandler, $notification);
+        $version = $serviceLocator->get('Versioning\Model\Version');
+        return new Organization($query, $systemCacheHandler, $notification, $version);
     }
 
 }
