@@ -158,7 +158,7 @@ class CourseForm extends Form
         ));
 
         $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
-        $status = Organization::ACTIVE;
+        $status = Status::STATUS_ACTIVE;
         $userIds = array();
         if ($this->isAdminUser === false) {
             $userIds[] = $this->userId;

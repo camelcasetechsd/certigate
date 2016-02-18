@@ -806,42 +806,42 @@ class Organization
     static function getStaticLangs()
     {
         return array(
-            '0' => 'Arabic',
-            '1' => 'English',
-            '2' => 'Deutsch',
-            '3' => 'French',
-            '4' => 'Japanese',
-            '5' => 'Chinese',
+            '1' => 'Arabic',
+            '2' => 'English',
+            '3' => 'Deutsch',
+            '4' => 'French',
+            '5' => 'Japanese',
+            '6' => 'Chinese',
         );
     }
 
     static function getOSs()
     {
         return array(
-            '0' => 'Microsoft Windows XP',
-            '1' => 'Microsoft Windows Vista',
-            '2' => 'Microsoft Windows 7',
-            '3' => 'Microsoft Windows 8',
-            '4' => 'Microsoft Windows 8.1',
-            '5' => 'Microsoft Windows 10',
-            '6' => 'Ubuntu Linux 13.04 LTS',
-            '7' => 'Ubuntu Linux 14.04 LTS',
-            '8' => 'Red Hat Enterprise Linux 5',
-            '9' => 'Red Hat Enterprise Linux 6',
-            '10' => 'Red Hat Enterprise Linux 7',
+            '1' => 'Microsoft Windows XP',
+            '2' => 'Microsoft Windows Vista',
+            '3' => 'Microsoft Windows 7',
+            '4' => 'Microsoft Windows 8',
+            '5' => 'Microsoft Windows 8.1',
+            '6' => 'Microsoft Windows 10',
+            '7' => 'Ubuntu Linux 13.04 LTS',
+            '8' => 'Ubuntu Linux 14.04 LTS',
+            '9' => 'Red Hat Enterprise Linux 5',
+            '10'=> 'Red Hat Enterprise Linux 6',
+            '11' => 'Red Hat Enterprise Linux 7',
         );
     }
 
     static function getOfficeVersions()
     {
         return array(
-            '0' => 'Office 2000',
-            '1' => 'Office XP (2002)',
-            '2' => 'Office 2003',
-            '3' => 'Office 2007',
-            '4' => 'Office 2010',
-            '5' => 'Office 2013',
-            '6' => 'Office 2016',
+            '1' => 'Office 2000',
+            '2' => 'Office XP (2002)',
+            '3' => 'Office 2003',
+            '4' => 'Office 2007',
+            '5' => 'Office 2010',
+            '6' => 'Office 2013',
+            '7' => 'Office 2016',
         );
     }
 
@@ -891,7 +891,11 @@ class Organization
         $this->setWebsite($data['website']);
         $this->setEmail($data['email']);
 
-        $this->focalContactPerson = $data['focalContactPerson_id'];
+        if (array_key_exists('focalContactPerson_id', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson_id'];
+        }elseif (array_key_exists('focalContactPerson', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson'];
+        }
 
         if (array_key_exists('phone2', $data)) {
             $this->setPhone2($data["phone2"]);

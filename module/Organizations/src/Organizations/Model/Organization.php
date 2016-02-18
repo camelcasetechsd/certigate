@@ -165,7 +165,7 @@ class Organization
             $editFlag = true;
             $entity = $orgObj;
             if ($isAdminUser === false) {
-                $entity->setStatus($oldStatus);
+                $entity->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
 
@@ -476,8 +476,8 @@ class Organization
         $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
         
         $locationChanged = false;
-        if($organizationComparisonPreparedArray["before"]->getLong() != $organizationComparisonPreparedArray["after"]->getLong()
-                || $organizationComparisonPreparedArray["before"]->getLat() != $organizationComparisonPreparedArray["after"]->getLat()){
+        if($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude
+                || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude){
             $locationChanged = true;
         }
         $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
@@ -489,10 +489,9 @@ class Organization
             'atcLicenseAttachment'
         );
         foreach($attachmentsArray as $attachment){
-            $attachmentGetter = "get" . ucfirst($attachment);
             $attachmentChanged = false;
             $attachmentChangedText = $attachment."Changed";
-            if($organizationComparisonPreparedArray["before"]->$attachmentGetter() != $organizationComparisonPreparedArray["after"]->$attachmentGetter()){
+            if($organizationComparisonPreparedArray["before"]->$attachment != $organizationComparisonPreparedArray["after"]->$attachment){
                 $attachmentChanged = true;
             }
             $organizationComparisonPreparedArray["after"]->$attachmentChangedText = $attachmentChanged;
@@ -525,9 +524,8 @@ class Organization
             $organization = $organizationComparison["after"];
         }
 
-        $fileGetter = "get" . ucfirst($type);
-        if (method_exists($organization, $fileGetter)) {
-            $file = $organization->$fileGetter();
+        if (property_exists($organization, $type)) {
+            $file = $organization->$type;
         }
         
         return $file;
