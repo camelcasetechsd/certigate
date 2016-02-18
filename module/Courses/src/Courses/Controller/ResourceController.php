@@ -9,8 +9,6 @@ use Courses\Entity\Resource;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Form\FormInterface;
-use Zend\Http\Response\Stream;
-use Zend\Http\Headers;
 
 /**
  * Resource Controller
@@ -239,18 +237,13 @@ class ResourceController extends ActionController
     public function downloadAction()
     {
         $id = $this->params('id');
-        $latest = $this->params('latest', /* $default = */ false);
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
         $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
         $course = $resource->getCourse();
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
-        if ($latest === false) {
-            $resourcesArray = array($resource);
-            $versionModel->getApprovedDataForNotApprovedOnesWrapper($resourcesArray);
-            $resource = reset($resourcesArray);
-        }
+        $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
+        
         $courseArray = array($course);
         $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
         $preparedCourse = reset($preparedCourseArray);
@@ -270,21 +263,7 @@ class ResourceController extends ActionController
         }
         else {
             $file = $resource->getFile()["tmp_name"];
-            $response = new Stream();
-            $response->setStream(fopen($file, 'r'));
-            $response->setStatusCode(200);
-            $response->setStreamName(basename($file));
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
-                'Content-Type' => 'application/octet-stream',
-                'Content-Length' => filesize($file),
-                'Expires' => '@0', // @0, because zf2 parses date as string to \DateTime() object
-                'Cache-Control' => 'must-revalidate',
-                'Pragma' => 'public'
-            ));
-            $response->setHeaders($headers);
-            return $response;
+            return $fileUtilities->getFileResponse($file);
         }
     }
 
