@@ -139,6 +139,7 @@ class Object
             $object->statusIsactive = false;
             $object->statusDeleted = false;
             $object->statusNotApproved = false;
+            $object->statusStateSaved = false;
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
                     $object->statusActive = TRUE;
@@ -155,6 +156,10 @@ class Object
                 case Status::STATUS_NOT_APPROVED:
                     $object->statusNotApproved = TRUE;
                     $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
+                    break;
+                case Status::STATUS_STATE_SAVED:
+                    $object->statusStateSaved = TRUE;
+                    $object->statusText = Status::STATUS_STATE_SAVED_TEXT;
                     break;
                 default:
                     break;

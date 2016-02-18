@@ -53,5 +53,15 @@ class Status {
      * Entity is not approved text
      */
     const STATUS_NOT_APPROVED_TEXT = "Not Approved";
+    
+    /**
+     * Entity is state saved
+     */
+    const STATUS_STATE_SAVED = 4;
+    
+    /**
+     * Entity is state saved text
+     */
+    const STATUS_STATE_SAVED_TEXT = "State Saved";
 
 }
