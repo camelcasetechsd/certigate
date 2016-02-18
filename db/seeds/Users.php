@@ -325,6 +325,7 @@ class Users extends AbstractSeed
         $organizationUsersEditRoute = "organizationUsersEdit";
         $organizationUsersDeleteRoute = "organizationUsersDelete";
         $organizationsPendingRoute = "organizationsPending";
+        $organizationsDownloadRoute = "organizationsDownload";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
         $orgTypeRoute = "org_type";
@@ -333,6 +334,16 @@ class Users extends AbstractSeed
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
         $organizationAcls = array(
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsDownloadRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsDownloadRoute,
+            ),
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,

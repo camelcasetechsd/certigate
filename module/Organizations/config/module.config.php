@@ -140,6 +140,21 @@ return array(
                     ),
                 )
             ),
+            'organizationsDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/download/:id/:type[/:notApproved]',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'type' => '[a-zA-Z]+',
+                        'notApproved' => 'true',
+                    ),
+                )
+            ),
             'org_type' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

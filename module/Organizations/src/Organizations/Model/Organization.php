@@ -24,6 +24,7 @@ use System\Service\Cache\CacheHandler;
  * @property Utilities\Service\Random $random
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
+ * @property Versioning\Model\Version $version
  * 
  * @package organizations
  * @subpackage model
@@ -60,6 +61,12 @@ class Organization
     protected $notification;
 
     /**
+     *
+     * @var Versioning\Model\Version
+     */
+    protected $version;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -69,12 +76,14 @@ class Organization
      * @param Utilities\Service\Query\Query $query
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
+     * @param Versioning\Model\Version $version
      */
-    public function __construct($query, $systemCacheHandler, $notification)
+    public function __construct($query, $systemCacheHandler, $notification, $version)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->version = $version;
         $this->random = new Random();
     }
 
@@ -134,7 +143,7 @@ class Organization
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true , $saveState = false)
+    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -159,7 +168,7 @@ class Organization
                 $entity->setStatus($oldStatus);
             }
         }
-        
+
 //       
         /**
          * Handling convert string date to datetime object
@@ -379,10 +388,12 @@ class Organization
      * @param array $organizationsArray
      * @return array organizations prepared for display
      */
-    public function prepareForDisplay(array $organizationsArray)
+    public function prepareForDisplay($organizationsArray)
     {
+        $OSArray = OrganizationEntity::getOSs();
+        $langsArray = OrganizationEntity::getStaticLangs();
+        $officeVersionsArray = OrganizationEntity::getOfficeVersions();
         foreach ($organizationsArray as $organization) {
-
             switch ($organization->type) {
                 case OrganizationEntity::TYPE_ATC:
                     $organization->typeText = "ATC";
@@ -393,6 +404,18 @@ class Organization
                 case OrganizationEntity::TYPE_BOTH:
                     $organization->typeText = "ATC/ATP";
                     break;
+            }
+            if (array_key_exists($organization->officeLang, $langsArray)) {
+                $organization->officeLangText = $langsArray[$organization->officeLang];
+            }
+            if (array_key_exists($organization->operatingSystemLang, $langsArray)) {
+                $organization->operatingSystemLangText = $langsArray[$organization->operatingSystemLang];
+            }
+            if (array_key_exists($organization->officeVersion, $officeVersionsArray)) {
+                $organization->officeVersionText = $officeVersionsArray[$organization->officeVersion];
+            }
+            if (array_key_exists($organization->operatingSystem, $OSArray)) {
+                $organization->operatingSystemText = $OSArray[$organization->operatingSystem];
             }
         }
         return $organizationsArray;
@@ -412,7 +435,7 @@ class Organization
 
         return null;
     }
-    
+
     /**
      * Get required roles
      * 
@@ -424,7 +447,7 @@ class Organization
     public function getRequiredRoles($organizationType)
     {
         $requiredRoles = array();
-        switch ((int)$organizationType) {
+        switch ((int) $organizationType) {
             case OrganizationEntity::TYPE_ATP:
                 $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
                 break;
@@ -437,6 +460,77 @@ class Organization
                 break;
         }
         return $requiredRoles;
+    }
+
+    /**
+     * Prepare organization diff
+     * 
+     * @access public
+     * 
+     * @param \ArrayIterator $organizationComparisonData
+     * @return \ArrayIterator prepared organization comparison data
+     */
+    public function prepareOrganizationDiff($organizationComparisonData)
+    {
+        $organizationComparisonArray = $organizationComparisonData->getArrayCopy();
+        $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
+        
+        $locationChanged = false;
+        if($organizationComparisonPreparedArray["before"]->getLong() != $organizationComparisonPreparedArray["after"]->getLong()
+                || $organizationComparisonPreparedArray["before"]->getLat() != $organizationComparisonPreparedArray["after"]->getLat()){
+            $locationChanged = true;
+        }
+        $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
+        
+        $attachmentsArray = array(
+            'CRAttachment',
+            'wireTransferAttachment',
+            'atpLicenseAttachment',
+            'atcLicenseAttachment'
+        );
+        foreach($attachmentsArray as $attachment){
+            $attachmentGetter = "get" . ucfirst($attachment);
+            $attachmentChanged = false;
+            $attachmentChangedText = $attachment."Changed";
+            if($organizationComparisonPreparedArray["before"]->$attachmentGetter() != $organizationComparisonPreparedArray["after"]->$attachmentGetter()){
+                $attachmentChanged = true;
+            }
+            $organizationComparisonPreparedArray["after"]->$attachmentChangedText = $attachmentChanged;
+        }
+                
+        $organizationComparisonPreparedData = new \ArrayIterator(array($organizationComparisonPreparedArray));
+        return $organizationComparisonPreparedData;
+    }
+
+    /**
+     * Get organization file
+     * 
+     * @access public
+     * 
+     * @param Organizations\Entity\Organization $organization
+     * @param string $type
+     * @param bool $notApproved
+     * @return string file path
+     */
+    public function getFile($organization, $type, $notApproved)
+    {
+        $file = null;
+
+        if ($notApproved !== false) {
+            $organizationArray = array($organization);
+            $organizationLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+            $organizationComparisonData = $this->version->prepareDiffs($organizationArray, $organizationLogs);
+            $organizationComparisonArray = $organizationComparisonData->getArrayCopy();
+            $organizationComparison = reset($organizationComparisonArray);
+            $organization = $organizationComparison["after"];
+        }
+
+        $fileGetter = "get" . ucfirst($type);
+        if (method_exists($organization, $fileGetter)) {
+            $file = $organization->$fileGetter();
+        }
+        
+        return $file;
     }
     
     /**
@@ -494,5 +588,5 @@ class Organization
         );
         $this->notification->notify($welcomeKitMailArray);
     }
-
+    
 }

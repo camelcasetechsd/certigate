@@ -462,7 +462,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                     'class' => 'atcSet',
                 ),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                'value_options' => $options['staticOfficeVersions']
+                'value_options' => $options['staticOss']
             ),
         ));
 
@@ -495,7 +495,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'options' => array(
                 'label' => 'Microseft Office Version',
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                'value_options' => $options['staticOss'],
+                'value_options' => $options['staticOfficeVersions'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
                 ),
