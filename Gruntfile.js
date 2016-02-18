@@ -33,6 +33,8 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
                     '<%= dirs.jsSrc %>/datepicker.js',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
+                    '<%= dirs.jsSrc %>/diff_match_patch.js',
+                    '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
@@ -62,6 +64,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/inactive.css',
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
                     '<%= dirs.cssSrc %>/evaluation.css',
+                    '<%= dirs.cssSrc %>/diff.css',
                 ]
             }
         },

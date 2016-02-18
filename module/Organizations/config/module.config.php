@@ -114,6 +114,32 @@ return array(
                     ),
                 )
             ),
+            'organizationsPending' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/pending/:id',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'pending',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'organizationsApproval' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/approve/:id',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'approve',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'org_type' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

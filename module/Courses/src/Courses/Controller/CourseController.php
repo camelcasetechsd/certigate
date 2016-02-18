@@ -11,7 +11,6 @@ use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Course Controller
@@ -81,12 +80,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
 
-        $notApprovedData = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_NOT_APPROVED));
-        $versionModel->getApprovedDataForNotApprovedOnesWrapper($notApprovedData);
-        $approvedData = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
-        $data = array_merge($notApprovedData, $approvedData);
+        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
         $courseModel->setCanEnroll($data);
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
@@ -188,21 +183,17 @@ class CourseController extends ActionController
         if ($course != null) {
             $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-            $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
 
-            $outlines = $course->getOutlines()->toArray();
-            $versionModel->getApprovedDataForNotApprovedOnesWrapper($outlines);
-
-            $course->setOutlines(new ArrayCollection($outlines));
             $courseArray = array($course);
-            if ($course->getStatus() == Status::STATUS_NOT_APPROVED) {
-                $versionModel->getApprovedDataForNotApprovedOnesWrapper($courseArray);
-            }
+
             $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
             $preparedCourse = reset($preparedCourseArray);
 
-            $resources = $preparedCourse->getResources()->toArray();
-            $versionModel->getApprovedDataForNotApprovedOnesWrapper($resources);
+            $outlines = $preparedCourse->getOutlines();
+            $preparedOutlines = $objectUtilities->prepareForDisplay($outlines);
+            $preparedCourse->setOutlines($preparedOutlines);
+
+            $resources = $preparedCourse->getResources();
             $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
             $preparedCourse->setResources($preparedResources);
 
@@ -217,7 +208,7 @@ class CourseController extends ActionController
 
             // check if course has evaluation or not
             $hasEvaluation = false;
-            if ($course->getEvaluation() != null) {
+            if (is_object($course->getEvaluation())) {
                 $hasEvaluation = true;
             }
 
@@ -399,34 +390,73 @@ class CourseController extends ActionController
         }
 
         $courseArray = array($course);
-        $courseLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $courseArray, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $courseComparisonData = $versionModel->prepareDiffs($courseArray, $courseLogs);
-        
+
         $outlines = $course->getOutlines()->toArray();
-        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $outlines, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $outlinesComparisonData = $versionModel->prepareDiffs($outlines, $outlinesLogs);
 
         $resources = $course->getResources()->toArray();
-        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $resources, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $resourcesComparisonData = $versionModel->prepareDiffs($resources, $resourcesLogs);
-        
+
         $evaluation = $course->getEvaluation();
         $questions = array();
         if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
-            $questions = $evaluation->getQuestions();
+            $questions = $evaluation->getQuestions()->toArray();
         }
-        $questionsLogs = $versionModel->getLogEntriesPerEntities(/*$entities =*/ $questions, /*$objectIds =*/ array(), /*$objectClass =*/ null, /*$status =*/ Status::STATUS_NOT_APPROVED);
+        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $questionsComparisonData = $versionModel->prepareDiffs($questions, $questionsLogs);
-        
+
         $variables['course'] = $courseComparisonData;
         $variables['outlines'] = $outlinesComparisonData;
         $variables['resources'] = $resourcesComparisonData;
         $variables['questions'] = $questionsComparisonData;
         $variables['isAdminUser'] = $isAdminUser;
-        var_dump($courseComparisonData->getArrayCopy());
-        var_dump($variables);
-        die;
+        $variables['id'] = $id;
         return new ViewModel($variables);
+    }
+
+    /**
+     * Approve pending version course
+     * 
+     * 
+     * @access public
+     */
+    public function approveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $course = $query->find('Courses\Entity\Course', $id);
+
+        $courseArray = array($course);
+        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($courseArray, $courseLogs);
+
+        $outlines = $course->getOutlines()->toArray();
+        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($outlines, $outlinesLogs);
+
+        $resources = $course->getResources()->toArray();
+        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($resources, $resourcesLogs);
+
+        $evaluation = $course->getEvaluation();
+        $evaluationArray = array();
+        $questions = array();
+        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
+            $evaluationArray[] = $evaluation;
+            $questions = $evaluation->getQuestions()->toArray();
+        }
+        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $evaluationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($questions, $questionsLogs);
+        $versionModel->approveChanges($evaluationArray, $evaluationLogs);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $this->redirect()->toUrl($url);
     }
 
     /**
@@ -880,15 +910,18 @@ class CourseController extends ActionController
                 }
                 //enrolled student
                 else {
-                    $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
                     $questions = $course->getEvaluation()->getQuestions()->toArray();
-                    $versionModel->getApprovedDataForNotApprovedOnesWrapper($questions);
+                    $questionIds = array();
+                    foreach ($questions as $questionKey => $question) {
+                        if ($question->getStatus() != Status::STATUS_NOT_APPROVED) {
+                            array_push($questionIds, $question->getId());
+                        }
+                        else {
+                            unset($questions[$questionKey]);
+                        }
+                    }
                     // questions assosiated with course evaluation
                     $variables['questions'] = $questions;
-                    $questionIds = array();
-                    foreach ($questions as $question) {
-                        array_push($questionIds, $question->getId());
-                    }
                 }
             }
         }

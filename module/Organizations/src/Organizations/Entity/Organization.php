@@ -18,7 +18,7 @@ use Utilities\Service\Time;
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
- * @property int    $active
+ * @property int    $status
  * @property int    $type 
  * @property string $commertialName
  * @property float  $longtitude
@@ -82,31 +82,6 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * not active organization
-     */
-    const NOT_ACTIVE = 0;
-
-    /**
-     * not approved organization
-     */
-    const SAVE_STATE = 0;
-
-    /**
-     * Active organization
-     */
-    const NOT_APPROVED = 1;
-
-    /**
-     * Active organization
-     */
-    const ACTIVE = 2;
-
-    /**
-     * edited organization
-     */
-    const EDITED = 3;
-
-    /**
      *
      * @var InputFilter validation constraints 
      */
@@ -132,7 +107,7 @@ class Organization
      * @ORM\Column(type="integer", nullable=true )
      * @var string
      */
-    public $active;
+    public $status;
 
     /**
      * @Gedmo\Versioned
@@ -806,20 +781,26 @@ class Organization
         $this->officeLang = $officeLang;
     }
 
-    function setActive($active)
+    /**
+     * Set status
+     * 
+     * @access public
+     * @param int $status
+     */
+    function setStatus($status)
     {
-        $this->active = $active;
+        $this->status = $status;
     }
 
     /**
-     * is active
+     * Get status
      * 
      * @access public
-     * @return int active
+     * @return int status
      */
-    public function isActive()
+    public function getStatus()
     {
-        return $this->active;
+        return $this->status;
     }
 
     static function getStaticLangs()
@@ -888,8 +869,8 @@ class Organization
         if (array_key_exists('creatorId', $data)) {
             $this->setCreatorId($data['creatorId']);
         }
-        if (array_key_exists('active', $data)) {
-            $this->setActive($data['active']);
+        if (array_key_exists('status', $data)) {
+            $this->setStatus($data['status']);
         }
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);

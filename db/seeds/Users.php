@@ -96,6 +96,7 @@ class Users extends AbstractSeed
         $coursesLeaveRoute = "coursesLeave";
         $coursesEditRoute = "coursesEdit";
         $coursesNewRoute = "coursesNew";
+        $coursesPendingRoute = "coursesPending";
         $coursesListRoute = "courses";
         $coursesVoteRoute = "studentEvaluation";
         $courseEvaluation = "courseEvaluations";
@@ -200,6 +201,11 @@ class Users extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $coursesListRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $coursesPendingRoute,
             ),
             array(
                 'role_id' => $studentRoleId,
@@ -318,6 +324,7 @@ class Users extends AbstractSeed
         $organizationUsersNewRoute = "organizationUsersNew";
         $organizationUsersEditRoute = "organizationUsersEdit";
         $organizationUsersDeleteRoute = "organizationUsersDelete";
+        $organizationsPendingRoute = "organizationsPending";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
         $orgTypeRoute = "org_type";
@@ -326,6 +333,16 @@ class Users extends AbstractSeed
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
         $organizationAcls = array(
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsPendingRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsPendingRoute,
+            ),
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,

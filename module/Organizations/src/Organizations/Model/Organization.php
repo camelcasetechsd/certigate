@@ -109,22 +109,17 @@ class Organization
 
     /**
      * this function is meant to list organizations by type
-     * its alrady list organizations with type 3 in the same time with
+     * its alrady list organizations with type both in the same time with
      * type wanted to be listed  for example if we wanted to list atps it
      * will post both atps and organizations which is both atp and atc 
      * at the same time
      * 
-     * @param type $query
-     * @param type $type
-     * @return type
+     * @param int $type
+     * @return array organizations
      */
-    public function listOrganizations($query, $type)
+    public function listOrganizations($type)
     {
-        $em = $query->entityManager;
-
-        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
-        $dqlQuery->setParameter(1, $type);
-        return $dqlQuery->getResult();
+        return $this->query->setEntity("Organizations\Entity\Organization")->entityRepository->listOrganizations($type);
     }
 
     /**
@@ -153,7 +148,7 @@ class Organization
             $entity = new \Organizations\Entity\Organization();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
-                $entity->setActive(OrganizationEntity::NOT_APPROVED);
+                $entity->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
         // at edit
@@ -161,7 +156,7 @@ class Organization
             $editFlag = true;
             $entity = $orgObj;
             if ($isAdminUser === false) {
-                $entity->setActive($oldStatus);
+                $entity->setStatus($oldStatus);
             }
         }
         
@@ -301,7 +296,7 @@ class Organization
     public function deleteOrganization($id)
     {
         $org = $this->query->find(/* $entityName = */ 'Organizations\Entity\Organization', $id);
-        $org->active = \Organizations\Entity\Organization::NOT_ACTIVE;
+        $org->setStatus(Status::STATUS_INACTIVE);
         $this->query->entityManager->merge($org);
         $this->query->entityManager->flush($org);
     }
@@ -350,11 +345,11 @@ class Organization
             return false;
         }
         // existed but type saved state
-        if ($organization->active == 0) {
+        if ($organization->getStatus() == Status::STATUS_STATE_SAVED) {
             $this->query->remove($organization);
             return false;
         }
-        // if existed with nactive = 1 or 2
+        // if existed with status not saved state
         return true;
     }
 
@@ -399,17 +394,6 @@ class Organization
                     $organization->typeText = "ATC/ATP";
                     break;
             }
-            switch ($organization->active) {
-                case OrganizationEntity::ACTIVE:
-                    $organization->activeText = Status::STATUS_ACTIVE_TEXT;
-                    break;
-                case OrganizationEntity::NOT_APPROVED:
-                    $organization->activeText = Status::STATUS_NOT_APPROVED_TEXT;
-                    break;
-                case OrganizationEntity::NOT_ACTIVE:
-                    $organization->activeText = Status::STATUS_INACTIVE_TEXT;
-                    break;
-            }
         }
         return $organizationsArray;
     }
@@ -418,7 +402,7 @@ class Organization
     {
         $savedState = $this->query->findOneBy('Organizations\Entity\Organization', array(
             'creatorId' => $creatorId,
-            'active' => \Organizations\Entity\Organization::SAVE_STATE,
+            'status' => Status::STATUS_STATE_SAVED,
             'type' => $orgType
         ));
 

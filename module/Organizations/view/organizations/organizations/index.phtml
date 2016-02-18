@@ -22,21 +22,23 @@
         </thead>
         <tbody>
             {{#organizations}}
-            <tr class="{{^active}}container-inactive{{/active}}">
+            <tr class="{{^status}}container-inactive{{/status}}">
                 <td><a href="{{website}}" target="_blank">{{commercialName}}</a></td>
                 <td>{{ownerName}}</td>
                 <td>{{typeText}}</td>
                 <td><a href="mailto:{{email}}" target="_blank">{{email}}</a></td>
                 <td>{{city}}</td>
-                <td>{{activeText}}</td>
+                <td>{{statusText}}</td>
                 <td>
                     <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
                     &nbsp;&nbsp;&nbsp;
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;
                     <a href="/organizations/edit/{{id}}?organization={{type}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                    {{#active}}
+                    {{#status}}
                     &nbsp;&nbsp;&nbsp;
                     <a href="/organizations/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
-                    {{/active}}
+                    {{/status}}
                 </td>
             </tr>
             {{/organizations}}

@@ -1,0 +1,189 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#organizationDetails" data-toggle="tab" aria-controls="organizationDetails" role="tab" data-toggle="tab">Organization Details</a></li>
+    <li role="presentation"><a href="#organizationUsers" data-toggle="tab" aria-controls="organizationUsers">Organization Users</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="organizationDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Organization Details</h3>
+            </div>
+            <div class="panel-body">
+
+                <table class="table diffTable">
+                    {{#organization}}
+                    <tr class="diffRow">
+                        <td >Name</td>
+                        <td class="hidden original">{{before.name}}</td>
+                        <td class="hidden changed">{{after.name}}</td>
+                        <td class="diff"></td>
+                    </tr> 
+                    <tr class="diffRow"> 
+                        <td >Start date</td>
+                        <td class="hidden original">{{before.startDate}}</td>
+                        <td class="hidden changed">{{after.startDate}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >End date</td>
+                        <td class="hidden original">{{before.endDate}}</td>
+                        <td class="hidden changed">{{after.endDate}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Capacity</td>
+                        <td class="hidden original">{{before.studentsNo}}</td>
+                        <td class="hidden changed">{{after.studentsNo}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Student No</td>
+                        <td class="hidden original">{{before.capacity}}</td>
+                        <td class="hidden changed">{{after.capacity}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Authorized training partner</td>
+                        <td class="hidden original">{{before.atp.commercialName}}</td>
+                        <td class="hidden changed">{{after.atp.commercialName}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Authorized instructor</td>
+                        <td class="hidden original">{{before.ai.firstName}} {{before.ai.lastName}}</td>
+                        <td class="hidden changed">{{after.ai.firstName}} {{after.ai.lastName}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Brief</td>
+                        <td class="hidden original">{{before.brief}}</td>
+                        <td class="hidden changed">{{after.brief}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow"> 
+                        <td >Time</td>
+                        <td class="hidden original">{{before.time}}</td>
+                        <td class="hidden changed">{{after.time}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <tr class="diffRow">
+                        <td >Duration</td>
+                        <td class="hidden original">{{before.duration}}</td>
+                        <td class="hidden changed">{{after.duration}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    <!--    public $type;
+                        public $status;
+                        public $commercialName;
+                        public $longtitude;
+                        public $latitude;
+                        public $ownerName;
+                        public $ownerNationalId;
+                        public $CRNo;
+                        public $CRExpiration;
+                        public $CRAttachment;
+                        public $wireTransferAttachment;
+                        public $atpLicenseNo;
+                        public $atpLicenseExpiration;
+                        public $atpLicenseAttachment;
+                        public $atcLicenseNo;
+                        public $atcLicenseExpiration;
+                        public $atcLicenseAttachment;
+                        public $addressLine1;
+                        public $addressLine2;
+                        public $city;
+                        public $zipCode;
+                        public $phone1;
+                        public $phone2;
+                        public $phone3;
+                        public $fax;
+                        public $website;
+                        public $email;
+                        public $focalContactPerson;
+                        public $labsNo;
+                        public $pcsNo_lab;
+                        public $classesNo;
+                        public $pcsNo_class;
+                        public $internetSpeed_lab;
+                        public $operatingSystem;
+                        public $operatingSystemLang;
+                        public $officeVersion;
+                        public $officeLang;-->
+                    {{#before.officeLang}}
+                    <tr class="diffRow">
+                        <td >Office language</td>
+                        <td class="hidden original">{{before.officeLang}}</td>
+                        <td class="hidden changed">{{after.officeLang}}</td>
+                        <td class="diff"></td>
+                    </tr>
+                    {{/before.officeLang}}
+                    {{/organization}}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="organizationUsers">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Organization Users</h3>
+            </div>
+            <div class="panel-body">
+
+                <table class="table diffTable">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#organizationUsers}}
+
+                        <tr>
+                            <td>
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.user.firstName}}{{#before.user.middleName}} {{before.user.middleName}}{{/before.user.middleName}} {{before.user.lastName}}</div>
+                                    <div class="hidden changed">{{after.user.firstName}}{{#after.user.middleName}} {{after.user.middleName}}{{/after.user.middleName}} {{after.user.lastName}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                            <td> 
+                                <div class="diffRow">
+                                    <div class="hidden original">{{before.role.name}}</div>
+                                    <div class="hidden changed">{{after.role.name}}</div>
+                                    <div class="diff"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/organizationUsers}}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    {{#isAdminUser}}
+    <a href="/organizations/approve/{{id}}"><button class="btn btn-small btn-success">Approve all changes</button></a>
+    {{/isAdminUser}}
+</div>
+{{/content}}
+
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        $(".diffTable .diffRow").prettyTextDiff({
+            // options 
+        });
+    });
+</script>
+{{/scripts}}
+{{/layout}}

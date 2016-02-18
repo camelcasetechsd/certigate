@@ -3,6 +3,8 @@
 namespace Organizations\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Utilities\Service\Status;
+use Organizations\Entity\Organization;
 
 /**
  * Organization Repository
@@ -64,18 +66,39 @@ class OrganizationRepository extends EntityRepository
         }
         if ($status !== false) {
             $parameters['status'] = $status;
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('o.active', ":status"));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('o.status', ":status"));
         }
         $organizations = $queryBuilder->getQuery()->setParameters($parameters)->getResult();
         return $organizations;
     }
 
-    public function listOrganizations($query, $type)
+    /**
+     * List active organizations by type
+     * 
+     * @access public
+     * @param int $type
+     * @return array active organizations list
+     */
+    public function listOrganizations($type)
     {
-        $em = $query->entityManager;
-        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
-        $dqlQuery->setParameter(1, $type);
-        return $dqlQuery->getResult();
+        $repository = $this->getEntityManager();
+        $queryBuilder = $repository->createQueryBuilder("o");
+
+        $parameters = array(
+            'status' => Status::STATUS_ACTIVE,
+            'types' => array(
+                $type,
+                Organization::TYPE_BOTH
+            )
+        );
+        
+        $queryBuilder->select("o")
+                ->from("Organizations\Entity\Organization", "o")
+                ->andWhere($queryBuilder->expr()->eq('o.status', ":status"))
+                ->andWhere($queryBuilder->expr()->in('o.type', ":types"));
+        
+        $organizations = $queryBuilder->getQuery()->setParameters($parameters)->getResult();
+        return $organizations;
     }
 
 }

@@ -6,12 +6,12 @@ use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
-use Organizations\Model\Organization as OrgModel;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
 use Zend\Json\Json;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Utilities\Service\Status;
 
 /**
  * Atps Controller
@@ -39,13 +39,14 @@ class OrganizationsController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        
         $criteria = Criteria::create();
         $expr = Criteria::expr();
-        $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
+        $criteria->andWhere($expr->in("status", array(Status::STATUS_INACTIVE, Status::STATUS_ACTIVE, Status::STATUS_NOT_APPROVED)));
 
         $data = $query->filter(/* $entityName = */'Organizations\Entity\Organization', $criteria);
-        $variables['organizations'] = $organizationModel->prepareForDisplay($data);
+        $variables['organizations'] = $organizationModel->prepareForDisplay($objectUtilities->prepareForDisplay($data));
         return new ViewModel($variables);
     }
 
@@ -85,9 +86,8 @@ class OrganizationsController extends ActionController
      */
     public function atcsAction()
     {
-        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
+        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
@@ -105,11 +105,8 @@ class OrganizationsController extends ActionController
      */
     public function atpsAction()
     {
-
-
-        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
+        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
@@ -275,7 +272,7 @@ class OrganizationsController extends ActionController
         $crAttachment = $orgObj->CRAttachment;
         $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
         $atpLicenseAttachment = $orgObj->atpLicenseAttachment;
-        $oldStatus = $orgObj->isActive();
+        $oldStatus = $orgObj->getStatus();
 
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -402,7 +399,7 @@ class OrganizationsController extends ActionController
         $auth = new \Zend\Authentication\AuthenticationService();
         $creatorId = $auth->getIdentity()['id'];
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $orgObj = new \Organizations\Entity\Organization();
+        $orgObj = new OrgEntity();
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -437,8 +434,8 @@ class OrganizationsController extends ActionController
                 $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
                 // check commercial name existance in DB
                 if (!$isUniqe) {
-                    // saving organizations as inactive organization
-                    $stateArray['active'] = OrgEntity::SAVE_STATE;
+                    // saving organizations as state saved organization
+                    $stateArray['status'] = Status::STATUS_STATE_SAVED;
                     $stateArray['creatorId'] = $creatorId;
 
                     /**
@@ -461,6 +458,68 @@ class OrganizationsController extends ActionController
             }
         }
         return $this->getResponse()->setContent(Json::encode($data));
+    }
+    
+    /**
+     * View pending version organization
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function pendingAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organization = $query->find('Organizations\Entity\Organization', $id);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            $isAdminUser = true;
+        }
+
+        $organizationArray = array($organization);
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $organizationComparisonData = $versionModel->prepareDiffs($organizationArray, $organizationLogs);
+
+        $organizationUsers = $organization->getOrganizationUsers()->toArray();
+        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $organizationUsersComparisonData = $versionModel->prepareDiffs($organizationUsers, $organizationUsersLogs);
+
+        $variables['organization'] = $organizationComparisonData;
+        $variables['organizationUsers'] = $organizationUsersComparisonData;
+        $variables['isAdminUser'] = $isAdminUser;
+        $variables['id'] = $id;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * Approve pending version organization
+     * 
+     * 
+     * @access public
+     */
+    public function approveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organization = $query->find('Organizations\Entity\Organization', $id);
+
+        $organizationArray = array($organization);
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($organizationArray, $organizationLogs);
+
+        $organizationUsers = $organization->getOrganizationUsers()->toArray();
+        $organizationUsersLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationUsers, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->approveChanges($organizationUsers, $organizationUsersLogs);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
+        $this->redirect()->toUrl($url);
     }
 
 }
