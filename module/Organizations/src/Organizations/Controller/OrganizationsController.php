@@ -6,7 +6,6 @@ use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
 use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
-use Organizations\Model\Organization as OrgModel;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
 use Zend\Json\Json;
@@ -40,13 +39,14 @@ class OrganizationsController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        
         $criteria = Criteria::create();
         $expr = Criteria::expr();
-        $criteria->andWhere($expr->in("active", array(OrgEntity::NOT_ACTIVE, OrgEntity::ACTIVE, OrgEntity::NOT_APPROVED)));
+        $criteria->andWhere($expr->in("status", array(Status::STATUS_INACTIVE, Status::STATUS_ACTIVE, Status::STATUS_NOT_APPROVED)));
 
         $data = $query->filter(/* $entityName = */'Organizations\Entity\Organization', $criteria);
-        $variables['organizations'] = $organizationModel->prepareForDisplay($data);
+        $variables['organizations'] = $organizationModel->prepareForDisplay($objectUtilities->prepareForDisplay($data));
         return new ViewModel($variables);
     }
 
@@ -86,9 +86,8 @@ class OrganizationsController extends ActionController
      */
     public function atcsAction()
     {
-        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATC);
+        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
 
         foreach ($variables['userList'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
@@ -106,11 +105,8 @@ class OrganizationsController extends ActionController
      */
     public function atpsAction()
     {
-
-
-        $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations($query, \Organizations\Entity\Organization::TYPE_ATP);
+        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
 
         foreach ($variables['userList'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
@@ -276,7 +272,7 @@ class OrganizationsController extends ActionController
         $crAttachment = $orgObj->CRAttachment;
         $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
         $atpLicenseAttachment = $orgObj->atpLicenseAttachment;
-        $oldStatus = $orgObj->isActive();
+        $oldStatus = $orgObj->getStatus();
 
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -403,7 +399,7 @@ class OrganizationsController extends ActionController
         $auth = new \Zend\Authentication\AuthenticationService();
         $creatorId = $auth->getIdentity()['id'];
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $orgObj = new \Organizations\Entity\Organization();
+        $orgObj = new OrgEntity();
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -438,8 +434,8 @@ class OrganizationsController extends ActionController
                 $isUniqe = $orgModel->checkSavedBefore($stateArray['commercialName']);
                 // check commercial name existance in DB
                 if (!$isUniqe) {
-                    // saving organizations as inactive organization
-                    $stateArray['active'] = OrgEntity::SAVE_STATE;
+                    // saving organizations as state saved organization
+                    $stateArray['status'] = Status::STATUS_STATE_SAVED;
                     $stateArray['creatorId'] = $creatorId;
 
                     /**
