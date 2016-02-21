@@ -5,7 +5,7 @@ namespace CMS;
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
-            __DIR__ . '/../../../themes/default/modules',
+            __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
     ),
     'service_manager' => array(
