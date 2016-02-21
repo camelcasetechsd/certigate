@@ -5,7 +5,7 @@ namespace Courses;
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
     ),
     'service_manager' => array(
@@ -59,7 +59,6 @@ return array(
             'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
             'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
             'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
-            
         ),
     ),
     'router' => array(

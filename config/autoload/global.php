@@ -26,11 +26,11 @@ return array(
         // Create out template mapping
         'template_map' => array(
             // This is where the global layout resides
-            'layout/layout' => __DIR__ . '/../../layout/layout.phtml',
+            'layout/layout' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/layout.phtml',
             // This defines where we can find the templates
             // for the error messages
-            'error/404' => __DIR__ . '/../../layout/error/error.phtml',
-            'error/index' => __DIR__ . '/../../layout/error/error.phtml',
+            'error/404' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME. 'layout/error/error.phtml',
+            'error/index' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/error/error.phtml',
         )
     ),
     'service_manager' => array(
@@ -73,7 +73,7 @@ return array(
             Mustache_Engine::PRAGMA_BLOCKS
         ),
         'partials_loader' => array(
-            dirname(__FILE__) . '/../../layout',
+            dirname(__FILE__) .APPLICATION_THEMES.CURRENT_THEME.'layout',
             "extension" => ".phtml"
         )
     ),
