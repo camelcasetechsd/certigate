@@ -18,7 +18,7 @@ use Utilities\Service\Time;
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
- * @property int    $active
+ * @property int    $status
  * @property int    $type 
  * @property string $commertialName
  * @property float  $longtitude
@@ -82,31 +82,6 @@ class Organization
     const TYPE_BOTH = 3;
 
     /**
-     * not active organization
-     */
-    const NOT_ACTIVE = 0;
-
-    /**
-     * not approved organization
-     */
-    const SAVE_STATE = 0;
-
-    /**
-     * Active organization
-     */
-    const NOT_APPROVED = 1;
-
-    /**
-     * Active organization
-     */
-    const ACTIVE = 2;
-
-    /**
-     * edited organization
-     */
-    const EDITED = 3;
-
-    /**
      *
      * @var InputFilter validation constraints 
      */
@@ -132,7 +107,7 @@ class Organization
      * @ORM\Column(type="integer", nullable=true )
      * @var string
      */
-    public $active;
+    public $status;
 
     /**
      * @Gedmo\Versioned
@@ -806,61 +781,67 @@ class Organization
         $this->officeLang = $officeLang;
     }
 
-    function setActive($active)
+    /**
+     * Set status
+     * 
+     * @access public
+     * @param int $status
+     */
+    function setStatus($status)
     {
-        $this->active = $active;
+        $this->status = $status;
     }
 
     /**
-     * is active
+     * Get status
      * 
      * @access public
-     * @return int active
+     * @return int status
      */
-    public function isActive()
+    public function getStatus()
     {
-        return $this->active;
+        return $this->status;
     }
 
     static function getStaticLangs()
     {
         return array(
-            '0' => 'Arabic',
-            '1' => 'English',
-            '2' => 'Deutsch',
-            '3' => 'French',
-            '4' => 'Japanese',
-            '5' => 'Chinese',
+            '1' => 'Arabic',
+            '2' => 'English',
+            '3' => 'Deutsch',
+            '4' => 'French',
+            '5' => 'Japanese',
+            '6' => 'Chinese',
         );
     }
 
     static function getOSs()
     {
         return array(
-            '0' => 'Microsoft Windows XP',
-            '1' => 'Microsoft Windows Vista',
-            '2' => 'Microsoft Windows 7',
-            '3' => 'Microsoft Windows 8',
-            '4' => 'Microsoft Windows 8.1',
-            '5' => 'Microsoft Windows 10',
-            '6' => 'Ubuntu Linux 13.04 LTS',
-            '7' => 'Ubuntu Linux 14.04 LTS',
-            '8' => 'Red Hat Enterprise Linux 5',
-            '9' => 'Red Hat Enterprise Linux 6',
-            '10' => 'Red Hat Enterprise Linux 7',
+            '1' => 'Microsoft Windows XP',
+            '2' => 'Microsoft Windows Vista',
+            '3' => 'Microsoft Windows 7',
+            '4' => 'Microsoft Windows 8',
+            '5' => 'Microsoft Windows 8.1',
+            '6' => 'Microsoft Windows 10',
+            '7' => 'Ubuntu Linux 13.04 LTS',
+            '8' => 'Ubuntu Linux 14.04 LTS',
+            '9' => 'Red Hat Enterprise Linux 5',
+            '10'=> 'Red Hat Enterprise Linux 6',
+            '11' => 'Red Hat Enterprise Linux 7',
         );
     }
 
     static function getOfficeVersions()
     {
         return array(
-            '0' => 'Office 2000',
-            '1' => 'Office XP (2002)',
-            '2' => 'Office 2003',
-            '3' => 'Office 2007',
-            '4' => 'Office 2010',
-            '5' => 'Office 2013',
-            '6' => 'Office 2016',
+            '1' => 'Office 2000',
+            '2' => 'Office XP (2002)',
+            '3' => 'Office 2003',
+            '4' => 'Office 2007',
+            '5' => 'Office 2010',
+            '6' => 'Office 2013',
+            '7' => 'Office 2016',
         );
     }
 
@@ -888,8 +869,8 @@ class Organization
         if (array_key_exists('creatorId', $data)) {
             $this->setCreatorId($data['creatorId']);
         }
-        if (array_key_exists('active', $data)) {
-            $this->setActive($data['active']);
+        if (array_key_exists('status', $data)) {
+            $this->setStatus($data['status']);
         }
         $this->setType($data['type']);
         $this->setCommercialName($data['commercialName']);
@@ -910,7 +891,11 @@ class Organization
         $this->setWebsite($data['website']);
         $this->setEmail($data['email']);
 
-        $this->focalContactPerson = $data['focalContactPerson_id'];
+        if (array_key_exists('focalContactPerson_id', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson_id'];
+        }elseif (array_key_exists('focalContactPerson', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson'];
+        }
 
         if (array_key_exists('phone2', $data)) {
             $this->setPhone2($data["phone2"]);

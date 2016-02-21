@@ -64,17 +64,29 @@ class Object
      * 
      * @access public
      * @param array $objectsArray
+     * @param mixed $sampleObject object used to get expected properties when $objectsArray is array of arrays not array of objects ,default is null
      * @param int $depthLevel ,default is 0
      * @param int $maxDepthLevel depth level including first object level ,default is 3
      * @return array objects prepared for display
      */
-    public function prepareForDisplay($objectsArray, $depthLevel = 0, $maxDepthLevel = 3)
+    public function prepareForDisplay($objectsArray, $sampleObject = null, $depthLevel = 0, $maxDepthLevel = 3)
     {
         $depthLevel ++;
-        foreach ($objectsArray as $object) {
+        foreach ($objectsArray as &$object) {
+            $notObject = false;
+            // support array of arrays instead of array of objects
+            if (is_array($object)) {
+                $object = (object) $object;
+                $notObject = true;
+            }
             $objectProperties = $this->prepareForStatusDisplay($object);
-            if ($depthLevel == 1) {
-                $wrapped = AbstractWrapper::wrap($object, $this->query->entityManager);
+            if (($notObject === false || ($notObject === true && !is_null($sampleObject))) && $depthLevel == 1) {
+                if(is_null($sampleObject)){
+                    $sampleObjectForWrapper = $object;
+                }else{
+                    $sampleObjectForWrapper = $sampleObject;
+                }
+                $wrapped = AbstractWrapper::wrap($sampleObjectForWrapper, $this->query->entityManager);
                 $meta = $wrapped->getMetadata();
             }
             foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
@@ -95,7 +107,7 @@ class Object
                     $object->$objectPropertyName = $formattedString;
                 }
                 elseif (is_object($objectPropertyValue) && $depthLevel != $maxDepthLevel) {
-                    $objectsPropertyValue = $this->prepareForDisplay(array($objectPropertyValue), $depthLevel, $maxDepthLevel);
+                    $objectsPropertyValue = $this->prepareForDisplay(array($objectPropertyValue), $sampleObject, $depthLevel, $maxDepthLevel);
                     $object->$objectPropertyName = reset($objectsPropertyValue);
                 }
                 elseif (is_array($objectPropertyValue) && array_key_exists("id", $objectPropertyValue) && isset($meta) && $meta->isSingleValuedAssociation($objectPropertyName)) {
@@ -123,13 +135,18 @@ class Object
             $objectProperties = get_object_vars($object);
         }
         if (array_key_exists("status", $objectProperties)) {
+            $object->statusActive = false;
+            $object->statusIsactive = false;
+            $object->statusDeleted = false;
+            $object->statusNotApproved = false;
+            $object->statusStateSaved = false;
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
                     $object->statusActive = TRUE;
                     $object->statusText = Status::STATUS_ACTIVE_TEXT;
                     break;
                 case Status::STATUS_INACTIVE:
-                    $object->statusIactive = TRUE;
+                    $object->statusIsactive = TRUE;
                     $object->statusText = Status::STATUS_INACTIVE_TEXT;
                     break;
                 case Status::STATUS_DELETED:
@@ -139,6 +156,10 @@ class Object
                 case Status::STATUS_NOT_APPROVED:
                     $object->statusNotApproved = TRUE;
                     $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
+                    break;
+                case Status::STATUS_STATE_SAVED:
+                    $object->statusStateSaved = TRUE;
+                    $object->statusText = Status::STATUS_STATE_SAVED_TEXT;
                     break;
                 default:
                     break;

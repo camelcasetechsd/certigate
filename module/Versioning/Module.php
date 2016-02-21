@@ -25,17 +25,25 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap( MvcEvent $e )
+    /**
+     * Initiate loggable listener on bootstrap
+     * 
+     * @access public
+     * @param MvcEvent $event
+     */
+    public function onBootstrap( MvcEvent $event )
     {
-        /* @var $evm \Doctrine\Common\EventManager */
-        $evm = $e->getApplication()->getServiceManager()->get( 'entitymanager' )->getEventManager();
+        /* @var $eventManager \Doctrine\Common\EventManager */
+        $eventManager = $event->getApplication()->getServiceManager()->get( 'entitymanager' )->getEventManager();
         $loggableListener = new LoggableListener;
         $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
         if ($auth->hasIdentity()) {
-            $loggableListener->setUsername( $auth->getIdentity()['username'] );
+            $loggableListener->setUserId( $storage['id'] );
+            $loggableListener->setUsername( $storage['username'] );
         }
-
-        $evm->addEventSubscriber( $loggableListener );
+        
+        $eventManager->addEventSubscriber( $loggableListener );
     }
 
 }

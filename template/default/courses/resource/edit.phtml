@@ -1,15 +1,114 @@
 {{% BLOCKS }}
 {{<layout}}
+{{$content}}
+<style>
+    td{
+        width: 500px;
+    }
+</style>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails" >Course Details</a></li>
+    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">Course Evaluation</a></li>
+    <li role="presentation" class="active"><a href="#courseResources" aria-controls="courseResources" role="tab" data-toggle="tab">Course Resources</a></li>
+</ul>
 
-    {{$content}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Edit Resource</h3>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
+    <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
+    <div role="tabpanel" class="tab-pane active" id="courseResources">
+        <br>
+        <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
+        <br><br>
+        <form id="resourcesForm" action="" method="POST" >
+            <div class="panel panel-default">
+                <div class="panel-heading">Resources</div>
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>File</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#resources}}
+                        <tr id ="{{id}}" class="{{^status}}container-inactive{{/status}}">
+                            <td>
+                                <input type="text" class="form-control editableInput resourceName" value="{{name}}">
+                            </td>
+                            <td>
+                                <select class="resourceType form-control editableInput" value='{{type}}'>
+                                    <option value="1">Presentations</option>
+                                    <option value="2">Activities</option>
+                                    <option value="3">Exams</option>
+                                </select>
+                            </td>
+                            <td><a target="_blank" href="/resources/download/{{id}}" >download</a></td>
+                            <td>
+                                <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="Delete">Remove</a>
+                            </td>
+                        </tr>
+                        {{/resources}}
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="panel-body">
-                {{{resourceForm}}}
-            </div>
-        </div>
-    {{/content}}
+            <button type="submit" class="btn btn-primary" name="submit" >Save Resources </button>
+        </form>
+    </div>
+</div>
 
+{{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        $('.resourceType').each(function () {
+            switch ($(this).attr('value')) {
+                case 'Presentations':
+                    $(this).val('1');
+                    break;
+                case 'Activities':
+                    $(this).val('2');
+                    break;
+                case 'Exams':
+                    $(this).val('3');
+                    break;
+            }
+        });
+        $('.removeResource').click(function () {
+            var removeButton = $(this);
+            bootbox.confirm("Are you sure you want to delete the resource ?", function (result) {
+                if (result) {
+                    var resourceId = removeButton.closest('tr').attr("id");
+                    $.ajax({
+                        dataType: "json",
+                        url: "/resources/delete/" + resourceId,
+                        data: "",
+                    });
+                    removeButton.closest('tr').remove();
+                }
+            });
+        });
+        /**
+         * by this implementation we will only use editedName
+         */
+        $('.editableInput').change(function () {
+            var inputType = $(this).attr('type');
+            var resourceId = $(this).closest('tr').attr('id');
+            //text field
+            if (inputType === "text") {
+                $(this).attr('name', 'editedName[' + resourceId + ']');
+            }
+            // combobox
+            else {
+                $(this).attr('name', 'editedType[' + resourceId + ']');
+            }
+        });
+    });
+</script>
+{{/scripts}}
 {{/layout}}

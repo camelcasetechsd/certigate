@@ -9,8 +9,6 @@ use Courses\Entity\Resource;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Form\FormInterface;
-use Zend\Http\Response\Stream;
-use Zend\Http\Headers;
 
 /**
  * Resource Controller
@@ -144,14 +142,14 @@ class ResourceController extends ActionController
                 $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
                 $resourceModel->save($resource, $formData, $isAdminUser);
 
-                $url = $this->getResourcesUrl($courseId);
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'courseId' => $courseId), array('name' => 'resourcesEdit'));
                 $this->redirect()->toUrl($url);
             }
             elseif (array_key_exists("addedResources", $validationOutput)) {
                 $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
-
+        $variables['courseId'] = $courseId;
         $variables['resourceForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -166,6 +164,129 @@ class ResourceController extends ActionController
      * @return ViewModel
      */
     public function editAction()
+    {
+        $variables = array();
+        $courseId = $this->params('courseId', /* $default = */ null);
+
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+        $course = $query->find('Courses\Entity\Course', $courseId);
+        $resources = $course->getResources();
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $isAdminUser = false;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                if ($resource->getCourse()->getId() != $courseId) {
+                    $url = $this->getEvent()->getRouter()->assemble(array("id" => $resource->getId(), "courseId" => $resource->getCourse()->getId()), array('name' => 'resourcesEditPerCourse'));
+                    $this->redirect()->toUrl($url);
+                }
+                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $resource->getCourse()->getAtp());
+                if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+                    return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+                }
+            }
+        }
+
+        $options = array();
+        $options['query'] = $query->setEntity('Courses\Entity\Resource');
+        $options['isAdminUser'] = $isAdminUser;
+        $options['courseId'] = $courseId;
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $resourceModel->updateListedResources($data);
+        }
+        $variables['courseId'] = $courseId;
+        $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
+        return new ViewModel($variables);
+    }
+
+    /**
+     * Delete resource
+     *
+     * 
+     * @access public
+     */
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $courseId = $this->params('courseId', /* $default = */ null);
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+        $resource = $query->find('Courses\Entity\Resource', $id);
+
+        $processResult = $resourceModel->remove($resource);
+
+
+        $url = $this->getResourcesUrl($courseId);
+        $url .= "/" . $processResult;
+        $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * Download resource
+     *
+     * 
+     * @access public
+     */
+    public function downloadAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+
+        $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
+        $course = $resource->getCourse();
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
+        
+        $courseArray = array($course);
+        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
+        $preparedCourse = reset($preparedCourseArray);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $canDownload = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+                $canDownload = false;
+            }
+        }
+
+        if ($canDownload === false) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+            $file = $resource->getFile()["tmp_name"];
+            return $fileUtilities->getFileResponse($file);
+        }
+    }
+
+    /**
+     * Get resources index url
+     * 
+     * @access private
+     * @param int $courseId ,default is null
+     * 
+     * @return string url
+     */
+    private function getResourcesUrl($courseId = null)
+    {
+        $routeName = "resources";
+        $params = array('action' => 'index');
+        if (!empty($courseId)) {
+            $params['courseId'] = $courseId;
+            $routeName = "resourcesListPerCourse";
+        }
+        return $this->getEvent()->getRouter()->assemble($params, array('name' => $routeName));
+    }
+
+    public function editRecourceAction()
     {
         $variables = array();
         $id = $this->params('id');
@@ -234,105 +355,6 @@ class ResourceController extends ActionController
 
         $variables['resourceForm'] = $this->getFormView($form);
         return new ViewModel($variables);
-    }
-
-    /**
-     * Delete resource
-     *
-     * 
-     * @access public
-     */
-    public function deleteAction()
-    {
-        $id = $this->params('id');
-        $courseId = $this->params('courseId', /* $default = */ null);
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-        $resource = $query->find('Courses\Entity\Resource', $id);
-
-        $processResult = $resourceModel->remove($resource);
-
-
-        $url = $this->getResourcesUrl($courseId);
-        $url .= "/" . $processResult;
-        $this->redirect()->toUrl($url);
-    }
-
-    /**
-     * Download resource
-     *
-     * 
-     * @access public
-     */
-    public function downloadAction()
-    {
-        $id = $this->params('id');
-        $latest = $this->params('latest', /* $default = */ false);
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-
-        $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
-        $course = $resource->getCourse();
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
-        if ($latest === false) {
-            $resourcesArray = array($resource);
-            $versionModel->getApprovedDataForNotApprovedOnesWrapper($resourcesArray);
-            $resource = reset($resourcesArray);
-        }
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
-        $preparedCourse = reset($preparedCourseArray);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $canDownload = true;
-        if ($auth->hasIdentity()) {
-            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
-                $canDownload = false;
-            }
-        }
-
-        if ($canDownload === false) {
-            $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
-        }
-        else {
-            $file = $resource->getFile()["tmp_name"];
-            $response = new Stream();
-            $response->setStream(fopen($file, 'r'));
-            $response->setStatusCode(200);
-            $response->setStreamName(basename($file));
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
-                'Content-Type' => 'application/octet-stream',
-                'Content-Length' => filesize($file),
-                'Expires' => '@0', // @0, because zf2 parses date as string to \DateTime() object
-                'Cache-Control' => 'must-revalidate',
-                'Pragma' => 'public'
-            ));
-            $response->setHeaders($headers);
-            return $response;
-        }
-    }
-
-    /**
-     * Get resources index url
-     * 
-     * @access private
-     * @param int $courseId ,default is null
-     * 
-     * @return string url
-     */
-    private function getResourcesUrl($courseId = null)
-    {
-        $routeName = "resources";
-        $params = array('action' => 'index');
-        if (!empty($courseId)) {
-            $params['courseId'] = $courseId;
-            $routeName = "resourcesListPerCourse";
-        }
-        return $this->getEvent()->getRouter()->assemble($params, array('name' => $routeName));
     }
 
 }

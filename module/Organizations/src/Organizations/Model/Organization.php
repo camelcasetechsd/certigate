@@ -24,6 +24,7 @@ use System\Service\Cache\CacheHandler;
  * @property Utilities\Service\Random $random
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
+ * @property Versioning\Model\Version $version
  * 
  * @package organizations
  * @subpackage model
@@ -60,6 +61,12 @@ class Organization
     protected $notification;
 
     /**
+     *
+     * @var Versioning\Model\Version
+     */
+    protected $version;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -69,12 +76,14 @@ class Organization
      * @param Utilities\Service\Query\Query $query
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
+     * @param Versioning\Model\Version $version
      */
-    public function __construct($query, $systemCacheHandler, $notification)
+    public function __construct($query, $systemCacheHandler, $notification, $version)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->version = $version;
         $this->random = new Random();
     }
 
@@ -109,22 +118,17 @@ class Organization
 
     /**
      * this function is meant to list organizations by type
-     * its alrady list organizations with type 3 in the same time with
+     * its alrady list organizations with type both in the same time with
      * type wanted to be listed  for example if we wanted to list atps it
      * will post both atps and organizations which is both atp and atc 
      * at the same time
      * 
-     * @param type $query
-     * @param type $type
-     * @return type
+     * @param int $type
+     * @return array organizations
      */
-    public function listOrganizations($query, $type)
+    public function listOrganizations($type)
     {
-        $em = $query->entityManager;
-
-        $dqlQuery = $em->createQuery('SELECT u FROM Organizations\Entity\Organization u WHERE u.active = 2 and (u.type =?1 or u.type = 3)');
-        $dqlQuery->setParameter(1, $type);
-        return $dqlQuery->getResult();
+        return $this->query->setEntity("Organizations\Entity\Organization")->entityRepository->listOrganizations($type);
     }
 
     /**
@@ -139,7 +143,7 @@ class Organization
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true , $saveState = false)
+    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -153,7 +157,7 @@ class Organization
             $entity = new \Organizations\Entity\Organization();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
-                $entity->setActive(OrganizationEntity::NOT_APPROVED);
+                $entity->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
         // at edit
@@ -161,10 +165,10 @@ class Organization
             $editFlag = true;
             $entity = $orgObj;
             if ($isAdminUser === false) {
-                $entity->setActive($oldStatus);
+                $entity->setStatus(Status::STATUS_NOT_APPROVED);
             }
         }
-        
+
 //       
         /**
          * Handling convert string date to datetime object
@@ -301,7 +305,7 @@ class Organization
     public function deleteOrganization($id)
     {
         $org = $this->query->find(/* $entityName = */ 'Organizations\Entity\Organization', $id);
-        $org->active = \Organizations\Entity\Organization::NOT_ACTIVE;
+        $org->setStatus(Status::STATUS_INACTIVE);
         $this->query->entityManager->merge($org);
         $this->query->entityManager->flush($org);
     }
@@ -350,11 +354,11 @@ class Organization
             return false;
         }
         // existed but type saved state
-        if ($organization->active == 0) {
+        if ($organization->getStatus() == Status::STATUS_STATE_SAVED) {
             $this->query->remove($organization);
             return false;
         }
-        // if existed with nactive = 1 or 2
+        // if existed with status not saved state
         return true;
     }
 
@@ -384,10 +388,12 @@ class Organization
      * @param array $organizationsArray
      * @return array organizations prepared for display
      */
-    public function prepareForDisplay(array $organizationsArray)
+    public function prepareForDisplay($organizationsArray)
     {
+        $OSArray = OrganizationEntity::getOSs();
+        $langsArray = OrganizationEntity::getStaticLangs();
+        $officeVersionsArray = OrganizationEntity::getOfficeVersions();
         foreach ($organizationsArray as $organization) {
-
             switch ($organization->type) {
                 case OrganizationEntity::TYPE_ATC:
                     $organization->typeText = "ATC";
@@ -399,16 +405,17 @@ class Organization
                     $organization->typeText = "ATC/ATP";
                     break;
             }
-            switch ($organization->active) {
-                case OrganizationEntity::ACTIVE:
-                    $organization->activeText = Status::STATUS_ACTIVE_TEXT;
-                    break;
-                case OrganizationEntity::NOT_APPROVED:
-                    $organization->activeText = Status::STATUS_NOT_APPROVED_TEXT;
-                    break;
-                case OrganizationEntity::NOT_ACTIVE:
-                    $organization->activeText = Status::STATUS_INACTIVE_TEXT;
-                    break;
+            if (array_key_exists($organization->officeLang, $langsArray)) {
+                $organization->officeLangText = $langsArray[$organization->officeLang];
+            }
+            if (array_key_exists($organization->operatingSystemLang, $langsArray)) {
+                $organization->operatingSystemLangText = $langsArray[$organization->operatingSystemLang];
+            }
+            if (array_key_exists($organization->officeVersion, $officeVersionsArray)) {
+                $organization->officeVersionText = $officeVersionsArray[$organization->officeVersion];
+            }
+            if (array_key_exists($organization->operatingSystem, $OSArray)) {
+                $organization->operatingSystemText = $OSArray[$organization->operatingSystem];
             }
         }
         return $organizationsArray;
@@ -418,7 +425,7 @@ class Organization
     {
         $savedState = $this->query->findOneBy('Organizations\Entity\Organization', array(
             'creatorId' => $creatorId,
-            'active' => \Organizations\Entity\Organization::SAVE_STATE,
+            'status' => Status::STATUS_STATE_SAVED,
             'type' => $orgType
         ));
 
@@ -428,7 +435,7 @@ class Organization
 
         return null;
     }
-    
+
     /**
      * Get required roles
      * 
@@ -440,7 +447,7 @@ class Organization
     public function getRequiredRoles($organizationType)
     {
         $requiredRoles = array();
-        switch ((int)$organizationType) {
+        switch ((int) $organizationType) {
             case OrganizationEntity::TYPE_ATP:
                 $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
                 break;
@@ -453,6 +460,75 @@ class Organization
                 break;
         }
         return $requiredRoles;
+    }
+
+    /**
+     * Prepare organization diff
+     * 
+     * @access public
+     * 
+     * @param \ArrayIterator $organizationComparisonData
+     * @return \ArrayIterator prepared organization comparison data
+     */
+    public function prepareOrganizationDiff($organizationComparisonData)
+    {
+        $organizationComparisonArray = $organizationComparisonData->getArrayCopy();
+        $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
+        
+        $locationChanged = false;
+        if($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude
+                || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude){
+            $locationChanged = true;
+        }
+        $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
+        
+        $attachmentsArray = array(
+            'CRAttachment',
+            'wireTransferAttachment',
+            'atpLicenseAttachment',
+            'atcLicenseAttachment'
+        );
+        foreach($attachmentsArray as $attachment){
+            $attachmentChanged = false;
+            $attachmentChangedText = $attachment."Changed";
+            if($organizationComparisonPreparedArray["before"]->$attachment != $organizationComparisonPreparedArray["after"]->$attachment){
+                $attachmentChanged = true;
+            }
+            $organizationComparisonPreparedArray["after"]->$attachmentChangedText = $attachmentChanged;
+        }
+                
+        $organizationComparisonPreparedData = new \ArrayIterator(array($organizationComparisonPreparedArray));
+        return $organizationComparisonPreparedData;
+    }
+
+    /**
+     * Get organization file
+     * 
+     * @access public
+     * 
+     * @param Organizations\Entity\Organization $organization
+     * @param string $type
+     * @param bool $notApproved
+     * @return string file path
+     */
+    public function getFile($organization, $type, $notApproved)
+    {
+        $file = null;
+
+        if ($notApproved !== false) {
+            $organizationArray = array($organization);
+            $organizationLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+            $organizationComparisonData = $this->version->prepareDiffs($organizationArray, $organizationLogs);
+            $organizationComparisonArray = $organizationComparisonData->getArrayCopy();
+            $organizationComparison = reset($organizationComparisonArray);
+            $organization = $organizationComparison["after"];
+        }
+
+        if (property_exists($organization, $type)) {
+            $file = $organization->$type;
+        }
+        
+        return $file;
     }
     
     /**
@@ -510,5 +586,5 @@ class Organization
         );
         $this->notification->notify($welcomeKitMailArray);
     }
-
+    
 }

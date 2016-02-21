@@ -388,7 +388,11 @@ class Resource
             $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
             if (!file_exists($target)) {
+                // PHP takes 0777 and substracts the current value of umask
+                $oldUmask = umask(0);
                 mkdir($target, 0777);
+                // return back umask to it's original value
+                umask($oldUmask);
             }
             if (is_string($name) && strlen($name) > 0) {
                 $target .= $name."_".$unique;

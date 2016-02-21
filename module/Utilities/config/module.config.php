@@ -7,6 +7,7 @@ return array(
             'paginatorWrapperQuery' => 'Utilities\Service\Paginator',
             'cacheUtilities' => 'Utilities\Service\Cache',
             'objectUtilities' => 'Utilities\Service\Object',
+            'fileUtilities' => 'Utilities\Service\File',
             'loggerUtilities' => 'Utilities\Service\Logger',
             'validationUtilities' => 'Utilities\Service\Validator',
         ),
@@ -16,7 +17,10 @@ return array(
             'Utilities\Service\Cache' => 'Utilities\Service\Cache\CacheFactory',
             'Utilities\Service\Object' => 'Utilities\Service\ObjectFactory',
             'Utilities\Service\Logger' => 'Utilities\Service\Logger\LoggerFactory',
-        )
+        ),
+        'invokables' => array(
+            'Utilities\Service\File' => 'Utilities\Service\File',
+        ),
     ),
     'validators' => array(
         'invokables' => array(

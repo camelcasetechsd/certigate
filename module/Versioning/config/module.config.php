@@ -1,5 +1,7 @@
 <?php
 
+namespace Versioning;
+
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
@@ -8,16 +10,16 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
-            'loggable_metadata_driver' => array(
+            __NAMESPACE__ . '_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    'vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
-                ),
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                    ),
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'Gedmo\Loggable\Entity' => 'loggable_metadata_driver',
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ),
             ),
         ),

@@ -131,7 +131,7 @@ class Evaluation
         return False;
     }
 
-     /**
+    /**
      * Get status
      * 
      * 
@@ -156,7 +156,7 @@ class Evaluation
         $this->status = $status;
         return $this;
     }
-    
+
     function setCourse($course)
     {
         $this->course = $course;
@@ -204,7 +204,15 @@ class Evaluation
      */
     public function exchangeArray($data = array())
     {
-        $this->setQuestionTitle($data['questionTitle']);
+        if (array_key_exists("percentage", $data)) {
+            $this->setPercentage($data['percentage']);
+        }
+        if (array_key_exists("course", $data)) {
+            $this->setCourse($data['course']);
+        }
+        if (array_key_exists("status", $data)) {
+            $this->setStatus($data['status']);
+        }
     }
 
     /**

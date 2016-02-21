@@ -196,4 +196,51 @@ class Resource
         return array_values($preparedResources);
     }
 
+    public function updateListedResources($dataArray)
+    {
+        if (isset($dataArray['editedName'])) {
+            $editedResourceNames = $dataArray['editedName'];
+            foreach ($editedResourceNames as $key => $name) {
+                $resource = $this->query->findOneBy('Courses\Entity\Resource', array(
+                    'id' => $key
+                ));
+                $resource->setName($name);
+                if (isset($dataArray['editedType'][$key])) {
+                    $resource->setType($dataArray['editedType'][$key]);
+                    unset($dataArray['editedType'][$key]);
+                }
+                $this->query->save($resource);
+            }
+        }
+
+        if (isset($dataArray['editedType'])) {
+            $editedResourceType = $dataArray['editedType'];
+            foreach ($editedResourceType as $key => $Type) {
+                $resource = $this->query->findOneBy('Courses\Entity\Resource', array(
+                    'id' => $key
+                ));
+                $resource->setType($Type);
+                $this->query->save($resource);
+            }
+        }
+    }
+
+    public function listResourcesForEdit($resources)
+    {
+        foreach ($resources as $resource) {
+            switch ($resource->getType()) {
+                case 1:
+                    $resource->setType(\Courses\Entity\Resource::TYPE_PRESENTATIONS);
+                    break;
+                case 2:
+                    $resource->setType(\Courses\Entity\Resource::TYPE_ACTIVITIES);
+                    break;
+                case 3:
+                    $resource->setType(\Courses\Entity\Resource::TYPE_EXAMS);
+                    break;
+            }
+        }
+        return $resources;
+    }
+
 }

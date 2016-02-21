@@ -120,13 +120,13 @@ return array(
             'resourcesEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/edit/:id',
+                    'route' => '/courses/resources/edit/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'edit',
                     ),
                     'constraints' => array(
-                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
                     ),
                 )
             ),
@@ -136,7 +136,7 @@ return array(
                     'route' => '/resources/edit/:id/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
-                        'action' => 'edit',
+                        'action' => 'editRecource',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
@@ -174,14 +174,13 @@ return array(
             'resourcesResourceDownload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/download/:id[/:latest]',
+                    'route' => '/resources/download/:id',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'download',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
-                        'latest' => 'true',
                     ),
                 )
             ),
@@ -205,6 +204,32 @@ return array(
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'calendar',
+                    ),
+                )
+            ),
+            'coursesPending' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/pending/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'pending',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'coursesApproval' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/approve/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'approve',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
                     ),
                 )
             ),

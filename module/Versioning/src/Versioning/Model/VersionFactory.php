@@ -27,8 +27,9 @@ class VersionFactory implements FactoryInterface {
      * @return Version
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        $query = $serviceLocator->get('wrapperQuery')->setEntity('Gedmo\Loggable\Entity\LogEntry');
-        return new Version($query);
+        $query = $serviceLocator->get('wrapperQuery')->setEntity('Versioning\Entity\LogEntry');
+        $objectUtilities = $serviceLocator->get('objectUtilities');
+        return new Version($query, $objectUtilities);
     }
 
 }

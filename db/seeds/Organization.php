@@ -62,7 +62,7 @@ class Organization extends AbstractSeed
         
         $atp[] = array(
             'commercialName' => $faker->userName,
-            'active' => 2,
+            'status' => true,
             'type' => 2,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
@@ -104,7 +104,7 @@ class Organization extends AbstractSeed
         $this->insert('organization', $atp);
         $atc[] = array(
             'commercialName' => $faker->userName,
-            'active' => 2,
+            'status' => true,
             'type' => 1,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
@@ -148,7 +148,7 @@ class Organization extends AbstractSeed
 
         $both[] = array(
             'commercialName' => $faker->userName,
-            'active' => 2,
+            'status' => true,
             'type' => 3,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),

@@ -7,7 +7,7 @@ use Utilities\Form\Form;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Utilities\Service\Time;
-use Organizations\Entity\Organization;
+use Utilities\Service\Status;
 
 /**
  * User Form
@@ -462,7 +462,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                     'class' => 'atcSet',
                 ),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                'value_options' => $options['staticOfficeVersions']
+                'value_options' => $options['staticOss']
             ),
         ));
 
@@ -495,7 +495,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'options' => array(
                 'label' => 'Microseft Office Version',
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                'value_options' => $options['staticOss'],
+                'value_options' => $options['staticOfficeVersions'],
                 'label_attributes' => array(
                     'class' => 'atpLicenseNo atcSet',
                 ),
@@ -713,15 +713,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         if ($this->isAdminUser === true) {
             $this->add(array(
-                'name' => 'active',
+                'name' => 'status',
                 'type' => 'Zend\Form\Element\Checkbox',
                 'attributes' => array(
                     'class' => 'form-control',
                 ),
                 'options' => array(
                     'label' => 'Status',
-                    'checked_value' => Organization::ACTIVE,
-                    'unchecked_value' => Organization::NOT_ACTIVE
+                    'checked_value' => Status::STATUS_ACTIVE,
+                    'unchecked_value' => Status::STATUS_INACTIVE
                 ),
             ));
         }

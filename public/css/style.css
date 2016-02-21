@@ -129,3 +129,8 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+.smallContainer{
+    width: 300px;
+    height: 150px;
+}
