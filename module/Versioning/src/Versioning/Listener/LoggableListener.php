@@ -64,9 +64,6 @@ class LoggableListener extends OriginalLoggableListener
         foreach ($this->eventAdapter->getScheduledObjectInsertions($unitOfWork) as $object) {
             $this->createLogEntry(self::ACTION_CREATE, $object, $this->eventAdapter);
         }
-        foreach ($this->eventAdapter->getScheduledObjectDeletions($unitOfWork) as $object) {
-            $this->createLogEntry(self::ACTION_REMOVE, $object, $this->eventAdapter);
-        }
 
         foreach ($this->eventAdapter->getScheduledObjectUpdates($unitOfWork) as $entity) {
             $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
