@@ -140,6 +140,19 @@ return array(
                     ),
                 )
             ),
+            'organizationsDisapproval' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/disapprove/:id',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'disapprove',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'organizationsDownload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

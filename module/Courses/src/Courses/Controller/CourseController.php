@@ -456,6 +456,47 @@ class CourseController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
         $this->redirect()->toUrl($url);
     }
+    
+    /**
+     * Disapprove pending version course
+     * 
+     * 
+     * @access public
+     */
+    public function disapproveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $course = $query->find('Courses\Entity\Course', $id);
+
+        $courseArray = array($course);
+        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->disapproveChanges($courseArray, $courseLogs);
+
+        $outlines = $course->getOutlines()->toArray();
+        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->disapproveChanges($outlines, $outlinesLogs);
+
+        $resources = $course->getResources()->toArray();
+        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->disapproveChanges($resources, $resourcesLogs);
+
+        $evaluation = $course->getEvaluation();
+        $evaluationArray = array();
+        $questions = array();
+        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
+            $evaluationArray[] = $evaluation;
+            $questions = $evaluation->getQuestions()->toArray();
+        }
+        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $evaluationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->disapproveChanges($questions, $questionsLogs);
+        $versionModel->disapproveChanges($evaluationArray, $evaluationLogs);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
+        $this->redirect()->toUrl($url);
+    }
 
     /**
      * Delete course

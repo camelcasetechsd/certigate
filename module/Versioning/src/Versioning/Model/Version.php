@@ -171,13 +171,45 @@ class Version
                         $entityClass = get_class($entity);
                         $data = $entityLog->getData();
                         $data["status"] = Status::STATUS_ACTIVE;
-                        $this->query->setEntity($entityClass)->save($entity, $data, /*$flushAll =*/ false, /* $noFlush = */ true);
+                        $this->query->setEntity($entityClass)->save($entity, $data, /* $flushAll = */ false, /* $noFlush = */ true);
                         break 2;
                     }
                 }
             }
         }
-        if(count($entities) > 0 && count($entitiesLogs) > 0 ){
+        if (count($entities) > 0 && count($entitiesLogs) > 0) {
+            // flush all entities changes
+            $this->query->entityManager->flush();
+        }
+        return $processResult;
+    }
+
+    /**
+     * Disapprove entities changes
+     * 
+     * @access public
+     * 
+     * @param array $entities
+     * @param array $entitiesLogs
+     * 
+     * @return bool process result
+     */
+    public function disapproveChanges($entities, $entitiesLogs)
+    {
+        $processResult = true;
+        foreach ($entitiesLogs as $logsPerEntity) {
+            foreach ($logsPerEntity as $entityLog) {
+                $entityLogClass = get_class($entityLog);
+                $this->query->setEntity($entityLogClass)->remove($entityLog, /* $noFlush = */ true);
+            }
+        }
+        foreach ($entities as $entity) {
+            if(property_exists($entity, "status") && $entity->status == Status::STATUS_NOT_APPROVED){
+                $entityClass = get_class($entity);
+                $this->query->setEntity($entityClass)->remove($entity, /* $noFlush = */ true);
+            }
+        }
+        if (count($entities) > 0 && count($entitiesLogs) > 0) {
             // flush all entities changes
             $this->query->entityManager->flush();
         }

@@ -513,6 +513,27 @@ class OrganizationsController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);
     }
+    
+    /**
+     * Disapprove pending version organization
+     * 
+     * 
+     * @access public
+     */
+    public function disapproveAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organization = $query->find('Organizations\Entity\Organization', $id);
+
+        $organizationArray = array($organization);
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $versionModel->disapproveChanges($organizationArray, $organizationLogs);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
+        $this->redirect()->toUrl($url);
+    }
 
     /**
      * Download organization attachment

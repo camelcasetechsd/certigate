@@ -250,11 +250,14 @@ class Query
      * 
      * @access public
      * @param mixed $entity entity object to be removed
+     * @param bool $noFlush ,default is false
      */
-    public function remove($entity)
+    public function remove($entity, $noFlush = false)
     {
         $this->entityManager->remove($entity);
+        if ($noFlush === false) {
         $this->entityManager->flush($entity);
+        }
     }
 
     function checkExistance($entityName, $targetColumn, $value)
