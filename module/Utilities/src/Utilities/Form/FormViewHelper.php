@@ -2,7 +2,7 @@
 
 namespace Utilities\Form;
 
-use Zend\Form\View\Helper\Form;
+use Zend\Form\View\Helper\Form as OriginalFormViewHelper;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\FormInterface;
 use Zend\Form\Element\Submit;
@@ -17,7 +17,7 @@ use Zend\Form\Element\Submit;
  * @package utilities
  * @subpackage form
  */
-class FormViewHelper extends Form
+class FormViewHelper extends OriginalFormViewHelper
 {
 
     /**
@@ -97,7 +97,11 @@ class FormViewHelper extends Form
 
         // Change submit button text to edit if form is an edit form
         if ($element instanceof Submit && $form->isEditForm === true) {
-            $element->setValue("Edit");
+            if(property_exists($form, "isAdminUser") && $form->isAdminUser === false && $form->needAdminApproval === true){
+                $element->setValue("Submit for admin approval");
+            }else{
+                $element->setValue("Edit");
+            }
         }
 
         $elementContent.= $this->getView()->formRow($element);

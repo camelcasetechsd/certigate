@@ -73,11 +73,6 @@ class IndexController extends ActionController
             $this->redirect()->toUrl($url);
         }
 
-        $isAdmin = false;
-        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdmin = true;
-        }
-
         $options = array();
         $options['query'] = $query;
         $locale = "en";
@@ -93,7 +88,6 @@ class IndexController extends ActionController
             $isAdminUser = true;
         }
         
-        $options['isAdmin'] = $isAdminUser;
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
 
@@ -146,7 +140,7 @@ class IndexController extends ActionController
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, $userObj, $isAdminUser);
                 
-                if($options['isAdmin']){
+                if($isAdminUser){
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'users'));
                 $this->redirect()->toUrl($url);
@@ -199,7 +193,6 @@ class IndexController extends ActionController
         if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
             $isAdminUser = true;
         }
-        $options['isAdmin'] = $isAdminUser;
         $form = new UserForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -227,7 +220,7 @@ class IndexController extends ActionController
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data , /*$userObj =*/ null ,$isAdminUser);
 
-                if($options['isAdmin']){
+                if($isAdminUser){
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'users'));
                 $this->redirect()->toUrl($url);

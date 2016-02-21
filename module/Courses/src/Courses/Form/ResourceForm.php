@@ -13,7 +13,6 @@ use Zend\Form\FormInterface;
  * Handles Resource form setup
  * 
  * @property Utilities\Service\Query\Query $query
- * @property bool $isAdminUser
  * @property int $courseId
  * 
  * @package courses
@@ -26,12 +25,6 @@ class ResourceForm extends Form {
      * @var Utilities\Service\Query\Query 
      */
     protected $query;
-
-    /**
-     *
-     * @var bool
-     */
-    protected $isAdminUser;
 
     /**
      *
@@ -48,11 +41,10 @@ class ResourceForm extends Form {
      * @param array $options ,default is null
      */
     public function __construct($name = null, $options = null) {
+        $this->needAdminApproval = true;
         $this->query = $options['query'];
         unset($options['query']);
-        $this->isAdminUser = $options['isAdminUser'];
         $this->courseId = $options['courseId'];
-        unset($options['isAdminUser']);
         unset($options['courseId']);
         parent::__construct($name, $options);
 

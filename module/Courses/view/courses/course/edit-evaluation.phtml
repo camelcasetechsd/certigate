@@ -60,7 +60,7 @@
                 <!-- button -->
                 <div class=" row form-group">
                     <div class="col-md-4">
-                        <button id="singlebutton" name="submit" class="btn btn-success">Submit Evaluation Template</button>
+                        <button id="singlebutton" name="submit" class="btn btn-success">{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Submit Evaluation Template{{/isAdminUser}}</button>
                     </div>
                 </div>
 

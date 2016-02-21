@@ -115,7 +115,6 @@ class ResourceController extends ActionController
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
-        $options['isAdminUser'] = $isAdminUser;
         $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
 
@@ -174,27 +173,22 @@ class ResourceController extends ActionController
         $resources = $course->getResources();
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
+
         $isAdminUser = false;
+
         if ($auth->hasIdentity()) {
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
-                if ($resource->getCourse()->getId() != $courseId) {
-                    $url = $this->getEvent()->getRouter()->assemble(array("id" => $resource->getId(), "courseId" => $resource->getCourse()->getId()), array('name' => 'resourcesEditPerCourse'));
-                    $this->redirect()->toUrl($url);
-                }
-                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $resource->getCourse()->getAtp());
+            if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
                 if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
                     return $this->redirect()->toUrl($validationResult["redirectUrl"]);
                 }
             }
         }
 
-        $options = array();
-        $options['query'] = $query->setEntity('Courses\Entity\Resource');
-        $options['isAdminUser'] = $isAdminUser;
-        $options['courseId'] = $courseId;
+        $variables['isAdminUser'] = $isAdminUser;
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -243,7 +237,7 @@ class ResourceController extends ActionController
         $course = $resource->getCourse();
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
-        
+
         $courseArray = array($course);
         $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
         $preparedCourse = reset($preparedCourseArray);
@@ -316,7 +310,6 @@ class ResourceController extends ActionController
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
-        $options['isAdminUser'] = $isAdminUser;
         $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
         $form->bind($resource);

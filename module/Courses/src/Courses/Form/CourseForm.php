@@ -16,7 +16,6 @@ use Courses\Form\OutlineFieldset;
  * Handles Course form setup
  * 
  * @property Utilities\Service\Query\Query $query
- * @property bool $isAdminUser
  * @property int $userId
  * 
  * @package courses
@@ -30,12 +29,6 @@ class CourseForm extends Form
      * @var Utilities\Service\Query\Query 
      */
     protected $query;
-
-    /**
-     *
-     * @var bool
-     */
-    protected $isAdminUser;
 
     /**
      *
@@ -53,11 +46,10 @@ class CourseForm extends Form
      */
     public function __construct($name = null, $options = null)
     {
+        $this->needAdminApproval = true;
         $this->query = $options['query'];
         unset($options['query']);
-        $this->isAdminUser = $options['isAdminUser'];
         $this->userId = $options['userId'];
-        unset($options['isAdminUser']);
         unset($options['userId']);
         parent::__construct($name, $options);
 

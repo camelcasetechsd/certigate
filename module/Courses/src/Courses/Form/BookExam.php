@@ -13,7 +13,6 @@ use Doctrine\Common\Persistence\ObjectManager;
  * Handles BookExam setup
  * 
  * @property Utilities\Service\Query\Query $query
- * @property bool $isAdminUser
  * 
  * @package courses
  * @subpackage form

@@ -190,7 +190,6 @@ class OrganizationsController extends ActionController
         }
 
         $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
@@ -288,7 +287,6 @@ class OrganizationsController extends ActionController
 
         $options = array();
         $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();

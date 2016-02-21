@@ -40,12 +40,10 @@ class UserForm extends Form
         $countries = $options['countries'];
         $languages = $options['languages'];
         $excludedRoles = $options['excludedRoles'];
-        $isAdmin = $options['isAdmin'];
         unset($options['query']);
         unset($options['countries']);
         unset($options['languages']);
         unset($options['excludedRoles']);
-        unset($options['isAdmin']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -444,7 +442,7 @@ class UserForm extends Form
             ),
         ));
 
-        if (!$isAdmin) {
+        if (!$this->isAdminUser) {
             $this->add(array(
                 'type' => 'Zend\Form\Element\Captcha',
                 'name' => 'captcha',

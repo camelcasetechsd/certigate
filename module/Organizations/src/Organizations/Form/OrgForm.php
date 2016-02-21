@@ -16,7 +16,6 @@ use Utilities\Service\Status;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
- * @property bool $isAdminUser
  * 
  * @package organizations
  * @subpackage form
@@ -33,12 +32,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     protected $query;
 
     /**
-     *
-     * @var bool
-     */
-    protected $isAdminUser;
-
-    /**
      * setup form
      * 
      * 
@@ -48,8 +41,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
      */
     public function __construct($name = null, $options = null)
     {
+        $this->needAdminApproval = true;
         $this->query = $options['query'];
-        $this->isAdminUser = $options['isAdminUser'];
         unset($options['query']);
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');

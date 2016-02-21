@@ -259,10 +259,9 @@ class Course
         return $isCustomValidationValid;
     }
 
-    public function saveEvaluation($evalObj, $data, $isAdmin)
+    public function saveEvaluation($evalObj, $data, $isAdminUser)
     {
-        if ($isAdmin) {
-            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::ADMIN_CREATED);
+        if ($isAdminUser) {
             $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj, $data);
             $courses = $this->query->findAll("Courses\Entity\Course");
             $eval = $this->query->findBy("Courses\Entity\Evaluation", array('questionTitle' => $evalObj->getQuestionTitle()));
@@ -272,7 +271,7 @@ class Course
             }
         }
         else {
-            $evalObj->setIsAdmin(\Courses\Entity\Evaluation::USER_CREATED);
+            $evalObj->setStatus(Status::STATUS_NOT_APPROVED);
             $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
         }
     }

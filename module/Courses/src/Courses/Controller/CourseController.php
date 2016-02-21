@@ -282,7 +282,6 @@ class CourseController extends ActionController
 
         $options = array();
         $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
         $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
         $form->bind($course, /* $flags = */ FormInterface::VALUES_NORMALIZED, /* $isEditForm = */ false);
@@ -339,7 +338,6 @@ class CourseController extends ActionController
         }
         $options = array();
         $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
         $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
         $form->bind($course);
@@ -581,34 +579,23 @@ class CourseController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
         $evalEntity = new \Courses\Entity\Evaluation();
-        $evaluationModle = new \Courses\Model\Evaluation($query);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
-
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
-
+        $evaluationModel = new \Courses\Model\Evaluation($query);
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             // validate questions
-            $errors = $evaluationModle->validateQuestion($data['newQuestion']);
+            $errors = $evaluationModel->validateQuestion($data['newQuestion']);
 
             if (empty($errors)) {
                 //creating empty user template for this course
                 $evalEntity = new \Courses\Entity\Evaluation();
                 $evalEntity->setIsTemplate();
                 $evalEntity->setPercentage(0.00);
-                $evaluationModle->saveEvaluation($evalEntity);
+                $evaluationModel->saveEvaluation($evalEntity);
                 // save questions
                 foreach ($data['newQuestion'] as $new) {
-                    $evaluationModle->assignQuestionToEvaluation($new);
+                    $evaluationModel->assignQuestionToEvaluation($new);
                 }
                 //redirect to edit page
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvTemplate', 'id' => $evalEntity->getId()), array('name' => 'editEvTemplate'));
@@ -630,16 +617,6 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $eval = $query->find('Courses\Entity\Evaluation', $id);
         $evaluationModel = new \Courses\Model\Evaluation($query);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
-
-        $options = array();
-        $options['query'] = $query;
-        $options['isAdminUser'] = $isAdminUser;
 
         $request = $this->getRequest();
         if ($request->isPost()) {

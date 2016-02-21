@@ -246,10 +246,6 @@ class Evaluation
                 'name' => 'questionTitle',
                 'required' => true
             ));
-            $inputFilter->add(array(
-                'name' => 'isAdmin',
-                'required' => true
-            ));
 
             $this->inputFilter = $inputFilter;
         }

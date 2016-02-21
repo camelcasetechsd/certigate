@@ -63,13 +63,9 @@ class ExamController extends ActionController
         
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $isAdminUser = false;
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-            else {
+            if (! (in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']))) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -99,17 +95,13 @@ class ExamController extends ActionController
     {
         $variables = array();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
-
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $isAdminUser = false;
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
             // only admin can access this page
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-            else {
+            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -131,13 +123,10 @@ class ExamController extends ActionController
         // no one can fake admin approval
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $isAdminUser = false;
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-            else {
+            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+               
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -159,13 +148,10 @@ class ExamController extends ActionController
         $auth = new AuthenticationService();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         $storage = $auth->getIdentity();
-        $isAdminUser = false;
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-            else {
+            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+               
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
