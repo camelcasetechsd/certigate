@@ -177,6 +177,7 @@ class ResourceController extends ActionController
         $isAdminUser = false;
 
         if ($auth->hasIdentity()) {
+            $userEmail = $storage["email"];
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
@@ -193,7 +194,7 @@ class ResourceController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $resourceModel->updateListedResources($data);
+            $resourceModel->updateListedResources($data, $isAdminUser, $userEmail);
         }
         
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');

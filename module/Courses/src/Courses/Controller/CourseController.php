@@ -360,7 +360,7 @@ class CourseController extends ActionController
             }
         }
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
-        
+
         $variables['courseId'] = $id;
         $variables['courseForm'] = $this->getFormView($form);
         $variables['isAdminUser'] = $isAdminUser;
@@ -445,7 +445,7 @@ class CourseController extends ActionController
         $evaluationLogs = $entitiesAndLogEntriesArray["evaluationLogs"];
         $questions = $entitiesAndLogEntriesArray["questions"];
         $questionsLogs = $entitiesAndLogEntriesArray["questionsLogs"];
-        
+
         $versionModel->approveChanges($courseArray, $courseLogs);
         $versionModel->approveChanges($outlines, $outlinesLogs);
         $versionModel->approveChanges($resources, $resourcesLogs);
@@ -481,7 +481,7 @@ class CourseController extends ActionController
         $evaluationLogs = $entitiesAndLogEntriesArray["evaluationLogs"];
         $questions = $entitiesAndLogEntriesArray["questions"];
         $questionsLogs = $entitiesAndLogEntriesArray["questionsLogs"];
-        
+
         $versionModel->disapproveChanges($courseArray, $courseLogs);
         $versionModel->disapproveChanges($outlines, $outlinesLogs);
         $versionModel->disapproveChanges($resources, $resourcesLogs);
@@ -612,9 +612,8 @@ class CourseController extends ActionController
     public function newEvTemplateAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
         $evalEntity = new \Courses\Entity\Evaluation();
-        $evaluationModel = new \Courses\Model\Evaluation($query);
+        $evaluationModel = $this->getServiceLocator()->get("Courses\Model\Evaluation");
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -651,7 +650,7 @@ class CourseController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $eval = $query->find('Courses\Entity\Evaluation', $id);
-        $evaluationModel = new \Courses\Model\Evaluation($query);
+        $evaluationModel = $this->getServiceLocator()->get("Courses\Model\Evaluation");
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -717,7 +716,7 @@ class CourseController extends ActionController
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        $evaluationModel = new \Courses\Model\Evaluation($query->setEntity('Courses\Entity\Evaluation'));
+        $evaluationModel = $this->getServiceLocator()->get("Courses\Model\Evaluation");
 
         // getting template evalutaion
         $evaluationTemplate = $query->findOneBy("Courses\Entity\Evaluation", array(
@@ -733,8 +732,11 @@ class CourseController extends ActionController
         $storage = $auth->getIdentity();
         $isAdminUser = false;
         // admin or atp only
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            $userEmail = $storage['email'];
         }
         $variables['isAdminUser'] = $isAdminUser;
 
@@ -756,7 +758,7 @@ class CourseController extends ActionController
                     $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
                 }
                 $evalEntity->setStatus($status);
-                $evaluationModel->saveEvaluation($evalEntity, $courseId);
+                $evaluationModel->saveEvaluation($evalEntity, $courseId, $userEmail, $isAdminUser, /* $editFlag = */ false);
                 // save templates and newQuestions
                 foreach ($data['template'] as $temp) {
 
@@ -809,15 +811,18 @@ class CourseController extends ActionController
             // getting course evaluation questions
             $variables['oldQuestions'] = $eval->getQuestions();
             // evaluation model
-            $evaluationModel = new \Courses\Model\Evaluation($query);
+            $evaluationModel = $this->getServiceLocator()->get("Courses\Model\Evaluation");
         }
 
         //authentication
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+            $userEmail = $storage['email'];
         }
 
         $variables['isAdminUser'] = $isAdminUser;
@@ -843,7 +848,7 @@ class CourseController extends ActionController
                     $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
                 }
                 $eval->setStatus($status);
-                $evaluationModel->saveEvaluation($eval, $courseId);
+                $evaluationModel->saveEvaluation($eval, $courseId, $userEmail, $isAdminUser, /* $editFlag = */ true);
                 // saving new Questions
                 if (isset($data['newQuestion'])) {
                     foreach ($data['newQuestion'] as $new) {
@@ -876,7 +881,7 @@ class CourseController extends ActionController
         }
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
-        
+
         $variables['courseId'] = $courseId;
         $hasPendingChanges = $entitiesAndLogEntriesArray["hasPendingChanges"];
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));

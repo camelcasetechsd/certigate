@@ -155,18 +155,15 @@ class Organization
         // at create
         if (is_null($orgObj)) {
             $entity = new \Organizations\Entity\Organization();
-            if ($isAdminUser === false) {
-                $sendNotificationFlag = true;
-                $entity->setStatus(Status::STATUS_NOT_APPROVED);
-            }
         }
         // at edit
         else {
             $editFlag = true;
             $entity = $orgObj;
-            if ($isAdminUser === false) {
-                $entity->setStatus(Status::STATUS_NOT_APPROVED);
-            }
+        }
+        if ($isAdminUser === false) {
+            $sendNotificationFlag = true;
+            $entity->setStatus(Status::STATUS_NOT_APPROVED);
         }
 
 //       
@@ -248,7 +245,7 @@ class Organization
         }
 
         if ($sendNotificationFlag === true) {
-            $this->sendMail($userEmail);
+            $this->sendMail($userEmail, $editFlag);
         }
     }
 
@@ -474,29 +471,28 @@ class Organization
     {
         $organizationComparisonArray = $organizationComparisonData->getArrayCopy();
         $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
-        
+
         $locationChanged = false;
-        if($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude
-                || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude){
+        if ($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude) {
             $locationChanged = true;
         }
         $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
-        
+
         $attachmentsArray = array(
             'CRAttachment',
             'wireTransferAttachment',
             'atpLicenseAttachment',
             'atcLicenseAttachment'
         );
-        foreach($attachmentsArray as $attachment){
+        foreach ($attachmentsArray as $attachment) {
             $attachmentChanged = false;
-            $attachmentChangedText = $attachment."Changed";
-            if($organizationComparisonPreparedArray["before"]->$attachment != $organizationComparisonPreparedArray["after"]->$attachment){
+            $attachmentChangedText = $attachment . "Changed";
+            if ($organizationComparisonPreparedArray["before"]->$attachment != $organizationComparisonPreparedArray["after"]->$attachment) {
                 $attachmentChanged = true;
             }
             $organizationComparisonPreparedArray["after"]->$attachmentChangedText = $attachmentChanged;
         }
-                
+
         $organizationComparisonPreparedData = new \ArrayIterator(array($organizationComparisonPreparedArray));
         return $organizationComparisonPreparedData;
     }
@@ -527,20 +523,21 @@ class Organization
         if (property_exists($organization, $type)) {
             $file = $organization->$type;
         }
-        
+
         return $file;
     }
-    
+
     /**
      * Send mail
      * 
      * @access private
      * @param string $userEmail
+     * @param bool $editFlag
      * @throws \Exception From email is not set
      * @throws \Exception Admin email is not set
      * @throws \Exception Operations email is not set
      */
-    private function sendMail($userEmail)
+    private function sendMail($userEmail, $editFlag)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -568,23 +565,33 @@ class Organization
         $templateParameters = array(
             "email" => $userEmail,
         );
+        if ($editFlag === false) {
+            $templateName = MailTempates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::NEW_ORGANIZATION_NOTIFICATION_SUBJECT;
+        }
+        else {
+            $templateName = MailTempates::UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::UPDATED_ORGANIZATION_NOTIFICATION_SUBJECT;
+        }
         $notificationMailArray = array(
             'to' => $adminEmail,
             'from' => $from,
-            'templateName' => MailTempates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE,
+            'templateName' => $templateName,
             'templateParameters' => $templateParameters,
-            'subject' => MailSubjects::NEW_ORGANIZATION_NOTIFICATION_SUBJECT,
+            'subject' => $subject,
         );
         $this->notification->notify($notificationMailArray);
 
-        $welcomeKitMailArray = array(
-            'to' => $operationsEmail,
-            'from' => $from,
-            'templateName' => MailTempates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
-            'templateParameters' => $templateParameters,
-            'subject' => MailSubjects::NEW_ORGANIZATION_WELCOME_KIT_SUBJECT,
-        );
-        $this->notification->notify($welcomeKitMailArray);
+        if ($editFlag === false) {
+            $welcomeKitMailArray = array(
+                'to' => $operationsEmail,
+                'from' => $from,
+                'templateName' => MailTempates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
+                'templateParameters' => $templateParameters,
+                'subject' => MailSubjects::NEW_ORGANIZATION_WELCOME_KIT_SUBJECT,
+            );
+            $this->notification->notify($welcomeKitMailArray);
+        }
     }
-    
+
 }

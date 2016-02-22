@@ -65,7 +65,7 @@ class Course
      * @var Versioning\Model\Version
      */
     protected $version;
-    
+
     /**
      * Set needed properties
      * 
@@ -137,6 +137,10 @@ class Course
     public function save($course, $data = array(), $isAdminUser = false, $userEmail = null)
     {
         $notifyAdminFlag = false;
+        $editFlag = false;
+        if (empty($data)) {
+            $editFlag = true;
+        }
         if ($isAdminUser === false) {
             $course->setStatus(Status::STATUS_NOT_APPROVED);
             $notifyAdminFlag = true;
@@ -148,49 +152,8 @@ class Course
         $this->outlineModel->cleanUpOutlines();
 
         if ($notifyAdminFlag === true) {
-            $this->sendMail($userEmail);
+            $this->sendMail($userEmail, $editFlag);
         }
-    }
-
-    /**
-     * Send mail
-     * 
-     * @access private
-     * @param string $userEmail
-     * @throws \Exception From email is not set
-     * @throws \Exception To email is not set
-     */
-    private function sendMail($userEmail)
-    {
-        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
-        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
-        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
-
-        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
-            $from = $settings[Settings::SYSTEM_EMAIL];
-        }
-        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
-            $to = $settings[Settings::ADMIN_EMAIL];
-        }
-
-        if (!isset($from)) {
-            throw new \Exception("From email is not set");
-        }
-        if (!isset($to)) {
-            throw new \Exception("To email is not set");
-        }
-        $templateParameters = array(
-            "email" => $userEmail,
-        );
-
-        $mailArray = array(
-            'to' => $to,
-            'from' => $from,
-            'templateName' => MailTempates::NEW_COURSE_NOTIFICATION_TEMPLATE,
-            'templateParameters' => $templateParameters,
-            'subject' => MailSubjects::NEW_COURSE_NOTIFICATION_SUBJECT,
-        );
-        $this->notification->notify($mailArray);
     }
 
     /**
@@ -268,23 +231,6 @@ class Course
         return $isCustomValidationValid;
     }
 
-    public function saveEvaluation($evalObj, $data, $isAdminUser)
-    {
-        if ($isAdminUser) {
-            $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj, $data);
-            $courses = $this->query->findAll("Courses\Entity\Course");
-            $eval = $this->query->findBy("Courses\Entity\Evaluation", array('questionTitle' => $evalObj->getQuestionTitle()));
-            foreach ($courses as $course) {
-                $course->setEvaluation($eval[0]);
-                $this->query->setEntity("Courses\Entity\Course")->save($course);
-            }
-        }
-        else {
-            $evalObj->setStatus(Status::STATUS_NOT_APPROVED);
-            $this->query->setEntity("Courses\Entity\Course")->save($evalObj, $data);
-        }
-    }
-
     /**
      * this function meant to list all courses assigned to user if instructor
      */
@@ -300,7 +246,7 @@ class Course
         }
         return $courses;
     }
-    
+
     /**
      * Get course log entries
      * 
@@ -328,12 +274,12 @@ class Course
         }
         $questionsLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $evaluationLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        
+
         $hasPendingChanges = false;
-        if(count($questionsLogs) > 0 || count($resourcesLogs) > 0 || count($outlinesLogs) > 0 || count($courseLogs) > 0){
+        if (count($questionsLogs) > 0 || count($resourcesLogs) > 0 || count($outlinesLogs) > 0 || count($courseLogs) > 0) {
             $hasPendingChanges = true;
         }
-        
+
         return array(
             "course" => $courseArray,
             "courseLogs" => $courseLogs,
@@ -347,6 +293,57 @@ class Course
             "questionsLogs" => $questionsLogs,
             "hasPendingChanges" => $hasPendingChanges,
         );
+    }
+    
+    /**
+     * Send mail
+     * 
+     * @access private
+     * @param string $userEmail
+     * @param bool $editFlag
+     * @throws \Exception From email is not set
+     * @throws \Exception To email is not set
+     */
+    private function sendMail($userEmail, $editFlag)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $to = $settings[Settings::ADMIN_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+        if (!isset($to)) {
+            throw new \Exception("To email is not set");
+        }
+        $templateParameters = array(
+            "email" => $userEmail,
+        );
+
+        if ($editFlag === false) {
+            $templateName = MailTempates::NEW_COURSE_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::NEW_COURSE_NOTIFICATION_SUBJECT;
+        }
+        else {
+            $templateName = MailTempates::UPDATED_COURSE_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::UPDATED_COURSE_NOTIFICATION_SUBJECT;
+        }
+
+        $mailArray = array(
+            'to' => $to,
+            'from' => $from,
+            'templateName' => $templateName,
+            'templateParameters' => $templateParameters,
+            'subject' => $subject,
+        );
+        $this->notification->notify($mailArray);
     }
 
 }
