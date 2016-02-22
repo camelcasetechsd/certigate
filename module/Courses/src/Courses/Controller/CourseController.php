@@ -359,9 +359,15 @@ class CourseController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        
         $variables['courseId'] = $id;
         $variables['courseForm'] = $this->getFormView($form);
         $variables['isAdminUser'] = $isAdminUser;
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'coursesPending'));
+        $hasPendingChanges = $entitiesAndLogEntriesArray["hasPendingChanges"];
+        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
         return new ViewModel($variables);
     }
 
@@ -387,24 +393,22 @@ class CourseController extends ActionController
             $isAdminUser = true;
         }
 
-        $courseArray = array($course);
-        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        $courseArray = $entitiesAndLogEntriesArray["course"];
+        $courseLogs = $entitiesAndLogEntriesArray["courseLogs"];
         $courseComparisonData = $versionModel->prepareDiffs($courseArray, $courseLogs);
 
-        $outlines = $course->getOutlines()->toArray();
-        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $outlines = $entitiesAndLogEntriesArray["outlines"];
+        $outlinesLogs = $entitiesAndLogEntriesArray["outlinesLogs"];
         $outlinesComparisonData = $versionModel->prepareDiffs($outlines, $outlinesLogs);
 
-        $resources = $course->getResources()->toArray();
-        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $resources = $entitiesAndLogEntriesArray["resources"];
+        $resourcesLogs = $entitiesAndLogEntriesArray["resourcesLogs"];
         $resourcesComparisonData = $versionModel->prepareDiffs($resources, $resourcesLogs);
 
-        $evaluation = $course->getEvaluation();
-        $questions = array();
-        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
-            $questions = $evaluation->getQuestions()->toArray();
-        }
-        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $questions = $entitiesAndLogEntriesArray["questions"];
+        $questionsLogs = $entitiesAndLogEntriesArray["questionsLogs"];
         $questionsComparisonData = $versionModel->prepareDiffs($questions, $questionsLogs);
 
         $variables['course'] = $courseComparisonData;
@@ -429,34 +433,29 @@ class CourseController extends ActionController
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $course = $query->find('Courses\Entity\Course', $id);
 
-        $courseArray = array($course);
-        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        $courseArray = $entitiesAndLogEntriesArray["course"];
+        $courseLogs = $entitiesAndLogEntriesArray["courseLogs"];
+        $outlines = $entitiesAndLogEntriesArray["outlines"];
+        $outlinesLogs = $entitiesAndLogEntriesArray["outlinesLogs"];
+        $resources = $entitiesAndLogEntriesArray["resources"];
+        $resourcesLogs = $entitiesAndLogEntriesArray["resourcesLogs"];
+        $evaluationArray = $entitiesAndLogEntriesArray["evaluation"];
+        $evaluationLogs = $entitiesAndLogEntriesArray["evaluationLogs"];
+        $questions = $entitiesAndLogEntriesArray["questions"];
+        $questionsLogs = $entitiesAndLogEntriesArray["questionsLogs"];
+        
         $versionModel->approveChanges($courseArray, $courseLogs);
-
-        $outlines = $course->getOutlines()->toArray();
-        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->approveChanges($outlines, $outlinesLogs);
-
-        $resources = $course->getResources()->toArray();
-        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->approveChanges($resources, $resourcesLogs);
-
-        $evaluation = $course->getEvaluation();
-        $evaluationArray = array();
-        $questions = array();
-        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
-            $evaluationArray[] = $evaluation;
-            $questions = $evaluation->getQuestions()->toArray();
-        }
-        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        $evaluationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->approveChanges($questions, $questionsLogs);
         $versionModel->approveChanges($evaluationArray, $evaluationLogs);
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'courses'));
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * Disapprove pending version course
      * 
@@ -470,27 +469,22 @@ class CourseController extends ActionController
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $course = $query->find('Courses\Entity\Course', $id);
 
-        $courseArray = array($course);
-        $courseLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        $courseArray = $entitiesAndLogEntriesArray["course"];
+        $courseLogs = $entitiesAndLogEntriesArray["courseLogs"];
+        $outlines = $entitiesAndLogEntriesArray["outlines"];
+        $outlinesLogs = $entitiesAndLogEntriesArray["outlinesLogs"];
+        $resources = $entitiesAndLogEntriesArray["resources"];
+        $resourcesLogs = $entitiesAndLogEntriesArray["resourcesLogs"];
+        $evaluationArray = $entitiesAndLogEntriesArray["evaluation"];
+        $evaluationLogs = $entitiesAndLogEntriesArray["evaluationLogs"];
+        $questions = $entitiesAndLogEntriesArray["questions"];
+        $questionsLogs = $entitiesAndLogEntriesArray["questionsLogs"];
+        
         $versionModel->disapproveChanges($courseArray, $courseLogs);
-
-        $outlines = $course->getOutlines()->toArray();
-        $outlinesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->disapproveChanges($outlines, $outlinesLogs);
-
-        $resources = $course->getResources()->toArray();
-        $resourcesLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->disapproveChanges($resources, $resourcesLogs);
-
-        $evaluation = $course->getEvaluation();
-        $evaluationArray = array();
-        $questions = array();
-        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
-            $evaluationArray[] = $evaluation;
-            $questions = $evaluation->getQuestions()->toArray();
-        }
-        $questionsLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        $evaluationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->disapproveChanges($questions, $questionsLogs);
         $versionModel->disapproveChanges($evaluationArray, $evaluationLogs);
 
@@ -621,7 +615,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Evaluation');
         $evalEntity = new \Courses\Entity\Evaluation();
         $evaluationModel = new \Courses\Model\Evaluation($query);
-        
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -774,7 +768,7 @@ class CourseController extends ActionController
                     }
                 }
                 //redirect to course page
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation' , 'courseId'=> $courseId ), array('name' => 'editCourseEvaluation'));
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation', 'courseId' => $courseId), array('name' => 'editCourseEvaluation'));
                 $this->redirect()->toUrl($url);
             }
             else {
@@ -880,7 +874,14 @@ class CourseController extends ActionController
                 $variables['unvalidQuestions'] = $unValidQuestions;
             }
         }
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        
         $variables['courseId'] = $courseId;
+        $hasPendingChanges = $entitiesAndLogEntriesArray["hasPendingChanges"];
+        $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
         return new ViewModel($variables);
     }
 

@@ -195,8 +195,16 @@ class ResourceController extends ActionController
             $data = $request->getPost()->toArray();
             $resourceModel->updateListedResources($data);
         }
+        
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        
         $variables['courseId'] = $courseId;
+        $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
+        $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
         return new ViewModel($variables);
     }
 

@@ -22,6 +22,7 @@ use System\Service\Cache\CacheHandler;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Utilities\Service\Object $objectUtilities
+ * @property Versioning\Model\Version $version
  * 
  * @package courses
  * @subpackage model
@@ -60,6 +61,12 @@ class Course
     protected $objectUtilities;
 
     /**
+     *
+     * @var Versioning\Model\Version
+     */
+    protected $version;
+    
+    /**
      * Set needed properties
      * 
      * @access public
@@ -68,14 +75,16 @@ class Course
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Utilities\Service\Object $objectUtilities
+     * @param Versioning\Model\Version $version
      */
-    public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $objectUtilities)
+    public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $objectUtilities, $version)
     {
         $this->query = $query;
         $this->outlineModel = $outlineModel;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->objectUtilities = $objectUtilities;
+        $this->version = $version;
     }
 
     /**
@@ -290,6 +299,54 @@ class Course
             }
         }
         return $courses;
+    }
+    
+    /**
+     * Get course log entries
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course 
+     * @return array log entries for the course
+     */
+    public function getLogEntries($course)
+    {
+        $courseArray = array($course);
+        $courseLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $courseArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+
+        $outlines = $course->getOutlines()->toArray();
+        $outlinesLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $outlines, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+
+        $resources = $course->getResources()->toArray();
+        $resourcesLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $resources, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+
+        $evaluation = $course->getEvaluation();
+        $evaluationArray = array();
+        $questions = array();
+        if (is_object($evaluation) && count($evaluation->getQuestions()) > 0) {
+            $evaluationArray[] = $evaluation;
+            $questions = $evaluation->getQuestions()->toArray();
+        }
+        $questionsLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $questions, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        $evaluationLogs = $this->version->getLogEntriesPerEntities(/* $entities = */ $evaluationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        
+        $hasPendingChanges = false;
+        if(count($questionsLogs) > 0 || count($resourcesLogs) > 0 || count($outlinesLogs) > 0 || count($courseLogs) > 0){
+            $hasPendingChanges = true;
+        }
+        
+        return array(
+            "course" => $courseArray,
+            "courseLogs" => $courseLogs,
+            "outlines" => $outlines,
+            "outlinesLogs" => $outlinesLogs,
+            "resources" => $resources,
+            "resourcesLogs" => $resourcesLogs,
+            "evaluation" => $evaluationArray,
+            "evaluationLogs" => $evaluationLogs,
+            "questions" => $questions,
+            "questionsLogs" => $questionsLogs,
+            "hasPendingChanges" => $hasPendingChanges,
+        );
     }
 
 }

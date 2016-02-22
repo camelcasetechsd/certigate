@@ -367,7 +367,15 @@ class OrganizationsController extends ActionController
         $variables['CRAttachment'] = $crAttachment;
         $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
         $variables['atcLicenseAttachment'] = $atcLicenseAttachment;
-        $variables['userForm'] = $this->getFormView($form);
+        $variables['organizationForm'] = $this->getFormView($form);
+        
+        $organizationArray = array($orgObj);
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
+        
+        $hasPendingChanges = (count($organizationLogs) > 0) ? true : false;
+        $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'organizationsPending'));
+        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
         return new ViewModel($variables);
     }
 
