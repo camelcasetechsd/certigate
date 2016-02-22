@@ -2,11 +2,7 @@
 {{<layout}}
 
 {{$content}}
-<ul>    
-    {{#validationError}}
-    <li class="error">{{.}}</li>
-    {{/validationError}}
-</ul>
+
 
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails">Course Details</a></li>
@@ -18,58 +14,74 @@
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
     <div role="tabpanel" class="tab-pane active" id="courseEvaluation">
-        <form id="editForm" class="form-horizontal" method="POST" action="">
-            <fieldset>
-                <br>
-                <!-- Form Name -->
-                {{#templateQuestions}}
-                <!-- Text input-->
-                <div class="form-group" >
-                    <label class="col-md-4 control-label" for="template[]">Question Title</label>  
-                    <div class=" col-md-4">
-                        <input name="template[]" type="text" placeholder="Add Your Question Here" class="form-control templateQuestion input-md" required=""value="{{questionTitle}}">
-                        <a href="#" class="deleteTemplateQuestion removeQ" >X</a>
-                    </div>
-                </div>
-                {{/templateQuestions}}
-                {{#oldQuestions}}
-                <!-- Text input-->
-                <div class="form-group" >
-                    <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
-                    <div class=" col-md-4">
-                        <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
-                        <a href="#" class="deleteQuestion removeQ" >X</a>
-                    </div>
-                </div>
-                {{/oldQuestions}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Create Evaluation</h3>
+            </div>
+            <div class="panel-body">
+                <ul>    
+                    {{#validationError}}
+                    <li class="error">{{.}}</li>
+                    {{/validationError}}
+                </ul>
+                <form id="editForm" class="form-horizontal" method="POST" action="">
+                    <fieldset>
+                        <br>
+                        <!-- Form Name -->
+                        {{#templateQuestions}}
+                        <!-- Text input-->
+                        <div class="form-group" >
+                            <label class="col-md-4 control-label" for="template[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="template[]" type="text" placeholder="Add Your Question Here" class="form-control templateQuestion input-md" required=""value="{{questionTitle}}">
+                                <a href="#" class="deleteTemplateQuestion removeQ" >X</a>
+                            </div>
+                        </div>
+                        {{/templateQuestions}}
+                        {{#oldQuestions}}
+                        <!-- Text input-->
+                        <div class="form-group" >
+                            <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                                <a href="#" class="deleteQuestion removeQ" >X</a>
+                            </div>
+                        </div>
+                        {{/oldQuestions}}
 
-                <span id="endOfText"></span>
-                {{#isAdminUser}}
-                <div class="form-group">
-                    <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
-                    <div class=" col-md-4"> 
-                        <input type="checkbox" name="status" class="form-control" id="evaluation_form_status">
-                    </div>
-                </div>
-                {{/isAdminUser}}
-                <!-- button -->
-                <div class=" row form-group">
-                    <div class="col-md-4">
-                        <button id="singlebutton" name="submit" class="btn btn-success">Submit Course Evaluation</button>
-                    </div>
-                </div>
+                        <span id="endOfText"></span>
+                        {{#isAdminUser}}
+                        <div class="form-group">
+                            <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
+                            <div class=" col-md-4"> 
+                                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status">
+                            </div>
+                        </div>
+                        {{/isAdminUser}}
+                        <!-- button -->
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+                            </div>
+                        </div>
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button id="singlebutton" name="submit" class="btn btn-success">Submit Course Evaluation</button>
+                            </div>
+                        </div>
 
-            </fieldset>
-        </form>
+                    </fieldset>
+                </form>
 
+
+            </div>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
 
     </div>
-    <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
 </div>
-
-
-<button type="button" id="addmore" class=" btn btn-primary">Add More</button>
-
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script>

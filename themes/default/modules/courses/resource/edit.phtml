@@ -17,48 +17,54 @@
     <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
     <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
     <div role="tabpanel" class="tab-pane active" id="courseResources">
-        <br>
-        <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
-        <br><br>
-        <form id="resourcesForm" action="" method="POST" >
-            <div class="panel panel-default">
-                <div class="panel-heading">Resources</div>
-                <!-- Table -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>File</th>
-                            <th colspan="2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#resources}}
-                        <tr id ="{{id}}" class="{{^status}}container-inactive{{/status}}">
-                            <td>
-                                <input type="text" class="form-control editableInput resourceName" value="{{name}}">
-                            </td>
-                            <td>
-                                <select class="resourceType form-control editableInput" value='{{type}}'>
-                                    <option value="1">Presentations</option>
-                                    <option value="2">Activities</option>
-                                    <option value="3">Exams</option>
-                                </select>
-                            </td>
-                            <td><a target="_blank" href="/resources/download/{{id}}" >download</a></td>
-                            <td>
-                                <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="Delete">Remove</a>
-                            </td>
-                        </tr>
-                        {{/resources}}
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Edit Resources</h3>
             </div>
-            <button type="submit" class="btn btn-primary" name="submit" >{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Save Resources{{/isAdminUser}} </button>
-        </form>
+            <div class="panel-body">
+                <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
+                <br><br>
+                <form id="resourcesForm" action="" method="POST" >
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Resources</div>
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>File</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#resources}}
+                                <tr id ="{{id}}" class="{{^status}}container-inactive{{/status}}">
+                                    <td>
+                                        <input type="text" class="form-control editableInput resourceName" value="{{name}}">
+                                    </td>
+                                    <td>
+                                        <select class="resourceType form-control editableInput" value='{{type}}'>
+                                            <option value="1">Presentations</option>
+                                            <option value="2">Activities</option>
+                                            <option value="3">Exams</option>
+                                        </select>
+                                    </td>
+                                    <td><a target="_blank" href="/resources/download/{{id}}" >download</a></td>
+                                    <td>
+                                        <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="Delete">Remove</a>
+                                    </td>
+                                </tr>
+                                {{/resources}}
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="submit" >{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Save Resources{{/isAdminUser}} </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
