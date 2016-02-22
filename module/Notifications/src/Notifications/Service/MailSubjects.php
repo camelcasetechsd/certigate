@@ -28,6 +28,11 @@ class MailSubjects {
      * New Organization Notification Subject
      */
     const NEW_ORGANIZATION_NOTIFICATION_SUBJECT = "New organization notification";
+
+    /**
+     * Updated Organization Notification Subject
+     */
+    const UPDATED_ORGANIZATION_NOTIFICATION_SUBJECT = "Updated organization notification";
     
     /**
      * New User Notification Subject
@@ -38,6 +43,11 @@ class MailSubjects {
      * New Course Notification Subject
      */
     const NEW_COURSE_NOTIFICATION_SUBJECT = "New course notification";
+    
+    /**
+     * Updated Course Notification Subject
+     */
+    const UPDATED_COURSE_NOTIFICATION_SUBJECT = "Updated course notification";
             
     /**
      * New Instructor Welcome Kit Subject
@@ -48,6 +58,26 @@ class MailSubjects {
      * New Organization Welcome Kit Subject
      */
     const NEW_ORGANIZATION_WELCOME_KIT_SUBJECT = "New organization welcome kit";
+           
+    /**
+     * New evaluation Notification Subject
+     */
+    const NEW_EVALUATION_NOTIFICATION_SUBJECT = "New evaluation notification";
+
+    /**
+     * Updated evaluation Notification Subject
+     */
+    const UPDATED_EVALUATION_NOTIFICATION_SUBJECT = "Updated evaluation notification";
+           
+    /**
+     * New resource Notification Subject
+     */
+    const NEW_RESOURCE_NOTIFICATION_SUBJECT = "New resource notification";
+
+    /**
+     * Updated resource Notification Subject
+     */
+    const UPDATED_RESOURCE_NOTIFICATION_SUBJECT = "Updated resource notification";
     
     /**
      * Contact us Subject

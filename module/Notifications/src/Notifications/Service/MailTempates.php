@@ -28,6 +28,11 @@ class MailTempates {
      * New Organization Notification Template
      */
     const NEW_ORGANIZATION_NOTIFICATION_TEMPLATE = "new-organization-notification";
+
+    /**
+     * Updated Organization Notification Template
+     */
+    const UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE = "updated-organization-notification";
     
     /**
      * New User Notification Template
@@ -38,7 +43,32 @@ class MailTempates {
      * New Course Notification Template
      */
     const NEW_COURSE_NOTIFICATION_TEMPLATE = "new-course-notification";
-            
+    
+    /**
+     * Updated Course Notification Template
+     */
+    const UPDATED_COURSE_NOTIFICATION_TEMPLATE = "updated-course-notification";
+           
+    /**
+     * New evaluation Notification Template
+     */
+    const NEW_EVALUATION_NOTIFICATION_TEMPLATE = "new-evaluation-notification";
+
+    /**
+     * Updated evaluation Notification Template
+     */
+    const UPDATED_EVALUATION_NOTIFICATION_TEMPLATE = "updated-evaluation-notification";
+           
+    /**
+     * New resource Notification Template
+     */
+    const NEW_RESOURCE_NOTIFICATION_TEMPLATE = "new-resource-notification";
+
+    /**
+     * Updated resource Notification Template
+     */
+    const UPDATED_RESOURCE_NOTIFICATION_TEMPLATE = "updated-resource-notification";
+    
     /**
      * New Instructor Welcome Kit Template
      */
