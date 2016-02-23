@@ -41,7 +41,8 @@ $config = array(
         'Courses',
         'Versioning',
         'System',
-        'Notifications'
+        'Notifications',
+        'Translation'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
