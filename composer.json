@@ -16,7 +16,8 @@
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
-        "phpunit/phpunit": "4.7.x",
+        "phpunit/phpunit": "4.8.x",
+        "phpunit/dbunit": "2.0.x",
         "apigen/apigen": "2.8.1"
     }
 }
