@@ -15,5 +15,10 @@ class SignControllerTest extends AbstractTestCase
    {
        echo "true";
    }
+   
+   public function testOutAction()
+   {
+       echo "again";
+   }
     
 }
