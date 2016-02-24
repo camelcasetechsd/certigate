@@ -4,6 +4,7 @@ namespace DefaultModule\Test\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use PHPUnit_Extensions_Database_TestCase_Trait;
+use PHPUnit_Extensions_Database_DataSet_YamlDataSet;
 
 /**
  * AbstractTestCase Parent for each and every test case providing common needs for all test cases
@@ -47,7 +48,7 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
      * @var Doctrine\DBAL\Connection 
      */
     private $connection = null;
-    
+
     /**
      * Setup test case needed properties
      * 
@@ -60,18 +61,21 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
         );
         $this->application = $this->getApplication();
         $this->serviceManager = $this->getApplicationServiceLocator();
-        
-        $this->getConnection()->executeQuery("set foreign_key_checks=0");
+
+        $entitymanager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
+        $connection = $entitymanager->getConnection();
+        $connection->executeQuery("set foreign_key_checks=0");
         parent::setUp();
-        $this->getConnection()->executeQuery("set foreign_key_checks=1");
-        
+
         // this part is a duplicate from original trait setup method, as it is overridden here 
         $this->databaseTester = NULL;
         $this->getDatabaseTester()->setSetUpOperation($this->getSetUpOperation());
         $this->getDatabaseTester()->setDataSet($this->getDataSet());
         $this->getDatabaseTester()->onSetUp();
+
+        $connection->executeQuery("set foreign_key_checks=1");
     }
- 
+
     /**
      * Get connection using doctrine entity manager
      * 
@@ -80,23 +84,24 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
      */
     final public function getConnection()
     {
-        if ($this->connection === null)
-        {
-            $this->connection = $this->serviceManager->get('doctrine.entitymanager.orm_default')->getConnection();
-            
-            $this->connection = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['DB_DBNAME']);
+        if ($this->connection === null) {
+            $entitymanager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
+            $connection = $entitymanager->getConnection();
+            $pdo = $connection->getWrappedConnection();
+            $databaseName = $connection->getDatabase();
+
+            $this->connection = $this->createDefaultDBConnection($pdo, $databaseName);
         }
- 
+
         return $this->connection;
     }
- 
-    
+
     /**
      * @return PHPUnit_Extensions_Database_DataSet_IDataSet
      */
     public function getDataSet()
     {
-        return $this->createFlatXMLDataSet(dirname(__FILE__) . '/../_files/ws_db.xml');
+        return $this->createMySQLXMLDataSet('extra/sql.xml');
     }
 
 }
