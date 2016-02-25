@@ -18,7 +18,6 @@ class TranslatorHandler extends Translator
     {
         $this->setLocale(CURRENT_LOCALE);
         $this->setFallbackLocale(DEFAULT_LOCALE);
-        $this->addTranslationFile('gettext',__DIR__.'/ar_Ar.mo');
+        $this->addTranslationFile('gettext',__DIR__.'/../../../../language/ar_Ar.mo');
         }
-
 }
