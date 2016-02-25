@@ -17,8 +17,8 @@ class TranslatorHandler extends Translator
     public function __construct( )
     {
         $this->setLocale(CURRENT_LOCALE);
-        $this->setFallbackLocale(CURRENT_LOCALE);
-        $this->addTranslationFile('gettext','./module/Translation/language/ar_Ar.mo','./module/Translation/language');
+        $this->setFallbackLocale(DEFAULT_LOCALE);
+        $this->addTranslationFile('gettext',__DIR__.'/ar_Ar.mo');
         }
 
 }
