@@ -23,6 +23,13 @@ use Users\Entity\Role;
 class RendererFactory implements FactoryInterface
 {
 
+    protected $translator;
+
+    private function setTranslator($serviceLocator)
+    {
+        $this->translator = $serviceLocator->get('translatorHandler');
+    }
+
     /**
      * Prepare Renderer service
      * 
@@ -39,7 +46,6 @@ class RendererFactory implements FactoryInterface
     {
 
         $config = $serviceLocator->get('Configuration');
-        $translator = $serviceLocator->get('translatorHandler');
         $config = $config['mustache'];
 
         // set isProduction according to current environment
@@ -50,16 +56,10 @@ class RendererFactory implements FactoryInterface
 
         $config['helpers']['primaryMenu'] = '';
 
-//        $config['helpers']["i18n"] = function($text, &$translator) {
-//            return $translator->translate($text);
-//        };
+        $this->setTranslator($serviceLocator);
 
         $config['helpers']["i18n"] = function($text) {
-            /**
-             * TODO: Need to inject $translator object inside lambda_helper
-             * to be able to use translate function
-             */
-            return "TEST" . $text . "TEST";
+            return $this->translator->translate($text /* SENTENCE_KEY */);
         };
 
         $forceFlush = !$config['helpers']['isProduction'];

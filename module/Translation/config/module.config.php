@@ -3,8 +3,10 @@
 namespace Translation;
 
 return array(
-    'router' => array(),
     'service_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
+        ),
         'factories' => array(
             'CMS\Service\TranslatorHandler' => 'Translation\Service\Translator\TranslatorHandlerFactory',
         ),
@@ -13,6 +15,7 @@ return array(
         ),
     ),
     'translator' => array(
+        'local' => 'ar_Ar' ,
         'translation_file_patterns' => array(
             array(
                 'type' => 'gettext',
@@ -22,6 +25,26 @@ return array(
             ),
         ),
     ),
-    'controllers' => array(),
-    'view_manager' => array(),
+    'controllers' => array(
+        'invokables' => array(
+            'Translation\Controller\Index' => 'Translation\Controller\IndexController',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'organizationUsers' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/trans/index',
+                    'defaults' => array(
+                        'controller' => 'Translation\Controller\Index',
+                        'action' => 'index'
+                    ),
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                )
+            ),
+        )
+    )
 );
