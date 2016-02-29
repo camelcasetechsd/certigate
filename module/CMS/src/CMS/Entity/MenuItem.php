@@ -524,15 +524,15 @@ class MenuItem
             ) );
             $inputFilter->add( array(
                 'name' => 'directUrl',
-                'required' => FALSE
+                'required' => true
             ) );
             $inputFilter->add(array(
                 'name' => 'page',
-                'required' => FALSE,
+                'required' => true,
             ));
             $inputFilter->add( array(
                 'name' => 'menu',
-                'required' => true
+                'required' => false
             ) );
             $inputFilter->add( array(
                 'name' => 'weight',
@@ -551,7 +551,7 @@ class MenuItem
             ) );
             $inputFilter->add( array(
                 'name' => 'parent',
-                'required' => false
+                'required' => true
             ) );
             $this->inputFilter = $inputFilter;
         }
