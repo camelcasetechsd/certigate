@@ -3,18 +3,16 @@
 namespace DefaultModule\Test\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 /**
  * AbstractTestCase Parent for each and every test case providing common needs for all test cases
  * 
  * @property Zend\ServiceManager\ServiceManager $serviceManager
  * @property Zend\Mvc\ApplicationInterface $application
- * @property Doctrine\Common\DataFixtures\Loader $loader
+ * @property Utilities\Service\Fixture\FixtureLoader $fixtureLoader
  * @property bool $traceError ,default is true
  * @property bool $firstTestCaseFlag ,default is true
+ * @property string $truncateQuery
  * 
  * @package defaultModule
  * @subpackage test
@@ -36,9 +34,9 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
 
     /**
      *
-     * @var Doctrine\Common\DataFixtures\Loader
+     * @var Utilities\Service\Fixture\FixtureLoader
      */
-    public $loader;
+    public $fixtureLoader;
 
     /**
      *
@@ -52,23 +50,34 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
     static private $firstTestCaseFlag = true;
 
     /**
+     * @var string
+     */
+    static private $truncateQuery;
+
+    /**
      * Setup test case needed properties
      * 
      * @access public
      */
     public function setUp()
     {
-        $this->setApplicationConfig(
-                include 'config/application.config.php'
-        );
+        $this->serviceManager = \PhpunitBootstrap::getServiceManager();
+        
+        if (empty($this->getApplicationConfig())) {
+            $this->setApplicationConfig(
+                    $this->serviceManager->get('ApplicationConfig')
+            );
+        }
         $this->application = $this->getApplication();
-        $this->serviceManager = $this->getApplicationServiceLocator();
-        $this->loader = new Loader();
-
+        $this->fixtureLoader = $this->serviceManager->get("Utilities\Service\Fixture\FixtureLoader");
+        $this->fixtureLoader->setDefaultFixtures(array(
+            "Users\Entity\Fixture\Acl",
+            "Users\Entity\Fixture\Role"
+        ));
         // refresh DB structure
         if (self::$firstTestCaseFlag === true) {
-            shell_exec("bin/doctrine orm:schema-tool:drop --force;");
-            shell_exec("bin/doctrine orm:schema-tool:update --force;");
+            shell_exec("bin/doctrine orm:schema-tool:drop --force; "
+                    . "bin/doctrine orm:schema-tool:update --force;");
         }
         else {
             $this->truncateDatabase();
@@ -76,23 +85,6 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
 
         parent::setUp();
         self::$firstTestCaseFlag = false;
-    }
-
-    /**
-     * Load fixtures in database
-     * 
-     * @access public
-     * @param array $fixtures array of fixture classes
-     */
-    public function loadFixtures($fixtures)
-    {
-        foreach ($fixtures as $fixture) {
-            $this->loader->addFixture($fixture);
-        }
-        $purger = new ORMPurger();
-        $entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
-        $executor = new ORMExecutor($entityManager, $purger);
-        $executor->execute($this->loader->getFixtures());
     }
 
     /**
@@ -104,16 +96,20 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
     {
         $entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
         $connection = $entityManager->getConnection();
-        $schemaManager = $connection->getSchemaManager();
-        $tables = $schemaManager->listTables();
-        $query = '';
+        if (empty(self::$truncateQuery)) {
+            $schemaManager = $connection->getSchemaManager();
+            $tables = $schemaManager->listTables();
+            $query = '';
 
-        $query .= 'set foreign_key_checks=0;';
-        foreach ($tables as $table) {
-            $name = $table->getName();
-            $query .= 'TRUNCATE ' . $name . ';';
+            $query .= 'set foreign_key_checks=0;';
+            foreach ($tables as $table) {
+                $name = $table->getName();
+                $query .= 'DELETE FROM ' . $name . ';VACUUM;';
+            }
+            $query .= 'set foreign_key_checks=1;';
+            self::$truncateQuery = $query;
         }
-        $query .= 'set foreign_key_checks=1;';
+        $connection->executeQuery(self::$truncateQuery);
     }
 
 }

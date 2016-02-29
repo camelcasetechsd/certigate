@@ -24,12 +24,6 @@ class PhpunitBootstrap
         static::$serviceManager = $serviceManager;
     }
 
-    public static function chroot()
-    {
-        $rootPath = dirname(static::findParentPath('module'));
-        chdir($rootPath);
-    }
-
     public static function getServiceManager()
     {
         return static::$serviceManager;
@@ -37,7 +31,7 @@ class PhpunitBootstrap
 
     protected static function initAutoloader()
     {
-        $vendorPath = static::findParentPath('vendor');
+        $vendorPath = 'vendor';
 
         if (file_exists($vendorPath.'/autoload.php')) {
             include $vendorPath.'/autoload.php';
@@ -58,21 +52,6 @@ class PhpunitBootstrap
             ),
         ));
     }
-
-    protected static function findParentPath($path)
-    {
-        $dir = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-        return $dir . '/' . $path;
-    }
 }
 
 PhpunitBootstrap::init();
-PhpunitBootstrap::chroot();
