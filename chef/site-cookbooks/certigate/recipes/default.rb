@@ -16,11 +16,20 @@ mysql_service "default" do
 end
 
 # create default database
-mysql_database "#{node.site.db.name}" do
+mysql_database "#{node.site.db.main.name}" do
     connection node['mysql']['root_connection']
-    owner "#{node.site.db.username}"
-    encoding  "#{node.site.db.encoding}"
-    collation  "#{node.site.db.collation}"
+    owner "#{node.site.db.main.username}"
+    encoding  "#{node.site.db.main.encoding}"
+    collation  "#{node.site.db.main.collation}"
+    action :create
+end
+
+# create test database
+mysql_database "#{node.site.db.test.name}" do
+    connection node['mysql']['root_connection']
+    owner "#{node.site.db.test.username}"
+    encoding  "#{node.site.db.test.encoding}"
+    collation  "#{node.site.db.test.collation}"
     action :create
 end
 
