@@ -1,5 +1,7 @@
 <?php
 
+namespace DefaultModule\Test\Controller;
+
 use DefaultModule\Test\Controller\AbstractTestCase;
 use Zend\Http\Request;
 use Users\Fixture\UserCredentials;
