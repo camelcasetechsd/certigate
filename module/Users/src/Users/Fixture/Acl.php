@@ -1,6 +1,6 @@
 <?php
 
-namespace Users\Entity\Fixture;
+namespace Users\Fixture;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
