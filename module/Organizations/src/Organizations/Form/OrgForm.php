@@ -383,10 +383,10 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
                 'class' => 'atcSet',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'ATC License Attachment',
-                'required' => 'required',
                 'label_attributes' => array(
                     'class' => 'atcSet',
                 ),
