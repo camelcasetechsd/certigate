@@ -17,6 +17,7 @@ return array(
             'Utilities\Service\Cache' => 'Utilities\Service\Cache\CacheFactory',
             'Utilities\Service\Object' => 'Utilities\Service\ObjectFactory',
             'Utilities\Service\Logger' => 'Utilities\Service\Logger\LoggerFactory',
+            'Utilities\Service\Fixture\FixtureLoader' => 'Utilities\Service\Fixture\FixtureLoaderFactory',
         ),
         'invokables' => array(
             'Utilities\Service\File' => 'Utilities\Service\File',
