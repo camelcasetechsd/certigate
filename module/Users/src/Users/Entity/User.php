@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Utilities\Service\Time;
 use DoctrineModule\Validator\UniqueObject;
 use Utilities\Service\Inflector;
+use Utilities\Service\Status;
+use Zend\Validator\Identical;
 
 /**
  * User Entity
@@ -297,8 +299,6 @@ class User
      */
     public $votes;
 
-    
-    
     /**
      * hash password
      * 
@@ -508,14 +508,14 @@ class User
     public function getRolesNames()
     {
         $rolesNames = array();
-        foreach($this->roles as $role){
-            if(is_object($role)){
+        foreach ($this->roles as $role) {
+            if (is_object($role)) {
                 $rolesNames[] = $role->getName();
             }
         }
         return $rolesNames;
     }
-    
+
     /**
      * Get roles agreements status
      * 
@@ -528,9 +528,9 @@ class User
         $inflector = new Inflector();
         $roles = $this->getRolesNames();
         $rolesAgreementsStatus = array();
-        foreach($roles as $role){
-            $roleAgrementStatusMethod = "get".$inflector->camelize($role)."Statement";
-            if(method_exists($this, $roleAgrementStatusMethod)){
+        foreach ($roles as $role) {
+            $roleAgrementStatusMethod = "get" . $inflector->camelize($role) . "Statement";
+            if (method_exists($this, $roleAgrementStatusMethod)) {
                 $rolesAgreementsStatus[$role] = $this->$roleAgrementStatusMethod();
             }
         }
@@ -1420,7 +1420,7 @@ class User
                 'name' => 'language',
                 'required' => true,
             ));
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'mobile',
                 'required' => true,
                 'filters' => array(
@@ -1438,7 +1438,7 @@ class User
                             )
                         ))
                 )
-            ) );
+            ));
             $inputFilter->add(array(
                 'name' => 'dateOfBirth',
                 'required' => true,
@@ -1481,7 +1481,7 @@ class User
                 'name' => 'zipCode',
                 'required' => false,
             ));
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
                 'filters' => array(
@@ -1499,7 +1499,7 @@ class User
                             )
                         ))
                 )
-            ) );
+            ));
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,
@@ -1575,6 +1575,17 @@ class User
             $inputFilter->add(array(
                 'name' => 'privacyStatement',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'Identical',
+                        'options' => array(
+                            'token' => (string) Status::STATUS_ACTIVE,
+                            'messages' => array(
+                                Identical::NOT_SAME => 'You must agree to the privacy statement',
+                            ),
+                        ),
+                    ),
+                ),
             ));
 
             $this->inputFilter = $inputFilter;
