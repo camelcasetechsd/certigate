@@ -5,16 +5,15 @@ namespace Users\Entity\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Users\Entity\Role as RoleEntity;
 
 /**
  * Role Fixture
  * 
  * @package users
- * @subpackage entity
+ * @subpackage fixture
  */
-class Role extends AbstractFixture implements OrderedFixtureInterface,DependentFixtureInterface
+class Role extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * Load role fixture
@@ -40,6 +39,10 @@ class Role extends AbstractFixture implements OrderedFixtureInterface,DependentF
         $trainingManagerRole->setName(RoleEntity::TRAINING_MANAGER_ROLE);
         $manager->persist($trainingManagerRole);
         
+        $instructorRole = new RoleEntity();
+        $instructorRole->setName(RoleEntity::INSTRUCTOR_ROLE);
+        $manager->persist($instructorRole);
+        
         $userRole = new RoleEntity();
         $userRole->setName(RoleEntity::USER_ROLE);
         $manager->persist($userRole);
@@ -49,19 +52,14 @@ class Role extends AbstractFixture implements OrderedFixtureInterface,DependentF
         $manager->persist($adminRole);
         
         $manager->flush();
-        $this->addReference('role', $proctorRole);
-    }
-    
-    /**
-     * Get Fixture dependencies
-     * 
-     * @access public
-     * @return array
-     */
-    public function getDependencies()
-    {
-        return array(
-            ); // fixture classes fixture is dependent on
+        
+        $this->addReference(RoleEntity::PROCTOR_ROLE, $proctorRole);
+        $this->addReference(RoleEntity::STUDENT_ROLE, $studentRole);
+        $this->addReference(RoleEntity::TEST_CENTER_ADMIN_ROLE, $testCenterAdminRole);
+        $this->addReference(RoleEntity::TRAINING_MANAGER_ROLE, $trainingManagerRole);
+        $this->addReference(RoleEntity::INSTRUCTOR_ROLE, $instructorRole);
+        $this->addReference(RoleEntity::USER_ROLE, $userRole);
+        $this->addReference(RoleEntity::ADMIN_ROLE, $adminRole);
     }
     
     /**
