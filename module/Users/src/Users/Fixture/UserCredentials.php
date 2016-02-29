@@ -1,6 +1,6 @@
 <?php
 
-namespace Users\Entity\Fixture;
+namespace Users\Fixture;
 
 use Users\Entity\Role as RoleEntity;
 

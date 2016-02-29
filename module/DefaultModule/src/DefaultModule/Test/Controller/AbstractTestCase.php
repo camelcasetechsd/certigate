@@ -71,8 +71,8 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
         $this->application = $this->getApplication();
         $this->fixtureLoader = $this->serviceManager->get("Utilities\Service\Fixture\FixtureLoader");
         $this->fixtureLoader->setDefaultFixtures(array(
-            "Users\Entity\Fixture\Acl",
-            "Users\Entity\Fixture\Role"
+            "Users\Fixture\Acl",
+            "Users\Fixture\Role"
         ));
         // refresh DB structure
         if (self::$firstTestCaseFlag === true) {
