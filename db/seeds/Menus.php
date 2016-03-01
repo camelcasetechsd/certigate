@@ -3,10 +3,12 @@
 require_once 'init_autoloader.php';
 require_once 'module/CMS/src/CMS/Entity/Menu.php';
 require_once 'module/CMS/src/CMS/Entity/MenuItem.php';
+require_once 'module/CMS/src/CMS/Service/PageTypes.php';
 
 use Phinx\Seed\AbstractSeed;
 use \CMS\Entity\Menu;
 use \CMS\Entity\MenuItem;
+use \CMS\Service\PageTypes;
 
 class Menus extends AbstractSeed
 {
@@ -464,7 +466,8 @@ class Menus extends AbstractSeed
             'title' => $item['title'],
             'path' => $item['path'],
             'status' => TRUE,
-            'body' => base64_encode(bzcompress($faker->text))
+            'body' => base64_encode(bzcompress($faker->text)),
+            'type' => PageTypes::PAGE_TYPE
         ]);
 
         $pageId = $this->getAdapter()->getConnection()->lastInsertId();
