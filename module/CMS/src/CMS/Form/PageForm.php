@@ -130,7 +130,7 @@ class PageForm extends Form
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'rows' => 3,
+                'maxlength' => 1000,
                 'cols' => 80,
             ),
             'options' => array(

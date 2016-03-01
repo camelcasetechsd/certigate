@@ -576,7 +576,15 @@ class Page
             ));
             $inputFilter->add(array(
                 'name' => 'summary',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'StringLength',
+                        'options' => array(
+                            'max' => 1000, 
+                            'encoding' => 'UTF-8'
+                        )
+                    ),
+                )
             ));
             $inputFilter->add(array(
                 'name' => 'body',
