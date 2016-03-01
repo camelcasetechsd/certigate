@@ -45,6 +45,7 @@ return array(
             'CMS\Controller\Page' => 'CMS\Controller\PageController',
             'CMS\Controller\Menu' => 'CMS\Controller\MenuController',
             'CMS\Controller\MenuItem' => 'CMS\Controller\MenuItemController',
+            'CMS\Controller\Press' => 'CMS\Controller\PressController',
         ),
     ),
     'router' => array(
@@ -264,6 +265,19 @@ return array(
                     'defaults' => array(
                         'controller' => 'CMS\Controller\MenuItem',
                         'action' => 'activate',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'press_details' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/press[/:id]',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Press',
+                        'action' => 'details',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
