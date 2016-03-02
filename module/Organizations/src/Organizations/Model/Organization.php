@@ -236,7 +236,7 @@ class Organization
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
             //creator left TM empty
-            else if (empty($orgInfo['trainingManager_id']) && ($orgInfo['type']== OrganizationEntity::TYPE_ATP || $orgInfo['type']== OrganizationEntity::TYPE_BOTH) ) {
+            else if (empty($orgInfo['trainingManager_id']) && ($orgInfo['type']== OrganizationEntity::TYPE_ATP || $orgInfo['type']== OrganizationEntity::TYPE_BOTH)  && !$editFlag) {
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
 
@@ -247,7 +247,7 @@ class Organization
             else if ($orgInfo['testCenterAdmin_id'] != 0) {
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
             }
-            else if (empty($orgInfo['testCenterAdmin_id']) && ($orgInfo['type']== OrganizationEntity::TYPE_ATC || $orgInfo['type']== OrganizationEntity::TYPE_BOTH)) {
+            else if (empty($orgInfo['testCenterAdmin_id']) && ($orgInfo['type'] == OrganizationEntity::TYPE_ATC || $orgInfo['type'] == OrganizationEntity::TYPE_BOTH) && !$editFlag) {
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
             }
         }
