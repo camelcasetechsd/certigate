@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 use Zend\Authentication\AuthenticationService;
 use Utilities\Service\MessageTypes;
 use Zend\View\Model\ViewModel;
+use Zend\Json\Json;
 
 /**
  * PressReleaseSubscription Model
@@ -108,6 +109,51 @@ class PressReleaseSubscription
         return $subscriptionsStatus;
     }
 
+    /**
+     * Get subscription submission result HTML result
+     * 
+     * @access public
+     * @param bool $status ,default is false
+     * @param bool $unsubscribeFlag ,default is false
+     * @param bool $message ,default is false
+     * @param bool $jsonFlag ,default is false
+     * 
+     * @return string HTML or JSON content for subscription result
+     */
+    public function getSubscriptionResult($status = false, $unsubscribeFlag = false, $message = false, $jsonFlag = false)
+    {
+        $unsubscribeText = "";
+        if ($unsubscribeFlag === true) {
+            $unsubscribeText = "un";
+        }
+        if ($status === false) {
+            $messages = array(
+                'type' => MessageTypes::DANGER,
+                'message' => (empty($message)) ? "Failed to {$unsubscribeText}subscribe!" : $message
+            );
+        }
+        else {
+            $messages = array(
+                'type' => MessageTypes::SUCCESS,
+                'message' => (empty($message)) ? "You have been {$unsubscribeText}subscribed successfully." : $message
+            );
+        }
+        $variables = array(
+            'messages' => $messages
+        );
+        $view = new ViewModel($variables);
+        $view->setTemplate('layout/messages');
+
+        $content = $this->viewRenderer->render($view);
+        if($jsonFlag === true){
+            $content = Json::encode(/* $variables = */ array(
+                        "content" => $content,
+                        "status" => $status,
+            ));
+        }
+        return $content;
+    }
+    
     /**
      * Get subscription submission result HTML result
      * 

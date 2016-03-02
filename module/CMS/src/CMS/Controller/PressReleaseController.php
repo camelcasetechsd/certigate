@@ -6,7 +6,6 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\PressReleaseSubscriptionForm;
 use CMS\Entity\PressReleaseSubscription;
-use Zend\Json\Json;
 
 /**
  * PressReleaseController Controller
@@ -90,10 +89,7 @@ class PressReleaseController extends ActionController
             }
         }
 
-        return $this->getResponse()->setContent(Json::encode(/* $variables = */ array(
-                            "content" => $pressReleaseSubscriptionModel->getSubscriptionResultHTML($status),
-                            "status" => $status,
-        )));
+        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ false, /*$message =*/ false, /*$jsonFlag =*/ true));
     }
 
     /**
@@ -106,30 +102,20 @@ class PressReleaseController extends ActionController
     public function unsubscribeAction()
     {
         $status = false;
-        $message = '';
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\PressReleaseSubscription');
         $pressReleaseSubscriptionModel = $this->getServiceLocator()->get('CMS\Model\PressReleaseSubscription');
 
         $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
         $token = $this->params('token');
         $subscriptionResult = $pressReleaseSubscriptionModel->getSubscription($token, $subscriptionsStatus);
-
+        $message = $subscriptionResult["message"];
+        
         if (!is_null($subscriptionResult["pressReleaseSubscription"])) {
             $query->remove($subscriptionResult["pressReleaseSubscription"]);
             $status = true;
         }
-        else {
-            $message = $subscriptionResult["message"];
-        }
 
-        $content = $pressReleaseSubscriptionModel->getSubscriptionResultHTML($status, /* $unsubscribeFlag */ true, $message);
-        if (empty($token)) {
-            $content = Json::encode(/* $variables = */ array(
-                        "content" => $content,
-                        "status" => $status,
-            ));
-        }
-        return $this->getResponse()->setContent($content);
+        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, $message, /*$jsonFlag =*/ (empty($token)) ? true : false));
     }
 
 }
