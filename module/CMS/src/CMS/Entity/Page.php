@@ -298,6 +298,9 @@ class Page
      */
     public function setPicture($picture)
     {
+        if(is_array($picture) && array_key_exists("tmp_name", $picture)){
+            $picture["tmp_name"] = str_replace(/* $search= */APPLICATION_PATH, /* $replace= */'', $picture["tmp_name"]);
+        }
         $this->picture = $picture;
         return $this;
     }
