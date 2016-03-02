@@ -4,32 +4,33 @@ namespace CMS\Model;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use CMS\Model\PressRelease;
+use CMS\Model\PressReleaseSubscription;
 
 /**
- * PressReleaseFactory Factory
+ * PressReleaseSubscriptionFactory Factory
  * 
- * Prepare PressReleaseFactory service factory
+ * Prepare PressReleaseSubscription service factory
  * 
  * 
  * @package cms
  * @subpackage model
  */
-class PressReleaseFactory implements FactoryInterface {
+class PressReleaseSubscriptionFactory implements FactoryInterface {
 
     /**
-     * Prepare PressRelease service
+     * Prepare PressReleaseSubscription service
      * 
-     * @uses PressRelease
+     * @uses PressReleaseSubscription
      * 
      * @access public
      * @param ServiceLocatorInterface $serviceLocator
-     * @return PressRelease
+     * @return PressReleaseSubscription
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity(/* $entityName = */ 'CMS\Entity\PressReleaseSubscription');
         $router = $serviceLocator->get('router');
-        return new PressRelease($query, $router);
+        $mustacheViewRenderer = $this->getServiceLocator()->get('Mustache\View\Renderer');
+        return new PressReleaseSubscription($query, $router, $mustacheViewRenderer);
     }
 
 }

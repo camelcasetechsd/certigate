@@ -8,6 +8,9 @@ use Zend\File\Transfer\Adapter\Http;
 use Utilities\Form\FormButtons;
 use Utilities\Service\Status;
 use CMS\Service\PageTypes;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Page Model
@@ -22,6 +25,7 @@ use CMS\Service\PageTypes;
  */
 class Page
 {
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     const UPLOAD_PATH = 'public/upload/pageContents/';
 
@@ -48,6 +52,7 @@ class Page
     {
         $this->query = $query;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
 
     /**
@@ -165,6 +170,20 @@ class Page
                 $picture = $inputFilter->get('picture');
                 $picture->setRequired(false);
             }
+    }
+    
+    /**
+     * Filter press releases
+     * 
+     * @access public
+     */
+    public function filterPressReleases()
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->andWhere($expr->eq("type", PageTypes::PRESS_RELEASE_TYPE));
+        $criteria->andWhere($expr->eq("status", Status::STATUS_ACTIVE));
+        $this->setCriteria($criteria);
     }
 
 }
