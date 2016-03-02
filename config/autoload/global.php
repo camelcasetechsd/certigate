@@ -27,6 +27,7 @@ return array(
         'template_map' => array(
             // This is where the global layout resides
             'layout/layout' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/layout.phtml',
+            'layout/messages' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/messages.phtml',
             // This defines where we can find the templates
             // for the error messages
             'error/404' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME. 'layout/error/error.phtml',

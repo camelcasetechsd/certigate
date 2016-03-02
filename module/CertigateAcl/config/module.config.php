@@ -56,6 +56,9 @@ return array(
             ),
             'cmsPressReleaseList' => array(
                 'resource' => 'CMS',
+            ),
+            'cmsPressReleaseUnsubscribe' => array(
+                'resource' => 'CMS',
             )
         )
     )

@@ -5,6 +5,8 @@ namespace CMS\Controller;
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use CMS\Form\PressReleaseSubscriptionForm;
+use CMS\Entity\PressReleaseSubscription;
+use Zend\Json\Json;
 
 /**
  * PressReleaseController Controller
@@ -31,29 +33,103 @@ class PressReleaseController extends ActionController
     {
         $variables = array();
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $pressReleaseModel = $this->getServiceLocator()->get('CMS\Model\PressRelease');
+        $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
+        $pressReleaseSubscriptionModel = $this->getServiceLocator()->get('CMS\Model\PressReleaseSubscription');
 
         $pageNumber = $this->getRequest()->getQuery('page');
-        $pressReleaseModel->filterPressReleases();
-        $pressReleaseModel->setPage($pageNumber);
+        $pageModel->filterPressReleases();
+        $pageModel->setPage($pageNumber);
 
-        $pageNumbers = $pressReleaseModel->getPagesRange($pageNumber);
-        $nextPageNumber = $pressReleaseModel->getNextPageNumber($pageNumber);
-        $previousPageNumber = $pressReleaseModel->getPreviousPageNumber($pageNumber);
+        $pageNumbers = $pageModel->getPagesRange($pageNumber);
+        $nextPageNumber = $pageModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $pageModel->getPreviousPageNumber($pageNumber);
 
-        $variables['pressReleases'] = $objectUtilities->prepareForDisplay($pressReleaseModel->getCurrentItems());
+        $variables['pressReleases'] = $objectUtilities->prepareForDisplay($pageModel->getCurrentItems());
         $variables['pageNumbers'] = $pageNumbers;
         $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
 
 
-        $subscriptionsStatus = $pressReleaseModel->getSubscriptionsStatus();
+        $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
         if (!empty($subscriptionsStatus)) {
             $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ reset($subscriptionsStatus));
             $variables['pressReleaseSubscriptionForm'] = $this->getFormView($pressReleaseSubscriptionForm);
         }
         return new ViewModel($variables);
+    }
+
+    /**
+     * Subscribe in press releases subscription
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function subscribeAction()
+    {
+        $status = false;
+
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\PressReleaseSubscription');
+        $pressReleaseSubscriptionModel = $this->getServiceLocator()->get('CMS\Model\PressReleaseSubscription');
+
+        $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
+        $subscriptionStatus = reset($subscriptionsStatus);
+        $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ $subscriptionStatus);
+        $pressReleaseSubscription = new PressReleaseSubscription();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $pressReleaseSubscriptionForm->setInputFilter($pressReleaseSubscription->getInputFilter($query));
+            $pressReleaseSubscriptionForm->setData($data);
+            if ($pressReleaseSubscriptionForm->isValid()) {
+                $userId = key($subscriptionsStatus);
+                $query->save($pressReleaseSubscription, /* $data = */ array("user" => $userId));
+                $status = true;
+            }
+        }
+
+        return $this->getResponse()->setContent(Json::encode(/* $variables = */ array(
+                            "content" => $pressReleaseSubscriptionModel->getSubscriptionResultHTML($status),
+                            "status" => $status,
+        )));
+    }
+
+    /**
+     * Unsubscribe from press releases subscription
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function unsubscribeAction()
+    {
+        $status = false;
+        $message = '';
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\PressReleaseSubscription');
+        $pressReleaseSubscriptionModel = $this->getServiceLocator()->get('CMS\Model\PressReleaseSubscription');
+
+        $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
+        $token = $this->params('token');
+        $subscriptionResult = $pressReleaseSubscriptionModel->getSubscription($token, $subscriptionsStatus);
+
+        if (!is_null($subscriptionResult["pressReleaseSubscription"])) {
+            $query->remove($subscriptionResult["pressReleaseSubscription"]);
+            $status = true;
+        }
+        else {
+            $message = $subscriptionResult["message"];
+        }
+
+        $content = $pressReleaseSubscriptionModel->getSubscriptionResultHTML($status, /* $unsubscribeFlag */ true, $message);
+        if (empty($token)) {
+            $content = Json::encode(/* $variables = */ array(
+                        "content" => $content,
+                        "status" => $status,
+            ));
+        }
+        return $this->getResponse()->setContent($content);
     }
 
 }
