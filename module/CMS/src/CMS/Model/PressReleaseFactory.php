@@ -27,8 +27,9 @@ class PressReleaseFactory implements FactoryInterface {
      * @return PressRelease
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
-        $query = $serviceLocator->get('wrapperQuery')->setEntity(/* $entityName = */ 'CMS\Entity\Page');
-        return new PressRelease($query);
+        $query = $serviceLocator->get('wrapperQuery')->setEntity(/* $entityName = */ 'CMS\Entity\PressReleaseSubscription');
+        $router = $serviceLocator->get('router');
+        return new PressRelease($query, $router);
     }
 
 }

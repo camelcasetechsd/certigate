@@ -4,6 +4,7 @@ namespace CMS\Controller;
 
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
+use CMS\Form\PressReleaseSubscriptionForm;
 
 /**
  * PressReleaseController Controller
@@ -31,7 +32,7 @@ class PressReleaseController extends ActionController
         $variables = array();
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $pressReleaseModel = $this->getServiceLocator()->get('CMS\Model\PressRelease');
-        
+
         $pageNumber = $this->getRequest()->getQuery('page');
         $pressReleaseModel->filterPressReleases();
         $pressReleaseModel->setPage($pageNumber);
@@ -39,13 +40,20 @@ class PressReleaseController extends ActionController
         $pageNumbers = $pressReleaseModel->getPagesRange($pageNumber);
         $nextPageNumber = $pressReleaseModel->getNextPageNumber($pageNumber);
         $previousPageNumber = $pressReleaseModel->getPreviousPageNumber($pageNumber);
-        
+
         $variables['pressReleases'] = $objectUtilities->prepareForDisplay($pressReleaseModel->getCurrentItems());
         $variables['pageNumbers'] = $pageNumbers;
-        $variables['hasPages'] = ( count($pageNumbers) > 0 )? true : false;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
+
+
+        $subscriptionsStatus = $pressReleaseModel->getSubscriptionsStatus();
+        if (!empty($subscriptionsStatus)) {
+            $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ reset($subscriptionsStatus));
+            $variables['pressReleaseSubscriptionForm'] = $this->getFormView($pressReleaseSubscriptionForm);
+        }
         return new ViewModel($variables);
     }
-}
 
+}
