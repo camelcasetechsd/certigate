@@ -125,10 +125,9 @@ class Page
         if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $data)) {
             $page->setStatus(Status::STATUS_ACTIVE);
         }
-        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $data)) {
-            $page->setStatus(Status::STATUS_INACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::SAVE_BUTTON, $data) && $editFlag === false) {
+        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $data)
+                || (array_key_exists(FormButtons::SAVE_BUTTON, $data) && $editFlag === false)
+                ) {
             $page->setStatus(Status::STATUS_INACTIVE);
         }
         if ($editFlag === true) {
