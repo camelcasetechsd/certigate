@@ -15,12 +15,18 @@ class PressController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $pressModel = $this->getServiceLocator()->get('CMS\Model\Press');
+        $pressModel = new \CMS\Model\Press($query);
 
         $newsId = $this->params('id');
         $newsDetails = $pressModel->getMoreDetails($newsId);
-        
-        $variables['details'] = $newsDetails;
+        // if type is page .. so it will return null
+        if (is_null($newsDetails)) {
+            
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array(
+                'name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
+        }
+        $variables['details'] = $newsDetails[0];
         return new ViewModel($variables);
     }
 
