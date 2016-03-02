@@ -61,4 +61,20 @@ class FormButtons {
      * unpublish button text
      */
     const UNPUBLISH_BUTTON_TEXT = "Unpublish";
+    /**
+     * subscribe button
+     */
+    const SUBSCRIBE_BUTTON = "subscribe";
+    /**
+     * subscribe button text
+     */
+    const SUBSCRIBE_BUTTON_TEXT = "Subscribe";
+    /**
+     * unsubscribe button
+     */
+    const UNSUBSCRIBE_BUTTON = "unsubscribe";
+    /**
+     * unsubscribe button text
+     */
+    const UNSUBSCRIBE_BUTTON_TEXT = "Unsubscribe";
 }

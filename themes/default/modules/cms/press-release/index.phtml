@@ -1,17 +1,47 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<div class="panel panel-default">
 
-    <div class="panel-heading">Press Releases</div>
+    <div class="panel panel-default">
 
-    
-    
-            {{#pressReleases}}
-                {{summary}} <br>
-            {{/pressReleases}}
-           
-</div>
+        <div class="panel-heading">
+            Press Releases
+
+        </div>
+        {{#pressReleaseSubscriptionForm}}
+        <div class="row">
+            <div class="col-md-offset-10">
+                {{{pressReleaseSubscriptionForm}}}
+            </div>
+        </div>
+        <br>
+        {{/pressReleaseSubscriptionForm}}
+
+
+        {{#pressReleases}}
+
+        <div class="row">
+            <div class="col-md-1">&nbsp;</div>
+            <div class="media col-md-10">
+                <a class="pull-left" href="#">
+                    <img width="100" class="media-object" src="{{picture.tmp_name}}">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">{{title}}</h4>
+                    <p class="text-right">By {{author}}</p>
+                    <p>{{summary}}</p>
+                    <ul class="list-inline list-unstyled">
+                        <a href="/press/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
+                    </ul>
+                </div>
+                <hr>
+            </div>
+            <div class="col-md-1">&nbsp;</div>
+        </div>
+
+
+        {{/pressReleases}}
+    </div>
 {{#hasPages}}
 <div class="pagination-bar">
     <p > Pages :  </p>
