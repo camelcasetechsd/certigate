@@ -13,6 +13,7 @@
             <tr>
                 <th>Title</th>
                 <th>Path</th>
+                <th>Type</th>
                 <th>Status</th>
                 <th>Created</th>
                 <th colspan="2">Actions</th>
@@ -23,7 +24,8 @@
             <tr class="{{^status}}container-inactive{{/status}}" >
                 <td>{{title}}</td>         
                 <td>{{path}}</td>
-                <td>{{status}}</td>
+                <td>{{type}}</td>
+                <td>{{statusText}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
