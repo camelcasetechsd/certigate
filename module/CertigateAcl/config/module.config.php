@@ -53,6 +53,9 @@ return array(
             ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
+            ),
+            'cmsPressReleaseList' => array(
+                'resource' => 'CMS',
             )
         )
     )

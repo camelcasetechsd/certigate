@@ -10,6 +10,7 @@ return array(
     ),
     'service_manager' => array(
         'aliases' => array(
+            'cmsPressRelease' => 'CMS\Controller\PressReleaseController',
             'cmsPage' => 'CMS\Controller\PageController',
             'cmsMenu' => 'CMS\Controller\MenuController',
             'cmsMenuItem' => 'CMS\Controller\MenuItemController',
@@ -18,6 +19,7 @@ return array(
         ),
         'factories' => array(
             'CMS\Model\Page' => 'CMS\Model\PageFactory',
+            'CMS\Model\PressRelease' => 'CMS\Model\PressReleaseFactory',
             'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
             'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
             'CMS\Event\RouteEvent' => 'CMS\Event\RouteEventFactory',
@@ -42,6 +44,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
+            'CMS\Controller\PressRelease' => 'CMS\Controller\PressReleaseController',
             'CMS\Controller\Page' => 'CMS\Controller\PageController',
             'CMS\Controller\Menu' => 'CMS\Controller\MenuController',
             'CMS\Controller\MenuItem' => 'CMS\Controller\MenuItemController',
@@ -267,6 +270,16 @@ return array(
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'cmsPressReleaseList' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/press-release',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\PressRelease',
+                        'action' => 'index',
                     ),
                 )
             ),
