@@ -91,7 +91,7 @@ class PressReleaseController extends ActionController
                 $status = true;
             }
             else {
-                $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString();
+                $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString(/*$includeFieldNameFlag =*/ false);
             }
         }
 
