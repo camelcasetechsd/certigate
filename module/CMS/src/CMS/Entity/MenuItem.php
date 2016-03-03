@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Status;
 use Zend\Validator\Regex;
+use Utilities\Service\Uri;
 
 /**
  * MenuItem Entity
@@ -525,7 +526,16 @@ class MenuItem
             ) );
             $inputFilter->add( array(
                 'name' => 'directUrl',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Uri',
+                        'options' => array(
+                            'uriHandler' => new Uri(/*$uri =*/ null, /*$acceptEmptyUri =*/ true),
+                            'allowRelative' => true,
+                            'allowAbsolute' => true,
+                        )
+                    )
+                )
             ) );
             $inputFilter->add(array(
                 'name' => 'page',
