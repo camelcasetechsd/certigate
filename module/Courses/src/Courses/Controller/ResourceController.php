@@ -177,6 +177,7 @@ class ResourceController extends ActionController
         $isAdminUser = false;
 
         if ($auth->hasIdentity()) {
+            $userEmail = $storage["email"];
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
@@ -193,10 +194,18 @@ class ResourceController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $resourceModel->updateListedResources($data);
+            $resourceModel->updateListedResources($data, $isAdminUser, $userEmail);
         }
+        
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
+        
         $variables['courseId'] = $courseId;
+        $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
+        $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));
+        $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
+        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
         return new ViewModel($variables);
     }
 

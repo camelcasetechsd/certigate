@@ -7,6 +7,7 @@ use Utilities\Form\FormViewHelper as OriginalFormViewHelper;
 use DoctrineModule\Form\Element\ObjectSelect;
 use CMS\Entity\MenuItem;
 use Utilities\Service\Status;
+use Utilities\Form\Form;
 
 /**
  * FormView Helper
@@ -108,6 +109,8 @@ class FormViewHelper extends OriginalFormViewHelper {
                         array_unshift($valueOptions[$menuTitle]["options"], $emptyKeyValueArray);
                     }
                 }
+                // add empty option at options beginning
+                array_unshift($valueOptions, Form::EMPTY_SELECT_VALUE);
                 $element->setValueOptions($valueOptions);
             }
         }

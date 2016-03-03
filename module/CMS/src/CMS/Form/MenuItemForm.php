@@ -4,6 +4,7 @@ namespace CMS\Form;
 
 use Utilities\Form\Form;
 use Utilities\Service\Status;
+use CMS\Entity\MenuItem;
 
 /**
  * MenuItem Form
@@ -58,12 +59,14 @@ class MenuItemForm extends Form
         $this->add( array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'type',
-            'required' => true,
             'options' => array(
-                'label' => 'Menu Item Type',
+                'label' => '<div class="required">Menu Item Type</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                ),
                 'value_options' => array(
                     array(
-                        'value' => \CMS\Entity\MenuItem::TYPE_PAGE,
+                        'value' => MenuItem::TYPE_PAGE,
                         'label' => 'Page',
                         'checked' => false,
                         'attributes' => array(
@@ -72,7 +75,7 @@ class MenuItemForm extends Form
                         ),
                     ),
                     array(
-                        'value' => \CMS\Entity\MenuItem::TYPE_DIRECT_URL,
+                        'value' => MenuItem::TYPE_DIRECT_URL,
                         'label' => 'Direct Url',
                         'checked' => false,
                         'attributes' => array(
@@ -89,6 +92,7 @@ class MenuItemForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Direct Url',
@@ -100,6 +104,7 @@ class MenuItemForm extends Form
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Page',
@@ -119,6 +124,7 @@ class MenuItemForm extends Form
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Parent',

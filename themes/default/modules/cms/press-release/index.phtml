@@ -1,0 +1,81 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<div class="subscriptionResult"></div>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        Press Releases
+
+    </div>
+    {{#pressReleaseSubscriptionForm}}
+    <div class="row">
+        <div class="col-md-offset-10">
+            {{{pressReleaseSubscriptionForm}}}
+        </div>
+    </div>
+    <br>
+    {{/pressReleaseSubscriptionForm}}
+
+
+    {{#pressReleases}}
+
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="media col-md-10">
+            <a class="pull-left" href="#">
+                <img width="100" class="media-object" src="{{picture.tmp_name}}">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{title}}</h4>
+                <p class="text-right">By {{author}}</p>
+                <p>{{summary}}</p>
+                <ul class="list-inline list-unstyled">
+                    <a href="/press/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
+                </ul>
+            </div>
+            <hr>
+        </div>
+        <div class="col-md-1">&nbsp;</div>
+    </div>
+
+
+    {{/pressReleases}}
+</div>
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        submitFormAjax("#press_release_subscription_form", ".subscriptionResult");
+    });
+</script>
+{{/scripts}}
+
+{{/layout}}

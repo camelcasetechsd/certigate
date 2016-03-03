@@ -6,6 +6,7 @@ use Zend\Form\View\Helper\Form as OriginalFormViewHelper;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\FormInterface;
 use Zend\Form\Element\Submit;
+use Zend\Form\Element\Button;
 
 /**
  * FormView Helper
@@ -83,7 +84,10 @@ class FormViewHelper extends OriginalFormViewHelper
         if (empty($element->getLabel()) && $element->getAttribute('type') !== "hidden") {
             $labelAbsent = true;
         }
-        if ($labelAbsent === true && $inlineForm === false) {
+        if ($labelAbsent === true 
+                && (strpos($element->getAttribute('class'), "btn") === false
+                || (strpos($element->getAttribute('class'), "btn") !== false && strpos($element->getAttribute('class'), "pull") === false))
+                && $inlineForm === false) {
             $elementContent.= "<dt>&nbsp;</dt>";
         }
         else {
@@ -98,9 +102,9 @@ class FormViewHelper extends OriginalFormViewHelper
         // Change submit button text to edit if form is an edit form
         if ($element instanceof Submit && $form->isEditForm === true) {
             if(property_exists($form, "isAdminUser") && $form->isAdminUser === false && $form->needAdminApproval === true){
-                $element->setValue("Submit for admin approval");
-            }else{
-                $element->setValue("Edit");
+                $element->setValue(FormButtons::SUBMIT_FOR_ADMIN_APPROVAL_BUTTON_TEXT);
+            }elseif($element->getValue() == FormButtons::CREATE_BUTTON_TEXT){
+                $element->setValue(FormButtons::EDIT_BUTTON_TEXT);
             }
         }
 

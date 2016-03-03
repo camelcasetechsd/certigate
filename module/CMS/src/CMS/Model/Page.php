@@ -5,6 +5,12 @@ namespace CMS\Model;
 use CMS\Entity\Page as PageEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
+use Utilities\Form\FormButtons;
+use Utilities\Service\Status;
+use CMS\Service\PageTypes;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Page Model
@@ -19,6 +25,7 @@ use Zend\File\Transfer\Adapter\Http;
  */
 class Page
 {
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     const UPLOAD_PATH = 'public/upload/pageContents/';
 
@@ -45,6 +52,7 @@ class Page
     {
         $this->query = $query;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
 
     /**
@@ -103,12 +111,79 @@ class Page
         unset($images[1]);
         unset($images[2]);
         $new = array();
-        foreach ($images as $image){
+        foreach ($images as $image) {
             array_push($new, $image);
         }
         return $new;
     }
 
+    /**
+     * Save page
+     * 
+     * @access public
+     * @param CMS\Entity\Page $page
+     * @param array $data ,default is empty array
+     * @param bool $editFlag ,default is false
+     */
+    public function save($page, $data = array(), $editFlag = false)
+    {
+        if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $data)) {
+            $page->setStatus(Status::STATUS_ACTIVE);
+        }
+        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $data)
+                || (array_key_exists(FormButtons::SAVE_BUTTON, $data) && $editFlag === false)
+                ) {
+            $page->setStatus(Status::STATUS_INACTIVE);
+        }
+        if ($editFlag === true) {
+            $data = array();
+        }
+        $this->query->setEntity("CMS\Entity\Page")->save($page, $data);
+    }
     
+    /**
+     * Set page form required fields
+     * 
+     * @access public
+     * @param Zend\Form\FormInterface $form
+     * @param array $data
+     * @param bool $editFlag ,default is false
+     */
+    public function setFormRequiredFields($form, $data, $editFlag = false)
+    {
+        $inputFilter = $form->getInputFilter();
+            // type is not press release
+            if ($data['type'] != PageTypes::PRESS_RELEASE_TYPE ) {
+                // Change required flag to false for press release fields
+                $category = $inputFilter->get('category');
+                $category->setRequired(false);
+                $summary = $inputFilter->get('summary');
+                $summary->setRequired(false);
+                $author = $inputFilter->get('author');
+                $author->setRequired(false);
+                $picture = $inputFilter->get('picture');
+                $picture->setRequired(false);
+            }
+            // file not updated
+            if ($editFlag === true && isset($data['picture']['name']) && empty($data['picture']['name'])) {
+                // Change required flag to false for any previously uploaded files
+                $picture = $inputFilter->get('picture');
+                $picture->setRequired(false);
+            }
+    }
+    
+    /**
+     * Filter press releases
+     * 
+     * @access public
+     */
+    public function filterPressReleases()
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->andWhere($expr->eq("type", PageTypes::PRESS_RELEASE_TYPE));
+        $criteria->andWhere($expr->eq("status", Status::STATUS_ACTIVE));
+        $this->setCriteria($criteria);
+    }
 
 }

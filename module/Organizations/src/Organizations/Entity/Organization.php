@@ -1025,17 +1025,11 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'longtitude',
                 'required' => false,
-//                'validators' => array(
-//                    'name' => 'Float'
-//                )
             ));
 
             $inputFilter->add(array(
                 'name' => 'latitude',
                 'required' => false,
-//                'validators' => array(
-//                    'name' => 'Float'
-//                )
             ));
 
             $inputFilter->add(array(
@@ -1111,7 +1105,7 @@ class Organization
 //
             $inputFilter->add(array(
                 'name' => 'atcLicenseNo',
-                'required' => false,
+                'required' => true,
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1120,7 +1114,7 @@ class Organization
             ));
             $inputFilter->add(array(
                 'name' => 'atcLicenseExpiration',
-                'required' => false,
+                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -1171,7 +1165,7 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseAttachment',
-                'required' => false,
+                'required' => true,
                 'validators' => array(
                     array('name' => 'Filesize',
                         'options' => array(
@@ -1188,7 +1182,7 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseExpiration',
-                'required' => false,
+                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -1316,7 +1310,7 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_class',
-                'required' => false,
+                'required' => true,
             ));
 
             $inputFilter->add(array(

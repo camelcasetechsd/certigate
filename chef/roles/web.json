@@ -10,10 +10,18 @@
             "host": "local-certigate.com",
             "public_path": "/var/www/html/public",
             "db": {
-                "name": "certigate",
-                "username": "root",
-                "encoding": "utf8",
-                "collation": "utf8_general_ci"
+                "main": {
+                    "name": "certigate",
+                    "username": "root",
+                    "encoding": "utf8",
+                    "collation": "utf8_general_ci"
+                },
+                "test": {
+                    "name": "certigate_test",
+                    "username": "root",
+                    "encoding": "utf8",
+                    "collation": "utf8_general_ci"
+                }
             }
         },
         "estore": {
@@ -26,8 +34,8 @@
                 "encoding": "utf8",
                 "collation": "utf8_general_ci"
             },
-            "admin":{
-                "username" : "admin",
+            "admin": {
+                "username": "admin",
                 "password": "admin",
                 "email": "admin@certigate-pro.com"
             }

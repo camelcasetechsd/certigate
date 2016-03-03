@@ -3,6 +3,7 @@
 namespace Versioning\Model;
 
 use Utilities\Service\Status;
+use Utilities\Service\MessageTypes;
 
 /**
  * Version Model
@@ -177,6 +178,12 @@ class Version
                 }
             }
         }
+        foreach ($entitiesLogs as $logsPerEntity) {
+            foreach ($logsPerEntity as $entityLog) {
+                $entityLogClass = get_class($entityLog);
+                $this->query->setEntity($entityLogClass)->remove($entityLog, /* $noFlush = */ true);
+            }
+        }
         if (count($entities) > 0 && count($entitiesLogs) > 0) {
             // flush all entities changes
             $this->query->entityManager->flush();
@@ -214,6 +221,29 @@ class Version
             $this->query->entityManager->flush();
         }
         return $processResult;
+    }
+    
+    /**
+     * Get pending messages
+     * 
+     * @access public
+     * 
+     * @param bool $hasPendingChanges
+     * @param string $pendingUrl
+     * @return array pending message if there are pending changes
+     */
+    public function getPendingMessages($hasPendingChanges, $pendingUrl)
+    {
+        $messages = array();
+        
+        if($hasPendingChanges === true){
+            $messages[] = array( 
+                "message" => sprintf('There are <a target="_blank" href="%s">some changes</a> pending for Admin approval', $pendingUrl),
+                "type" => MessageTypes::WARNING
+                );
+        }
+        
+        return $messages;
     }
 
 }

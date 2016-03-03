@@ -17,6 +17,7 @@ return array(
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
+            'Courses\Model\Evaluation' => 'Courses\Model\EvaluationFactory',
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
             'Courses\Model\Exam' => 'Courses\Model\ExamFactory',

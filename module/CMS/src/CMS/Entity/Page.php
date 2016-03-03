@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
+use Utilities\Service\Random;
 
 /**
  * Page Entity
@@ -18,6 +19,11 @@ use Zend\InputFilter\InputFilter;
  * @property int $id
  * @property string $title
  * @property string $path
+ * @property string $type
+ * @property string $category
+ * @property string $author
+ * @property array $picture
+ * @property string $summary
  * @property string $body
  * @property int $status
  * @property \DateTime $created
@@ -58,6 +64,46 @@ class Page
      * @var string
      */
     public $path;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $type;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $category;
+
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $author;
+
+    /**
+     *
+     * @ORM\Column(type="array", nullable=true)
+     * @Gedmo\Versioned
+     * @var array
+     */
+    public $picture;
+
+    /**
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $summary;
 
     /**
      *
@@ -149,6 +195,139 @@ class Page
     public function setPath($path)
     {
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * Get type
+     * 
+     * 
+     * @access public
+     * @return string type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     * 
+     * 
+     * @access public
+     * @param string $type
+     * @return Page current entity
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get category
+     * 
+     * 
+     * @access public
+     * @return string category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set category
+     * 
+     * 
+     * @access public
+     * @param string $category
+     * @return Page current entity
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * Get author
+     * 
+     * 
+     * @access public
+     * @return string author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set author
+     * 
+     * 
+     * @access public
+     * @param string $author
+     * @return Page current entity
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * Get picture
+     * 
+     * 
+     * @access public
+     * @return string picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Set picture
+     * 
+     * 
+     * @access public
+     * @param string $picture
+     * @return Page current entity
+     */
+    public function setPicture($picture)
+    {
+        if(is_array($picture) && array_key_exists("tmp_name", $picture)){
+            $picture["tmp_name"] = str_replace(/* $search= */APPLICATION_PATH, /* $replace= */'', $picture["tmp_name"]);
+        }
+        $this->picture = $picture;
+        return $this;
+    }
+
+    /**
+     * Get summary
+     * 
+     * 
+     * @access public
+     * @return string summary
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * Set summary
+     * 
+     * 
+     * @access public
+     * @param string $summary
+     * @return Page current entity
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
         return $this;
     }
 
@@ -277,6 +456,7 @@ class Page
      */
     public function exchangeArray($data = array())
     {
+        $this->setType($data["type"]);
         if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
         }
@@ -288,6 +468,18 @@ class Page
         }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
+        }
+        if (array_key_exists('category', $data) && !empty($data["category"])) {
+            $this->setCategory($data["category"]);
+        }
+        if (array_key_exists('author', $data) && !empty($data["author"])) {
+            $this->setAuthor($data["author"]);
+        }
+        if (array_key_exists('picture', $data) && !empty($data["picture"]["name"])) {
+            $this->setPicture($data["picture"]);
+        }
+        if (array_key_exists('summary', $data) && !empty($data["summary"])) {
+            $this->setSummary($data["summary"]);
         }
     }
 
@@ -326,6 +518,76 @@ class Page
             $inputFilter->add(array(
                 'name' => 'path',
                 'required' => true
+            ));
+            
+            $pageTypesReflection = new \ReflectionClass('CMS\Service\PageTypes');
+            $inputFilter->add(array(
+                'name' => 'type',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'InArray',
+                        'options' => array(
+                            'haystack' => $pageTypesReflection->getConstants(),
+                        )
+                    ),
+                )
+            ));
+            $pageCategoriesReflection = new \ReflectionClass('CMS\Service\PageCategories');
+            $inputFilter->add(array(
+                'name' => 'category',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'InArray',
+                        'options' => array(
+                            'haystack' => $pageCategoriesReflection->getConstants(),
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'author',
+                'required' => true
+            ));
+            
+            $DirSep = DIRECTORY_SEPARATOR;
+            $targetPath = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'pagePictures' . $DirSep ;
+            if (!file_exists($targetPath)) {
+                $oldUmask = umask(0);
+                mkdir($targetPath, 0777);
+                umask($oldUmask);
+            }
+            $random = new Random();
+            $fileUploadOptions = array(
+                "target" => $targetPath . $random->getRandomUniqueName(),
+                "overwrite" => true,
+                "use_upload_name" => false,
+                "use_upload_extension" => true
+            );
+            $inputFilter->add(array(
+                'name' => 'picture',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        "name" => "Zend\Filter\File\RenameUpload",
+                        "options" => $fileUploadOptions
+                    ),
+                ),
+                'validators' => array(
+                    array('name' => 'Zend\Validator\File\IsImage',
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'summary',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'StringLength',
+                        'options' => array(
+                            'max' => 1000, 
+                            'encoding' => 'UTF-8'
+                        )
+                    ),
+                )
             ));
             $inputFilter->add(array(
                 'name' => 'body',

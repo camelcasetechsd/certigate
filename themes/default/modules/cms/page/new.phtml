@@ -14,16 +14,21 @@
 {{$scripts}}
 <!--scripts can not be concatenated as other scripts/ style sheets are initiated with relative paths-->
 <script type="text/javascript" src="/bower_components/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        managePressReleaseFields('{{pressReleaseType}}');
+    });
+</script>
 {{/scripts}}
 {{/layout}}
 
 <script>
         $(document).ready(function () {
-                {{#imageSource}}
-                    $('#cke_118_textInput').val({{imageSource}});
-                {{/imageSource}}
-                        
+            {{#imageSource}}
+            $('#cke_118_textInput').val({{imageSource}});
+            {{/imageSource}}
 
 
-});
+
+        });
 </script>

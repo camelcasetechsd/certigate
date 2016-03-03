@@ -2,11 +2,6 @@
 {{<layout}}
 
 {{$content}}
-<ul>    
-    {{#validationError}}
-    <li class="error">{{.}}</li>
-    {{/validationError}}
-</ul>
 
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails" >Course Details</a></li>
@@ -18,58 +13,78 @@
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
     <div role="tabpanel" class="tab-pane active" id="courseEvaluation">
-        {{#noEvaluation}}
-        <h1 class="error">Course has no evaluation yet</h1>
-        <a href="/courses/evaluation/new/{{courseId}}"><input type="button" id="addmore" class=" btn btn-primary" value="Create Course Evaluation"></a>
-
-        {{/noEvaluation}}
-        {{^noEvaluation}}
-        <form id="editForm" class="form-horizontal" method="POST" action="">
-            <fieldset>
-                <br>
-                <!-- Form Name -->
-                {{#oldQuestions}}
-                <!-- Text input-->
-                <div class="form-group" >
-                    <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
-                    <div class=" col-md-4">
-                        <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
-                        {{#isAdminUser}}<a href="#" class="deleteQuestion removeQ" >X</a>{{/isAdminUser}}
-                        <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
-                    </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Edit Evaluation</h3>
+            </div>
+            <div class="panel-body">
+                <ul>    
+                    {{#validationError}}
+                    <li class="error">{{.}}</li>
+                    {{/validationError}}
+                </ul>
+                {{#noEvaluation}}
+                <div class="alert alert-warning" role="alert">
+                    Course has no evaluation yet
                 </div>
-                {{/oldQuestions}}
-                {{#unvalidQuestions}}
-                <div class="form-group" >
-                    <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
-                    <div class=" col-md-4">
-                        <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
-                        {{#isAdminUser}}<a href="#" class="deleteInvalidQuestion removeQ" >X</a>{{/isAdminUser}}
-                    </div>
-                </div>
-                {{/unvalidQuestions}}
-                <span id="endOfText"></span>
-                {{#isAdminUser}}
-                <div class=" row form-group">
-                    <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
-                    <div class=" col-md-4"> 
-                        <input type="checkbox" name="status" class="form-control" id="evaluation_form_status" {{#status}}checked="checked"{{/status}}>
-                    </div>
-                </div>
-                {{/isAdminUser}}
-                <!-- button -->
-                <div class=" row form-group">
-                    <div class="col-md-4">
-                        <button id="singlebutton" name="submit" class="btn btn-success">{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Submit Evaluation Template{{/isAdminUser}}</button>
-                    </div>
-                </div>
+                <a href="/courses/evaluation/new/{{courseId}}"><input type="button" id="addmore" class=" btn btn-primary" value="Create Course Evaluation"></a>
+
+                {{/noEvaluation}}
+                {{^noEvaluation}}
+
+                <form id="editForm" class="form-horizontal" method="POST" action="">
+                    <fieldset>
+                        <br>
+                        <!-- Form Name -->
+                        {{#oldQuestions}}
+                        <!-- Text input-->
+                        <div class="form-group" >
+                            <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
+                                {{#isAdminUser}}<a href="#" class="deleteQuestion removeQ" >X</a>{{/isAdminUser}}
+                                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+                            </div>
+                        </div>
+                        {{/oldQuestions}}
+                        {{#unvalidQuestions}}
+                        <div class="form-group" >
+                            <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                                {{#isAdminUser}}<a href="#" class="deleteInvalidQuestion removeQ" >X</a>{{/isAdminUser}}
+                            </div>
+                        </div>
+                        {{/unvalidQuestions}}
+                        <span id="endOfText"></span>
+                        {{#isAdminUser}}
+                        <div class=" row form-group">
+                            <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
+                            <div class=" col-md-4"> 
+                                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status" {{#status}}checked="checked"{{/status}}>
+                            </div>
+                        </div>
+                        {{/isAdminUser}}
+                        <!-- button -->
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+                            </div>
+                        </div>
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button id="singlebutton" name="submit" class="btn btn-success">{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Submit Evaluation Template{{/isAdminUser}}</button>
+                            </div>
+                        </div>
 
 
-            </fieldset>
-        </form>
+                    </fieldset>
+                </form>
 
-        <button type="button" id="addmore" class=" btn btn-primary">Add More</button>
-        {{/noEvaluation}}
+
+                {{/noEvaluation}}
+            </div>
+        </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
 </div>
@@ -131,7 +146,7 @@
             $(this).parent().parent().remove();
             numerateLabels();
         });
-        
+
     });
 
 </script>

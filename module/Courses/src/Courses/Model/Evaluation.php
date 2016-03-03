@@ -2,10 +2,24 @@
 
 namespace Courses\Model;
 
-use Zend\Authentication\AuthenticationService;
-use Users\Entity\Role;
-use Utilities\Service\Status;
+use System\Service\Cache\CacheHandler;
+use System\Service\Settings;
+use Notifications\Service\MailTempates;
+use Notifications\Service\MailSubjects;
 
+/**
+ * Evaluation Model
+ * 
+ * Handles Evaluation Entity related business
+ * 
+ * 
+ * @property Utilities\Service\Query\Query $query
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
+ * 
+ * @package courses
+ * @subpackage model
+ */
 class Evaluation
 {
 
@@ -14,16 +28,32 @@ class Evaluation
      * @var Utilities\Service\Query\Query 
      */
     protected $query;
+    
+    /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
 
+    /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
+    
     /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query)
+    public function __construct($query, $systemCacheHandler, $notification)
     {
         $this->query = $query;
+        $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
     }
 
     /**
@@ -43,8 +73,11 @@ class Evaluation
      * template or course evaluation
      * @param Evaluation $evalObj
      * @param int $courseId not required if template
+     * @param string $userEmail ,default is null
+     * @param bool $isAdminUser ,default is true
+     * @param bool $editFlag ,default is false
      */
-    public function saveEvaluation($evalObj, $courseId = null)
+    public function saveEvaluation($evalObj, $courseId = null, $userEmail = null, $isAdminUser = true, $editFlag = false)
     {
         // if evaluation is admin template
         if ($evalObj->isTemplate()) {
@@ -61,6 +94,9 @@ class Evaluation
 
             $this->query->setEntity('Courses\Entity\Evaluation')->save($evalObj);
             
+        }
+        if($isAdminUser === false){
+            $this->sendMail($userEmail, $editFlag);
         }
     }
 
@@ -149,6 +185,57 @@ class Evaluation
             }
         }
         return TRUE;
+    }
+    
+    /**
+     * Send mail
+     * 
+     * @access private
+     * @param string $userEmail
+     * @param bool $editFlag
+     * @throws \Exception From email is not set
+     * @throws \Exception To email is not set
+     */
+    private function sendMail($userEmail, $editFlag)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $to = $settings[Settings::ADMIN_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+        if (!isset($to)) {
+            throw new \Exception("To email is not set");
+        }
+        $templateParameters = array(
+            "email" => $userEmail,
+        );
+
+        if ($editFlag === false) {
+            $templateName = MailTempates::NEW_EVALUATION_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::NEW_EVALUATION_NOTIFICATION_SUBJECT;
+        }
+        else {
+            $templateName = MailTempates::UPDATED_EVALUATION_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::UPDATED_EVALUATION_NOTIFICATION_SUBJECT;
+        }
+
+        $mailArray = array(
+            'to' => $to,
+            'from' => $from,
+            'templateName' => $templateName,
+            'templateParameters' => $templateParameters,
+            'subject' => $subject,
+        );
+        $this->notification->notify($mailArray);
     }
 
 }

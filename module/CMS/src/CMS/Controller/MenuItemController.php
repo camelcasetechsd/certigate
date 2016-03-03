@@ -60,7 +60,7 @@ class MenuItemController extends ActionController
         $form = new MenuItemFilterForm(/* $name = */ null, $options);
         $form->setData($data);
         $variables['filterForm'] = $this->getFormView($form);
-        $variables['filterQuery'] = preg_replace('/page=[\d]+&/i', '', $request->getUri()->getQuery());
+        $variables['filterQuery'] = preg_replace('/page=[\d]+(&)?/i', '', $request->getUri()->getQuery());
         return new ViewModel($variables);
     }
 
@@ -78,6 +78,7 @@ class MenuItemController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\MenuItem');
+        $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
         $menuItemObj = new MenuItem();
 
         $options = array();
@@ -89,6 +90,7 @@ class MenuItemController extends ActionController
             $data = $request->getPost()->toArray();
             $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
+            $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
                 $query->save($menuItemObj, $data);
 
@@ -118,7 +120,7 @@ class MenuItemController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
-
+        $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
         $options = array();
         $options['query'] = $query;
         // hide current menu from possible parents options
@@ -134,6 +136,7 @@ class MenuItemController extends ActionController
             $data = $request->getPost()->toArray();
             $form->setInputFilter($menuItemObj->getInputFilter($query));
             $form->setData($data);
+            $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
                 $query->setEntity('CMS\Entity\MenuItem')->save($menuItemObj, $data);
 

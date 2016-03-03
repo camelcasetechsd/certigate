@@ -5,6 +5,10 @@ namespace Courses\Model;
 use Utilities\Service\Status;
 use Zend\Filter\File\RenameUpload;
 use Utilities\Form\FormElementErrors;
+use System\Service\Cache\CacheHandler;
+use System\Service\Settings;
+use Notifications\Service\MailTempates;
+use Notifications\Service\MailSubjects;
 
 /**
  * Resource Model
@@ -14,6 +18,8 @@ use Utilities\Form\FormElementErrors;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property Zend\Log\Logger $logger
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
  * 
  * @package courses
  * @subpackage model
@@ -32,6 +38,18 @@ class Resource
      * @var Zend\Log\Logger
      */
     protected $logger;
+        
+    /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+
+    /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
 
     /**
      * Set needed properties
@@ -39,11 +57,15 @@ class Resource
      * @access public
      * @param Utilities\Service\Query\Query $query
      * @param Zend\Log\Logger $logger
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $logger)
+    public function __construct($query, $logger, $systemCacheHandler, $notification)
     {
         $this->query = $query;
         $this->logger = $logger;
+        $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
     }
 
     /**
@@ -53,12 +75,19 @@ class Resource
      * @param Courses\Entity\Resource $resource
      * @param array $data ,default is empty array
      * @param bool $isAdminUser ,default is bool false
+     * @param string $userEmail ,default is null
      */
-    public function save($resource, $data = array(), $isAdminUser = false)
+    public function save($resource, $data = array(), $isAdminUser = false, $userEmail = null)
     {
+        $notifyAdminFlag = false;
+        $editFlag = false;
+        if (empty($data)) {
+            $editFlag = true;
+        }
 
         if ($isAdminUser === false) {
             $resource->setStatus(Status::STATUS_NOT_APPROVED);
+            $notifyAdminFlag = true;
         }
 
         $this->query->setEntity('Courses\Entity\Resource')->save($resource, $data);
@@ -73,6 +102,10 @@ class Resource
                 $resource->setName($data["nameAdded"][$fileKey]);
                 $this->query->setEntity('Courses\Entity\Resource')->save($resource);
             }
+        }
+        
+        if($notifyAdminFlag === true){
+            $this->sendMail($userEmail, $editFlag);
         }
     }
 
@@ -196,7 +229,15 @@ class Resource
         return array_values($preparedResources);
     }
 
-    public function updateListedResources($dataArray)
+    /**
+     * Update listed resources
+     * 
+     * @access public
+     * @param array $dataArray
+     * @param bool $isAdminUser
+     * @param string $userEmail
+     */
+    public function updateListedResources($dataArray, $isAdminUser, $userEmail)
     {
         if (isset($dataArray['editedName'])) {
             $editedResourceNames = $dataArray['editedName'];
@@ -205,6 +246,9 @@ class Resource
                     'id' => $key
                 ));
                 $resource->setName($name);
+                if($isAdminUser === false){
+                    $resource->setStatus(Status::STATUS_NOT_APPROVED);
+                }
                 if (isset($dataArray['editedType'][$key])) {
                     $resource->setType($dataArray['editedType'][$key]);
                     unset($dataArray['editedType'][$key]);
@@ -220,8 +264,15 @@ class Resource
                     'id' => $key
                 ));
                 $resource->setType($Type);
+                if($isAdminUser === false){
+                    $resource->setStatus(Status::STATUS_NOT_APPROVED);
+                }
                 $this->query->save($resource);
             }
+        }
+        
+        if($isAdminUser === false){
+            $this->sendMail($userEmail, /*$editFlag =*/ true);
         }
     }
 
@@ -243,4 +294,54 @@ class Resource
         return $resources;
     }
 
+    /**
+     * Send mail
+     * 
+     * @access private
+     * @param string $userEmail
+     * @param bool $editFlag
+     * @throws \Exception From email is not set
+     * @throws \Exception To email is not set
+     */
+    private function sendMail($userEmail, $editFlag)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $to = $settings[Settings::ADMIN_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+        if (!isset($to)) {
+            throw new \Exception("To email is not set");
+        }
+        $templateParameters = array(
+            "email" => $userEmail,
+        );
+
+        if ($editFlag === false) {
+            $templateName = MailTempates::NEW_RESOURCE_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::NEW_RESOURCE_NOTIFICATION_SUBJECT;
+        }
+        else {
+            $templateName = MailTempates::UPDATED_RESOURCE_NOTIFICATION_TEMPLATE;
+            $subject = MailSubjects::UPDATED_RESOURCE_NOTIFICATION_SUBJECT;
+        }
+
+        $mailArray = array(
+            'to' => $to,
+            'from' => $from,
+            'templateName' => $templateName,
+            'templateParameters' => $templateParameters,
+            'subject' => $subject,
+        );
+        $this->notification->notify($mailArray);
+    }
 }
