@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Status;
+use Zend\Validator\Regex;
 
 /**
  * MenuItem Entity
@@ -551,7 +552,18 @@ class MenuItem
             ) );
             $inputFilter->add( array(
                 'name' => 'parent',
-                'required' => true
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '#^([1-9]{1}[0-9]*)?$#',
+                            'messages' => array(
+                                Regex::NOT_MATCH => "Value is required and can't be empty"
+                            )
+                        )
+                    )
+                )
             ) );
             $this->inputFilter = $inputFilter;
         }
