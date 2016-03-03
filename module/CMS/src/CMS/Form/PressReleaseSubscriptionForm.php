@@ -33,6 +33,11 @@ class PressReleaseSubscriptionForm extends Form
         $this->setAttribute('action', $options["action"]);
 
         $this->add(array(
+            'name' => 'user',
+            'type' => 'Zend\Form\Element\Hidden',
+        ));
+
+        $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));

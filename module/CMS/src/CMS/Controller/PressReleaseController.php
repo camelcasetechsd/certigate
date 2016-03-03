@@ -74,22 +74,28 @@ class PressReleaseController extends ActionController
 
         $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
         $subscriptionStatus = reset($subscriptionsStatus);
+        $userId = key($subscriptionsStatus);
         $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ $subscriptionStatus);
         $pressReleaseSubscription = new PressReleaseSubscription();
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
+            $data["user"] = $userId;
             $pressReleaseSubscriptionForm->setInputFilter($pressReleaseSubscription->getInputFilter($query));
             $pressReleaseSubscriptionForm->setData($data);
+            $failureMessage = '';
             if ($pressReleaseSubscriptionForm->isValid()) {
-                $userId = key($subscriptionsStatus);
+
                 $query->save($pressReleaseSubscription, /* $data = */ array("user" => $userId));
                 $status = true;
             }
+            else {
+                $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString();
+            }
         }
 
-        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ false, /*$message =*/ false, /*$jsonFlag =*/ true));
+        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ false, $failureMessage, /* $successMessage = */ false, /* $jsonFlag = */ true));
     }
 
     /**
@@ -107,15 +113,21 @@ class PressReleaseController extends ActionController
 
         $subscriptionsStatus = $pressReleaseSubscriptionModel->getSubscriptionsStatus();
         $token = $this->params('token');
-        $subscriptionResult = $pressReleaseSubscriptionModel->getSubscription($token, $subscriptionsStatus);
+        $userId = $this->params('userId');
+        $subscriptionResult = $pressReleaseSubscriptionModel->getSubscription($token, $userId, $subscriptionsStatus);
         $message = $subscriptionResult["message"];
-        
+
         if (!is_null($subscriptionResult["pressReleaseSubscription"])) {
             $query->remove($subscriptionResult["pressReleaseSubscription"]);
             $status = true;
         }
 
-        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, $message, /*$jsonFlag =*/ (empty($token)) ? true : false));
+        if (empty($token)) {
+            return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, /* $failureMessage = */ $message, /* $successMessage = */ false, /* $jsonFlag = */ true));
+        }
+        else {
+            return $pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, /* $failureMessage = */ $message);
+        }
     }
 
 }
