@@ -91,21 +91,24 @@ class Form extends ZendForm
         }
         parent::bind($object, $flags);
     }
-    
+
     /**
      * Get Error Messages as string glued with the passed glue
      *
-     * @param  string $glue ,default is " <br>"
+     * @param  bool $includeFieldNameFlag ,default is true
+     * @param  string $glue ,default is "br" tag
      * @return string error messages glued
      */
-    public function getMessagesAsString($glue = " <br>")
+    public function getMessagesAsString($includeFieldNameFlag = true, $glue = " <br>")
     {
-        $inflector = new Inflector();
         $messagesOneDimensional = array_map('current', $this->getMessages());
-        array_walk($messagesOneDimensional, 
-                /*$callback =*/ function(&$message, $fieldName)use($inflector){
-            $message = $inflector->humanize($fieldName) .": ". $message;
-        });
+        if ($includeFieldNameFlag === true) {
+            $inflector = new Inflector();
+            array_walk($messagesOneDimensional,
+                    /* $callback = */ function(&$message, $fieldName)use($inflector) {
+                $message = $inflector->humanize($fieldName) . ": " . $message;
+            });
+        }
         return implode($glue, $messagesOneDimensional);
     }
 

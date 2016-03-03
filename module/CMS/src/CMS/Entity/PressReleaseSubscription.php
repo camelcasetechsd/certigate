@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Random;
+use DoctrineModule\Validator\UniqueObject;
 
 /**
  * PressReleaseSubscription Entity
@@ -232,7 +233,8 @@ class PressReleaseSubscription {
                             'use_context'   => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('user')
+                            'fields' => array('user'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "The current user is already subscribed!")
                         )
                     ),
                 )
