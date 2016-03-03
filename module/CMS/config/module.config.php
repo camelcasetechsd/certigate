@@ -296,10 +296,13 @@ return array(
             'cmsPressReleaseUnsubscribe' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/press-release/unsubscribe',
+                    'route' => '/cms/press-release/unsubscribe[/:userId/:token]',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\PressRelease',
                         'action' => 'unsubscribe',
+                    ),
+                    'constraints' => array(
+                        'userId' => '[0-9]+',
                     ),
                 )
             ),

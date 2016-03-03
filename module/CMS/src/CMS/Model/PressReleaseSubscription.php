@@ -89,11 +89,14 @@ class PressReleaseSubscription
             $userId = $subscribtion->getUser()->getId();
             $parameters = array();
             if ($loggedInUserFlag === false) {
-                $parameters = array('token' => $subscribtion->getToken());
+                $parameters = array(
+                    'token' => $subscribtion->getToken(),
+                    'userId' => $userId,
+                        );
             }
             $subscriptionsStatus[$userId] = array(
                 "isSubscribed" => true,
-                "action" => $this->router->assemble($parameters, array('name' => 'noaccess')),
+                "action" => $this->router->assemble($parameters, array('name' => 'cmsPressReleaseUnsubscribe')),
             );
         }
         // non subscribed part
@@ -115,12 +118,13 @@ class PressReleaseSubscription
      * @access public
      * @param bool $status ,default is false
      * @param bool $unsubscribeFlag ,default is false
-     * @param bool $message ,default is false
+     * @param string $failureMessage ,default is false
+     * @param string $successMessage ,default is false
      * @param bool $jsonFlag ,default is false
      * 
-     * @return string HTML or JSON content for subscription result
+     * @return string|ViewModel HTML view model or JSON content for subscription result
      */
-    public function getSubscriptionResult($status = false, $unsubscribeFlag = false, $message = false, $jsonFlag = false)
+    public function getSubscriptionResult($status = false, $unsubscribeFlag = false, $failureMessage = false, $successMessage = false, $jsonFlag = false)
     {
         $unsubscribeText = "";
         if ($unsubscribeFlag === true) {
@@ -129,84 +133,47 @@ class PressReleaseSubscription
         if ($status === false) {
             $messages = array(
                 'type' => MessageTypes::DANGER,
-                'message' => (empty($message)) ? "Failed to {$unsubscribeText}subscribe!" : $message
+                'message' => (empty($failureMessage)) ? "Failed to {$unsubscribeText}subscribe!" : $failureMessage
             );
         }
         else {
             $messages = array(
                 'type' => MessageTypes::SUCCESS,
-                'message' => (empty($message)) ? "You have been {$unsubscribeText}subscribed successfully." : $message
+                'message' => (empty($successMessage)) ? "You have been {$unsubscribeText}subscribed successfully." : $successMessage
             );
         }
         $variables = array(
             'messages' => $messages
         );
         $view = new ViewModel($variables);
-        $view->setTemplate('layout/messages');
-
-        $content = $this->viewRenderer->render($view);
         if($jsonFlag === true){
-            $content = Json::encode(/* $variables = */ array(
-                        "content" => $content,
+            $view->setTemplate('layout/messages');
+            $view = Json::encode(/* $variables = */ array(
+                        "content" => $this->viewRenderer->render($view),
                         "status" => $status,
             ));
         }
-        return $content;
+        return $view;
     }
     
-    /**
-     * Get subscription submission result HTML result
-     * 
-     * @access public
-     * @param bool $status ,default is false
-     * @param bool $unsubscribeFlag ,default is false
-     * @param bool $message ,default is empty string
-     * 
-     * @return string HTML content for subscription result
-     */
-    public function getSubscriptionResultHTML($status = false, $unsubscribeFlag = false, $message = '')
-    {
-        $unsubscribeText = "";
-        if ($unsubscribeFlag === true) {
-            $unsubscribeText = "un";
-        }
-        if ($status === false) {
-            $messages = array(
-                'type' => MessageTypes::DANGER,
-                'message' => (empty($message)) ? "Failed to {$unsubscribeText}subscribe!" : $message
-            );
-        }
-        else {
-            $messages = array(
-                'type' => MessageTypes::SUCCESS,
-                'message' => (empty($message)) ? "You have been {$unsubscribeText}subscribed successfully." : $message
-            );
-        }
-        $variables = array(
-            'messages' => $messages
-        );
-        $view = new ViewModel($variables);
-        $view->setTemplate('layout/messages');
-
-        return $this->viewRenderer->render($view);
-    }
-
     /**
      * Get subscription for logged in user or the passed token
      * 
      * @access public
      * @param string $token
+     * @param int $userId
      * @param array $subscriptionsStatus
      * 
      * @return array subscription if found and message if error occurred
      */
-    public function getSubscription($token, $subscriptionsStatus)
+    public function getSubscription($token, $userId, $subscriptionsStatus)
     {
         $pressReleaseSubscription = null;
         $message = null;
-        if (!empty($token)) {
+        if (!empty($token) && !empty($userId)) {
             $criteria = array(
-                'token' => $token
+                'token' => $token,
+                'user' => $userId
             );
         }
         elseif (!empty($subscriptionsStatus)) {
@@ -222,7 +189,7 @@ class PressReleaseSubscription
         else {
             $pressReleaseSubscription = $this->query->findOneBy(/* $entityName = */ "CMS\Entity\PressReleaseSubscription", $criteria);
         }
-        if (isset($pressReleaseSubscription) && !is_object($pressReleaseSubscription)) {
+        if (!is_object($pressReleaseSubscription)) {
             $message = "No subscription exists with the passed data";
         }
         
