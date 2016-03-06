@@ -34,14 +34,7 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
 
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
-        $coursesEditRoute = "coursesEdit";
-        $coursesNewRoute = "coursesNew";
-        $coursesPendingRoute = "coursesPending";
-        $coursesListRoute = "courses";
         $coursesVoteRoute = "studentEvaluation";
-        $courseEvaluation = "courseEvaluations";
-        $newCourseEvaluation = "newCourseEvaluation";
-        $editCourseEvaluation = "editCourseEvaluation";
 
         $instructorCalendar = "coursesInstructorCalendar";
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
@@ -49,8 +42,6 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
 
         $resourcesListPerCourseRoute = "resourcesListPerCourse";
         $resourcesResourceDownloadRoute = "resourcesResourceDownload";
-        $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
-        $resourcesEditRoute = "resourcesEdit";
 
         $organizationModule = "Organizations";
         $organizationUsersRoute = "organizationUsers";
@@ -180,44 +171,9 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
                 'route' => $coursesLeaveRoute,
             ),
             array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $coursesNewRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $coursesEditRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $coursesListRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $coursesPendingRoute,
-            ),
-            array(
                 'role' => RoleEntity::STUDENT_ROLE,
                 'module' => $courseModule,
                 'route' => $coursesVoteRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $courseEvaluation,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $newCourseEvaluation,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $editCourseEvaluation,
             ),
             array(
                 'role' => RoleEntity::INSTRUCTOR_ROLE,
@@ -258,21 +214,6 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
                 'role' => RoleEntity::TEST_CENTER_ADMIN_ROLE,
                 'module' => $courseModule,
                 'route' => $examBookingRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $resourcesListPerCourseRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $resourcesNewPerCourseRoute,
-            ),
-            array(
-                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
-                'module' => $courseModule,
-                'route' => $resourcesEditRoute,
             ),
             array(
                 'role' => RoleEntity::STUDENT_ROLE,
