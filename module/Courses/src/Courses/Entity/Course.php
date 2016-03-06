@@ -19,19 +19,15 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $name
- * @property \DateTime $startDate
- * @property \DateTime $endDate
- * @property int $capacity
- * @property int $studentsNo
- * @property Organizations\Entity\Organization $atp
- * @property Users\Entity\User $ai
  * @property Doctrine\Common\Collections\ArrayCollection $resources
  * @property Doctrine\Common\Collections\ArrayCollection $outlines
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEvents
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
  * @property int $isForInstructor
  * @property int $status
+ * @property Evaluation $evaluation
  * @property \DateTime $created
  * @property \DateTime $modified
  * 
@@ -61,50 +57,6 @@ class Course
      * @var string
      */
     public $name;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="date")
-     * @var \DateTime
-     */
-    public $startDate;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="date")
-     * @var \DateTime
-     */
-    public $endDate;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    public $capacity;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    public $studentsNo;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization")
-     * @ORM\JoinColumn(name="atp_id", referencedColumnName="id")
-     * @var Organizations\Entity\Organization
-     */
-    public $atp;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
-     * @ORM\JoinColumn(name="ai_id", referencedColumnName="id")
-     * @var Users\Entity\User
-     */
-    public $ai;
 
     /**
      * @Gedmo\Versioned
@@ -156,17 +108,9 @@ class Course
     public $modified = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="courses")
-     * @ORM\JoinTable(name="courses_users",
-     *      joinColumns={@ORM\JoinColumn(name="course_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     *      )
-     */
-    public $users;
-
-    /**
      * @Gedmo\Versioned
      * @ORM\OneToOne(targetEntity="Evaluation", mappedBy="course")
+     * @var Evaluation
      */
     public $evaluation;
 
@@ -183,9 +127,10 @@ class Course
     public $outlines;
 
     /**
-     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="course")
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEvent", mappedBy="course")
+     * @var Doctrine\Common\Collections\ArrayCollection
      */
-    public $exambook;
+    public $courseEvents;
 
     /**
      * Prepare entity
@@ -195,10 +140,9 @@ class Course
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->evaluations = new ArrayCollection();
         $this->resources = new ArrayCollection();
         $this->outlines = new ArrayCollection();
+        $this->courseEvents = new ArrayCollection();
     }
 
     /**
@@ -236,168 +180,6 @@ class Course
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Get Start Date
-     * 
-     * 
-     * @access public
-     * @return \DateTime startDate
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    /**
-     * Set Start Date
-     * 
-     * 
-     * @access public
-     * @param \DateTime $startDate
-     * @return Course
-     */
-    public function setStartDate($startDate)
-    {
-        if (!is_object($startDate)) {
-            $startDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDate);
-        }
-        $this->startDate = $startDate;
-        return $this;
-    }
-
-    /**
-     * Get End Date
-     * 
-     * 
-     * @access public
-     * @return \DateTime endDate
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * Set End Date
-     * 
-     * 
-     * @access public
-     * @param \DateTime $endDate
-     * @return Course
-     */
-    public function setEndDate($endDate)
-    {
-        if (!is_object($endDate)) {
-            $endDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDate);
-        }
-        $this->endDate = $endDate;
-        return $this;
-    }
-
-    /**
-     * Get capacity
-     * 
-     * 
-     * @access public
-     * @return int capacity
-     */
-    public function getCapacity()
-    {
-        return $this->capacity;
-    }
-
-    /**
-     * Set capacity
-     * 
-     * 
-     * @access public
-     * @param int $capacity
-     * @return Course
-     */
-    public function setCapacity($capacity)
-    {
-        $this->capacity = (int) $capacity;
-        return $this;
-    }
-
-    /**
-     * Get Students No
-     * 
-     * 
-     * @access public
-     * @return int studentsNo
-     */
-    public function getStudentsNo()
-    {
-        return $this->studentsNo;
-    }
-
-    /**
-     * Set Students No
-     * 
-     * 
-     * @access public
-     * @param int $studentsNo
-     * @return Course
-     */
-    public function setStudentsNo($studentsNo)
-    {
-        $this->studentsNo = (int) $studentsNo;
-        return $this;
-    }
-
-    /**
-     * Get Atp
-     * 
-     * 
-     * @access public
-     * @return Organizations\Entity\Organization atp
-     */
-    public function getAtp()
-    {
-        return $this->atp;
-    }
-
-    /**
-     * Set Atp
-     * 
-     * 
-     * @access public
-     * @param Organizations\Entity\Organization $atp
-     * @return Course
-     */
-    public function setAtp($atp)
-    {
-        $this->atp = $atp;
-        return $this;
-    }
-
-    /**
-     * Get Ai
-     * 
-     * 
-     * @access public
-     * @return Users\Entity\User Ai
-     */
-    public function getAi()
-    {
-        return $this->ai;
-    }
-
-    /**
-     * Set Ai
-     * 
-     * 
-     * @access public
-     * @param Users\Entity\User $ai
-     * @return Course
-     */
-    public function setAi($ai)
-    {
-        $this->ai = $ai;
         return $this;
     }
 
@@ -583,45 +365,30 @@ class Course
     }
 
     /**
-     * Get Users
+     * Get CourseEvents
      * 
      * 
      * @access public
-     * @return ArrayCollection users
+     * @return ArrayCollection courseEvents
      */
-    public function getUsers()
+    public function getCourseEvents()
     {
-        return $this->users;
+        return $this->courseEvents;
     }
 
     /**
-     * Add Users
+     * Set CourseEvents
      * 
      * 
      * @access public
-     * @param Users\Entity\User $user
+     * @param ArrayCollection $courseEvents
      * @return Course
      */
-    public function addUser($user)
+    public function setCourseEvents($courseEvents)
     {
-        $this->users[] = $user;
+        $this->courseEvents = $courseEvents;
         return $this;
     }
-
-    /**
-     * Set Users
-     * 
-     * 
-     * @access public
-     * @param ArrayCollection $users
-     * @return Course
-     */
-    public function setUsers($users)
-    {
-        $this->users = $users;
-        return $this;
-    }
-
     /**
      * Get Resources
      * 
@@ -808,14 +575,8 @@ class Course
         if (array_key_exists('isForInstructor', $data)) {
             $this->setIsForInstructor($data["isForInstructor"]);
         }
-        $this->setAi($data["ai"])
-                ->setAtp($data["atp"])
-                ->setBrief($data["brief"])
-                ->setCapacity($data["capacity"])
+        $this->setBrief($data["brief"])
                 ->setDuration($data["duration"])
-                ->setEndDate($data["endDate"])
-                ->setStartDate($data["startDate"])
-                ->setStudentsNo($data["studentsNo"])
                 ->setTime($data["time"])
         ;
     }
@@ -852,30 +613,6 @@ class Course
                 'required' => true
             ));
 
-            $inputFilter->add(array(
-                'name' => 'startDate',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'endDate',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'capacity',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'studentsNo',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'atp',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'ai',
-                'required' => true,
-            ));
             $inputFilter->add(array(
                 'name' => 'brief',
                 'required' => true,

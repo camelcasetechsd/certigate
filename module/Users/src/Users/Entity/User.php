@@ -53,6 +53,7 @@ use Zend\Validator\Identical;
  * @property int $testCenterAdministratorStatement
  * @property int $trainingManagerStatement
  * @property int $status
+ * @property Courses\Entity\CourseEvent $courseEvents
  * 
  * @package users
  * @subpackage entity
@@ -278,9 +279,9 @@ class User
     public $trainingManagerStatement;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="Courses\Entity\CourseEvent", mappedBy="users")
      */
-    public $courses;
+    public $courseEvents;
 
     /**
      *
@@ -344,7 +345,7 @@ class User
      */
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->courseEvents = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
@@ -1212,42 +1213,42 @@ class User
     }
 
     /**
-     * Get Courses
+     * Get CourseEvents
      * 
      * 
      * @access public
-     * @return ArrayCollection courses
+     * @return ArrayCollection courseEvents
      */
-    public function getCourses()
+    public function getCourseEvents()
     {
-        return $this->courses;
+        return $this->courseEvents;
     }
 
     /**
-     * Add Courses
+     * Add CourseEvents
      * 
      * 
      * @access public
-     * @param Courses\Entity\Course $course
+     * @param Courses\Entity\CourseEvent $courseEvent
      * @return User
      */
-    public function addCourses($course)
+    public function addCourseEvents($courseEvent)
     {
-        $this->courses[] = $course;
+        $this->courseEvents[] = $courseEvent;
         return $this;
     }
 
     /**
-     * Set Courses
+     * Set CourseEvents
      * 
      * 
      * @access public
-     * @param ArrayCollection $courses
+     * @param ArrayCollection $courseEvents
      * @return User
      */
-    public function setCourses($courses)
+    public function setCourseEvents($courseEvents)
     {
-        $this->courses = $courses;
+        $this->courseEvents = $courseEvents;
         return $this;
     }
 

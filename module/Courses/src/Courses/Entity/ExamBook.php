@@ -5,7 +5,6 @@ namespace Courses\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
-use Utilities\Service\Random;
 
 /**
  * Resource Entity
@@ -83,10 +82,10 @@ class ExamBook
     public $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Courses\Entity\Course", inversedBy="exambook")
-     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\CourseEvent", inversedBy="exambooks")
+     * @ORM\JoinColumn(name="course_event_id", referencedColumnName="id")
      */
-    public $course;
+    public $courseEvent;
 
     /**
      * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization", inversedBy="exambook")
@@ -117,9 +116,9 @@ class ExamBook
         return $this->id;
     }
 
-    function getCourse()
+    function getCourseEvent()
     {
-        return $this->course;
+        return $this->courseEvent;
     }
 
     function getAdminStatus()
@@ -157,9 +156,9 @@ class ExamBook
         $this->createdAt = $date;
     }
 
-    function setCourse($course)
+    function setCourseEvent($courseEvent)
     {
-        $this->course = $course;
+        $this->courseEvent = $courseEvent;
     }
 
     function setStudentNum($studentsNo)
@@ -227,16 +226,11 @@ class ExamBook
      * 
      * @access public
      * 
-     * @param int $courseId
-     * @param string $name
-     * @param bool $overrideFilterFlag ,default is bool false
-     * @param array $fileUploadOptions ,default is empty array
-     * 
      * @return InputFilter validation constraints
      */
     public function getInputFilter()
     {
-        if (!$this->inputFilter || $overrideFilterFlag === true) {
+        if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
@@ -255,7 +249,7 @@ class ExamBook
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'courseId',
+                'name' => 'courseEvent',
                 'required' => true,
             ));
             $inputFilter->add(array(
