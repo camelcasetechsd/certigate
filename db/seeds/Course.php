@@ -102,7 +102,6 @@ class Course extends AbstractSeed
         );
 
         $this->insert('organization', $atp);
-        $atpId = $this->getAdapter()->getConnection()->lastInsertId();
 
 
         // getting authorized Instuctor role id 
@@ -157,10 +156,6 @@ class Course extends AbstractSeed
 
         $course = array(
             "name" => $faker->firstName,
-            "startDate" => date('Y-m-d H:i:s'),
-            "endDate" => date('Y-m-d H:i:s'),
-            "capacity" => 100,
-            "studentsNo" => 10,
             "brief" => $faker->text,
             "time" => $faker->date('Y-m-d H:i:s'),
             "duration" => 20,
@@ -168,8 +163,6 @@ class Course extends AbstractSeed
             "status" => 1,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
-            "atp_id" => $atpId,
-            "ai_id" => $instructorId
         );
         $this->insert('course', $course);
         $courseId = $this->getAdapter()->getConnection()->lastInsertId();

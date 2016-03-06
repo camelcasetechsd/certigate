@@ -49,18 +49,8 @@ class CourseController extends ActionController
             if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
                 $isAdminUser = true;
             }
-            elseif (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
-                $trainingManagerId = $storage['id'];
-            }
         }
-        $criteria = Criteria::create();
-        if (!empty($trainingManagerId)) {
-            $expr = Criteria::expr();
-            $atpsArray = $query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($trainingManagerId));
-            $criteria->andWhere($expr->in("atp", $atpsArray));
-        }
-
-        $data = $query->filter(/* $entityName = */'Courses\Entity\Course', $criteria);
+        $data = $query->findAll(/* $entityName = */'Courses\Entity\Course');
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
@@ -266,8 +256,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
-        // setting default students number and isForInstructor
-        $course->setStudentsNo(/* $studentsNo = */ 0);
+        // setting default isForInstructor
         $course->setIsForInstructor(Status::STATUS_INACTIVE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -291,10 +280,9 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $form->setInputFilter($course->getInputFilter());
             $form->setData($data);
-            $isCustomValidationValid = $courseModel->validateForm($form, $data, $course, /* $isEditForm = */ false);
-            if ($form->isValid() && $isCustomValidationValid === true) {
+            if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $courseModel->save($course, $data, $isAdminUser, $userEmail);
+                $courseModel->save($course, $data, /*$editFlag =*/ false, $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);
@@ -332,13 +320,12 @@ class CourseController extends ActionController
             $userEmail = $storage["email"];
         }
 
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $options = array();
         $options['query'] = $query;
-        $options['userId'] = $storage['id'];
         $form = new CourseForm(/* $name = */ null, $options);
         $form->bind($course);
 
@@ -350,10 +337,8 @@ class CourseController extends ActionController
             $form->setInputFilter($course->getInputFilter());
 
             $form->setData($data);
-
-            $isCustomValidationValid = $courseModel->validateForm($form, $data, $course);
-            if ($form->isValid() && $isCustomValidationValid === true) {
-                $courseModel->save($course, /* $data = */ array(), $isAdminUser, $userEmail);
+            if ($form->isValid()) {
+                $courseModel->save($course, $data,/*$editFlag =*/ true , $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'edit', 'id' => $id), /* $routeName = */ array('name' => "coursesEdit"));
                 $this->redirect()->toUrl($url);
@@ -711,8 +696,7 @@ class CourseController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseId = $this->params('courseId');
-        $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
@@ -797,7 +781,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         // getting the course
         $course = $query->find('Courses\Entity\Course', $courseId);
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
