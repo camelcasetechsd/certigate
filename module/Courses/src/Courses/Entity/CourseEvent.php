@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Utilities\Service\Time;
+use Utilities\Service\String;
 
 /**
  * CourseEvent Entity
@@ -493,6 +494,20 @@ class CourseEvent
         return $this;
     }
 
+    /**
+     * Get detailed name
+     * 
+     * @access public
+     * @return string detailed name
+     */
+    public function getDetailedName()
+    {
+        $detailedName = $this->getCourse()->getName() . String::TEXT_SEPARATOR . "Start: " . $this->getStartDate()->format(Time::DATE_FORMAT)
+                            . " - End: " . $this->getEndDate()->format(Time::DATE_FORMAT)
+                            . " - ATP: " . $this->getAtp()->getCommercialName();
+        return $detailedName;
+    }
+    
     /**
      * Convert the object to an array.
      * 

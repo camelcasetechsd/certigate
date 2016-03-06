@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Utilities\Service\Status;
 use Zend\Validator\Regex;
 use Utilities\Service\Uri;
+use Utilities\Service\String;
 
 /**
  * MenuItem Entity
@@ -33,11 +34,6 @@ use Utilities\Service\Uri;
  */
 class MenuItem
 {
-
-    /**
-     * Separator between menu and menu item titles
-     */
-    const MENU_ITEM_TITLE_SEPARATOR = "%^*";
 
     /**
      * Menu Item Types
@@ -445,7 +441,7 @@ class MenuItem
     public function getNestedTitle()
     {
         $menu = $this->getMenu();
-        $nestedTitle = $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR;
+        $nestedTitle = $menu->getId() . String::TEXT_SEPARATOR . $menu->getTitle() . String::TEXT_SEPARATOR;
         $nestedTitle .= str_repeat( '- ', $this->getDepthLevel() ) . $this->getTitle();
         if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object( $menu ) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
             $nestedTitle .= ' [' . Status::STATUS_INACTIVE_TEXT . ']';
