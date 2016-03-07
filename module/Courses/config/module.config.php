@@ -570,6 +570,17 @@ return array(
                     ),
                 )
             ),
+            // list my courses
+            'myCourses' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/mycourses',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'myCourses',
+                    ),
+                )
+            ),
         )
     ),
 );

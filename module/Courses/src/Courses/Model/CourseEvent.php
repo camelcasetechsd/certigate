@@ -185,4 +185,15 @@ class CourseEvent
         return $criteria;
     }
 
+    public function prepareCourseOccurrences($courseEvents)
+    {
+        foreach ($courseEvents as $event) {
+            $event->startDate = $event->startDate->format('d-m-Y');
+            $event->endDate = $event->endDate->format('d-m-Y');
+            $event->name = $event->getCourse()->getName();
+            $event->course_id = $event->getCourse()->getId();
+        }
+        return $courseEvents;
+    }
+
 }

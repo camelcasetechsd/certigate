@@ -91,7 +91,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
         $userId = $auth->getIdentity()["id"];
-        $instructorCourseEvents = $query->findBy('Courses\Entity\CourseEvent', /*$criteria =*/ array('ai' => $userId), /*$orderBy =*/ array('id' => Criteria::DESC));
+        $instructorCourseEvents = $query->findBy('Courses\Entity\CourseEvent', /* $criteria = */ array('ai' => $userId), /* $orderBy = */ array('id' => Criteria::DESC));
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourseEvents);
         return new ViewModel($variables);
@@ -278,7 +278,7 @@ class CourseController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $courseModel->save($course, $data, /*$editFlag =*/ false, $isAdminUser, $userEmail);
+                $courseModel->save($course, $data, /* $editFlag = */ false, $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'index'), /* $routeName = */ array('name' => "courses"));
                 $this->redirect()->toUrl($url);
@@ -335,7 +335,7 @@ class CourseController extends ActionController
 
             $form->setData($data);
             if ($form->isValid()) {
-                $courseModel->save($course, $data,/*$editFlag =*/ true , $isAdminUser, $userEmail);
+                $courseModel->save($course, $data, /* $editFlag = */ true, $isAdminUser, $userEmail);
 
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'edit', 'id' => $id), /* $routeName = */ array('name' => "coursesEdit"));
                 $this->redirect()->toUrl($url);
@@ -946,6 +946,43 @@ class CourseController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $courseId), array('name' => 'coursesMore'));
             $this->redirect()->toUrl($url);
         }
+        return new ViewModel($variables);
+    }
+
+    public function myCoursesAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get("wrapperQuery");
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $auth = new AuthenticationService();
+        // user id
+        $id = $auth->getIdentity()['id'];
+        $user = $query->findOneBy('Users\Entity\User', array(
+            'id' => $id
+        ));
+
+        $userCourses = $user->getCourseEvents();
+        $courseEventModel = new \Courses\Model\CourseEvent($query, $this->getServiceLocator()->get('objectUtilities'));
+        $variables['courseEvents'] = $courseEventModel->prepareCourseOccurrences($userCourses);
+        // if user did not enroll in any course
+        if (count($userCourses) < 1) {
+            $variables['messages'] = 'Currently you are not enrolled in any courses';
+        }
+
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $request = $this->getRequest();
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $courseModel->setPage($pageNumber);
+
+        $pageNumbers = $courseModel->getPagesRange($pageNumber);
+        $nextPageNumber = $courseModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $courseModel->getPreviousPageNumber($pageNumber);
+        $variables['menuItems'] = $objectUtilities->prepareForDisplay($courseModel->getCurrentItems());
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $nextPageNumber;
+        $variables['previousPageNumber'] = $previousPageNumber;
+        $variables['filterQuery'] = preg_replace('/page=[\d]+&/i', '', $request->getUri()->getQuery());
         return new ViewModel($variables);
     }
 

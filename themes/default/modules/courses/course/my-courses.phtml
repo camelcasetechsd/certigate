@@ -1,0 +1,65 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br>
+
+{{^messages}}
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>My Courses</h3></div>
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th colspan="2">View Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courseEvents}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>
+                    <a href="/courses/more/{{course_id}}">View More..</a>
+                </td>
+            </tr>
+            {{/courseEvents}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    {{/messages}}
+</div>
+
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+
+{{/content}}
+{{/layout}}

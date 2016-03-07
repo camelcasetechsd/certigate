@@ -30,8 +30,8 @@ class Course extends AbstractSeed
             "lastName" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
-            "username" => "marcoPolo",
-            "password" => User::hashPassword("marcoPolo"),
+            "username" => "newstudent",
+            "password" => User::hashPassword("student"),
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
@@ -181,6 +181,7 @@ class Course extends AbstractSeed
             "modified" => null
         );
         $this->insert('course_event', $courseEvent);
+        $courseEventId = $this->getAdapter()->getConnection()->lastInsertId();
 
         // creating outlines for the course
         $outline1 = array(
@@ -202,6 +203,14 @@ class Course extends AbstractSeed
             "modified" => null,
         );
         $this->insert('outline', $outline2);
+
+
+
+        $course_events_user = array(
+            'course_event_id' => $courseEventId,
+            'user_id' => $instructorId
+        );
+        $this->insert('course_events_users', $course_events_user);
     }
 
 }
