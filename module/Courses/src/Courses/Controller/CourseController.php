@@ -88,13 +88,12 @@ class CourseController extends ActionController
     public function instructorCalendarAction()
     {
         $variables = array();
-//        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
-        $storage = $auth->getIdentity()["id"];
+        $userId = $auth->getIdentity()["id"];
+        $instructorCourseEvents = $query->findBy('Courses\Entity\CourseEvent', /*$criteria =*/ array('ai' => $userId), /*$orderBy =*/ array('id' => Criteria::DESC));
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-        $instructorCourses = $courseModel->prepareInstructorCourses($storage);
-        $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourses);
+        $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourseEvents);
         return new ViewModel($variables);
     }
 
@@ -128,10 +127,7 @@ class CourseController extends ActionController
         }
         else {
 
-            $courseModel->setCanEnroll($data);
-
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-
             $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
             $preparedCourse = reset($preparedCourseArray);
 
