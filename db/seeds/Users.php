@@ -92,7 +92,10 @@ class Users extends AbstractSeed
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
         $coursesVoteRoute = "studentEvaluation";
-
+        $courseEventsRoute = "courseEvents";
+        $courseEventsNewRoute = "courseEventsNew";
+        $courseEventsEditRoute = "courseEventsEdit";
+        $courseEventsDeleteRoute = "courseEventsDelete";
         $instructorCalendar = "coursesInstructorCalendar";
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
         $examBookingRoute = "examBooking";
@@ -221,6 +224,26 @@ class Users extends AbstractSeed
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $courseModule,
                 'route' => $examBookingRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsDeleteRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsEditRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsNewRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsRoute,
             ),
         );
         $this->insert('acl', $coursesAcls);

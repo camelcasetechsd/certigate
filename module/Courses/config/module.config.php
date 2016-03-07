@@ -61,10 +61,65 @@ return array(
             'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
             'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
             'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
+            'Courses\Controller\CourseEvent' => 'Courses\Controller\CourseEventController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'courseEvents' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsNew' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/new[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/edit/:id[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/delete/:id[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
