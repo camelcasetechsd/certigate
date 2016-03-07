@@ -34,7 +34,6 @@ class CourseEvent
      */
     protected $objectUtilities;
 
-
     /**
      * Set needed properties
      * 
@@ -85,8 +84,6 @@ class CourseEvent
         }
         return $courseEvents;
     }
-
-   
 
     /**
      * Leave course event
@@ -160,4 +157,32 @@ class CourseEvent
         }
         return $isCustomValidationValid;
     }
+
+    /**
+     * Get course events listing criteria
+     * 
+     * @access public
+     * @param int $trainingManagerId ,default is false
+     * @return Criteria listing criteria
+     */
+    public function getListingCriteria($trainingManagerId = false)
+    {
+        if ($trainingManagerId !== false) {
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+            if ($auth->hasIdentity()) {
+                if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                    $trainingManagerId = $storage['id'];
+                }
+            }
+        }
+        $criteria = Criteria::create();
+        if (!empty($trainingManagerId)) {
+            $expr = Criteria::expr();
+            $atpsArray = $this->query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($trainingManagerId));
+            $criteria->andWhere($expr->in("atp", $atpsArray));
+        }
+        return $criteria;
+    }
+
 }
