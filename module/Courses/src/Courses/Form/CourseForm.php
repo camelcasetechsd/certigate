@@ -122,7 +122,7 @@ class CourseForm extends Form
                 'class' => 'outlinesFieldset',
             ),
             'options' => array(
-                'count' => 1,
+                'count' => 5,
                 'label' => "Outline",
                 'should_create_template' => true,
                 'allow_add' => true,
@@ -132,13 +132,23 @@ class CourseForm extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'addMore',
+            'name' => 'addOneMore',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-primary addMoreButton',
-                'value' => 'Add More',
+                'value' => 'Add One More',
                 'type' => 'button',
-                'onclick' => "addMoreOutline('#course_form_addMore')"
+                'onclick' => "addMoreOutline('#course_form_addOneMore', 1)"
+            )
+        ));
+        $this->add(array(
+            'name' => 'addFiveMore',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-primary addMoreButton',
+                'value' => 'Add Five More',
+                'type' => 'button',
+                'onclick' => "addMoreOutline('#course_form_addFiveMore', 5)"
             )
         ));
         

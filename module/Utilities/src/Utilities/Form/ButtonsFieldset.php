@@ -28,8 +28,7 @@ class ButtonsFieldset extends Fieldset
     {
         parent::__construct(/* $name = */ (!empty($name)) ? $name : "buttons", $options);
 
-        $createButtonOnly = $options["create_button_only"];
-        if ($createButtonOnly === true) {
+        if (array_key_exists("create_button_only", $options) && $options["create_button_only"] === true) {
             $this->add(array(
                 'name' => FormButtons::CREATE_BUTTON,
                 'type' => 'Zend\Form\Element\Submit',

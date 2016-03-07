@@ -286,6 +286,7 @@ class CourseController extends ActionController
         }
 
         $variables['courseForm'] = $this->getFormView($form);
+        $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
 
