@@ -1,0 +1,38 @@
+<style>
+    .cover_image{
+        width: 250px;
+        height: 200px;
+    }
+    .summary{
+        margin-top: 3px;
+    }
+    .news_body{
+        margin-top: 20px;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-3 main_pic">
+        <div class="imageContainer">
+            <img class="cover_image" src="/var/www/html/public/upload/pagePictures/<?php echo $this->tmp_name ?>"/>
+        </div>
+    </div>
+    <div class=" col-lg-7 news_head">
+        <blockquote>
+            <h3><?php echo $this->title ?></h3>
+            <footer>
+                <span>By: <?php echo $this->author ?></span><br>
+                <span class="pull-right"><?php echo $this->created ?></span>
+            </footer>
+        </blockquote>
+
+
+        <div class="summary">
+           <?php echo $this->summary ?>
+        </div>
+    </div> 
+</div>
+<div class="row">
+    <div class="col-lg-12 news_body">
+        <?php echo $this->body ?>
+    </div> 
+</div>
