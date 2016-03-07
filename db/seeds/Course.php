@@ -176,6 +176,7 @@ class Course extends AbstractSeed
             "studentsNo" => 10,
             "atp_id" => $atpId,
             "ai_id" => $instructorId,
+            "status" => true,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null
         );

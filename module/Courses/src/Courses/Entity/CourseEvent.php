@@ -26,11 +26,12 @@ use Utilities\Service\String;
  * @property int $studentsNo
  * @property Organizations\Entity\Organization $atp
  * @property Users\Entity\User $ai
- * @property \DateTime $created
- * @property \DateTime $modified
+ * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $users
  * @property Doctrine\Common\Collections\ArrayCollection $exambooks
  * @property Doctrine\Common\Collections\ArrayCollection $votes
+ * @property \DateTime $created
+ * @property \DateTime $modified
  * 
  * @package courses
  * @subpackage entity
@@ -139,6 +140,13 @@ class CourseEvent
      */
     public $votes;
 
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $status;
+    
     /**
      * Prepare entity
      * 
@@ -403,6 +411,32 @@ class CourseEvent
     }
 
     /**
+     * Get status
+     * 
+     * 
+     * @access public
+     * @return int status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set status
+     * 
+     * 
+     * @access public
+     * @param int $status
+     * @return CourseEvent
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
+    /**
      * Get Users
      * 
      * 
@@ -529,6 +563,9 @@ class CourseEvent
      */
     public function exchangeArray($data = array())
     {
+        if (array_key_exists('status', $data)) {
+            $this->setStatus($data["status"]);
+        }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])
                 ->setCourse($data["course"])
