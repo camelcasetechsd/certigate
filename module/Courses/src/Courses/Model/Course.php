@@ -7,6 +7,9 @@ use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Course Model
@@ -25,6 +28,8 @@ use System\Service\Cache\CacheHandler;
  */
 class Course
 {
+
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     /**
      *
@@ -73,6 +78,7 @@ class Course
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->version = $version;
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
     }
 
     /**
@@ -91,7 +97,7 @@ class Course
         if ($editFlag === true) {
             $data = array();
         }
-        
+
         if ($isAdminUser === false) {
             $course->setStatus(Status::STATUS_NOT_APPROVED);
             $notifyAdminFlag = true;
@@ -154,7 +160,7 @@ class Course
             "hasPendingChanges" => $hasPendingChanges,
         );
     }
-    
+
     /**
      * Send mail
      * 
@@ -204,6 +210,24 @@ class Course
             'subject' => $subject,
         );
         $this->notification->notify($mailArray);
+    }
+
+    /**
+     * Filter courses
+     * 
+     * @access public
+     * 
+     * @param array $criteriaArray ,default is empty array
+     */
+    public function filterCourses($criteriaArray = array())
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        foreach ($criteriaArray as $fieldName => $fieldValue) {
+            $criteria->andWhere($expr->eq($fieldName, $fieldValue));
+        }
+        $this->setCriteria($criteria);
+        $this->setItemCountPerPage(1);
     }
 
 }

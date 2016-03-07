@@ -244,14 +244,14 @@ class ResourceController extends ActionController
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
 
-        $courseEventsArray = $resource->getCourse()->getCourseEvents();
-        $preparedCourseArray = $courseEventModel->setCanEnroll($courseEventsArray);
+        $courseArray = array($resource->getCourse());
+        $preparedCourseArray = $courseEventModel->setCourseEventsPrivileges($courseArray);
         $preparedCourse = reset($preparedCourseArray);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $canDownload = true;
         if ($auth->hasIdentity()) {
-            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && is_object($preparedCourse) && property_exists($preparedCourse, 'canLeave') && $preparedCourse->canLeave === false) {
+            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && is_object($preparedCourse) && property_exists($preparedCourse, 'canDownload') && $preparedCourse->canDownload === false) {
                 $canDownload = false;
             }
         }
