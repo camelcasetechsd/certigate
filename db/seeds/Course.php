@@ -102,6 +102,7 @@ class Course extends AbstractSeed
         );
 
         $this->insert('organization', $atp);
+        $atpId = $this->getAdapter()->getConnection()->lastInsertId();
 
 
         // getting authorized Instuctor role id 
@@ -167,6 +168,19 @@ class Course extends AbstractSeed
         $this->insert('course', $course);
         $courseId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        $courseEvent = array(
+            "course_id" => $courseId,
+            "startDate" => date('Y-m-d H:i:s'),
+            "endDate" => date('Y-m-d H:i:s'),
+            "capacity" => 100,
+            "studentsNo" => 10,
+            "atp_id" => $atpId,
+            "ai_id" => $instructorId,
+            "created" => date('Y-m-d H:i:s'),
+            "modified" => null
+        );
+        $this->insert('course_event', $courseEvent);
+
         // creating outlines for the course
         $outline1 = array(
             "title" => "outline1",
@@ -177,7 +191,7 @@ class Course extends AbstractSeed
             "modified" => null,
         );
         $this->insert('outline', $outline1);
-       
+
         $outline2 = array(
             "title" => "outline2",
             "course_id" => $courseId,

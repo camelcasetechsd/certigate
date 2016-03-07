@@ -83,7 +83,7 @@ class ExamController extends ActionController
             if ($form->isValid()) {
                 // save exam rquest
                 $examModel->saveBookingRequest($data,$config);
-//              // redirect
+                // redirect
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'calendar'), /* $routeName = */ array('name' => "coursesCalendar"));
                 $this->redirect()->toUrl($url);
             }

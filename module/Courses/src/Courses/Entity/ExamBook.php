@@ -79,7 +79,7 @@ class ExamBook
      * @var \DateTime
      */
     public $date;
-    
+
     /**
      *
      * @ORM\Column(type="date")
@@ -270,7 +270,7 @@ class ExamBook
         $this->tvtcStatus = $tvtcStatus;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -320,7 +320,7 @@ class ExamBook
         $this->modified = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -342,15 +342,17 @@ class ExamBook
      */
     public function exchangeArray($data = array())
     {
-        if(array_key_exists("tvtcStatus", $data)){
+        if (array_key_exists("tvtcStatus", $data)) {
             $this->setTvtcStatus($data["tvtcStatus"]);
         }
-        $this->setAdminStatus($data["adminStatus"])
-                ->setAtc($data["atc"])
+        if (array_key_exists("adminStatus", $data)) {
+            $this->setAdminStatus($data["adminStatus"]);
+        }
+        $this->setAtc($data["atc"])
                 ->setCourseEvent($data["courseEvent"])
                 ->setDate($data["date"])
                 ->setStudentsNo($data["studentsNo"])
-                ;
+        ;
     }
 
     /**
@@ -401,7 +403,7 @@ class ExamBook
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'atcId',
+                'name' => 'atc',
                 'required' => true,
             ));
 

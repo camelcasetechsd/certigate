@@ -121,7 +121,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'target_class' => 'Courses\Entity\CourseEvent',
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
-                'property' => 'getDetailedName',
+                'property' => 'detailedName',
                 'is_method' => true,
             )
         ));
