@@ -21,8 +21,11 @@ class Press
             'id' => $newsId
                 )
         );
-        if ($news[0]->type == PageTypes::PRESS_RELEASE_TYPE) {
-            return $this->prepareNews($news);
+        if (!empty($news)) {
+            if ($news[0]->type == PageTypes::PRESS_RELEASE_TYPE) {
+                return $this->prepareNews($news);
+            }
+            return null;
         }
         return null;
     }
@@ -35,7 +38,7 @@ class Press
             $singleNews->picture['tmp_name'] = $newsPicture[7];
             $singleNews->created = $singleNews->created->format('d-m-Y');
             $singleNews->body = $singleNews->getBody();
-            }
+        }
         return $news;
     }
 
