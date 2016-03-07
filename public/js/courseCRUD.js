@@ -7,8 +7,8 @@
 function updateOutlines(addMoreSelector, isAdminUser) {
     var currentCount, newLabel, newRemoveButton;
     // update displayed outlines fieldsets
-    if ($('#course_form > fieldset > fieldset').length) {
-        $('#course_form > fieldset > fieldset').each(function (index) {
+    if ($('#course_form > fieldset.outlinesFieldset > fieldset').length) {
+        $('#course_form > fieldset.outlinesFieldset > fieldset').each(function (index) {
             if (index !== 0) {
                 currentCount = index;
                 newLabel = getOutlineLabel(currentCount);
@@ -29,15 +29,15 @@ function updateOutlines(addMoreSelector, isAdminUser) {
  * @param {String} addMoreSelector
  */
 function addMoreOutline(addMoreSelector) {
-    var currentCount = $('form > fieldset > fieldset').length;
+    var currentCount = $('form > fieldset.outlinesFieldset > fieldset').length;
     var newLabel = getOutlineLabel(currentCount);
     var newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
 
-    var template = $('form > fieldset > span').data('template');
+    var template = $('form > fieldset.outlinesFieldset > span').data('template');
     template = template.replace(/__outlineNumber__/g, currentCount);
 
     var outlineFieldset = newLabel + template + newRemoveButton;
-    $('form > fieldset').append(outlineFieldset);
+    $('form > fieldset.outlinesFieldset').append(outlineFieldset);
 }
 
 /**

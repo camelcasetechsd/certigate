@@ -118,6 +118,9 @@ class CourseForm extends Form
         $this->add(array(
             'type' => 'Zend\Form\Element\Collection',
             'name' => 'outlines',
+            'attributes' => array(
+                'class' => 'outlinesFieldset',
+            ),
             'options' => array(
                 'count' => 1,
                 'label' => "Outline",
