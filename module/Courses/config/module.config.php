@@ -22,6 +22,7 @@ return array(
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
             'Courses\Model\Exam' => 'Courses\Model\ExamFactory',
+            'Courses\Model\Vote' => 'Courses\Model\VoteFactory',
         )
     ),
     'doctrine' => array(
@@ -325,13 +326,14 @@ return array(
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/more/:id',
+                    'route' => '/courses/more/:id[/:courseEventId]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'more',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
+                        'courseEventId' => '[0-9]+',
                     ),
                 )
             ),

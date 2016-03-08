@@ -5,18 +5,14 @@
 <br><br>
 
 <br><br>
-<!--make sure that user did not evaluated the course before-->
-{{#notEvaluatedBefore}}
-<!--making sure that course has evaluation-->
-{{#hasEvaluation}}
-<!--making sure that user is student-->
-{{#isStudent}}
+<!--making sure that user can evaluate-->
+{{#canEvaluate}}
+{{#courseEventId}}
 <!--this rule is only for students-->
-<a class="btn btn-info" href="/courses/vote/{{course.id}}" >Evaluate Course</a>
+<a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >Evaluate Course</a>
 <br><br>
-{{/isStudent}}
-{{/hasEvaluation}}
-{{/notEvaluatedBefore}}
+{{/courseEventId}}
+{{/canEvaluate}}
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
     <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">Course Events</a></li>

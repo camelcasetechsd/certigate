@@ -6,6 +6,7 @@ use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
+use Utilities\Service\Status;
 
 /**
  * CourseEvent Model
@@ -65,6 +66,7 @@ class CourseEvent
         foreach ($courses as $course) {
             $courseEvents = $course->getCourseEvents();
             $course->canDownload = false;
+            $course->currentUserEnrolled = false;
             foreach ($courseEvents as $courseEvent) {
                 $nonAuthorizedEnroll = false;
                 $courseFull = false;
@@ -86,14 +88,27 @@ class CourseEvent
                 if ($canLeave === true || $nonAuthorizedEnroll === true || $courseFull === true) {
                     $canEnroll = false;
                 }
-                
+
                 $courseEvent->canEnroll = $canEnroll;
                 $courseEvent->isFull = $courseFull;
                 $courseEvent->canLeave = $canLeave;
-                if($course->canDownload === false && $canLeave === true){
-                    $course->canDownload = true;
+                if ($course->canDownload === false && $canLeave === true) {
+                    $course->canDownload = $course->currentUserEnrolled = true;
                 }
             }
+            $canEvaluate = false;
+            $criteria = Criteria::create();
+            $expr = Criteria::expr();
+            $criteria->andWhere($expr->eq("user", $currentUser));
+            $courseVotes = $course->getEvaluation()->getVotes()->matching($criteria);
+            if (is_object($course->getEvaluation()) && $auth->hasIdentity() 
+                    && $course->getEvaluation()->getStatus() == Status::STATUS_ACTIVE 
+                    && $course->currentUserEnrolled === true && $courseVotes->isEmpty()
+                    && (in_array(Role::STUDENT_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))
+            ) {
+                $canEvaluate = true;
+            }
+            $course->canEvaluate = $canEvaluate;
             $courseEvents = $this->objectUtilities->prepareForDisplay($courseEvents);
         }
         return $courses;
