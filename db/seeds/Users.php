@@ -87,6 +87,7 @@ class Users extends AbstractSeed
 
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
+        $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
         $coursesEnrollRoute = "coursesEnroll";
@@ -119,6 +120,26 @@ class Users extends AbstractSeed
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
                 'route' => $coursesCalendarRoute,
+            ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
             ),
             array(
                 'role_id' => $studentRoleId,

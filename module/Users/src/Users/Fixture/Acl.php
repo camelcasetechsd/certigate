@@ -29,6 +29,7 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
         $userEditRoute = "userEdit";
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
+        $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
 
@@ -112,6 +113,26 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
                 'role' => RoleEntity::INSTRUCTOR_ROLE,
                 'module' => $courseModule,
                 'route' => $coursesCalendarRoute,
+            ),
+            array(
+                'role' => RoleEntity::STUDENT_ROLE,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role' => RoleEntity::TEST_CENTER_ADMIN_ROLE,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role' => RoleEntity::TRAINING_MANAGER_ROLE,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role' => RoleEntity::INSTRUCTOR_ROLE,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
             ),
             array(
                 'role' => RoleEntity::STUDENT_ROLE,

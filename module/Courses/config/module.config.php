@@ -570,6 +570,20 @@ return array(
                     ),
                 )
             ),
+            // download Course outlines pdf
+            'courseOutlinesPdf' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/outlines/generate-pdf/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Outline',
+                        'action' => 'generatePdf',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
         )
     ),
 );

@@ -227,7 +227,6 @@ class Course
             $criteria->andWhere($expr->eq($fieldName, $fieldValue));
         }
         $this->setCriteria($criteria);
-        $this->setItemCountPerPage(1);
     }
 
 }

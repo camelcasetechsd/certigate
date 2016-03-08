@@ -4,18 +4,12 @@ namespace Courses\Controller;
 
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
-use Courses\Form\ResourceForm;
-use Courses\Entity\Resource;
-use Zend\Authentication\AuthenticationService;
-use Users\Entity\Role;
-use Zend\Form\FormInterface;
-use Zend\Http\Response\Stream;
-use Zend\Http\Headers;
+use DOMPDFModule\View\Model\PdfModel;
 
 /**
- * Resource Controller
+ * Outline Controller
  * 
- * resources entries listing
+ * outlines entries listing
  * 
  * 
  * 
@@ -50,6 +44,36 @@ class OutlineController extends ActionController
             $variables['outlines'] = $data;
             return new ViewModel($variables);
         }
+    }
+
+    /**
+     * List outlines
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function generatePdfAction()
+    {
+        $courseId = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
+        // if course does not exist
+        if (!is_object($course)) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
+        $pdfModel = new PdfModel();
+        $pdfModel->setOption("filename", "{$course->getName()} outlines"); // Triggers PDF download, automatically appends ".pdf"
+        // To set view variables
+        $pdfModel->setVariables(array(
+          'outlines' => $objectUtilities->prepareForDisplay($course->getOutlines())
+        ));
+        $pdfModel->setTemplate("courses/outline/generate-pdf");
+        return $this->getPdfView($pdfModel);
     }
 
 }
