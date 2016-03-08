@@ -899,4 +899,41 @@ class CourseController extends ActionController
         return new ViewModel($variables);
     }
 
+    public function myCoursesAction()
+    {
+        $variables = array();
+        $query = $this->getServiceLocator()->get("wrapperQuery");
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $auth = new AuthenticationService();
+        // user id
+        $id = $auth->getIdentity()['id'];
+        $user = $query->findOneBy('Users\Entity\User', array(
+            'id' => $id
+        ));
+
+        $userCourses = $user->getCourseEvents();
+        $courseEventModel = new \Courses\Model\CourseEvent($query, $this->getServiceLocator()->get('objectUtilities'));
+        $variables['courseEvents'] = $courseEventModel->prepareCourseOccurrences($userCourses);
+        // if user did not enroll in any course
+        if (count($userCourses) < 1) {
+            $variables['messages'] = 'Currently you are not enrolled in any courses';
+        }
+
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $request = $this->getRequest();
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $courseModel->setPage($pageNumber);
+
+        $pageNumbers = $courseModel->getPagesRange($pageNumber);
+        $nextPageNumber = $courseModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $courseModel->getPreviousPageNumber($pageNumber);
+        $variables['menuItems'] = $objectUtilities->prepareForDisplay($courseModel->getCurrentItems());
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $nextPageNumber;
+        $variables['previousPageNumber'] = $previousPageNumber;
+        $variables['filterQuery'] = preg_replace('/page=[\d]+&/i', '', $request->getUri()->getQuery());
+        return new ViewModel($variables);
+    }
+
 }

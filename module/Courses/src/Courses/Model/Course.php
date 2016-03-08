@@ -74,6 +74,7 @@ class Course
     public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $version)
     {
         $this->query = $query;
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
         $this->outlineModel = $outlineModel;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
