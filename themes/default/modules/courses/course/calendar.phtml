@@ -10,69 +10,76 @@
     <div class="row">
         <div class="col-md-1">&nbsp;</div>
         <div class="media col-md-10">
-            <div class="media-body">
 
-                <div  class="media-heading"><div class="pull-left"><h4>{{name}}</h4></div> <div class="text-right"><a href="/courses/outlines/generate-pdf/{{id}}">Download Outlines</a> &nbsp; <a href="#">Periodical Notification</a></div></div>
-                <div class="clearfix"></div>
-                <div class="panel-footer">
-                    <p>{{brief}}</p>
-                    <ul class="list-inline list-unstyled">
-                        <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
-                    </ul>
+            <div class="media-body">
+                <div class="panel-default">
+
+
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h4>{{name}}</h4></div> <div class="text-right"><a href="/courses/outlines/generate-pdf/{{id}}">Download Outlines</a> &nbsp; <a href="#">Periodical Notification</a></div></div>
+                    </div><div class="clearfix"></div>
+                    <div>
+                        <p>{{brief}}</p>
+                        <ul class="list-inline list-unstyled">
+                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
+                        </ul>
+                    </div>
+
+                    {{#courseEvents.count}}
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>ATP Name</th>
+                                <th>ATP City</th>
+                                <th>&nbsp;</th>
+                                <th colspan="2">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#courseEvents}}
+                            <tr>
+                                <td>
+                                    {{startDate}}
+                                </td>
+                                <td>
+                                    {{endDate}}
+                                </td>
+                                <td>
+                                    {{atp.commercialName}}
+                                </td>
+                                <td>
+                                    {{atp.city}}
+                                </td>
+                                <td>
+                                    <a href="#">Notify me before start</a>
+                                </td>
+                                <td>
+                                    {{#canEnroll}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">Enroll</button></a>
+                                    {{/canEnroll}}
+                                    {{#canLeave}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">Cancel</button></a>
+                                    {{/canLeave}}
+                                    {{#isFull}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Course Full
+                                    {{/isFull}}
+                                </td>
+                            </tr>
+
+                            {{/courseEvents}}
+
+                        </tbody>
+                    </table>
+                    {{/courseEvents.count}}
+
+                    
                 </div>
             </div>
-            {{#courseEvents.count}}
-            <!-- Table -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>ATP Name</th>
-                        <th>ATP City</th>
-                        <th>&nbsp;</th>
-                        <th colspan="2">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#courseEvents}}
-                    <tr>
-                        <td>
-                            {{startDate}}
-                        </td>
-                        <td>
-                            {{endDate}}
-                        </td>
-                        <td>
-                            {{atp.commercialName}}
-                        </td>
-                        <td>
-                            {{atp.city}}
-                        </td>
-                        <td>
-                            <a href="#">Notify me before start</a>
-                        </td>
-                        <td>
-                            {{#canEnroll}}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">Enroll</button></a>
-                            {{/canEnroll}}
-                            {{#canLeave}}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">Cancel</button></a>
-                            {{/canLeave}}
-                            {{#isFull}}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            Course Full
-                            {{/isFull}}
-                        </td>
-                    </tr>
-
-                    {{/courseEvents}}
-
-                </tbody>
-            </table>
-            {{/courseEvents.count}}
             <hr>
         </div>
         <div class="col-md-1">&nbsp;</div>
