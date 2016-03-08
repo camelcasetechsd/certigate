@@ -5,6 +5,7 @@ namespace Users\Form;
 use Utilities\Form\Form;
 use Users\Service\Statement;
 use Utilities\Service\Time;
+use Utilities\Form\ButtonsFieldset;
 
 /**
  * User Form
@@ -473,23 +474,9 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'btn btn-success',
-                'value' => 'Create',
-            )
-        ));
-        $this->add(array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ));
+        // Add buttons fieldset
+        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $this->add($buttonsFieldset);
     }
 
 }

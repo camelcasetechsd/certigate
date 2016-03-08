@@ -5,6 +5,7 @@ namespace CMS\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use CMS\Entity\MenuItem;
+use Utilities\Form\ButtonsFieldset;
 
 /**
  * MenuItem Form
@@ -181,24 +182,9 @@ class MenuItemForm extends Form
             'type' => 'Zend\Form\Element\Hidden',
         ) );
 
-        $this->add( array(
-            'name' => 'Create',
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'btn btn-success',
-                'value' => 'Create',
-            )
-        ) );
-
-        $this->add( array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ) );
+        // Add buttons fieldset
+        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $this->add($buttonsFieldset);
     }
 
 }
