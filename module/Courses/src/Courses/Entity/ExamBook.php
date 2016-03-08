@@ -16,7 +16,7 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property \DateTime $date
- * @property Courses\Entity\CourseEvent $courseEvent
+ * @property Courses\Entity\Course $course
  * @property Organizations\Entity\Organization $atc
  * @property int $studentsNo
  * @property int $adminStatus
@@ -95,10 +95,10 @@ class ExamBook
     public $modified = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Courses\Entity\CourseEvent", inversedBy="exambooks")
-     * @ORM\JoinColumn(name="course_event_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\Course", inversedBy="exambooks")
+     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
      */
-    public $courseEvent;
+    public $course;
 
     /**
      * @ORM\ManyToOne(targetEntity="Organizations\Entity\Organization", inversedBy="exambook")
@@ -136,14 +136,14 @@ class ExamBook
     }
 
     /**
-     * Get courseEvent
+     * Get course
      * 
      * @access public
-     * @return Courses\Entity\CourseEvent
+     * @return Courses\Entity\Course
      */
-    public function getCourseEvent()
+    public function getCourse()
     {
-        return $this->courseEvent;
+        return $this->course;
     }
 
     /**
@@ -207,15 +207,15 @@ class ExamBook
     }
 
     /**
-     * Set courseEvent
+     * Set course
      * 
      * @access public
-     * @param Courses\Entity\CourseEvent $courseEvent
+     * @param Courses\Entity\Course $course
      * @return Courses\Entity\ExamBook
      */
-    public function setCourseEvent($courseEvent)
+    public function setCourse($course)
     {
-        $this->courseEvent = $courseEvent;
+        $this->course = $course;
         return $this;
     }
 
@@ -349,7 +349,7 @@ class ExamBook
             $this->setAdminStatus($data["adminStatus"]);
         }
         $this->setAtc($data["atc"])
-                ->setCourseEvent($data["courseEvent"])
+                ->setCourse($data["course"])
                 ->setDate($data["date"])
                 ->setStudentsNo($data["studentsNo"])
         ;
@@ -399,7 +399,7 @@ class ExamBook
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'courseEvent',
+                'name' => 'course',
                 'required' => true,
             ));
             $inputFilter->add(array(

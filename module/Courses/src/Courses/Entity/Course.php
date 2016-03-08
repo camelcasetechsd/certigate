@@ -22,6 +22,7 @@ use Utilities\Service\Time;
  * @property Doctrine\Common\Collections\ArrayCollection $resources
  * @property Doctrine\Common\Collections\ArrayCollection $outlines
  * @property Doctrine\Common\Collections\ArrayCollection $courseEvents
+ * @property Doctrine\Common\Collections\ArrayCollection $exambooks
  * @property string $brief
  * @property \DateTime $time
  * @property int $duration
@@ -131,6 +132,12 @@ class Course
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $courseEvents;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="course")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $exambooks;
 
     /**
      * Prepare entity
@@ -143,6 +150,7 @@ class Course
         $this->resources = new ArrayCollection();
         $this->outlines = new ArrayCollection();
         $this->courseEvents = new ArrayCollection();
+        $this->exambooks = new ArrayCollection();
     }
 
     /**
@@ -545,6 +553,32 @@ class Course
         return $this->evaluation;
     }
 
+    /**
+     * Get ExamBooks
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection examBooks
+     */
+    public function getExamBooks()
+    {
+        return $this->examBooks;
+    }
+
+    /**
+     * Set ExamBooks
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $examBooks
+     * @return Course
+     */
+    public function setExamBooks($examBooks)
+    {
+        $this->examBooks = $examBooks;
+        return $this;
+    }
+    
     /**
      * Convert the object to an array.
      * 

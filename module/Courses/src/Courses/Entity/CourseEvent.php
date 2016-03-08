@@ -28,7 +28,6 @@ use Utilities\Service\String;
  * @property Users\Entity\User $ai
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $users
- * @property Doctrine\Common\Collections\ArrayCollection $exambooks
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -129,12 +128,6 @@ class CourseEvent
     public $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="courseEvent")
-     * @var Doctrine\Common\Collections\ArrayCollection
-     */
-    public $exambooks;
-
-    /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="courseEvent")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
@@ -156,7 +149,6 @@ class CourseEvent
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->exambooks = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -473,32 +465,6 @@ class CourseEvent
     public function setUsers($users)
     {
         $this->users = $users;
-        return $this;
-    }
-    
-    /**
-     * Get ExamBooks
-     * 
-     * 
-     * @access public
-     * @return ArrayCollection examBooks
-     */
-    public function getExamBooks()
-    {
-        return $this->examBooks;
-    }
-
-    /**
-     * Set ExamBooks
-     * 
-     * 
-     * @access public
-     * @param ArrayCollection $examBooks
-     * @return CourseEvent
-     */
-    public function setExamBooks($examBooks)
-    {
-        $this->examBooks = $examBooks;
         return $this;
     }
     

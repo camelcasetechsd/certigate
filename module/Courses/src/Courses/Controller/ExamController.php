@@ -6,7 +6,6 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
-use Courses\Form\BookExamFormViewHelper;
 
 /**
  * ExamController
@@ -88,8 +87,6 @@ class ExamController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $formViewHelper = new BookExamFormViewHelper();
-        $this->setFormViewHelper($formViewHelper);
         $variables['bookExamForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
