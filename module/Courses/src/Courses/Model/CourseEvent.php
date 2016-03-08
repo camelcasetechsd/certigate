@@ -48,13 +48,13 @@ class CourseEvent
     }
 
     /**
-     * Set can enroll property
+     * Set course Privileges
      * 
      * @access public
-     * @param array $courseEvents
+     * @param array $courses
      * @return array courseEvents with canRoll property added
      */
-    public function setCanEnroll($courseEvents)
+    public function setCourseEventsPrivileges($courses)
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -62,27 +62,41 @@ class CourseEvent
         if ($auth->hasIdentity()) {
             $currentUser = $this->query->find('Users\Entity\User', $storage['id']);
         }
-        foreach ($courseEvents as $courseEvent) {
-            $nonAuthorizedEnroll = false;
-            $canEnroll = true;
-            $users = $courseEvent->getUsers();
-            $canLeave = false;
-            if ($auth->hasIdentity()) {
-                $courseEventAiId = $this->objectUtilities->getId($courseEvent->getAi());
-                if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEventAiId) {
-                    $nonAuthorizedEnroll = true;
+        foreach ($courses as $course) {
+            $courseEvents = $course->getCourseEvents();
+            $course->canDownload = false;
+            foreach ($courseEvents as $courseEvent) {
+                $nonAuthorizedEnroll = false;
+                $courseFull = false;
+                $canEnroll = true;
+                $users = $courseEvent->getUsers();
+                $canLeave = false;
+                if ($auth->hasIdentity()) {
+                    $courseEventAiId = $this->objectUtilities->getId($courseEvent->getAi());
+                    if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEventAiId) {
+                        $nonAuthorizedEnroll = true;
+                    }
+                }
+                if (!is_null($currentUser)) {
+                    $canLeave = $users->contains($currentUser);
+                }
+                if ($courseEvent->getStudentsNo() >= $courseEvent->getCapacity()) {
+                    $courseFull = true;
+                }
+                if ($canLeave === true || $nonAuthorizedEnroll === true || $courseFull === true) {
+                    $canEnroll = false;
+                }
+                
+                $courseEvent->canEnroll = $canEnroll;
+                $courseEvent->isFull = $courseFull;
+                $courseEvent->canLeave = $canLeave;
+                if($course->canDownload === false && $canLeave === true){
+                    $course->canDownload = true;
                 }
             }
-            if (!is_null($currentUser)) {
-                $canLeave = $users->contains($currentUser);
-            }
-            if ($canLeave === true || $nonAuthorizedEnroll === true || $courseEvent->getStudentsNo() >= $courseEvent->getCapacity()) {
-                $canEnroll = false;
-            }
-            $courseEvent->canEnroll = $canEnroll;
-            $courseEvent->canLeave = $canLeave;
+            $courseEvents = $this->objectUtilities->prepareForDisplay($courseEvents);
         }
-        return $courseEvents;
+        return $courses;
     }
 
     /**

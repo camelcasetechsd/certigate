@@ -9,6 +9,8 @@ use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
+
 
 /**
  * Course Model
@@ -28,6 +30,7 @@ use Zend\Paginator\Paginator;
 class Course
 {
 
+    use \Utilities\Service\Paginator\PaginatorTrait;
     /**
      *
      * @var Utilities\Service\Query\Query 
@@ -82,6 +85,7 @@ class Course
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->version = $version;
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
     }
 
     /**
@@ -348,6 +352,24 @@ class Course
     public function setCriteria($criteria)
     {
         $this->paginator->getAdapter()->setCriteria($criteria);
+}
+    /**
+     * Filter courses
+     * 
+     * @access public
+     * 
+     * @param array $criteriaArray ,default is empty array
+     */
+    public function filterCourses($criteriaArray = array())
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        foreach ($criteriaArray as $fieldName => $fieldValue) {
+            $criteria->andWhere($expr->eq($fieldName, $fieldValue));
+        }
+        $this->setCriteria($criteria);
+        $this->setItemCountPerPage(1);
+
     }
 
 }

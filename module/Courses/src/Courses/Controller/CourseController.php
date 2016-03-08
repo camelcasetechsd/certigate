@@ -67,13 +67,21 @@ class CourseController extends ActionController
     public function calendarAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
 
-        $data = $query->findBy(/* $entityName = */'Courses\Entity\Course', /* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
-        $courseModel->setCanEnroll($data);
-        $variables['courses'] = $objectUtilities->prepareForDisplay($data);
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $courseModel->filterCourses(/* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
+        $courseModel->setPage($pageNumber);
+        $pageNumbers = $courseModel->getPagesRange($pageNumber);
+        $nextPageNumber = $courseModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $courseModel->getPreviousPageNumber($pageNumber);
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $nextPageNumber;
+        $variables['previousPageNumber'] = $previousPageNumber;
+        
+        $variables['courses'] = $courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems());
         return new ViewModel($variables);
     }
 
@@ -93,7 +101,7 @@ class CourseController extends ActionController
         $userId = $auth->getIdentity()["id"];
         $instructorCourseEvents = $query->findBy('Courses\Entity\CourseEvent', /* $criteria = */ array('ai' => $userId), /* $orderBy = */ array('id' => Criteria::DESC));
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $variables['courses'] = $objectUtilities->prepareForDisplay($instructorCourseEvents);
+        $variables['courseEvents'] = $objectUtilities->prepareForDisplay($instructorCourseEvents);
         return new ViewModel($variables);
     }
 
@@ -128,7 +136,7 @@ class CourseController extends ActionController
         else {
 
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-            $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($data));
+            $preparedCourseArray = $courseModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($data));
             $preparedCourse = reset($preparedCourseArray);
 
             $resources = $preparedCourse->getResources();
@@ -167,12 +175,12 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
         if ($course != null) {
-            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+            $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
 
             $courseArray = array($course);
 
-            $preparedCourseArray = $courseModel->setCanEnroll($objectUtilities->prepareForDisplay($courseArray));
+            $preparedCourseArray = $courseEventModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($courseArray));
             $preparedCourse = reset($preparedCourseArray);
 
             $outlines = $preparedCourse->getOutlines();
@@ -188,7 +196,7 @@ class CourseController extends ActionController
             $auth = new AuthenticationService();
             $storage = $auth->getIdentity();
             $canDownloadResources = true;
-            if ($auth->hasIdentity() && in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+            if ($auth->hasIdentity() && $preparedCourse->canDownload === false && in_array(Role::STUDENT_ROLE, $storage['roles'])) {
                 $canDownloadResources = false;
             }
 
@@ -506,7 +514,8 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $course = $query->find('Courses\Entity\Course', $id);
+        $courseEvent = $query->find('Courses\Entity\CourseEvent', $id);
+        $course = $courseEvent->getCourse();
 
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
 
@@ -518,7 +527,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
             $notAuthorized = true;
         }
 
@@ -527,8 +536,8 @@ class CourseController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
         }
         else {
-            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-            $courseModel->enrollCourse($course, /* $user = */ $currentUser);
+            $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+            $courseEventModel->enrollCourse($courseEvent, /* $user = */ $currentUser);
             $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName));
         }
         $this->redirect()->toUrl($url);
@@ -546,9 +555,10 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        $course = $query->find('Courses\Entity\Course', $id);
+        $courseEvent = $query->find('Courses\Entity\CourseEvent', $id);
+        $course = $courseEvent->getCourse();
         $currentUser = $query->find('Users\Entity\User', $storage['id']);
-
+        $notAuthorized = false;
         $routeName = "coursesCalendar";
         if ($course->isForInstructor() === Status::STATUS_ACTIVE) {
             $routeName = "coursesInstructorTraining";
@@ -556,7 +566,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $course->getAi()->getId())) {
+        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
             $notAuthorized = true;
         }
         if ($notAuthorized === true) {
@@ -564,8 +574,8 @@ class CourseController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
         }
         else {
-            $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-            $courseModel->leaveCourse($course, /* $user = */ $currentUser);
+            $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+            $courseEventModel->leaveCourse($courseEvent, /* $user = */ $currentUser);
             $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName));
         }
         $this->redirect()->toUrl($url);
