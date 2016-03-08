@@ -546,13 +546,13 @@ return array(
             'studentEvaluation' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/vote[/:courseId]',
+                    'route' => '/courses/vote/:courseEventId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'vote',
                     ),
                     'constraints' => array(
-                        'courseId' => '[0-9]+',
+                        'courseEventId' => '[0-9]+',
                     ),
                 )
             ),

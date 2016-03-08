@@ -884,7 +884,7 @@ class CourseController extends ActionController
     public function voteAction()
     {
         $variables = array();
-        $courseId = $this->params('courseId');
+        $courseEventId = $this->params('courseEventId');
         $query = $this->getServiceLocator()->get("wrapperQuery");
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -894,11 +894,12 @@ class CourseController extends ActionController
         if ($auth->hasIdentity() && ( in_array(Role::STUDENT_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))) {
 
             // student must be enrolled in this course
-            $course = $query->findOneBy('Courses\Entity\Course', array(
-                'id' => $courseId
+            $courseEvent = $query->findOneBy('Courses\Entity\CourseEvent', array(
+                'id' => $courseEventId
             ));
+            $course = $courseEvent->getCourse();
             // no course with this id (alert) OR COURSE HAS NO EVALUATION YET
-            if ($course == null || $course->getEvaluation() == null) {
+            if ($course == null || $course->getEvaluation() == null || $course->getEvaluation()->getStatus() == Status::STATUS_INACTIVE) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
                 $this->redirect()->toUrl($url);
@@ -951,9 +952,9 @@ class CourseController extends ActionController
         if ($request->isPost()) {
             $values = $request->getPost()->toArray();
             $questionModel = new \Courses\Model\Vote($query->setEntity("Courses\Entity\Vote"));
-            $questionModel->saveCourseVotes($questionIds, $values, $enrolledStudent, $course->getEvaluation());
+            $questionModel->saveCourseVotes($questionIds, $values, $enrolledStudent, $course->getEvaluation(), $courseEvent);
             // redirect to course more
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $courseId), array('name' => 'coursesMore'));
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $courseEventId), array('name' => 'coursesMore'));
             $this->redirect()->toUrl($url);
         }
         return new ViewModel($variables);
