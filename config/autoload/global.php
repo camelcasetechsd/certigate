@@ -87,5 +87,8 @@ return array(
             'password' => '74bbf394d82b6eb4c52a2cf97acf2fd3'
         ),
         'port' => 587,
+    ),
+    'dompdf_module' => array(
+        'default_font' => 'sans-serif',
     )
 );
