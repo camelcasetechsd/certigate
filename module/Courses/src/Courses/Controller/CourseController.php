@@ -11,6 +11,7 @@ use Users\Entity\Role;
 use Utilities\Service\Status;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
+use Utilities\Service\MessageTypes;
 
 /**
  * Course Controller
@@ -916,7 +917,12 @@ class CourseController extends ActionController
         $variables['courseEvents'] = $courseEventModel->prepareCourseOccurrences($userCourses);
         // if user did not enroll in any course
         if (count($userCourses) < 1) {
-            $variables['messages'] = 'Currently you are not enrolled in any courses';
+            $variables['messages'] = array(
+                array(
+                    'message' => 'Currently you are not enrolled in any courses',
+                    'type' => MessageTypes::WARNING
+                )
+            );
         }
 
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
