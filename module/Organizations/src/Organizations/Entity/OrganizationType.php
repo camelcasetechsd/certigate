@@ -11,7 +11,7 @@ use Utilities\Service\Time;
 
 /** OrganziationType Entity
  * @ORM\Entity
- * @ORM\Table(name="organizationType")
+ * @ORM\Table(name="organization_type")
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id

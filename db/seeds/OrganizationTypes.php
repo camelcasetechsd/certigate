@@ -32,10 +32,10 @@ class OrganizationTypes extends AbstractSeed
             "title" => "Re-Seller",
         );
 
-        $this->insert('organizationType', $org1);
-        $this->insert('organizationType', $org2);
-        $this->insert('organizationType', $org3);
-        $this->insert('organizationType', $org4);
+        $this->insert('organization_type', $org1);
+        $this->insert('organization_type', $org2);
+        $this->insert('organization_type', $org3);
+        $this->insert('organization_type', $org4);
     }
 
 }
