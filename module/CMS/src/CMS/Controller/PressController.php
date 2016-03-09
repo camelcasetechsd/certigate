@@ -35,9 +35,9 @@ class PressController extends ActionController
             $inputFilter = $form->getInputFilter();
 
             // adding custom value for ignored fields
-            $url = '';
+            $url = $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute().'/'.$newsId;
             $data["subject"] = \Notifications\Service\MailSubjects::SEND_TO_FRIEND;
-            $data["message"] = 'Check This out ' . $url;
+            $data["message"] = 'A friend of yours wants you to check this out '.$url  ;
             $data["name"] = '';
 
             $form->setData($data);
@@ -58,11 +58,11 @@ class PressController extends ActionController
                 $sTF = $this->getServiceLocator()->get('CMS\Service\STF');
                 $submissionResult = $sTF->submitMessage($data, $form);
                 $variables['messages'] = $submissionResult['messages'];
-                $variables['status'] = $submissionResult['status'];
+                $variables['type'] = $submissionResult['type'];
             }
         }
         $variables['form'] = $this->getFormView($form);
-        $variables['details'] = $newsDetails[0];
+        $variables['details'] = $newsDetails;
         return new ViewModel($variables);
     }
 
