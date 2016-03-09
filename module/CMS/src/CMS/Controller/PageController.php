@@ -12,6 +12,7 @@ use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Form\FormInterface;
 use CMS\Service\PageTypes;
+use Utilities\Form\FormButtons;
 
 /**
  * Page Controller
@@ -78,13 +79,13 @@ class PageController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $request->getFiles()->toArray()
             );
-            
+
             $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
-            $pageModel->setFormRequiredFields($form, $data, /*$editFlag =*/false);
+            $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ false);
             if ($form->isValid()) {
                 $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $pageModel->save($pageObj, $data, /*$editFlag =*/ false);
+                $pageModel->save($pageObj, $data, /* $editFlag = */ false);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -124,6 +125,11 @@ class PageController extends ActionController
         $options = array();
         $options['query'] = $query;
         $form = new PageForm(/* $name = */ null, $options);
+        // removing unpublish button in case of already unpublished page
+        if ($pageObj->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {
+            $form->remove(FormButtons::UNPUBLISH_BUTTON);
+            $form->getInputFilter()->remove(FormButtons::UNPUBLISH_BUTTON);
+        }
         $form->bind($pageObj);
 
         if ($request->isPost()) {
@@ -132,11 +138,11 @@ class PageController extends ActionController
             );
             $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
-            
-            $pageModel->setFormRequiredFields($form, $data, /*$editFlag =*/true);
-            
+
+            $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ true);
+
             if ($form->isValid()) {
-                $pageModel->save($pageObj, $data, /*$editFlag =*/ true);
+                $pageModel->save($pageObj, $data, /* $editFlag = */ true);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -230,6 +236,14 @@ class PageController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
         $page = $query->setEntity('CMS\Entity\Page')->entityRepository->getPageByPath($staticPagePath);
+
+        // is inActive page 
+        if ($page->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'ResourceNotFound'), array(
+                'name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
+        }
+
         $variables = array(
             "title" => $page->getTitle(),
             "body" => $page->getBody()

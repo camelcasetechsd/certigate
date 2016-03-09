@@ -13,6 +13,16 @@
         margin-top: 20px;
     }
 </style>
+
+{{#messages.0}}
+<div class="alert alert-{{^status}}danger{{/status}}{{#status}}success{{/status}} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{#messages}}
+    <p>{{message}}</p>
+    {{/messages}}
+</div>
+{{/messages.0}}
+
 {{#details}}
 <div class="row">
     <div class="col-lg-3 main_pic">
@@ -41,8 +51,8 @@
 </div>
 
 <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Send to friend</button>
-<button type="button" class="btn btn-success">Download</button>
 
+<a href="/pdf/{{id}}"><button type="button" class="btn btn-success download_pdf">Download</button></a>
 
 
 
@@ -55,7 +65,7 @@
                     <h3>Send to friend</h3>
                 </div>
                 <div class="panel-body">
-                    {{{pageForm}}}
+                    {{{form}}}
                 </div>
             </div>
         </div>
@@ -66,3 +76,11 @@
 
 {{/content}}
 {{/layout}}
+<script>
+    $(document).ready(function () {
+        // hiding unneeded fields
+        $('#contact_us_form_name').removeAttr('required').parent().hide();
+        $('#contact_us_form_subject').removeAttr('required').parent().hide();
+        $('#contact_us_form_message').removeAttr('required').parent().hide();
+    });
+</script>
