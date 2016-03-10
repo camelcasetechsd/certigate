@@ -182,7 +182,7 @@ class OrganizationsController extends ActionController
 
         $orgObj = new OrgEntity();
         $options = array();
-        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this));
+        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this , null));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
@@ -238,11 +238,11 @@ class OrganizationsController extends ActionController
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
-//        $rolesArray = $orgModel->getRequiredRoles($orgObj->getType());
-//        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
-//        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
-//            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
-//        }
+        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes(null , $orgObj));
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
 //        // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $oldStatus = $orgObj->getStatus();

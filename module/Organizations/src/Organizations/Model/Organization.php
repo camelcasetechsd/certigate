@@ -312,8 +312,9 @@ class Organization
             }
 
             // redirecting
-
-            switch ($action->params('v1')) {
+            $organizationTypes = $this->getOrganizationTypes(null, $entity);
+            // redirection is based on first type of organization
+            switch ($organizationTypes[0]) {
                 case 1:
                     $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
                     break;
@@ -548,12 +549,22 @@ class Organization
      * @param type $action
      * @return array
      */
-    public function getOrganizationTypes($action)
+    public function getOrganizationTypes($action = null, $organizationObj = null)
     {
         $params = array();
-        for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
-            if ($action->params('v' . $i) != null) {
-                array_push($params, $action->params('v' . $i));
+        if ($action != null) {
+            for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
+                if ($action->params('v' . $i) != null) {
+                    array_push($params, $action->params('v' . $i));
+                }
+            }
+        }
+        else if ($organizationObj != null) {
+            $typesArray = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+                'organization' => $organizationObj->getId()
+            ));
+            foreach ($typesArray as $type) {
+                array_push($params, $type->getType()->getId());
             }
         }
         return $params;
