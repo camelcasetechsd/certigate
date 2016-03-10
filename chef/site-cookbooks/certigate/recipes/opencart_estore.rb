@@ -1,11 +1,11 @@
 # create open cart database
-mysql_database "#{node.estore.db.name}" do
-    connection node['mysql']['root_connection']
-    owner "#{node.estore.db.username}"
-    encoding  "#{node.estore.db.encoding}"
-    collation  "#{node.estore.db.collation}"
-    action :create
-end
+# mysql_database "#{node.estore.db.name}" do
+#     connection node['mysql']['root_connection']
+#     owner "#{node.estore.db.username}"
+#     encoding  "#{node.estore.db.encoding}"
+#     collation  "#{node.estore.db.collation}"
+#     action :create
+# end
 
 # moving estore to the same path as certigate
 # Initialize web app
