@@ -135,6 +135,7 @@ class CourseEventController extends ActionController
             $data = $request->getPost()->toArray();
             if (!empty($courseId)) {
                 $data["course"] = $courseId;
+                $courseEvent->setCourse($courseId);
             }
             $form->setInputFilter($courseEvent->getInputFilter());
             $form->setData($data);

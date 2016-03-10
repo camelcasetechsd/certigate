@@ -41,7 +41,7 @@ class CourseEventForm extends Form
      * @var int
      */
     protected $courseId;
-    
+
     /**
      * setup form
      * 
@@ -65,40 +65,32 @@ class CourseEventForm extends Form
 
         $status = Status::STATUS_ACTIVE;
         $criteria = array('status' => $status);
-        $readOnly = false;
-        $displayEmptyItem = true;
-        if(! empty($this->courseId)){
-            $criteria["id"] = $this->courseId;
-            $readOnly = true;
-            $displayEmptyItem = false;
-        }
-        $this->add(array(
-            'name' => 'course',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control',
-                'disabled' => $readOnly,
-            ),
-            'options' => array(
-                'label' => 'Course',
-                'object_manager' => $this->query->entityManager,
-                'target_class' => 'Courses\Entity\Course',
-                'property' => 'name',
-                'is_method' => false,
-                'find_method' => array(
-                    'name' => 'findBy',
-                    'params' => array(
-                        'criteria' => array(
-                            'status' => $status,
-                            )
-                    )
+        if (empty($this->courseId)) {
+            $this->add(array(
+                'name' => 'course',
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control',
                 ),
-                'empty_item_label' => self::EMPTY_SELECT_VALUE,
-                'display_empty_item' => $displayEmptyItem,
-            ),
-        ));
-        
+                'options' => array(
+                    'label' => 'Course',
+                    'object_manager' => $this->query->entityManager,
+                    'target_class' => 'Courses\Entity\Course',
+                    'property' => 'name',
+                    'is_method' => false,
+                    'find_method' => array(
+                        'name' => 'findBy',
+                        'params' => array(
+                            'criteria' => $criteria
+                        )
+                    ),
+                    'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                    'display_empty_item' => true,
+                ),
+            ));
+        }
+
         $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
         $userIds = array();
         if ($this->isAdminUser === false) {
@@ -154,7 +146,7 @@ class CourseEventForm extends Form
                 'display_empty_item' => true,
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'capacity',
             'type' => 'Zend\Form\Element\Number',
@@ -180,7 +172,7 @@ class CourseEventForm extends Form
                 'label' => 'Students Number',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'startDate',
             'type' => 'Zend\Form\Element\Date',
@@ -213,7 +205,7 @@ class CourseEventForm extends Form
             'type' => 'Zend\Form\Element\Hidden',
         ));
         // Add buttons fieldset
-        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("create_button_only" => true));
         $this->add($buttonsFieldset);
     }
 

@@ -532,9 +532,11 @@ class CourseEvent
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
+        if (array_key_exists('course', $data)) {
+            $this->setCourse($data["course"]);
+        }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])
-                ->setCourse($data["course"])
                 ->setCapacity($data["capacity"])
                 ->setEndDate($data["endDate"])
                 ->setStartDate($data["startDate"])
