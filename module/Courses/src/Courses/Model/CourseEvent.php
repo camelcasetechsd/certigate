@@ -100,10 +100,8 @@ class CourseEvent
             $criteria = Criteria::create();
             $expr = Criteria::expr();
             $criteria->andWhere($expr->eq("user", $currentUser));
-            $courseVotes = $course->getEvaluation()->getVotes()->matching($criteria);
-            if (is_object($course->getEvaluation()) && $auth->hasIdentity() 
-                    && $course->getEvaluation()->getStatus() == Status::STATUS_ACTIVE 
-                    && $course->currentUserEnrolled === true && $courseVotes->isEmpty()
+            if (is_object($course->getEvaluation()) && $auth->hasIdentity() && $course->getEvaluation()->getStatus() == Status::STATUS_ACTIVE 
+                    && $course->currentUserEnrolled === true && $course->getEvaluation()->getVotes()->matching($criteria)->isEmpty()
                     && (in_array(Role::STUDENT_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']))
             ) {
                 $canEvaluate = true;
