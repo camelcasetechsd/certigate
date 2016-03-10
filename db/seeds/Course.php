@@ -162,6 +162,8 @@ class Course extends AbstractSeed
             "duration" => 20,
             "isForInstructor" => 0,
             "status" => 1,
+            "price" => 1,
+            "productId" => 999,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
         );
@@ -177,6 +179,7 @@ class Course extends AbstractSeed
             "atp_id" => $atpId,
             "ai_id" => $instructorId,
             "status" => true,
+            "optionValueId" => 999,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null
         );
@@ -208,9 +211,11 @@ class Course extends AbstractSeed
 
         $course_events_user = array(
             'course_event_id' => $courseEventId,
-            'user_id' => $instructorId
+            'user_id' => $instructorId,
+            'status' => 1,
+            'token' => 123
         );
-        $this->insert('course_events_users', $course_events_user);
+        $this->insert('course_event_user', $course_events_user);
     }
 
 }

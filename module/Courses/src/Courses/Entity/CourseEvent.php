@@ -26,8 +26,9 @@ use Utilities\Service\String;
  * @property int $studentsNo
  * @property Organizations\Entity\Organization $atp
  * @property Users\Entity\User $ai
+ * @property int $optionValueId
  * @property int $status
- * @property Doctrine\Common\Collections\ArrayCollection $users
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -118,14 +119,10 @@ class CourseEvent
     public $modified = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="courseEvents")
-     * @ORM\JoinTable(name="course_events_users",
-     *      joinColumns={@ORM\JoinColumn(name="course_event_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventUser", mappedBy="courseEvent")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
-    public $users;
+    public $courseEventUsers;
 
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="courseEvent")
@@ -133,6 +130,12 @@ class CourseEvent
      */
     public $votes;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $optionValueId;
+    
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
@@ -148,7 +151,7 @@ class CourseEvent
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->courseEventUsers = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -429,42 +432,42 @@ class CourseEvent
     }
     
     /**
-     * Get Users
+     * Get CourseEventUsers
      * 
      * 
      * @access public
-     * @return ArrayCollection users
+     * @return ArrayCollection CourseEventUsers
      */
-    public function getUsers()
+    public function getCourseEventUsers()
     {
-        return $this->users;
+        return $this->courseEventUsers;
     }
 
     /**
-     * Add Users
+     * Add CourseEventUsers
      * 
      * 
      * @access public
-     * @param Users\Entity\User $user
+     * @param Courses\Entity\CourseEventUser $courseEventUser
      * @return CourseEvent
      */
-    public function addUser($user)
+    public function addCourseEventUser($courseEventUser)
     {
-        $this->users[] = $user;
+        $this->courseEventUsers[] = $courseEventUser;
         return $this;
     }
 
     /**
-     * Set Users
+     * Set CourseEventUsers
      * 
      * 
      * @access public
-     * @param ArrayCollection $users
+     * @param ArrayCollection $courseEventUsers
      * @return CourseEvent
      */
-    public function setUsers($users)
+    public function setCourseEventUsers($courseEventUsers)
     {
-        $this->users = $users;
+        $this->courseEventUsers = $courseEventUsers;
         return $this;
     }
     
@@ -495,6 +498,32 @@ class CourseEvent
     }
 
     /**
+     * Get OptionValueId
+     * 
+     * 
+     * @access public
+     * @return int optionValueId
+     */
+    public function getOptionValueId()
+    {
+        return $this->optionValueId;
+    }
+
+    /**
+     * Set OptionValueId
+     * 
+     * 
+     * @access public
+     * @param int $optionValueId
+     * @return CourseEvent
+     */
+    public function setOptionValueId($optionValueId)
+    {
+        $this->optionValueId = $optionValueId;
+        return $this;
+    }
+
+        /**
      * Get detailed name
      * 
      * @access public
@@ -534,6 +563,9 @@ class CourseEvent
         }
         if (array_key_exists('course', $data)) {
             $this->setCourse($data["course"]);
+        }
+        if (array_key_exists('optionValueId', $data)) {
+            $this->setOptionValueId($data["optionValueId"]);
         }
         $this->setAi($data["ai"])
                 ->setAtp($data["atp"])

@@ -7,6 +7,7 @@ use Users\Entity\Role;
 use Zend\Form\FormInterface;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Status;
+use Courses\Entity\CourseEventUser;
 
 /**
  * CourseEvent Model
@@ -121,14 +122,16 @@ class CourseEvent
      */
     public function leaveCourse($courseEvent, $user)
     {
-        $users = $courseEvent->getUsers();
-        $users->removeElement($user);
-        $courseEvent->setUsers($users);
-
         $studentsNo = $courseEvent->getStudentsNo();
         $studentsNo--;
         $courseEvent->setStudentsNo($studentsNo);
         $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent);
+        
+        $courseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', /*$criteria =*/array(
+            "user" => $user->getId(),
+            "courseEvent" => $courseEvent->getId(),
+        ));
+        $this->query->remove($courseEventUser);
     }
 
     /**
@@ -150,8 +153,15 @@ class CourseEvent
         }
 
         $courseEvent->setStudentsNo($studentsNo);
-        $courseEvent->addUser($user);
         $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent);
+        
+        $courseEventUser = new CourseEventUser();
+        $courseEventUserData = array(
+            "status" => Status::STATUS_INACTIVE,
+            "user" => $user,
+            "courseEvent" => $courseEvent,
+        );
+        $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
     }
 
     /**

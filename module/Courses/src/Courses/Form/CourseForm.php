@@ -97,6 +97,19 @@ class CourseForm extends Form
                 'label' => 'Duration (days)',
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'price',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'maxlength' => 7,
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Price',
+            ),
+        ));
 
         if ($this->isAdminUser === true) {
             $this->add(array(
