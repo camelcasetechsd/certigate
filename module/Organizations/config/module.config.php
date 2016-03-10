@@ -14,7 +14,8 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory',
-            'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory'
+            'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory',
+            'Organizations\Model\OrganizationMeta' => 'Organizations\Model\OrganizationMetaFactory'
         ),
     ),
     'doctrine' => array(
@@ -214,11 +215,17 @@ return array(
             'new_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organizations/new',
+                    'route' => '/organizations/new[/:v1[/:v2[/:v3[/:v4]]]]',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'new'
-                    )
+                    ),
+                    'constraints' => array(
+                        'v1' => '[0-9]*',
+                        'v2' => '[0-9]*',
+                        'v3' => '[0-9]*',
+                        'v4' => '[0-9]*'
+                    ),
                 )
             ),
             'edit_org' => array(
@@ -265,7 +272,8 @@ return array(
         'atpLicenseAttachment',
         'classesNo',
         'pcsNo_class',
-        'trainingManager_id'
+        'trainingManager_id',
+        'atpPrivacyStatement'
     ),
     'atpSkippedParams' => array(
         'atcLicenseNo',
@@ -278,6 +286,17 @@ return array(
         'operatingSystemLang',
         'officeVersion',
         'officeLang',
-        'testCenterAdmin_id'
-    )
+        'testCenterAdmin_id',
+        'atcPrivacyStatement'
+    ),
+    'atcEditSkippedParams' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+    ),
+    'atpEditSkippedParams' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+    ),
 );

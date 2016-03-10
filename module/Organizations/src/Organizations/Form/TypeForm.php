@@ -35,11 +35,8 @@ class TypeForm extends Form
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-//        $excludedRoles = $options['excludedRoles'];
+        $organizationTypes = $this->query->findAll('Organizations\Entity\OrganizationType');
         unset($options['query']);
-//        unset($options['countries']);
-//        unset($options['languages']);
-//        unset($options['excludedRoles']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -55,33 +52,28 @@ class TypeForm extends Form
             )
         ));
 
-        
+        $valueOptions = array();
+        foreach ($organizationTypes as $type) {
+            $temp = array(
+                'value' => $type->getId(),
+                'label' => $type->getTitle().' Organization',
+                'checked' => false,
+                'attributes' => array(
+                    'class' => 'orgType',
+                    'id' => 'type-'.$type->getId(),
+                ),
+            );
+            array_push($valueOptions, $temp);
+            unset($temp);
+        }
+
         $this->add(array(
             'type' => 'Zend\Form\Element\MultiCheckbox',
             'name' => 'orgType',
             'required' => true,
             'options' => array(
                 'label' => 'Organization Type',
-                'value_options' => array(
-                    array(
-                        'value' => '1',
-                        'label' => '    ATC Organization',
-                        'checked' => false,
-                        'attributes' => array(
-                            'class' => 'orgType',
-                            'id' => 'type-1',
-                        ),
-                    ),
-                    array(
-                        'value' => '2',
-                        'label' => '    ATP Organization',
-                        'checked' => false,
-                        'attributes' => array(
-                            'id' => 'type-2',
-                            'class' => 'orgType',
-                        ),
-                    ),
-                ),
+                'value_options' => $valueOptions
             ),
         ));
 

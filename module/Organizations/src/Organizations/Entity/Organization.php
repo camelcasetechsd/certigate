@@ -19,8 +19,7 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
  * @property int    $status
- * @property int    $type 
- * @property string $commertialName
+ * @property string $commercialName
  * @property float  $longtitude
  * @property float  $latitude
  * @property string $ownerName
@@ -77,9 +76,14 @@ class Organization
     const TYPE_ATP = 2;
 
     /**
-     * both ATP & ATC
+     * distribitror
      */
-    const TYPE_BOTH = 3;
+    const TYPE_DISTRIBUTOR = 3;
+
+    /**
+     * reselller
+     */
+    const TYPE_RESELLER = 4;
 
     /**
      *
@@ -94,13 +98,6 @@ class Organization
      * @var int
      */
     public $id;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="integer" )
-     * @var int
-     */
-    public $type;
 
     /**
      * @Gedmo\Versioned
@@ -372,9 +369,23 @@ class Organization
      */
     public $creatorId;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="OrganizationGovernorate", inversedBy="organizations")
+     * @ORM\JoinTable(name="organization_governorates")
+     */
+    public $governorates;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="OrganizationRegion", inversedBy="organizations")
+     * @ORM\JoinTable(name="organization_regions")
+     */
+    public $regions;
+
     public function __construct()
     {
         $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->governorates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     function getId()
@@ -385,11 +396,6 @@ class Organization
     function getCreatorId()
     {
         return $this->creatorId;
-    }
-
-    function getType()
-    {
-        return $this->type;
     }
 
     function getCommercialName()
@@ -482,6 +488,100 @@ class Organization
         return $this->city;
     }
 
+    function getGovernorates()
+    {
+        return $this->governorates;
+    }
+
+    function getRegions()
+    {
+        return $this->regions;
+    }
+
+    function setGovernorates($governorates)
+    {
+//        foreach ($governorates as $gov) {
+//            $this->governorates[] = $gov;
+//        }
+        $this->governorates = $governorates;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function addGovernorate($outline)
+    {
+        $this->governorates[] = $outline;
+        return $this;
+    }
+
+    /**
+     * Remove Outlines
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function removeGovernorate($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setOrganization(null);
+            $this->governorates->removeElement($outline);
+        }
+        return $this;
+    }
+
+    /**
+     * Set $regions
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $regions
+     * @return Course
+     */
+    public function setRegions($regions)
+    {
+//        foreach ($regions as $gov) {
+//            $this->regions[] = $gov;
+//        }
+        $this->regions = $regions;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function addRegions($outline)
+    {
+        $this->regions[] = $outline;
+        return $this;
+    }
+
+    /**
+     * Remove Outlines
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function removeRegions($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setOrganization(null);
+            $this->regions->removeElement($outline);
+        }
+        return $this;
+    }
+
     function getZipCode()
     {
         return $this->zipCode;
@@ -521,11 +621,6 @@ class Organization
     {
         return $this->organizationUser;
     }
-
-//    function getTestCenterAdmin()
-//    {
-//        return $this->testCenterAdmin;
-//    }
 
     function getFocalContactPerson()
     {
@@ -585,11 +680,6 @@ class Organization
     function setCreatorId($creatorId)
     {
         $this->creatorId = $creatorId;
-    }
-
-    function setType($type)
-    {
-        $this->type = $type;
     }
 
     function setCommercialName($commercialName)
@@ -827,7 +917,7 @@ class Organization
             '7' => 'Ubuntu Linux 13.04 LTS',
             '8' => 'Ubuntu Linux 14.04 LTS',
             '9' => 'Red Hat Enterprise Linux 5',
-            '10'=> 'Red Hat Enterprise Linux 6',
+            '10' => 'Red Hat Enterprise Linux 6',
             '11' => 'Red Hat Enterprise Linux 7',
         );
     }
@@ -872,7 +962,11 @@ class Organization
         if (array_key_exists('status', $data)) {
             $this->setStatus($data['status']);
         }
-        $this->setType($data['type']);
+//        var_dump($data['region']);
+//        var_dump($data['governorate']);exit;
+        $this->setRegions($data['region']);
+        $this->setGovernorates($data['governorate']);
+
         $this->setCommercialName($data['commercialName']);
         $this->setOwnerName($data['ownerName']);
         $this->setOwnerNationalId($data['ownerNationalId']);
@@ -893,7 +987,8 @@ class Organization
 
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
-        }elseif (array_key_exists('focalContactPerson', $data)) {
+        }
+        elseif (array_key_exists('focalContactPerson', $data)) {
             $this->focalContactPerson = $data['focalContactPerson'];
         }
 
@@ -998,28 +1093,23 @@ class Organization
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add(array(
-                'name' => 'type',
-                'required' => false,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'commercialName',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('commercialName'),
-                            'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
+//            $inputFilter->add(array(
+//                'name' => 'commercialName',
+//                'required' => true,
+//                'validators' => array(
+//                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+//                        'options' => array(
+//                            'use_context' => true,
+//                            'object_manager' => $query->entityManager,
+//                            'object_repository' => $query->entityRepository,
+//                            'fields' => array('commercialName'),
+//                            'messages' => array(
+////                                'objectFound' => 'Sorry, This commercial name already exists !'
+//                            ),
+//                        )
+//                    ),
+//                )
+//            ));
 
 
             $inputFilter->add(array(

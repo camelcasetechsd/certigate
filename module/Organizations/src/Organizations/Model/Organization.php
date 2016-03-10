@@ -12,6 +12,7 @@ use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
+use Organizations\Form\OrgForm as OrgForm;
 
 /**
  * Org Model
@@ -65,6 +66,10 @@ class Organization
      * @var Versioning\Model\Version
      */
     protected $version;
+    /*
+     * saves number of organizations in this app
+     */
+    protected $organizationTypesNumber;
 
     /**
      * Set needed properties
@@ -85,6 +90,12 @@ class Organization
         $this->notification = $notification;
         $this->version = $version;
         $this->random = new Random();
+        $this->organizationTypesNumber = count($this->getOrganizationTypesNumber());
+    }
+
+    public function getOrganizationTypesNumber()
+    {
+        return $this->query->findAll(/* $entityName = */'Organizations\Entity\OrganizationType');
     }
 
     public function getUsers()
@@ -95,6 +106,20 @@ class Organization
     public function getUserby($targetColumn, $value)
     {
         return $this->query->findBy(/* $entityName = */ 'Users\Entity\User', array(
+                    $targetColumn => $value
+        ));
+    }
+
+    public function getRegionby($targetColumn, $value)
+    {
+        return $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\OrganizationRegion', array(
+                    $targetColumn => $value
+        ));
+    }
+
+    public function getGovernorateby($targetColumn, $value)
+    {
+        return $this->query->findOneBy(/* $entityName = */ 'Organizations\Entity\OrganizationGovernorate', array(
                     $targetColumn => $value
         ));
     }
@@ -135,6 +160,7 @@ class Organization
      * Save organization
      * 
      * @access public
+     * @param type $action
      * @param array $orgInfo
      * @param Organizations\Entity\Organization $orgObj ,default is null
      * @param int $oldStatus ,default is null
@@ -143,7 +169,7 @@ class Organization
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
+    public function saveOrganization($action, $orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -175,14 +201,14 @@ class Organization
             $orgInfo['CRExpiration'] = $date;
         }
 
-        if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
+        if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "" && !$editFlag) {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
         else {
             $orgInfo['atcLicenseExpiration'] = null;
         }
-        if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
+        if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "" && !$editFlag) {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
         }
@@ -200,60 +226,112 @@ class Organization
             $orgInfo['focalContactPerson_id'] = $this->getUserby('id', $orgInfo['focalContactPerson_id'])[0];
         }
 
-        /**
-         * Handling transfered Files
-         */
+        if (!empty($orgInfo['region']) && $orgInfo['region'] != 0) {
+            $regions = $orgInfo['region'];
+            $temp = array();
+            foreach ($regions as $region) {
+                array_push($temp, $this->getRegionby('id', $region));
+            }
+            $orgInfo['region'] = $temp;
+
+//            $entity->setRegions($temp);
+        }
+
+        if (!empty($orgInfo['governorate']) && $orgInfo['governorate'] != 0) {
+            $governorates = $orgInfo['governorate'];
+            $temp = array();
+            foreach ($governorates as $gov) {
+                array_push($temp, $this->getGovernorateby('id', $gov));
+            }
+            $orgInfo['governorate'] = $temp;
+
+//            $entity->setGovernorates($temp);
+        }
+
         /**
          * Handling transfered Files
          */
         if (!empty($orgInfo['CRAttachment']['name'])) {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
-        if (!empty($orgInfo['wireTransferAttachment']['name'])) {
+        if (!empty($orgInfo['wireTransferAttachment']['name']) && !$editFlag) {
             $orgInfo['wireTransferAttachment'] = $this->saveAttachment('wireTransferAttachment', 'wr');
         }
-        if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
+        if (!empty($orgInfo['atpLicenseAttachment']['name']) && !$editFlag) {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
-        if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
+        if (!empty($orgInfo['atcLicenseAttachment']['name']) && !$editFlag) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
         /**
          * Save Organization
          */
+//        var_dump($entity->getGovernorates());exit;
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
+
+        // saving organization meta
+        $orgMetaModel = $action->getServiceLocator()->get('Organizations\Model\OrganizationMeta');
+        $orgMetaModel->saveOrganizationMeta($entity, $orgInfo);
 
         // does not work in case of savestate or edit
         if (!$saveState) {
-            // if creater choosed someone with him as TM
-            if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != $creatorId) {
 
-                $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-            }
-            // creator selected himself as TM
-            else if ($orgInfo['trainingManager_id'] != 0) {
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
-            }
-            //creator left TM empty
-            else if (empty($orgInfo['trainingManager_id']) && ($orgInfo['type']== OrganizationEntity::TYPE_ATP || $orgInfo['type']== OrganizationEntity::TYPE_BOTH)  && !$editFlag) {
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            if (isset($orgInfo['trainingManager_id'])) {
+                // if creater choosed someone with him as TM
+                if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != $creatorId) {
+
+                    $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                }
+                // creator selected himself as TM
+                else if ($orgInfo['trainingManager_id'] != 0) {
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                }
+                //creator left TM empty
+                else if (empty($orgInfo['trainingManager_id']) && !$editFlag) {
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+                }
             }
 
-            if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != $creatorId) {
-                $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-            }
-            else if ($orgInfo['testCenterAdmin_id'] != 0) {
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-            }
-            else if (empty($orgInfo['testCenterAdmin_id']) && ($orgInfo['type'] == OrganizationEntity::TYPE_ATC || $orgInfo['type'] == OrganizationEntity::TYPE_BOTH) && !$editFlag) {
-                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
-            }
-        }
 
-        if ($sendNotificationFlag === true) {
-            $this->sendMail($userEmail, $editFlag);
+            if (isset($orgInfo['testCenterAdmin_id'])) {
+                if (!empty($orgInfo['testCenterAdmin_id']) && $orgInfo['testCenterAdmin_id'] != $creatorId) {
+                    $this->assignUserToOrg($entity, $orgInfo['testCenterAdmin_id'], $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                }
+                else if ($orgInfo['testCenterAdmin_id'] != 0) {
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                }
+                else if (empty($orgInfo['testCenterAdmin_id']) && !$editFlag) {
+                    $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+                }
+            }
+
+            if ($sendNotificationFlag === true) {
+                $this->sendMail($userEmail, $editFlag);
+            }
+
+            // redirecting
+
+            switch ($action->params('v1')) {
+                case 1:
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+                    break;
+
+                case 2:
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+                    break;
+
+                case 3:
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'distributors'), array('name' => 'list_distributor_orgs'));
+                    break;
+
+                case 4:
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'resellers'), array('name' => 'list_reseller_orgs'));
+                    break;
+            }
+
+            $action->redirect()->toUrl($url);
         }
     }
 
@@ -449,22 +527,36 @@ class Organization
      * 
      * @return array required roles
      */
-    public function getRequiredRoles($organizationType)
+    public function getRequiredRoles($organizationTypes)
     {
         $requiredRoles = array();
-        switch ((int) $organizationType) {
-            case OrganizationEntity::TYPE_ATP:
-                $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
-                break;
-            case OrganizationEntity::TYPE_ATC:
-                $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
-                break;
-            case OrganizationEntity::TYPE_BOTH:
-                $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
-                $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
-                break;
+        foreach ($organizationTypes as $organizationType) {
+            switch ((int) $organizationType) {
+                case OrganizationEntity::TYPE_ATP:
+                    $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
+                    break;
+                case OrganizationEntity::TYPE_ATC:
+                    $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
+                    break;
+            }
         }
         return $requiredRoles;
+    }
+
+    /**
+     * function to return array of parameters
+     * @param type $action
+     * @return array
+     */
+    public function getOrganizationTypes($action)
+    {
+        $params = array();
+        for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
+            if ($action->params('v' . $i) != null) {
+                array_push($params, $action->params('v' . $i));
+            }
+        }
+        return $params;
     }
 
     /**
@@ -600,6 +692,209 @@ class Organization
             );
             $this->notification->notify($welcomeKitMailArray);
         }
+    }
+
+    /**
+     * function to test url minpulation with organization types
+     * 1- no one can put number > organization number or negative numbers
+     * 2- no one can preform something like that 1/2/2
+     * @param type $action
+     * @return boolean
+     */
+    private function validateParamters($action)
+    {
+        $params = array();
+        // if no parameters 
+        if ($action->params("v1") == null) {
+            return false;
+        }
+
+        for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
+            // no one enters /1/2/2
+            if (in_array($action->params('v' . $i), $params) && $action->params('v' . $i) != null) {
+                return false;
+            }
+            else {
+                array_push($params, $action->params('v' . $i));
+            }
+            // no one enters values larger than number of organizations number or less than 0
+            if ($action->params('v' . $i) > $this->organizationTypesNumber ||
+                    $action->params('v' . $i) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // false validation back to types page 
+
+    public function validateUrlParamters($action)
+    {
+        $validUrl = $this->validateParamters($action);
+
+        if (!$validUrl) {
+            $url = $action->getEvent()->getRouter()->assemble(array('action' => 'type'), array('name' => 'org_type'));
+            return $action->redirect()->toUrl($url);
+        }
+    }
+
+    /**
+     * function to customize org form as the required organization types
+     * if required role is Training manager means it's an Atp
+     * if required role is testcenter admin means it's an Atc
+     * if required roles are TM & TCA means it's an Atc&Atp type and so on
+     * NOTE : only ATc or ATP types need field minpulations
+     * @param type $rolesArray
+     * @param array $options
+     * @param array $action to use service locator to get skipped params
+     * returns Organization\Form\OrgForm $form
+     */
+    public function customizeOrgForm($rolesArray, $options, $action)
+    {
+        $form = new OrgForm(/* name */null, $options);
+
+//        if there's no atp or atc organizations needed ex /3 or /4 or /3/4
+        if (empty($rolesArray)) {
+            $form = $this->unsetAtpFields($form, $action);
+            $form = $this->unsetAtcFields($form, $action);
+        }
+        else if (!(in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray))) {
+
+            foreach ($rolesArray as $role) {
+                switch ($role) {
+                    case \Users\Entity\Role::TRAINING_MANAGER_ROLE :
+                        $form = $this->unsetAtcFields($form, $action);
+                        break;
+                    case \Users\Entity\Role::TEST_CENTER_ADMIN_ROLE :
+                        $form = $this->unsetAtpFields($form, $action);
+                        break;
+                }
+            }
+        }
+        return $form;
+    }
+
+    public function customizeOrgEditForm($options, $action, $orgId)
+    {
+        $form = new OrgForm(/* name */null, $options);
+        $organizationTypes = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+            'organization' => $orgId
+        ));
+
+        $typeIds = array();
+        foreach ($organizationTypes as $type) {
+            array_push($typeIds, $type->getType()->getId());
+        }
+
+        $form->remove('wireTransferAttachment');
+        $form->getInputFilter()->remove('wireTransferAttachment');
+
+        $form->get('CRAttachment')->setAttribute('required', false);
+
+        foreach ($typeIds as $type) {
+
+            if (in_array(OrganizationEntity::TYPE_ATC, $typeIds) && in_array(OrganizationEntity::TYPE_ATP, $typeIds)) {
+
+                $form = $this->UnsetAtcEditFields($form, $action);
+                $form = $this->UnsetAtpEditFields($form, $action);
+                // user can manager user from organizationuser mang
+                $form->remove('trainingManager_id');
+                $form->getInputFilter()->remove('trainingManager_id');
+                // user can manager user from organizationuser mang
+                $form->remove('testCenterAdmin_id');
+                $form->getInputFilter()->remove('testCenterAdmin_id');
+            }
+            else if ($type == OrganizationEntity::TYPE_ATC) {
+                $form = $this->unsetAtpFields($form, $action, true);
+                $form = $this->UnsetAtcEditFields($form, $action);
+            }
+            else if ($type == OrganizationEntity::TYPE_ATP) {
+                $form = $this->unsetAtcFields($form, $action, true);
+                $form = $this->UnsetAtpEditFields($form, $action);
+            }
+            else {
+
+                $form = $this->unsetAtpFields($form, $action, true);
+                $form = $this->unsetAtcFields($form, $action, true);
+                $form = $this->UnsetAtpEditFields($form, $action);
+                $form = $this->UnsetAtcEditFields($form, $action);
+            }
+        }
+
+        return $form;
+    }
+
+    /**
+     * function removes atc fields 
+     * @param Organization\Form\OrgForm $form
+     * 
+     * @return Organization\Form\OrgForm $form 
+     */
+    private function unsetAtpFields($form, $action, $editFlag = false)
+    {
+//        $form->getInputFilter()->get('testCenterAdmin_id')->setRequired(false);
+
+        $atcSkippedParams = $action->getServiceLocator()->get('Config')['atcSkippedParams'];
+        foreach ($atcSkippedParams as $paramName) {
+            $form->remove($paramName);
+            $form->getInputFilter()->remove($paramName);
+        }
+
+        if ($editFlag) {
+            // user can manager user from organizationuser mang
+            $form->remove('testCenterAdmin_id');
+            $form->getInputFilter()->remove('testCenterAdmin_id');
+        }
+
+        return $form;
+    }
+
+    /**
+     * function removes atp fields 
+     * @param Organization\Form\OrgForm $form
+     * 
+     * @return Organization\Form\OrgForm $form 
+     */
+    private function unsetAtcFields($form, $action, $editFlag = false)
+    {
+//        $form->getInputFilter()->get('trainingManager_id')->setRequired(false);
+
+        $atpSkippedParams = $action->getServiceLocator()->get('Config')['atpSkippedParams'];
+        foreach ($atpSkippedParams as $paramName) {
+            $form->remove($paramName);
+            $form->getInputFilter()->remove($paramName);
+        }
+
+        // user can manager user from organizationuser mang
+        if ($editFlag) {
+            // user can edit it form OrgUser Crud
+            $form->remove('trainingManager_id');
+            $form->getInputFilter()->remove('trainingManager_id');
+        }
+        return $form;
+    }
+
+    private function UnsetAtcEditFields($form, $action)
+    {
+        $atcEditSkippedParams = $action->getServiceLocator()->get('Config')['atcEditSkippedParams'];
+        // user can edit them from renewal fields
+        foreach ($atcEditSkippedParams as $paramName) {
+            $form->remove($paramName);
+            $form->getInputFilter()->remove($paramName);
+        }
+        return $form;
+    }
+
+    private function UnsetAtpEditFields($form, $action)
+    {
+        $atpEditSkippedParams = $action->getServiceLocator()->get('Config')['atpEditSkippedParams'];
+        // user can edit them from renewal fields
+        foreach ($atpEditSkippedParams as $paramName) {
+            $form->remove($paramName);
+            $form->getInputFilter()->remove($paramName);
+        }
+        return $form;
     }
 
 }

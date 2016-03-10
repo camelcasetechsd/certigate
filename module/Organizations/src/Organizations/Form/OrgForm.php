@@ -148,6 +148,45 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
+            'name' => 'region',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'multiple' => true,
+            ),
+            'options' => array(
+                'label' => 'Region',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Organizations\Entity\OrganizationRegion',
+                'property' => 'title',
+                'display_empty_item' => true,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getTitle();
+                },
+            )
+        ));
+        $this->add(array(
+            'name' => 'governorate',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'multiple' => true,
+            ),
+            'options' => array(
+                'label' => 'Governorate',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Organizations\Entity\OrganizationGovernorate',
+                'property' => 'title',
+                'display_empty_item' => true,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getTitle();
+                },
+            )
+        ));
+
+        $this->add(array(
             'name' => 'ownerNationalId',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
@@ -630,6 +669,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'attributes' => array(
                 'class' => 'form-control atcSet notReqOnEdit',
                 'multiple' => false,
+                'required' => false
             ),
             'options' => array(
                 'label' => 'Test Center Admin',
@@ -752,11 +792,23 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
     {
         parent::bind($object, $flags);
-//
-//        $users = $object->getOrganizationUsers();
-//
-//        
-//        
+
+        $regions = $object->getRegions();
+        $regionArray = array();
+        foreach ($regions as $region) {
+            array_push($regionArray, $region->getId());
+        }
+        $this->get('region')->setValue($regionArray);
+
+        
+        $governorates = $object->getGovernorates();
+        $governorateArray = array();
+        foreach ($governorates as $gov) {
+            array_push($governorateArray, $gov->getId());
+        }
+        $this->get('governorate')->setValue($governorateArray);
+
+        
         $focalContactPerson = $object->getFocalContactPerson();
         if (isset($focalContactPerson->id) && $focalContactPerson != null) {
             $this->get('focalContactPerson_id')->setValue($focalContactPerson->id);

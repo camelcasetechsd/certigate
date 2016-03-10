@@ -52,13 +52,15 @@ class OrganizationsController extends ActionController
 
     public function typeAction()
     {
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $rolesArray = array(Role::TEST_CENTER_ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE);
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, /* $organization = */ null, /* $atLeastOneRoleFlag = */ true);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
         $variables = array();
-        $form = new \Organizations\Form\TypeForm(/* $name = */ null);
+        $options['query'] = $query;
+        $form = new \Organizations\Form\TypeForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -68,10 +70,9 @@ class OrganizationsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'));
-                $this->redirect()->toUrl($url . '?organization=' . $data['type']);
+                return $this->redirect()->toUrl($url . $data['type']);
             }
         }
-
         $variables['TypeForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -159,6 +160,12 @@ class OrganizationsController extends ActionController
         $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
+        /**
+         *  chicking url minpulation by sending object of the action
+         *  to analyize each parameter
+         */
+        $orgModel->validateUrlParamters($this);
+
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
 
@@ -175,27 +182,25 @@ class OrganizationsController extends ActionController
 
         $orgObj = new OrgEntity();
         $options = array();
-        // organization type
-        $orgType = $_GET['organization'];
-
-        $rolesArray = $orgModel->getRequiredRoles($orgType);
+        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        $savedState = $orgModel->hasSavedState($orgType, $creatorId);
-        if ($savedState != null) {
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'id' => $savedState), array('name' => 'edit_org'));
-            $this->redirect()->toUrl($url . '?organization=' . $orgType);
-        }
+
+// //     TODO: Delaying Save State business
+//        $savedState = $orgModel->hasSavedState($orgType, $creatorId);
+//        if ($savedState != null) {
+//            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'id' => $savedState), array('name' => 'edit_org'));
+//            $this->redirect()->toUrl($url . '?organization=' . $orgType);
+//        }
 
         $options['query'] = $query;
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
-        $form = new OrgForm(/* $name = */ null, $options);
-        $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
-        $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
+        $customizedForm = $orgModel->customizeOrgForm($rolesArray, $options, $this);
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             // Make certain to merge the files info!
@@ -203,45 +208,16 @@ class OrganizationsController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            $inputFilter = $orgObj->getInputFilter($query);
-            $form->setInputFilter($orgObj->getInputFilter($orgsQuery));
-            $form->setData($data);
 
-
-            switch ($data['type']) {
-                case '1':
-                    foreach ($atcSkippedParams as $param) {
-                        $inputFilter->get($param)->setRequired(false);
-                        $data[$param] = null;
-                    }
-                    break;
-
-                case '2':
-
-                    foreach ($atpSkippedParams as $param) {
-                        $inputFilter->get($param)->setRequired(false);
-                        $data[$param] = null;
-                    }
-                    break;
-            }
+            $customizedForm->setData($data);
             $data['creatorId'] = $creatorId;
-            if ($form->isValid()) {
 
-                $orgModel->saveOrganization($data, /* $orgObj = */ null, /* $oldStatus = */ null, $creatorId, $userEmail, $isAdminUser);
-
-                // redirecting
-                if ($data['type'] == 1) {
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
-                }
-                else if ($data['type'] == 2 || $data['type'] == 3) {
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
-                }
-
-                $this->redirect()->toUrl($url);
+            if ($customizedForm->isValid()) {
+                $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, $creatorId, $userEmail, $isAdminUser);
             }
         }
 
-        $variables['orgForm'] = $this->getFormView($form);
+        $variables['orgForm'] = $this->getFormView($customizedForm);
         return new ViewModel($variables);
     }
 
@@ -262,17 +238,15 @@ class OrganizationsController extends ActionController
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
-        $rolesArray = $orgModel->getRequiredRoles($orgObj->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
-        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
-            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
-        }
-        // for checking on attachments 
+//        $rolesArray = $orgModel->getRequiredRoles($orgObj->getType());
+//        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+//        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+//            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+//        }
+//        // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
-        $atcLicenseAttachment = $orgObj->atcLicenseAttachment;
-        $atpLicenseAttachment = $orgObj->atpLicenseAttachment;
         $oldStatus = $orgObj->getStatus();
-
+//
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
 
@@ -290,11 +264,9 @@ class OrganizationsController extends ActionController
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
-        $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
-        $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
-        $form = new orgForm(/* $name = */ null, $options);
 
-        $form->bind($orgObj);
+        $customizedForm = $orgModel->customizeOrgEditForm($options, $this, $id);
+        $customizedForm->bind($orgObj);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -307,72 +279,25 @@ class OrganizationsController extends ActionController
                     $request->getPost()->toArray(), $fileData
             );
 
-            $form->setInputFilter($orgObj->getInputFilter($orgsQuery->setEntity("Organizations\Entity\Organization")));
-            $inputFilter = $form->getInputFilter();
-            $form->setData($data);
+            $customizedForm->setData($data);
+
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('CRAttachment');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['wireTransferAttachment']['name']) && empty($fileData['wireTransferAttachment']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('wireTransferAttachment');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['atcLicenseAttachment']['name']) && empty($fileData['atcLicenseAttachment']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('atcLicenseAttachment');
-                $input->setRequired(false);
-            }
-            if (isset($fileData['atpLicenseAttachment']['name']) && empty($fileData['atpLicenseAttachment']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $input = $inputFilter->get('atpLicenseAttachment');
-                $input->setRequired(false);
+                $customizedForm->getInputFilter()->get('CRAttachment')->setRequired(false);
             }
 
-            switch ($data['type']) {
-                case '1':
-                    array_push($atcSkippedParams, 'testCenterAdmin_id');
-                    foreach ($atcSkippedParams as $param) {
-                        $inputFilter->get($param)->setRequired(false);
-                        $data[$param] = null;
-                    }
-                    break;
-
-                case '2':
-                    array_push($atcSkippedParams, 'trainingManager_id');
-                    foreach ($atpSkippedParams as $param) {
-                        $inputFilter->get($param)->setRequired(false);
-                        $data[$param] = null;
-                    }
-                    break;
-            }
-
-            if ($form->isValid()) {
-                $orgModel->saveOrganization($data, $orgObj, $oldStatus, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
-
-                // redirecting
-                if ($data['type'] == 1) {
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
-                }
-                else if ($data['type'] == 2 || $data['type'] == 3) {
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atp_orgs'));
-                }
-                $this->redirect()->toUrl($url);
+            if ($customizedForm->isValid()) {
+                $orgModel->saveOrganization($this, $data, $orgObj, $oldStatus, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
             }
         }
-        $variables['wireTransferAttachment'] = $crAttachment;
         $variables['CRAttachment'] = $crAttachment;
-        $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
-        $variables['atcLicenseAttachment'] = $atcLicenseAttachment;
-        $variables['organizationForm'] = $this->getFormView($form);
-        
+        $variables['organizationForm'] = $this->getFormView($customizedForm);
+
         $organizationArray = array($orgObj);
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        
+
         $hasPendingChanges = (count($organizationLogs) > 0) ? true : false;
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'organizationsPending'));
         $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
@@ -521,7 +446,7 @@ class OrganizationsController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * Disapprove pending version organization
      * 
@@ -558,10 +483,10 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        
+
         $organization = $query->find('Organizations\Entity\Organization', /* $criteria = */ $id);
         $file = $organizationModel->getFile($organization, $type, $notApproved);
-        
+
         return $fileUtilities->getFileResponse($file);
     }
 

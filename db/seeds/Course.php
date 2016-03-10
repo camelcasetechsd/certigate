@@ -63,7 +63,6 @@ class Course extends AbstractSeed
         $atp[] = array(
             'commercialName' => $faker->userName,
             'status' => true,
-            'type' => 2,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),

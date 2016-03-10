@@ -20,10 +20,10 @@ class OrganizationTypes extends AbstractSeed
     public function run()
     {
         $org1 = array(
-            "title" => "ATP",
+            "title" => "ATC",
         );
         $org2 = array(
-            "title" => "ATC",
+            "title" => "ATP",
         );
         $org3 = array(
             "title" => "Distributor",
