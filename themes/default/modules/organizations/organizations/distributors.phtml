@@ -2,10 +2,10 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/organizations/new/{{atcTypeId}}"><button class="btn btn-small btn-success create-new">Create new ATC</button></a>
-<br/>
-<div class="panel panel-default atcs-list">
-    <div class="panel-heading">ATCs</div>
+<a href="/organizations/new/{{distributorsTypeId}}"><button class="btn btn-small btn-success create-new">Create new Distributors</button></a>
+<br/><br/>
+<div class="panel panel-default atps-list">
+    <div class="panel-heading">Distributors</div>
 
     <!-- Table -->
     <table class="table">
@@ -15,33 +15,29 @@
                 <th>City</th>
                 <th>Phone</th>
                 <th>WebSite</th>
-                <th>ATC License Expiration</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
-            {{#atcs}}
+            {{#distributors}}
             <tr>
                 <td>{{commercialName}}</td>
                 <td>{{city}}</td>
                 <td>{{phone1}}</td>
                 <td>{{website}}</td>
-                <td>{{atcLicenseExpiration}}</td>
                 <td>
-                    <a href="/organizations/more/{{id}}">More</a>     
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="/organizations/more/{{id}}">More</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{#status}}
+                   {{#status}}
                     <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                 </td>
             </tr>
-            {{/atcs}}
+            {{/distributors}}
         </tbody>
     </table>
 </div>

@@ -153,7 +153,18 @@ class Organization
      */
     public function listOrganizations($type)
     {
-        return $this->query->setEntity("Organizations\Entity\Organization")->entityRepository->listOrganizations($type);
+        $organizations = $this->query->findBy("Organizations\Entity\OrganizationMeta", array(
+            'type' => $type
+        ));
+
+        $organizationIds = array();
+        foreach ($organizations as $singleOrg) {
+            array_push($organizationIds, $singleOrg->getOrganization()->getId());
+        }
+
+        return $this->query->findBy("Organizations\Entity\Organization", array(
+                    'id' => $organizationIds
+        ));
     }
 
     /**
@@ -316,11 +327,11 @@ class Organization
             // redirection is based on first type of organization
             switch ($organizationTypes[0]) {
                 case 1:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atc_orgs'));
                     break;
 
                 case 2:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atc_orgs'));
+                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atp_orgs'));
                     break;
 
                 case 3:
@@ -478,7 +489,7 @@ class Organization
         $langsArray = OrganizationEntity::getStaticLangs();
         $officeVersionsArray = OrganizationEntity::getOfficeVersions();
         foreach ($organizationsArray as $organization) {
-            switch ($organization->type) {
+            switch ($this->getOrganizationTypes(null, $organization)) {
                 case OrganizationEntity::TYPE_ATC:
                     $organization->typeText = "ATC";
                     break;

@@ -500,9 +500,6 @@ class Organization
 
     function setGovernorates($governorates)
     {
-//        foreach ($governorates as $gov) {
-//            $this->governorates[] = $gov;
-//        }
         $this->governorates = $governorates;
     }
 
@@ -546,9 +543,6 @@ class Organization
      */
     public function setRegions($regions)
     {
-//        foreach ($regions as $gov) {
-//            $this->regions[] = $gov;
-//        }
         $this->regions = $regions;
     }
 

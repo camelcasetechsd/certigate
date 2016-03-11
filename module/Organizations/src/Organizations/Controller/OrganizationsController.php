@@ -88,11 +88,12 @@ class OrganizationsController extends ActionController
     public function atcsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
 
-        foreach ($variables['userList'] as $user) {
+        $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
+        foreach ($variables['atcs'] as $user) {
             $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $variables['atcTypeId'] = OrgEntity::TYPE_ATC;
         return new ViewModel($variables);
     }
 
@@ -107,11 +108,43 @@ class OrganizationsController extends ActionController
     public function atpsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
-
-        foreach ($variables['userList'] as $user) {
+        $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
+        foreach ($variables['atps'] as $user) {
             $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $variables['atpTypeId'] = OrgEntity::TYPE_ATP;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * List distributors
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function distributorsAction()
+    {
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $variables['distributors'] = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR);
+        $variables['distributorsTypeId'] = OrgEntity::TYPE_DISTRIBUTOR;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * List resellers
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function resellersAction()
+    {
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $variables['resellers'] = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER);
+        $variables['resellersTypeId'] = OrgEntity::TYPE_RESELLER;
         return new ViewModel($variables);
     }
 
@@ -182,7 +215,7 @@ class OrganizationsController extends ActionController
 
         $orgObj = new OrgEntity();
         $options = array();
-        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this , null));
+        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this, null));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
@@ -238,7 +271,7 @@ class OrganizationsController extends ActionController
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
-        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes(null , $orgObj));
+        $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes(null, $orgObj));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);

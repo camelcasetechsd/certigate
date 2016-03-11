@@ -2,7 +2,7 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/organizations/new?organization=2"><button class="btn btn-small btn-success create-new">Create new ATP</button></a>
+<a href="/organizations/new/{{atpTypeId}}"><button class="btn btn-small btn-success create-new">Create new ATP</button></a>
 <br/>
 <div class="panel panel-default atps-list">
     <div class="panel-heading">ATPs</div>
@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            {{#userList}}
+            {{#atps}}
             <tr>
                 <td>{{commercialName}}</td>
                 <td>{{city}}</td>
@@ -41,7 +41,7 @@
                     {{/status}}
                 </td>
             </tr>
-            {{/userList}}
+            {{/atps}}
         </tbody>
     </table>
 </div>

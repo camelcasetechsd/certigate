@@ -199,6 +199,26 @@ return array(
                     ),
                 )
             ),
+            'list_distributor_orgs' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/distributors',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'distributors'
+                    ),
+                )
+            ),
+            'list_reseller_orgs' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/resellers',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'resellers'
+                    ),
+                )
+            ),
             'more' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
