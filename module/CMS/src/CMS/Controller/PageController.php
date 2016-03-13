@@ -10,6 +10,9 @@ use Utilities\Service\Status;
 use CMS\Form\FormViewHelper;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Zend\Form\FormInterface;
+use CMS\Service\PageTypes;
+use Utilities\Form\FormButtons;
 
 /**
  * Page Controller
@@ -63,6 +66,7 @@ class PageController extends ActionController
     public function newAction()
     {
         $variables = array();
+        $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $pageObj = new Page();
 
@@ -72,11 +76,16 @@ class PageController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+            );
+
             $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
+            $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ false);
             if ($form->isValid()) {
-                $query->save($pageObj, $data);
+                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $pageModel->save($pageObj, $data, /* $editFlag = */ false);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -87,6 +96,7 @@ class PageController extends ActionController
         $formViewHelper = new FormViewHelper();
         $this->setFormViewHelper($formViewHelper);
         $variables['pageForm'] = $this->getFormView($form);
+        $variables['pressReleaseType'] = PageTypes::PRESS_RELEASE_TYPE;
         return new ViewModel($variables);
     }
 
@@ -103,6 +113,7 @@ class PageController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
+        $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pageObj = $query->find('CMS\Entity\Page', $id);
         $request = $this->getRequest();
@@ -114,14 +125,24 @@ class PageController extends ActionController
         $options = array();
         $options['query'] = $query;
         $form = new PageForm(/* $name = */ null, $options);
+        // removing unpublish button in case of already unpublished page
+        if ($pageObj->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {
+            $form->remove(FormButtons::UNPUBLISH_BUTTON);
+            $form->getInputFilter()->remove(FormButtons::UNPUBLISH_BUTTON);
+        }
         $form->bind($pageObj);
 
         if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+            );
             $form->setInputFilter($pageObj->getInputFilter($query));
             $form->setData($data);
+
+            $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ true);
+
             if ($form->isValid()) {
-                $query->save($pageObj);
+                $pageModel->save($pageObj, $data, /* $editFlag = */ true);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -133,6 +154,7 @@ class PageController extends ActionController
         $this->setFormViewHelper($formViewHelper);
         $variables['id'] = $id;
         $variables['pageForm'] = $this->getFormView($form);
+        $variables['pressReleaseType'] = PageTypes::PRESS_RELEASE_TYPE;
         return new ViewModel($variables);
     }
 
@@ -214,6 +236,14 @@ class PageController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
         $page = $query->setEntity('CMS\Entity\Page')->entityRepository->getPageByPath($staticPagePath);
+
+        // is inActive page 
+        if ($page->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'ResourceNotFound'), array(
+                'name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
+        }
+
         $variables = array(
             "title" => $page->getTitle(),
             "body" => $page->getBody()

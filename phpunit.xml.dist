@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="PhpunitBootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         forceCoversAnnotation="true"
+>
+
+    <php>
+        <includePath>.</includePath>
+        <env name="APPLICATION_ENV" value="test"/>
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">module</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="coverage" lowUpperBound="35"
+             highLowerBound="70"/>
+    </logging>
+    
+    <testsuites>
+        <testsuite name="Certigate">
+            <directory>module/*/src/*/Test/*/</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>

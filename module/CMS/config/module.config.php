@@ -17,6 +17,7 @@ return array(
             'cmsMenuView' => 'CMS\Service\View\MenuView',
         ),
         'factories' => array(
+            'CMS\Service\STF' => 'CMS\Service\SendToFriendFactory',
             'CMS\Model\Page' => 'CMS\Model\PageFactory',
             'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
             'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
@@ -45,6 +46,8 @@ return array(
             'CMS\Controller\Page' => 'CMS\Controller\PageController',
             'CMS\Controller\Menu' => 'CMS\Controller\MenuController',
             'CMS\Controller\MenuItem' => 'CMS\Controller\MenuItemController',
+            'CMS\Controller\Press' => 'CMS\Controller\PressController',
+            'CMS\Controller\Pdf' => 'CMS\Controller\PdfController',
         ),
     ),
     'router' => array(
@@ -269,6 +272,32 @@ return array(
                         'id' => '[0-9]+',
                     ),
                 )
+            ),
+            'press_details' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/press[/:id]',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Press',
+                        'action' => 'details',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'pdf' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/pdf[/:newsId]',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Press',
+                        'action' => 'pdf',
+                    ),
+                    'constraints' => array(
+                        'newsId' => '[0-9]+',
+                    ),
+                ),
             ),
         )
     )

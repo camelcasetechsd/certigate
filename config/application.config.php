@@ -1,20 +1,19 @@
 <?php
+
 use Zend\Console\Console;
+
 // Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 $env = APPLICATION_ENV;
 if (!ini_get('date.timezone')) {
     date_default_timezone_set("UTC");
 }
 
 // defining path for application themes directory
-defined('APPLICATION_THEMES')
-    || define('APPLICATION_THEMES', (getenv('APPLICATION_THEMES') ? getenv('APPLICATION_THEMES') : '/../../themes/'));
+defined('APPLICATION_THEMES') || define('APPLICATION_THEMES', (getenv('APPLICATION_THEMES') ? getenv('APPLICATION_THEMES') : '/../../themes/'));
 
 // defining Name of the current theme
-defined('CURRENT_THEME')
-    || define('CURRENT_THEME', (getenv('CURRENT_THEME') ? getenv('CURRENT_THEME') : 'default/'));
+defined('CURRENT_THEME') || define('CURRENT_THEME', (getenv('CURRENT_THEME') ? getenv('CURRENT_THEME') : 'default/'));
 
 define('DEFAULT_LOCALE','en_US');
 
@@ -47,6 +46,7 @@ $config = array(
         'Versioning',
         'System',
         'Notifications',
+        'DOMPDFModule'
         'Translation'
     ),
     'module_listener_options' => array(
@@ -60,7 +60,7 @@ $config = array(
     )
 );
 
-if(Console::isConsole()){
+if (Console::isConsole()) {
     $key = array_search('CustomMustache', $config['modules']);
     unset($config['modules'][$key]);
 }

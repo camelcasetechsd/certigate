@@ -11,6 +11,8 @@ vendor/
 /.vagrant
 /logs/*
 !logs/.gitignore
+/coverage/*
+!coverage/.gitignore
 public/upload/images/*
 !public/upload/images/.gitignore
 public/bower_components/

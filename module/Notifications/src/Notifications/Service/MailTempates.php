@@ -83,6 +83,10 @@ class MailTempates {
      * Contact us Template
      */
     const CONTACT_US_TEMPLATE = "contact-us";
+    /**
+     * Send to Friend Template
+     */
+    const SEND_TO_FRIEND_TEMPLATE = "send-to-friend";
     
     
 }

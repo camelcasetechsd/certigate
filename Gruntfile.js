@@ -39,6 +39,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/pageCRUD.js',
                     '<%= dirs.jsSrc %>/courseCRUD.js',
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
                     '<%= dirs.jsSrc %>/orgReg.js',                    
