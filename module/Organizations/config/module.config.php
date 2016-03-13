@@ -283,6 +283,45 @@ return array(
                         'action' => 'saveState'
                     )
                 )
+            ),
+            'myOrganizations' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/myorganizations',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'myOrganizations'
+                    )
+                )
+            ),
+            'renew' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/renew[/:id]',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'renew'
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    )
+                )
+            )
+        )
+    ),
+    // for cron tabs to update Expiration Flag status 
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'updateExpirationFlag' => array(
+                    'options' => array(
+                        'route' => 'updateExpirationFlag [--verbose|-v] ',
+                        'defaults' => array(
+                            'controller' => 'Organizations\Controller\Organizations',
+                            'action' => 'updateExpirationFlag'
+                        )
+                    )
+                )
             )
         )
     ),
@@ -319,4 +358,14 @@ return array(
         'atpLicenseExpiration',
         'atpLicenseAttachment',
     ),
+    'AtcRenewalFields' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+    ),
+    'AtpRenewalFields' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+    )
 );

@@ -12,6 +12,7 @@ use Zend\Json\Json;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Organizations\Service\Messages;
 
 /**
  * Atps Controller
@@ -174,6 +175,36 @@ class OrganizationsController extends ActionController
             $variables['userData']->atpLicenseExpiration = $variables['userData']->getAtpLicenseExpiration()->format('Y-m-d');
         }
         $variables = $organizationModel->prepareStatics($variables);
+        return new ViewModel($variables);
+    }
+
+    /**
+     * renewing attchments  
+     */
+    public function renewAction()
+    {
+        $variables = array();
+        $organizationId = $this->params('id');
+        $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+
+        if ($OrganizationModel->canBeRenewed($organizationId)) {
+            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($organizationId, $this));
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $fileData = $request->getFiles()->toArray();
+                $data = array_merge_recursive(
+                        $request->getPost()->toArray(), $fileData
+                );
+                $OrganizationModel->renewOrganization($this, $organizationId, $data);
+            }
+            $variables['renewForm'] = $customizedForm;
+        }
+        else {
+            $variables['messages'] = Messages::NO_RENEWAL_TYPE;
+            $variables['type'] = 'warning'; // TODO : change it after merging new layout messages
+        }
+
         return new ViewModel($variables);
     }
 
@@ -521,6 +552,15 @@ class OrganizationsController extends ActionController
         $file = $organizationModel->getFile($organization, $type, $notApproved);
 
         return $fileUtilities->getFileResponse($file);
+    }
+
+    /**
+     * Console action to update ExpirationDate Flag
+     */
+    public function updateExpirationFlagAction()
+    {
+        $organizationMetaModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationMeta');
+        $organizationMetaModel->updateExpirationFlag();
     }
 
 }

@@ -87,6 +87,10 @@ class MailTempates {
      * Send to Friend Template
      */
     const SEND_TO_FRIEND_TEMPLATE = "send-to-friend";
+    /**
+     * 
+     */
+    const ORGANIZATION_RENEWAL_TEMPLATE = "organization-renewal";
     
     
 }

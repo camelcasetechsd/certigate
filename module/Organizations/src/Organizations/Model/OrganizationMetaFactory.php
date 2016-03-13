@@ -15,7 +15,8 @@ use Organizations\Model\OrganizationMeta;
  * @package organizations
  * @subpackage model
  */
-class OrganizationMetaFactory implements FactoryInterface {
+class OrganizationMetaFactory implements FactoryInterface
+{
 
     /**
      * Prepare OrganizationMeta service
@@ -26,9 +27,13 @@ class OrganizationMetaFactory implements FactoryInterface {
      * @param ServiceLocatorInterface $serviceLocator
      * @return OrganizationMeta
      */
-    public function createService(ServiceLocatorInterface $serviceLocator) {
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Organizations\Entity\OrganizationMeta');
-        return new OrganizationMeta($query);
+        $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
+        $notification = $serviceLocator->get('Notifications\Service\Notification');
+
+        return new OrganizationMeta($query, $systemCacheHandler, $notification);
     }
 
 }

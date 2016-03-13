@@ -2,7 +2,7 @@
 
 namespace Organizations\Controller;
 
-use Utilities\Controller\ActionController;
+    use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Organizations\Form\OrganizationUserForm;
 use Organizations\Entity\OrganizationUser;

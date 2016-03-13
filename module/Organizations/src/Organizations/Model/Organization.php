@@ -13,6 +13,7 @@ use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Organizations\Form\OrgForm as OrgForm;
+use Zend\Authentication\AuthenticationService;
 
 /**
  * Org Model
@@ -90,7 +91,7 @@ class Organization
         $this->notification = $notification;
         $this->version = $version;
         $this->random = new Random();
-        $this->organizationTypesNumber = count($this->getOrganizationTypesNumber());
+        $this->organizationTypesNumber = count($this->query->findAll('Organizations\Entity\OrganizationType'));
     }
 
     public function getOrganizationTypesNumber()
@@ -171,7 +172,7 @@ class Organization
      * Save organization
      * 
      * @access public
-     * @param type $action
+     * @param type $action 
      * @param array $orgInfo
      * @param Organizations\Entity\Organization $orgObj ,default is null
      * @param int $oldStatus ,default is null
@@ -212,14 +213,14 @@ class Organization
             $orgInfo['CRExpiration'] = $date;
         }
 
-        if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "" && !$editFlag) {
+        if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
         else {
             $orgInfo['atcLicenseExpiration'] = null;
         }
-        if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "" && !$editFlag) {
+        if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
         }
@@ -244,8 +245,6 @@ class Organization
                 array_push($temp, $this->getRegionby('id', $region));
             }
             $orgInfo['region'] = $temp;
-
-//            $entity->setRegions($temp);
         }
 
         if (!empty($orgInfo['governorate']) && $orgInfo['governorate'] != 0) {
@@ -255,8 +254,6 @@ class Organization
                 array_push($temp, $this->getGovernorateby('id', $gov));
             }
             $orgInfo['governorate'] = $temp;
-
-//            $entity->setGovernorates($temp);
         }
 
         /**
@@ -277,12 +274,11 @@ class Organization
         /**
          * Save Organization
          */
-//        var_dump($entity->getGovernorates());exit;
         $this->query->setEntity('Organizations\Entity\Organization')->save($entity, $orgInfo);
 
         // saving organization meta
         $orgMetaModel = $action->getServiceLocator()->get('Organizations\Model\OrganizationMeta');
-        $orgMetaModel->saveOrganizationMeta($entity, $orgInfo);
+        $orgMetaModel->saveOrganizationMeta($entity, $orgInfo, $editFlag);
 
         // does not work in case of savestate or edit
         if (!$saveState) {
@@ -917,6 +913,96 @@ class Organization
             $form->getInputFilter()->remove($paramName);
         }
         return $form;
+    }
+
+    /**
+     * function checks if the organization has renewable types (ATC , ATC || BOTH ) 
+     * @param int $organizationId
+     * @return boolean
+     */
+    public function canBeRenewed($organizationId)
+    {
+
+        $organizationMeta = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+            'organization' => $organizationId
+        ));
+
+        $types = array();
+        foreach ($organizationMeta as $meta) {
+            array_push($types, $meta->getType()->getId());
+        }
+
+        if (in_array(OrganizationEntity::TYPE_ATC, $types) || in_array(OrganizationEntity::TYPE_ATP, $types)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * function returns a customized form as needed for renewal type
+     * @param Int $organizationId
+     * @param type $action
+     * @return FORM
+     */
+    public function getCustomizedRenewalForm($organizationId, $action)
+    {
+
+        $form = new \Organizations\Form\RenewForm();
+        $atpFields = $action->getServiceLocator()->get('Config')['AtpRenewalFields'];
+        $atcFields = $action->getServiceLocator()->get('Config')['AtcRenewalFields'];
+
+        $organizationMeta = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+            'organization' => $organizationId
+        ));
+        $types = array();
+        foreach ($organizationMeta as $meta) {
+            array_push($types, $meta->getType()->getId());
+        }
+
+        if (!(in_array(OrganizationEntity::TYPE_ATC, $types) && in_array(OrganizationEntity::TYPE_ATP, $types))) {
+
+            if (in_array(OrganizationEntity::TYPE_ATC, $types)) {
+                $form = $this->unsetRenewFields($form, $atpFields);
+            }
+            else if (in_array(OrganizationEntity::TYPE_ATP, $types)) {
+                $form = $this->unsetRenewFields($form, $atcFields);
+            }
+        }
+
+        $form->bind($this->query->findOneBy('Organizations\Entity\Organization', array(
+                    'id' => $organizationId
+        )));
+
+        return $form;
+    }
+
+    private function unsetRenewFields($form, $fields)
+    {
+        foreach ($fields as $field) {
+            $form->remove($field);
+            $form->getInputFilter()->remove($field);
+        }
+        return $form;
+    }
+
+    public function renewOrganization($action, $organizationId, $data)
+    {
+
+        $organizationObj = $this->query->findOneBy('Organizations\Entity\Organization', array(
+            'id' => $organizationId
+        ));
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        $isAdminUser = false;
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                $isAdminUser = true;
+            }
+        }
+
+        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
 
 }

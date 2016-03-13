@@ -956,36 +956,63 @@ class Organization
         if (array_key_exists('status', $data)) {
             $this->setStatus($data['status']);
         }
-//        var_dump($data['region']);
-//        var_dump($data['governorate']);exit;
-        $this->setRegions($data['region']);
-        $this->setGovernorates($data['governorate']);
-
-        $this->setCommercialName($data['commercialName']);
-        $this->setOwnerName($data['ownerName']);
-        $this->setOwnerNationalId($data['ownerNationalId']);
-        $this->setCRNo($data['CRNo']);
-        $this->setCRExpiration($data['CRExpiration']);
+        if (array_key_exists('region', $data)) {
+            $this->setRegions($data['region']);
+        }
+        if (array_key_exists('governorate', $data)) {
+            $this->setGovernorates($data['governorate']);
+        }
+        if (array_key_exists('commercialName', $data)) {
+            $this->setCommercialName($data['commercialName']);
+        }
+        if (array_key_exists('ownerName', $data)) {
+            $this->setOwnerName($data['ownerName']);
+        }
+        if (array_key_exists('ownerNationalId', $data)) {
+            $this->setOwnerNationalId($data['ownerNationalId']);
+        }
+        if (array_key_exists('CRNo', $data)) {
+            $this->setCRNo($data['CRNo']);
+        }
+        if (array_key_exists('CRExpiration', $data)) {
+            $this->setCRExpiration($data['CRExpiration']);
+        }
+        if (array_key_exists('addressLine1', $data)) {
+            $this->setAddressLine1($data['addressLine1']);
+        }
+        if (array_key_exists('labsNo', $data)) {
+            $this->setLabsNo($data["labsNo"]);
+        }
+        if (array_key_exists('addressLine2', $data)) {
+            $this->setAddressLine2($data['addressLine2']);
+        }
+        if (array_key_exists('city', $data)) {
+            $this->setCity($data['city']);
+        }
+        if (array_key_exists('zipCode', $data)) {
+            $this->setZipCode($data['zipCode']);
+        }
+        if (array_key_exists('phone1', $data)) {
+            $this->setPhone1($data['phone1']);
+        }
+        if (array_key_exists('website', $data)) {
+            $this->setWebsite($data['website']);
+        }
+        if (array_key_exists('email', $data)) {
+            $this->setEmail($data['email']);
+        }
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
         }
         if (array_key_exists('wireTransferAttachment', $data) && is_string($data['wireTransferAttachment'])) {
             $this->setWireTransferAttachment($data["wireTransferAttachment"]);
         }
-        $this->setAddressLine1($data['addressLine1']);
-        $this->setCity($data['city']);
-        $this->setZipCode($data['zipCode']);
-        $this->setPhone1($data['phone1']);
-        $this->setWebsite($data['website']);
-        $this->setEmail($data['email']);
-
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
         }
         elseif (array_key_exists('focalContactPerson', $data)) {
             $this->focalContactPerson = $data['focalContactPerson'];
         }
-
         if (array_key_exists('phone2', $data)) {
             $this->setPhone2($data["phone2"]);
         }
@@ -995,20 +1022,11 @@ class Organization
         if (array_key_exists('fax', $data)) {
             $this->setFax($data["fax"]);
         }
-        if (array_key_exists('addressLine2', $data)) {
-            $this->setAddressLine2($data["addressLine2"]);
-        }
         if (array_key_exists('longtitude', $data)) {
             $this->setLongtitude($data["longtitude"]);
         }
         if (array_key_exists('latitude', $data)) {
             $this->setLat($data["latitude"]);
-        }
-        if (array_key_exists('trainingManager_id', $data)) {
-            $this->trainingManager = $data["trainingManager_id"];
-        }
-        if (array_key_exists('testCenterAdmin_id', $data)) {
-            $this->testCenterAdmin = $data["testCenterAdmin_id"];
         }
         if (array_key_exists('labsNo', $data)) {
             $this->setLabsNo($data["labsNo"]);
@@ -1040,9 +1058,6 @@ class Organization
         if (array_key_exists('atcLicenseAttachment', $data) && is_string($data['atcLicenseAttachment'])) {
             $this->setAtcLicenseAttachment($data["atcLicenseAttachment"]);
         }
-//        if (array_key_exists('atcLicenseAttachment', $data)) {
-//            $this->setAtcLicenseAttachment($data['atcLicenseAttachment']);
-//        }
         if (array_key_exists('atcLicenseNo', $data)) {
             $this->setAtcLicenseNo($data["atcLicenseNo"]);
         }
