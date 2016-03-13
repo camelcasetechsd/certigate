@@ -1005,9 +1005,10 @@ class Organization
                 $isAdminUser = true;
             }
         }
-        
+
         $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
+
     /**
      * function to get organizations assigned to current user
      * 
@@ -1018,10 +1019,24 @@ class Organization
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        
-        
-        
-        
+        $userOrganizations = $this->query->findBy('Organizations\Entity\OrganizationUser', array(
+            'user' => $storage['id']
+        ));
+        $myOrganizations = array();
+        foreach ($userOrganizations as $userOrganization) {
+            $organizations = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+                'organization' => $userOrganization->getOrganization()->getId()
+            ));
+            /**
+             * those are organization meta objects not pure organizations
+             */
+            foreach ($organizations as $organization) {
+//                var_dump($organization->expirationDate->format('Y-m-d'));exit;
+                $organization->type = $organization->getType()->getTitle();
+                $organization->expirationDate == null ? $organization->expirationDate = 'NO Expiration Date' : $organization->expirationDate = $organization->expirationDate->format('d/m/Y');
+                array_push($myOrganizations, $organization);
+            }
+        }
         return $myOrganizations;
     }
 
