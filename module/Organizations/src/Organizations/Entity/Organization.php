@@ -31,9 +31,11 @@ use Utilities\Service\Time;
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
  * @property string $atpLicenseAttachment
+ * @property string $atpWireTransferAttachment
  * @property string $atcLicenseNo
  * @property \DateTime $atcLicenseExpiration
  * @property string $atcLicenseAttachment
+ * @property string $atcWireTransferAttachment
  * @property string $addressline1
  * @property string $addressline2
  * @property string $city
@@ -164,13 +166,6 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string",nullable=true)
-     * @var string
-     */
-    public $wireTransferAttachment;
-
-    /**
-     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
@@ -192,6 +187,13 @@ class Organization
 
     /**
      * @Gedmo\Versioned
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    public $atpWireTransferAttachment;
+
+    /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
@@ -210,6 +212,13 @@ class Organization
      * @var string
      */
     public $atcLicenseAttachment;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    public $atcWireTransferAttachment;
 
     /**
      * @Gedmo\Versioned
@@ -438,11 +447,6 @@ class Organization
         return $this->CRAttachment;
     }
 
-    function getWireTransferAttachment()
-    {
-        return $this->wireTransferAttachment;
-    }
-
     function getAtpLicenseNo()
     {
         return $this->atpLicenseNo;
@@ -471,6 +475,26 @@ class Organization
     function getAtcLicenseAttachment()
     {
         return $this->atcLicenseAttachment;
+    }
+
+    function getAtpWireTransferAttachment()
+    {
+        return $this->atpWireTransferAttachment;
+    }
+
+    function getAtcWireTransferAttachment()
+    {
+        return $this->atcWireTransferAttachment;
+    }
+
+    function setAtpWireTransferAttachment($atpWireTransferAttachment)
+    {
+        $this->atpWireTransferAttachment = $atpWireTransferAttachment;
+    }
+
+    function setAtcWireTransferAttachment($atcWireTransferAttachment)
+    {
+        $this->atcWireTransferAttachment = $atcWireTransferAttachment;
     }
 
     function getAddressLine1()
@@ -717,11 +741,6 @@ class Organization
     function setCRAttachment($CRAttachment)
     {
         $this->CRAttachment = $CRAttachment;
-    }
-
-    function setWireTransferAttachment($wireTransferAttachment)
-    {
-        $this->wireTransferAttachment = $wireTransferAttachment;
     }
 
     function setAtpLicenseNo($atpLicenseNo)
@@ -1004,8 +1023,11 @@ class Organization
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
         }
-        if (array_key_exists('wireTransferAttachment', $data) && is_string($data['wireTransferAttachment'])) {
-            $this->setWireTransferAttachment($data["wireTransferAttachment"]);
+        if (array_key_exists('atpWireTransferAttachment', $data) && is_string($data['atpWireTransferAttachment'])) {
+            $this->setAtpWireTransferAttachment($data["atpWireTransferAttachment"]);
+        }
+        if (array_key_exists('atcWireTransferAttachment', $data) && is_string($data['atcWireTransferAttachment'])) {
+            $this->setAtcWireTransferAttachment($data["atcWireTransferAttachment"]);
         }
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];

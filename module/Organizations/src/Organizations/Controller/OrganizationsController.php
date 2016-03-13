@@ -563,4 +563,17 @@ class OrganizationsController extends ActionController
         $organizationMetaModel->updateExpirationFlag();
     }
 
+    /**
+     * listing organization that user assigned for
+     * @return ViewModel
+     */
+    public function myOrganizationsAction()
+    {
+        $variables = array();
+        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $myOrganizations = $organizationModel->getMyOrganizations($this);
+        $variables['myOrganizations'] = $myOrganizations;
+        return new ViewModel($variables);
+    }
+
 }

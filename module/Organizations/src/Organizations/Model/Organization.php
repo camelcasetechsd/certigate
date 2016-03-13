@@ -262,13 +262,17 @@ class Organization
         if (!empty($orgInfo['CRAttachment']['name'])) {
             $orgInfo['CRAttachment'] = $this->saveAttachment('CRAttachment', 'cr');
         }
-        if (!empty($orgInfo['wireTransferAttachment']['name']) && !$editFlag) {
-            $orgInfo['wireTransferAttachment'] = $this->saveAttachment('wireTransferAttachment', 'wr');
+        if (!empty($orgInfo['atcWireTransferAttachment']['name'])) {
+            $orgInfo['atcWireTransferAttachment'] = $this->saveAttachment('atcWireTransferAttachment', 'wr');
         }
-        if (!empty($orgInfo['atpLicenseAttachment']['name']) && !$editFlag) {
+        if (!empty($orgInfo['atpWireTransferAttachment']['name'])) {
+            var_dump('here');
+            $orgInfo['atpWireTransferAttachment'] = $this->saveAttachment('atpWireTransferAttachment', 'wr');
+        }
+        if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
             $orgInfo['atpLicenseAttachment'] = $this->saveAttachment('atpLicenseAttachment', 'atp');
         }
-        if (!empty($orgInfo['atcLicenseAttachment']['name']) && !$editFlag) {
+        if (!empty($orgInfo['atcLicenseAttachment']['name'])) {
             $orgInfo['atcLicenseAttachment'] = $this->saveAttachment('atcLicenseAttachment', 'atc');
         }
         /**
@@ -805,8 +809,8 @@ class Organization
             array_push($typeIds, $type->getType()->getId());
         }
 
-        $form->remove('wireTransferAttachment');
-        $form->getInputFilter()->remove('wireTransferAttachment');
+//        $form->remove('wireTransferAttachment');
+//        $form->getInputFilter()->remove('wireTransferAttachment');
 
         $form->get('CRAttachment')->setAttribute('required', false);
 
@@ -1001,8 +1005,24 @@ class Organization
                 $isAdminUser = true;
             }
         }
-
+        
         $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
+    }
+    /**
+     * function to get organizations assigned to current user
+     * 
+     * @param ActionController $action
+     * @return array Organizations\Entity\Organization
+     */
+    public function getMyOrganizations($action)
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        
+        
+        
+        
+        return $myOrganizations;
     }
 
 }

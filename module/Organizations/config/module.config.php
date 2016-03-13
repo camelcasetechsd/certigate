@@ -329,6 +329,7 @@ return array(
         'atpLicenseNo',
         'atpLicenseExpiration',
         'atpLicenseAttachment',
+        'atpWireTransferAttachment',
         'classesNo',
         'pcsNo_class',
         'trainingManager_id',
@@ -338,6 +339,7 @@ return array(
         'atcLicenseNo',
         'atcLicenseExpiration',
         'atcLicenseAttachment',
+        'atcWireTransferAttachment',
         'labsNo',
         'pcsNo_lab',
         'internetSpeed_lab',
@@ -352,20 +354,25 @@ return array(
         'atcLicenseNo',
         'atcLicenseExpiration',
         'atcLicenseAttachment',
+        'atcWireTransferAttachment',
     ),
     'atpEditSkippedParams' => array(
         'atpLicenseNo',
         'atpLicenseExpiration',
         'atpLicenseAttachment',
+        'atpWireTransferAttachment',
     ),
     'AtcRenewalFields' => array(
         'atcLicenseNo',
         'atcLicenseExpiration',
         'atcLicenseAttachment',
+        'atcWireTransferAttachment'
+        
     ),
     'AtpRenewalFields' => array(
         'atpLicenseNo',
         'atpLicenseExpiration',
         'atpLicenseAttachment',
+        'atpWireTransferAttachment',
     )
 );

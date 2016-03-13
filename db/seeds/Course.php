@@ -84,12 +84,14 @@ class Course extends AbstractSeed
             'atpLicenseNo' => $faker->randomNumber(),
             'atpLicenseExpiration' => date('Y-m-d H:i:s'),
             'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'classesNo' => $faker->randomDigitNotNull,
             'pcsNo_class' => $faker->randomDigitNotNull,
             //atcData should be null
             'atcLicenseNo' => null,
             'atcLicenseExpiration' => null,
             'atcLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => null,
             'pcsNo_lab' => null,
             'operatingSystem' => null,
@@ -183,7 +185,7 @@ class Course extends AbstractSeed
             "modified" => null,
         );
         $this->insert('outline', $outline1);
-       
+
         $outline2 = array(
             "title" => "outline2",
             "course_id" => $courseId,

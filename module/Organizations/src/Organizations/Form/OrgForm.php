@@ -238,17 +238,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'required' => true,
             )
         ));
-        $this->add(array(
-            'name' => 'wireTransferAttachment',
-            'type' => 'Zend\Form\Element\File',
-            'options' => array(
-                'label' => 'Wire Transfer Attachment',
-                'required' => 'required',
-            ),
-            'attributes' => array(
-                'required' => true,
-            )
-        ));
 
         $this->add(array(
             'name' => 'phone1',
@@ -432,6 +421,18 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
+        $this->add(array(
+            'name' => 'atcWireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'ATC Wire Transfer Attachment',
+                'required' => 'required',
+            ),
+            'attributes' => array(
+                'required' => true,
+            )
+        ));
+
 
         $this->add(array(
             'name' => 'labsNo',
@@ -604,6 +605,19 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
+        
+         $this->add(array(
+            'name' => 'atpWireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'ATP Wire Transfer Attachment',
+                'required' => 'required',
+            ),
+            'attributes' => array(
+                'required' => true,
+            )
+        ));
+
 
         $this->add(array(
             'name' => 'classesNo',
@@ -800,7 +814,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         }
         $this->get('region')->setValue($regionArray);
 
-        
+
         $governorates = $object->getGovernorates();
         $governorateArray = array();
         foreach ($governorates as $gov) {
@@ -808,7 +822,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         }
         $this->get('governorate')->setValue($governorateArray);
 
-        
+
         $focalContactPerson = $object->getFocalContactPerson();
         if (isset($focalContactPerson->id) && $focalContactPerson != null) {
             $this->get('focalContactPerson_id')->setValue($focalContactPerson->id);

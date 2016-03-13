@@ -87,6 +87,21 @@ class RenewForm extends Form
                 ),
             ),
         ));
+        
+        /**
+         * ATP Wire Transfer
+         */
+        $this->add(array(
+            'name' => 'atpWireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'ATP Wire Transfer Attachment',
+            ),
+            'attributes' => array(
+                'class' => 'form-control',
+                'required'=>'required'
+            )
+        ));
 
         /**
          * Atc Renewal Fields
@@ -136,13 +151,13 @@ class RenewForm extends Form
         ));
 
         /**
-         * Wire Transfer
+         * ATC Wire Transfer
          */
         $this->add(array(
-            'name' => 'wireTransferAttachment',
+            'name' => 'atcWireTransferAttachment',
             'type' => 'Zend\Form\Element\File',
             'options' => array(
-                'label' => 'Wire Transfer Attachment',
+                'label' => 'ATC Wire Transfer Attachment',
             ),
             'attributes' => array(
                 'class' => 'form-control',
