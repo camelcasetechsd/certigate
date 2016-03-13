@@ -28,7 +28,8 @@ class ApiFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery');
-        return new Api($query);
+        $serverUrl = $serviceLocator->get('ViewHelperManager')->get('ServerUrl');
+        return new Api($query, $serverUrl);
     }
 
 }
