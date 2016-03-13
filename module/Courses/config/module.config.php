@@ -17,10 +17,12 @@ return array(
         ),
         'factories' => array(
             'Courses\Model\Course' => 'Courses\Model\CourseFactory',
+            'Courses\Model\CourseEvent' => 'Courses\Model\CourseEventFactory',
             'Courses\Model\Evaluation' => 'Courses\Model\EvaluationFactory',
             'Courses\Model\Resource' => 'Courses\Model\ResourceFactory',
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
             'Courses\Model\Exam' => 'Courses\Model\ExamFactory',
+            'Courses\Model\Vote' => 'Courses\Model\VoteFactory',
         )
     ),
     'doctrine' => array(
@@ -60,10 +62,65 @@ return array(
             'Courses\Controller\Resource' => 'Courses\Controller\ResourceController',
             'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
             'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
+            'Courses\Controller\CourseEvent' => 'Courses\Controller\CourseEventController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'courseEvents' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsNew' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/new[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'new',
+                    ),
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/edit/:id[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            'courseEventsDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/delete/:id[/:courseId]',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -269,13 +326,14 @@ return array(
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/more/:id',
+                    'route' => '/courses/more/:id[/:courseEventId]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'more',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
+                        'courseEventId' => '[0-9]+',
                     ),
                 )
             ),
@@ -490,13 +548,13 @@ return array(
             'studentEvaluation' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/vote[/:courseId]',
+                    'route' => '/courses/vote/:courseEventId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'vote',
                     ),
                     'constraints' => array(
-                        'courseId' => '[0-9]+',
+                        'courseEventId' => '[0-9]+',
                     ),
                 )
             ),
@@ -511,6 +569,31 @@ return array(
                     ),
                     'constraints' => array(
                         'courseId' => '[0-9]+',
+                    ),
+                )
+            ),
+            // list my courses
+            'myCourses' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/mycourses',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'myCourses',
+                    )
+                )
+            ),
+            // download Course outlines pdf
+            'courseOutlinesPdf' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/outlines/generate-pdf/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Outline',
+                        'action' => 'generatePdf',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
                     ),
                 )
             ),

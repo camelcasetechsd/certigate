@@ -61,4 +61,12 @@ class FormButtons {
      * unpublish button text
      */
     const UNPUBLISH_BUTTON_TEXT = "Unpublish";
+    /**
+     * reset button
+     */
+    const RESET_BUTTON = "reset";
+    /**
+     * reset button text
+     */
+    const RESET_BUTTON_TEXT = "Reset";
 }

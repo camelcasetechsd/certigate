@@ -5,7 +5,6 @@ namespace CMS\Form;
 use Utilities\Form\Form;
 use CMS\Service\PageTypes;
 use CMS\Service\PageCategories;
-use Utilities\Form\FormButtons;
 
 /**
  * Page Form
@@ -157,42 +156,11 @@ class PageForm extends Form
             'type' => 'Zend\Form\Element\Hidden',
         ) );
         
-        $this->add( array(
-            'name' => FormButtons::SAVE_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-primary',
-                'value' => FormButtons::SAVE_BUTTON_TEXT,
-            )
-        ) );
-        
-        $this->add( array(
-            'name' => FormButtons::SAVE_AND_PUBLISH_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-success',
-                'value' => FormButtons::SAVE_AND_PUBLISH_BUTTON_TEXT,
-            )
-        ) );
-        
-        $this->add( array(
-            'name' => FormButtons::UNPUBLISH_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-warning',
-                'value' => FormButtons::UNPUBLISH_BUTTON_TEXT,
-            )
-        ) );
-
-        $this->add( array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ) );
+        // Add buttons fieldset
+        $this->add(array(
+             'name' => 'buttons',
+             'type' => 'Utilities\Form\ButtonsFieldset'
+         ));
     }
 
 }

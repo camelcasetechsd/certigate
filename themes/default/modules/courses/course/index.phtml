@@ -12,10 +12,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Authorized Instructor</th>
-                <th>ATP</th>
                 <th>Status</th>
                 <th colspan="2">Actions</th>
             </tr>
@@ -24,10 +20,6 @@
             {{#courses}}
             <tr class="{{^status}}container-inactive{{/status}}">
                 <td>{{name}}</td>
-                <td>{{startDate}}</td>
-                <td>{{endDate}}</td>
-                <td>{{ai.firstName}} {{ai.lastName}}</td>
-                <td>{{atp.commercialName}}</td>
                 <td>{{statusText}}</td>
 
                 <td>
@@ -41,7 +33,7 @@
                     <a href="/courses/evaluation/new/{{id}}" data-toggle="tooltip" data-placement="left" title="Create Course Evaluation"><span class="glyphicon glyphicon-list-alt"></span></a>
                     {{/evaluation}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="/course-events/{{id}}" data-toggle="tooltip" data-placement="left" title="Course Events"><span class="glyphicon glyphicon-calendar"></span></a>
                     &nbsp;&nbsp;&nbsp;
                     <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}

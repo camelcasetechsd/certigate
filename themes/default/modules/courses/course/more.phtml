@@ -5,82 +5,150 @@
 <br><br>
 
 <br><br>
-<!--make sure that user did not evaluated the course before-->
-{{#notEvaluatedBefore}}
-<!--making sure that course has evaluation-->
-{{#hasEvaluation}}
-<!--making sure that user is student-->
-{{#isStudent}}
+<!--making sure that user can evaluate-->
+{{#canEvaluate}}
+{{#courseEventId}}
 <!--this rule is only for students-->
-<a class="btn btn-info" href="/courses/vote/{{course.id}}" >Evaluate Course</a>
+<a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >Evaluate Course</a>
 <br><br>
-{{/isStudent}}
-{{/hasEvaluation}}
-{{/notEvaluatedBefore}}
+{{/courseEventId}}
+{{/canEvaluate}}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
+    <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">Course Events</a></li>
+    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">Course Outlines</a></li>
+    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">Course Resources</a></li>
 
-<div class="panel panel-default">
+</ul>
 
-    <div class="panel-heading">Course Info</div>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Details</h3>
+            </div>
+            <div class="panel-body">
 
-    <!-- Table -->
+                {{#course}}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td>{{name}}</td>
+                        </tr><tr>
+                            <td>Brief</td><td>{{brief}}</td>
+                        </tr><tr>
+                            <td>Time</td><td>{{time}}</td>
+                        </tr><tr>
+                            <td>Duration</td><td>{{duration}} Day(s)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 
-    {{#course}}
-    <table class="table">
-        <tbody>
-            <tr>
-                <td>Name</td><td>{{name}}</td>
-            </tr><tr>
-                <td>Brief</td><td>{{brief}}</td>
-            </tr><tr>
-                <td>Authorized Instructor</td><td>{{ai.firstName}} {{ai.lastName}}</td>
-            </tr><tr>
-                <td>Start Date</td><td>{{startDate}}</td>
-            </tr><tr>
-                <td>End Date</td><td>{{endDate}}</td>
-            </tr><tr>
-                <td>Time</td><td>{{time}}</td>
-            </tr><tr>
-                <td>Duration</td><td>{{duration}} Day(s)</td>
-            </tr><tr>
-                <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
-            </tr>
+    <div role="tabpanel" class="tab-pane fade" id="courseEvents">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Events</h3>
+            </div>
+            <div class="panel-body">
 
-            {{#outlines.count}}
-            <td>Outlines</td><td></td>
-            <tr>
-                <td>&ensp; Title</td>
-                <td>Duration (minutes)</td>
-            </tr>
-            {{/outlines.count}}
-            {{#outlines}}
-                {{#statusActive}}
-                <tr>
-                    <td>&ensp; {{title}}</td>
-                    <td>{{duration}}</td>
-                </tr>
-                {{/statusActive}}
-            {{/outlines}} 
+                {{#course}}
+                <table class="table">
+                    <thead>
 
-        {{#canDownloadResources}}
+                        {{#courseEvents.count}}
+                        <tr>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Instructor</th>
+                            <th>ATP Name</th>
+                            <th>ATP City</th>
+                        </tr>
+                        {{/courseEvents.count}}
+                    </thead>
+                    <tbody>
+                        {{#courseEvents}}
 
-        {{#resources}}
-        <td>Resources</td><td></td>
-        {{/resources}}
-        {{#resources}}
-        <tr>
-            <td>&ensp; {{type}}</td>
-            <td>
-                {{#files}}
-                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
-                {{/files}}
-            </td>
-        </tr>
-        {{/resources}} 
-        {{/canDownloadResources}}
-        </tbody>
-    </table>
-    {{/course}}
+                        <tr>
+                            <td>{{startDate}}</td>
+                            <td>{{endDate}}</td>
+                            <td>{{ai.firstName}} {{ai.lastName}}</td>
+                            <td>{{atp.commercialName}}</td>
+                            <td>{{atp.city}}</td>
+                        </tr>
+                        {{/courseEvents}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 
+    <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Outlines</h3>
+            </div>
+            <div class="panel-body">
+
+                {{#course}}
+                <table class="table">
+                    <thead>
+                        {{#outlines.count}}
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration (minutes)</th>
+                        </tr>
+                        {{/outlines.count}}
+                    </thead>
+                    <tbody>
+                        {{#outlines}}
+                        {{#statusActive}}
+                        <tr>
+                            <td>{{title}}</td>
+                            <td>{{duration}}</td>
+                        </tr>
+                        {{/statusActive}}
+                        {{/outlines}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseResources">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Resources</h3>
+            </div>
+            <div class="panel-body">
+
+                {{#course}}
+                <table class="table">
+                    <tbody>
+                        {{#canDownloadResources}}
+                        {{#resources}}
+                        <tr>
+                            <td>{{type}}</td>
+                            <td>
+                                {{#files}}
+                                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                                {{/files}}
+                            </td>
+                        </tr>
+                        {{/resources}} 
+                        {{/canDownloadResources}}
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 </div>
 {{/content}}
 {{/layout}}

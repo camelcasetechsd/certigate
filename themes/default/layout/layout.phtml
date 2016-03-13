@@ -12,7 +12,7 @@
     </head>
 
     <body>
-
+        {{$header}}
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -20,19 +20,21 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     {{^loggedInUsername}}
-                        <li><a href="/sign/in"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="/sign/in"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     {{/loggedInUsername}}
                     {{#loggedInUsername}}
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{loggedInUsername}}</a></li>
-                        <li><a href="/sign/out"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{loggedInUsername}}</a></li>
+                    <li><a href="/sign/out"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                     {{/loggedInUsername}}
                 </ul>
             </div>
         </div>
     </nav>
+    {{/header}}
 
     <div class="container-fluid">
         <div class="row">
+            {{$menus}}
             <div class="col-sm-3 col-md-2 sidebar no-padding">
                 {{<primary_menu}}
                 {{/primary_menu}}
@@ -42,6 +44,7 @@
                 {{{adminMenu}}}
                 {{/adminMenu}}
             </div>
+            {{/menus}}
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div id="page-wrapper">
 

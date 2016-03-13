@@ -23,8 +23,6 @@ class Users extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-//        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
-//        $this->insert('role', $instructorRole);
         $instructorRoleId = $this->fetchRow('select id from role where name = "Instructor"')['id'];
 
         $proctorRole = array('name' => Role::PROCTOR_ROLE);
@@ -89,23 +87,20 @@ class Users extends AbstractSeed
 
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
+        $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
-
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
-        $coursesEditRoute = "coursesEdit";
-        $coursesNewRoute = "coursesNew";
-        $coursesPendingRoute = "coursesPending";
-        $coursesListRoute = "courses";
         $coursesVoteRoute = "studentEvaluation";
-        $courseEvaluation = "courseEvaluations";
-        $newCourseEvaluation = "newCourseEvaluation";
-        $editCourseEvaluation = "editCourseEvaluation";
-
+        $courseEventsRoute = "courseEvents";
+        $courseEventsNewRoute = "courseEventsNew";
+        $courseEventsEditRoute = "courseEventsEdit";
+        $courseEventsDeleteRoute = "courseEventsDelete";
         $instructorCalendar = "coursesInstructorCalendar";
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
         $examBookingRoute = "examBooking";
+        $myCoursesRoute = "myCourses";
         $coursesAcls = array(
             array(
                 'role_id' => $studentRoleId,
@@ -130,6 +125,26 @@ class Users extends AbstractSeed
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
                 'route' => $coursesMoreRoute,
             ),
             array(
@@ -186,46 +201,11 @@ class Users extends AbstractSeed
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
                 'route' => $coursesLeaveRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesNewRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesEditRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesListRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesPendingRoute,
             ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
                 'route' => $coursesVoteRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $courseEvaluation,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $newCourseEvaluation,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $editCourseEvaluation,
             ),
             array(
                 'role_id' => $instructorRoleId,
@@ -267,29 +247,42 @@ class Users extends AbstractSeed
                 'module' => $courseModule,
                 'route' => $examBookingRoute,
             ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsDeleteRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsEditRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsNewRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
         );
         $this->insert('acl', $coursesAcls);
 
         $resourcesListPerCourseRoute = "resourcesListPerCourse";
         $resourcesResourceDownloadRoute = "resourcesResourceDownload";
-        $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
-        $resourcesEditRoute = "resourcesEdit";
         $resourcesAcls = array(
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesListPerCourseRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesNewPerCourseRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesEditRoute,
-            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,

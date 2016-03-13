@@ -5,7 +5,6 @@ namespace CMS\Model;
 use CMS\Entity\Page as PageEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
-use Utilities\Form\FormButtons;
 use Utilities\Service\Status;
 use CMS\Service\PageTypes;
 
@@ -122,15 +121,7 @@ class Page
      */
     public function save($page, $data = array(), $editFlag = false)
     {
-        if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $data)) {
-            $page->setStatus(Status::STATUS_ACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $data)) {
-            $page->setStatus(Status::STATUS_INACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::SAVE_BUTTON, $data) && $editFlag === false) {
-            $page->setStatus(Status::STATUS_INACTIVE);
-        }
+        Status::setStatus($page, $data, $editFlag);
         if ($editFlag === true) {
             $data = array();
         }

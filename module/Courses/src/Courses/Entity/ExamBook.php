@@ -5,7 +5,7 @@ namespace Courses\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
-use Utilities\Service\Random;
+use Utilities\Service\Time;
 
 /**
  * Resource Entity
@@ -16,9 +16,13 @@ use Utilities\Service\Random;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property \DateTime $date
+ * @property Courses\Entity\Course $course
+ * @property Organizations\Entity\Organization $atc
  * @property int $studentsNo
  * @property int $adminStatus
  * @property int $tvtcStatus
+ * @property \DateTime $created
+ * @property \DateTime $modified
  * 
  * @package courses
  * @subpackage entity
@@ -77,13 +81,21 @@ class ExamBook
     public $date;
 
     /**
+     *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
-    public $createdAt;
+    public $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Courses\Entity\Course", inversedBy="exambook")
+     *
+     * @ORM\Column(type="date" , nullable=true)
+     * @var \DateTime
+     */
+    public $modified = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\Course", inversedBy="exambooks")
      * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
      */
     public $course;
@@ -112,74 +124,201 @@ class ExamBook
      */
     public $tvtcStatus;
 
-    function getId()
+    /**
+     * Get id
+     * 
+     * @access public
+     * @return int
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    function getCourse()
+    /**
+     * Get course
+     * 
+     * @access public
+     * @return Courses\Entity\Course
+     */
+    public function getCourse()
     {
         return $this->course;
     }
 
-    function getAdminStatus()
+    /**
+     * Get adminStatus
+     * 
+     * @access public
+     * @return int
+     */
+    public function getAdminStatus()
     {
         return $this->adminStatus;
     }
 
-    function getTvtcStatus()
+    /**
+     * Get tvtcStatus
+     * 
+     * @access public
+     * @return int
+     */
+    public function getTvtcStatus()
     {
         return $this->tvtcStatus;
     }
 
-    function getDate()
+    /**
+     * Get date
+     * 
+     * @access public
+     * @return \DateTime
+     */
+    public function getDate()
     {
         return $this->date;
     }
 
-    function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    function getAtc()
+    /**
+     * Get atc
+     * 
+     * @access public
+     * @return Organizations\Entity\Organization
+     */
+    public function getAtc()
     {
         return $this->atc;
     }
 
-    function setDate($date)
+    /**
+     * Set date
+     * 
+     * @access public
+     * @param \DateTime $date
+     * @return Courses\Entity\ExamBook
+     */
+    public function setDate($date)
     {
+        if (!is_object($date)) {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $date);
+        }
         $this->date = $date;
+        return $this;
     }
 
-    function setCreatedAt($date)
-    {
-        $this->createdAt = $date;
-    }
-
-    function setCourse($course)
+    /**
+     * Set course
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @return Courses\Entity\ExamBook
+     */
+    public function setCourse($course)
     {
         $this->course = $course;
+        return $this;
     }
 
-    function setStudentNum($studentsNo)
+    /**
+     * Set studentsNo
+     * 
+     * @access public
+     * @param int $studentsNo
+     * @return Courses\Entity\ExamBook
+     */
+    public function setStudentsNo($studentsNo)
     {
         $this->studentsNo = $studentsNo;
+        return $this;
     }
 
-    function setAtc($atc)
+    /**
+     * Set atc
+     * 
+     * @access public
+     * @param Organizations\Entity\Organization $atc
+     * @return Courses\Entity\ExamBook
+     */
+    public function setAtc($atc)
     {
         $this->atc = $atc;
+        return $this;
     }
 
-    function setAdminStatus($adminStatus)
+    /**
+     * Set AdminStatus
+     * 
+     * @access public
+     * @param int $adminStatus
+     * @return Courses\Entity\ExamBook
+     */
+    public function setAdminStatus($adminStatus)
     {
         $this->adminStatus = $adminStatus;
+        return $this;
     }
 
-    function setTvtcStatus($tvtcStatus)
+    /**
+     * Set TvtcStatus
+     * 
+     * @access public
+     * @param int $tvtcStatus
+     * @return Courses\Entity\ExamBook
+     */
+    public function setTvtcStatus($tvtcStatus)
     {
         $this->tvtcStatus = $tvtcStatus;
+        return $this;
+    }
+
+    /**
+     * Get created
+     * 
+     * 
+     * @access public
+     * @return \DateTime created
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set created
+     * 
+     * @ORM\PrePersist
+     * @access public
+     * @return ExamBook
+     */
+    public function setCreated()
+    {
+        $this->created = new \DateTime();
+        return $this;
+    }
+
+    /**
+     * Get modified
+     * 
+     * 
+     * @access public
+     * @return \DateTime modified
+     */
+    public function getModified()
+    {
+        return $this->modified;
+    }
+
+    /**
+     * Set modified
+     * 
+     * @ORM\PreUpdate
+     * @access public
+     * @return ExamBook
+     */
+    public function setModified()
+    {
+        $this->modified = new \DateTime();
+        return $this;
     }
 
     /**
@@ -203,7 +342,17 @@ class ExamBook
      */
     public function exchangeArray($data = array())
     {
-        
+        if (array_key_exists("tvtcStatus", $data)) {
+            $this->setTvtcStatus($data["tvtcStatus"]);
+        }
+        if (array_key_exists("adminStatus", $data)) {
+            $this->setAdminStatus($data["adminStatus"]);
+        }
+        $this->setAtc($data["atc"])
+                ->setCourse($data["course"])
+                ->setDate($data["date"])
+                ->setStudentsNo($data["studentsNo"])
+        ;
     }
 
     /**
@@ -227,16 +376,11 @@ class ExamBook
      * 
      * @access public
      * 
-     * @param int $courseId
-     * @param string $name
-     * @param bool $overrideFilterFlag ,default is bool false
-     * @param array $fileUploadOptions ,default is empty array
-     * 
      * @return InputFilter validation constraints
      */
     public function getInputFilter()
     {
-        if (!$this->inputFilter || $overrideFilterFlag === true) {
+        if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
@@ -255,11 +399,11 @@ class ExamBook
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'courseId',
+                'name' => 'course',
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'atcId',
+                'name' => 'atc',
                 'required' => true,
             ));
 

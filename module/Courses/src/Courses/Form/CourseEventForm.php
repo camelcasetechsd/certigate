@@ -1,0 +1,212 @@
+<?php
+
+namespace Courses\Form;
+
+use Utilities\Form\Form;
+use Utilities\Service\Status;
+use Users\Entity\Role;
+use Utilities\Service\Time;
+use Organizations\Entity\Organization;
+use Utilities\Form\ButtonsFieldset;
+
+/**
+ * CourseEvent Form
+ * 
+ * Handles CourseEvent form setup
+ * 
+ * @property Utilities\Service\Query\Query $query
+ * @property int $userId
+ * @property int $courseId
+ * 
+ * @package courses
+ * @subpackage form
+ */
+class CourseEventForm extends Form
+{
+
+    /**
+     *
+     * @var Utilities\Service\Query\Query 
+     */
+    protected $query;
+
+    /**
+     *
+     * @var int
+     */
+    protected $userId;
+
+    /**
+     *
+     * @var int
+     */
+    protected $courseId;
+
+    /**
+     * setup form
+     * 
+     * 
+     * @access public
+     * @param string $name ,default is null
+     * @param array $options ,default is null
+     */
+    public function __construct($name = null, $options = null)
+    {
+        $this->needAdminApproval = true;
+        $this->query = $options['query'];
+        unset($options['query']);
+        $this->userId = $options['userId'];
+        unset($options['userId']);
+        $this->courseId = $options['courseId'];
+        unset($options['courseId']);
+        parent::__construct($name, $options);
+
+        $this->setAttribute('class', 'form form-horizontal');
+
+        $status = Status::STATUS_ACTIVE;
+        $criteria = array('status' => $status);
+        if (empty($this->courseId)) {
+            $this->add(array(
+                'name' => 'course',
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Course',
+                    'object_manager' => $this->query->entityManager,
+                    'target_class' => 'Courses\Entity\Course',
+                    'property' => 'name',
+                    'is_method' => false,
+                    'find_method' => array(
+                        'name' => 'findBy',
+                        'params' => array(
+                            'criteria' => $criteria
+                        )
+                    ),
+                    'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                    'display_empty_item' => true,
+                ),
+            ));
+        }
+
+        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
+        $userIds = array();
+        if ($this->isAdminUser === false) {
+            $userIds[] = $this->userId;
+        }
+        $this->add(array(
+            'name' => 'atp',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Training Partner',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Organizations\Entity\Organization',
+                'property' => 'commercialName',
+                'is_method' => false,
+                'find_method' => array(
+                    'name' => 'getOrganizationsBy',
+                    'params' => array(
+                        'userIds' => $userIds,
+                        'types' => $types,
+                        'status' => $status,
+                    )
+                ),
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'ai',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Instructor',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Users\Entity\User',
+                'property' => 'fullName',
+                'is_method' => true,
+                'find_method' => array(
+                    'name' => 'getUsers',
+                    'params' => array(
+                        "roles" => array(
+                            Role::INSTRUCTOR_ROLE
+                        )
+                    )
+                ),
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'capacity',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'min' => '1',
+            ),
+            'options' => array(
+                'label' => 'Capacity',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'studentsNo',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'min' => '0',
+            ),
+            'options' => array(
+                'label' => 'Students Number',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'startDate',
+            'type' => 'Zend\Form\Element\Date',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control date',
+                'type' => 'text',
+            ),
+            'options' => array(
+                'label' => 'Start Date',
+                'format' => Time::DATE_FORMAT,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'endDate',
+            'type' => 'Zend\Form\Element\Date',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control date',
+                'type' => 'text',
+            ),
+            'options' => array(
+                'label' => 'End Date',
+                'format' => Time::DATE_FORMAT,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'id',
+            'type' => 'Zend\Form\Element\Hidden',
+        ));
+        // Add buttons fieldset
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("create_button_only" => true));
+        $this->add($buttonsFieldset);
+    }
+
+}

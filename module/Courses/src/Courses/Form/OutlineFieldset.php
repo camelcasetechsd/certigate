@@ -77,7 +77,7 @@ class OutlineFieldset extends Fieldset implements InputFilterProviderInterface
                 'min' => '1',
             ),
             'options' => array(
-                'label' => '<div class="required">Duration</div>',
+                'label' => '<div class="required">Duration (minutes)</div>',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )

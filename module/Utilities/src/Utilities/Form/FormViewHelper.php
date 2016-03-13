@@ -41,6 +41,9 @@ class FormViewHelper extends OriginalFormViewHelper
         foreach ($form as $element) {
 
             if ($element instanceof FieldsetInterface) {
+                foreach ($element->getIterator() as $elementOrFieldset) {
+                    $this->renderFieldsetElement($form, $elementOrFieldset);
+                }
                 $formContent.= $this->getView()->formCollection($element);
             }
             else {
@@ -84,10 +87,7 @@ class FormViewHelper extends OriginalFormViewHelper
         if (empty($element->getLabel()) && $element->getAttribute('type') !== "hidden") {
             $labelAbsent = true;
         }
-        if ($labelAbsent === true 
-                && (strpos($element->getAttribute('class'), "btn") === false
-                || (strpos($element->getAttribute('class'), "btn") !== false && strpos($element->getAttribute('class'), "pull") === false))
-                && $inlineForm === false) {
+        if ($labelAbsent === true && (strpos($element->getAttribute('class'), "btn") === false || (strpos($element->getAttribute('class'), "btn") !== false && strpos($element->getAttribute('class'), "pull") === false)) && $inlineForm === false) {
             $elementContent.= "<dt>&nbsp;</dt>";
         }
         else {
@@ -101,9 +101,10 @@ class FormViewHelper extends OriginalFormViewHelper
 
         // Change submit button text to edit if form is an edit form
         if ($element instanceof Submit && $form->isEditForm === true) {
-            if(property_exists($form, "isAdminUser") && $form->isAdminUser === false && $form->needAdminApproval === true){
+            if (property_exists($form, "isAdminUser") && $form->isAdminUser === false && $form->needAdminApproval === true) {
                 $element->setValue(FormButtons::SUBMIT_FOR_ADMIN_APPROVAL_BUTTON_TEXT);
-            }elseif($element->getValue() == FormButtons::CREATE_BUTTON_TEXT){
+            }
+            elseif ($element->getValue() == FormButtons::CREATE_BUTTON_TEXT) {
                 $element->setValue(FormButtons::EDIT_BUTTON_TEXT);
             }
         }
@@ -112,6 +113,21 @@ class FormViewHelper extends OriginalFormViewHelper
         $elementContent.=$formElementAppendString;
 
         return $elementContent;
+    }
+
+    /**
+     * Render fieldset element
+     * 
+     * @access public
+     * @param FormInterface $form
+     * @param Zend\Form\Element $elementOrFieldset
+     */
+    public function renderFieldsetElement($form, $elementOrFieldset)
+    {
+        // Change submit button text to edit if form is an edit form
+        if ($elementOrFieldset instanceof Submit && $form->isEditForm === true && $elementOrFieldset->getValue() == FormButtons::CREATE_BUTTON_TEXT) {
+            $elementOrFieldset->setValue(FormButtons::EDIT_BUTTON_TEXT);
+        }
     }
 
 }

@@ -17,8 +17,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property int $vote
- * 
-
+ * @property Courses\Entity\CourseEvent $courseEvent
+ * @property Courses\Entity\Evaluation $evaluation
+ * @property Users\Entity\User $user
+ * @property Courses\Entity\Question $question
  * 
  * @package courses
  * @subpackage entity
@@ -54,6 +56,12 @@ class Vote
     public $evaluation;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\CourseEvent", inversedBy="votes")
+     * @ORM\JoinColumn(name="course_event_id", referencedColumnName="id")
+     */
+    public $courseEvent;
+
+    /**
      * any one who can vote for course 
      * 
      * @ORM\ManyToOne(targetEntity="Users\Entity\User", inversedBy="votes")
@@ -67,49 +75,135 @@ class Vote
      */
     public $question;
 
-    function getId()
+    /**
+     * Get id
+     * 
+     * @access public
+     * @return int
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    function getVote()
+    /**
+     * Get vote
+     * 
+     * @access public
+     * @return int
+     */
+    public function getVote()
     {
         return $this->vote;
     }
 
-    function getEvaluation()
+    /**
+     * Get evaluation
+     * 
+     * @access public
+     * @return Courses\Entity\Evaluation
+     */
+    public function getEvaluation()
     {
         return $this->evaluation;
     }
 
-    function getUser()
+    /**
+     * Get user
+     * 
+     * @access public
+     * @return Users\Entity\User
+     */
+    public function getUser()
     {
         return $this->user;
     }
+    
+    /**
+     * Get Course Event
+     * 
+     * @access public
+     * @return Courses\Entity\CourseEvent
+     */
+    public function getCourseEvent()
+    {
+        return $this->courseEvent;
+    }
 
-    function getQuestion()
+    /**
+     * Get Question
+     * 
+     * @access public
+     * @return Courses\Entity\Question
+     */
+    public function getQuestion()
     {
         return $this->question;
     }
 
-    function setVote($vote)
+    /**
+     * Set Vote
+     * 
+     * @access public
+     * @param int $vote
+     * @return Courses\Entity\Vote
+     */
+    public function setVote($vote)
     {
         $this->vote = $vote;
+        return $this;
     }
 
-    function setEvaluation($evaluation)
+    /**
+     * Set evaluation
+     * 
+     * @access public
+     * @param Courses\Entity\Evaluation $evaluation
+     * @return Courses\Entity\Vote
+     */
+    public function setEvaluation($evaluation)
     {
         $this->evaluation = $evaluation;
+        return $this;
     }
 
-    function setUser($user)
+    /**
+     * Set user
+     * 
+     * @access public
+     * @param Users\Entity\User $user
+     * @return Courses\Entity\Vote
+     */
+    public function setUser($user)
     {
         $this->user = $user;
+        return $this;
+    }
+    
+    /**
+     * Set Course Event
+     * 
+     * @access public
+     * @param Courses\Entity\CourseEvent $courseEvent
+     * @return Courses\Entity\Vote
+     */
+    public function setCourseEvent($courseEvent)
+    {
+        $this->courseEvent = $courseEvent;
+        return $this;
     }
 
-    function setQuestion($question)
+    /**
+     * Set Question
+     * 
+     * @access public
+     * @param Courses\Entity\Question $question
+     * @return Courses\Entity\Vote
+     */
+    public function setQuestion($question)
     {
         $this->question = $question;
+        return $this;
     }
 
     /**
@@ -133,7 +227,13 @@ class Vote
      */
     public function exchangeArray($data = array())
     {
-        $this->vote($data);
+        $this
+                ->setCourseEvent($data["courseEvent"])
+                ->setEvaluation($data["evaluation"])
+                ->setQuestion($data["question"])
+                ->setUser($data["user"])
+                ->setVote($data["vote"])
+                ;
     }
 
     /**
@@ -165,6 +265,11 @@ class Vote
 
             $inputFilter->add(array(
                 'name' => 'vote',
+                'required' => true,
+                    )
+            );
+            $inputFilter->add(array(
+                'name' => 'courseEvent',
                 'required' => true,
                     )
             );
