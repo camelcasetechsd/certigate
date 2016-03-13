@@ -27,6 +27,6 @@ define('DB_DRIVER', 'mysqli');
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'testpass');
-define('DB_DATABASE', 'certigate_estore');
+define('DB_DATABASE', 'certigate');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
