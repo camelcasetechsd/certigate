@@ -64,7 +64,7 @@ class RenewForm extends Form
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'placeholder' => 'Enter License Expiration Date',
-                'class' => 'form-control',
+                'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
@@ -110,7 +110,7 @@ class RenewForm extends Form
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'placeholder' => 'Enter License Expiration Date',
-                'class' => 'form-control',
+                'class' => 'form-control date',
                 'type' => 'text',
             ),
             'options' => array(
@@ -146,15 +146,16 @@ class RenewForm extends Form
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'required'=>'required'
             )
         ));
 
         $this->add(array(
-            'name' => 'Renew',
+            'name' => 'renew',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Add',
+                'value' => 'Renew',
             )
         ));
 
