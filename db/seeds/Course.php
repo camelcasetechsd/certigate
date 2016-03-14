@@ -215,7 +215,7 @@ class Course extends AbstractSeed
             'status' => 1,
             'token' => 123
         );
-        $this->insert('course_event_user', $course_events_user);
+        $this->insert('course_events_users', $course_events_user);
     }
 
 }

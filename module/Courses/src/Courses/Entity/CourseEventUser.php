@@ -10,7 +10,7 @@ use Utilities\Service\Random;
 /**
  * CourseEventUser Entity
  * @ORM\Entity
- * @ORM\Table(name="course_event_user")
+ * @ORM\Table(name="course_events_users")
  * @ORM\HasLifecycleCallbacks
  *  
  * @property InputFilter $inputFilter validation constraints 
