@@ -36,7 +36,7 @@ class ControllerApiCart extends Controller
             }
             elseif (isset($this->request->post['product_id'])) {
                 $this->load->model('catalog/product');
-
+                
                 $product_info = $this->model_catalog_product->getProduct($this->request->post['product_id']);
 
                 if ($product_info) {
@@ -46,7 +46,7 @@ class ControllerApiCart extends Controller
                     else {
                         $quantity = 1;
                     }
-
+                    
                     if (isset($this->request->post['option'])) {
                         $option = array_filter($this->request->post['option']);
                     }
@@ -63,9 +63,10 @@ class ControllerApiCart extends Controller
                     }
 
                     if (!isset($json['error']['option'])) {
-                        $this->cart->add($this->request->post['product_id'], $quantity, $option);
+                        $cartId = $this->cart->add($this->request->post['product_id'], $quantity, $option);
 
                         $json['success'] = $this->language->get('text_success');
+                        $json['redirectUrl'] = $this->url->link('checkout/cart&cart='.$cartId, '', 'SSL');
 
                         unset($this->session->data['shipping_method']);
                         unset($this->session->data['shipping_methods']);

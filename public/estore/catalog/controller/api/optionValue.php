@@ -33,7 +33,9 @@ class ControllerApiOptionValue extends Controller
         $this->model_api_request->validateSession($json);
         $json["success"] = false;
         if (!array_key_exists("error", $json) && ($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateOptionValue($json)) {
-            $json["optionValueId"] = $this->model_catalog_option->addOptionValue($this->request->post);
+            $productOptionData = $this->model_catalog_option->addOptionValue($this->request->post);
+            $json["optionId"] = $productOptionData["option_id"];
+            $json["optionValueId"] = $productOptionData["option_value_id"];
             $json["success"] = true;
         }
         $this->model_api_request->prepareResponse($json);
@@ -49,7 +51,7 @@ class ControllerApiOptionValue extends Controller
         $this->model_api_request->validateSession($json);
         $json["success"] = false;
         if (!array_key_exists("error", $json) && ($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateOptionValue($json)) {
-            $json["optionValueId"] = $this->model_catalog_option->editOptionValue($this->request->get['option_value_id'], $this->request->post);
+            $this->model_catalog_option->editOptionValue($this->request->get['option_value_id'], $this->request->post);
             $json["success"] = true;
         }
 

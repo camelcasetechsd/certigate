@@ -231,6 +231,7 @@ class ModelCatalogOption extends Model
             $option_value_id = $this->db->getLastId();
             if (isset($product_id) && isset($product_option_id) && ($data['type'] == 'select' || $data['type'] == 'radio' || $data['type'] == 'checkbox' || $data['type'] == 'image')) {
                 $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int) $product_option_id . "', product_id = '" . (int) $product_id . "', option_id = '" . (int) $option_id . "', option_value_id = '" . (int) $option_value_id . "', quantity = '" . (int) $data['quantity'] . "', subtract = '" . (int) $data['subtract'] . "', price = '" . (float) $data['price'] . "', price_prefix = '" . $this->db->escape($data['price_prefix']) . "', points = '" . (int) $data['points'] . "', points_prefix = '" . $this->db->escape($data['points_prefix']) . "', weight = '" . (float) $data['weight'] . "', weight_prefix = '" . $this->db->escape($data['weight_prefix']) . "'");
+                $product_option_value_id = $this->db->getLastId();
             }
 
             foreach ($data['option_value']['option_value_description'] as $language_id => $option_value_description) {
@@ -240,7 +241,10 @@ class ModelCatalogOption extends Model
 
         $this->event->trigger('post.admin.option.add', $option_id);
 
-        return $option_value_id;
+        return array(
+            "option_value_id" => $product_option_value_id,
+            "option_id" => $product_option_id,
+                );
     }
 
     public function editOptionValue($option_value_id, $data)
@@ -251,7 +255,6 @@ class ModelCatalogOption extends Model
                 $this->db->query("UPDATE " . DB_PREFIX . "option_value_description SET language_id = '" . (int) $language_id . "', name = '" . $this->db->escape($option_value_description['name']) . "' WHERE option_value_id = '" . (int) $option_value_id . "'");
             }
         }
-        return $option_value_id;
     }
 
 }
