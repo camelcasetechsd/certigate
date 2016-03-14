@@ -103,6 +103,7 @@ class CourseForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'maxlength' => 7,
+                'placeholder' => 'Price is in US Dollar',
                 'required' => 'required',
                 'class' => 'form-control',
             ),

@@ -10,6 +10,10 @@ use System\Service\Cache\CacheHandler;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
 use Doctrine\Common\Collections\Criteria;
+use EStore\Service\ApiCalls;
+use Zend\Http\Request;
+use EStore\Service\ProductTypes;
+use Utilities\Service\Random;
 
 /**
  * Course Model
@@ -22,6 +26,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Versioning\Model\Version $version
+ * @property EStore\Service\Api $estoreApi
  * 
  * @package courses
  * @subpackage model
@@ -62,6 +67,12 @@ class Course
     protected $version;
 
     /**
+     *
+     * @var EStore\Service\Api
+     */
+    protected $estoreApi;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -70,8 +81,9 @@ class Course
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Versioning\Model\Version $version
+     * @param EStore\Service\Api $estoreApi
      */
-    public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $version)
+    public function __construct($query, $outlineModel, $systemCacheHandler, $notification, $version, $estoreApi)
     {
         $this->query = $query;
         $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
@@ -79,6 +91,7 @@ class Course
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->version = $version;
+        $this->estoreApi = $estoreApi;
         $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
     }
 
@@ -88,6 +101,7 @@ class Course
      * @access public
      * @param Courses\Entity\Course $course
      * @param array $data ,default is empty array
+     * @param bool $editFlag ,default is bool false
      * @param bool $isAdminUser ,default is bool false
      * @param string $userEmail ,default is null
      */
@@ -104,6 +118,7 @@ class Course
             $notifyAdminFlag = true;
         }
         unset($data["outlines"]);
+        $this->saveCourseProduct($course, $data, $editFlag);
         $this->query->setEntity("Courses\Entity\Course")->save($course, $data, /* $flushAll = */ true);
 
         // remove not needed outlines        
@@ -111,6 +126,78 @@ class Course
 
         if ($notifyAdminFlag === true) {
             $this->sendMail($userEmail, $editFlag);
+        }
+    }
+
+    /**
+     * Save course product
+     * 
+     * @access public
+     * @param Courses\Entity\Course $course
+     * @param array $data ,default is empty array
+     * @param bool $editFlag ,default is bool false
+     */
+    public function saveCourseProduct($course, $data = array(), $editFlag = false)
+    {
+        if ($editFlag === true) {
+            $estoreApiEdge = ApiCalls::PRODUCT_EDIT;
+            $name = $course->getName();
+            $price = $course->getPrice();
+        }
+        else {
+            $estoreApiEdge = ApiCalls::PRODUCT_ADD;
+            $name = $data["name"];
+            $price = $data["price"];
+        }
+        $languages = $this->estoreApi->getLanguageData();
+        $languageId = reset($languages)["language_id"];
+        $random = new Random();
+        $parameters = array(
+            'model' => $name,
+            'keyword' => $name . $random->getRandomUniqueName(),
+            'price' => $price,
+            'status' => ($course->getStatus() == Status::STATUS_ACTIVE) ? true : false,
+            'shipping' => false,
+            'quantity' => 9999999999,
+            'product_description' => array(
+                $languageId => array(
+                    'name' => ProductTypes::COURSE,
+                    'meta_title' => ProductTypes::COURSE,
+                    'description' => "",
+                    'tag' => "",
+                    'meta_description' => "",
+                    'meta_keyword' => "",
+                )
+            ),
+            'sku' => "",
+            'upc' => "",
+            'ean' => "",
+            'jan' => "",
+            'isbn' => "",
+            'mpn' => "",
+            'location' => "",
+            'minimum' => "",
+            'subtract' => "",
+            'stock_status_id' => "",
+            'date_available' => "",
+            'manufacturer_id' => "",
+            'points' => "",
+            'weight' => "",
+            'weight_class_id' => "",
+            'length' => "",
+            'width' => "",
+            'height' => "",
+            'length_class_id' => "",
+            'tax_class_id' => "",
+            'sort_order' => "",
+        );
+        $queryParameters = array();
+        if (!empty($course->getProductId())) {
+            $queryParameters["product_id"] = $course->getProductId();
+        }
+        $responseContent = $this->estoreApi->callEdge(/* $edge = */ $estoreApiEdge, /* $method = */ Request::METHOD_POST, $queryParameters, $parameters);
+        if (empty($course->getProductId())) {
+            $course->setProductId($responseContent->productId);
         }
     }
 

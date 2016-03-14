@@ -71,6 +71,17 @@ class Api
     }
 
     /**
+     * Get estore language data
+     * 
+     * @access public
+     * @return array language data
+     */
+    public function getLanguageData()
+    {
+        return $this->connection->fetchAll("select * from oc_language where status = 1 limit 1");
+    }
+
+    /**
      * Get api token via successful login with api key
      * 
      * @access public
@@ -105,13 +116,14 @@ class Api
      * @access public
      * @param string $edge
      * @param string $method ,default is Request::METHOD_GET
+     * @param array $queryParameters ,default is empty array
      * @param array $parameters ,default is empty array
      * @param int $trialNumber current trial number ,default is 1
      * @return object response decoded content
      * @throws \Exception edge call failed
      * @throws \Exception trials limit reached
      */
-    public function callEdge($edge, $method = Request::METHOD_GET, $parameters = array(), $trialNumber = 1)
+    public function callEdge($edge, $method = Request::METHOD_GET, $queryParameters = array(), $parameters = array(), $trialNumber = 1)
     {
         $request = new Request();
         $request->setUri($this->serverBaseUrl . $edge);
@@ -122,14 +134,14 @@ class Api
         if($trialNumber === 3){
             throw new \Exception("trials limit reached");
         }
-        
+
         // prepare request parameters container
         if ($method === Request::METHOD_GET) {
             $parametersContainer = $request->getQuery();
         }
         else {
             $parametersContainer = $request->getPost();
-            $client->setEncType(Client::ENC_FORMDATA);
+            $client->setEncType(Client::ENC_URLENCODED);
         }
 
         // fill request with query or post parameters
@@ -142,13 +154,17 @@ class Api
             $this->getApiToken();
         }
         $request->getQuery()->set("token", self::$token);
+        // fill request with query parameters
+        foreach ($queryParameters as $parameterKey => $parameterValue) {
+            $request->getQuery()->set($parameterKey, $parameterValue);
+        }
         
         $response = $client->dispatch($request);
 
         if ($response->isSuccess()) {
             $responseContent = json_decode($response->getContent());
             // assuming error is due to token expiry, retry with new token
-            if (property_exists($responseContent, "error")) {
+            if (is_object($responseContent) && property_exists($responseContent, "error")) {
                 $this->getApiToken();
                 $responseContent = $this->callEdge($edge, $method, $parameters, ++$trialNumber);
             }
