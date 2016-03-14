@@ -37,4 +37,34 @@ class ApiCalls
      */
     const PRODUCT_EDIT = "/estore/index.php?route=api/product/edit";
 
+    /**
+     * OptionValue options route
+     */
+    const OPTION_VALUE_OPTIONS = "/estore/index.php?route=api/optionValue/options";
+
+    /**
+     * OptionValue add route
+     */
+    const OPTION_VALUE_ADD = "/estore/index.php?route=api/optionValue/add";
+
+    /**
+     * OptionValue edit route
+     */
+    const OPTION_VALUE_EDIT = "/estore/index.php?route=api/optionValue/edit";
+
+    /**
+     * Option options route
+     */
+    const OPTION_OPTIONS = "/estore/index.php?route=api/option/options";
+
+    /**
+     * Option add route
+     */
+    const OPTION_ADD = "/estore/index.php?route=api/option/add";
+
+    /**
+     * Option edit route
+     */
+    const OPTION_EDIT = "/estore/index.php?route=api/option/edit";
+
 }

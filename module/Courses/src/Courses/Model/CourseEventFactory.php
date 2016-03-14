@@ -29,7 +29,8 @@ class CourseEventFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\CourseEvent');
         $objectUtilities = $serviceLocator->get('objectUtilities');
-        return new CourseEvent($query, $objectUtilities);
+        $estoreApi = $serviceLocator->get('EStore\Service\Api');
+        return new CourseEvent($query, $objectUtilities, $estoreApi);
     }
 
 }

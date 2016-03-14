@@ -89,7 +89,7 @@ class CourseEventController extends ActionController
             $form->setData($data);
             $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent, /* $isEditForm = */ false);
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent->setStatus(Status::STATUS_ACTIVE), $data);
+                $courseEventModel->save($courseEvent, $data);
 
                 $url = $this->getIndexUrl();
                 $this->redirect()->toUrl($url);
@@ -142,7 +142,7 @@ class CourseEventController extends ActionController
 
             $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent);
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent->setStatus(Status::STATUS_ACTIVE));
+                $courseEventModel->save($courseEvent);
                 $url = $this->getIndexUrl();
                 $this->redirect()->toUrl($url);
             }
