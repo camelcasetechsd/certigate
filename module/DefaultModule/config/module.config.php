@@ -123,6 +123,19 @@ return array(
                     ),
                 ),
             ),
+            'noOrganizationUsers' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/no-organization-users',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'noOrganizationUsers',
+                    ),
+                    'constraints' => array(
+                    ),
+                ),
+            ),
+            
         )
     )
 );

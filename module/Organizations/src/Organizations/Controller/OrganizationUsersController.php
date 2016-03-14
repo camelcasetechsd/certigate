@@ -23,6 +23,19 @@ use Organizations\Entity\Organization;
 class OrganizationUsersController extends ActionController
 {
 
+    public function onDispatch(\Zend\Mvc\MvcEvent $e)
+    {
+        parent::onDispatch($e);
+
+        $organizationId = $this->params('organizationId');
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $userValidation = $organizationUserModel->validateOrganizationType($organizationId);
+        if (!$userValidation) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'noOrganizationUsers'), array('name' => 'noOrganizationUsers'));
+            return $this->redirect()->toUrl($url);
+        }
+    }
+
     /**
      * List organizationUsers
      * 
@@ -122,7 +135,7 @@ class OrganizationUsersController extends ActionController
     public function editAction()
     {
         $variables = array();
-        $id = $this->params('id');
+        $id = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -170,7 +183,7 @@ class OrganizationUsersController extends ActionController
      */
     public function deleteAction()
     {
-        $id = $this->params('id');
+        $id = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');

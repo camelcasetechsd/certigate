@@ -2,6 +2,8 @@
 
 namespace Organizations\Model;
 
+use Organizations\Entity\Organization;
+
 /**
  * OrganizationUser Model
  * 
@@ -56,6 +58,28 @@ class OrganizationUser
             $user->addRole($organizationUser->getRole());
             $this->query->setEntity('Users\Entity\User')->save($user, /* $data = */ array());
         }
+    }
+
+    /**
+     * function limits user access on organization users pages if
+     * organization type has no organization users
+     * @param int $organizationId
+     * @return boolean
+     */
+    public function validateOrganizationType($organizationId)
+    {
+        $organizationMeta = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+            'organization' => $organizationId
+        ));
+
+        $types = array();
+        foreach ($organizationMeta as $org) {
+            array_push($types, $org->getType()->getId());
+        }
+        if (in_array(Organization::TYPE_ATC, $types) || in_array(Organization::TYPE_ATC, $types)) {
+            return true;
+        }
+        return false;
     }
 
 }

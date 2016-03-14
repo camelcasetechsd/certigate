@@ -82,7 +82,7 @@ return array(
             'organizationUsersEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/edit/:id',
+                    'route' => '/organization-users/edit/:organizationId',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'edit',
@@ -95,7 +95,7 @@ return array(
             'organizationUsersDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/delete/:id',
+                    'route' => '/organization-users/delete/:organizationId',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'delete',
