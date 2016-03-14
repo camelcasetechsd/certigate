@@ -160,13 +160,12 @@ class Api
         }
         
         $response = $client->dispatch($request);
-
         if ($response->isSuccess()) {
             $responseContent = json_decode($response->getContent());
             // assuming error is due to token expiry, retry with new token
             if (is_object($responseContent) && property_exists($responseContent, "error")) {
                 $this->getApiToken();
-                $responseContent = $this->callEdge($edge, $method, $parameters, ++$trialNumber);
+                $responseContent = $this->callEdge($edge, $method, $queryParameters, $parameters, ++$trialNumber);
             }
             return $responseContent;
         }

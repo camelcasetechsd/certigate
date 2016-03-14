@@ -21,6 +21,21 @@ class ApiCalls
      * Cart products route
      */
     const CART_PRODUCTS = "/estore/index.php?route=api/cart/products";
+    
+    /**
+     * Cart add route
+     */
+    const CART_ADD = "/estore/index.php?route=api/cart/add";
+    
+    /**
+     * Cart edit route
+     */
+    const CART_EDIT = "/estore/index.php?route=api/cart/edit";
+    
+    /**
+     * Cart remove route
+     */
+    const CART_REMOVE = "/estore/index.php?route=api/cart/remove";
 
     /**
      * Product products route
