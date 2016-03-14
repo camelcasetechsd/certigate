@@ -333,6 +333,8 @@ class Users extends AbstractSeed
         $orgNewRoute = "new_org";
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
+        $myOrganization = "myOrganizations";
+        $renewal = "renew";
         $organizationAcls = array(
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -463,6 +465,16 @@ class Users extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $orgMoreRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
             ),
         );
         $this->insert('acl', $organizationAcls);
