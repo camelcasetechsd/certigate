@@ -31,10 +31,11 @@ class ControllerApiOptionValue extends Controller
         $json = array();
 
         $this->model_api_request->validateSession($json);
+        $json["success"] = false;
         if (!array_key_exists("error", $json) && ($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateOptionValue($json)) {
-            $this->model_catalog_option->addOptionValue($this->request->get['option_id'], $this->request->post);
+            $json["optionValueId"] = $this->model_catalog_option->addOptionValue($this->request->post);
+            $json["success"] = true;
         }
-
         $this->model_api_request->prepareResponse($json);
     }
 
@@ -46,8 +47,10 @@ class ControllerApiOptionValue extends Controller
         $json = array();
 
         $this->model_api_request->validateSession($json);
+        $json["success"] = false;
         if (!array_key_exists("error", $json) && ($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateOptionValue($json)) {
-            $this->model_catalog_option->editOptionValue($this->request->get['option_value_id'], $this->request->post);
+            $json["optionValueId"] = $this->model_catalog_option->editOptionValue($this->request->get['option_value_id'], $this->request->post);
+            $json["success"] = true;
         }
 
         $this->model_api_request->prepareResponse($json);
@@ -56,11 +59,9 @@ class ControllerApiOptionValue extends Controller
     protected function validateOptionValue(&$json)
     {
         if (isset($this->request->post['option_value'])) {
-            foreach ($this->request->post['option_value'] as $option_value_id => $option_value) {
-                foreach ($option_value['option_value_description'] as $language_id => $option_value_description) {
-                    if ((utf8_strlen($option_value_description['name']) < 1) || (utf8_strlen($option_value_description['name']) > 128)) {
-                        $json['error']['option_value'][$option_value_id][$language_id] = $this->language->get('error_option_value');
-                    }
+            foreach ($this->request->post['option_value']['option_value_description'] as $language_id => $option_value_description) {
+                if ((utf8_strlen($option_value_description['name']) < 1) || (utf8_strlen($option_value_description['name']) > 128)) {
+                    $json['error']['option_value'][$option_value_id][$language_id] = $this->language->get('error_option_value');
                 }
             }
         }
