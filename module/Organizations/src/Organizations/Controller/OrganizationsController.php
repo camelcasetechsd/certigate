@@ -571,7 +571,7 @@ class OrganizationsController extends ActionController
     {
         $variables = array();
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $myOrganizations = $organizationModel->getMyOrganizations($this);
+        $myOrganizations = $organizationModel->getMyOrganizations();
         $variables['myOrganizations'] = $myOrganizations;
         return new ViewModel($variables);
     }
