@@ -8,14 +8,18 @@ return array(
             __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
         'factories' => array(
-            'CMS\Service\TranslatorHandler' => 'Translation\Service\Translator\TranslatorHandlerFactory',
+            'Translation\Service\TranslatorHandler' => 'Translation\Service\Translator\TranslatorHandlerFactory',
+            'Translation\Helper\TranslatorHelper' => 'Translation\Helper\TranslatorHelperFactory',
+            'Translation\Service\Locale' => 'Translation\Service\Locale\LocaleFactory',
         ),
         'aliases' => array(
-            'translatorHandler' => 'CMS\Service\TranslatorHandler',
+            'translatorHandler' => 'Translation\Service\TranslatorHandler',
+            'translatorHelper' => 'Translation\Helper\TranslatorHelper',
+            'applicationLocale' => 'Translation\Service\Locale',
         ),
     ),
     'translator' => array(
-        'local' => 'ar_Ar' ,
+        'locale' => 'ar_AR' ,
         'translation_file_patterns' => array(
             array(
                 'type' => 'gettext',
@@ -32,7 +36,7 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'organizationUsers' => array(
+            'translationTest' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route' => '/trans/index',
@@ -42,6 +46,19 @@ return array(
                     ),
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                )
+            ),
+            'translationSetLocale' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/trans/setlocale/:locale',
+                    'defaults' => array(
+                        'controller' => 'Translation\Controller\Index',
+                        'action' => 'setLocale',
+                    ),
+                    'constraints' => array(
+                        'locale' => '[a-z]{2}_[A-Z]{2}',
                     ),
                 )
             ),
