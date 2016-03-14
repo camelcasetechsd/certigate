@@ -1,1 +1,9 @@
-Hello there, {{#i18n}}{{name}}{{/i18n}}
+{{% BLOCKS }}
+{{<layout}}
+
+    {{$content}}
+        Hello there, {{#translate}}test{{/translate}}
+    {{/content}}
+
+{{/layout}}
+

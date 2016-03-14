@@ -25,9 +25,9 @@ class RendererFactory implements FactoryInterface
 
     protected $translator;
 
-    private function setTranslator($serviceLocator)
+    private function setTranslator($translatorHandler)
     {
-        $this->translator = $serviceLocator->get('translatorHandler');
+        $this->translator = $translatorHandler;
     }
 
     /**
@@ -56,11 +56,9 @@ class RendererFactory implements FactoryInterface
 
         $config['helpers']['primaryMenu'] = '';
 
-        $this->setTranslator($serviceLocator);
+//        $this->setTranslator($serviceLocator->get('translatorHandler'));
 
-        $config['helpers']["i18n"] = function($text) {
-            return $this->translator->translate($text /* SENTENCE_KEY */);
-        };
+        $config['helpers']["translate"] = $serviceLocator->get('translatorHelper');
 
         $forceFlush = !$config['helpers']['isProduction'];
         $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
