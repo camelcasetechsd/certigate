@@ -159,6 +159,7 @@ class Course
             'status' => ($course->getStatus() == Status::STATUS_ACTIVE) ? true : false,
             'shipping' => false,
             'quantity' => 9999999999,
+            'product_store' => array(0),
             'product_description' => array(
                 $languageId => array(
                     'name' => ProductTypes::COURSE,
