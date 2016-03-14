@@ -62,7 +62,7 @@
                                     {{/canEnroll}}
                                     {{#canLeave}}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">Cancel</button></a>
+                                    <a href="/courses/{{#enrolling}}enroll{{/enrolling}}{{^enrolling}}leave{{/enrolling}}/{{id}}"><button class="btn btn-small btn-{{#enrolling}}warning{{/enrolling}}{{^enrolling}}danger{{/enrolling}}">{{#enrolling}}Pending{{/enrolling}}{{^enrolling}}Cancel{{/enrolling}}</button></a>
                                     {{/canLeave}}
                                     {{#isFull}}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

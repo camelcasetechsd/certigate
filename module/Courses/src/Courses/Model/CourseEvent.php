@@ -11,6 +11,7 @@ use Courses\Entity\CourseEventUser;
 use EStore\Service\ApiCalls;
 use EStore\Service\OptionTypes;
 use Zend\Http\Request;
+use Utilities\Service\Random;
 
 /**
  * CourseEvent Model
@@ -146,6 +147,7 @@ class CourseEvent
         }
         $responseContent = $this->estoreApi->callEdge(/* $edge = */ $estoreApiEdge, /* $method = */ Request::METHOD_POST, $queryParameters, $parameters);
         if (empty($courseEvent->getOptionValueId())) {
+            $courseEvent->setOptionId($responseContent->optionId);
             $courseEvent->setOptionValueId($responseContent->optionValueId);
         }
     }
@@ -173,8 +175,8 @@ class CourseEvent
                 $nonAuthorizedEnroll = false;
                 $courseFull = false;
                 $canEnroll = true;
-                $users = $courseEvent->getUsers();
                 $canLeave = false;
+                $enrolling = false;
                 if ($auth->hasIdentity()) {
                     $courseEventAiId = $this->objectUtilities->getId($courseEvent->getAi());
                     if (in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEventAiId) {
@@ -182,7 +184,16 @@ class CourseEvent
                     }
                 }
                 if (!is_null($currentUser)) {
-                    $canLeave = $users->contains($currentUser);
+                    $courseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', array(
+                        "user" => $currentUser,
+                        "courseEvent" => $courseEvent,
+                    ));
+                    if (is_object($courseEventUser)) {
+                        $canLeave = true;
+                        if ($courseEventUser->getStatus() == Status::STATUS_INACTIVE) {
+                            $enrolling = true;
+                        }
+                    }
                 }
                 if ($courseEvent->getStudentsNo() >= $courseEvent->getCapacity()) {
                     $courseFull = true;
@@ -191,6 +202,7 @@ class CourseEvent
                     $canEnroll = false;
                 }
 
+                $courseEvent->enrolling = $enrolling;
                 $courseEvent->canEnroll = $canEnroll;
                 $courseEvent->isFull = $courseFull;
                 $courseEvent->canLeave = $canLeave;
@@ -239,28 +251,72 @@ class CourseEvent
      * @access public
      * @param Courses\Entity\CourseEvent $courseEvent
      * @param Users\Entity\User $user
+     * @param string $redirectUrl
+     * @return string redirect url
      * @throws \Exception Capacity exceeded
      */
-    public function enrollCourse($courseEvent, $user)
+    public function enrollCourse($courseEvent, $user, $redirectUrl)
     {
-        $studentsNo = $courseEvent->getStudentsNo();
-        $studentsNo++;
-
-        $capacity = $courseEvent->getCapacity();
-        if ($capacity < $studentsNo) {
-            throw new \Exception("Capacity exceeded");
-        }
-
-        $courseEvent->setStudentsNo($studentsNo);
-        $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent);
-
-        $courseEventUser = new CourseEventUser();
-        $courseEventUserData = array(
-            "status" => Status::STATUS_INACTIVE,
+        $existingCourseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', array(
             "user" => $user,
             "courseEvent" => $courseEvent,
+        ));
+        if (is_null($existingCourseEventUser)) {
+            $studentsNo = $courseEvent->getStudentsNo();
+            $studentsNo++;
+
+            $capacity = $courseEvent->getCapacity();
+            if ($capacity < $studentsNo) {
+                throw new \Exception("Capacity exceeded");
+            }
+
+            $courseEvent->setStudentsNo($studentsNo);
+            $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent);
+
+            $random = new Random();
+            $courseEventUser = new CourseEventUser();
+            $token = $random->getRandomUniqueName();
+            $courseEventUserData = array(
+                "status" => Status::STATUS_INACTIVE,
+                "user" => $user,
+                "courseEvent" => $courseEvent,
+                "token" => $token
+            );
+        }else{
+            $token = $existingCourseEventUser->getToken();
+        }
+
+        $parameters = array(
+            'product_id' => $courseEvent->getCourse()->getProductId(),
+            'quantity' => 1,
+            'option' => array(
+                $courseEvent->getOptionId() => $courseEvent->getOptionValueId(),
+                'redirectUrl' => $redirectUrl."/".$token
+            ),
+            
         );
-        $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
+        $responseContent = $this->estoreApi->callEdge(/* $edge = */ ApiCalls::CART_ADD, /* $method = */ Request::METHOD_POST, /* $queryParameters = */ array(), $parameters);
+        if (is_null($existingCourseEventUser) && property_exists($responseContent, "success")) {
+            $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
+        }
+        return $responseContent->redirectUrl;
+    }
+
+    /**
+     * Approve course enroll
+     * 
+     * @access public
+     * @param string $token
+     */
+    public function approveEnroll($token)
+    {
+        $existingCourseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', array(
+            "token" => $token,
+        ));
+        if (! is_null($existingCourseEventUser)) {
+            $existingCourseEventUser->setToken("")->setStatus(Status::STATUS_ACTIVE);
+            $this->query->setEntity('Courses\Entity\CourseEventUser')->save($existingCourseEventUser);
+        }
     }
 
     /**
@@ -299,11 +355,12 @@ class CourseEvent
      * 
      * @access public
      * @param int $trainingManagerId ,default is false
+     * @param int $courseId ,default is false
      * @return Criteria listing criteria
      */
-    public function getListingCriteria($trainingManagerId = false)
+    public function getListingCriteria($trainingManagerId = false, $courseId = false)
     {
-        if ($trainingManagerId !== false) {
+        if ($trainingManagerId === false) {
             $auth = new AuthenticationService();
             $storage = $auth->getIdentity();
             if ($auth->hasIdentity()) {
@@ -313,10 +370,14 @@ class CourseEvent
             }
         }
         $criteria = Criteria::create();
+        $expr = Criteria::expr();
         if (!empty($trainingManagerId)) {
-            $expr = Criteria::expr();
             $atpsArray = $this->query->setEntity(/* $entityName = */'Organizations\Entity\Organization')->entityRepository->getOrganizationsBy(/* $userIds = */ array($trainingManagerId));
             $criteria->andWhere($expr->in("atp", $atpsArray));
+        }
+        if (!empty($courseId)) {
+            $course = $this->query->find('Courses\Entity\Course', $courseId);
+            $criteria->andWhere($expr->eq("course", $course));
         }
         return $criteria;
     }

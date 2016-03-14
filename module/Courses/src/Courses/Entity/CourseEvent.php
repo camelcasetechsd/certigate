@@ -26,6 +26,7 @@ use Utilities\Service\String;
  * @property int $studentsNo
  * @property Organizations\Entity\Organization $atp
  * @property Users\Entity\User $ai
+ * @property int $optionId
  * @property int $optionValueId
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
@@ -129,6 +130,12 @@ class CourseEvent
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $votes;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $optionId;
 
     /**
      * @ORM\Column(type="integer", nullable=false);
@@ -498,6 +505,32 @@ class CourseEvent
     }
 
     /**
+     * Get OptionId
+     * 
+     * 
+     * @access public
+     * @return int optionId
+     */
+    public function getOptionId()
+    {
+        return $this->optionId;
+    }
+
+    /**
+     * Set OptionId
+     * 
+     * 
+     * @access public
+     * @param int $optionId
+     * @return CourseEvent
+     */
+    public function setOptionId($optionId)
+    {
+        $this->optionId = $optionId;
+        return $this;
+    }
+
+    /**
      * Get OptionValueId
      * 
      * 
@@ -563,6 +596,9 @@ class CourseEvent
         }
         if (array_key_exists('course', $data)) {
             $this->setCourse($data["course"]);
+        }
+        if (array_key_exists('optionId', $data)) {
+            $this->setOptionId($data["optionId"]);
         }
         if (array_key_exists('optionValueId', $data)) {
             $this->setOptionValueId($data["optionValueId"]);
