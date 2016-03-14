@@ -1,278 +1,295 @@
 <?php
-class ControllerApiCart extends Controller {
-	public function add() {
-		$this->load->language('api/cart');
 
-		$json = array();
+class ControllerApiCart extends Controller
+{
 
-		if (!isset($this->session->data['api_id'])) {
-			$json['error']['warning'] = $this->language->get('error_permission');
-		} else {
-			if (isset($this->request->post['product'])) {
-				$this->cart->clear();
+    public function add()
+    {
+        $this->load->language('api/cart');
 
-				foreach ($this->request->post['product'] as $product) {
-					if (isset($product['option'])) {
-						$option = $product['option'];
-					} else {
-						$option = array();
-					}
+        $json = array();
 
-					$this->cart->add($product['product_id'], $product['quantity'], $option);
-				}
+        if (!isset($this->session->data['api_id'])) {
+            $json['error']['warning'] = $this->language->get('error_permission');
+        }
+        else {
+            if (isset($this->request->post['product'])) {
+                $this->cart->clear();
 
-				$json['success'] = $this->language->get('text_success');
+                foreach ($this->request->post['product'] as $product) {
+                    if (isset($product['option'])) {
+                        $option = $product['option'];
+                    }
+                    else {
+                        $option = array();
+                    }
 
-				unset($this->session->data['shipping_method']);
-				unset($this->session->data['shipping_methods']);
-				unset($this->session->data['payment_method']);
-				unset($this->session->data['payment_methods']);
-			} elseif (isset($this->request->post['product_id'])) {
-				$this->load->model('catalog/product');
+                    $this->cart->add($product['product_id'], $product['quantity'], $option);
+                }
 
-				$product_info = $this->model_catalog_product->getProduct($this->request->post['product_id']);
+                $json['success'] = $this->language->get('text_success');
 
-				if ($product_info) {
-					if (isset($this->request->post['quantity'])) {
-						$quantity = $this->request->post['quantity'];
-					} else {
-						$quantity = 1;
-					}
+                unset($this->session->data['shipping_method']);
+                unset($this->session->data['shipping_methods']);
+                unset($this->session->data['payment_method']);
+                unset($this->session->data['payment_methods']);
+            }
+            elseif (isset($this->request->post['product_id'])) {
+                $this->load->model('catalog/product');
 
-					if (isset($this->request->post['option'])) {
-						$option = array_filter($this->request->post['option']);
-					} else {
-						$option = array();
-					}
+                $product_info = $this->model_catalog_product->getProduct($this->request->post['product_id']);
 
-					$product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
+                if ($product_info) {
+                    if (isset($this->request->post['quantity'])) {
+                        $quantity = $this->request->post['quantity'];
+                    }
+                    else {
+                        $quantity = 1;
+                    }
 
-					foreach ($product_options as $product_option) {
-						if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
-							$json['error']['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
-						}
-					}
+                    if (isset($this->request->post['option'])) {
+                        $option = array_filter($this->request->post['option']);
+                    }
+                    else {
+                        $option = array();
+                    }
 
-					if (!isset($json['error']['option'])) {
-						$this->cart->add($this->request->post['product_id'], $quantity, $option);
+                    $product_options = $this->model_catalog_product->getProductOptions($this->request->post['product_id']);
 
-						$json['success'] = $this->language->get('text_success');
+                    foreach ($product_options as $product_option) {
+                        if ($product_option['required'] && empty($option[$product_option['product_option_id']])) {
+                            $json['error']['option'][$product_option['product_option_id']] = sprintf($this->language->get('error_required'), $product_option['name']);
+                        }
+                    }
 
-						unset($this->session->data['shipping_method']);
-						unset($this->session->data['shipping_methods']);
-						unset($this->session->data['payment_method']);
-						unset($this->session->data['payment_methods']);
-					}
-				} else {
-					$json['error']['store'] = $this->language->get('error_store');
-				}
-			}
-		}
+                    if (!isset($json['error']['option'])) {
+                        $this->cart->add($this->request->post['product_id'], $quantity, $option);
 
-		if (isset($this->request->server['HTTP_ORIGIN'])) {
-			$this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
-			$this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-			$this->response->addHeader('Access-Control-Max-Age: 1000');
-			$this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-		}
+                        $json['success'] = $this->language->get('text_success');
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
+                        unset($this->session->data['shipping_method']);
+                        unset($this->session->data['shipping_methods']);
+                        unset($this->session->data['payment_method']);
+                        unset($this->session->data['payment_methods']);
+                    }
+                }
+                else {
+                    $json['error']['store'] = $this->language->get('error_store');
+                }
+            }
+        }
 
-	public function edit() {
-		$this->load->language('api/cart');
+        if (isset($this->request->server['HTTP_ORIGIN'])) {
+            $this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
+            $this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+            $this->response->addHeader('Access-Control-Max-Age: 1000');
+            $this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        }
 
-		$json = array();
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 
-		if (!isset($this->session->data['api_id'])) {
-			$json['error'] = $this->language->get('error_permission');
-		} else {
-			$this->cart->update($this->request->post['key'], $this->request->post['quantity']);
+    public function edit()
+    {
+        $this->load->language('api/cart');
 
-			$json['success'] = $this->language->get('text_success');
+        $json = array();
 
-			unset($this->session->data['shipping_method']);
-			unset($this->session->data['shipping_methods']);
-			unset($this->session->data['payment_method']);
-			unset($this->session->data['payment_methods']);
-			unset($this->session->data['reward']);
-		}
+        if (!isset($this->session->data['api_id'])) {
+            $json['error'] = $this->language->get('error_permission');
+        }
+        else {
+            $this->cart->update($this->request->post['key'], $this->request->post['quantity']);
 
-		if (isset($this->request->server['HTTP_ORIGIN'])) {
-			$this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
-			$this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-			$this->response->addHeader('Access-Control-Max-Age: 1000');
-			$this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-		}
+            $json['success'] = $this->language->get('text_success');
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
+            unset($this->session->data['shipping_method']);
+            unset($this->session->data['shipping_methods']);
+            unset($this->session->data['payment_method']);
+            unset($this->session->data['payment_methods']);
+            unset($this->session->data['reward']);
+        }
 
-	public function remove() {
-		$this->load->language('api/cart');
+        if (isset($this->request->server['HTTP_ORIGIN'])) {
+            $this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
+            $this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+            $this->response->addHeader('Access-Control-Max-Age: 1000');
+            $this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        }
 
-		$json = array();
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 
-		if (!isset($this->session->data['api_id'])) {
-			$json['error'] = $this->language->get('error_permission');
-		} else {
-			// Remove
-			if (isset($this->request->post['key'])) {
-				$this->cart->remove($this->request->post['key']);
+    public function remove()
+    {
+        $this->load->language('api/cart');
 
-				unset($this->session->data['vouchers'][$this->request->post['key']]);
+        $json = array();
 
-				$json['success'] = $this->language->get('text_success');
+        if (!isset($this->session->data['api_id'])) {
+            $json['error'] = $this->language->get('error_permission');
+        }
+        else {
+            // Remove
+            if (isset($this->request->post['key'])) {
+                $this->cart->remove($this->request->post['key']);
 
-				unset($this->session->data['shipping_method']);
-				unset($this->session->data['shipping_methods']);
-				unset($this->session->data['payment_method']);
-				unset($this->session->data['payment_methods']);
-				unset($this->session->data['reward']);
-			}
-		}
+                unset($this->session->data['vouchers'][$this->request->post['key']]);
 
-		if (isset($this->request->server['HTTP_ORIGIN'])) {
-			$this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
-			$this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-			$this->response->addHeader('Access-Control-Max-Age: 1000');
-			$this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-		}
+                $json['success'] = $this->language->get('text_success');
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
+                unset($this->session->data['shipping_method']);
+                unset($this->session->data['shipping_methods']);
+                unset($this->session->data['payment_method']);
+                unset($this->session->data['payment_methods']);
+                unset($this->session->data['reward']);
+            }
+        }
 
-	public function products() {
-		$this->load->language('api/cart');
+        if (isset($this->request->server['HTTP_ORIGIN'])) {
+            $this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
+            $this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+            $this->response->addHeader('Access-Control-Max-Age: 1000');
+            $this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        }
 
-		$json = array();
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
 
-		if (!isset($this->session->data['api_id'])) {
-			$json['error']['warning'] = $this->language->get('error_permission');
-		} else {
-			// Stock
-			if (!$this->cart->hasStock() && (!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning'))) {
-				$json['error']['stock'] = $this->language->get('error_stock');
-			}
+    public function products()
+    {
+        $this->load->language('api/cart');
 
-			// Products
-			$json['products'] = array();
+        $json = array();
 
-			$products = $this->cart->getProducts();
+        if (!isset($this->session->data['api_id'])) {
+            $json['error']['warning'] = $this->language->get('error_permission');
+        }
+        else {
+            // Stock
+            if (!$this->cart->hasStock() && (!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning'))) {
+                $json['error']['stock'] = $this->language->get('error_stock');
+            }
 
-			foreach ($products as $product) {
-				$product_total = 0;
+            // Products
+            $json['products'] = array();
 
-				foreach ($products as $product_2) {
-					if ($product_2['product_id'] == $product['product_id']) {
-						$product_total += $product_2['quantity'];
-					}
-				}
+            $products = $this->cart->getProducts();
 
-				if ($product['minimum'] > $product_total) {
-					$json['error']['minimum'][] = sprintf($this->language->get('error_minimum'), $product['name'], $product['minimum']);
-				}
+            foreach ($products as $product) {
+                $product_total = 0;
 
-				$option_data = array();
+                foreach ($products as $product_2) {
+                    if ($product_2['product_id'] == $product['product_id']) {
+                        $product_total += $product_2['quantity'];
+                    }
+                }
 
-				foreach ($product['option'] as $option) {
-					$option_data[] = array(
-						'product_option_id'       => $option['product_option_id'],
-						'product_option_value_id' => $option['product_option_value_id'],
-						'name'                    => $option['name'],
-						'value'                   => $option['value'],
-						'type'                    => $option['type']
-					);
-				}
+                if ($product['minimum'] > $product_total) {
+                    $json['error']['minimum'][] = sprintf($this->language->get('error_minimum'), $product['name'], $product['minimum']);
+                }
 
-				$json['products'][] = array(
-					'cart_id'    => $product['cart_id'],
-					'product_id' => $product['product_id'],
-					'name'       => $product['name'],
-					'model'      => $product['model'],
-					'option'     => $option_data,
-					'quantity'   => $product['quantity'],
-					'stock'      => $product['stock'] ? true : !(!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning')),
-					'shipping'   => $product['shipping'],
-					'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'))),
-					'total'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity']),
-					'reward'     => $product['reward']
-				);
-			}
+                $option_data = array();
 
-			// Voucher
-			$json['vouchers'] = array();
+                foreach ($product['option'] as $option) {
+                    $option_data[] = array(
+                        'product_option_id' => $option['product_option_id'],
+                        'product_option_value_id' => $option['product_option_value_id'],
+                        'name' => $option['name'],
+                        'value' => $option['value'],
+                        'type' => $option['type']
+                    );
+                }
 
-			if (!empty($this->session->data['vouchers'])) {
-				foreach ($this->session->data['vouchers'] as $key => $voucher) {
-					$json['vouchers'][] = array(
-						'code'             => $voucher['code'],
-						'description'      => $voucher['description'],
-						'from_name'        => $voucher['from_name'],
-						'from_email'       => $voucher['from_email'],
-						'to_name'          => $voucher['to_name'],
-						'to_email'         => $voucher['to_email'],
-						'voucher_theme_id' => $voucher['voucher_theme_id'],
-						'message'          => $voucher['message'],
-						'amount'           => $this->currency->format($voucher['amount'])
-					);
-				}
-			}
+                $json['products'][] = array(
+                    'cart_id' => $product['cart_id'],
+                    'product_id' => $product['product_id'],
+                    'name' => $product['name'],
+                    'model' => $product['model'],
+                    'option' => $option_data,
+                    'quantity' => $product['quantity'],
+                    'stock' => $product['stock'] ? true : !(!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning')),
+                    'shipping' => $product['shipping'],
+                    'price' => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'))),
+                    'total' => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity']),
+                    'reward' => $product['reward']
+                );
+            }
 
-			// Totals
-			$this->load->model('extension/extension');
+            // Voucher
+            $json['vouchers'] = array();
 
-			$total_data = array();
-			$total = 0;
-			$taxes = $this->cart->getTaxes();
+            if (!empty($this->session->data['vouchers'])) {
+                foreach ($this->session->data['vouchers'] as $key => $voucher) {
+                    $json['vouchers'][] = array(
+                        'code' => $voucher['code'],
+                        'description' => $voucher['description'],
+                        'from_name' => $voucher['from_name'],
+                        'from_email' => $voucher['from_email'],
+                        'to_name' => $voucher['to_name'],
+                        'to_email' => $voucher['to_email'],
+                        'voucher_theme_id' => $voucher['voucher_theme_id'],
+                        'message' => $voucher['message'],
+                        'amount' => $this->currency->format($voucher['amount'])
+                    );
+                }
+            }
 
-			$sort_order = array();
+            // Totals
+            $this->load->model('extension/extension');
 
-			$results = $this->model_extension_extension->getExtensions('total');
+            $total_data = array();
+            $total = 0;
+            $taxes = $this->cart->getTaxes();
 
-			foreach ($results as $key => $value) {
-				$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
-			}
+            $sort_order = array();
 
-			array_multisort($sort_order, SORT_ASC, $results);
+            $results = $this->model_extension_extension->getExtensions('total');
 
-			foreach ($results as $result) {
-				if ($this->config->get($result['code'] . '_status')) {
-					$this->load->model('total/' . $result['code']);
+            foreach ($results as $key => $value) {
+                $sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+            }
 
-					$this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
-				}
-			}
+            array_multisort($sort_order, SORT_ASC, $results);
 
-			$sort_order = array();
+            foreach ($results as $result) {
+                if ($this->config->get($result['code'] . '_status')) {
+                    $this->load->model('total/' . $result['code']);
 
-			foreach ($total_data as $key => $value) {
-				$sort_order[$key] = $value['sort_order'];
-			}
+                    $this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
+                }
+            }
 
-			array_multisort($sort_order, SORT_ASC, $total_data);
+            $sort_order = array();
 
-			$json['totals'] = array();
+            foreach ($total_data as $key => $value) {
+                $sort_order[$key] = $value['sort_order'];
+            }
 
-			foreach ($total_data as $total) {
-				$json['totals'][] = array(
-					'title' => $total['title'],
-					'text'  => $this->currency->format($total['value'])
-				);
-			}
-		}
+            array_multisort($sort_order, SORT_ASC, $total_data);
 
-		if (isset($this->request->server['HTTP_ORIGIN'])) {
-			$this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
-			$this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-			$this->response->addHeader('Access-Control-Max-Age: 1000');
-			$this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-		}
+            $json['totals'] = array();
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
+            foreach ($total_data as $total) {
+                $json['totals'][] = array(
+                    'title' => $total['title'],
+                    'text' => $this->currency->format($total['value'])
+                );
+            }
+        }
+
+        if (isset($this->request->server['HTTP_ORIGIN'])) {
+            $this->response->addHeader('Access-Control-Allow-Origin: ' . $this->request->server['HTTP_ORIGIN']);
+            $this->response->addHeader('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+            $this->response->addHeader('Access-Control-Max-Age: 1000');
+            $this->response->addHeader('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
 }
