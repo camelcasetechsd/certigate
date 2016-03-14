@@ -212,20 +212,14 @@ class Organization
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['CRExpiration']);
             $orgInfo['CRExpiration'] = $date;
         }
-
         if (!empty($orgInfo['atcLicenseExpiration']) && $orgInfo['atcLicenseExpiration'] != "") {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpiration']);
             $orgInfo['atcLicenseExpiration'] = $date;
         }
-        else {
-            $orgInfo['atcLicenseExpiration'] = null;
-        }
+
         if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
-        }
-        else {
-            $orgInfo['atpLicenseExpiration'] = null;
         }
 
         /**
@@ -266,7 +260,7 @@ class Organization
             $orgInfo['atcWireTransferAttachment'] = $this->saveAttachment('atcWireTransferAttachment', 'wr');
         }
         if (!empty($orgInfo['atpWireTransferAttachment']['name'])) {
-            var_dump('here');
+
             $orgInfo['atpWireTransferAttachment'] = $this->saveAttachment('atpWireTransferAttachment', 'wr');
         }
         if (!empty($orgInfo['atpLicenseAttachment']['name'])) {
@@ -922,21 +916,29 @@ class Organization
     /**
      * function checks if the organization has renewable types (ATC , ATC || BOTH ) 
      * @param int $organizationId
+     * @param int $metaId
      * @return boolean
      */
-    public function canBeRenewed($organizationId)
+    public function canBeRenewed($action, $organizationId, $metaId)
     {
+        if ($metaId == null || $organizationId == null) {
 
-        $organizationMeta = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
-            'organization' => $organizationId
-        ));
-
-        $types = array();
-        foreach ($organizationMeta as $meta) {
-            array_push($types, $meta->getType()->getId());
+            $url = $action->getEvent()->getRouter()->assemble(array('action' => 'noaccess'), array('name' => 'noaccess'));
+            return $action->redirect()->toUrl($url);
         }
 
-        if (in_array(OrganizationEntity::TYPE_ATC, $types) || in_array(OrganizationEntity::TYPE_ATP, $types)) {
+        $organizationMeta = $this->query->findOneBy('Organizations\Entity\OrganizationMeta', array(
+            'id' => $metaId, 'organization' => $organizationId
+        ));
+        
+        //in case of url manipulation
+        if ($organizationMeta == null) {
+            $url = $action->getEvent()->getRouter()->assemble(array('action' => 'noaccess'), array('name' => 'noaccess'));
+            return $action->redirect()->toUrl($url);
+        }
+
+        if ($organizationMeta->getType()->getId() == OrganizationEntity::TYPE_ATC ||
+                $organizationMeta->getType()->getId() == OrganizationEntity::TYPE_ATP) {
             return true;
         }
         return false;
@@ -944,33 +946,36 @@ class Organization
 
     /**
      * function returns a customized form as needed for renewal type
-     * @param Int $organizationId
      * @param type $action
+     * @param Int $organizationId
+     * @param Int $metaId
      * @return FORM
      */
-    public function getCustomizedRenewalForm($organizationId, $action)
+    public function getCustomizedRenewalForm($action, $organizationId, $metaId)
     {
 
         $form = new \Organizations\Form\RenewForm();
         $atpFields = $action->getServiceLocator()->get('Config')['AtpRenewalFields'];
         $atcFields = $action->getServiceLocator()->get('Config')['AtcRenewalFields'];
 
-        $organizationMeta = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
-            'organization' => $organizationId
+        $organizationMeta = $this->query->findOneBy('Organizations\Entity\OrganizationMeta', array(
+            'id' => $metaId
         ));
-        $types = array();
-        foreach ($organizationMeta as $meta) {
-            array_push($types, $meta->getType()->getId());
+
+//        if (!(in_array(OrganizationEntity::TYPE_ATC, $types) && in_array(OrganizationEntity::TYPE_ATP, $types))) {
+//
+//            if (in_array(OrganizationEntity::TYPE_ATC, $types)) {
+//                $form = $this->unsetRenewFields($form, $atpFields);
+//            }
+//            else if (in_array(OrganizationEntity::TYPE_ATP, $types)) {
+//                $form = $this->unsetRenewFields($form, $atcFields);
+//            }
+//        }
+        if ($organizationMeta->getType()->getId() == OrganizationEntity::TYPE_ATC) {
+            $form = $this->unsetRenewFields($form, $atpFields);
         }
-
-        if (!(in_array(OrganizationEntity::TYPE_ATC, $types) && in_array(OrganizationEntity::TYPE_ATP, $types))) {
-
-            if (in_array(OrganizationEntity::TYPE_ATC, $types)) {
-                $form = $this->unsetRenewFields($form, $atpFields);
-            }
-            else if (in_array(OrganizationEntity::TYPE_ATP, $types)) {
-                $form = $this->unsetRenewFields($form, $atcFields);
-            }
+        else if ($organizationMeta->getType()->getId() == OrganizationEntity::TYPE_ATP) {
+            $form = $this->unsetRenewFields($form, $atcFields);
         }
 
         $form->bind($this->query->findOneBy('Organizations\Entity\Organization', array(

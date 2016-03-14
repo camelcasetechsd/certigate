@@ -297,13 +297,14 @@ return array(
             'renew' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organizations/renew[/:id]',
+                    'route' => '/organizations/renew[/:organizationId[/:metaId]]',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'renew'
                     ),
                     'constraints' => array(
-                        'id' => '[0-9]*'
+                        'organizationId' => '[0-9]*',
+                        'metaId' => '[0-9]*'
                     )
                 )
             )
@@ -367,7 +368,6 @@ return array(
         'atcLicenseExpiration',
         'atcLicenseAttachment',
         'atcWireTransferAttachment'
-        
     ),
     'AtpRenewalFields' => array(
         'atpLicenseNo',

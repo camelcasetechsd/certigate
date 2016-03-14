@@ -184,11 +184,12 @@ class OrganizationsController extends ActionController
     public function renewAction()
     {
         $variables = array();
-        $organizationId = $this->params('id');
+        $organizationId = $this->params('organizationId');
+        $metaId = $this->params('metaId');
         $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
-        if ($OrganizationModel->canBeRenewed($organizationId)) {
-            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($organizationId, $this));
+        if ($OrganizationModel->canBeRenewed($this, $organizationId, $metaId)) {
+            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId));
 
             $request = $this->getRequest();
             if ($request->isPost()) {

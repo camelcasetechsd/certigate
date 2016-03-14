@@ -67,7 +67,7 @@ class OrganizationMeta
      */
     public function saveOrganizationMeta($orgEntity, $data = array(), $editFlag = false)
     {
-     
+
         $types = array();
         /**
          * type is hidden field taked url parameters as types of organization
