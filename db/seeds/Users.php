@@ -467,6 +467,16 @@ class Users extends AbstractSeed
         );
         $this->insert('acl', $organizationAcls);
 
+        $translationModule = "Translation";
+        $setLocalRoute = "translationSetLocale";
+        $translationAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $translationModule,
+                'route' => $setLocalRoute,
+            ),
+        );
+        $this->insert('acl', $translationAcls);
         $adminUser = array(
             "firstName" => $faker->firstName,
             "middleName" => $faker->name,
