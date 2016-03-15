@@ -1,20 +1,19 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/cms/menu/new"class="btn btn-small btn-success create-new">Create new Menu</a>
+<a href="/cms/menu/new"class="btn btn-small btn-success create-new">{{#translate}}Create new Menu{{/translate}}</a>
 <br><br>
 <div class="panel panel-default">
-
-    <div class="panel-heading">Menus</div>
+    <div class="panel-heading">{{#translate}}Menus{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th>{{#translate}}Created{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -24,10 +23,10 @@
                 <td>{{statusText}}</td>
                 <td>{{created}}</td>
                 <td>
-                    <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/menu/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        <a href="/cms/menu/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                 </td>
             </tr>

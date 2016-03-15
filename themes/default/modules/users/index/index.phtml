@@ -2,24 +2,24 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/users/new"><button class="btn btn-small btn-success">Create new User</button></a>
+<a href="/users/new"><button class="btn btn-small btn-success">{{#translate}}Create new User{{/translate}}</button></a>
 <br><br>
 <div class="panel panel-default users-list">
-    <div class="panel-heading">Users</div>
+    <div class="panel-heading">{{#translate}}Users{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Photo</th>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Country</th>
-                <th>Status</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Photo{{/translate}}</th>
+                <th>{{#translate}}ID{{/translate}}</th>
+                <th>{{#translate}}First Name{{/translate}}</th>
+                <th>{{#translate}}Last Name{{/translate}}</th>
+                <th>{{#translate}}User Name{{/translate}}</th>
+                <th>{{#translate}}Email{{/translate}}</th>
+                <th>{{#translate}}Country{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -35,15 +35,15 @@
                 <td>{{statusText}}</td>
                 <td>
 
-                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#statusActive}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="Delete" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/statusActive}}
                     
                     {{#statusDeleted}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="Activate" href="/users/activate/{{id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}" href="/users/activate/{{id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/statusDeleted}}
                     
                 </td>

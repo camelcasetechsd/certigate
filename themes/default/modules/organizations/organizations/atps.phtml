@@ -2,21 +2,21 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/organizations/new?organization=2"><button class="btn btn-small btn-success create-new">Create new ATP</button></a>
+<a href="/organizations/new?organization=2"><button class="btn btn-small btn-success create-new">{{#translate}}Create new ATP{{/translate}}</button></a>
 <br/>
 <div class="panel panel-default atps-list">
-    <div class="panel-heading">ATPs</div>
+    <div class="panel-heading">{{#translate}}ATPs{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Commercial Name</th>
-                <th>City</th>
-                <th>Phone</th>
-                <th>WebSite</th>
-                <th>ATP License Expiration</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Commercial Name{{/translate}}</th>
+                <th>{{#translate}}City{{/translate}}</th>
+                <th>{{#translate}}Phone{{/translate}}</th>
+                <th>{{#translate}}WebSite{{/translate}}</th>
+                <th>{{#translate}}ATP License Expiration{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -28,16 +28,16 @@
                 <td>{{website}}</td>
                 <td>{{atpLicenseExpiration}}</td>
                 <td>
-                    <a href="/organizations/more/{{id}}">More</a>
+                    <a href="/organizations/more/{{id}}">{{#translate}}More{{/translate}}</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   {{#status}}
-                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{#status}}
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                 </td>
             </tr>

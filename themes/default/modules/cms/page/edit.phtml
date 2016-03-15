@@ -2,11 +2,11 @@
 {{<layout}}
 
 {{$content}}
-<a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="View History"><button class="btn btn-small btn-success">View History</button></a>
+<a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View History{{/translate}}"><button class="btn btn-small btn-success">View History</button></a>
 <br><br>
-<div class="panel panel-default">
+<div class="panel p/anel-default">
     <div class="panel-heading">
-        <h3>Edit Page</h3>
+        <h3>{{#translate}}Edit Page{{translate}}</h3>
     </div>
     <div class="panel-body">
         {{{pageForm}}}

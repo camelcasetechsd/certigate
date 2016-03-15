@@ -3,7 +3,7 @@
 {{$content}}
 <div class="panel panel-default">
 
-    <div class="panel-heading">Privileges of role <strong>{{role.name}}</strong></div>
+    <div class="panel-heading">{{#translate}}Privileges of role{{/translate}} <strong>{{role.name}}</strong></div>
 
     <form action="/roles/privileges/{{role.id}}" method="post">
         {{#modulesRoutes}}

@@ -4,16 +4,16 @@
 <br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Courses Calendar</div>
+    <div class="panel-heading">{{#translate}}Courses Calendar{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Course name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Course name{{/translate}}</th>
+                <th>{{#translate}}Start Date{{/translate}}</th>
+                <th>{{#translate}}End Date{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -23,14 +23,14 @@
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>
-                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-expand"></span></a>
+                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}More{{/translate}}"><span class="glyphicon glyphicon-expand"></span></a>
                     {{#canEnroll}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><span class="glyphicon glyphicon-plus"></span></a>
+                        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Enroll{{/translate}}"><span class="glyphicon glyphicon-plus"></span></a>
                     {{/canEnroll}}
                     {{#canLeave}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="Leave"><span class="glyphicon glyphicon-minus"></span></a>
+                        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Leave{{/translate}}"><span class="glyphicon glyphicon-minus"></span></a>
                     {{/canLeave}}
                 </td>
             </tr>

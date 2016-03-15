@@ -1,23 +1,23 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/courses/new"><button class="btn btn-small btn-success">Create new Course</button></a>
+<a href="/courses/new"><button class="btn btn-small btn-success">{{#translate}}Create new Course{{/translate}}</button></a>
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Courses</div>
+    <div class="panel-heading">{{#translate}}Courses{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Authorized Instructor</th>
-                <th>ATP</th>
-                <th>Status</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Name{{/translate}}</th>
+                <th>{{#translate}}Start Date{{/translate}}</th>
+                <th>{{#translate}}End Date{{/translate}}</th>
+                <th>{{#translate}}Authorized Instructor{{/translate}}</th>
+                <th>{{#translate}}ATP{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -31,23 +31,23 @@
                 <td>{{statusText}}</td>
 
                 <td>
-                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon-folder-close"></span></a>
+                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Resources{{/translate}}"><span class="glyphicon glyphicon-folder-close"></span></a>
                     {{#evaluation}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/evaluation/edit/{{evaluation.course.id}}" data-toggle="tooltip" data-placement="left" title="Edit Course Evaluation"><span class="glyphicon glyphicon-list-alt"></span></a>
+                    <a href="/courses/evaluation/edit/{{evaluation.course.id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit Course Evaluation{{/translate}}"><span class="glyphicon glyphicon-list-alt"></span></a>
                     {{/evaluation}}
                     {{^evaluation}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/evaluation/new/{{id}}" data-toggle="tooltip" data-placement="left" title="Create Course Evaluation"><span class="glyphicon glyphicon-list-alt"></span></a>
+                    <a href="/courses/evaluation/new/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Create Course Evaluation{{/translate}}"><span class="glyphicon glyphicon-list-alt"></span></a>
                     {{/evaluation}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="/courses/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     {{#isAdminUser}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/status}}
 

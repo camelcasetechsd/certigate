@@ -11,13 +11,13 @@
     <fieldset>
 
         <!-- Form Name -->
-        <legend>Evaluation Template</legend>
+        <legend>{{#translate}}Evaluation Template{{/translate}}</legend>
         {{#questions}}
         <!-- Text input-->
         <div class="form-group" >
-            <label class="col-md-4 control-label" for="editedQuestion[]">Question Title</label>  
+            <label class="col-md-4 control-label" for="editedQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
             <div class=" col-md-4">
-                <input name="editedQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
+                <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
                 <a href="#" class="deleteQuestion removeQ" >X</a>
                 <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
             </div>
@@ -25,9 +25,9 @@
         {{/questions}}
         {{#unvalidQuestions}}
         <div class="form-group" >
-            <label class="col-md-4 error control-label" for="newQuestion[]">Question Title</label>  
+            <label class="col-md-4 error control-label" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
             <div class=" col-md-4">
-                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""value="{{.}}">
                 <a href="#" class="deleteInvalidQuestion removeQ" >X</a>
             </div>
         </div>
@@ -37,14 +37,14 @@
         <!-- button -->
         <div class=" row form-group">
             <div class="col-md-4">
-                <button id="singlebutton" name="submit" class="btn btn-success">Edit Evaluation Template</button>
+                <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Edit Evaluation Template{{/translate}}</button>
             </div>
         </div>
 
     </fieldset>
 </form>
 
-<button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+<button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
 
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
