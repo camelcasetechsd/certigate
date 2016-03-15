@@ -170,6 +170,13 @@ CREATE TABLE IF NOT EXISTS `oc_api_ip` (
   PRIMARY KEY (`api_ip_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Dumping data for table `oc_api_ip`
+--
+
+INSERT INTO `oc_api_ip` (`api_ip_id`, `api_id`, `ip`) VALUES
+(1, 1, "127.0.0.1");
+
 -- --------------------------------------------------------
 
 --
