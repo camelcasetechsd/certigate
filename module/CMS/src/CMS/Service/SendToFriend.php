@@ -6,6 +6,7 @@ use Notifications\Service\MailTempates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Notifications\Service\MailSubjects;
+use Utilities\Service\MessageTypes;
 
 /**
  * ContactUs
@@ -64,9 +65,8 @@ class SendToFriend
         $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
 
         $fromArray = array();
-        if (array_key_exists(Settings::OPERATIONS_EMAIL, $settings) && array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+        if (array_key_exists(Settings::OPERATIONS_EMAIL, $settings)) {
             $fromArray[] = $settings[Settings::OPERATIONS_EMAIL];
-            $fromArray[] = $settings[Settings::ADMIN_EMAIL];
         }
         if (count($fromArray) == 0) {
             throw new \Exception("To email is not set");
@@ -84,7 +84,7 @@ class SendToFriend
 
         $submissionResult[]['message'] = "Your message has been submitted successfully.";
         $submissionResult['messages'] = $submissionResult;
-        $submissionResult['status'] = true;
+        $submissionResult['type'] = MessageTypes::SUCCESS;
         // clear form
         $form->setData(array('name' => '', 'subject' => '', 'message' => '', 'email' => ''));
         return $submissionResult;
