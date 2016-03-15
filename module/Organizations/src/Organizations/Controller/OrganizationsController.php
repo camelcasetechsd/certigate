@@ -89,10 +89,14 @@ class OrganizationsController extends ActionController
     public function atcsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
 
         $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
-        foreach ($variables['atcs'] as $user) {
-            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
+
+        foreach ($variables['atcs'] as $org) {
+            $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
+            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+            $org->atcLicenseExpiration = $org->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         $variables['atcTypeId'] = OrgEntity::TYPE_ATC;
         return new ViewModel($variables);
@@ -109,9 +113,12 @@ class OrganizationsController extends ActionController
     public function atpsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
-        foreach ($variables['atps'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
+        foreach ($variables['atps'] as $org) {
+            $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
+            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+            $org->atpLicenseExpiration = $org->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
         $variables['atpTypeId'] = OrgEntity::TYPE_ATP;
         return new ViewModel($variables);
@@ -128,7 +135,13 @@ class OrganizationsController extends ActionController
     public function distributorsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['distributors'] = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR);
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR);
+        foreach ($organizations as $org) {
+            $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
+            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+        }
+        $variables['distributors'] = $organizations;
         $variables['distributorsTypeId'] = OrgEntity::TYPE_DISTRIBUTOR;
         return new ViewModel($variables);
     }
@@ -144,7 +157,13 @@ class OrganizationsController extends ActionController
     public function resellersAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['resellers'] = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER);
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER);
+        foreach ($organizations as $org) {
+            $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
+            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+        }
+        $variables['resellers'] = $organizations;
         $variables['resellersTypeId'] = OrgEntity::TYPE_RESELLER;
         return new ViewModel($variables);
     }

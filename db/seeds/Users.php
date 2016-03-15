@@ -328,6 +328,8 @@ class Users extends AbstractSeed
         $organizationsDownloadRoute = "organizationsDownload";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
+        $listDistOrgsRoute = "list_distributor_orgs";
+        $listResellerOrgsRoute = "list_reseller_orgs";
         $orgTypeRoute = "org_type";
         $orgMoreRoute = "more";
         $orgNewRoute = "new_org";
@@ -415,6 +417,16 @@ class Users extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $listAtpOrgsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
             ),
             array(
                 'role_id' => $testCenterAdminRoleId,

@@ -3,6 +3,8 @@
 namespace Organizations\Model;
 
 use Organizations\Entity\Organization;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
 /**
  * OrganizationUser Model
@@ -80,6 +82,51 @@ class OrganizationUser
             return true;
         }
         return false;
+    }
+
+    /**
+     * function checks if the currnt user is a organization user (TCA || TM)
+     * in given Oragnization
+     * 
+     * @param type $organizationObj
+     * @return boolean
+     */
+    public function isOrganizationUser($action = null, $organizationObj)
+    {
+        $organizationUsers = $organizationObj->organizationUser;
+        $usersIds = array();
+        foreach ($organizationUsers as $user) {
+            array_push($usersIds, $user->getUser()->getId());
+        }
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        // if organization is ATP or ATC
+        if (in_array($storage['id'], $usersIds)) {
+            return true;
+        }
+
+        // if Organization DIST or Resselers so we need to check with creator id
+        if ($action != null) {
+            $orgCreatorId = $organizationObj->getCreatorId();
+            if ($orgCreatorId == $storage['id']) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isAdmin()
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        if ($auth->hasIdentity()) {
+            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+                return true;
+            }
+            return false;
+        }
     }
 
 }
