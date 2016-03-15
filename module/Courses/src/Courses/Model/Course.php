@@ -143,11 +143,13 @@ class Course
             $estoreApiEdge = ApiCalls::PRODUCT_EDIT;
             $name = $course->getName();
             $price = $course->getPrice();
+            $brief = $course->getBrief();
         }
         else {
             $estoreApiEdge = ApiCalls::PRODUCT_ADD;
             $name = $data["name"];
             $price = $data["price"];
+            $brief = $data["brief"];
         }
         $languages = $this->estoreApi->getLanguageData();
         $languageId = reset($languages)["language_id"];
@@ -162,9 +164,9 @@ class Course
             'product_store' => array(0),
             'product_description' => array(
                 $languageId => array(
-                    'name' => ProductTypes::COURSE,
+                    'name' => $name . " " . ProductTypes::COURSE,
                     'meta_title' => ProductTypes::COURSE,
-                    'description' => "",
+                    'description' => $brief,
                     'tag' => "",
                     'meta_description' => "",
                     'meta_keyword' => "",

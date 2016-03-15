@@ -251,11 +251,12 @@ class CourseEvent
      * @access public
      * @param Courses\Entity\CourseEvent $courseEvent
      * @param Users\Entity\User $user
-     * @param string $redirectUrl
+     * @param string $redirectBackUrl
      * @return string redirect url
      * @throws \Exception Capacity exceeded
+     * @throws \Exception Adding course to cart failed
      */
-    public function enrollCourse($courseEvent, $user, $redirectUrl)
+    public function enrollCourse($courseEvent, $user, $redirectBackUrl)
     {
         $existingCourseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', array(
             "user" => $user,
@@ -282,7 +283,8 @@ class CourseEvent
                 "courseEvent" => $courseEvent,
                 "token" => $token
             );
-        }else{
+        }
+        else {
             $token = $existingCourseEventUser->getToken();
         }
 
@@ -291,15 +293,17 @@ class CourseEvent
             'quantity' => 1,
             'option' => array(
                 $courseEvent->getOptionId() => $courseEvent->getOptionValueId(),
-                'redirectUrl' => $redirectUrl."/".$token
+                'redirectUrl' => $redirectBackUrl . "/" . $token
             ),
-            
         );
         $responseContent = $this->estoreApi->callEdge(/* $edge = */ ApiCalls::CART_ADD, /* $method = */ Request::METHOD_POST, /* $queryParameters = */ array(), $parameters);
-        if (is_null($existingCourseEventUser) && property_exists($responseContent, "success")) {
-            $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
+        if (property_exists($responseContent, "success")) {
+            if (is_null($existingCourseEventUser)) {
+                $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
+            }
+            return $responseContent->redirectUrl;
         }
-        return $responseContent->redirectUrl;
+        throw new \Exception("Adding course to cart failed");
     }
 
     /**
@@ -313,7 +317,7 @@ class CourseEvent
         $existingCourseEventUser = $this->query->findOneBy('Courses\Entity\CourseEventUser', array(
             "token" => $token,
         ));
-        if (! is_null($existingCourseEventUser)) {
+        if (!is_null($existingCourseEventUser)) {
             $existingCourseEventUser->setToken("")->setStatus(Status::STATUS_ACTIVE);
             $this->query->setEntity('Courses\Entity\CourseEventUser')->save($existingCourseEventUser);
         }
