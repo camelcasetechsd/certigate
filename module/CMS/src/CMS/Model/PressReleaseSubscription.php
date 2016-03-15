@@ -239,7 +239,6 @@ class PressReleaseSubscription
         foreach ($subscriptions as $subscription) {
             $subscriptionUser = $subscription->getUser();
             $mailArray["to"] = $subscriptionUser->getEmail();
-            $mailArray["to"] = "lebaz20@gmail.com";
             $unsubscribeUrlParameters = array(
                 'token' => $subscription->getToken(),
                 'userId' => $subscriptionUser->getId(),
