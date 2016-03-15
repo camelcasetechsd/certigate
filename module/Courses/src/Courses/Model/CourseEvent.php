@@ -201,7 +201,12 @@ class CourseEvent
                 if ($canLeave === true || $nonAuthorizedEnroll === true || $courseFull === true) {
                     $canEnroll = false;
                 }
-
+                $today = new \DateTime();
+                $alreadyStarted = false;
+                if($courseEvent->getStartDate() <= $today){
+                    $alreadyStarted = true;
+                }
+                $courseEvent->alreadyStarted = $alreadyStarted;
                 $courseEvent->enrolling = $enrolling;
                 $courseEvent->canEnroll = $canEnroll;
                 $courseEvent->isFull = $courseFull;

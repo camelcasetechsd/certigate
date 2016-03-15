@@ -72,7 +72,7 @@
                     </thead>
                     <tbody>
                         {{#courseEvents}}
-
+                        {{^alreadyStarted}}
                         <tr>
                             <td>{{startDate}}</td>
                             <td>{{endDate}}</td>
@@ -80,6 +80,7 @@
                             <td>{{atp.commercialName}}</td>
                             <td>{{atp.city}}</td>
                         </tr>
+                        {{/alreadyStarted}}
                         {{/courseEvents}} 
                     </tbody>
                 </table>

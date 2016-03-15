@@ -39,6 +39,7 @@
                         </thead>
                         <tbody>
                             {{#courseEvents}}
+                            {{^alreadyStarted}}
                             <tr>
                                 <td>
                                     {{startDate}}
@@ -70,14 +71,14 @@
                                     {{/isFull}}
                                 </td>
                             </tr>
-
+                            {{/alreadyStarted}}
                             {{/courseEvents}}
 
                         </tbody>
                     </table>
                     {{/courseEvents.count}}
 
-                    
+
                 </div>
             </div>
             <hr>
