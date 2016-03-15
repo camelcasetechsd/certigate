@@ -48,6 +48,7 @@ return array(
             'CMS\Controller\Page' => 'CMS\Controller\PageController',
             'CMS\Controller\Menu' => 'CMS\Controller\MenuController',
             'CMS\Controller\MenuItem' => 'CMS\Controller\MenuItemController',
+            'CMS\Controller\Press' => 'CMS\Controller\PressController',
         ),
     ),
     'router' => array(
@@ -273,36 +274,16 @@ return array(
                     ),
                 )
             ),
-            'cmsPressReleaseList' => array(
+            'press_details' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/press-release',
+                    'route' => '/press[/:id]',
                     'defaults' => array(
-                        'controller' => 'CMS\Controller\PressRelease',
-                        'action' => 'index',
-                    ),
-                )
-            ),
-            'cmsPressReleaseSubscribe' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/cms/press-release/subscribe',
-                    'defaults' => array(
-                        'controller' => 'CMS\Controller\PressRelease',
-                        'action' => 'subscribe',
-                    ),
-                )
-            ),
-            'cmsPressReleaseUnsubscribe' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/cms/press-release/unsubscribe[/:userId/:token]',
-                    'defaults' => array(
-                        'controller' => 'CMS\Controller\PressRelease',
-                        'action' => 'unsubscribe',
+                        'controller' => 'CMS\Controller\Press',
+                        'action' => 'details',
                     ),
                     'constraints' => array(
-                        'userId' => '[0-9]+',
+                        'id' => '[0-9]+',
                     ),
                 )
             ),

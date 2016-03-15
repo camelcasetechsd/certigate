@@ -71,6 +71,7 @@ abstract class AbstractTestCase extends AbstractHttpControllerTestCase
         $this->application = $this->getApplication();
         $this->fixtureLoader = $this->serviceManager->get("Utilities\Service\Fixture\FixtureLoader");
         $this->fixtureLoader->setDefaultFixtures(array(
+            "System\Fixture\Settings",
             "Users\Fixture\Acl",
             "Users\Fixture\Role"
         ));

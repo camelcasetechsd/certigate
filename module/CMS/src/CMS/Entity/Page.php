@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Random;
+use Utilities\Service\Uri;
 
 /**
  * Page Entity
@@ -517,7 +518,16 @@ class Page
             ));
             $inputFilter->add(array(
                 'name' => 'path',
-                'required' => true
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Uri',
+                        'options' => array(
+                            'uriHandler' => new Uri(),
+                            'allowRelative' => true,
+                            'allowAbsolute' => false,
+                        )
+                    ),
+                )
             ));
             
             $pageTypesReflection = new \ReflectionClass('CMS\Service\PageTypes');
