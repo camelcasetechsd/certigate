@@ -55,6 +55,12 @@ class PressReleaseController extends ActionController
             $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ reset($subscriptionsStatus));
             $variables['pressReleaseSubscriptionForm'] = $this->getFormView($pressReleaseSubscriptionForm);
         }
+        $failureMessage = $this->params('failureMessage', null);
+        $status = $this->params('status', null);
+        $unsubscribeFlag = $this->params('unsubscribeFlag', null);
+        if (!is_null($failureMessage) || !is_null($status) || !is_null($unsubscribeFlag)) {
+            $variables["messages"] = $pressReleaseSubscriptionModel->getSubscriptionResult((bool)$status, (bool)$unsubscribeFlag, $failureMessage);
+        }
         return new ViewModel($variables);
     }
 
@@ -84,18 +90,24 @@ class PressReleaseController extends ActionController
             $data["user"] = $userId;
             $pressReleaseSubscriptionForm->setInputFilter($pressReleaseSubscription->getInputFilter($query));
             $pressReleaseSubscriptionForm->setData($data);
-            $failureMessage = '';
+            $failureMessage = null;
             if ($pressReleaseSubscriptionForm->isValid()) {
 
                 $query->save($pressReleaseSubscription, /* $data = */ array("user" => $userId));
                 $status = true;
             }
             else {
-                $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString(/*$includeFieldNameFlag =*/ false);
+                $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString(/* $includeFieldNameFlag = */ false);
             }
         }
 
-        return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ false, $failureMessage, /* $successMessage = */ false, /* $jsonFlag = */ true));
+        $url = $this->getEvent()->getRouter()->assemble(array(
+            'action' => 'index', 
+            'failureMessage' => $failureMessage,
+            'status' => (int)$status,
+            'unsubscribeFlag' => 0,
+                ), array('name' => 'cmsPressReleaseList'));
+        return $this->redirect()->toUrl($url);
     }
 
     /**
@@ -122,12 +134,13 @@ class PressReleaseController extends ActionController
             $status = true;
         }
 
-        if (empty($token)) {
-            return $this->getResponse()->setContent($pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, /* $failureMessage = */ $message, /* $successMessage = */ false, /* $jsonFlag = */ true));
-        }
-        else {
-            return $pressReleaseSubscriptionModel->getSubscriptionResult($status, /* $unsubscribeFlag */ true, /* $failureMessage = */ $message);
-        }
+        $url = $this->getEvent()->getRouter()->assemble(array(
+            'action' => 'index',
+            'failureMessage' => $message,
+            'status' => (int)$status,
+            'unsubscribeFlag' => 1,
+                ), array('name' => 'cmsPressReleaseList'));
+        return $this->redirect()->toUrl($url);
     }
 
 }

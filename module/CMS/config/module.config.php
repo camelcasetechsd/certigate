@@ -274,6 +274,43 @@ return array(
                     ),
                 )
             ),
+            'cmsPressReleaseList' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/press-release[/:status/:unsubscribeFlag[/:failureMessage]]',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\PressRelease',
+                        'action' => 'index',
+                    ),
+                    'constraints' => array(
+                        'status' => '[0-1]{1}',
+                        'unsubscribeFlag' => '[0-1]{1}',
+                    ),
+                )
+            ),
+            'cmsPressReleaseSubscribe' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/press-release/subscribe',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\PressRelease',
+                        'action' => 'subscribe',
+                    ),
+                )
+            ),
+            'cmsPressReleaseUnsubscribe' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/press-release/unsubscribe[/:userId/:token]',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\PressRelease',
+                        'action' => 'unsubscribe',
+                    ),
+                    'constraints' => array(
+                        'userId' => '[0-9]+',
+                    ),
+                )
+            ),
             'press_details' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

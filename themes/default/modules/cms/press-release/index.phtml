@@ -2,7 +2,6 @@
 {{<layout}}
 {{$content}}
 
-<div class="subscriptionResult"></div>
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -70,12 +69,5 @@
 <br>
 {{/hasPages}}
 {{/content}}
-{{$scripts}}
-<script>
-    $(document).ready(function () {
-        submitFormAjax("#press_release_subscription_form", ".subscriptionResult");
-    });
-</script>
-{{/scripts}}
 
 {{/layout}}

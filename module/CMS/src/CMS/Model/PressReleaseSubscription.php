@@ -120,11 +120,10 @@ class PressReleaseSubscription
      * @param bool $unsubscribeFlag ,default is false
      * @param string $failureMessage ,default is false
      * @param string $successMessage ,default is false
-     * @param bool $jsonFlag ,default is false
      * 
-     * @return string|ViewModel HTML view model or JSON content for subscription result
+     * @return array messages according to process result
      */
-    public function getSubscriptionResult($status = false, $unsubscribeFlag = false, $failureMessage = false, $successMessage = false, $jsonFlag = false)
+    public function getSubscriptionResult($status = false, $unsubscribeFlag = false, $failureMessage = false, $successMessage = false)
     {
         $unsubscribeText = "";
         if ($unsubscribeFlag === true) {
@@ -142,18 +141,7 @@ class PressReleaseSubscription
                 'message' => (empty($successMessage)) ? "You have been {$unsubscribeText}subscribed successfully." : $successMessage
             );
         }
-        $variables = array(
-            'messages' => $messages
-        );
-        $view = new ViewModel($variables);
-        if($jsonFlag === true){
-            $view->setTemplate('layout/messages');
-            $view = Json::encode(/* $variables = */ array(
-                        "content" => $this->viewRenderer->render($view),
-                        "status" => $status,
-            ));
-        }
-        return $view;
+        return $messages;
     }
     
     /**
