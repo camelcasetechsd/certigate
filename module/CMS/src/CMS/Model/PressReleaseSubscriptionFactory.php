@@ -30,7 +30,9 @@ class PressReleaseSubscriptionFactory implements FactoryInterface {
         $query = $serviceLocator->get('wrapperQuery')->setEntity(/* $entityName = */ 'CMS\Entity\PressReleaseSubscription');
         $router = $serviceLocator->get('router');
         $mustacheViewRenderer = $serviceLocator->get('Mustache\View\Renderer');
-        return new PressReleaseSubscription($query, $router, $mustacheViewRenderer);
+        $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
+        $notification = $serviceLocator->get('Notifications\Service\Notification');
+        return new PressReleaseSubscription($query, $router, $mustacheViewRenderer, $systemCacheHandler, $notification);
     }
 
 }

@@ -6,8 +6,10 @@ use Utilities\Service\Query\Query;
 use Doctrine\Common\Collections\Criteria;
 use Zend\Authentication\AuthenticationService;
 use Utilities\Service\MessageTypes;
-use Zend\View\Model\ViewModel;
-use Zend\Json\Json;
+use System\Service\Settings;
+use Notifications\Service\MailTempates;
+use Notifications\Service\MailSubjects;
+use System\Service\Cache\CacheHandler;
 
 /**
  * PressReleaseSubscription Model
@@ -17,6 +19,8 @@ use Zend\Json\Json;
  * @property Query $query
  * @property Zend\Mvc\Router\RouteInterface $router
  * @property Mustache\View\Renderer $viewRenderer
+ * @property System\Service\Cache\CacheHandler $systemCacheHandler
+ * @property Notifications\Service\Notification $notification
  * 
  * @package cms
  * @subpackage model
@@ -43,18 +47,34 @@ class PressReleaseSubscription
     protected $viewRenderer;
 
     /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+
+    /**
+     *
+     * @var Notifications\Service\Notification
+     */
+    protected $notification;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Query $query
      * @param Zend\Mvc\Router\RouteInterface $router
      * @param Mustache\View\Renderer $viewRenderer
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $router, $viewRenderer)
+    public function __construct($query, $router, $viewRenderer, $systemCacheHandler, $notification)
     {
         $this->query = $query;
         $this->router = $router;
         $this->viewRenderer = $viewRenderer;
+        $this->systemCacheHandler = $systemCacheHandler;
+        $this->notification = $notification;
     }
 
     /**
@@ -82,17 +102,17 @@ class PressReleaseSubscription
         $criteria = Criteria::create();
         $expr = Criteria::expr();
         $criteria->andWhere($expr->in("user", $userIds));
-        $subscribtions = $this->query->filter(/* $entityName = */ "CMS\Entity\PressReleaseSubscription", $criteria);
+        $subscriptions = $this->query->filter(/* $entityName = */ "CMS\Entity\PressReleaseSubscription", $criteria);
 
         // subscribed part
-        foreach ($subscribtions as $subscribtion) {
-            $userId = $subscribtion->getUser()->getId();
+        foreach ($subscriptions as $subscription) {
+            $userId = $subscription->getUser()->getId();
             $parameters = array();
             if ($loggedInUserFlag === false) {
                 $parameters = array(
-                    'token' => $subscribtion->getToken(),
+                    'token' => $subscription->getToken(),
                     'userId' => $userId,
-                        );
+                );
             }
             $subscriptionsStatus[$userId] = array(
                 "isSubscribed" => true,
@@ -143,7 +163,7 @@ class PressReleaseSubscription
         }
         return $messages;
     }
-    
+
     /**
      * Get subscription for logged in user or the passed token
      * 
@@ -180,11 +200,59 @@ class PressReleaseSubscription
         if (!is_object($pressReleaseSubscription)) {
             $message = "No subscription exists with the passed data";
         }
-        
+
         return array(
             "message" => $message,
             "pressReleaseSubscription" => $pressReleaseSubscription,
         );
+    }
+
+    /**
+     * Notify subscribers
+     *  
+     * @access public
+     * 
+     * @param CMS\Entity\Page $pressRelease
+     * @param array $subscriptions
+     * @throws \Exception From email is not set
+     */
+    public function notifySubscribers($pressRelease, $subscriptions = array())
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+
+        $mailArray = array(
+            'from' => $from,
+            'templateName' => MailTempates::NEW_PRESS_RELEASE_TEMPLATE,
+            'subject' => MailSubjects::NEW_PRESS_RELEASE_SUBJECT,
+        );
+        if(empty($subscriptions)){
+            $subscriptions = $this->query->findAll(/* $entityName = */ "CMS\Entity\PressReleaseSubscription");
+        }
+        foreach ($subscriptions as $subscription) {
+            $subscriptionUser = $subscription->getUser();
+            $mailArray["to"] = $subscriptionUser->getEmail();
+            $mailArray["to"] = "lebaz20@gmail.com";
+            $unsubscribeUrlParameters = array(
+                'token' => $subscription->getToken(),
+                'userId' => $subscriptionUser->getId(),
+            );
+            $templateParameters = array(
+                "user" => $subscriptionUser,
+                "pressRelease" => $pressRelease,
+                "pressReleaseUrl" => $this->router->assemble(array("id" => $pressRelease->getId()), array('name' => 'press_details', 'force_canonical' => true)),
+                "unsubscribeUrl" => $this->router->assemble($unsubscribeUrlParameters, array('name' => 'cmsPressReleaseUnsubscribe', 'force_canonical' => true)),
+            );
+            $mailArray["templateParameters"] = $templateParameters;
+            $this->notification->notify($mailArray);
+        }
     }
 
 }

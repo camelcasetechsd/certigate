@@ -84,5 +84,10 @@ class MailSubjects {
      */
     const CONTACT_US_SUBJECT = "New contact us message";
     
+    /**
+     * New Press Release Subject
+     */
+    const NEW_PRESS_RELEASE_SUBJECT = "New press release";
+    
     
 }

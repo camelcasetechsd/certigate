@@ -84,5 +84,10 @@ class MailTempates {
      */
     const CONTACT_US_TEMPLATE = "contact-us";
     
+    /**
+     * New Press Release Template
+     */
+    const NEW_PRESS_RELEASE_TEMPLATE = "new-press-release";
+    
     
 }
