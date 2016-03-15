@@ -2,7 +2,7 @@ if ($('#menu_item_form_parent').length) {
     var menuId = $('#menu_item_form_menu').val();
     // in case selected value is empty and menuId has value set
     // select empty value under proper optGroup "parent"
-    if (!$('#menu_item_form_parent :selected').val() && menuId) {
+    if ($('#menu_item_form_parent :selected').val() == false && menuId) {
         // set value for select empty, which is the already expected case
         $('#menu_item_form_parent').val('');
         // loop on options

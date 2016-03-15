@@ -3,6 +3,7 @@
 namespace Translation\Service\Translator;
 
 use Zend\I18n\Translator\Translator as Translator;
+use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * TranslatorHandler
@@ -13,11 +14,22 @@ use Zend\I18n\Translator\Translator as Translator;
  */
 class TranslatorHandler extends Translator
 {
+    
+    /**
+     *
+     * @var ApplicationLocale
+     */
+    protected $applicationLocale;
 
-    public function __construct( )
+    public function getApplicationLocale()
     {
-        $this->setLocale(CURRENT_LOCALE);
-        $this->setFallbackLocale(DEFAULT_LOCALE);
-        $this->addTranslationFile('gettext',__DIR__.'/../../../../language/ar_Ar.mo');
-        }
+        return $this->applicationLocale;
+    }
+    
+    public function setApplicationLocale(ApplicationLocale $applicationLocale)
+    {
+        $this->applicationLocale = $applicationLocale;
+        $this->setLocale($applicationLocale->getCurrentLocale());
+    }
+
 }

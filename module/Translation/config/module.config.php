@@ -4,24 +4,29 @@ namespace Translation;
 
 return array(
     'service_manager' => array(
+        'allow_override' => true,
         'template_path_stack' => array(
             __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
         'factories' => array(
-            'CMS\Service\TranslatorHandler' => 'Translation\Service\Translator\TranslatorHandlerFactory',
+            'Translation\Service\TranslatorHandler' => 'Translation\Service\Translator\TranslatorHandlerFactory',
+            'Translation\Helper\TranslatorHelper' => 'Translation\Helper\TranslatorHelperFactory',
+            'Translation\Service\Locale' => 'Translation\Service\Locale\LocaleFactory',
+            'mvcTranslator' => 'Translation\Service\Translator\TranslatorHandlerFactory',
         ),
         'aliases' => array(
-            'translatorHandler' => 'CMS\Service\TranslatorHandler',
+            'translatorHandler' => 'Translation\Service\TranslatorHandler',
+            'translatorHelper' => 'Translation\Helper\TranslatorHelper',
+            'applicationLocale' => 'Translation\Service\Locale',
         ),
     ),
     'translator' => array(
-        'local' => 'ar_Ar' ,
+        'locale' => 'en_US',
         'translation_file_patterns' => array(
             array(
                 'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.mo',
-                'text_domain' => __NAMESPACE__,
             ),
         ),
     ),
@@ -32,7 +37,7 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'organizationUsers' => array(
+            'translationTest' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route' => '/trans/index',
@@ -42,6 +47,19 @@ return array(
                     ),
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                )
+            ),
+            'translationSetLocale' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/trans/setlocale/:locale',
+                    'defaults' => array(
+                        'controller' => 'Translation\Controller\Index',
+                        'action' => 'setLocale',
+                    ),
+                    'constraints' => array(
+                        'locale' => '[a-z]{2}_[A-Z]{2}',
                     ),
                 )
             ),

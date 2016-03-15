@@ -11,14 +11,14 @@ namespace Notifications\Service;
  * @package notifications
  * @subpackage service
  */
-class MailSubjects {
+class MailSubjects
+{
 
-    
     /**
      * Exam Approval Request Subject
      */
     const EXAM_APPROVAL_REQUEST_SUBJECT = "New exam approval request";
-    
+
     /**
      * New Exam Notification Subject
      */
@@ -33,32 +33,32 @@ class MailSubjects {
      * Updated Organization Notification Subject
      */
     const UPDATED_ORGANIZATION_NOTIFICATION_SUBJECT = "Updated organization notification";
-    
+
     /**
      * New User Notification Subject
      */
     const NEW_USER_NOTIFICATION_SUBJECT = "New user notification";
-    
+
     /**
      * New Course Notification Subject
      */
     const NEW_COURSE_NOTIFICATION_SUBJECT = "New course notification";
-    
+
     /**
      * Updated Course Notification Subject
      */
     const UPDATED_COURSE_NOTIFICATION_SUBJECT = "Updated course notification";
-            
+
     /**
      * New Instructor Welcome Kit Subject
      */
     const NEW_INSTRUCTOR_WELCOME_KIT_SUBJECT = "New instructor welcome kit";
-    
+
     /**
      * New Organization Welcome Kit Subject
      */
     const NEW_ORGANIZATION_WELCOME_KIT_SUBJECT = "New organization welcome kit";
-           
+
     /**
      * New evaluation Notification Subject
      */
@@ -68,7 +68,7 @@ class MailSubjects {
      * Updated evaluation Notification Subject
      */
     const UPDATED_EVALUATION_NOTIFICATION_SUBJECT = "Updated evaluation notification";
-           
+
     /**
      * New resource Notification Subject
      */
@@ -78,11 +78,14 @@ class MailSubjects {
      * Updated resource Notification Subject
      */
     const UPDATED_RESOURCE_NOTIFICATION_SUBJECT = "Updated resource notification";
-    
+
     /**
      * Contact us Subject
      */
     const CONTACT_US_SUBJECT = "New contact us message";
-    
-    
+    /*
+     * Send to Friend
+     */
+    const SEND_TO_FRIEND = "send to firend";
+
 }

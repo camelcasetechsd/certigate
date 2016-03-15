@@ -47,7 +47,7 @@ class UserForm extends Form
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
-
+        
         $this->add(array(
             'name' => 'firstName',
             'type' => 'Zend\Form\Element\Text',

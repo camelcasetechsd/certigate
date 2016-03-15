@@ -9,11 +9,20 @@ class IndexController extends \Utilities\Controller\ActionController
 
     public function indexAction()
     {
-        $translator = $this->getServiceLocator()->get('translatorHandler');
-        $translator->setLocale('ar_Ar');
-        
-        var_dump($translator);exit;
         return new ViewModel();
     }
 
+    public function setLocaleAction()
+    {
+        $locale = $this->params('locale');
+        
+        /* @var $applicationLocale \Translation\Service\Locale\Locale */
+        $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
+        $applicationLocale->setCurrentLocale($locale);
+        $applicationLocale->saveLocaleInCookies();
+                
+        $url = ($this->getRequest()->getHeader('Referer')->getUri()) ?:  '/';
+        
+        $this->redirect()->toUrl($url);
+    }
 }

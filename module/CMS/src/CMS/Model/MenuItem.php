@@ -362,13 +362,35 @@ class MenuItem
             // only submitted values are used in filter
             if ($fieldValue != "") {
                 $expressionMethod = "eq";
-                if(in_array($fieldName, $menuItemFieldsFilterByLike)){
+                if (in_array($fieldName, $menuItemFieldsFilterByLike)) {
                     $expressionMethod = "contains";
                 }
                 $criteria->andWhere($expr->$expressionMethod($fieldName, $fieldValue));
             }
         }
         $this->setCriteria($criteria);
+    }
+
+    /**
+     * Set menu item form required fields
+     * 
+     * @access public
+     * @param Zend\Form\FormInterface $form
+     * @param array $data
+     */
+    public function setFormRequiredFields($form, $data)
+    {
+        $inputFilter = $form->getInputFilter();
+        if (isset($data['type']) && $data['type'] == MenuItemEntity::TYPE_DIRECT_URL) {
+            // Change required flag to false
+            $input = $inputFilter->get('page');
+            $input->setRequired(false);
+        }
+        if (isset($data['type']) && $data['type'] == MenuItemEntity::TYPE_PAGE) {
+            // Change required flag to false
+            $input = $inputFilter->get('directUrl');
+            $input->setRequired(false);
+        }
     }
 
 }

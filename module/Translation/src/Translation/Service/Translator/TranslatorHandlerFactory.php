@@ -32,6 +32,15 @@ class TranslatorHandlerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $translatorHandler = new TranslatorHandler();
+        
+        /* @var $applicationLocale \Translation\Service\Locale\Locale */
+        $applicationLocale = $serviceLocator->get('applicationLocale');
+        $applicationLocale->loadLocaleFromCookies();
+        $currentLocale = $applicationLocale->getCurrentLocale();
+        
+        $translatorHandler->setApplicationLocale($applicationLocale);
+        $translatorHandler->addTranslationFile('gettext', __DIR__ . '/../../../../language/'.$currentLocale.'.mo');
+        
         return $translatorHandler;
     }
 

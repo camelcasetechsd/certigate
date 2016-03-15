@@ -131,12 +131,7 @@ class FixtureLoader
             }
 
             foreach ($entityClasses as &$class) {
-                $classParts = explode(/* $delimiter = */ "\\", $class);
-                $classPartsKeys = array_keys($classParts);
-                $lastKey = end($classPartsKeys);
-                $classParts[] = $classParts[$lastKey];
-                $classParts[$lastKey] = "Fixture";
-                $class = implode(/* $glue = */ "\\", $classParts);
+                $class = str_replace(/* $search = */ "\\Entity\\", /* $replace = */ "\\Fixture\\",$class);
             }
             $classes = array_merge($classes, $entityClasses);
         }

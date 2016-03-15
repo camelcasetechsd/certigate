@@ -1,12 +1,12 @@
 <?php
 
-namespace Users\Entity\Fixture;
+namespace Users\Fixture;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Users\Entity\User as UserEntity;
-use Users\Entity\Fixture\UserCredentials;
+use Users\Fixture\UserCredentials;
 use Utilities\Service\Status;
 use Utilities\Service\Time;
 use Utilities\Service\Inflector;

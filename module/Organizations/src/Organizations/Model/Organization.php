@@ -225,13 +225,18 @@ class Organization
 
         // does not work in case of savestate or edit
         if (!$saveState) {
-            // if there's 
+            // if creater choosed someone with him as TM
             if (!empty($orgInfo['trainingManager_id']) && $orgInfo['trainingManager_id'] != $creatorId) {
 
                 $this->assignUserToOrg($entity, $orgInfo['trainingManager_id'], $rolesIds[Role::TRAINING_MANAGER_ROLE]);
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
+            // creator selected himself as TM
             else if ($orgInfo['trainingManager_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
+            }
+            //creator left TM empty
+            else if (empty($orgInfo['trainingManager_id']) && ($orgInfo['type']== OrganizationEntity::TYPE_ATP || $orgInfo['type']== OrganizationEntity::TYPE_BOTH)  && !$editFlag) {
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TRAINING_MANAGER_ROLE]);
             }
 
@@ -240,6 +245,9 @@ class Organization
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
             }
             else if ($orgInfo['testCenterAdmin_id'] != 0) {
+                $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
+            }
+            else if (empty($orgInfo['testCenterAdmin_id']) && ($orgInfo['type'] == OrganizationEntity::TYPE_ATC || $orgInfo['type'] == OrganizationEntity::TYPE_BOTH) && !$editFlag) {
                 $this->assignUserToOrg($entity, $creatorId, $rolesIds[Role::TEST_CENTER_ADMIN_ROLE]);
             }
         }
