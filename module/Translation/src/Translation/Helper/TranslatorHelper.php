@@ -2,20 +2,20 @@
 
 namespace Translation\Helper;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Mustache Helper 
  */
-class TranslatorHelper implements ServiceManagerAwareInterface
+class TranslatorHelper implements ServiceLocatorAwareInterface
 {
 
     /**
      *
-     * @var \Zend\ServiceManager\ServiceManager
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
-    protected $serviceManager;
+    protected $serviceLocator;
 
     /**
      * Called when class is called as a method
@@ -28,17 +28,18 @@ class TranslatorHelper implements ServiceManagerAwareInterface
     public function __invoke($text, $mustache)
     {
         /* @var $translatorHandler \Translation\Service\Translator\TranslatorHandler */
-        $translatorHandler = $this->getServiceManager()->get('translatorHandler');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         return $translatorHandler->translate($mustache->render($text));
     }
 
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function getServiceLocator()
     {
-        $this->serviceManager = $serviceManager;
+        return $this->serviceLocator;
     }
 
-    public function getServiceManager()
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
-        return $this->serviceManager;
+        $this->serviceLocator = $serviceLocator;
     }
+
 }

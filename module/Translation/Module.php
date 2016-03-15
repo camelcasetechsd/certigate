@@ -14,8 +14,9 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
  * 
  * @package system
  */
-class Module implements ConfigProviderInterface, AutoloaderProviderInterface {
-    
+class Module implements ConfigProviderInterface, AutoloaderProviderInterface
+{
+
     /**
      * Get config array
      * 
@@ -23,7 +24,8 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface {
      * @access public
      * @return array module configuration array
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return include __DIR__ . '/config/module.config.php';
     }
 
@@ -34,7 +36,8 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface {
      * @access public
      * @return array module autoloader configuration array
      */
-    public function getAutoloaderConfig() {
+    public function getAutoloaderConfig()
+    {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -43,5 +46,4 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface {
             ),
         );
     }
-
 }

@@ -32,7 +32,7 @@ class TranslatorHelperFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $translatorHelper = new TranslatorHelper();
-        $translatorHelper->setServiceManager($serviceLocator);
+        $translatorHelper->setServiceLocator($serviceLocator);
         return $translatorHelper;
     }
 
