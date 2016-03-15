@@ -3,7 +3,7 @@ class Session {
 	public $data = array();
 
 	public function __construct($session_id = '',  $key = 'default') {
-		if (!session_id()) {
+		if (!session_id()){
 			ini_set('session.use_only_cookies', 'Off');
 			ini_set('session.use_cookies', 'On');
 			ini_set('session.use_trans_sid', 'Off');
@@ -16,6 +16,8 @@ class Session {
 			if ($session_id) {
 				session_id($session_id);
 			}
+            // name session to separate it from zf2's session
+            session_name("ESTORESESSID");
 
 			session_set_cookie_params(0, '/');
 			session_start();
