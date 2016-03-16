@@ -1,0 +1,53 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/cms/page/new"class="btn btn-small btn-success create-new">Create new Page</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Pages</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Path</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#pages}}
+            <tr class="{{^status}}container-inactive{{/status}}" >
+                <td>{{title}}</td>         
+                <td>{{path}}</td>
+                <td>{{type}}</td>
+                <td>{{statusText}}</td>
+                <td>{{created}}</td>
+                <td>
+                    <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{^status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    {{/status}}
+                    {{#isAdminUser}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="History"><span class="glyphicon glyphicon-time"></span></a>
+                    {{/isAdminUser}}
+                </td>
+            </tr>
+            {{/pages}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

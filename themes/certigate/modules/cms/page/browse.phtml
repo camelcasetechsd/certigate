@@ -1,0 +1,32 @@
+{{% BLOCKS }}
+{{$content}}
+<style>
+    img{
+        width: 300px;
+        height: 300px;
+        margin: -13px -79px 18px 80px;
+    }
+</style>
+
+
+
+{{#images}}
+<a class="imageClicker" href="javascript:void(0)" result="allow" onclick="SetName(this.getElementsByTagName('img')[0].src);">
+    <img class="myImage" src="/upload/pageContents/{{.}}"/>
+</a>
+
+{{/images}}
+{{^images}}
+<h1> Currently There're no Images Here</h1>
+{{/images}}
+{{/content}}
+
+<script>
+    function SetName(name){
+        if (window.opener != null && !window.opener.closed) {
+            var txtName = window.opener.document.getElementById("cke_118_textInput");
+            txtName.value = name ;
+        }
+        window.close();
+    }
+</script>

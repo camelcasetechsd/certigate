@@ -1,0 +1,52 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Edit Organization</h3>
+    </div>
+    <div class="panel-body">
+        {{{organizationForm}}}
+
+        <div class="modal fade atcSet" id="AtcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">ATC Privacy Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        ATC Privacy Statement
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade atpSet" id="AtpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">ATP Privacy Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        ATP Privacy Statement
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/content}}
+{{$scripts}}
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+{{/scripts}}
+{{/layout}}

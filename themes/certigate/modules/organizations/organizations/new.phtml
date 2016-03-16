@@ -1,0 +1,89 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+{{{orgForm}}}
+
+<div class="modal fade atcSet" id="AtcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">ATC Privacy Statement</h4>
+            </div>
+            <div class="modal-body">
+                ATC Privacy Statement
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade atpSet" id="AtpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">ATP Privacy Statement</h4>
+            </div>
+            <div class="modal-body">
+                ATP Privacy Statement
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/content}}
+{{$scripts}}
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+{{/scripts}}
+{{/layout}}
+
+<script>
+$(document).ready(function () {
+    $('#org_form_saveState').click(function (e) {
+
+        if ($('#org_form_commercialName').val() !== "") {
+            $state = $('#org_form').serialize();
+            console.log($state);
+            $.ajax({
+                type: "POST",
+                url: "/organizations/savestate",
+                data: {
+                    saveState: $state
+                },
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    if (data.result === "Commercial Name already Exists") {
+                        alert("Commercial Name already Exists");
+                    } else if (data.result === true) {
+                        alert("saved");
+                        window.location.replace("/organizations/atps");
+                    }
+                }, error: function (ts) {
+                    try
+                    {
+                        var json = $.parseJSON(ts.responseText);
+                        if (json.redirect === true) {
+                            window.location.replace(json.result);
+                        }
+                    }
+                    catch (err)
+                    {
+                        alert(ts.responseText);
+                    }
+
+                }
+
+            });
+        }
+    });
+
+});
+</script>

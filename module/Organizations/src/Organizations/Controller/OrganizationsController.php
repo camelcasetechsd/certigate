@@ -87,11 +87,15 @@ class OrganizationsController extends ActionController
     public function atcsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
-
-        foreach ($variables['userList'] as $user) {
-            $user->atcLicenseExpiration = $user->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $atcs = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
+        foreach ($atcs as $atc) {
+            $atc->atcLicenseExpiration = $atc->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $atcs = $organizationUserModel->validateOrganizationUsers($atcs);
+        
+        $variables['isAdmin'] = $organizationUserModel->isAdmin();
+        $variables['atcs'] = $atcs;
         return new ViewModel($variables);
     }
 
@@ -106,11 +110,15 @@ class OrganizationsController extends ActionController
     public function atpsAction()
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $variables['userList'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
-
-        foreach ($variables['userList'] as $user) {
-            $user->atpLicenseExpiration = $user->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $atps = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
+        foreach ($atps as $atc) {
+            $atc->atpLicenseExpiration = $atc->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $atps = $organizationUserModel->validateOrganizationUsers($atps);
+        
+        $variables['isAdmin'] = $organizationUserModel->isAdmin();
+        $variables['atps'] = $atps;
         return new ViewModel($variables);
     }
 
@@ -368,11 +376,11 @@ class OrganizationsController extends ActionController
         $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
         $variables['atcLicenseAttachment'] = $atcLicenseAttachment;
         $variables['organizationForm'] = $this->getFormView($form);
-        
+
         $organizationArray = array($orgObj);
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        
+
         $hasPendingChanges = (count($organizationLogs) > 0) ? true : false;
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'organizationsPending'));
         $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
@@ -521,7 +529,7 @@ class OrganizationsController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * Disapprove pending version organization
      * 
@@ -558,10 +566,10 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        
+
         $organization = $query->find('Organizations\Entity\Organization', /* $criteria = */ $id);
         $file = $organizationModel->getFile($organization, $type, $notApproved);
-        
+
         return $fileUtilities->getFileResponse($file);
     }
 

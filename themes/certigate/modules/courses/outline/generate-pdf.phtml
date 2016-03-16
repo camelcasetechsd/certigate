@@ -1,0 +1,39 @@
+{{% BLOCKS }}
+{{<layout}}
+<!--hide header-->
+{{$header}}
+{{/header}}
+<!--hide menu-->
+{{$menus}}
+{{/menus}}
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Course Outlines</h3>
+    </div>
+    <div class="panel-body">
+
+        <table class="table">
+            <thead>
+                {{#outlines.count}}
+                <tr>
+                    <th>Title</th>
+                    <th>Duration (minutes)</th>
+                </tr>
+                {{/outlines.count}}
+            </thead>
+            <tbody>
+                {{#outlines}}
+                {{#statusActive}}
+                <tr>
+                    <td>{{title}}</td>
+                    <td>{{duration}}</td>
+                </tr>
+                {{/statusActive}}
+                {{/outlines}} 
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/content}}
+{{/layout}}

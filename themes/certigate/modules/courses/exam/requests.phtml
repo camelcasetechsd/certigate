@@ -1,0 +1,58 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Exam Requests</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Authorized Testing Center</th>
+                <th>Exam Date</th>
+                <th>Students No.</th>
+                <th>Admin Status</th>
+                <th>TVTC Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#requests}}
+            <tr>
+                <td>{{course.name}}</td>
+                <td>{{atc.commercialName}}</td>
+                <td>{{date}}</td>
+                <td>{{studentsNo}}</td>
+                {{#isAdminPending}}
+                <td><span class="error">{{adminStatus}}</span></td>
+                {{/isAdminPending}}
+                {{^isAdminPending}}
+                <td><span>{{adminStatus}}</span></td>
+                {{/isAdminPending}}
+                
+                {{#isTvtcPending}}
+                <td><span class="error">{{tvtcStatus}}</span></td>
+                {{/isTvtcPending}}
+                {{^isTvtcPending}}
+                <td><span>{{tvtcStatus}}</span></td>
+                {{/isTvtcPending}}
+                <td>
+                    {{#isAdminPending}}
+                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="Accept"><span class="glyphicon glyphicon-ok"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isAdminPending}}
+                </td>
+            </tr>
+            {{/requests}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

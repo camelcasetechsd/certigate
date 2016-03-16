@@ -1,0 +1,22 @@
+Dear {{user.firstName}} {{user.lastName}},
+
+<br>
+<br>
+Check our new press release;
+
+{{#pressRelease}}
+<div>
+    <div>
+        <div>
+            <h4>{{title}}</h4><p>By {{author}}</p>
+            <p>{{summary}}</p>
+            <ul>
+                <a href="{{pressReleaseUrl}}" target="_blank">Read more ...</a>
+            </ul>
+        </div>
+        <hr>
+    </div>
+</div>
+{{/pressRelease}}
+
+If you want to unsubscribe, <a href="{{unsubscribeUrl}}" target="_blank">Click here</a>

@@ -27,7 +27,8 @@ return array(
             'SlmQueue',
             'SlmQueueDoctrine',
             'Versioning',
-            'Notifications'
+            'Notifications',
+            'DOMPDFModule'
         ),
         'anonymous_routes' => array(
             'contactUs' => array(
