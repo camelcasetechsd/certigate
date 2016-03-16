@@ -1,0 +1,97 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/cms/menuitem/new"class="btn btn-small btn-success create-new">Create new Menu Item</a>
+<br><br>
+<div class="panel-default">
+
+    <div class="panel-heading">Filter Menu Items</div>
+    {{{filterForm}}}
+</div>
+<br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Menu Items</div>
+
+    
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Menu Item Parent</th>
+                <th>Page Path</th>
+                <th>Direct Url</th>
+                <th>Menu</th>
+                <th>Sort order</th>
+                <th>Status</th>
+                <th>Menu Status</th>
+                <th>Created</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#menuItems}}
+            <tr class="{{^status}}container-inactive{{/status}} {{^menu.status}}container-inactive{{/menu.status}}" >
+                <td>{{title}}</td>
+                <td>
+                    {{#parent}}
+                    {{parent.title}}
+                    {{/parent}}
+                    {{^parent}}
+                    Root
+                    {{/parent}}
+                </td>
+                <td>{{page.path}}</td>
+                <td>{{directUrl}}</td>
+                <td>{{menu.title}}</td>
+                <td>{{weight}}</td>
+                <td>{{statusText}}</td>
+                <td>{{menu.statusText}}</td>
+                <td>{{created}}</td>
+                <td>
+                    <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{^status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/cms/menuitem/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    {{/status}}
+                </td>
+            </tr>
+            {{/menuItems}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+{{/layout}}

@@ -1,0 +1,56 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+{{^processResult}}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Process failed to complete!
+</div>
+{{/processResult}}
+
+<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Bulk upload Resources</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Resources</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Course</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#resources}}
+            <tr class="{{^status}}container-inactive{{/status}}">
+                <td><a target="_blank" href="/resources/download/{{id}}" >{{name}}</a></td>
+                <td>{{type}}</td>
+                <td>{{course.name}}</td>
+                <td>{{statusText}}</td>
+
+                <td>  
+                    {{#isInstructor}}
+                    <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#isAdminUser}}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="#" data-href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isAdminUser}}
+                    {{/isInstructor}}
+                    
+
+                </td>
+            </tr>
+            {{/resources}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

@@ -1,0 +1,146 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails">Course Details</a></li>
+    <li role="presentation" class="active"><a href="#courseEvaluation" aria-controls="courseEvaluation"  role="tab" data-toggle="tab">Course Evaluation</a></li>
+    <li role="presentation"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">Course Resources</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
+    <div role="tabpanel" class="tab-pane active" id="courseEvaluation">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Create Evaluation</h3>
+            </div>
+            <div class="panel-body">
+                <ul>    
+                    {{#validationError}}
+                    <li class="error">{{.}}</li>
+                    {{/validationError}}
+                </ul>
+                <form id="editForm" class="form-horizontal" method="POST" action="">
+                    <fieldset>
+                        <br>
+                        <!-- Form Name -->
+                        {{#templateQuestions}}
+                        <!-- Text input-->
+                        <div class="form-group" >
+                            <label class="col-md-4 control-label" for="template[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="template[]" type="text" placeholder="Add Your Question Here" class="form-control templateQuestion input-md" required=""value="{{questionTitle}}">
+                                <a href="#" class="deleteTemplateQuestion removeQ" >X</a>
+                            </div>
+                        </div>
+                        {{/templateQuestions}}
+                        {{#oldQuestions}}
+                        <!-- Text input-->
+                        <div class="form-group" >
+                            <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label>  
+                            <div class=" col-md-4">
+                                <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""value="{{.}}">
+                                <a href="#" class="deleteQuestion removeQ" >X</a>
+                            </div>
+                        </div>
+                        {{/oldQuestions}}
+
+                        <span id="endOfText"></span>
+                        {{#isAdminUser}}
+                        <div class="form-group">
+                            <label class="text-right col-md-4" for="evaluation_form_status">Status</label>
+                            <div class=" col-md-4"> 
+                                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status">
+                            </div>
+                        </div>
+                        {{/isAdminUser}}
+                        <!-- button -->
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="addmore" class=" btn btn-primary">Add More</button>
+                            </div>
+                        </div>
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button id="singlebutton" name="submit" class="btn btn-success">Submit Course Evaluation</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+
+            </div>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    //
+    numerateLabels();
+
+    $('#addmore').click(function () {
+        getMeNewInput();
+    });
+
+    function getMeNewInput() {
+        window.template = '<div class="form-group" > <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class=" col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="form-control questionInputs input-md" required=""><a href="#" class="deleteNewQuestion removeQ">X</a></div> </div>';
+        $('#endOfText').before(window.template);
+        numerateLabels();
+    }
+
+    function numerateLabels() {
+        window.index = 1
+        $('.control-label').each(function () {
+            if ($(this).parent().is(":visible")) {
+                $(this).text('Question Title ' + window.index)
+                window.index++;
+            }
+        });
+    }
+
+    /**
+     * This action is meant to delete 
+     */
+    $('.deleteQuestion').click(function () {
+        // delete template 
+        $(this).parent().parent().hide();
+        numerateLabels();
+    });
+
+    $('.templateQuestion').keyup(function () {
+        // remove questionInputs class and replace it with deletedQuestion class
+        $(this).attr("class", "questionInputs form-control input-md");
+        // change input name 
+        $(this).prop("name", 'newQuestion[]');
+    });
+
+    $('.deleteTemplateQuestion').click(function () {
+        $(this).parent().parent().remove();
+        numerateLabels();
+
+    });
+    // to delete run time created questions  
+    $(document).on("click", ".deleteNewQuestion", function () {
+        $(this).parent().parent().remove();
+        numerateLabels();
+    });
+
+});
+
+</script>
+
+
+{{/content}}
+
+{{/layout}}
