@@ -53,6 +53,7 @@ use Zend\Validator\Identical;
  * @property int $testCenterAdministratorStatement
  * @property int $trainingManagerStatement
  * @property int $status
+ * @property int $customerId
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * 
  * @package users
@@ -301,6 +302,12 @@ class User
      */
     public $votes;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $customerId;
+    
     /**
      * hash password
      * 
@@ -1254,6 +1261,32 @@ class User
     }
 
     /**
+     * Get CustomerId
+     * 
+     * 
+     * @access public
+     * @return int customerId
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set CustomerId
+     * 
+     * 
+     * @access public
+     * @param int $customerId
+     * @return CourseEvent
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+        return $this;
+    }
+    
+    /**
      * Convert the object to an array.
      * 
      * 
@@ -1285,6 +1318,9 @@ class User
         }
         if (array_key_exists('password', $data) && !empty($data['password'])) {
             $this->setPassword($data["password"]);
+        }
+        if (array_key_exists('customerId', $data)) {
+            $this->setCustomerId($data["customerId"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setMobile($data["mobile"])

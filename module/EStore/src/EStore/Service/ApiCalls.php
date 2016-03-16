@@ -81,5 +81,20 @@ class ApiCalls
      * Option edit route
      */
     const OPTION_EDIT = "/estore/index.php?route=api/option/edit";
+    
+    /**
+     * Customer add route
+     */
+    const CUSTOMER_ADD = "/estore/index.php?route=api/customer/add";
+    
+    /**
+     * Customer edit route
+     */
+    const CUSTOMER_EDIT = "/estore/index.php?route=api/customer/edit";
+    
+    /**
+     * Customer login route
+     */
+    const CUSTOMER_LOGIN = "/estore/index.php?route=api/customer";
 
 }

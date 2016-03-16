@@ -5,6 +5,8 @@ namespace Users\Auth;
 use Utilities\Service\Query\Query;
 use Users\Auth\Adapter;
 use Zend\Authentication\AuthenticationService;
+use EStore\Service\ApiCalls;
+use Zend\Http\Request;
 
 /**
  * Authentication
@@ -14,6 +16,7 @@ use Zend\Authentication\AuthenticationService;
  * 
  * @property Zend\Http\Request $request
  * @property Utilities\Service\Query\Query $query
+ * @property EStore\Service\Api $estoreApi
  * 
  * @package users
  * @subpackage auth
@@ -34,15 +37,23 @@ class Authentication
     private $query;
 
     /**
+     *
+     * @var EStore\Service\Api 
+     */
+    private $estoreApi;
+
+    /**
      * Set needed properties
      * 
      * 
      * @access public
      * @param Query $query
+     * @param EStore\Service\Api $estoreApi
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, $estoreApi)
     {
         $this->query = $query;
+        $this->estoreApi = $estoreApi;
     }
 
     /**
@@ -101,7 +112,7 @@ class Authentication
         }
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
-
+        $this->loginEstoreCustomer($user);
         // here to add new entries to the session
         $storage->write(array(
             'id' => $user->id,
@@ -111,11 +122,48 @@ class Authentication
             'name' => $user->getFullName(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
+            'mobile' => $user->getMobile(),
             'photo' => $user->getPhoto(),
             'status' => $user->getStatus(),
             'roles' => $user->getRolesNames(),
             'agreements' => $user->getRolesAgreementsStatus()
         ));
+    }
+    
+    /**
+     * Clear authenticated session data
+     * 
+     * 
+     * @access public
+     * @uses AuthenticationService
+     */
+    public function clearSession()
+    {
+        $auth = new AuthenticationService();
+        // clear user-related data in session
+        $auth->clearIdentity();
+    }
+    
+    /**
+     * Login user in estore
+     * 
+     * @access private
+     * @param Users\Entity\User $user
+     */
+    private function loginEstoreCustomer($user)
+    {
+        $estoreApiEdge = ApiCalls::CUSTOMER_LOGIN;
+        $parameters = array(
+            'customer_id' => $user->getCustomerId(),
+            'firstname' => $user->getFirstName(),
+            'lastname' => $user->getLastName(),
+            'email' => $user->getEmail(),
+            'telephone' => $user->getMobile(),
+            'session_id' => $_COOKIE["ESTORESESSID"],
+        );
+        $queryParameters = array();
+        $return = $this->estoreApi->callEdge(/* $edge = */ $estoreApiEdge, /* $method = */ Request::METHOD_POST, $queryParameters, $parameters);
+        var_dump($return);die;
     }
 
 }

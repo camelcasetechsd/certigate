@@ -12,6 +12,8 @@ use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Zend\Authentication\AuthenticationService;
+use EStore\Service\ApiCalls;
+use Zend\Http\Request;
 
 /**
  * User Model
@@ -25,6 +27,7 @@ use Zend\Authentication\AuthenticationService;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Users\Auth\Authentication $auth
+ * @property EStore\Service\Api $estoreApi
  * 
  * @package users
  * @subpackage model
@@ -63,6 +66,12 @@ class User
     protected $auth;
 
     /**
+     *
+     * @var EStore\Service\Api
+     */
+    protected $estoreApi;
+    
+    /**
      * Set needed properties
      * 
      * 
@@ -73,13 +82,15 @@ class User
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Users\Auth\Authentication $auth
+     * @param EStore\Service\Api $estoreApi
      */
-    public function __construct($query, $systemCacheHandler, $notification, $auth)
+    public function __construct($query, $systemCacheHandler, $notification, $auth, $estoreApi)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->auth = $auth;
+        $this->estoreApi = $estoreApi;
         $this->random = new Random();
     }
 
@@ -122,7 +133,8 @@ class User
         if (!in_array($userRole->getId(), $userInfo['roles'])) {
             $userInfo['roles'][] = $userRole->getId();
         }
-
+        // create/ update customer in estore in case user is newly created or updated
+        $this->saveUserCustomer($userObj, $userInfo, $editFormFlag);
         $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
 
         if ($sendNotificationFlag === true) {
@@ -138,7 +150,50 @@ class User
             $this->auth->newSession($userObj);
         }
     }
-
+    
+    /**
+     * Save user customer
+     * 
+     * @access public
+     * @param Users\Entity\User $user
+     * @param array $data ,default is empty array
+     * @param bool $editFlag ,default is bool false
+     */
+    public function saveUserCustomer($user, $data = array(), $editFlag = false)
+    {
+        if ($editFlag === true) {
+            $estoreApiEdge = ApiCalls::CUSTOMER_EDIT;
+            $data = $user->getArrayCopy();
+        }
+        else {
+            $estoreApiEdge = ApiCalls::CUSTOMER_ADD;
+        }
+        $parameters = array(
+            'firstname' => $data["firstName"],
+            'lastname' => $data["lastName"],
+            'email' => $data["email"],
+            'password' => "",
+            'telephone' => $data["mobile"],
+            'fax' => "",
+            'company' => "",
+            'address_1' => $data["addressOne"],
+            'address_2' => $data["addressTwo"],
+            'city' => $data["city"],
+            'postcode' => $data["zipCode"],
+            'country_iso_code_2' => $data["country"],
+            'zone_id' => "",
+            'agree' => true,
+        );
+        $queryParameters = array();
+        if (!empty($user->getCustomerId())) {
+            $queryParameters["customer_id"] = $user->getCustomerId();
+        }
+        $responseContent = $this->estoreApi->callEdge(/* $edge = */ $estoreApiEdge, /* $method = */ Request::METHOD_POST, $queryParameters, $parameters);
+        if (empty($user->getCustomerId())) {
+            $user->setCustomerId($responseContent->customerId);
+        }
+    }
+    
     /**
      * Save user photo
      * 

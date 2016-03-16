@@ -30,9 +30,9 @@ class AuthenticationFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $wrapperQuery = $serviceLocator->get('wrapperQuery');
+        $estoreApi = $serviceLocator->get('EStore\Service\Api');
+        $authentication = new Authentication($wrapperQuery, $estoreApi);
         
-        $authentication = new Authentication($wrapperQuery);
-
         return $authentication;
     }
 }

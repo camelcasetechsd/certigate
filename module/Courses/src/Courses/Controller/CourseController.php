@@ -36,6 +36,23 @@ class CourseController extends ActionController
      */
     public function indexAction()
     {
+        echo "<pre>";
+        var_Dump($_COOKIE);
+        session_id($_COOKIE["PHPSESSID"]);
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        var_dump($_SESSION);
+        session_write_close();
+        session_id($_COOKIE["ESTORESESSID"]);
+        session_start();
+        var_dump($_SESSION);
+        session_write_close();
+        session_id($_COOKIE["PHPSESSID"]);
+        session_start();
+        var_dump($_SESSION);
+        session_write_close();
+        die;
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
@@ -72,7 +89,7 @@ class CourseController extends ActionController
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $courseEventModel->approveEnroll($token);
-        
+
         $pageNumber = $this->getRequest()->getQuery('page');
         $courseModel->filterCourses(/* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
         $courseModel->setPage($pageNumber);
