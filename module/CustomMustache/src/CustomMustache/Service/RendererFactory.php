@@ -58,7 +58,7 @@ class RendererFactory implements FactoryInterface
         $menuView->setActivePath($path);
 
         $menusArray = $cmsCacheHandler->getCachedCMSData( $forceFlush );
-        $menusViewArray = $menuView->prepareMenuView( $menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED );
+        $menusViewArray = $menuView->prepareMenuView( $menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED, /*$divId =*/"navbar", /*$divClass =*/"navbar-collapse collapse" );
         $config['helpers']['primaryMenu'] = isset( $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] ) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
 
 
