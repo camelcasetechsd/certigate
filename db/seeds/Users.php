@@ -266,7 +266,7 @@ class Users extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $courseEventsRoute,
-                ),
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
@@ -459,7 +459,7 @@ class Users extends AbstractSeed
             ),
         );
         $this->insert('acl', $organizationAcls);
-        
+
         $cmsModule = "CMS";
         $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
         $cmsAcls = array(
@@ -479,12 +479,12 @@ class Users extends AbstractSeed
             "language" => $faker->languageCode,
             "username" => "admin",
             "password" => User::hashPassword("adminadmin"),
-            "mobile" => $faker->phoneNumber,
+            "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
+            "phone" => '555-555-5555',
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
@@ -512,12 +512,12 @@ class Users extends AbstractSeed
             "language" => $faker->languageCode,
             "username" => "user",
             "password" => User::hashPassword("useruser"),
-            "mobile" => $faker->phoneNumber,
+            "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
+            "phone" => '555-555-5555',
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
