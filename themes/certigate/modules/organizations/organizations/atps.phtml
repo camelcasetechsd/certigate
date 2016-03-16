@@ -1,0 +1,51 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br />
+<a href="/organizations/new?organization=2"><button class="btn btn-small btn-success create-new">Create new ATP</button></a>
+<br/>
+<div class="panel panel-default atps-list">
+    <div class="panel-heading">ATPs</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Commercial Name</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th>WebSite</th>
+                <th>ATP License Expiration</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#userList}}
+            <tr>
+                <td>{{commercialName}}</td>
+                <td>{{city}}</td>
+                <td>{{phone1}}</td>
+                <td>{{website}}</td>
+                <td>{{atpLicenseExpiration}}</td>
+                <td>
+                    <a href="/organizations/more/{{id}}">More</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   {{#status}}
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                </td>
+            </tr>
+            {{/userList}}
+        </tbody>
+    </table>
+</div>
+
+{{/content}}
+
+{{/layout}}

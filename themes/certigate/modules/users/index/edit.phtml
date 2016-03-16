@@ -1,0 +1,36 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Edit User</h3>
+                 <img src="{{photo}}" data-toggle="tooltip" data-placement="left"  class="user-photos" style="height: 70px !important;width: 70px !important;">
+    </div>
+    <div class="panel-body">
+        {{{userForm}}}
+    </div>
+</div>
+{{/content}}
+
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        {{#statements}}
+                generateStatementCheckboxContent('user_form_' + '{{type}}', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
+        {{/statements}}
+        displayStatementCheckbox('input[name="roles[]"]');
+        
+            {{#success}}
+            
+            if({{success}}){
+                alert('Saved Successfully');
+            }
+            
+            {{/success}}
+            
+            
+            });
+</script>
+{{/scripts}}
+{{/layout}}

@@ -1,0 +1,21 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>New Organization User</h3>
+    </div>
+    <div class="panel-body">
+{{{organizationUserForm}}}
+    </div><!-- body -->
+</div><!-- panel -->
+
+{{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+        $('.chosen-select').chosen({});
+    });
+</script>
+{{/scripts}}
+{{/layout}}
