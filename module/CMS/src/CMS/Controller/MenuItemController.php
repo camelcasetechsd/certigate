@@ -60,7 +60,7 @@ class MenuItemController extends ActionController
         $form = new MenuItemFilterForm(/* $name = */ null, $options);
         $form->setData($data);
         $variables['filterForm'] = $this->getFormView($form);
-        $variables['filterQuery'] = preg_replace('/page=[\d]+&/i', '', $request->getUri()->getQuery());
+        $variables['filterQuery'] = preg_replace('/page=[\d]+(&)?/i', '', $request->getUri()->getQuery());
         return new ViewModel($variables);
     }
 

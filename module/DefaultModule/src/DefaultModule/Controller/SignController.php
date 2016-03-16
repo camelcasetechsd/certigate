@@ -62,7 +62,8 @@ class SignController extends ActionController
                     $forceFlush = (APPLICATION_ENV == "production" )? false : true;
                     $cmsCacheHandler->prepareCachedCMSData($forceFlush);
                     $systemCacheHandler->prepareCachedSystemData($forceFlush);
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                    $defaultUrl = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                    $url = $this->params()->fromQuery('redirectBackUrl', $defaultUrl);
                     $this->redirect()->toUrl($url);
                 } else {
                     $errorMessages = array();

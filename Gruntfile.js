@@ -35,6 +35,7 @@ module.exports = function (grunt) {
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
                     '<%= dirs.jsSrc %>/diff_match_patch.js',
                     '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
+                    '<%= dirs.jsSrc %>/form.js',
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',

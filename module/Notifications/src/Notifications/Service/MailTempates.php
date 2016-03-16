@@ -88,5 +88,10 @@ class MailTempates {
      */
     const SEND_TO_FRIEND_TEMPLATE = "send-to-friend";
     
+    /**
+     * New Press Release Template
+     */
+    const NEW_PRESS_RELEASE_TEMPLATE = "new-press-release";
+    
     
 }

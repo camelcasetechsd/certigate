@@ -459,6 +459,17 @@ class Users extends AbstractSeed
             ),
         );
         $this->insert('acl', $organizationAcls);
+        
+        $cmsModule = "CMS";
+        $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
+        $cmsAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $cmsModule,
+                'route' => $cmsPressReleaseSubscribeRoute,
+            ),
+        );
+        $this->insert('acl', $cmsAcls);
 
         $adminUser = array(
             "firstName" => $faker->firstName,

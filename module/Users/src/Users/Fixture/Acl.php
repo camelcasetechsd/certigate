@@ -63,6 +63,9 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
 
+        $cmsModule = "CMS";
+        $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
+        
         $acls = array(
             array(
                 'role' => RoleEntity::INSTRUCTOR_ROLE,
@@ -413,6 +416,9 @@ class Acl extends AbstractFixture implements OrderedFixtureInterface
                 'role' => RoleEntity::TRAINING_MANAGER_ROLE,
                 'module' => $courseEventsRoute,
                 'route' => $courseModule,
+                'role' => RoleEntity::USER_ROLE,
+                'module' => $cmsModule,
+                'route' => $cmsPressReleaseSubscribeRoute,
             ),
         );
 
