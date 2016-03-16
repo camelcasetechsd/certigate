@@ -13,7 +13,6 @@ bin/doctrine orm:schema-tool:update --force;
 app_env=${APPLICATION_ENV:-'vagrant'}
 ./vendor/bin/phinx seed:run -e $app_env
 php public/q2a/updateDB.php
-php public/estore/updateDB.php
 
 ## prepare public resources
 cd public

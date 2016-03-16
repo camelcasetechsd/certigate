@@ -164,10 +164,6 @@ class Menus extends AbstractSeed
                                             [
                                                 "title" => "Publish Training Calendar",
                                                 "path" => "/courses/new",
-                                            ],
-                                            [
-                                                "title" => "Order Material",
-                                                "path" => "/estore",
                                             ]
                                         ]
                                     ],
@@ -337,11 +333,6 @@ class Menus extends AbstractSeed
                                         "weight" => 1,
                                     ],
                                     [
-                                        "title" => "Order Material",
-                                        "path" => "/estore",
-                                        "weight" => 2,
-                                    ],
-                                    [
                                         /**
                                          * Ask ali ???
                                          */
@@ -356,33 +347,6 @@ class Menus extends AbstractSeed
                                     ],
                                 ]
                             ]
-                        ]
-                    ],
-                    [
-                        "title" => "eStore",
-                        "path" => "#",
-                        "weight" => 5,
-                        "children" => [
-                            [
-                                "title" => "Books",
-                                "path" => "/estore",
-                                "weight" => 1,
-                            ],
-                            [
-                                "title" => "Exams",
-                                "path" => "/estore",
-                                "weight" => 2,
-                            ],
-                            [
-                                "title" => "Practice test",
-                                "path" => "/estore",
-                                "weight" => 3,
-                            ],
-                            [
-                                "title" => "e-Learning",
-                                "path" => "/estore",
-                                "weight" => 4,
-                            ],
                         ]
                     ],
                     [
