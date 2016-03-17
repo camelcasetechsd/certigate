@@ -25,6 +25,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Notifications\Service\Notification' => 'Notifications\Service\NotificationFactory',
+            'SlmQueueDoctrine\Worker\DoctrineWorker' => 'Notifications\Service\Worker\DoctrineWorkerFactory',
         ),
     ),
 );
