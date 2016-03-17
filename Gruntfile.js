@@ -37,6 +37,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/diff_match_patch.js',
                     '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
                     '<%= dirs.jsSrc %>/form.js',
+                    '<%= dirs.jsSrc %>/signin.js',
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/userCRUD.js',
