@@ -16,13 +16,16 @@
 
         <div class="main-holder">
             {{>messages}}
-            {{$content}}{{/content}}
-            <br>
-            {{>footer}}
+            <div class="page-container">
+                {{$content}}{{/content}}
+            </div>
         </div>
+        <br>
+        {{>footer}}
+    </div>
 
-        <script src="/concat/app.js" type="text/javascript"></script>
-        <!-- Additional scripts to be added to specific views -->
-        {{$scripts}}{{/scripts}}
-    </body>
+    <script src="/concat/app.js" type="text/javascript"></script>
+    <!-- Additional scripts to be added to specific views -->
+    {{$scripts}}{{/scripts}}
+</body>
 </html>
