@@ -9801,6 +9801,10 @@ button.close {
  * Base structure
  */
 
+/* Move down content because we have a fixed navbar that is 50px tall */
+/*body {
+  padding-top: 50px;
+}*/
 
 /* Utility classes */
 .no-padding {
@@ -9929,6 +9933,7 @@ button.close {
     width: 300px;
     height: 150px;
 }
+
 /* OriginalFileName : public/css/form.css */ 
 
 .required:after { 

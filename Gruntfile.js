@@ -46,6 +46,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
                     '<%= dirs.jsSrc %>/orgReg.js',
                     '<%= dirs.jsSrc %>/CKEditor_config.js',
+                    '<%= dirs.jsSrc %>/homepage.js',
                 ]
 
             },
