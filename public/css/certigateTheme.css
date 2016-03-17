@@ -4,8 +4,24 @@
 }
 
 .page-container{
-   margin-right: 10%;
-   margin-left: 10%;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+/**
+Organization Form buttons
+**/
+.panel-default > .panel-heading{
+    color: #1964B6;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+}
+.saveStateButton{
+    margin-top: -96px;
+    margin-left: 80px;
+}
+.orgResetButton{    
+    margin-top: -175px;
+    margin-left: 188px;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
