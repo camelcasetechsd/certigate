@@ -1,0 +1,22 @@
+.title-top{
+    padding: 0px 0px !important; 
+    margin-top: 0px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+  position: relative;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 120px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 120px;
+}
