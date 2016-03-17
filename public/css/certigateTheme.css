@@ -3,21 +3,25 @@
     margin-top: 0px;
 }
 
+.page-container{
+   margin-right: 10%;
+   margin-left: 10%;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 120px;
+    /* Margin bottom by footer height */
+    margin-bottom: 120px;
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 120px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 120px;
 }
