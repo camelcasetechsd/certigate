@@ -86,7 +86,7 @@ class MailSubjects
     /*
      * Send to Friend
      */
-    const SEND_TO_FRIEND = "send to firend";
+    const SEND_TO_FRIEND = "send to friend";
 
     /**
      * New Press Release Subject

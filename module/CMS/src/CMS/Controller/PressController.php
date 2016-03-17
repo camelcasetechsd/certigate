@@ -36,7 +36,7 @@ class PressController extends ActionController
 
             // adding custom value for ignored fields
             $url = $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute().'/'.$newsId;
-            $data["subject"] = \Notifications\Service\MailSubjects::SEND_TO_FRIEND;
+            $data["subject"] = reset($newsDetails)->getTitle();
             $data["message"] = 'A friend of yours wants you to check this out '.$url  ;
             $data["name"] = '';
 
