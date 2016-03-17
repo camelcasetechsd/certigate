@@ -320,7 +320,7 @@ text-transform:uppercase;}
 	.navbar-inverse .navbar-nav>li>a:focus{ color:#023d7d; }
 	
 /* Coursers */	
-.image-course{ background-image:url("images/image-bg.jpg");
+.image-course{ background-image:url("../images/image-bg.jpg");
               height: 265px;
               background-repeat: no-repeat;
               background-size: cover;     padding: 41px;}
@@ -359,7 +359,7 @@ text-transform:uppercase;}
 	font-weight: 600;
 	text-transform:uppercase;}
 	
-	.image-about{ background-image:url("images/about.jpg");
+	.image-about{ background-image:url("../images/about.jpg");
               height: 265px;
               background-repeat: no-repeat;
               background-size: cover;     padding: 41px;}

@@ -3,19 +3,27 @@
     margin-top: 0px;
 }
 
+.text-normal{
+    font-weight: normal;
+    text-transform: none;
+}
 .page-container{
     margin-right: 10%;
     margin-left: 10%;
 }
-/**
-Organization Form buttons
-**/
 .panel-default > .panel-heading{
     color: #1964B6;
     background-color: #FFFFFF;
-    border-color: #1964B6;
-    
+    font-weight: 600;
+    text-transform: uppercase;
 }
+.page-container-wide{
+    margin-right: -12.5%; 
+    margin-left: -12.5%;
+}
+/**
+Organization Form buttons
+**/
 .saveStateButton{
     margin-top: -96px;
     margin-left: 80px;
@@ -35,6 +43,8 @@ html {
     min-height: 100%;
 }
 body {
+    /* Margin top by header height */
+    margin-top: 113px;
     /* Margin bottom by footer height */
     margin-bottom: 120px;
 }
