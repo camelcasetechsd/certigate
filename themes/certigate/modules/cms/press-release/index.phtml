@@ -1,22 +1,16 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-
-<div class="panel panel-default">
-
-    <div class="panel-heading">
-        Press Releases
-
-    </div>
-    {{#pressReleaseSubscriptionForm}}
+<div class="container static-cont">
     <div class="row">
+    <h1 class="title-blue col-md-4"> Press Releases</h1>
+    {{#pressReleaseSubscriptionForm}}
         <div class="col-md-offset-10">
             {{{pressReleaseSubscriptionForm}}}
         </div>
-    </div>
-    <br>
     {{/pressReleaseSubscriptionForm}}
-
+    </div>
+    <hr>
 
     {{#pressReleases}}
 
@@ -27,7 +21,7 @@
                 <img width="100" class="media-object" src="{{picture.tmp_name}}">
             </a>
             <div class="media-body">
-                <h4 class="media-heading">{{title}}</h4>
+                <h4 class="media-heading title-blue title-top">{{title}}</h4>
                 <p class="text-right">By {{author}}</p>
                 <p>{{summary}}</p>
                 <ul class="list-inline list-unstyled">
@@ -41,6 +35,7 @@
 
 
     {{/pressReleases}}
+    <hr class="featurette-divider"> 
 </div>
 {{#hasPages}}
 <div class="pagination-bar">
