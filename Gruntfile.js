@@ -61,6 +61,7 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
                     '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/certigateTheme.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/userForm.css',
                     '<%= dirs.cssSrc %>/courseForm.css',
