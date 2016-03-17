@@ -94,7 +94,7 @@ class MenuView
      *
      * @var string 
      */
-    protected $childIndicator = '<span class="fa arrow"></span>';
+    protected $childIndicator = ' <span class="caret"></span>';
 
     /**
      *

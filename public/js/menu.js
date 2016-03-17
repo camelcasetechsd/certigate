@@ -1,5 +1,6 @@
-$(function () {
-    $('.admin_menu>ul').metisMenu({
-        preventDefault: false
-    });
+$(document).ready(function(){
+  $('.dropdown a').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+  });
 });
