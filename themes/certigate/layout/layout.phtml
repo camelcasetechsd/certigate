@@ -16,7 +16,14 @@
 
         <div class="main-holder">
             {{>messages}}
-            {{$content}}{{/content}}  
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    {{$content}}{{/content}}  
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <br>
             {{>footer}}
         </div>
 
