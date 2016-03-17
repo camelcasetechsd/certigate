@@ -1,8 +1,16 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-
-{{{orgForm}}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Create An Organization</h3>
+    </div>
+    <div class="panel-body">
+        <div class ="formContainer">
+            {{{orgForm}}}
+        </div>
+    </div>
+</div>
 
 <div class="modal fade atcSet" id="AtcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
