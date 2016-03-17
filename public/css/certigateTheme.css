@@ -13,7 +13,8 @@ Organization Form buttons
 .panel-default > .panel-heading{
     color: #1964B6;
     background-color: #FFFFFF;
-    border-color: #FFFFFF;
+    border-color: #1964B6;
+    
 }
 .saveStateButton{
     margin-top: -96px;
@@ -22,6 +23,9 @@ Organization Form buttons
 .orgResetButton{    
     margin-top: -175px;
     margin-left: 188px;
+}
+.navbar-toggle{
+    background-color: #1964B6;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
