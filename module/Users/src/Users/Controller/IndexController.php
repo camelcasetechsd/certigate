@@ -154,7 +154,8 @@ class IndexController extends ActionController
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         $variables['photo'] = $photo;
         return new ViewModel($variables);
     }
@@ -232,7 +233,8 @@ class IndexController extends ActionController
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         return new ViewModel($variables);
     }
 

@@ -48,7 +48,7 @@ class UserForm extends Form
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
-        
+
         $this->add(array(
             'name' => 'firstName',
             'type' => 'Zend\Form\Element\Text',
@@ -116,7 +116,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'class' => 'form-control',
-           ),
+            ),
             'options' => array(
                 'label' => 'Phone',
             ),
@@ -348,7 +348,7 @@ class UserForm extends Form
                 'class' => 'form-control',
             ),
             'options' => array(
-                'label' => '<label class="legendLabel">Roles</label>',
+                'label' => '<label class="legendLabel"><div class="col-md-4">Roles</div><div>Agreements</div></label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
                 'property' => 'name',
@@ -360,8 +360,16 @@ class UserForm extends Form
                 ),
                 'label_options' => array(
                     'disable_html_escape' => true,
+                ),
+                'label_attributes' => array(
+                    'class' => "col-md-4",
                 )
             ),
+        ));
+
+        $this->add(array(
+            'name' => 'agreements',
+            'type' => 'Users\Form\AgreementsFieldset',
         ));
 
         $this->add(array(
@@ -373,71 +381,6 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Privacy Statement',
-                'checked_value' => Statement::STATEMENT_AGREE,
-                'unchecked_value' => Statement::STATEMENT_DISAGREE
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'studentStatement',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Student Statement',
-                'checked_value' => Statement::STATEMENT_AGREE,
-                'unchecked_value' => Statement::STATEMENT_DISAGREE
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'proctorStatement',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Proctor Statement',
-                'checked_value' => Statement::STATEMENT_AGREE,
-                'unchecked_value' => Statement::STATEMENT_DISAGREE
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'instructorStatement',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Instructor Statement',
-                'checked_value' => Statement::STATEMENT_AGREE,
-                'unchecked_value' => Statement::STATEMENT_DISAGREE
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'testCenterAdministratorStatement',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Test Center Administrator Statement',
-                'checked_value' => Statement::STATEMENT_AGREE,
-                'unchecked_value' => Statement::STATEMENT_DISAGREE
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'trainingManagerStatement',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Training Manager Statement',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -475,7 +418,7 @@ class UserForm extends Form
         ));
 
         // Add buttons fieldset
-        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("create_button_only" => true));
         $this->add($buttonsFieldset);
     }
 

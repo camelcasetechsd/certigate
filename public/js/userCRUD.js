@@ -13,9 +13,9 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
     var divId = checkboxId + "Div";
     var checkboxSelector = "#" + checkboxId;
     var divSelector = "#" + divId;
-    $(checkboxSelector).attr('data-role', role).after("<div id='" + divId + "'></div>")
+    $(checkboxSelector).attr('data-role', role).after("<div id='" + divId + "'></div>");
     $(checkboxSelector).appendTo(divSelector);
-    $(divSelector).append("<p >" + sentence + "</p>");
+    $(divSelector).append("<p>" + sentence + "</p>");
     $(divSelector + ' a').click(function () {
         bootbox.dialog({
             message: content,
@@ -39,7 +39,8 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
         });
     });
     if (role !== '') {
-        $(divSelector).parent("div").hide();
+        var roleLabel = $("label:contains('" + role + "')");
+        roleLabel.after($(divSelector));
     }
 }
 
@@ -55,21 +56,21 @@ function displayStatementCheckbox(roleSelector) {
         value = $(selected).parent('label').text();
         checkboxSelector = $("[data-role='" + value + "']");
         if (checkboxSelector.length) {
-            checkboxSelector.parent("div").parent("div").show();
+            checkboxSelector.parent("div").show();
         }
     });
     $(roleSelector).change(function () {
-        if($(this).is(":checked")){
+        if ($(this).is(":checked")) {
             value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("div").show();
+                checkboxSelector.parent("div").show();
             }
-        }else{
+        } else {
             value = $(this).parent('label').text();
             checkboxSelector = $("[data-role='" + value + "']");
             if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("div").hide();
+                checkboxSelector.parent("div").hide();
             }
         }
     });

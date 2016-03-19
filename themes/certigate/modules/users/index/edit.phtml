@@ -16,10 +16,12 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-        {{#statements}}
-                generateStatementCheckboxContent('user_form_' + '{{type}}', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
-        {{/statements}}
-        displayStatementCheckbox('input[name="roles[]"]');
+        {{#rolesStatements}}   
+                generateStatementCheckboxContent('user_form_agreements_{{type}}', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
+        {{/rolesStatements}}
+        {{#privacyStatement}}
+                generateStatementCheckboxContent('user_form_privacyStatement', '{{title}}', '{{{sentence}}}', '{{{content}}}', '{{role}}');
+        {{/privacyStatement}}
         
             {{#success}}
             
