@@ -20,13 +20,16 @@ use Translation\Service\Locale\Locale as ApplicationLocale;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $title
+ * @property string $titleAr
  * @property string $path
  * @property string $type
  * @property string $category
  * @property string $author
  * @property array $picture
  * @property string $summary
+ * @property string $summaryAr
  * @property string $body
+ * @property string $bodyAr
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -129,7 +132,7 @@ class Page
      * @var string
      */
     public $summary;
-    
+
     /**
      *
      * @ORM\Column(type="text", nullable=true)
@@ -212,7 +215,7 @@ class Page
         $this->title = $title;
         return $this;
     }
-    
+
     /**
      * Get titleAr
      * 
@@ -394,7 +397,7 @@ class Page
         $this->summary = $summary;
         return $this;
     }
-    
+
     /**
      * Get summaryAr
      * 
@@ -448,7 +451,7 @@ class Page
         $this->body = base64_encode(bzcompress($body));
         return $this;
     }
-    
+
     /**
      * Get bodyAr
      *      * 
@@ -574,12 +577,12 @@ class Page
     public function exchangeArray($data = array())
     {
         $this->setType($data["type"]);
-        
+
         if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
         }
         if (array_key_exists('titleAr', $data) & !empty($data['titleAr'])) {
-            $this->setTitle($data["titleAr"]);
+            $this->setTitleAr($data["titleAr"]);
         }
         if (array_key_exists('path', $data)) {
             $this->setPath($data["path"]);
@@ -588,7 +591,7 @@ class Page
             $this->setBody($data["body"]);
         }
         if (array_key_exists('bodyAr', $data) & !empty($data['bodyAr'])) {
-            $this->setTitle($data["bodyAr"]);
+            $this->setBodyAr($data["bodyAr"]);
         }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
@@ -606,7 +609,7 @@ class Page
             $this->setSummary($data["summary"]);
         }
         if (array_key_exists('summaryAr', $data) && !empty($data["summaryAr"])) {
-            $this->setSummary($data["summaryAr"]);
+            $this->setSummaryAr($data["summaryAr"]);
         }
     }
 
@@ -642,6 +645,12 @@ class Page
                 'name' => 'title',
                 'required' => true
             ));
+            
+            $inputFilter->add(array(
+                'name' => 'titleAr',
+                'required' => true
+            ));
+            
             $inputFilter->add(array(
                 'name' => 'path',
                 'required' => true,
@@ -668,6 +677,7 @@ class Page
                     ),
                 )
             ));
+
             $pageCategoriesReflection = new \ReflectionClass('CMS\Service\PageCategories');
             $inputFilter->add(array(
                 'name' => 'category',
@@ -713,8 +723,14 @@ class Page
                     ),
                 )
             ));
+
             $inputFilter->add(array(
                 'name' => 'summary',
+                'required' => true
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'summaryAr',
                 'required' => true
             ));
             $inputFilter->add(array(

@@ -66,6 +66,10 @@ class Page
                     $dummyPage->body = $dataValue;
                     $dataValue = $dummyPage->getBody();
                 }
+                if ($dataKey == "bodyAr") {
+                    $dummyPage->bodyAr = $dataValue;
+                    $dataValue = $dummyPage->getBodyAr();
+                }
             }
         }
         return $logs;
@@ -155,6 +159,8 @@ class Page
                 $category->setRequired(false);
                 $summary = $inputFilter->get('summary');
                 $summary->setRequired(false);
+                $summaryAr = $inputFilter->get('summaryAr');
+                $summaryAr->setRequired(false);
                 $author = $inputFilter->get('author');
                 $author->setRequired(false);
                 $picture = $inputFilter->get('picture');

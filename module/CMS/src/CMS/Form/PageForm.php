@@ -6,6 +6,7 @@ use Utilities\Form\Form;
 use CMS\Service\PageTypes;
 use CMS\Service\PageCategories;
 use Utilities\Form\FormButtons;
+use Translation\Service\Locale\Locale;
 
 /**
  * Page Form
@@ -27,6 +28,12 @@ class PageForm extends Form
     protected $query;
 
     /**
+     *
+     * @var Translation\Service\Locale\Locale 
+     */
+    protected $locale;
+
+    /**
      * setup form
      * 
      * 
@@ -34,15 +41,33 @@ class PageForm extends Form
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct( $name = null, $options = null )
+    public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-        unset( $options['query'] );
-        parent::__construct( $name, $options );
+        $this->locale = $options['locale'];
+        unset($options['query']);
+        unset($options['locale']);
+        parent::__construct($name, $options);
 
-        $this->setAttribute( 'class', 'form form-horizontal' );
+        $pageCategories = array();
+        $pageTypes = array();
+        if ($this->locale->getCurrentLocale() == Locale::LOCALE_AR_AR) {
+            $pageCategories = array(
+                PageCategories::DEFAULT_CATEGORY_AR => PageCategories::DEFAULT_CATEGORY_AR,
+            );
+//            $pageTypes = array();
+        }
+        else {
 
-        $this->add( array(
+            $pageCategories = array(
+                PageCategories::DEFAULT_CATEGORY => PageCategories::DEFAULT_CATEGORY,
+            );
+//            $pageTypes = array();
+        }
+
+        $this->setAttribute('class', 'form form-horizontal');
+
+        $this->add(array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -52,8 +77,8 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Title',
             ),
-        ) );
-        $this->add( array(
+        ));
+        $this->add(array(
             'name' => 'titleAr',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -63,8 +88,8 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Title in Arabic',
             ),
-        ) );
-        $this->add( array(
+        ));
+        $this->add(array(
             'name' => 'path',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -74,8 +99,8 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Path',
             ),
-        ) );
-        
+        ));
+
         $this->add(array(
             'name' => 'type',
             'type' => 'Zend\Form\Element\Select',
@@ -92,7 +117,7 @@ class PageForm extends Form
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'category',
             'type' => 'Zend\Form\Element\Select',
@@ -102,14 +127,12 @@ class PageForm extends Form
             ),
             'options' => array(
                 'label' => 'Category',
-                "value_options" => array(
-                    PageCategories::DEFAULT_CATEGORY => PageCategories::DEFAULT_CATEGORY,
-                ),
+                "value_options" => $pageCategories,
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-        
-        $this->add( array(
+
+        $this->add(array(
             'name' => 'author',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -120,7 +143,7 @@ class PageForm extends Form
                 'label' => 'Author',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'picture',
             'type' => 'Zend\Form\Element\File',
@@ -134,8 +157,8 @@ class PageForm extends Form
                 )
             ),
         ));
-        
-        $this->add( array(
+
+        $this->add(array(
             'name' => 'summary',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -148,7 +171,8 @@ class PageForm extends Form
                 'label' => 'Summary',
             ),
         ));
-        $this->add( array(
+
+        $this->add(array(
             'name' => 'summaryAr',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -160,8 +184,8 @@ class PageForm extends Form
                 'label' => 'Summary in Arabic',
             ),
         ));
-        
-        $this->add( array(
+
+        $this->add(array(
             'name' => 'body',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -173,9 +197,9 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Body',
             ),
-        ) );
-        
-        $this->add( array(
+        ));
+
+        $this->add(array(
             'name' => 'bodyAr',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -187,41 +211,41 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Body in Arabic',
             ),
-        ) );
-        
-        $this->add( array(
+        ));
+
+        $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
-        ) );
-        
-        $this->add( array(
+        ));
+
+        $this->add(array(
             'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'pull-left btn-inline btn btn-primary',
                 'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
-        ) );
-        
-        $this->add( array(
+        ));
+
+        $this->add(array(
             'name' => FormButtons::SAVE_AND_PUBLISH_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'pull-left btn-inline btn btn-success',
                 'value' => FormButtons::SAVE_AND_PUBLISH_BUTTON_TEXT,
             )
-        ) );
-        
-        $this->add( array(
+        ));
+
+        $this->add(array(
             'name' => FormButtons::UNPUBLISH_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'pull-left btn-inline btn btn-warning',
                 'value' => FormButtons::UNPUBLISH_BUTTON_TEXT,
             )
-        ) );
+        ));
 
-        $this->add( array(
+        $this->add(array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
@@ -229,7 +253,7 @@ class PageForm extends Form
                 'value' => 'Reset',
                 'type' => 'button',
             )
-        ) );
+        ));
     }
 
 }

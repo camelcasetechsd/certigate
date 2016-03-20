@@ -14,12 +14,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th>{{#translate}}Username{{#translate}}</th>
-                <th>{{#translate}}Data{{#translate}}</th>
-                <th>{{#translate}}Taken Action{{#translate}}</th>
-                <th>{{#translate}}Version{{#translate}}</th>
-                <th>{{#translate}}Stored at{{#translate}}</th>
-                <th colspan="2">{{#translate}}Actions{{#translate}}</th>
+                <th>{{#translate}}Username{{/translate}}</th>
+                <th>{{#translate}}Data{{/translate}}</th>
+                <th>{{#translate}}Taken Action{{/translate}}</th>
+                <th>{{#translate}}Version{{/translate}}</th>
+                <th>{{#translate}}Stored at{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +33,9 @@
                             <td>Title</td><td>{{title}}</td>
                         </tr>
                         <tr>
+                            <td>Title in Arabic</td><td>{{titleAr}}</td>
+                        </tr>
+                        <tr>
                             <td>Path</td><td>{{path}}</td>
                         </tr>
                         <tr>
@@ -42,6 +45,15 @@
                              </td>
                              <td hidden="">
                                  {{{body}}}
+                             </td>
+                        </tr>
+                        <tr>
+                             <td>
+                                 Body in Arabic&nbsp;&nbsp;<a href="#" class="expandBody"><span class="glyphicon glyphicon-folder-open" title="{{#translate}}Expand Body{{/translate}}"></span></a>
+                                 &nbsp;&nbsp;<a href="#" class="shortenBody"><span class="glyphicon glyphicon-folder-close" title="{{#translate}}Shorten Body{{/translate}}"></span></a>
+                             </td>
+                             <td hidden="">
+                                 {{{bodyAr}}}
                              </td>
                         </tr>
                     </table>

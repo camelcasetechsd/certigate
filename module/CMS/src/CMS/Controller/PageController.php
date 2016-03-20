@@ -67,12 +67,14 @@ class PageController extends ActionController
     public function newAction()
     {
         $variables = array();
+        $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $pageObj = new Page();
 
         $options = array();
         $options['query'] = $query;
+        $options['locale'] = $applicationLocale;
         $form = new PageForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -121,6 +123,7 @@ class PageController extends ActionController
         if (!$request->isPost()) {
             // extract body data to be able to display it in it's natural form
             $pageObj->body = $pageObj->getBody();
+            $pageObj->bodyAr = $pageObj->getBodyAr();
         }
 
         $options = array();

@@ -15,4 +15,9 @@ class PageCategories
      * default category
      */
     const DEFAULT_CATEGORY = "Default";
+    
+    /**
+     * default category
+     */
+    const DEFAULT_CATEGORY_AR = "الاعتياديه";
 }
