@@ -67,14 +67,15 @@ class PageController extends ActionController
     public function newAction()
     {
         $variables = array();
-        $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
+
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $pageObj = new Page();
 
         $options = array();
         $options['query'] = $query;
-        $options['locale'] = $applicationLocale;
+        $options['translatorHandler'] = $translatorHandler;
         $form = new PageForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();

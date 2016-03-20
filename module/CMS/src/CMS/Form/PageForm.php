@@ -34,6 +34,12 @@ class PageForm extends Form
     protected $locale;
 
     /**
+     *
+     * @var Translation\Helper\translatorHandler 
+     */
+    protected $translatorHandler;
+
+    /**
      * setup form
      * 
      * 
@@ -44,26 +50,11 @@ class PageForm extends Form
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-        $this->locale = $options['locale'];
+        $this->translatorHandler = $options['translatorHandler'];
         unset($options['query']);
         unset($options['locale']);
+        unset($options['translatorHandler']);
         parent::__construct($name, $options);
-
-        $pageCategories = array();
-        $pageTypes = array();
-        if ($this->locale->getCurrentLocale() == Locale::LOCALE_AR_AR) {
-            $pageCategories = array(
-                PageCategories::DEFAULT_CATEGORY_AR => PageCategories::DEFAULT_CATEGORY_AR,
-            );
-//            $pageTypes = array();
-        }
-        else {
-
-            $pageCategories = array(
-                PageCategories::DEFAULT_CATEGORY => PageCategories::DEFAULT_CATEGORY,
-            );
-//            $pageTypes = array();
-        }
 
         $this->setAttribute('class', 'form form-horizontal');
 
@@ -111,10 +102,10 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Type',
                 "value_options" => array(
-                    PageTypes::PAGE_TYPE => PageTypes::PAGE_TYPE,
-                    PageTypes::PRESS_RELEASE_TYPE => PageTypes::PRESS_RELEASE_TYPE,
+                    $this->translatorHandler->translate(PageTypes::PAGE_TYPE) => $this->translatorHandler->translate(PageTypes::PAGE_TYPE),
+                    $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE) => $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE)
                 ),
-                'empty_option' => self::EMPTY_SELECT_VALUE,
+                'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
             ),
         ));
 
@@ -127,8 +118,10 @@ class PageForm extends Form
             ),
             'options' => array(
                 'label' => 'Category',
-                "value_options" => $pageCategories,
-                'empty_option' => self::EMPTY_SELECT_VALUE,
+                "value_options" => array(
+                    $this->translatorHandler->translate(PageCategories::DEFAULT_CATEGORY) => $this->translatorHandler->translate(PageCategories::DEFAULT_CATEGORY),
+                ),
+                'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
             ),
         ));
 
