@@ -54,6 +54,17 @@ class PageForm extends Form
             ),
         ) );
         $this->add( array(
+            'name' => 'titleAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Title in Arabic',
+            ),
+        ) );
+        $this->add( array(
             'name' => 'path',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -137,6 +148,18 @@ class PageForm extends Form
                 'label' => 'Summary',
             ),
         ));
+        $this->add( array(
+            'name' => 'summaryAr',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'class' => 'form-control',
+                'rows' => 3,
+                'cols' => 80,
+            ),
+            'options' => array(
+                'label' => 'Summary in Arabic',
+            ),
+        ));
         
         $this->add( array(
             'name' => 'body',
@@ -149,6 +172,20 @@ class PageForm extends Form
             ),
             'options' => array(
                 'label' => 'Body',
+            ),
+        ) );
+        
+        $this->add( array(
+            'name' => 'bodyAr',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'rows' => 10,
+                'cols' => 80,
+            ),
+            'options' => array(
+                'label' => 'Body in Arabic',
             ),
         ) );
         

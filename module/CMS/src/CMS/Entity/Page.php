@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Random;
 use Utilities\Service\Uri;
+use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * Page Entity
@@ -36,6 +37,21 @@ use Utilities\Service\Uri;
 class Page
 {
 
+    protected $translatedProperties = [
+        'title' => [
+            'en_US' => 'title',
+            'ar_AR' => 'titleAr'
+        ],
+        'summary' => [
+            'en_US' => 'summary',
+            'ar_AR' => 'summaryAr'
+        ],
+        'body' => [
+            'en_US' => 'body',
+            'ar_AR' => 'bodyAr'
+        ]
+    ];
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -57,6 +73,14 @@ class Page
      * @var string
      */
     public $title;
+
+    /**
+     *
+     * @ORM\Column(type="string" , nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $titleAr;
 
     /**
      *
@@ -105,6 +129,14 @@ class Page
      * @var string
      */
     public $summary;
+    
+    /**
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $summaryAr;
 
     /**
      *
@@ -113,6 +145,14 @@ class Page
      * @var string
      */
     public $body;
+
+    /**
+     *
+     * @ORM\Column(type="text" , nullable=true)
+     * @Gedmo\Versioned
+     * @var string
+     */
+    public $bodyAr;
 
     /**
      *
@@ -170,6 +210,32 @@ class Page
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+    
+    /**
+     * Get titleAr
+     * 
+     * 
+     * @access public
+     * @return string titleAr
+     */
+    public function getTitleAr()
+    {
+        return $this->titleAr;
+    }
+
+    /**
+     * Set titleAr
+     * 
+     * 
+     * @access public
+     * @param string $titleAr
+     * @return Page current entity
+     */
+    public function setTitleAr($titleAr)
+    {
+        $this->titleAr = $titleAr;
         return $this;
     }
 
@@ -328,6 +394,32 @@ class Page
         $this->summary = $summary;
         return $this;
     }
+    
+    /**
+     * Get summaryAr
+     * 
+     * 
+     * @access public
+     * @return string summaryAr
+     */
+    public function getSummaryAr()
+    {
+        return $this->summaryAr;
+    }
+
+    /**
+     * Set summaryAr
+     * 
+     * 
+     * @access public
+     * @param string $summaryAr
+     * @return Page current entity
+     */
+    public function setSummaryAr($summaryAr)
+    {
+        $this->summaryAr = $summaryAr;
+        return $this;
+    }
 
     /**
      * Get body
@@ -354,6 +446,33 @@ class Page
         // compress large page content
         // encode data, so that binary data survive transport through transport layers that are not 8-bit clean
         $this->body = base64_encode(bzcompress($body));
+        return $this;
+    }
+    
+    /**
+     * Get bodyAr
+     *      * 
+     * @access public
+     * @return string bodyAr
+     */
+    public function getBodyAr()
+    {
+        return bzdecompress(base64_decode($this->bodyAr));
+    }
+
+    /**
+     * Set bodyAr
+     * 
+     * 
+     * @access public
+     * @param string $bodyAr
+     * @return Page current entity
+     */
+    public function setBodyAr($bodyAr)
+    {
+        // compress large page content
+        // encode data, so that binary data survive transport through transport layers that are not 8-bit clean
+        $this->bodyAr = base64_encode(bzcompress($bodyAr));
         return $this;
     }
 
@@ -455,14 +574,21 @@ class Page
     public function exchangeArray($data = array())
     {
         $this->setType($data["type"]);
+        
         if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
+        }
+        if (array_key_exists('titleAr', $data) & !empty($data['titleAr'])) {
+            $this->setTitle($data["titleAr"]);
         }
         if (array_key_exists('path', $data)) {
             $this->setPath($data["path"]);
         }
         if (array_key_exists('body', $data)) {
             $this->setBody($data["body"]);
+        }
+        if (array_key_exists('bodyAr', $data) & !empty($data['bodyAr'])) {
+            $this->setTitle($data["bodyAr"]);
         }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
@@ -478,6 +604,9 @@ class Page
         }
         if (array_key_exists('summary', $data) && !empty($data["summary"])) {
             $this->setSummary($data["summary"]);
+        }
+        if (array_key_exists('summaryAr', $data) && !empty($data["summaryAr"])) {
+            $this->setSummary($data["summaryAr"]);
         }
     }
 
@@ -526,7 +655,7 @@ class Page
                     ),
                 )
             ));
-            
+
             $pageTypesReflection = new \ReflectionClass('CMS\Service\PageTypes');
             $inputFilter->add(array(
                 'name' => 'type',
@@ -555,9 +684,9 @@ class Page
                 'name' => 'author',
                 'required' => true
             ));
-            
+
             $DirSep = DIRECTORY_SEPARATOR;
-            $targetPath = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'pagePictures' . $DirSep ;
+            $targetPath = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'pagePictures' . $DirSep;
             if (!file_exists($targetPath)) {
                 $oldUmask = umask(0);
                 mkdir($targetPath, 0777);

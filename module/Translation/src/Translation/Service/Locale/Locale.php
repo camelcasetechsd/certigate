@@ -73,7 +73,6 @@ class Locale
         if (isset($_COOKIE[self::COOKIE_KEY])) {
             $this->setCurrentLocale($_COOKIE[self::COOKIE_KEY]);
         }
-        return $this->getCurrentLocale();
     }
 
 }

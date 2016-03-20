@@ -13,6 +13,7 @@ use Users\Entity\Role;
 use Zend\Form\FormInterface;
 use CMS\Service\PageTypes;
 use Utilities\Form\FormButtons;
+use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * Page Controller
@@ -244,10 +245,24 @@ class PageController extends ActionController
             $this->redirect()->toUrl($url);
         }
 
-        $variables = array(
-            "title" => $page->getTitle(),
-            "body" => $page->getBody()
-        );
+        /* @var $applicationLocale ApplicationLocale */
+        $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
+        switch ($applicationLocale->getCurrentLocale()) {
+            case ApplicationLocale::LOCALE_AR_AR:
+                $variables = array(
+                    "title" => $page->getTitleAr(),
+                    "body" => $page->getBodyAr()
+                );
+                break;
+            case ApplicationLocale::LOCALE_EN_US:
+            default:
+                $variables = array(
+                    "title" => $page->getTitle(),
+                    "body" => $page->getBody()
+                );
+                break;
+        }
+
         return new ViewModel($variables);
     }
 

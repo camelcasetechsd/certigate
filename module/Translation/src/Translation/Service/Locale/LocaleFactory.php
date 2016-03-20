@@ -32,6 +32,7 @@ class LocaleFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $locale = new Locale();
+        $locale->loadLocaleFromCookies();
         return $locale;
     }
 
