@@ -26,6 +26,7 @@ class Menus extends AbstractSeed
         // Primary Menu
         $menu = [
             "title" => "Primary Menu",
+            "titleAr" => "Primary Menu",
             "status" => true
         ];
 
@@ -423,6 +424,7 @@ class Menus extends AbstractSeed
         // Admin Menu
         $menu = [
             "title" => "Admin Menu",
+            "titleAr" => "Admin Menu",
             "status" => true
         ];
 

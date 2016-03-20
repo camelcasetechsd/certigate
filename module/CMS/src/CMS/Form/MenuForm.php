@@ -43,6 +43,18 @@ class MenuForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'titleAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Title in Arabic',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'status',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
