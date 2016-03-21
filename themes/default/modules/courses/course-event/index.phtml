@@ -1,0 +1,47 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/course-events/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">Create new Course Event</button></a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">Course Events</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Instructor</th>
+                <th>ATP</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courseEvents}}
+            <tr class="{{^status}}container-inactive{{/status}}">
+                <td>{{course.name}}</td>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>{{ai.firstName}} {{ai.lastName}}</td>
+                <td>{{atp.commercialName}}</td>
+                <td>{{statusText}}</td>
+                <td>
+                    <a href="/course-events/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    {{#status}}
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/course-events/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                </td>
+            </tr>
+            {{/courseEvents}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

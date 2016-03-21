@@ -1,5 +1,7 @@
 <?php
+
 namespace Utilities\Service;
+
 /**
  * MessageTypes
  * 
@@ -9,25 +11,27 @@ namespace Utilities\Service;
  * @package utilities
  * @subpackage service
  */
-class MessageTypes {
-    
+class MessageTypes
+{
+
     /**
      * warning message type
      */
     const WARNING = "warning";
-    
+
     /**
      * danger message type
      */
     const DANGER = "danger";
-    
+
     /**
      * success message type
      */
     const SUCCESS = "success";
-    
+
     /**
      * info message type
      */
     const INFO = "info";
+
 }

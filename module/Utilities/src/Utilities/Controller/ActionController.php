@@ -70,6 +70,35 @@ class ActionController extends AbstractActionController
         }
         return $this->formViewHelper;
     }
+    
+    /**
+     * Get pdf view
+     * 
+     * 
+     * @access public
+     * @param PdfModel $pdfModel
+     * 
+     * @return HttpResponse pdf response
+     */
+    public function getPdfView($pdfModel)
+    {
+        $viewPdfRenderer = $this->getServiceLocator()->get('ViewPdfRenderer');
+        $mustacheRenderer = $this->getServiceLocator()->get('Mustache\View\Renderer');
+        $renderedPdf = $viewPdfRenderer->setHtmlRenderer($mustacheRenderer)->render($pdfModel);
+        $this->getResponse()->getHeaders()->addHeaderLine('content-type', 'application/pdf');
+        $fileName = $pdfModel->getOption('filename');
+        if (isset($fileName)) {
+            if (substr($fileName, -4) != '.pdf') {
+                $fileName .= '.pdf';
+            }
+            
+            $this->getResponse()->getHeaders()->addHeaderLine(
+            	'Content-Disposition', 
+            	'attachment; filename=' . $fileName);
+        }
+        
+        return $this->getResponse()->setContent($renderedPdf);
+    }
 
 }
 

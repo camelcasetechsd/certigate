@@ -22,14 +22,14 @@
             </tr>
         </thead>
         <tbody>
-            {{#courses}}
+            {{#courseEvents}}
             <tr>
                 <td>
-                    {{name}}
+                    {{course.name}}
                 </td>
 
                 <td>
-                    {{brief}}
+                    {{course.brief}}
                 </td>
                 <td>
                     {{startDate}}
@@ -44,7 +44,7 @@
                     {{atp.commercialName}}
                 </td>
                 <td>
-                    {{evaluation.percentage}} %
+                    {{course.evaluation.percentage}} %
                 </td>
                 <td>
                     <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}More{{/translate}}"><span class="glyphicon glyphicon-folder-close"></span></a>
@@ -57,7 +57,7 @@
 
 
 
-            {{/courses}}
+            {{/courseEvents}}
         </tbody>
     </table>
     {{/content}}

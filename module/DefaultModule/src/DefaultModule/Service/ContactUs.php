@@ -6,6 +6,7 @@ use Notifications\Service\MailTempates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Notifications\Service\MailSubjects;
+use Utilities\Service\MessageTypes;
 
 /**
  * ContactUs
@@ -82,9 +83,11 @@ class ContactUs
         );
         $this->notification->notify($mailArray);
 
-        $submissionResult[]['message'] = "Your message has been submitted successfully.";
+        $submissionResult[] = array(
+            'message' => "Your message has been submitted successfully.",
+            'type' => MessageTypes::SUCCESS,
+            );
         $submissionResult['messages'] = $submissionResult;
-        $submissionResult['status'] = true;
         // clear form
         $form->setData(array('name' => '', 'subject' => '', 'message' => '', 'email' => ''));
         return $submissionResult;

@@ -3,7 +3,7 @@
 namespace System\Form;
 
 use Utilities\Form\Form;
-
+use Utilities\Form\ButtonsFieldset;
 
 /**
  * Setting Form
@@ -58,24 +58,9 @@ class SettingForm extends Form {
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
-        $this->add(array(
-            'name' => 'Create',
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'btn btn-success',
-                'value' => 'Create',
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ));
+        // Add buttons fieldset
+        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $this->add($buttonsFieldset);
     }
 
 }

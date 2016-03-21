@@ -28,7 +28,8 @@ class PageFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('CMS\Entity\Page');
-        return new Page($query);
+        $pressReleaseSubscriptionModel = $serviceLocator->get('CMS\Model\PressReleaseSubscription');
+        return new Page($query, $pressReleaseSubscriptionModel);
     }
 
 }

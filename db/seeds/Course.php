@@ -30,8 +30,8 @@ class Course extends AbstractSeed
             "lastName" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
-            "username" => "marcoPolo",
-            "password" => User::hashPassword("marcoPolo"),
+            "username" => "newstudent",
+            "password" => User::hashPassword("student"),
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
@@ -160,10 +160,6 @@ class Course extends AbstractSeed
 
         $course = array(
             "name" => $faker->firstName,
-            "startDate" => date('Y-m-d H:i:s'),
-            "endDate" => date('Y-m-d H:i:s'),
-            "capacity" => 100,
-            "studentsNo" => 10,
             "brief" => $faker->text,
             "time" => $faker->date('Y-m-d H:i:s'),
             "duration" => 20,
@@ -171,11 +167,24 @@ class Course extends AbstractSeed
             "status" => 1,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
-            "atp_id" => $atpId,
-            "ai_id" => $instructorId
         );
         $this->insert('course', $course);
         $courseId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $courseEvent = array(
+            "course_id" => $courseId,
+            "startDate" => date('Y-m-d H:i:s'),
+            "endDate" => date('Y-m-d H:i:s'),
+            "capacity" => 100,
+            "studentsNo" => 10,
+            "atp_id" => $atpId,
+            "ai_id" => $instructorId,
+            "status" => true,
+            "created" => date('Y-m-d H:i:s'),
+            "modified" => null
+        );
+        $this->insert('course_event', $courseEvent);
+        $courseEventId = $this->getAdapter()->getConnection()->lastInsertId();
 
         // creating outlines for the course
         $outline1 = array(
@@ -197,6 +206,14 @@ class Course extends AbstractSeed
             "modified" => null,
         );
         $this->insert('outline', $outline2);
+
+
+
+        $course_events_user = array(
+            'course_event_id' => $courseEventId,
+            'user_id' => $instructorId
+        );
+        $this->insert('course_events_users', $course_events_user);
     }
 
 }

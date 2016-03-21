@@ -9,6 +9,7 @@ use Zend\View\Helper\ServerUrl;
 use Utilities\Service\Time;
 use System\Service\Settings;
 use Notifications\Service\MailSubjects;
+use Courses\Entity\ExamBook;
 
 /**
  * Exam Model
@@ -61,32 +62,10 @@ class Exam
 
     public function saveBookingRequest($data, $config)
     {
-        $bookObj = new \Courses\Entity\ExamBook();
-
-        $course = $this->query->findOneBy('Courses\Entity\Course', array(
-            'id' => $data['courseId']
-        ));
-
-
-        $atc = $this->query->findOneBy('Organizations\Entity\Organization', array(
-            'id' => $data['atcId']
-        ));
-        // exam date
-        $bookObj->setDate(\DateTime::createFromFormat(Time::DATE_FORMAT, $data['date']) );
-        // creation time
-        $bookObj->setCreatedAt(new \DateTime());
-        // number of students
-        $bookObj->setStudentNum($data['studentsNo']);
-        // assign request to course
-        $bookObj->setCourse($course);
-        // assign request to atc
-        $bookObj->setAtc($atc);
+        $bookObj = new ExamBook();
         // admin pending request
-        $bookObj->setAdminStatus(\Courses\Entity\ExamBook::ADMIN_PENDING);
-        // tvtc nothing
-        $bookObj->setTvtcStatus(Null);
-
-        $this->query->setEntity('Courses\Entity\ExamBook')->save($bookObj);
+        $bookObj->setAdminStatus(ExamBook::ADMIN_PENDING);
+        $this->query->setEntity('Courses\Entity\ExamBook')->save($bookObj, $data);
 
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);

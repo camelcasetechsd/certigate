@@ -55,6 +55,12 @@ return array(
             'cmsPageView' => array(
                 'resource' => 'CMS',
             ),
+            'cmsPressReleaseList' => array(
+                'resource' => 'CMS',
+            ),
+            'cmsPressReleaseUnsubscribe' => array(
+                'resource' => 'CMS',
+            ),
             'translationSetLocale' => array(
                 'resource' => 'Translation',
             )

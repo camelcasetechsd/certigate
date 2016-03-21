@@ -6,39 +6,112 @@
 
     <div class="panel-heading">{{#translate}}Courses Calendar{{/translate}}</div>
 
-    <!-- Table -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{#translate}}Course name{{/translate}}</th>
-                <th>{{#translate}}Start Date{{/translate}}</th>
-                <th>{{#translate}}End Date{{/translate}}</th>
-                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#courses}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{startDate}}</td>
-                <td>{{endDate}}</td>
-                <td>
-                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}More{{/translate}}"><span class="glyphicon glyphicon-expand"></span></a>
-                    {{#canEnroll}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Enroll{{/translate}}"><span class="glyphicon glyphicon-plus"></span></a>
-                    {{/canEnroll}}
-                    {{#canLeave}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Leave{{/translate}}"><span class="glyphicon glyphicon-minus"></span></a>
-                    {{/canLeave}}
-                </td>
-            </tr>
-            {{/courses}}
-            </td>
-            </tr>
-        </tbody>
-    </table>
+    {{#courses}}
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="media col-md-10">
+
+            <div class="media-body">
+                <div class="panel-default">
+
+
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h4>{{name}}</h4></div> <div class="text-right"><a href="/courses/outlines/generate-pdf/{{id}}">Download Outlines</a> &nbsp; <a href="#">Periodical Notification</a></div></div>
+                    </div><div class="clearfix"></div>
+                    <div>
+                        <p>{{brief}}</p>
+                        <ul class="list-inline list-unstyled">
+                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
+                        </ul>
+                    </div>
+
+                    {{#courseEvents.count}}
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>ATP Name</th>
+                                <th>ATP City</th>
+                                <th>&nbsp;</th>
+                                <th colspan="2">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#courseEvents}}
+                            <tr>
+                                <td>
+                                    {{startDate}}
+                                </td>
+                                <td>
+                                    {{endDate}}
+                                </td>
+                                <td>
+                                    {{atp.commercialName}}
+                                </td>
+                                <td>
+                                    {{atp.city}}
+                                </td>
+                                <td>
+                                    <a href="#">Notify me before start</a>
+                                </td>
+                                <td>
+                                    {{#canEnroll}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">Enroll</button></a>
+                                    {{/canEnroll}}
+                                    {{#canLeave}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">Cancel</button></a>
+                                    {{/canLeave}}
+                                    {{#isFull}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Course Full
+                                    {{/isFull}}
+                                </td>
+                            </tr>
+
+                            {{/courseEvents}}
+
+                        </tbody>
+                    </table>
+                    {{/courseEvents.count}}
+
+                    
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="col-md-1">&nbsp;</div>
+    </div>
+    {{/courses}}
 </div>
+
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
 {{/content}}
 {{/layout}}
