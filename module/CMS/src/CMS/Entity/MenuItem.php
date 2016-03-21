@@ -18,6 +18,7 @@ use Utilities\Service\Uri;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $title
+ * @property string $titleAr
  * @property int $type
  * @property string $directUrl
  * @property CMS\Entity\Page $page
@@ -65,6 +66,13 @@ class MenuItem
      * @var string
      */
     public $title;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $titleAr;
 
     /**
      * 
@@ -157,6 +165,18 @@ class MenuItem
     }
 
     /**
+     * Get title in arabic
+     * 
+     * 
+     * @access public
+     * @return string title
+     */
+    public function getTitleAr()
+    {
+        return $this->titleAr;
+    }
+
+    /**
      * Set title
      * 
      * 
@@ -164,9 +184,23 @@ class MenuItem
      * @param string $title
      * @return MenuItem current entity
      */
-    public function setTitle( $title )
+    public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Set title in arabic
+     * 
+     * 
+     * @access public
+     * @param string $titleAr
+     * @return MenuItem current entity
+     */
+    public function setTitleAr($titleAr)
+    {
+        $this->titleAr = $titleAr;
         return $this;
     }
 
@@ -190,12 +224,12 @@ class MenuItem
      * @param int $type
      * @return MenuItem current entity
      */
-    public function setType( $type )
+    public function setType($type)
     {
         $this->type = $type;
         return $this;
     }
-    
+
     /**
      * Get directUrl
      * 
@@ -216,7 +250,7 @@ class MenuItem
      * @param string directUrl 
      * @return MenuItem current entity
      */
-    public function setDirectUrl( $directUrl )
+    public function setDirectUrl($directUrl)
     {
         $this->directUrl = $directUrl;
         return $this;
@@ -242,7 +276,7 @@ class MenuItem
      * @param CMS\Entity\Page $page
      * @return MenuItem current entity
      */
-    public function setPage( $page )
+    public function setPage($page)
     {
         $this->page = $page;
         return $this;
@@ -268,7 +302,7 @@ class MenuItem
      * @param CMS\Entity\Menu $menu
      * @return MenuItem current entity
      */
-    public function setMenu( $menu )
+    public function setMenu($menu)
     {
         $this->menu = $menu;
         return $this;
@@ -294,9 +328,9 @@ class MenuItem
      * @param CMS\Entity\MenuItem $parent
      * @return MenuItem current entity
      */
-    public function setParent( $parent )
+    public function setParent($parent)
     {
-        if (empty( $parent )) {
+        if (empty($parent)) {
             $parent = null;
         }
         $this->parent = $parent;
@@ -323,7 +357,7 @@ class MenuItem
      * @param int $weight
      * @return MenuItem current entity
      */
-    public function setWeight( $weight )
+    public function setWeight($weight)
     {
         $this->weight = $weight;
         return $this;
@@ -349,7 +383,7 @@ class MenuItem
      * @param int $status
      * @return MenuItem current entity
      */
-    public function setStatus( $status )
+    public function setStatus($status)
     {
         $this->status = $status;
         return $this;
@@ -414,7 +448,7 @@ class MenuItem
      */
     public function getArrayCopy()
     {
-        return get_object_vars( $this );
+        return get_object_vars($this);
     }
 
     /**
@@ -446,8 +480,8 @@ class MenuItem
     {
         $menu = $this->getMenu();
         $nestedTitle = $menu->getId() . self::MENU_ITEM_TITLE_SEPARATOR . $menu->getTitle() . self::MENU_ITEM_TITLE_SEPARATOR;
-        $nestedTitle .= str_repeat( '- ', $this->getDepthLevel() ) . $this->getTitle();
-        if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object( $menu ) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
+        $nestedTitle .= str_repeat('- ', $this->getDepthLevel()) . $this->getTitle();
+        if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object($menu) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
             $nestedTitle .= ' [' . Status::STATUS_INACTIVE_TEXT . ']';
         }
         return $nestedTitle;
@@ -460,31 +494,34 @@ class MenuItem
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray( $data = array() )
+    public function exchangeArray($data = array())
     {
-        if (array_key_exists( 'title', $data )) {
-            $this->setTitle( $data["title"] );
+        if (array_key_exists('title', $data)) {
+            $this->setTitle($data["title"]);
         }
-        if (array_key_exists( 'type', $data )) {
-            $this->setType( $data["type"] );
+        if (array_key_exists('title', $data)) {
+            $this->setTitleAr($data["titleAr"]);
         }
-        if (array_key_exists( 'directUrl', $data )) {
-            $this->setDirectUrl( $data["directUrl"] );
+        if (array_key_exists('type', $data)) {
+            $this->setType($data["type"]);
         }
-        if (array_key_exists( 'page', $data ) && !empty($data['page'])) {
-            $this->setPage( $data["page"] );
+        if (array_key_exists('directUrl', $data)) {
+            $this->setDirectUrl($data["directUrl"]);
         }
-        if (array_key_exists( 'menu', $data )) {
-            $this->setMenu( $data["menu"] );
+        if (array_key_exists('page', $data) && !empty($data['page'])) {
+            $this->setPage($data["page"]);
         }
-        if (array_key_exists( 'parent', $data )) {
-            $this->setParent( $data["parent"] );
+        if (array_key_exists('menu', $data)) {
+            $this->setMenu($data["menu"]);
         }
-        if (array_key_exists( 'weight', $data )) {
-            $this->setWeight( $data["weight"] );
+        if (array_key_exists('parent', $data)) {
+            $this->setParent($data["parent"]);
         }
-        if (array_key_exists( 'status', $data )) {
-            $this->setStatus( $data["status"] );
+        if (array_key_exists('weight', $data)) {
+            $this->setWeight($data["weight"]);
+        }
+        if (array_key_exists('status', $data)) {
+            $this->setStatus($data["status"]);
         }
     }
 
@@ -496,9 +533,9 @@ class MenuItem
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter( InputFilterInterface $inputFilter )
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception( "Not used" );
+        throw new \Exception("Not used");
     }
 
     /**
@@ -511,41 +548,41 @@ class MenuItem
      * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter( $query )
+    public function getInputFilter($query)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'title',
                 'required' => true
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'type',
                 'required' => true
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'directUrl',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Uri',
                         'options' => array(
-                            'uriHandler' => new Uri(/*$uri =*/ null, /*$acceptEmptyUri =*/ true),
+                            'uriHandler' => new Uri(/* $uri = */ null, /* $acceptEmptyUri = */ true),
                             'allowRelative' => true,
                             'allowAbsolute' => true,
                         )
                     )
                 )
-            ) );
+            ));
             $inputFilter->add(array(
                 'name' => 'page',
                 'required' => true,
             ));
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'menu',
                 'required' => false
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'weight',
                 'required' => true,
                 'validators' => array(
@@ -559,8 +596,8 @@ class MenuItem
                         'name' => 'Digits',
                     ),
                 )
-            ) );
-            $inputFilter->add( array(
+            ));
+            $inputFilter->add(array(
                 'name' => 'parent',
                 'required' => false,
                 'validators' => array(
@@ -574,7 +611,7 @@ class MenuItem
                         )
                     )
                 )
-            ) );
+            ));
             $this->inputFilter = $inputFilter;
         }
 
