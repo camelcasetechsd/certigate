@@ -257,6 +257,9 @@ foreach ($query->rows as $result) {
 // Front Controller
 $controller = new Front($registry);
 
+// Autologin
+$controller->addPreAction(new Action('common/autologin'));
+
 // Maintenance Mode
 $controller->addPreAction(new Action('common/maintenance'));
 

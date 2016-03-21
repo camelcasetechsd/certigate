@@ -5,8 +5,6 @@ namespace Users\Auth;
 use Utilities\Service\Query\Query;
 use Users\Auth\Adapter;
 use Zend\Authentication\AuthenticationService;
-use EStore\Service\ApiCalls;
-use Zend\Http\Request;
 
 /**
  * Authentication
@@ -125,7 +123,8 @@ class Authentication
             'photo' => $user->getPhoto(),
             'status' => $user->getStatus(),
             'roles' => $user->getRolesNames(),
-            'agreements' => $user->getRolesAgreementsStatus()
+            'agreements' => $user->getRolesAgreementsStatus(),
+            'customerId' => $user->getCustomerId()
         ));
     }
     
