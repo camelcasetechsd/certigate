@@ -112,7 +112,6 @@ class Authentication
         }
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
-        $this->loginEstoreCustomer($user);
         // here to add new entries to the session
         $storage->write(array(
             'id' => $user->id,
@@ -142,28 +141,6 @@ class Authentication
         $auth = new AuthenticationService();
         // clear user-related data in session
         $auth->clearIdentity();
-    }
-    
-    /**
-     * Login user in estore
-     * 
-     * @access private
-     * @param Users\Entity\User $user
-     */
-    private function loginEstoreCustomer($user)
-    {
-        $estoreApiEdge = ApiCalls::CUSTOMER_LOGIN;
-        $parameters = array(
-            'customer_id' => $user->getCustomerId(),
-            'firstname' => $user->getFirstName(),
-            'lastname' => $user->getLastName(),
-            'email' => $user->getEmail(),
-            'telephone' => $user->getMobile(),
-            'session_id' => $_COOKIE["ESTORESESSID"],
-        );
-        $queryParameters = array();
-        $return = $this->estoreApi->callEdge(/* $edge = */ $estoreApiEdge, /* $method = */ Request::METHOD_POST, $queryParameters, $parameters);
-        var_dump($return);die;
     }
 
 }

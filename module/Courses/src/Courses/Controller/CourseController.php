@@ -36,23 +36,6 @@ class CourseController extends ActionController
      */
     public function indexAction()
     {
-        echo "<pre>";
-        var_Dump($_COOKIE);
-        session_id($_COOKIE["PHPSESSID"]);
-        if (session_status() != PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-        var_dump($_SESSION);
-        session_write_close();
-        session_id($_COOKIE["ESTORESESSID"]);
-        session_start();
-        var_dump($_SESSION);
-        session_write_close();
-        session_id($_COOKIE["PHPSESSID"]);
-        session_start();
-        var_dump($_SESSION);
-        session_write_close();
-        die;
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
