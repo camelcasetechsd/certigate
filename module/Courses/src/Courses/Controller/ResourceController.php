@@ -94,6 +94,7 @@ class ResourceController extends ActionController
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         if (!is_null($courseId)) {
             $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
             if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
@@ -113,6 +114,7 @@ class ResourceController extends ActionController
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
+        $options['translatorHandler'] = $translatorHandler;
         $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
 
@@ -194,10 +196,10 @@ class ResourceController extends ActionController
             $data = $request->getPost()->toArray();
             $resourceModel->updateListedResources($data, $isAdminUser, $userEmail);
         }
-        
+
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
-        
+
         $variables['courseId'] = $courseId;
         $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
