@@ -2,9 +2,9 @@
 {{<layout}}
 {{$content}}
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails">{{#translation}}Course Details{{/translation}}</a></li>
-    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">{{#translation}}Course Evaluation{{/translation}}</a></li>
-    <li role="presentation" class="active"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">{{#translation}}Course Resources{{/translation}}</a></li>
+    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails">{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">{{#translate}}Course Evaluation{{/translate}}</a></li>
+    <li role="presentation" class="active"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -12,7 +12,7 @@
     <div role="tabpanel" class="tab-pane" id="courseDetails">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>{{#translation}}Edit Course{{/translation}}</h3>
+                <h3>{{#translate}}Edit Course{{/translate}}</h3>
             </div>
             <div class="panel-body">
                 {{{courseForm}}}
@@ -24,7 +24,7 @@
         <br>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>{{#translation}}Upload Resources{{/translation}}</h3>
+                <h3>{{#translate}}Upload Resources{{/translate}}</h3>
             </div>
             <div class="panel-body">
                 {{{resourceForm}}}

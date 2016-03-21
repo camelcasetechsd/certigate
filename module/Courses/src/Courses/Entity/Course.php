@@ -19,11 +19,13 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $name
+ * @property string $nameAr
  * @property Doctrine\Common\Collections\ArrayCollection $resources
  * @property Doctrine\Common\Collections\ArrayCollection $outlines
  * @property Doctrine\Common\Collections\ArrayCollection $courseEvents
  * @property Doctrine\Common\Collections\ArrayCollection $exambooks
  * @property string $brief
+ * @property string $briefAr
  * @property \DateTime $time
  * @property int $duration
  * @property int $isForInstructor
@@ -37,6 +39,21 @@ use Utilities\Service\Time;
  */
 class Course
 {
+
+    /**
+     *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'name' => [
+            'en_US' => 'name',
+            'ar_AR' => 'nameAr'
+        ],
+        'brief' => [
+            'en_US' => 'brief',
+            'ar_AR' => 'briefAr'
+        ],
+    ];
 
     /**
      *
@@ -61,10 +78,24 @@ class Course
 
     /**
      * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $nameAr;
+
+    /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="text")
      * @var string
      */
     public $brief;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="text")
+     * @var string
+     */
+    public $briefAr;
 
     /**
      * @Gedmo\Versioned
@@ -132,7 +163,7 @@ class Course
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $courseEvents;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="course")
      * @var Doctrine\Common\Collections\ArrayCollection
@@ -295,7 +326,7 @@ class Course
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get isForInstructor
      * 
@@ -320,6 +351,56 @@ class Course
     {
         $this->isForInstructor = $isForInstructor;
         return $this;
+    }
+
+    /**
+     * Get name in Arabic
+     * 
+     * 
+     * @access public
+     * @return \DateTime created
+     */
+    function getNameAr()
+    {
+        return $this->nameAr;
+    }
+
+    /**
+     * Set name in Arabic
+     * 
+     * 
+     * @access public
+     * @param int $nameAr
+     * @return Course
+     */
+    function setNameAr($nameAr)
+    {
+        $this->nameAr = $nameAr;
+    }
+
+    /**
+     * Get brief in Arabic
+     * 
+     * 
+     * @access public
+     * @return \DateTime created
+     */
+    function getBriefAr()
+    {
+        return $this->briefAr;
+    }
+
+    /**
+     * Set brief in Arabic
+     * 
+     * 
+     * @access public
+     * @param int $briefAr
+     * @return Course
+     */
+    function setBriefAr($briefAr)
+    {
+        $this->briefAr = $briefAr;
     }
 
     /**
@@ -397,6 +478,7 @@ class Course
         $this->courseEvents = $courseEvents;
         return $this;
     }
+
     /**
      * Get Resources
      * 
@@ -519,7 +601,7 @@ class Course
     {
         foreach ($outlines as $outline) {
             $outline->setCourse($this);
-            if(is_null($outline->getStatus())){
+            if (is_null($outline->getStatus())) {
                 $outline->setStatus();
             }
             $this->outlines->add($outline);
@@ -578,7 +660,7 @@ class Course
         $this->examBooks = $examBooks;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -603,14 +685,22 @@ class Course
         if (array_key_exists('name', $data)) {
             $this->setName($data["name"]);
         }
+        if (array_key_exists('nameAr', $data)) {
+            $this->setNameAr($data["nameAr"]);
+        }
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
         if (array_key_exists('isForInstructor', $data)) {
             $this->setIsForInstructor($data["isForInstructor"]);
         }
-        $this->setBrief($data["brief"])
-                ->setDuration($data["duration"])
+        if (array_key_exists('brief', $data)) {
+            $this->setBrief($data["brief"]);
+        }
+        if (array_key_exists('briefAr', $data)) {
+            $this->setBriefAr($data["briefAr"]);
+        }
+        $this->setDuration($data["duration"])
                 ->setTime($data["time"])
         ;
     }
@@ -648,9 +738,20 @@ class Course
             ));
 
             $inputFilter->add(array(
+                'name' => 'nameAr',
+                'required' => true
+            ));
+
+            $inputFilter->add(array(
                 'name' => 'brief',
                 'required' => true,
             ));
+
+            $inputFilter->add(array(
+                'name' => 'briefAr',
+                'required' => true,
+            ));
+
             $inputFilter->add(array(
                 'name' => 'time',
                 'required' => true,

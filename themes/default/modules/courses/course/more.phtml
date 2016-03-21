@@ -36,11 +36,15 @@
                         <tr>
                             <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
                         </tr><tr>
+                            <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
+                        </tr><tr>
                             <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
                         </tr><tr>
                             <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
                         </tr><tr>
-                            <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} Day(s)</td>
+                            <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,7 +56,7 @@
     <div role="tabpanel" class="tab-pane fade" id="courseEvents">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>{{#translation}}Course Events{{/translation}}</h3>
+                <h3>{{#translate}}Course Events{{/translate}}</h3>
             </div>
             <div class="panel-body">
 
@@ -101,6 +105,7 @@
                         {{#outlines.count}}
                         <tr>
                             <th>{{#translate}}Title{{/translate}}</th>
+                            <th>{{#translate}}Title in Arabic{{/translate}}</th>
                             <th>{{#translate}}Duration (minutes){{/translate}}</th>
                         </tr>
                         {{/outlines.count}}
@@ -110,6 +115,7 @@
                         {{#statusActive}}
                         <tr>
                             <td>{{title}}</td>
+                            <td>{{titleAr}}</td>
                             <td>{{duration}}</td>
                         </tr>
                         {{/statusActive}}

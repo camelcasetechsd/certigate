@@ -15,6 +15,7 @@ use Utilities\Service\Status;
  *  
  * @property int $id
  * @property string $title
+ * @property string $titleAr
  * @property int $duration
  * @property int $status
  * @property Courses\Entity\Course $course
@@ -26,6 +27,17 @@ use Utilities\Service\Status;
  */
 class Outline
 {
+
+    /**
+     *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'title' => [
+            'en_US' => 'title',
+            'ar_AR' => 'titleAr'
+        ],
+    ];
 
     /**
      * @ORM\Id
@@ -41,6 +53,13 @@ class Outline
      * @var string
      */
     public $title;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $titleAr;
 
     /**
      * @Gedmo\Versioned
@@ -63,7 +82,7 @@ class Outline
      * @var Courses\Entity\Course
      */
     public $course;
-    
+
     /**
      *
      * @ORM\Column(type="date")
@@ -117,6 +136,32 @@ class Outline
     }
 
     /**
+     * Get Title in Arabic
+     * 
+     * 
+     * @access public
+     * @return string title
+     */
+    public function getTitleAr()
+    {
+        return $this->titleAr;
+    }
+
+    /**
+     * Set title in Arabic
+     * 
+     * 
+     * @access public
+     * @param string $titleAr
+     * @return Outline
+     */
+    public function setTitleAr($titleAr)
+    {
+        $this->titleAr = $titleAr;
+        return $this;
+    }
+
+    /**
      * Get duration
      * 
      * 
@@ -164,7 +209,7 @@ class Outline
      */
     public function setStatus($status = null)
     {
-        if(is_null($status)){
+        if (is_null($status)) {
             $status = Status::STATUS_NOT_APPROVED;
         }
         $this->status = $status;
@@ -196,7 +241,7 @@ class Outline
         $this->course = $course;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -268,14 +313,16 @@ class Outline
      */
     public function exchangeArray($data = array())
     {
-        if(isset($data["course"])){
+        if (isset($data["course"])) {
             $this->setCourse($data["course"]);
         }
-        if(isset($data["status"])){
+        if (isset($data["status"])) {
             $this->setStatus($data["status"]);
         }
         $this->setTitle($data["title"])
+                ->setTitleAr($data["titleAr"])
                 ->setDuration($data["duration"])
         ;
     }
+
 }

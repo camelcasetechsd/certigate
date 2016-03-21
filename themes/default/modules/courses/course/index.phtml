@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>{{#translate}}Name{{/translate}}</th>
+                <th>{{#translate}}Name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
@@ -20,6 +21,7 @@
             {{#courses}}
             <tr class="{{^status}}container-inactive{{/status}}">
                 <td>{{name}}</td>
+                <td>{{nameAr}}</td>
                 <td>{{statusText}}</td>
 
                 <td>

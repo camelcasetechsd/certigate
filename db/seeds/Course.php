@@ -160,7 +160,9 @@ class Course extends AbstractSeed
 
         $course = array(
             "name" => $faker->firstName,
+            "nameAr" => $faker->firstName,
             "brief" => $faker->text,
+            "briefAr" => $faker->text,
             "time" => $faker->date('Y-m-d H:i:s'),
             "duration" => 20,
             "isForInstructor" => 0,
@@ -189,6 +191,7 @@ class Course extends AbstractSeed
         // creating outlines for the course
         $outline1 = array(
             "title" => "outline1",
+            "titleAr" => "outline1",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => 1,
@@ -199,6 +202,7 @@ class Course extends AbstractSeed
 
         $outline2 = array(
             "title" => "outline2",
+            "titleAr" => "outline2",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => 1,

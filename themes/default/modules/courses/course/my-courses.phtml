@@ -5,15 +5,15 @@
 
 {{^messages}}
 <div class="panel panel-default">
-    <div class="panel-heading"><h3>{{#translation}}My Courses{{#translation}}</h3></div>
+    <div class="panel-heading"><h3>{{#translate}}My Courses{{/translate}}</h3></div>
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>{{#translation}}Course name{{#translation}}</th>
-                <th>{{#translation}}Start Date{{#translation}}</th>
-                <th>{{#translation}}End Date{{#translation}}</th>
-                <th colspan="2">{{#translation}}View Details{{#translation}}</th>
+                <th>{{#translate}}Course name{{/translate}}</th>
+                <th>{{#translate}}Start Date{{/translate}}</th>
+                <th>{{#translate}}End Date{{/translate}}</th>
+                <th colspan="2">{{#translate}}View Details{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>
-                    <a href="/courses/more/{{course_id}}/{{id}}">{{#translation}}View More{{#translation}}..</a>
+                    <a href="/courses/more/{{course_id}}/{{id}}">{{#translate}}View More{{/translate}}..</a>
                 </td>
             </tr>
             {{/courseEvents}}

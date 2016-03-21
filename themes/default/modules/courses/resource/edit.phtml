@@ -22,19 +22,19 @@
                 <h3>Edit Resources</h3>
             </div>
             <div class="panel-body">
-                <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">{{#translation}}Bulk upload Resources{{/translation}}</button></a>
+                <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
                 <br><br>
                 <form id="resourcesForm" action="" method="POST" >
                     <div class="panel panel-default">
-                        <div class="panel-heading">{{#translation}}Resources{{/translation}}</div>
+                        <div class="panel-heading">{{#translate}}Resources{{/translate}}</div>
                         <!-- Table -->
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>{{#translation}}Name{{/translation}}</th>
-                                    <th>{{#translation}}Type{{/translation}}</th>
-                                    <th>{{#translation}}File{{/translation}}</th>
-                                    <th colspan="2">{{#translation}}Actions{{/translation}}</th>
+                                    <th>{{#translate}}Name{{/translate}}</th>
+                                    <th>{{#translate}}Type{{/translate}}</th>
+                                    <th>{{#translate}}File{{/translate}}</th>
+                                    <th colspan="2">{{#translate}}Actions{{/translate}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,14 +45,14 @@
                                     </td>
                                     <td>
                                         <select class="resourceType form-control editableInput" value='{{type}}'>
-                                            <option value="1">{{#translation}}Presentations{{/translation}}</option>
-                                            <option value="2">{{#translation}}Activities{{/translation}}</option>
-                                            <option value="3">{{#translation}}Exams{{/translation}}</option>
+                                            <option value="1">{{#translate}}Presentations{{/translate}}</option>
+                                            <option value="2">{{#translate}}Activities{{/translate}}</option>
+                                            <option value="3">{{#translate}}Exams{{/translate}}</option>
                                         </select>
                                     </td>
-                                    <td><a target="_blank" href="/resources/download/{{id}}" >{{#translation}}Download{{/translation}}</a></td>
+                                    <td><a target="_blank" href="/resources/download/{{id}}" >{{#translate}}Download{{/translate}}</a></td>
                                     <td>
-                                        <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="{{#translation}}Delete{{/translation}}">{{#translation}}Remove{{/translation}}</a>
+                                        <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}">{{#translate}}Remove{{/translate}}</a>
                                     </td>
                                 </tr>
                                 {{/resources}}
