@@ -55,7 +55,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter First Name',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'First Name',
@@ -66,7 +66,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Middle Name',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Middle Name',
@@ -78,7 +78,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Last Name',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Last Name',
@@ -91,7 +91,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter User Name',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'User Name',
@@ -104,7 +104,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Mobile',
@@ -115,7 +115,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Phone',
@@ -129,7 +129,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Email',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Email',
@@ -140,7 +140,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Email',
             'attributes' => array(
                 'placeholder' => 'Confirm User Email',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Confirm Email',
@@ -151,7 +151,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
                 'placeholder' => 'Enter Password',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Password',
@@ -162,7 +162,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
                 'placeholder' => 'Confirm User Password',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Confirm Password',
@@ -174,13 +174,10 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Security Question',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
-                'label' => '<p class="required">Security Question</p> <p><ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul></p>',
-                'label_options' => array(
-                    'disable_html_escape' => true,
-                )
+                'label' => 'Security Question'
             ),
         ));
         $this->add(array(
@@ -189,7 +186,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Security Answer',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Security Answer',
@@ -202,7 +199,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Identification Type (National ID, or Passport, etc)',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Identification Type',
@@ -214,7 +211,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Identification Number',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Identification Number',
@@ -225,7 +222,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control date',
+                'class' => 'form-register date',
                 'type' => 'text',
             ),
             'options' => array(
@@ -238,7 +235,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control date',
+                'class' => 'form-register date',
                 'type' => 'text',
             ),
             'options' => array(
@@ -250,7 +247,7 @@ class UserForm extends Form
             'name' => 'nationality',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-register',
                 'required' => 'required',
             ),
             'options' => array(
@@ -263,7 +260,7 @@ class UserForm extends Form
             'name' => 'language',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-register',
                 'required' => 'required',
             ),
             'options' => array(
@@ -279,7 +276,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Address Line 1',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Address Line 1',
@@ -290,7 +287,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Address Line 2',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Address Line 2',
@@ -302,7 +299,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter City',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'City',
@@ -313,7 +310,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Zip Code',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Zip Code',
@@ -323,7 +320,7 @@ class UserForm extends Form
             'name' => 'country',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-register',
                 'required' => 'required',
             ),
             'options' => array(
@@ -345,10 +342,10 @@ class UserForm extends Form
             'name' => 'roles',
             'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'mar',
             ),
             'options' => array(
-                'label' => '<label class="legendLabel"><div class="col-md-4">Roles</div><div>Agreements</div></label>',
+                'label' => '<label class="legendLabel"><div>Roles</div></label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
                 'property' => 'name',
@@ -391,7 +388,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Captcha',
                 'name' => 'captcha',
                 'attributes' => array(
-                    'class' => 'form-control classCaptcha',
+                    'class' => 'form-register classCaptcha',
                     'required' => 'required',
                 ),
                 'options' => array(
@@ -404,8 +401,8 @@ class UserForm extends Form
                         'options' => array(
                             'font' => APPLICATION_PATH . '/fonts/Arctik.ttf',
                             'width' => 200,
-                            'height' => 100,
-                            'dotNoiseLevel' => 90,
+                            'height' => 65,
+                            'dotNoiseLevel' => 20,
                             'lineNoiseLevel' => 3,
                         ),
                     ),
