@@ -503,7 +503,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
+        if ($auth->hasIdentity() && ($courseEvent->getHideFromCalendar() || ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId()))) {
             $notAuthorized = true;
         }
 
@@ -542,7 +542,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
+        if ($auth->hasIdentity() && ($courseEvent->getHideFromCalendar() || ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId()))) {
             $notAuthorized = true;
         }
         if ($notAuthorized === true) {
