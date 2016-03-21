@@ -5,19 +5,19 @@
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Exam Requests</div>
+    <div class="panel-heading">{{#translation}}Exam Requests{{/translation}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Course name</th>
-                <th>Authorized Testing Center</th>
-                <th>Exam Date</th>
-                <th>Students No.</th>
-                <th>Admin Status</th>
-                <th>TVTC Status</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translation}}Course name{{/translation}}</th>
+                <th>{{#translation}}Authorized Testing Center{{/translation}}</th>
+                <th>{{#translation}}Exam Date{{/translation}}</th>
+                <th>{{#translation}}Students No.{{/translation}}</th>
+                <th>{{#translation}}Admin Status{{/translation}}</th>
+                <th>{{#translation}}TVTC Status{{/translation}}</th>
+                <th colspan="2">{{#translation}}Actions{{/translation}}</th>
             </tr>
         </thead>
         <tbody>
@@ -42,9 +42,9 @@
                 {{/isTvtcPending}}
                 <td>
                     {{#isAdminPending}}
-                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="Accept"><span class="glyphicon glyphicon-ok"></span></a>
+                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translation}}Accept{{/translation}}"><span class="glyphicon glyphicon-ok"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translation}}Delete{{/translation}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminPending}}
                 </td>
             </tr>

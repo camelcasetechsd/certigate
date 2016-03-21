@@ -4,21 +4,21 @@
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Courses Outlines</div>
+    <div class="panel-heading">{{#translation}}Courses Outlines{{/translation}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>title</th>
-                <th>duration</th>
+                <th>{{#translation}}Title{{/translation}}</th>
+                <th>{{#translation}}Duration{{/translation}}</th>
             </tr>
         </thead>
         <tbody>
             {{#outlines}}
             <tr>
                 <td>{{title}}</td>
-                <td>{{duration}} mins</td>
+                <td>{{duration}} {{#translation}}mins{{/translation}}</td>
             </tr>
             {{/outlines}}
             </td>
