@@ -42,6 +42,18 @@ class RoleForm extends Form {
         ));
         
         $this->add(array(
+            'name' => 'nameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Name in Arabic',
+            ),
+        ));
+        
+        $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));

@@ -107,7 +107,10 @@ class Course extends AbstractSeed
 
         // getting authorized Instuctor role id 
 
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
+        $instructorRole = array(
+            'name' => Role::INSTRUCTOR_ROLE,
+            'nameAr' => Role::INSTRUCTOR_ROLE
+        );
         $this->insert('role', $instructorRole);
         $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
@@ -184,7 +187,7 @@ class Course extends AbstractSeed
             "modified" => null,
         );
         $this->insert('outline', $outline1);
-       
+
         $outline2 = array(
             "title" => "outline2",
             "course_id" => $courseId,

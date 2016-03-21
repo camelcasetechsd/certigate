@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Title in Arabic{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
@@ -19,6 +20,7 @@
             {{#roles}}
             <tr>
                 <td>{{name}}</td>
+                <td>{{nameAr}}</td>
                 <td>
                     <a href="/roles/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;

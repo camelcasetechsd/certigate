@@ -48,6 +48,17 @@ class MenuItem
 
     /**
      *
+     * @var Array 
+     */
+    protected $translatedProperties = [
+        'title' => [
+            'en_US' => 'title',
+            'ar_AR' => 'titleAr'
+        ]
+    ];
+
+    /**
+     *
      * @var InputFilter validation constraints 
      */
     private $inputFilter;
