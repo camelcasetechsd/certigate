@@ -6,6 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6"><h1>{{commercialName}}</h1></div>
+        <div class="col-sm-6"><h1>{{commercialNameAr}}</h1></div>
     </div>
     <div class="row">
         <div class="col-sm-3">
@@ -13,11 +14,13 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">{{#translate}}Profile{{/translate}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Commercial Name{{/translate}}</strong></span>{{commercialName}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Commercial Name in Arabic{{/translate}}</strong></span>{{commercialNameAr}}</li>
             </ul> 
 
             <ul class="list-group">
                 <li class="list-group-item text-muted">{{#translate}}Owner Profile{{/translate}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner{{/translate}}</strong></span>{{ownerName}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner in Arabic{{/translate}}</strong></span>{{ownerNameAr}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner National Id{{/translate}}</strong></span>{{ownerNationalId}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}CR No.{{/translate}}</strong></span>{{CRNo}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}CR Expiration Date{{/translate}}</strong></span>{{CRExpiration}}</li>
@@ -45,11 +48,14 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">{{#translate}}Find Us{{/translate}}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address{{/translate}}</strong></span>{{addressLine1}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address in Arabic{{/translate}}</strong></span>{{addressLine1Ar}}</li>
                 {{#addressLine2}}
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address{{/translate}}</strong></span>{{addressLine1}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address{{/translate}}</strong></span>{{addressLine2}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address in Arabic{{/translate}}</strong></span>{{addressLine2Ar}}</li>
                 {{/addressLine2}}
                 <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}City{{/translate}}</strong></span>{{city}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}ZipCode{{/translate}}</strong></span>{{zipCode}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}City in Arabic{{/translate}}</strong></span>{{cityAr}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Zip Code{{/translate}}</strong></span>{{zipCode}}</li>
 
             </ul>
         </div>

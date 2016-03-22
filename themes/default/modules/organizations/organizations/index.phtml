@@ -12,10 +12,13 @@
         <thead>
             <tr>
                 <th>{{#translate}}Commercial name{{/translate}}</th>
+                <th>{{#translate}}Commercial name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Owner name{{/translate}}</th>
+                <th>{{#translate}}Owner name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Type{{/translate}}</th>
                 <th>{{#translate}}E-mail{{/translate}}</th>
                 <th>{{#translate}}City{{/translate}}</th>
+                <th>{{#translate}}City in Arabic{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
@@ -24,10 +27,13 @@
             {{#organizations}}
             <tr class="{{^status}}container-inactive{{/status}}">
                 <td><a href="{{website}}" target="_blank">{{commercialName}}</a></td>
+                <td><a href="{{website}}" target="_blank">{{commercialNameAr}}</a></td>
                 <td>{{ownerName}}</td>
+                <td>{{ownerNameAr}}</td>
                 <td>{{typeText}}</td>
                 <td><a href="mailto:{{email}}" target="_blank">{{email}}</a></td>
                 <td>{{city}}</td>
+                <td>{{cityAr}}</td>
                 <td>{{statusText}}</td>
                 <td>
                     <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
