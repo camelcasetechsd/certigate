@@ -12,11 +12,13 @@
 </div>
 {{/content}}
 
+
 {{$scripts}}
+{{> ../modules/users/index/userCRUD.js }}
 <script>
     $(document).ready(function () {
         {{#statements}}
-                generateStatementCheckboxContent('user_form_' + '{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{role}}');
+                generateStatementCheckboxContent('user_form_' + '{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
         {{/statements}}
         displayStatementCheckbox('input[name="roles[]"]');
         
