@@ -67,9 +67,11 @@ class Organization extends AbstractSeed
         
         $atp[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'type' => 2,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -83,8 +85,11 @@ class Organization extends AbstractSeed
             'website' => $faker->url,
             'email' => $faker->email,
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             'zipCode' => $faker->randomNumber(),
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
@@ -109,9 +114,11 @@ class Organization extends AbstractSeed
         $this->insert('organization', $atp);
         $atc[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'type' => 1,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -126,8 +133,11 @@ class Organization extends AbstractSeed
             'email' => $faker->email,
             'zipCode' => $faker->randomNumber(),
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             //AtpData
             'atpLicenseNo' => null,
             'atpLicenseExpiration' => null,
@@ -153,9 +163,11 @@ class Organization extends AbstractSeed
 
         $both[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'type' => 3,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -170,8 +182,11 @@ class Organization extends AbstractSeed
             'website' => $faker->url,
             'email' => $faker->email,
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
             'atpLicenseExpiration' => date('Y-m-d H:i:s'),
