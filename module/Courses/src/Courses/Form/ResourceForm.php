@@ -160,7 +160,7 @@ class ResourceForm extends Form
                 'class' => 'btn btn-primary',
                 'value' => 'Add More',
                 'type' => 'button',
-                'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_file', '', '', '', '', '')"
+                'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name','#resource_form_nameAr','#resource_form_file', '', '', '', '', '')"
             )
         ));
 

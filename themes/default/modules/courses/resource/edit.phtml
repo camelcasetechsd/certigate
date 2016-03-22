@@ -32,6 +32,7 @@
                             <thead>
                                 <tr>
                                     <th>{{#translate}}Name{{/translate}}</th>
+                                    <th>{{#translate}}Name in Arabic{{/translate}}</th>
                                     <th>{{#translate}}Type{{/translate}}</th>
                                     <th>{{#translate}}File{{/translate}}</th>
                                     <th colspan="2">{{#translate}}Actions{{/translate}}</th>
@@ -42,6 +43,9 @@
                                 <tr id ="{{id}}" class="{{^status}}container-inactive{{/status}}">
                                     <td>
                                         <input type="text" class="form-control editableInput resourceName" value="{{name}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control editableInput resourceNameAr" value="{{nameAr}}">
                                     </td>
                                     <td>
                                         <select class="resourceType form-control editableInput" value='{{type}}'>
@@ -105,9 +109,15 @@
         $('.editableInput').change(function () {
             var inputType = $(this).attr('type');
             var resourceId = $(this).closest('tr').attr('id');
+            var parent = $(this).closest('tr');
             //text field
             if (inputType === "text") {
-                $(this).attr('name', 'editedName[' + resourceId + ']');
+                if ($(this).hasClass('resourceName')) {
+                    $(this).attr('name', 'editedName[' + resourceId + ']');
+                }
+                else if ($(this).hasClass('resourceNameAr')) {
+                    $(this).attr('name', 'editedNameAr[' + resourceId + ']');
+                }
             }
             // combobox
             else {

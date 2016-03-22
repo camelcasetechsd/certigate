@@ -9,27 +9,29 @@
 </div>
 {{/processResult}}
 
-<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{#translate}}</button></a>
+<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">{{#translate}}Resources{{#translate}}</div>
+    <div class="panel-heading">{{#translate}}Resources{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>{{#translate}}Name{{#translate}}</th>
-                <th>{{#translate}}Type{{#translate}}</th>
-                <th>{{#translate}}Course{{#translate}}</th>
-                <th>{{#translate}}Status{{#translate}}</th>
-                <th colspan="2">{{#translate}}Actions{{#translate}}</th>
+                <th>{{#translate}}Name{{/translate}}</th>
+                <th>{{#translate}}Name in Arabic{{/translate}}</th>
+                <th>{{#translate}}Type{{/translate}}</th>
+                <th>{{#translate}}Course{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}<</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
             {{#resources}}
             <tr class="{{^status}}container-inactive{{/status}}">
                 <td><a target="_blank" href="/resources/download/{{id}}" >{{name}}</a></td>
+                <td><a target="_blank" href="/resources/download/{{id}}" >{{nameAr}}</a></td>
                 <td>{{type}}</td>
                 <td>{{course.name}}</td>
                 <td>{{statusText}}</td>

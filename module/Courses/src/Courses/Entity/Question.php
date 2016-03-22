@@ -29,6 +29,17 @@ class Question
 
     /**
      *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'questionTitle' => [
+            'en_US' => 'questionTitle',
+            'ar_AR' => 'questionTitleAr'
+        ],
+    ];
+
+    /**
+     *
      * @var InputFilter validation constraints 
      */
     private $inputFilter;
@@ -49,16 +60,23 @@ class Question
     public $questionTitle;
 
     /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $questionTitleAr;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Evaluation", inversedBy="questions")
      * @ORM\JoinColumn(name="evaluation_id", referencedColumnName="id")
      */
     public $evaluation;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="question")
      */
     public $votes;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
@@ -71,24 +89,62 @@ class Question
         return $this->id;
     }
 
+    /**
+     * Get Question Title
+     * 
+     * @return string
+     */
     function getQuestionTitle()
     {
         return $this->questionTitle;
     }
 
+    /**
+     * Set Question Title 
+     * 
+     * @param type $questionTitle
+     * @return \Courses\Entity\Question
+     */
     function setQuestionTitle($questionTitle)
     {
         $this->questionTitle = $questionTitle;
         return $this;
     }
 
+    /**
+     * Get Question Title in Arabic
+     * 
+     * @return string
+     */
+    function getQuestionTitleAr()
+    {
+        return $this->questionTitleAr;
+    }
+
+    /**
+     * Set Question Title in Arabic
+     * 
+     * @param type $questionTitleAr
+     * @return \Courses\Entity\Question
+     */
+    function setQuestionTitleAr($questionTitleAr)
+    {
+        $this->questionTitleAr = $questionTitleAr;
+        return $this;
+    }
+    /**
+     * Assign question to evalution
+     * 
+     * @param type $evaluation
+     * @return \Courses\Entity\Question
+     */
     function setToEvaluation($evaluation)
     {
         $this->evaluation = $evaluation;
         return $this;
     }
 
-         /**
+    /**
      * Get status
      * 
      * 
@@ -113,7 +169,7 @@ class Question
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -168,6 +224,12 @@ class Question
 
             $inputFilter->add(array(
                 'name' => 'questionTitle',
+                'required' => true,
+                    )
+            );
+
+            $inputFilter->add(array(
+                'name' => 'questionTitleAr',
                 'required' => true,
                     )
             );

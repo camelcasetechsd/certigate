@@ -138,6 +138,7 @@ class ResourceController extends ActionController
             if ($validationOutput["isValid"]) {
                 $formData = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $formData["nameAdded"] = isset($data["nameAdded"]) ? $data["nameAdded"] : array();
+                $formData["nameArAddedAr"] = isset($data["nameArAddedAr"]) ? $data["nameArAddedAr"] : array();
                 $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
                 $resourceModel->save($resource, $formData, $isAdminUser);
 
