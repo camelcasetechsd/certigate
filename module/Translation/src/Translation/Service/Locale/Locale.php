@@ -41,6 +41,17 @@ class Locale
         }
         return $this->getDefaultLocale();
     }
+    
+    /**
+     * Get language code from current locale
+     * 
+     * @access public
+     * @return string language code
+     */
+    public function getCurrentLanguageCode()
+    {
+        return substr($this->getCurrentLocale(), /*$start =*/ 0, /*$length =*/ 2);
+    }
 
     public function setCurrentLocale($locale)
     {

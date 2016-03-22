@@ -69,11 +69,12 @@ class ButtonsFieldset extends Fieldset
 
         $this->add(array(
             'name' => FormButtons::RESET_BUTTON,
-            'type' => 'Zend\Form\Element',
+            'type' => 'Zend\Form\Element\Button',
             'attributes' => array(
                 'class' => 'pull-left btn-inline btn btn-danger resetButton',
-                'value' => FormButtons::RESET_BUTTON_TEXT,
-                'type' => 'button',
+            ),
+            'options' => array(
+                'label' => FormButtons::RESET_BUTTON_TEXT,
             )
         ));
     }
