@@ -58,15 +58,6 @@
                 <h3 class="panel-title">Send Us Message</h3>
             </div>
             <div class="panel-body">
-                {{#messages.0}}
-                <div class="alert alert-{{^status}}danger{{/status}}{{#status}}success{{/status}} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    {{#messages}}
-                        <p>{{message}}</p>
-                    {{/messages}}
-                </div>
-
-                {{/messages.0}}
                 {{{form}}}
             </div>
         </div>

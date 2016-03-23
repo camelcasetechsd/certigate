@@ -84,8 +84,9 @@ class PageController extends ActionController
             $form->setData($data);
             $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ false);
             if ($form->isValid()) {
-                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $pageModel->save($pageObj, $data, /* $editFlag = */ false);
+                $processedData = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $data["picture"] = $processedData["picture"];
+                $pageModel->save($pageObj, $data, /*$editFlag =*/ false);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));

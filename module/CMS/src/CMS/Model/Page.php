@@ -7,6 +7,9 @@ use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
 use Utilities\Service\Status;
 use CMS\Service\PageTypes;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Page Model
@@ -15,12 +18,14 @@ use CMS\Service\PageTypes;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property CMS\Model\PressReleaseSubscription $pressReleaseSubscriptionModel
  * 
  * @package cms
  * @subpackage model
  */
 class Page
 {
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     const UPLOAD_PATH = 'public/upload/pageContents/';
 
@@ -32,21 +37,31 @@ class Page
 
     /**
      *
-     * @var Utilities\Service\Random;
+     * @var Utilities\Service\Random
 
      */
     protected $random;
+
+    /**
+     *
+     * @var CMS\Model\PressReleaseSubscription
+
+     */
+    protected $pressReleaseSubscriptionModel;
 
     /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param CMS\Model\PressReleaseSubscription $pressReleaseSubscriptionModel
      */
-    public function __construct($query)
+    public function __construct($query, $pressReleaseSubscriptionModel)
     {
         $this->query = $query;
+        $this->pressReleaseSubscriptionModel = $pressReleaseSubscriptionModel;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
 
     /**
@@ -126,6 +141,10 @@ class Page
             $data = array();
         }
         $this->query->setEntity("CMS\Entity\Page")->save($page, $data);
+        
+        if($page->getType() == PageTypes::PRESS_RELEASE_TYPE && $page->getStatus() == Status::STATUS_ACTIVE && $editFlag === false){
+            $this->pressReleaseSubscriptionModel->notifySubscribers($page);
+        }
     }
     
     /**
@@ -157,6 +176,20 @@ class Page
                 $picture = $inputFilter->get('picture');
                 $picture->setRequired(false);
             }
+    }
+    
+    /**
+     * Filter press releases
+     * 
+     * @access public
+     */
+    public function filterPressReleases()
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->andWhere($expr->eq("type", PageTypes::PRESS_RELEASE_TYPE));
+        $criteria->andWhere($expr->eq("status", Status::STATUS_ACTIVE));
+        $this->setCriteria($criteria);
     }
 
 }

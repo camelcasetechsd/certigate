@@ -1,5 +1,7 @@
 <?php
+
 namespace Utilities\Service\Paginator;
+
 /**
  * PaginatorTrait
  * 
@@ -13,17 +15,19 @@ namespace Utilities\Service\Paginator;
  */
 trait PaginatorTrait
 {
+
     /**
      *
      * @var Zend\Paginator\Paginator 
      */
     protected $paginator = NULL;
+
     /**
      *
      * @var int 
      */
     protected $numberPerPage = 10.0;
-    
+
     /**
      * Set current page
      * @param int $currentPage
@@ -32,6 +36,7 @@ trait PaginatorTrait
     {
         $this->paginator->setCurrentPageNumber($currentPage);
     }
+
     /**
      * Set number of pages
      * @param int $numberPerPage
@@ -40,6 +45,7 @@ trait PaginatorTrait
     {
         $this->numberPerPage = $numberPerPage;
     }
+
     /**
      * Set number of items per page
      * @param int $itemsCountPerPage
@@ -48,6 +54,7 @@ trait PaginatorTrait
     {
         $this->paginator->setItemCountPerPage($itemsCountPerPage);
     }
+
     /**
      * Get number of pages
      * @return int number of pages
@@ -56,6 +63,7 @@ trait PaginatorTrait
     {
         return (int) $this->paginator->count();
     }
+
     /**
      * Get pages range
      * 
@@ -84,6 +92,7 @@ trait PaginatorTrait
         }
         return $pageNumbers;
     }
+
     /**
      * Get next page number
      * 
@@ -101,13 +110,13 @@ trait PaginatorTrait
                 if ($currentPageNumber != $numberOfPages) {
                     $nextPageNumber += $currentPageNumber + 1;
                 }
-            }
-            else {
+            } else {
                 $nextPageNumber = 2;
             }
         }
         return $nextPageNumber;
     }
+
     /**
      * Get previous page number
      * 
@@ -125,6 +134,7 @@ trait PaginatorTrait
         }
         return $previousPageNumber;
     }
+
     /**
      * Get number of items per page
      * @return int number of items per page
@@ -133,6 +143,7 @@ trait PaginatorTrait
     {
         return $this->paginator;
     }
+
     /**
      * Set criteria
      * 
@@ -144,4 +155,5 @@ trait PaginatorTrait
     {
         $this->paginator->getAdapter()->setCriteria($criteria);
     }
+
 }

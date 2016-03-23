@@ -88,4 +88,9 @@ class MailSubjects
      */
     const SEND_TO_FRIEND = "send to firend";
 
+    /**
+     * New Press Release Subject
+     */
+    const NEW_PRESS_RELEASE_SUBJECT = "New press release";
+
 }

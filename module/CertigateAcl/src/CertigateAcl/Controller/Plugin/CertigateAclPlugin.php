@@ -93,7 +93,7 @@ class CertigateAclPlugin extends AbstractPlugin
             // get logged in user roles
             $userRoles = $em->find('\Users\Entity\User', $auth->getIdentity()['id'])->getRoles();
             $isAllowed = false;
-            if ($acl->isAllowed( Role::ANONYMOUS_ROLE, $moduleName, $routeMatch )) {
+            if ($acl->isAllowed(Role::ANONYMOUS_ROLE, $moduleName, $routeMatch)) {
                 $isAllowed = true;
             }
             else {
@@ -113,7 +113,17 @@ class CertigateAclPlugin extends AbstractPlugin
         if ($authenticated === false && $controllerClass != $signInController) {
             if (!$acl->isAllowed(Role::ANONYMOUS_ROLE, $moduleName, $routeMatch)) {
                 // redirect to sign/in
-                $url = $router->assemble(array('action' => 'in'), array('name' => 'defaultSign'));
+                $redirectBackUrl = $event->getRequest()->getRequestUri();
+                $url = $router->assemble(
+                        array(
+                    'action' => 'in'
+                        ), array(
+                    'name' => 'defaultSign',
+                    'query' => array(
+                        'redirectBackUrl' => $redirectBackUrl
+                            )
+                        )
+                );
                 $status = 200;
             }
         }
