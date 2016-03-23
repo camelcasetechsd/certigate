@@ -50,12 +50,14 @@ class Api
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Zend\View\Helper\ServerUrl $serverUrl
+     * @param array $websiteData
      */
-    public function __construct($query, $serverUrl)
+    public function __construct($query, $serverUrl, $websiteData)
     {
         $this->query = $query;
         $this->connection = $this->query->entityManager->getConnection();
-        $this->serverBaseUrl = $serverUrl();
+        $this->setServerBaseUrl($serverUrl, $websiteData);
     }
 
     /**
@@ -129,9 +131,9 @@ class Api
         $request->setUri($this->serverBaseUrl . $edge);
         $request->setMethod($method);
         $client = new Client();
-        
+
         // limit retiral to one time only after failure
-        if($trialNumber === 3){
+        if ($trialNumber === 3) {
             throw new \Exception("trials limit reached");
         }
 
@@ -148,9 +150,9 @@ class Api
         foreach ($parameters as $parameterKey => $parameterValue) {
             $parametersContainer->set($parameterKey, $parameterValue);
         }
-        
+
         // prepare token for call authentication 
-        if(empty(self::$token)){
+        if (empty(self::$token)) {
             $this->getApiToken();
         }
         $request->getQuery()->set("token", self::$token);
@@ -158,11 +160,11 @@ class Api
         foreach ($queryParameters as $parameterKey => $parameterValue) {
             $request->getQuery()->set($parameterKey, $parameterValue);
         }
-        
+
         $response = $client->dispatch($request);
         if ($response->isSuccess()) {
             $responseContent = json_decode($response->getContent());
-            
+
             // assuming error is due to token expiry, retry with new token
             if (is_object($responseContent) && property_exists($responseContent, "error")) {
                 $this->getApiToken();
@@ -171,6 +173,22 @@ class Api
             return $responseContent;
         }
         throw new \Exception("$edge call failed");
+    }
+
+    /**
+     * Set server base url
+     * use config host if server host is not defined, hence calling from console for instance
+     * 
+     * @access private
+     * @param Zend\View\Helper\ServerUrl $serverUrl
+     * @param array $websiteData
+     */
+    private function setServerBaseUrl($serverUrl, $websiteData)
+    {
+        if (empty($serverUrl->getHost())) {
+            $serverUrl->setHost($websiteData["host"]);
+        }
+        $this->serverBaseUrl = $serverUrl();
     }
 
 }

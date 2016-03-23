@@ -104,13 +104,18 @@ class User
      * @param array $userInfo
      * @param UserEntity $userObj ,default is null in case new user is being created
      * @param bool $isAdminUser ,default is true
+     * @param bool $editFormFlag ,default is null
      */
-    public function saveUser($userInfo, $userObj = null, $isAdminUser = true)
+    public function saveUser($userInfo, $userObj = null, $isAdminUser = true, $editFormFlag = null)
     {
         $sendNotificationFlag = false;
-        $editFormFlag = true;
+        if(is_null($editFormFlag)){
+            $editFormFlag = true;
+        }
         if (is_null($userObj)) {
-            $editFormFlag = false;
+            if(is_null($editFormFlag)){
+                $editFormFlag = false;
+            }
             $userObj = new UserEntity();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
