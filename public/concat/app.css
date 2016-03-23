@@ -10119,10 +10119,10 @@ and open the template in the editor.
 
 /*remove x mark after questions*/
 .removeQ{
-        margin-top: -28px;
-        float: right;
-        margin-right: -28px;
-    } 
+    margin-top: -27px;
+    float: left;
+    margin-left: 527px;
+} 
 
 
 /* OriginalFileName : public/css/diff.css */ 

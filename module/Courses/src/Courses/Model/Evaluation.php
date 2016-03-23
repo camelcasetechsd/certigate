@@ -6,6 +6,7 @@ use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
+use Utilities\Service\Status;
 
 /**
  * Evaluation Model
@@ -28,7 +29,7 @@ class Evaluation
      * @var Utilities\Service\Query\Query 
      */
     protected $query;
-    
+
     /**
      *
      * @var System\Service\Cache\CacheHandler
@@ -40,7 +41,7 @@ class Evaluation
      * @var Notifications\Service\Notification
      */
     protected $notification;
-    
+
     /**
      * Set needed properties
      * 
@@ -81,6 +82,7 @@ class Evaluation
     {
         // if evaluation is admin template
         if ($evalObj->isTemplate()) {
+            $evalObj->setStatus(Status::STATUS_ACTIVE);
             $this->query->setEntity("Courses\Entity\Evaluation")->save($evalObj);
         }
         // id evaluation is user's (atp)
@@ -91,11 +93,11 @@ class Evaluation
             ));
             //assign course to evaluation
             $evalObj->setCourse($course);
+            $evalObj->setStatus(Status::STATUS_NOT_APPROVED);
 
             $this->query->setEntity('Courses\Entity\Evaluation')->save($evalObj);
-            
         }
-        if($isAdminUser === false){
+        if ($isAdminUser === false) {
             $this->sendMail($userEmail, $editFlag);
         }
     }
@@ -105,9 +107,10 @@ class Evaluation
      * if they are questions for admin template or course evaluation 
      * 
      * @param string $question question title
+     * @param string $questionInArabic question title in arabic
      * @param int $evaluationId not required if saving admin template
      */
-    public function assignQuestionToEvaluation($question, $evaluationId = 0)
+    public function assignQuestionToEvaluation($question, $questionInArabic, $evaluationId = 0)
     {
         // for admin evaluation ... note admin evaaluation will not be 0
         // but for sake of useing generic functions
@@ -126,9 +129,10 @@ class Evaluation
         $questionEntity = new \Courses\Entity\Question();
 
         $questionEntity->setQuestionTitle($question);
+        $questionEntity->setQuestionTitleAr($questionInArabic);
         $questionEntity->setStatus($evaluation->getStatus());
         $questionEntity->setToEvaluation($evaluation);
-            $evaluation->addQuestion($questionEntity);
+        $evaluation->addQuestion($questionEntity);
         $this->query->save($evaluation);
     }
 
@@ -140,29 +144,32 @@ class Evaluation
         $this->query->remove($question);
     }
 
-    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$evaluation)
+    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$oldQuestionTitleAr, $newQuestionTitleAr, $evaluation)
     {
         $evaluationId = $evaluation->getId();
         $question = $this->query->findOneBy("Courses\Entity\Question", array(
             'questionTitle' => $oldQuestionTitle,
+            'questionTitleAr' => $oldQuestionTitleAr,
             'evaluation' => $evaluationId
         ));
         $question->setQuestionTitle($newQuestionTitle);
+        $question->setQuestionTitleAr($newQuestionTitleAr);
         $question->setStatus($evaluation->getStatus());
         $this->query->save($question);
     }
 
-    public function validateQuestion($questions)
+    public function validateQuestion($questions, $key, $keyAr)
     {
+        unset($questions['submit']);
         $messages = array();
         $stringValidator = new \Zend\Validator\Regex('/^a-zA-Z0-9 \?|\s/');
-
-        foreach ($questions as $question) {
+        $tempArray = array_merge($questions[$key], $questions[$keyAr]);
+        foreach ($tempArray as $question) {
             // start question validation
             $isStringValid = $stringValidator->isValid($question);
             // check if string
             if (!$isStringValid) {
-                array_push($messages, $question." : is not a valid question ... please insert a valid one");
+                array_push($messages, $question . " : is not a valid question ... please insert a valid one");
             }
         }
         return $messages;
@@ -186,7 +193,7 @@ class Evaluation
         }
         return TRUE;
     }
-    
+
     /**
      * Send mail
      * 

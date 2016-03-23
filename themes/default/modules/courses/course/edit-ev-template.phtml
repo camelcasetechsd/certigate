@@ -4,7 +4,7 @@
 {{$content}}
 <ul>    
     {{#validationError}}
-    <li>{{.}}</li>
+    <li class="error">{{.}}</li>
     {{/validationError}}
 </ul>
 <form id="editForm" class="form-horizontal" method="POST" action="">
@@ -13,25 +13,30 @@
         <!-- Form Name -->
         <legend>{{#translate}}Evaluation Template{{/translate}}</legend>
         {{#questions}}
-        <!-- Text input-->
         <div class="form-group" >
-            <label class="col-md-4 control-label" for="editedQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
-            <div class=" col-md-4">
-                <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control editedInputs input-md" required=""value="{{questionTitle}}">
-                <a href="#" class="deleteQuestion removeQ" >X</a>
-                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+            <div class="questionContainer row">
+                <label class="col-md-4 control-label englishLabel">{{#translate}}Question Title{{/translate}}</label>  
+                <div class="col-md-4">
+                    <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitle}}">
+                    <a href="#" class="deleteQuestion removeQ pull-left" >X</a>
+                    <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+
+            <div class="questionContainer row">
+                <label class="col-md-4 control-label">{{#translate}}Question Title in Arabic{{/translate}}</label>  
+                <div class="col-md-4">
+                    <input name="editedQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitleAr}}">
+                    <input type="hidden" class="dummy" name="originalAr[]" value="{{questionTitleAr}}"/>
+                </div>
+                <div class="col-md-4">
+                </div>
             </div>
         </div>
         {{/questions}}
-        {{#unvalidQuestions}}
-        <div class="form-group" >
-            <label class="col-md-4 error control-label" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
-            <div class=" col-md-4">
-                <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""value="{{.}}">
-                <a href="#" class="deleteInvalidQuestion removeQ" >X</a>
-            </div>
-        </div>
-        {{/unvalidQuestions}}
 
         <span id="endOfText"></span>
         <!-- button -->
@@ -46,67 +51,67 @@
 
 <button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
 
-
-<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-<script>
-$(document).ready(function () {
-    //
-    numerateLabels();
-
-    $('#addmore').click(function () {
-        getMeNewInput();
-    });
-
-    function getMeNewInput() {
-        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> <a href="#" class="deleteNewQuestion removeQ">X</a></div></div>';
-        $('#endOfText').before(window.template);
-        numerateLabels();
-
-    }
-
-    function numerateLabels() {
-        window.index = 1
-        $('.control-label').each(function () {
-            if ($(this).parent().is(":visible")) {
-                $(this).text('Question Title ' + window.index)
-                window.index++;
-            }
-        });
-    }
-
-    /**
-     * This action is meant to delete 
-     */
-    $('.deleteQuestion').click(function () {
-        // remove questionInputs class and replace it with deletedQuestion class
-        $(this).prev().attr("class", "deletedquestion form-control input-md");
-        // change input name 
-        $(this).prev().prop("name", 'deleted[]');
-        // hide deleted input
-        $(this).parent().parent().hide();
-        //remove original value no longer needed
-        $(this).next().remove();
-        numerateLabels();
-    });
-    
-    // to delete run time created questions  
-    $(document).on("click", ".deleteNewQuestion", function () {
-        $(this).parent().parent().remove();
-        numerateLabels();
-    });
-
-    $('.deleteInvalidQuestion').click(function () {
-        //delete input
-        $(this).parent().parent().remove();
-        numerateLabels();
-
-    });
-
-});
-
-</script>
-
-
 {{/content}}
 
 {{/layout}}
+<script>
+    $(document).ready(function () {
+        //
+        numerateLabels();
+
+        $('#addmore').click(function () {
+            getMeNewInput();
+        });
+
+        function getMeNewInput() {
+//        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> <a href="#" class="deleteNewQuestion removeQ">X</a></div></div>';
+            window.template = '<div class="form-group" > <div class="questionContainer row"> <label class="col-md-4 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> <a href="#" class="deleteNewQuestion removeQ pull-left" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-4 control-label" for="newQuestionAr[]">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-4"> <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> </div> </div>';
+            $('#endOfText').before(window.template);
+            numerateLabels();
+
+        }
+
+        function numerateLabels() {
+            window.index = 1
+            $('.englishLabel').each(function () {
+                if ($(this).parent().is(":visible")) {
+                    $(this).text('Question Title ' + window.index)
+                    window.index++;
+                }
+            });
+        }
+
+        /**
+         * This action is meant to delete 
+         */
+        $('.deleteQuestion').click(function () {
+            // remove questionInputs class and replace it with deletedQuestion class
+            $(this).prev().attr("class", "deletedquestion form-control input-md");
+            // change english input name 
+            $(this).prev().prop("name", 'deleted[]');
+            // change english input name 
+            $(this).parents('.form-group').find('.questionInputs').prop("name", 'deletedAr[]');
+            // hide deleted input
+            $(this).parent().parent().parent().hide();
+            //remove original value no longer needed
+            $(this).parents('.form-group').find('.dummy').remove();
+            numerateLabels();
+        });
+
+        // to delete run time created questions  
+        $(document).on("click", ".deleteNewQuestion", function () {
+            $(this).parent().parent().parent().remove();
+            numerateLabels();
+        });
+
+        $('.deleteInvalidQuestion').click(function () {
+            //delete input
+            $(this).parent().parent().remove();
+            numerateLabels();
+
+        });
+
+    });
+
+</script>
+
