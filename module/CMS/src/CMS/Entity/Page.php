@@ -8,7 +8,6 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Random;
 use Utilities\Service\Uri;
-use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * Page Entity

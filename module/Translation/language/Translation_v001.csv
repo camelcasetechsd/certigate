@@ -227,7 +227,7 @@ Phone,Phone
 Photo,Photo
 Picture,Picture
 Please Sign In,Please Sign In
-Please verify you are human,Please verify you are human
+Please verify you are human.,Please verify you are human.
 Privacy Statement,Privacy Statement
 Privileges of role,Privileges of role
 Privileges,Privileges
@@ -298,3 +298,65 @@ Edit Resource,Edit Resource
 Bulk upload Resources,Bulk upload Resources
 Download,Download
 Process failed to complete,Process failed to complete
+Press Release ,Press Release
+Title in Arabic, Title in Arabic
+First Name in Arabic, First Name in Arabic
+Last Name in Arabic, Last Name in Arabic
+Active, Active
+Inactive, Inactive
+Deleted, Deleted
+Not Approved, Not Approved
+State Saved, State Saved
+Enter First Name, Enter First Name
+Middle Name in Arabic, Middle Name in Arabic
+Mobile, Mobile
+Confirm Password, Confirm Password
+"<p class=\"required\">Security Question</p> <p><ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul></p>", "<p class=\"required\">Security Question</p> <p><ul><li>Security Question "should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul></p>"
+Nationality, Nationality
+Address Line 1 in Arabic, Address Line 1 in Arabic
+Address Line 2 in Arabic, Address Line 2 in Arabic
+"<label class=\"legendLabel\">Roles</label>", "<label class=\"legendLabel\">Roles</label>"
+Enter First Name in Arabic, Enter First Name in Arabic
+Enter Middle Name, Enter Middle Name
+Enter Middle Name in Arabic, Enter Middle Name in Arabic
+Enter Last Name, Enter Last Name
+Enter Last Name in Arabic, Enter Last Name in Arabic
+Enter User Name, Enter User Name
+Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567), Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)
+Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567), Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)
+Enter Email, Enter Email
+Confirm User Email, Confirm User Email
+Enter Password, Enter Password
+Confirm User Password, Confirm User Password
+Enter Security Question, Enter Security Question
+Enter Security Answer, Enter Security Answer
+Enter Identification Type (National ID, or Passport, etc), Enter Identification Type (National ID, or Passport, etc)
+Enter Identification Number, Enter Identification Number
+Enter Address Line 1, Enter Address Line 1
+Enter Address Line 1 in Arabic, Enter Address Line 1 in Arabic
+Enter Address Line 2, Enter Address Line 2
+Enter Address Line 2 in Arabic, Enter Address Line 2 in Arabic
+Enter City, Enter City
+Enter Zip Code, Enter Zip Code
+-- Select --, -- Select --
+Create, Create
+Reset, Reset
+Save, Save
+Save and Publish, Save and Publish
+Unpublish, Unpublish
+Subscribe, Subscribe
+Unsubscribe, Unsubscribe
+Disagree, Disagree
+Agree, Agree
+dummy Privacy Statement content, dummy Privacy Statement content
+dummy Student Statement content, dummy Student Statement content
+dummy Proctor Statement content, dummy Proctor Statement content
+dummy Instructor Statement content, dummy Instructor Statement content
+dummy Test Center Administrator Statement content, dummy Test Center Administrator Statement content
+dummy Training Manager Statement content, dummy Training Manager Statement content
+"I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>", "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>"
+"I agree to <a href=\"javascript:void(0)\">Student Statement</a>", "I agree to <a href=\"javascript:void(0)\">Student Statement</a>"
+"I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>", "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>"
+"I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>", "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>"
+"I agree to <a href=\"javascript:void(0)\">Test Center Administrator Statement</a>", "I agree to <a href=\"javascript:void(0)\">Test Center Administrator Statement</a>"
+"I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>", "I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>"
