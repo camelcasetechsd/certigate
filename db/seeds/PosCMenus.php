@@ -1,16 +1,12 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/CMS/src/CMS/Entity/Menu.php';
-require_once 'module/CMS/src/CMS/Entity/MenuItem.php';
-require_once 'module/CMS/src/CMS/Service/PageTypes.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \CMS\Entity\Menu;
+use db\AbstractSeed;
 use \CMS\Entity\MenuItem;
 use \CMS\Service\PageTypes;
 
-class Menus extends AbstractSeed
+class PosCMenus extends AbstractSeed
 {
 
     /**

@@ -1,14 +1,18 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \Users\Entity\User as User;
-use \Users\Entity\Role;
+use db\AbstractSeed;
+use Users\Entity\User;
+use Users\Entity\Role;
+use Courses\Entity\Course as CourseEntity;
+use Courses\Entity\CourseEvent as CourseEventEntity;
+use Utilities\Form\FormButtons;
+use Utilities\Service\Time;
+use Organizations\Entity\Organization;
+use Utilities\Service\Status;
 
-class Course extends AbstractSeed
+class PosDCourse extends AbstractSeed
 {
 
     /**
@@ -31,7 +35,7 @@ class Course extends AbstractSeed
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "newstudent",
-            "password" => User::hashPassword("student"),
+            "password" => "student",
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
@@ -41,11 +45,11 @@ class Course extends AbstractSeed
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
+            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
             "email" => $faker->freeEmail,
             "securityQuestion" => $faker->sentence,
             "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
+            "dateOfBirth" => date(Time::DATE_FORMAT),
             "photo" => '/upload/images/userdefault.png',
             "privacyStatement" => true,
             "studentStatement" => false,
@@ -53,23 +57,23 @@ class Course extends AbstractSeed
             "instructorStatement" => false,
             "testCenterAdministratorStatement" => false,
             "trainingManagerStatement" => false,
-            "status" => true
+            "status" => Status::STATUS_ACTIVE
         );
-        $this->insert('user', $normalUser);
-        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-
+        $userModel = $this->serviceManager->get("Users\Model\User");
+        $userModel->saveUser($normalUser, $userObj = new User(), /*$isAdminUser =*/ true, /*$editFormFlag =*/ false);
+        $normalUserId = $userObj->getId();
 
         // dummy atp to be used in course creation
-        $atp[] = array(
+        $atp = array(
             'commercialName' => $faker->userName,
-            'status' => true,
+            'status' => Status::STATUS_ACTIVE,
             'type' => 2,
             'ownerName' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
             'CRNo' => $faker->randomNumber(),
-            'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpiration' => date(Time::DATE_FORMAT),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'phone1' => $faker->phoneNumber,
             'phone2' => $faker->phoneNumber,
@@ -83,7 +87,7 @@ class Course extends AbstractSeed
             'zipCode' => $faker->randomNumber(),
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
-            'atpLicenseExpiration' => date('Y-m-d H:i:s'),
+            'atpLicenseExpiration' => date(Time::DATE_FORMAT),
             'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'classesNo' => $faker->randomDigitNotNull,
             'pcsNo_class' => $faker->randomDigitNotNull,
@@ -98,19 +102,19 @@ class Course extends AbstractSeed
             'internetSpeed_lab' => null,
             'officeLang' => null,
             'officeVersion' => null,
-            'focalContactPerson_id' => $normalUserId
+            'focalContactPerson' => $normalUserId,
+            'creatorId' => $normalUserId,
+            'trainingManager_id' => 0,
+            'testCenterAdmin_id' => 0,
         );
-
-        $this->insert('organization', $atp);
-        $atpId = $this->getAdapter()->getConnection()->lastInsertId();
+        $this->serviceManager->get("Organizations\Model\Organization")->saveOrganization($atp, $orgObj = new Organization(), /*$oldStatus =*/ null, /*$creatorId =*/ $normalUserId, /*$userEmail =*/ null, /*$isAdminUser =*/ true, /*$saveState =*/ false);
+        $atpId = $orgObj->getId();
 
 
         // getting authorized Instuctor role id 
-
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
-        $this->insert('role', $instructorRole);
-        $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
-
+        $instructorRole = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array("name" => Role::INSTRUCTOR_ROLE));
+        $instructorRoleId = $instructorRole->getId();
+        
         $instructor = array(
             "firstName" => $faker->firstName,
             "middleName" => $faker->name,
@@ -118,7 +122,7 @@ class Course extends AbstractSeed
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "instructor",
-            "password" => User::hashPassword("useruser"),
+            "password" => "useruser",
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
@@ -128,11 +132,11 @@ class Course extends AbstractSeed
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
+            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
             "email" => $faker->freeEmail,
             "securityQuestion" => $faker->sentence,
             "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
+            "dateOfBirth" => date(Time::DATE_FORMAT),
             "photo" => '/upload/images/userdefault.png',
             "privacyStatement" => true,
             "studentStatement" => false,
@@ -140,11 +144,10 @@ class Course extends AbstractSeed
             "instructorStatement" => true,
             "testCenterAdministratorStatement" => false,
             "trainingManagerStatement" => false,
-            "status" => true
+            "status" => Status::STATUS_ACTIVE
         );
-
-        $this->insert('user', $instructor);
-        $instructorId = $this->getAdapter()->getConnection()->lastInsertId();
+        $userModel->saveUser($instructor, $userObj = new User(), /*$isAdminUser =*/ true, /*$editFormFlag =*/ false);
+        $instructorId = $userObj->getId();
 
         $userRoles = array(array(
                 'user_id' => $instructorId,
@@ -155,43 +158,41 @@ class Course extends AbstractSeed
 
 
 
-        $course = array(
+        $courseData = array(
             "name" => $faker->firstName,
             "brief" => $faker->text,
-            "time" => $faker->date('Y-m-d H:i:s'),
+            "time" => "10:30",
             "duration" => 20,
             "isForInstructor" => 0,
-            "status" => 1,
+            "status" => Status::STATUS_ACTIVE,
             "price" => 1,
-            "productId" => 999,
-            "created" => date('Y-m-d H:i:s'),
-            "modified" => null,
+            "buttons" => array(
+                FormButtons::SAVE_AND_PUBLISH_BUTTON => FormButtons::SAVE_AND_PUBLISH_BUTTON_TEXT
+            ),
         );
-        $this->insert('course', $course);
-        $courseId = $this->getAdapter()->getConnection()->lastInsertId();
+        $this->serviceManager->get("Courses\Model\Course")->save($course = new CourseEntity(), $courseData, /*$editFlag =*/ false, /*$isAdminUser =*/ true);
+        $courseId = $course->getId();
 
-        $courseEvent = array(
-            "course_id" => $courseId,
-            "startDate" => date('Y-m-d H:i:s'),
-            "endDate" => date('Y-m-d H:i:s'),
+        $startDate = new \DateTime("next week");
+        $endDate = new \DateTime("next month");
+        $courseEventData = array(
+            "course" => $courseId,
+            "startDate" => $startDate->format(Time::DATE_FORMAT),
+            "endDate" => $endDate->format(Time::DATE_FORMAT),
             "capacity" => 100,
             "studentsNo" => 10,
-            "atp_id" => $atpId,
-            "ai_id" => $instructorId,
-            "status" => true,
-            "optionValueId" => 999,
-            "created" => date('Y-m-d H:i:s'),
-            "modified" => null
+            "atp" => $atpId,
+            "ai" => $instructorId,
+            "status" => Status::STATUS_ACTIVE,
         );
-        $this->insert('course_event', $courseEvent);
-        $courseEventId = $this->getAdapter()->getConnection()->lastInsertId();
+        $this->serviceManager->get("Courses\Model\CourseEvent")->save(/*$courseEvent =*/ new CourseEventEntity(), $courseEventData);
 
         // creating outlines for the course
         $outline1 = array(
             "title" => "outline1",
             "course_id" => $courseId,
             "duration" => 10,
-            "status" => 1,
+            "status" => Status::STATUS_ACTIVE,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
         );
@@ -201,21 +202,11 @@ class Course extends AbstractSeed
             "title" => "outline2",
             "course_id" => $courseId,
             "duration" => 10,
-            "status" => 1,
+            "status" => Status::STATUS_ACTIVE,
             "created" => date('Y-m-d H:i:s'),
             "modified" => null,
         );
         $this->insert('outline', $outline2);
-
-
-
-        $course_events_user = array(
-            'course_event_id' => $courseEventId,
-            'user_id' => $instructorId,
-            'status' => 1,
-            'token' => 123
-        );
-        $this->insert('course_events_users', $course_events_user);
     }
 
 }

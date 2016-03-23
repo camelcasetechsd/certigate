@@ -1,12 +1,11 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/System/src/System/Service/Settings.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
+use db\AbstractSeed;
 use System\Service\Settings as SettingsConstants;
 
-class Settings extends AbstractSeed {
+class PosBSettings extends AbstractSeed {
 
     /**
      * Run Method.

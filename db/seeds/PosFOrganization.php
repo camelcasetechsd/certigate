@@ -1,14 +1,12 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \Users\Entity\User as User;
-use \Users\Entity\Role;
+use db\AbstractSeed;
+use \Users\Entity\User;
+use Utilities\Service\Time;
 
-class Organization extends AbstractSeed
+class PosFOrganization extends AbstractSeed
 {
 
     /**
@@ -31,7 +29,7 @@ class Organization extends AbstractSeed
                 "country" => $faker->countryCode,
                 "language" => $faker->languageCode,
                 "username" => "testuser",
-                "password" => User::hashPassword("testuser"),
+                "password" => "testuser",
                 "mobile" => $faker->phoneNumber,
                 "addressOne" => $faker->address,
                 "addressTwo" => $faker->address,
@@ -41,11 +39,11 @@ class Organization extends AbstractSeed
                 "nationality" => $faker->countryCode,
                 "identificationType" => $faker->word,
                 "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
-                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format('Y-m-d H:i:s'),
+                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format(Time::DATE_FORMAT),
                 "email" => $faker->freeEmail,
                 "securityQuestion" => $faker->sentence,
                 "securityAnswer" => $faker->sentence,
-                "dateOfBirth" => date('Y-m-d H:i:s'),
+                "dateOfBirth" => date(Time::DATE_FORMAT),
                 "photo" => '/upload/images/userdefault.png',
                 "privacyStatement" => true,
                 "studentStatement" => false,
@@ -55,9 +53,9 @@ class Organization extends AbstractSeed
                 "trainingManagerStatement" => false,
                 "status" => true
             );
-        $this->insert('user', $normalUser);
-        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        
+        $userModel = $this->serviceManager->get("Users\Model\User");
+        $userModel->saveUser($normalUser, $userObj = new User(), /*$isAdminUser =*/ true, /*$editFormFlag =*/ false);
+        $normalUserId = $userObj->getId();
         
         
         $atp[] = array(

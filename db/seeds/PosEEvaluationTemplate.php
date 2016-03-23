@@ -1,12 +1,10 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
+use db\AbstractSeed;
 
-class EvaluationTemplate extends AbstractSeed
+class PosEEvaluationTemplate extends AbstractSeed
 {
 
     /**

@@ -1,14 +1,11 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \Users\Entity\User;
+use db\AbstractSeed;
 use \Users\Entity\Role;
 
-class Users extends AbstractSeed
+class PosARoles extends AbstractSeed
 {
 
     /**
@@ -23,7 +20,9 @@ class Users extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-        $instructorRoleId = $this->fetchRow('select id from role where name = "Instructor"')['id'];
+        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
+        $this->insert('role', $instructorRole);
+        $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
         $proctorRole = array('name' => Role::PROCTOR_ROLE);
         $this->insert('role', $proctorRole);
@@ -47,7 +46,6 @@ class Users extends AbstractSeed
 
         $adminRole = array('name' => Role::ADMIN_ROLE);
         $this->insert('role', $adminRole);
-        $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
         $userModule = "Users";
         $userEditRoute = "userEdit";
@@ -470,82 +468,6 @@ class Users extends AbstractSeed
             ),
         );
         $this->insert('acl', $cmsAcls);
-
-        $adminUser = array(
-            "firstName" => $faker->firstName,
-            "middleName" => $faker->name,
-            "lastName" => $faker->lastName,
-            "country" => $faker->countryCode,
-            "language" => $faker->languageCode,
-            "username" => "admin",
-            "password" => User::hashPassword("adminadmin"),
-            "mobile" => $faker->phoneNumber,
-            "addressOne" => $faker->address,
-            "addressTwo" => $faker->address,
-            "city" => $faker->city,
-            "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
-            "nationality" => $faker->countryCode,
-            "identificationType" => $faker->word,
-            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
-            "email" => $faker->freeEmail,
-            "securityQuestion" => $faker->sentence,
-            "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
-            "photo" => '/upload/images/userdefault.png',
-            "privacyStatement" => true,
-            "studentStatement" => false,
-            "proctorStatement" => false,
-            "instructorStatement" => false,
-            "testCenterAdministratorStatement" => false,
-            "trainingManagerStatement" => false,
-            "status" => true
-        );
-        $this->insert('user', $adminUser);
-        $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        $normalUser = array(
-            "firstName" => $faker->firstName,
-            "middleName" => $faker->name,
-            "lastName" => $faker->lastName,
-            "country" => $faker->countryCode,
-            "language" => $faker->languageCode,
-            "username" => "user",
-            "password" => User::hashPassword("useruser"),
-            "mobile" => $faker->phoneNumber,
-            "addressOne" => $faker->address,
-            "addressTwo" => $faker->address,
-            "city" => $faker->city,
-            "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
-            "nationality" => $faker->countryCode,
-            "identificationType" => $faker->word,
-            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
-            "email" => $faker->freeEmail,
-            "securityQuestion" => $faker->sentence,
-            "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
-            "photo" => '/upload/images/userdefault.png',
-            "privacyStatement" => true,
-            "studentStatement" => false,
-            "proctorStatement" => false,
-            "instructorStatement" => false,
-            "testCenterAdministratorStatement" => false,
-            "trainingManagerStatement" => false,
-            "status" => true
-        );
-        $this->insert('user', $normalUser);
-        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-
-        $userRoles = array(array(
-                'user_id' => $adminUserId,
-                'role_id' => $adminRoleId
-            ), array(
-                'user_id' => $normalUserId,
-                'role_id' => $normalUserRoleId
-        ));
-        $this->insert('user_role', $userRoles);
     }
 
 }
