@@ -136,15 +136,16 @@ class Evaluation
         $this->query->save($evaluation);
     }
 
-    public function removeQuestion($questionTitle)
+    public function removeQuestion($questionTitle,$evalId)
     {
         $question = $this->query->findOneBy("Courses\Entity\Question", array(
-            'questionTitle' => $questionTitle
+            'questionTitle' => $questionTitle,
+            'evaluation'=>$evalId
         ));
         $this->query->remove($question);
     }
 
-    public function updateQuestion($oldQuestionTitle, $newQuestionTitle,$oldQuestionTitleAr, $newQuestionTitleAr, $evaluation)
+    public function updateQuestion($oldQuestionTitle, $newQuestionTitle, $oldQuestionTitleAr, $newQuestionTitleAr, $evaluation)
     {
         $evaluationId = $evaluation->getId();
         $question = $this->query->findOneBy("Courses\Entity\Question", array(
