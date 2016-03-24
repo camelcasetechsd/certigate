@@ -24,6 +24,7 @@ use Utilities\Service\String;
  * @property \DateTime $endDate
  * @property int $capacity
  * @property int $studentsNo
+ * @property int $hideFromCalendar
  * @property Organizations\Entity\Organization $atp
  * @property Users\Entity\User $ai
  * @property int $optionId
@@ -88,6 +89,13 @@ class CourseEvent
      * @var int
      */
     public $studentsNo;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    public $hideFromCalendar;
 
     /**
      * @Gedmo\Versioned
@@ -307,6 +315,32 @@ class CourseEvent
     public function setStudentsNo($studentsNo)
     {
         $this->studentsNo = (int) $studentsNo;
+        return $this;
+    }
+
+    /**
+     * Get hideFromCalendar
+     * 
+     * 
+     * @access public
+     * @return int hideFromCalendar
+     */
+    public function getHideFromCalendar()
+    {
+        return $this->hideFromCalendar;
+    }
+
+    /**
+     * Set hideFromCalendar
+     * 
+     * 
+     * @access public
+     * @param int $hideFromCalendar
+     * @return CourseEvent
+     */
+    public function setHideFromCalendar($hideFromCalendar)
+    {
+        $this->hideFromCalendar = (int) $hideFromCalendar;
         return $this;
     }
 
@@ -609,6 +643,7 @@ class CourseEvent
                 ->setEndDate($data["endDate"])
                 ->setStartDate($data["startDate"])
                 ->setStudentsNo($data["studentsNo"])
+                ->setHideFromCalendar($data["hideFromCalendar"])
         ;
     }
 

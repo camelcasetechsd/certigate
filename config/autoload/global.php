@@ -40,7 +40,7 @@ return array(
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
         'aliases' => array(
-            'translator' => 'MvcTranslator',
+//            'translator' => 'MvcTranslator',
             'entitymanager' => 'doctrine.entitymanager.orm_default',
         ),
     ),
@@ -57,16 +57,6 @@ return array(
                 )
             )
         )
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo',
-            ),
-        ),
     ),
     'mustache' => array(
         'suffix' => 'phtml',

@@ -42,6 +42,7 @@ $config = array(
         'System',
         'Notifications',
         'DOMPDFModule',
+        'Translation',
         'EStore'
     ),
     'module_listener_options' => array(

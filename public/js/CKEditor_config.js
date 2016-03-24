@@ -5,6 +5,11 @@ $(document).ready(function () {
             filebrowserUploadUrl: '/cms/page/upload'
 
         });
+        CKEDITOR.replace('page_form_bodyAr', {
+            filebrowserBrowseUrl: '/cms/page/browse',
+            filebrowserUploadUrl: '/cms/page/upload'
+
+        });
     }
     // moving from upload tab to image info tab
     $(document).on("click", "#cke_170_uiElement", function () {

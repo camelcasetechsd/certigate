@@ -3,10 +3,10 @@
 
 {{$content}}
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
-    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">Course Outlines</a></li>
-    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">Course Resources</a></li>
-    <li role="presentation"><a href="#courseEvaluation" data-toggle="tab" aria-controls="courseEvaluation">Course Evaluation</a></li>
+    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">{{#translate}}Course Outlines{{/translate}}</a></li>
+    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
+    <li role="presentation"><a href="#courseEvaluation" data-toggle="tab" aria-controls="courseEvaluation">{{#translate}}Course Evaluation{{/translate}}</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -14,68 +14,68 @@
     <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Details</h3>
+                <h3>{{#translate}}Course Details{{/translate}}</h3>
             </div>
             <div class="panel-body">
 
                 <table class="table diffTable">
                     {{#course}}
                     <tr class="diffRow">
-                        <td >Name</td>
+                        <td >{{#translate}}Name{{/translate}}</td>
                         <td class="hidden original">{{before.name}}</td>
                         <td class="hidden changed">{{after.name}}</td>
                         <td class="diff"></td>
                     </tr> 
                     <tr class="diffRow"> 
-                        <td >Start date</td>
+                        <td >{{#translate}}Start date{{/translate}}</td>
                         <td class="hidden original">{{before.startDate}}</td>
                         <td class="hidden changed">{{after.startDate}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >End date</td>
+                        <td >{{#translate}}End date{{/translate}}</td>
                         <td class="hidden original">{{before.endDate}}</td>
                         <td class="hidden changed">{{after.endDate}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Capacity</td>
+                        <td >{{#translate}}Capacity{{/translate}}</td>
                         <td class="hidden original">{{before.studentsNo}}</td>
                         <td class="hidden changed">{{after.studentsNo}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Student No</td>
+                        <td >{{#translate}}Student No{{/translate}}</td>
                         <td class="hidden original">{{before.capacity}}</td>
                         <td class="hidden changed">{{after.capacity}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Authorized training partner</td>
+                        <td >{{#translate}}Authroized training partner{{/translate}}</td>
                         <td class="hidden original">{{before.atp.commercialName}}</td>
                         <td class="hidden changed">{{after.atp.commercialName}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Authorized instructor</td>
+                        <td >{{#translate}}Authorized instructor{{/translate}}</td>
                         <td class="hidden original">{{before.ai.firstName}} {{before.ai.lastName}}</td>
                         <td class="hidden changed">{{after.ai.firstName}} {{after.ai.lastName}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Brief</td>
+                        <td >{{#translate}}Brief{{/translate}}</td>
                         <td class="hidden original">{{before.brief}}</td>
                         <td class="hidden changed">{{after.brief}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow"> 
-                        <td >Time</td>
+                        <td >{{#translate}}Time{{/translate}}</td>
                         <td class="hidden original">{{before.time}}</td>
                         <td class="hidden changed">{{after.time}}</td>
                         <td class="diff"></td>
                     </tr>
                     <tr class="diffRow">
-                        <td >Duration</td>
+                        <td >{{#translate}}Duration{{/translate}}</td>
                         <td class="hidden original">{{before.duration}}</td>
                         <td class="hidden changed">{{after.duration}}</td>
                         <td class="diff"></td>
@@ -90,15 +90,15 @@
     <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Outlines</h3>
+                <h3>{{#translate}}Course Outlines{{/translate}}</h3>
             </div>
             <div class="panel-body">
 
                 <table class="table diffTable">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Duration</th>
+                            <th>{{#translate}}Title{{/translate}}</th>
+                            <th>{{#translate}}Duration{{/translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,15 +130,15 @@
     <div role="tabpanel" class="tab-pane fade" id="courseResources">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Resources</h3>
+                <h3>{{#translate}}Course Resources{{/translate}}</h3>
             </div>
             <div class="panel-body">
                 
                 <table class="table diffTable">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Type</th>
+                            <th>{{#translate}}Name{{/translate}}</th>
+                            <th>{{#translate}}Type{{/translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,14 +170,14 @@
     <div role="tabpanel" class="tab-pane fade" id="courseEvaluation">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Evaluation</h3>
+                <h3>{{#translate}}Course Evaluation{{/translate}}</h3>
             </div>
             <div class="panel-body">
                 
                 <table class="table diffTable">
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>{{#translate}}Title{{/translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -200,8 +200,8 @@
     </div>
 
     {{#isAdminUser}}
-    <a href="/courses/approve/{{id}}"><button class="btn btn-small btn-success">Approve all changes</button></a>
-    <a href="/courses/disapprove/{{id}}"><button class="btn btn-small btn-danger">Disapprove all changes</button></a>
+    <a href="/courses/approve/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Approve all changes{{/translate}}</button></a>
+    <a href="/courses/disapprove/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Disapprove all changes{{/translate}}</button></a>
     {{/isAdminUser}}
 </div>
 {{/content}}

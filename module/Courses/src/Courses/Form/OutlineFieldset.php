@@ -66,6 +66,21 @@ class OutlineFieldset extends Fieldset implements InputFilterProviderInterface
                 )
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'titleAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => '<div class="required">Title in Arabic</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+        ));
 
         $this->add(array(
             'name' => 'duration',
@@ -114,6 +129,9 @@ class OutlineFieldset extends Fieldset implements InputFilterProviderInterface
     {
         return array(
             'title' => array(
+                'required' => true,
+            ),
+            'titleAr' => array(
                 'required' => true,
             ),
             'duration' => array(

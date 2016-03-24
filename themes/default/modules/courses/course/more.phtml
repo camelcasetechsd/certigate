@@ -9,7 +9,7 @@
 {{#canEvaluate}}
 {{#courseEventId}}
 <!--this rule is only for students-->
-<a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >Evaluate Course</a>
+<a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >{{#translate}}Evaluate Course{{/translate}}</a>
 <br><br>
 {{/courseEventId}}
 {{/canEvaluate}}
@@ -34,13 +34,17 @@
                 <table class="table">
                     <tbody>
                         <tr>
-                            <td>Name</td><td>{{name}}</td>
+                            <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
                         </tr><tr>
-                            <td>Brief</td><td>{{brief}}</td>
+                            <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
                         </tr><tr>
-                            <td>Time</td><td>{{time}}</td>
+                            <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
                         </tr><tr>
-                            <td>Duration</td><td>{{duration}} Day(s)</td>
+                            <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,7 +56,7 @@
     <div role="tabpanel" class="tab-pane fade" id="courseEvents">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Events</h3>
+                <h3>{{#translate}}Course Events{{/translate}}</h3>
             </div>
             <div class="panel-body">
 
@@ -62,25 +66,27 @@
 
                         {{#courseEvents.count}}
                         <tr>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Instructor</th>
-                            <th>ATP Name</th>
-                            <th>ATP City</th>
+                            <th>{{#translate}}Start Date{{/translate}}</th>
+                            <th>{{#translate}}End Date{{/translate}}</th>
+                            <th>{{#translate}}Instructor{{/translate}}</th>
+                            <th>{{#translate}}ATP Name{{/translate}}</th>
+                            <th>{{#translate}}ATP City{{/translate}}</th>
                         </tr>
                         {{/courseEvents.count}}
                     </thead>
                     <tbody>
                         {{#courseEvents}}
-                        {{^alreadyStarted}}
-                        <tr>
-                            <td>{{startDate}}</td>
-                            <td>{{endDate}}</td>
-                            <td>{{ai.firstName}} {{ai.lastName}}</td>
-                            <td>{{atp.commercialName}}</td>
-                            <td>{{atp.city}}</td>
-                        </tr>
-                        {{/alreadyStarted}}
+                            {{^hideFromCalendar}}
+                            {{^alreadyStarted}}
+                            <tr>
+                                <td>{{startDate}}</td>
+                                <td>{{endDate}}</td>
+                                <td>{{ai.firstName}} {{ai.lastName}}</td>
+                                <td>{{atp.commercialName}}</td>
+                                <td>{{atp.city}}</td>
+                            </tr>
+                            {{/alreadyStarted}}
+                            {{/hideFromCalendar}}
                         {{/courseEvents}} 
                     </tbody>
                 </table>
@@ -92,7 +98,7 @@
     <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Outlines</h3>
+                <h3>{{#translate}}Course Outlines{{/translate}}</h3>
             </div>
             <div class="panel-body">
 
@@ -101,8 +107,9 @@
                     <thead>
                         {{#outlines.count}}
                         <tr>
-                            <th>Title</th>
-                            <th>Duration (minutes)</th>
+                            <th>{{#translate}}Title{{/translate}}</th>
+                            <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                            <th>{{#translate}}Duration (minutes){{/translate}}</th>
                         </tr>
                         {{/outlines.count}}
                     </thead>
@@ -111,6 +118,7 @@
                         {{#statusActive}}
                         <tr>
                             <td>{{title}}</td>
+                            <td>{{titleAr}}</td>
                             <td>{{duration}}</td>
                         </tr>
                         {{/statusActive}}
@@ -125,7 +133,7 @@
     <div role="tabpanel" class="tab-pane fade" id="courseResources">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Course Resources</h3>
+                <h3>{{#translate}}Course Resources{{/translate}}</h3>
             </div>
             <div class="panel-body">
 

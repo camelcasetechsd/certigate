@@ -25,35 +25,53 @@ class Role
      * Anonymous role
      */
     const ANONYMOUS_ROLE = "Anonymous";
+
     /**
      * User role
      */
     const USER_ROLE = "User";
+
     /**
      * Admin role
      */
     const ADMIN_ROLE = "Admin";
+
     /**
      * Student role
      */
     const STUDENT_ROLE = "Student";
+
     /**
      * Proctor role
      */
     const PROCTOR_ROLE = "Proctor";
+
     /**
      * Instructor role
      */
     const INSTRUCTOR_ROLE = "Instructor";
+
     /**
      * Test Center Administrator role
      */
     const TEST_CENTER_ADMIN_ROLE = "Test Center Administrator";
+
     /**
      * Training Manager role
      */
     const TRAINING_MANAGER_ROLE = "Training Manager";
-    
+
+    /**
+     *
+     * @var Array translated properties 
+     */
+    protected $translatedProperties = [
+        'name' => [
+            'en_US' => 'name',
+            'ar_AR' => 'nameAr'
+        ]
+    ];
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -76,6 +94,13 @@ class Role
     public $name;
 
     /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $nameAr;
+
+    /**
      * Gets the value of id.
      *
      * @return int
@@ -94,7 +119,7 @@ class Role
      * @return self
      * @access public
      */
-    public function setId( $id )
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -120,11 +145,35 @@ class Role
      * @return self
      * @access public
      */
-    public function setName( $name )
+    public function setName($name)
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Gets the value of name in Arabic
+     *
+     * @return string
+     * @access public
+     */
+    function getNameAr()
+    {
+        return $this->nameAr;
+    }
+
+    /**
+     * Sets the value of name in Arabic
+     *
+     * @param string nameAr the name
+     *
+     * @return self
+     * @access public
+     */
+    function setNameAr($nameAr)
+    {
+        $this->nameAr = $nameAr;
     }
 
     /**
@@ -136,7 +185,7 @@ class Role
      */
     public function getArrayCopy()
     {
-        return get_object_vars( $this );
+        return get_object_vars($this);
     }
 
     /**
@@ -146,10 +195,11 @@ class Role
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray( $data = array() )
+    public function exchangeArray($data = array())
     {
-        
-        $this->setName( $data["name"] );
+
+        $this->setName($data["name"]);
+        $this->setNameAr($data["nameAr"]);
     }
 
     /**
@@ -160,9 +210,9 @@ class Role
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter( InputFilterInterface $inputFilter )
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception( "Not used" );
+        throw new \Exception("Not used");
     }
 
     /**
@@ -180,7 +230,7 @@ class Role
             $inputFilter = new InputFilter();
 
 
-            $inputFilter->add( array(
+            $inputFilter->add(array(
                 'name' => 'name',
                 'required' => true,
                 'validators' => array(
@@ -194,7 +244,24 @@ class Role
                         )
                     ),
                 )
-            ) );
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'nameAr',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('nameAr')
+                        )
+                    ),
+                )
+            ));
+            
             $this->inputFilter = $inputFilter;
         }
 

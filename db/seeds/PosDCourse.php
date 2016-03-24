@@ -30,15 +30,20 @@ class PosDCourse extends AbstractSeed
         // dummy user to use his id ad foreign key in orgs
         $normalUser = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "newstudent",
             "password" => "student",
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => $faker->phoneNumber,
@@ -66,9 +71,11 @@ class PosDCourse extends AbstractSeed
         // dummy atp to be used in course creation
         $atp = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => Status::STATUS_ACTIVE,
             'type' => 2,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -82,8 +89,11 @@ class PosDCourse extends AbstractSeed
             'website' => $faker->url,
             'email' => $faker->email,
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             'zipCode' => $faker->randomNumber(),
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
@@ -114,18 +124,23 @@ class PosDCourse extends AbstractSeed
         // getting authorized Instuctor role id 
         $instructorRole = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array("name" => Role::INSTRUCTOR_ROLE));
         $instructorRoleId = $instructorRole->getId();
-        
+
         $instructor = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "instructor",
             "password" => "useruser",
             "mobile" => $faker->phoneNumber,
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => $faker->phoneNumber,
@@ -160,8 +175,10 @@ class PosDCourse extends AbstractSeed
 
         $courseData = array(
             "name" => $faker->firstName,
+            "nameAr" => $faker->firstName,
             "brief" => $faker->text,
-            "time" => "10:30",
+            "briefAr" => $faker->text,
+            "time" => $faker->date('H:i:s'),
             "duration" => 20,
             "isForInstructor" => 0,
             "status" => Status::STATUS_ACTIVE,
@@ -184,12 +201,14 @@ class PosDCourse extends AbstractSeed
             "atp" => $atpId,
             "ai" => $instructorId,
             "status" => Status::STATUS_ACTIVE,
+            "hideFromCalendar" => 0
         );
         $this->serviceManager->get("Courses\Model\CourseEvent")->save(/*$courseEvent =*/ new CourseEventEntity(), $courseEventData);
 
         // creating outlines for the course
         $outline1 = array(
             "title" => "outline1",
+            "titleAr" => "outline1",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => Status::STATUS_ACTIVE,
@@ -200,6 +219,7 @@ class PosDCourse extends AbstractSeed
 
         $outline2 = array(
             "title" => "outline2",
+            "titleAr" => "outline2",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => Status::STATUS_ACTIVE,

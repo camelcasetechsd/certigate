@@ -5,19 +5,19 @@
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Exam Requests</div>
+    <div class="panel-heading">{{#translate}}Exam Requests{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Course name</th>
-                <th>Authorized Testing Center</th>
-                <th>Exam Date</th>
-                <th>Students No.</th>
-                <th>Admin Status</th>
-                <th>TVTC Status</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Course name{{/translate}}</th>
+                <th>{{#translate}}Authorized Testing Center{{/translate}}</th>
+                <th>{{#translate}}Exam Date{{/translate}}</th>
+                <th>{{#translate}}Students No.{{/translate}}</th>
+                <th>{{#translate}}Admin Status{{/translate}}</th>
+                <th>{{#translate}}TVTC Status{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -42,9 +42,9 @@
                 {{/isTvtcPending}}
                 <td>
                     {{#isAdminPending}}
-                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="Accept"><span class="glyphicon glyphicon-ok"></span></a>
+                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Accept{{/translate}}"><span class="glyphicon glyphicon-ok"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminPending}}
                 </td>
             </tr>

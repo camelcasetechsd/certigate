@@ -505,7 +505,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
+        if ($auth->hasIdentity() && ($courseEvent->getHideFromCalendar() || ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId()))) {
             $notAuthorized = true;
         }
 
@@ -544,7 +544,7 @@ class CourseController extends ActionController
                 $notAuthorized = true;
             }
         }
-        if ($auth->hasIdentity() && ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId())) {
+        if ($auth->hasIdentity() && ($courseEvent->getHideFromCalendar() || ( in_array(Role::INSTRUCTOR_ROLE, $storage['roles']) && $storage['id'] == $courseEvent->getAi()->getId()))) {
             $notAuthorized = true;
         }
         if ($notAuthorized === true) {
@@ -589,7 +589,7 @@ class CourseController extends ActionController
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             // validate questions
-            $errors = $evaluationModel->validateQuestion($data['newQuestion']);
+            $errors = $evaluationModel->validateQuestion($data, /* key */ 'newQuestion', /* keyAr */ 'newQuestionAr');
 
             if (empty($errors)) {
                 //creating empty user template for this course
@@ -598,8 +598,8 @@ class CourseController extends ActionController
                 $evalEntity->setPercentage(0.00);
                 $evaluationModel->saveEvaluation($evalEntity);
                 // save questions
-                foreach ($data['newQuestion'] as $new) {
-                    $evaluationModel->assignQuestionToEvaluation($new);
+                foreach ($data['newQuestion'] as $key => $new) {
+                    $evaluationModel->assignQuestionToEvaluation($data['newQuestion'][$key], $data['newQuestionAr'][$key]);
                 }
                 //redirect to edit page
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvTemplate', 'id' => $evalEntity->getId()), array('name' => 'editEvTemplate'));
@@ -607,8 +607,9 @@ class CourseController extends ActionController
             }
             else {
                 $variables['validationError'] = $errors;
-                // unvalid questions
-                $variables['oldQuestions'] = $data['newQuestion'];
+                /**
+                 *   TODO: populate unvallid questions
+                 */
             }
         }
         return new ViewModel($variables);
@@ -627,31 +628,30 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $error1 = array();
             $error2 = array();
-            if (isset($data['editedQuestion'])) {
-                $error1 = $evaluationModel->validateQuestion($data['editedQuestion']);
+            if (isset($data['editedQuestion']) && isset($data['editedQuestionAr'])) {
+                $error1 = $evaluationModel->validateQuestion($data, /* key */ 'editedQuestion', /* keyAr */ 'editedQuestionAr');
             }
-            if (isset($data['newQuestion'])) {
-                $error2 = $evaluationModel->validateQuestion($data['newQuestion']);
+            if (isset($data['newQuestion']) && isset($data['newQuestionAr'])) {
+                $error2 = $evaluationModel->validateQuestion($data, /* key */ 'newQuestion', /* keyAr */ 'newQuestionAr');
             }
             $errors = array_merge($error1, $error2);
             if (empty($errors)) {
-                // saving new Questions
-                if (isset($data['newQuestion'])) {
-                    foreach ($data['newQuestion'] as $new) {
-                        $evaluationModel->assignQuestionToEvaluation($new, $eval->getId());
-                    }
-                }
-                // updating old questions
-                if (isset($data['editedQuestion']) && isset($data['original'])) {
-                    for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval);
-                    }
-                }
-
                 //delete deleted questions
                 if (isset($data['deleted'])) {
                     foreach ($data['deleted'] as $deletedQuestion) {
-                        $evaluationModel->removeQuestion($deletedQuestion);
+                        $evaluationModel->removeQuestion($deletedQuestion, $eval->getId());
+                    }
+                }
+                // saving new Questions
+                if (isset($data['newQuestion']) && isset($data['newQuestionAr'])) {
+                    foreach ($data['newQuestion'] as $key => $new) {
+                        $evaluationModel->assignQuestionToEvaluation($data['newQuestion'][$key], $data['newQuestionAr'][$key]);
+                    }
+                }
+                // updating old questions
+                if (isset($data['editedQuestion']) && isset($data['original']) && isset($data['editedQuestionAr']) && isset($data['originalAr'])) {
+                    for ($i = 0; $i < count($data['editedQuestion']); $i++) {
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $data['originalAr'][$i], $data['editedQuestionAr'][$i], $eval);
                     }
                 }
             }
@@ -659,11 +659,6 @@ class CourseController extends ActionController
 
                 // errors
                 $variables['validationError'] = $errors;
-
-                if (isset($newQuestion)) {
-                    $unValidQuestions = array_merge($data['newQuestion']);
-                    $variables['unvalidQuestions'] = $unValidQuestions;
-                }
             }
         }
 
@@ -714,8 +709,8 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $errors = array();
             // if user didnot edited any of the template questions
-            if (isset($data['newQuestion'])) {
-                $errors = $evaluationModel->validateQuestion($data['newQuestion']);
+            if (isset($data['newQuestion']) && isset($data['newQuestionAr'])) {
+                $errors = $evaluationModel->validateQuestion($data, /* key */ 'newQuestion', /* keyAr */ 'newQuestionAr');
             }
             if (empty($errors)) {
                 //creating empty user template for this course
@@ -729,13 +724,15 @@ class CourseController extends ActionController
                 $evalEntity->setStatus($status);
                 $evaluationModel->saveEvaluation($evalEntity, $courseId, $userEmail, $isAdminUser, /* $editFlag = */ false);
                 // save templates and newQuestions
-                foreach ($data['template'] as $temp) {
-
-                    $evaluationModel->assignQuestionToEvaluation($temp, $evalEntity->getId());
+                if (isset($data['template'])) {
+                    foreach ($data['template'] as $key => $temp) {
+                        $evaluationModel->assignQuestionToEvaluation($data['template'][$key], $data['templateAr'][$key], $evalEntity->getId());
+                    }
                 }
+                // saving new Questions
                 if (isset($data['newQuestion'])) {
-                    foreach ($data['newQuestion'] as $new) {
-                        $evaluationModel->assignQuestionToEvaluation($new, $evalEntity->getId());
+                    foreach ($data['newQuestion'] as $key => $new) {
+                        $evaluationModel->assignQuestionToEvaluation($data['newQuestion'][$key], $data['newQuestionAr'][$key], $evalEntity->getId());
                     }
                 }
                 //redirect to course page
@@ -801,11 +798,13 @@ class CourseController extends ActionController
             $data = $request->getPost()->toArray();
             $error1 = array();
             $error2 = array();
-            if (isset($data['editedQuestion'])) {
-                $error1 = $evaluationModel->validateQuestion($data['editedQuestion']);
+
+
+            if (isset($data['editedQuestion']) && isset($data['editedQuestionAr'])) {
+                $error1 = $evaluationModel->validateQuestion($data, /* key */ 'editedQuestion', /* keyAr */ 'editedQuestionAr');
             }
-            if (isset($data['newQuestion'])) {
-                $error2 = $evaluationModel->validateQuestion($data['newQuestion']);
+            if (isset($data['newQuestion']) && isset($data['newQuestionAr'])) {
+                $error2 = $evaluationModel->validateQuestion($data, /* key */ 'newQuestion', /* keyAr */ 'newQuestionAr');
                 $errors = array_merge($error1, $error2);
             }
             else {
@@ -818,25 +817,28 @@ class CourseController extends ActionController
                 }
                 $eval->setStatus($status);
                 $evaluationModel->saveEvaluation($eval, $courseId, $userEmail, $isAdminUser, /* $editFlag = */ true);
+//                var_dump($data);exit;
+                //delete deleted questions
+                if (isset($data['deleted']) && $isAdminUser === true) {
+                    foreach ($data['deleted'] as $question) {
+                        $evaluationModel->removeQuestion($question , $eval->getId());
+                    }
+                }
+                
                 // saving new Questions
                 if (isset($data['newQuestion'])) {
-                    foreach ($data['newQuestion'] as $new) {
-                        $evaluationModel->assignQuestionToEvaluation($new, $eval->getId());
+                    foreach ($data['newQuestion'] as $key => $new) {
+                        $evaluationModel->assignQuestionToEvaluation($data['newQuestion'][$key], $data['newQuestionAr'][$key], $eval->getId());
                     }
                 }
                 // updating old questions
                 if (isset($data['editedQuestion']) && isset($data['original'])) {
                     for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $eval);
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i],$data['originalAr'][$i], $data['editedQuestionAr'][$i], $eval);
                     }
                 }
 
-                //delete deleted questions
-                if (isset($data['deleted']) && $isAdminUser === true) {
-                    foreach ($data['deleted'] as $deletedQuestion) {
-                        $evaluationModel->removeQuestion($deletedQuestion);
-                    }
-                }
+
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'editEvaluation', 'courseId' => $courseId), array('name' => 'editCourseEvaluation'));
                 $this->redirect()->toUrl($url);

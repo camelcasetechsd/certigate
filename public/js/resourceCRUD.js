@@ -11,42 +11,68 @@
  * @param {string} fileErrors
  * @returns {Boolean} false in case any field does not exist
  */
-function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, nameValue, nameClass, nameErrors, fileClass, fileErrors){
-    if(! $(addMoreSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector, fileInputSelector, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors) {
+
+    if (!$(addMoreSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
         return false;
     }
+
     // determine new fields iteration value
     var fileInputsCount = $(".addedResources").length;
     var newElementIdExtension = "Added_" + fileInputsCount;
+    var newElementIdArExtension = "Added_id_" + fileInputsCount;
     var newElementNameExtension = "Added[" + fileInputsCount + "]";
-    
+    var newElementNameArExtension = "AddedAr[" + fileInputsCount + "]";
+
     // This is a way to "htmlDecode" your string...  
     nameErrors = $("<div />").html(nameErrors).text();
+    nameArErrors = $("<div />").html(nameArErrors).text();
     fileErrors = $("<div />").html(fileErrors).text();
-    
-    // prepare new name field
+
+    // prepare new  name field
     var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
     var newNameInputName = $(nameInputSelector).attr("name") + newElementNameExtension;
     var oldNameInputClass = $(nameInputSelector).attr("class");
-    if(typeof oldNameInputClass !== "undefined"){
+    if (typeof oldNameInputClass !== "undefined") {
         oldNameInputClass.replace('input-error', '')
-    }else{
+    } else {
         oldNameInputClass = '';
     }
     var newNameInputClass = oldNameInputClass + " " + nameClass;
     var newNameInput = $(nameInputSelector).clone().attr('class', newNameInputClass).attr("id", newNameInputId).attr("name", newNameInputName).attr('value', nameValue);
-    if(nameValue === ""){
+    if (nameValue === "") {
         newNameInput.val("");
     }
     var newNameLabel = $(nameInputSelector).prev("label").clone();
     var newNameField = $("<div></div>").append(newNameLabel).append(newNameInput).append(nameErrors);
+
+
+    // prepare new arabic name field
+    var newNameArInputId = $(nameInputArSelector).attr("id") + newElementIdArExtension;
+    var newNameArInputName = $(nameInputArSelector).attr("name") + newElementNameArExtension;
+    var oldNameArInputClass = $(nameInputArSelector).attr("class");
+    if (typeof oldNameArInputClass !== "undefined") {
+        oldNameArInputClass.replace('input-error', '')
+    } else {
+        oldNameArInputClass = '';
+    }
+    var newNameArInputClass = oldNameArInputClass + " " + nameArClass;
+    var newNameArInput = $(nameInputArSelector).clone().attr('class', newNameArInputClass).attr("id", newNameArInputId).attr("name", newNameArInputName).attr('value', nameValue);
+    if (nameArValue === "") {
+        newNameArInput.val("");
+    }
+
+    var newNameArLabel = $(nameInputArSelector).prev("label").clone();
+    var newNameArField = $("<div></div>").append(newNameArLabel).append(newNameArInput).append(nameArErrors);
+
+
     // prepare new file field
     var newFileInputId = $(fileInputSelector).attr("id") + newElementIdExtension;
     var newFileInputName = $(fileInputSelector).attr("name") + newElementNameExtension;
     var oldFileInputClass = $(fileInputSelector).attr("class");
-    if(typeof oldFileInputClass !== "undefined"){
+    if (typeof oldFileInputClass !== "undefined") {
         oldFileInputClass.replace('input-error', '')
-    }else{
+    } else {
         oldFileInputClass = '';
     }
     var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
@@ -57,12 +83,12 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
     var newRemoveButtonSpacer = $(addMoreSelector).prev("dt").clone();
-    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
-    
-    
-    
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
+
+
+
     // prepare full new resource
-    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
     // add new resource before add button
     $(addMoreSelector).prev("dt").before(newResource);
 }
@@ -75,8 +101,8 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
  * @param {string} fileInputSelector
  * @returns {Boolean} false in case any field does not exist
  */
-function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector){
-    if(! $(removeButtonSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector) {
+    if (!$(removeButtonSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
         return false;
     }
     $(nameInputSelector).parent("div").parent("div").remove();
@@ -88,13 +114,13 @@ function removeResource(removeButtonSelector, nameInputSelector, fileInputSelect
  * @param {object} deleteAnchorTag
  * @returns {undefined}
  */
-function deleteResourcePhysically(deleteAnchorTag){
-    bootbox.confirm("Are you sure you want to delete the resource ?", function(result) {
-        if(result){
+function deleteResourcePhysically(deleteAnchorTag) {
+    bootbox.confirm("Are you sure you want to delete the resource ?", function (result) {
+        if (result) {
             var deleteLink = deleteAnchorTag.attr("data-href");
             window.location.href = deleteLink;
         }
-    }); 
+    });
 }
 
 

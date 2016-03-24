@@ -59,6 +59,18 @@ class CourseForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'nameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Name in Arabic',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'brief',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -67,6 +79,18 @@ class CourseForm extends Form
             ),
             'options' => array(
                 'label' => 'Brief',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'briefAr',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Brief in Arabic',
             ),
         ));
 

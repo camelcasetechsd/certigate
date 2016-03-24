@@ -155,6 +155,7 @@ class OrganizationsController extends ActionController
     {
         $variables = array();
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $query = $cleanQuery->setEntity('Users\Entity\User');
         $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -193,6 +194,7 @@ class OrganizationsController extends ActionController
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
+        $options['translatorHandler'] = $translatorHandler;
         $form = new OrgForm(/* $name = */ null, $options);
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
@@ -258,6 +260,7 @@ class OrganizationsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -290,6 +293,7 @@ class OrganizationsController extends ActionController
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
+        $options['translatorHandler'] = $translatorHandler;
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $form = new orgForm(/* $name = */ null, $options);
@@ -368,11 +372,11 @@ class OrganizationsController extends ActionController
         $variables['atpLicenseAttachment'] = $atpLicenseAttachment;
         $variables['atcLicenseAttachment'] = $atcLicenseAttachment;
         $variables['organizationForm'] = $this->getFormView($form);
-        
+
         $organizationArray = array($orgObj);
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
-        
+
         $hasPendingChanges = (count($organizationLogs) > 0) ? true : false;
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'organizationsPending'));
         $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
@@ -521,7 +525,7 @@ class OrganizationsController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'organizationsList'));
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * Disapprove pending version organization
      * 
@@ -558,10 +562,10 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        
+
         $organization = $query->find('Organizations\Entity\Organization', /* $criteria = */ $id);
         $file = $organizationModel->getFile($organization, $type, $notApproved);
-        
+
         return $fileUtilities->getFileResponse($file);
     }
 

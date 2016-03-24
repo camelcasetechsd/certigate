@@ -3,22 +3,22 @@
 {{$content}}
 
 <br><br>
-<h4 class="h4">Course You Are Assigned To ..</h4>
+<h4 class="h4">{{#translate}}Course You Are Assigned To{{/translate}} ..</h4>
 
 <div class="panel panel-default">
 
     <table class="table">
         <thead>
             <tr>
-                <th>Course name</th>
-                <th>Brief</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration (Days)</th>
-                <th>Authorized Training Partner</th>
-                <th>Rating</th>
+                <th>{{#translate}}Course name{{/translate}}</th>
+                <th>{{#translate}}Brief{{/translate}}</th>
+                <th>{{#translate}}Start Date{{/translate}}</th>
+                <th>{{#translate}}End Date{{/translate}}</th>
+                <th>{{#translate}}Duration{{/translate}} ({{#translate}}Days{{/translate}})</th>
+                <th>{{#translate}}Authorized Training Partner{{/translate}}</th>
+                <th>{{#translate}}Rating{{/translate}}</th>
                 
-                <th colspan="2">Actions</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
                     {{endDate}}
                 </td>
                 <td>
-                    {{course.duration}} Days
+                    {{duration}} {{#translate}}Days{{/translate}}
                 </td>
                 <td>
                     {{atp.commercialName}}
@@ -47,11 +47,11 @@
                     {{course.evaluation.percentage}} %
                 </td>
                 <td>
-                    <a href="/courses/more/{{course.id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-folder-close"></span></a>
+                    <a href="/courses/more/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}More{{/translate}}"><span class="glyphicon glyphicon-folder-close"></span></a>
                     &nbsp;
-                    <a href="/resources/{{course.id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon glyphicon-film"></span></a>
+                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Resources{{/translate}}"><span class="glyphicon glyphicon glyphicon-film"></span></a>
                     &nbsp;
-                    <a href="/courses/outlines/{{course.id}}" data-toggle="tooltip" data-placement="left" title="Outlines"><span class=" glyphicon glyphicon-list-alt"></span></a>
+                    <a href="/courses/outlines/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Outlines{{/translate}}"><span class=" glyphicon glyphicon-list-alt"></span></a>
                 </td>
             </tr>
 
