@@ -15,4 +15,5 @@ class PageCategories
      * default category
      */
     const DEFAULT_CATEGORY = "Default";
+
 }

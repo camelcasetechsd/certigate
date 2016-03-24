@@ -75,9 +75,10 @@ class IndexController extends ActionController
 
         $options = array();
         $options['query'] = $query;
-        $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        
         $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
@@ -180,9 +181,9 @@ class IndexController extends ActionController
         $userObj = new User();
         $options = array();
         $options['query'] = $query;
-        $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();

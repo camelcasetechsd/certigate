@@ -6,6 +6,7 @@ use Utilities\Form\Form;
 use Users\Service\Statement;
 use Utilities\Service\Time;
 use Utilities\Form\ButtonsFieldset;
+use Translation\Service\Locale\Locale;
 
 /**
  * User Form
@@ -38,12 +39,16 @@ class UserForm extends Form
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-        $countries = $options['countries'];
-        $languages = $options['languages'];
+        $countriesService = $options['countriesService'];
+        $languagesService = $options['languagesService'];
+        $applicationLocale = $options['applicationLocale'];
+        $currentLocale = $applicationLocale->getCurrentLocale();
+        $currentLanguageCode = $applicationLocale->getCurrentLanguageCode();
         $excludedRoles = $options['excludedRoles'];
         unset($options['query']);
-        unset($options['countries']);
-        unset($options['languages']);
+        unset($options['countriesService']);
+        unset($options['languagesService']);
+        unset($options['currentLocale']);
         unset($options['excludedRoles']);
         parent::__construct($name, $options);
 
@@ -61,6 +66,19 @@ class UserForm extends Form
                 'label' => 'First Name',
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'firstNameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter First Name in Arabic',
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'First Name in Arabic',
+            ),
+        ));
         $this->add(array(
             'name' => 'middleName',
             'type' => 'Zend\Form\Element\Text',
@@ -73,6 +91,17 @@ class UserForm extends Form
             ),
         ));
         $this->add(array(
+            'name' => 'middleNameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter Middle Name in Arabic',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Middle Name in Arabic',
+            ),
+        ));
+        $this->add(array(
             'name' => 'lastName',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -82,6 +111,18 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Last Name',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'lastNameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter Last Name in Arabic',
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Last Name in Arabic',
             ),
         ));
 
@@ -195,7 +236,7 @@ class UserForm extends Form
                 'label' => 'Security Answer',
             ),
         ));
-
+        
         $this->add(array(
             'name' => 'identificationType',
             'type' => 'Zend\Form\Element\Text',
@@ -208,6 +249,7 @@ class UserForm extends Form
                 'label' => 'Identification Type',
             ),
         ));
+
         $this->add(array(
             'name' => 'identificationNumber',
             'type' => 'Zend\Form\Element\Text',
@@ -255,10 +297,11 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Nationality',
-                'value_options' => $countries,
+                'value_options' => $countriesService->getAllCountries($currentLanguageCode),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
+        
         $this->add(array(
             'name' => 'language',
             'type' => 'Zend\Form\Element\Select',
@@ -268,11 +311,11 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Language',
-                'value_options' => $languages,
+                'value_options' => $languagesService->getAllLanguages($currentLanguageCode),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-
+       
         $this->add(array(
             'name' => 'addressOne',
             'type' => 'Zend\Form\Element\Text',
@@ -297,6 +340,29 @@ class UserForm extends Form
             ),
         ));
         $this->add(array(
+            'name' => 'addressOneAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter Address Line 1 in Arabic',
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Address Line 1 in Arabic',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'addressTwoAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter Address Line 2 in Arabic',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Address Line 2 in Arabic',
+            ),
+        ));
+        $this->add(array(
             'name' => 'city',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -308,6 +374,7 @@ class UserForm extends Form
                 'label' => 'City',
             ),
         ));
+
         $this->add(array(
             'name' => 'zipCode',
             'type' => 'Zend\Form\Element\Text',
@@ -319,6 +386,7 @@ class UserForm extends Form
                 'label' => 'Zip Code',
             ),
         ));
+
         $this->add(array(
             'name' => 'country',
             'type' => 'Zend\Form\Element\Select',
@@ -328,11 +396,11 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Country',
-                'value_options' => $countries,
+                'value_options' => $countriesService->getAllCountries($currentLanguageCode),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-
+       
         $this->add(array(
             'name' => 'photo',
             'type' => 'Zend\Form\Element\File',
@@ -351,7 +419,7 @@ class UserForm extends Form
                 'label' => '<label class="legendLabel">Roles</label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
-                'property' => 'name',
+                'property' => 'name'.(($currentLocale == Locale::LOCALE_AR_AR)? "Ar":""),
                 'find_method' => array(
                     'name' => 'getRoles',
                     'params' => array(

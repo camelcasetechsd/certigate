@@ -27,7 +27,8 @@ return array(
             'SlmQueue',
             'SlmQueueDoctrine',
             'Versioning',
-            'Notifications'
+            'Notifications',
+            'DOMPDFModule'
         ),
         'anonymous_routes' => array(
             'contactUs' => array(
@@ -59,6 +60,9 @@ return array(
             ),
             'cmsPressReleaseUnsubscribe' => array(
                 'resource' => 'CMS',
+            ),
+            'translationSetLocale' => array(
+                'resource' => 'Translation',
             )
         )
     )
