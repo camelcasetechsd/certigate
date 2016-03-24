@@ -40,38 +40,39 @@
                         </thead>
                         <tbody>
                             {{#courseEvents}}
-                            <tr>
-                                <td>
-                                    {{startDate}}
-                                </td>
-                                <td>
-                                    {{endDate}}
-                                </td>
-                                <td>
-                                    {{atp.commercialName}}
-                                </td>
-                                <td>
-                                    {{atp.city}}
-                                </td>
-                                <td>
+                                {{^hideFromCalendar}}
+                                <tr>
+                                    <td>
+                                        {{startDate}}
+                                    </td>
+                                    <td>
+                                        {{endDate}}
+                                    </td>
+                                    <td>
+                                        {{atp.commercialName}}
+                                    </td>
+                                    <td>
+                                        {{atp.city}}
+                                    </td>
+                                    <td>
                                     <a href="#">{{#translate}}Notify me before start{{/translate}}</a>
-                                </td>
-                                <td>
-                                    {{#canEnroll}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>
+                                        {{#canEnroll}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Enroll{{/translate}}</button></a>
-                                    {{/canEnroll}}
-                                    {{#canLeave}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {{/canEnroll}}
+                                        {{#canLeave}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
-                                    {{/canLeave}}
-                                    {{#isFull}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Course Full
-                                    {{/isFull}}
-                                </td>
-                            </tr>
-
+                                        {{/canLeave}}
+                                        {{#isFull}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Course Full
+                                        {{/isFull}}
+                                    </td>
+                                </tr>
+                                {{/hideFromCalendar}}
                             {{/courseEvents}}
 
                         </tbody>

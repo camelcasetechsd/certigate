@@ -76,14 +76,15 @@
                     </thead>
                     <tbody>
                         {{#courseEvents}}
-
-                        <tr>
-                            <td>{{startDate}}</td>
-                            <td>{{endDate}}</td>
-                            <td>{{ai.firstName}} {{ai.lastName}}</td>
-                            <td>{{atp.commercialName}}</td>
-                            <td>{{atp.city}}</td>
-                        </tr>
+                            {{^hideFromCalendar}}
+                            <tr>
+                                <td>{{startDate}}</td>
+                                <td>{{endDate}}</td>
+                                <td>{{ai.firstName}} {{ai.lastName}}</td>
+                                <td>{{atp.commercialName}}</td>
+                                <td>{{atp.city}}</td>
+                            </tr>
+                            {{/hideFromCalendar}}
                         {{/courseEvents}} 
                     </tbody>
                 </table>

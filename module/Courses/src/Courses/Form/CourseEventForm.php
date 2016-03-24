@@ -172,6 +172,17 @@ class CourseEventForm extends Form
                 'label' => 'Students Number',
             ),
         ));
+        
+        $this->add(array(
+            'name' => "fullCapacity",
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'btn btn-primary',
+                'value' => "Full Capacity",
+                'type' => 'button',
+                'onclick' => 'setFullCapacity("#course_event_form_studentsNo","#course_event_form_capacity")',
+            )
+        ));
 
         $this->add(array(
             'name' => 'startDate',
@@ -200,6 +211,19 @@ class CourseEventForm extends Form
             ),
         ));
 
+        $this->add(array(
+                'name' => 'hideFromCalendar',
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Hide From Calendar',
+                    'checked_value' => Status::STATUS_ACTIVE,
+                    'unchecked_value' => Status::STATUS_INACTIVE
+                ),
+            ));
+        
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
