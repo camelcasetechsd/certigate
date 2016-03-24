@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `b8_wordlist`
+--
+
+DROP TABLE IF EXISTS `b8_wordlist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `b8_wordlist` (
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `count_ham` int(11) DEFAULT NULL,
+  `count_spam` int(11) DEFAULT NULL,
+  PRIMARY KEY (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `b8_wordlist`
+--
+
+LOCK TABLES `b8_wordlist` WRITE;
+/*!40000 ALTER TABLE `b8_wordlist` DISABLE KEYS */;
+INSERT INTO `b8_wordlist` VALUES ('b8*dbversion',3,NULL),('b8*texts',0,0);
+/*!40000 ALTER TABLE `b8_wordlist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `codo_bans`
 --
 
@@ -152,7 +177,7 @@ CREATE TABLE `codo_config` (
 
 LOCK TABLES `codo_config` WRITE;
 /*!40000 ALTER TABLE `codo_config` DISABLE KEYS */;
-INSERT INTO `codo_config` VALUES (1,'site_url',''),(2,'site_title','CODOLOGIC'),(3,'site_description','codoforum - Enhancing your forum experience with next generation technology!'),(4,'admin_email','admin@codologic.com'),(5,'theme','blue'),(6,'captcha_public_key',''),(7,'captcha_private_key',''),(8,'register_pass_min','8'),(9,'num_posts_all_topics','30'),(10,'num_posts_cat_topics','20'),(11,'num_posts_per_topic','20'),(12,'forum_attachments_path','assets/img/attachments'),(13,'forum_attachments_exts','jpg,jpeg,png,gif,pjpeg,bmp,txt'),(14,'forum_attachments_size','3'),(15,'forum_attachments_mimetypes','image/*,text/plain'),(16,'forum_attachments_multiple','true'),(17,'forum_attachments_parallel','4'),(18,'forum_attachments_max','10'),(19,'reply_min_chars','10'),(20,'subcategory_dropdown','hidden'),(21,'captcha','disabled'),(22,'await_approval_message','Dear [user:username],\n\nThank you for registering at [option:site_title]. Before we can activate your account one last step must be taken to complete your registration.\n\nTo complete your registration, please visit this URL: [this:confirm_url]\n\nYour Username is: [user:username] \n\nIf you are still having problems signing up please contact a member of our support staff at [option:admin_email]\n\nRegards,\n[option:site_title]'),(23,'await_approval_subject','Confirm your email for [user:username] at [option:site_title]'),(24,'mail_type','mail'),(25,'smtp_protocol','ssl'),(26,'smtp_server','smtp.gmail.com'),(27,'smtp_port','465'),(28,'smtp_username','admin@codologic.com'),(29,'smtp_password','your_smtp_pass'),(30,'register_username_min','3'),(31,'signature_char_lim','255'),(32,'sso_client_id','certigateforum'),(33,'sso_secret','C371i9@13Xe24!rf'),(34,'sso_get_user_path','http://local-certigate.com/users/details'),(35,'sso_login_user_path','http://local-certigate.com/sign/in'),(36,'sso_logout_user_path','http://local-certigate.com/sign/out'),(37,'sso_register_user_path','http://local-certigate.com/users/new'),(38,'sso_name','certigate'),(39,'post_notify_message','Hi, \n\n[user:username] has replied to the topic: [post:title]\n\n----\n[post:imessage]\n----\n\nYou can view the reply at the following url\n[post:url]\n\nRegards,\n[option:site_title] team\n'),(40,'post_notify_subject','[post:title] - new reply'),(41,'password_reset_message','Hi,\r\n\r\nA request has been made to reset your account password. \r\n\r\\To reset your password, please follow the below link:\n[user:link]\r\n\rPassword reset token: [user:token]\r\n\r\nRegards,\r\n[option:site_title] team\r\n'),(42,'password_reset_subject','Your [option:site_title] password reset request'),(43,'topic_notify_message','Hi [post:username],\r\n\r\n[user:username] has created a new topic: [post:title]\r\nin category [post:category]\r\n\r\nYou can view the topic by clicking [post:url]\r\n\r\nRegards,\r\n[option:site_title] team'),(44,'topic_notify_subject','[post:category] - new topic'),(45,'version','3.4'),(46,'brand_img','http://codoforum.com/img/favicon-32x32.png'),(47,'reg_req_admin','no'),(48,'max_rep_per_day','100'),(49,'rep_req_to_inc','0'),(50,'posts_req_to_inc','0'),(51,'rep_req_to_dec','0'),(52,'posts_req_to_dec','0'),(53,'rep_times_same_user','5'),(54,'rep_hours_same_user','24'),(55,'enable_reputation','yes');
+INSERT INTO `codo_config` VALUES (1,'site_url',''),(2,'site_title','Certigate'),(3,'site_description',''),(4,'admin_email','admin@certigate.com'),(5,'theme','blue'),(6,'captcha_public_key',''),(7,'captcha_private_key',''),(8,'register_pass_min','8'),(9,'num_posts_all_topics','30'),(10,'num_posts_cat_topics','20'),(11,'num_posts_per_topic','20'),(12,'forum_attachments_path','assets/img/attachments'),(13,'forum_attachments_exts','jpg,jpeg,png,gif,pjpeg,bmp,txt'),(14,'forum_attachments_size','3'),(15,'forum_attachments_mimetypes','image/*,text/plain'),(16,'forum_attachments_multiple','true'),(17,'forum_attachments_parallel','4'),(18,'forum_attachments_max','10'),(19,'reply_min_chars','10'),(20,'subcategory_dropdown','hidden'),(21,'captcha','disabled'),(22,'await_approval_message','Dear [user:username],\n\nThank you for registering at [option:site_title]. Before we can activate your account one last step must be taken to complete your registration.\n\nTo complete your registration, please visit this URL: [this:confirm_url]\n\nYour Username is: [user:username] \n\nIf you are still having problems signing up please contact a member of our support staff at [option:admin_email]\n\nRegards,\n[option:site_title]'),(23,'await_approval_subject','Confirm your email for [user:username] at [option:site_title]'),(24,'mail_type','mail'),(25,'smtp_protocol','ssl'),(26,'smtp_server','smtp.gmail.com'),(27,'smtp_port','465'),(28,'smtp_username','admin@codologic.com'),(29,'smtp_password','your_smtp_pass'),(30,'register_username_min','3'),(31,'signature_char_lim','255'),(32,'sso_client_id','certigateforum'),(33,'sso_secret','C371i9@13Xe24!rf'),(34,'sso_get_user_path','http://local-certigate.com/users/details'),(35,'sso_login_user_path','http://local-certigate.com/sign/in?redirectBackUrl=/forum'),(36,'sso_logout_user_path','http://local-certigate.com/sign/out'),(37,'sso_register_user_path','http://local-certigate.com/users/new'),(38,'sso_name','certigate'),(39,'post_notify_message','Hi, \n\n[user:username] has replied to the topic: [post:title]\n\n----\n[post:imessage]\n----\n\nYou can view the reply at the following url\n[post:url]\n\nRegards,\n[option:site_title] team\n'),(40,'post_notify_subject','[post:title] - new reply'),(41,'password_reset_message','Hi,\r\n\r\nA request has been made to reset your account password. \r\n\r\\To reset your password, please follow the below link:\n[user:link]\r\n\rPassword reset token: [user:token]\r\n\r\nRegards,\r\n[option:site_title] team\r\n'),(42,'password_reset_subject','Your [option:site_title] password reset request'),(43,'topic_notify_message','Hi [post:username],\r\n\r\n[user:username] has created a new topic: [post:title]\r\nin category [post:category]\r\n\r\nYou can view the topic by clicking [post:url]\r\n\r\nRegards,\r\n[option:site_title] team'),(44,'topic_notify_subject','[post:category] - new topic'),(45,'version','3.4'),(46,'brand_img','http://codoforum.com/img/favicon-32x32.png'),(47,'reg_req_admin','no'),(48,'max_rep_per_day','100'),(49,'rep_req_to_inc','0'),(50,'posts_req_to_inc','0'),(51,'rep_req_to_dec','0'),(52,'posts_req_to_dec','0'),(53,'rep_times_same_user','5'),(54,'rep_hours_same_user','24'),(55,'enable_reputation','yes');
 /*!40000 ALTER TABLE `codo_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +207,7 @@ CREATE TABLE `codo_crons` (
 
 LOCK TABLES `codo_crons` WRITE;
 /*!40000 ALTER TABLE `codo_crons` DISABLE KEYS */;
-INSERT INTO `codo_crons` VALUES (1,'core','recurrence',86400,0,0,0),(2,'daily_digest','recurrence',86400,1458667241,1458667241,0),(3,'weekly_digest','recurrence',604800,1458148841,1458148841,0),(4,'mail_notify_send','recurrence',1800,1458751841,1458751841,0);
+INSERT INTO `codo_crons` VALUES (1,'core','recurrence',86400,1458824682,1458824683,0),(2,'daily_digest','recurrence',86400,1458824682,1458824683,0),(3,'weekly_digest','recurrence',604800,1458824682,1458824683,0),(4,'mail_notify_send','recurrence',1800,1458827755,1458827755,0);
 /*!40000 ALTER TABLE `codo_crons` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -525,7 +550,7 @@ CREATE TABLE `codo_plugins` (
 
 LOCK TABLES `codo_plugins` WRITE;
 /*!40000 ALTER TABLE `codo_plugins` DISABLE KEYS */;
-INSERT INTO `codo_plugins` VALUES ('post_notify','plugin',1,0,'1'),('sso','plugin',0,0,'1'),('uni_login','plugin',0,0,'1');
+INSERT INTO `codo_plugins` VALUES ('sso','plugin',1,0,'2.x'),('uni_login','plugin',0,0,'1');
 /*!40000 ALTER TABLE `codo_plugins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -659,6 +684,7 @@ CREATE TABLE `codo_sessions` (
 
 LOCK TABLES `codo_sessions` WRITE;
 /*!40000 ALTER TABLE `codo_sessions` DISABLE KEYS */;
+INSERT INTO `codo_sessions` VALUES ('759t7s3561vhj44f2fsmmdgqh4',1458828000,'56f3e113d78a2_csrf|s:32:\"74a3aa2120625a2c321a97e526bc60f3\";56f3e113d7830A_loggedin_created|s:14:\"March 24, 2016\";56f3e113d7830A_loggedin_avatar|s:85:\"http://local-certigate.com/forum/sites/default/assets/img/profiles/icons/A_7f2020.png\";56f3e113d7830A_loggedin_username|s:5:\"admin\";56f3e113d7830A_loggedin|s:5:\"admin\";codo_zombie_crons_cleanup|b:1;56f3e113d7830USER|a:1:{s:2:\"id\";s:1:\"1\";}');
 /*!40000 ALTER TABLE `codo_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -940,7 +966,7 @@ CREATE TABLE `codo_users` (
 
 LOCK TABLES `codo_users` WRITE;
 /*!40000 ALTER TABLE `codo_users` DISABLE KEYS */;
-INSERT INTO `codo_users` VALUES (1,'admin','admin','$2a$08$2HQcLoTX1ZxL59tyJnPedOvT4n0TdpwODqbJFBzdvapVeyOpWQTAu',NULL,'admin@certigate.com',1458753641,1458753641,0,1,'',NULL,1,0,'0',0),(2,'anonymous','Anonymous','youJustCantCrackThis','','anonymous@localhost',1458753641,1458753641,0,0,'','',0,0,'0',0);
+INSERT INTO `codo_users` VALUES (1,'admin','admin','$2a$08$8YY0R6D.98JyPt1xcPcqO.8Dl/ICdzrQxbVE8JRuh6tu586QSEbzS',NULL,'admin@certigate.com',1458823444,1458827613,0,1,'A_7f2020.png',NULL,1,0,'0',0),(2,'anonymous','Anonymous','youJustCantCrackThis','','anonymous@localhost',1458823444,1458823444,0,0,'','',0,0,'0',0);
 /*!40000 ALTER TABLE `codo_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -964,6 +990,7 @@ CREATE TABLE `codo_views` (
 
 LOCK TABLES `codo_views` WRITE;
 /*!40000 ALTER TABLE `codo_views` DISABLE KEYS */;
+INSERT INTO `codo_views` VALUES ('2016-03-24',25);
 /*!40000 ALTER TABLE `codo_views` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -976,4 +1003,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-23 17:28:41
+-- Dump completed on 2016-03-24 14:00:33

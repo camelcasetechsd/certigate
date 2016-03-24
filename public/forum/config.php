@@ -6,7 +6,7 @@ $env = APPLICATION_ENV;
 require_once 'config/' . $env . '.php';
 
 define('SSO_GET_USER_PATH', HOME_PAGE_URL."users/details");
-define('SSO_LOGIN_USER_PATH', HOME_PAGE_URL."sign/in");
+define('SSO_LOGIN_USER_PATH', HOME_PAGE_URL."sign/in?redirectBackUrl=/forum");
 define('SSO_LOGOUT_USER_PATH', HOME_PAGE_URL."sign/out");
 define('SSO_REGISTER_USER_PATH', HOME_PAGE_URL."users/new");
 define('SSO_CLIENT_ID', 'certigateforum');

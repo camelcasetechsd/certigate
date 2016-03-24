@@ -80,6 +80,16 @@ return array(
                     ),
                 )
             ),
+            'userDetails' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/details',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'details',
+                    ),
+                )
+            ),
             'userCreate' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

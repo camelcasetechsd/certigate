@@ -52,6 +52,9 @@ return array(
             'userCreate' => array(
                 'resource' => 'Users',
             ),
+            'userDetails' => array(
+                'resource' => 'Users',
+            ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
             ),
