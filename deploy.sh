@@ -1,6 +1,10 @@
 # composer 
 composer install
 
+## prepare Grunt libraries
+npm update npm
+npm install
+
 # creating schema
 bin/doctrine orm:schema-tool:drop --force;
 bin/doctrine orm:schema-tool:update --force;
