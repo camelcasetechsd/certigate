@@ -12,7 +12,8 @@ php public/estore/updateDB.php
 
 # running certigate seeds 
 app_env=${APPLICATION_ENV:-'vagrant'}
-./vendor/bin/phinx seed:run -e $app_env 
+# send app_env as environment variable and command variable 
+APPLICATION_ENV=$app_env ./vendor/bin/phinx seed:run -e $app_env 
 
 # seeding q2a
 php public/q2a/updateDB.php
