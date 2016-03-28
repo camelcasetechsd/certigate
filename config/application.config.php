@@ -41,7 +41,8 @@ $config = array(
         'Versioning',
         'System',
         'Notifications',
-        'DOMPDFModule'
+        'DOMPDFModule',
+        'IssueTracker'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
