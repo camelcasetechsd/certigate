@@ -14,6 +14,9 @@ use System\Service\Cache\CacheHandler;
 use Zend\Authentication\AuthenticationService;
 use EStore\Service\ApiCalls;
 use Zend\Http\Request;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * User Model
@@ -34,7 +37,8 @@ use Zend\Http\Request;
  */
 class User
 {
-
+    use \Utilities\Service\Paginator\PaginatorTrait;
+    
     /**
      *
      * @var Utilities\Service\Query\Query 
@@ -92,6 +96,7 @@ class User
         $this->auth = $auth;
         $this->estoreApi = $estoreApi;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
 
     /**
@@ -113,9 +118,7 @@ class User
             $editFormFlag = true;
         }
         if (is_null($userObj)) {
-            if(is_null($editFormFlag)){
-                $editFormFlag = false;
-            }
+            $editFormFlag = false;
             $userObj = new UserEntity();
             if ($isAdminUser === false) {
                 $sendNotificationFlag = true;
@@ -330,4 +333,21 @@ class User
         }
     }
 
+    /**
+     * Filter instructors
+     * 
+     * @access public
+     * @throws \Exception Instructor Role is not found
+     */
+    public function filterInstructors()
+    {
+        $adapter = $this->paginator->getAdapter();
+        $roles = array(Role::INSTRUCTOR_ROLE);
+        $adapter->setQuery($this->query->setEntity("Users\Entity\User")->entityRepository);
+        $adapter->setMethodName("getUsers");
+        $adapter->setParameters(array(
+            "roles" => $roles,
+            "status" => Status::STATUS_ACTIVE,
+                ));
+    }
 }

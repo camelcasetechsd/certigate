@@ -67,7 +67,19 @@ class PosARoles extends AbstractSeed
 
         $userModule = "Users";
         $userEditRoute = "userEdit";
+        $userInstructorsRoute = "userInstructors";
+        $userMoreRoute = "userMore";
         $userAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $userModule,
+                'route' => $userInstructorsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $userModule,
+                'route' => $userMoreRoute,
+            ),
             array(
                 'role_id' => $instructorRoleId,
                 'module' => $userModule,
