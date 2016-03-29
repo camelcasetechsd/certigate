@@ -23,6 +23,12 @@ class Organization extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
+
+        $typeAtcId = $this->fetchRow('select id from organization_type where title = "ATC"')['id'];
+        $typeAtpId = $this->fetchRow('select id from organization_type where title = "ATP"')['id'];
+        $typeDistId = $this->fetchRow('select id from organization_type where title = "Distributor"')['id'];
+        $typeResellerId = $this->fetchRow('select id from organization_type where title = "Re-Seller"')['id'];
+
         // dummy user to use his id ad foreign key in orgs
         $normalUser = array(
             "firstName" => $faker->firstName,
@@ -99,10 +105,20 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => null,
             'officeLang' => null,
             'officeVersion' => null,
-            'focalContactPerson_id' => $normalUserId
+            'focalContactPerson_id' => $normalUserId,
+            'creatorId' => $normalUserId
         );
-
         $this->insert('organization', $atp);
+        $atpId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $atpMeta [] = array(
+            'type_id' => $typeAtpId,
+            'org_id' => $atpId,
+            'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $atpMeta);
+
         $atc[] = array(
             'commercialName' => $faker->userName,
             'status' => true,
@@ -142,10 +158,20 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'focalContactPerson_id' => $normalUserId
+            'focalContactPerson_id' => $normalUserId,
+            'creatorId' => $normalUserId
         );
 
         $this->insert('organization', $atc);
+        $atcId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $atcMeta [] = array(
+            'type_id' => $typeAtcId,
+            'org_id' => $atcId,
+            'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $atcMeta);
 
 
         $both[] = array(
@@ -187,10 +213,29 @@ class Organization extends AbstractSeed
             'internetSpeed_lab' => $faker->randomNumber(),
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
-            'focalContactPerson_id' => $normalUserId
+            'focalContactPerson_id' => $normalUserId,
+            'creatorId' => $normalUserId
         );
 
         $this->insert('organization', $both);
+        $bothId = $this->getAdapter()->getConnection()->lastInsertId();
+
+
+        $bothMeta1 [] = array(
+            'type_id' => $typeAtpId,
+            'org_id' => $bothId,
+            'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $bothMeta1);
+
+        $bothMeta2 [] = array(
+            'type_id' => $typeAtcId,
+            'org_id' => $bothId,
+            'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $bothMeta2);
     }
 
 }

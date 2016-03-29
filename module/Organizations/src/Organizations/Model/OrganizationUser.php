@@ -78,7 +78,7 @@ class OrganizationUser
         foreach ($organizationMeta as $org) {
             array_push($types, $org->getType()->getId());
         }
-        if (in_array(Organization::TYPE_ATC, $types) || in_array(Organization::TYPE_ATC, $types)) {
+        if (in_array(Organization::TYPE_ATC, $types) || in_array(Organization::TYPE_ATP, $types)) {
             return true;
         }
         return false;

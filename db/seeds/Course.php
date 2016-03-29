@@ -59,6 +59,31 @@ class Course extends AbstractSeed
         $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
 
 
+        /**
+         * Declearing organization types
+         */
+        $org1 = array(
+            "title" => "ATC",
+        );
+        $org2 = array(
+            "title" => "ATP",
+        );
+        $org3 = array(
+            "title" => "Distributor",
+        );
+        $org4 = array(
+            "title" => "Re-Seller",
+        );
+
+        $this->insert('organization_type', $org1);
+
+        $this->insert('organization_type', $org2);
+        $typeAtpId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $this->insert('organization_type', $org3);
+        
+        $this->insert('organization_type', $org4);
+
         // dummy atp to be used in course creation
         $atp[] = array(
             'commercialName' => $faker->userName,
@@ -105,6 +130,13 @@ class Course extends AbstractSeed
         $this->insert('organization', $atp);
         $atpId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        $atpMeta [] = array(
+            'type_id' => $typeAtpId,
+            'org_id' => $atpId,
+            'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $atpMeta);
 
         // getting authorized Instuctor role id 
 

@@ -472,7 +472,6 @@ class Organization
     /**
      * prepare organizations for display
      * 
-     * 
      * @access public
      * @param array $organizationsArray
      * @return array organizations prepared for display
@@ -483,17 +482,8 @@ class Organization
         $langsArray = OrganizationEntity::getStaticLangs();
         $officeVersionsArray = OrganizationEntity::getOfficeVersions();
         foreach ($organizationsArray as $organization) {
-            switch ($this->getOrganizationTypes(null, $organization)) {
-                case OrganizationEntity::TYPE_ATC:
-                    $organization->typeText = "ATC";
-                    break;
-                case OrganizationEntity::TYPE_ATP:
-                    $organization->typeText = "ATP";
-                    break;
-                case OrganizationEntity::TYPE_BOTH:
-                    $organization->typeText = "ATC/ATP";
-                    break;
-            }
+
+            $organization->typeText = $this->prepareOrganizationTypesForDisplay($organization);
             if (array_key_exists($organization->officeLang, $langsArray)) {
                 $organization->officeLangText = $langsArray[$organization->officeLang];
             }
@@ -508,6 +498,22 @@ class Organization
             }
         }
         return $organizationsArray;
+    }
+    /**
+     * glue organization types with '/' and return types as string 
+     * @param Organizations\Entity\Organization $organization
+     * @return string
+     */
+    private function prepareOrganizationTypesForDisplay($organization)
+    {
+        $organizationMetas = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+            'organization' => $organization->getId()
+        ));
+        $types = array();
+        foreach ($organizationMetas as $meta) {
+            array_push($types, $meta->getType()->getTitle());
+        }
+        return implode('/', $types);
     }
 
     public function hasSavedState($orgType, $creatorId)
@@ -596,7 +602,8 @@ class Organization
 
         $attachmentsArray = array(
             'CRAttachment',
-            'wireTransferAttachment',
+            'atpWireTransferAttachment',
+            'atcWireTransferAttachment',
             'atpLicenseAttachment',
             'atcLicenseAttachment'
         );
@@ -930,7 +937,7 @@ class Organization
         $organizationMeta = $this->query->findOneBy('Organizations\Entity\OrganizationMeta', array(
             'id' => $metaId, 'organization' => $organizationId
         ));
-        
+
         //in case of url manipulation
         if ($organizationMeta == null) {
             $url = $action->getEvent()->getRouter()->assemble(array('action' => 'noaccess'), array('name' => 'noaccess'));

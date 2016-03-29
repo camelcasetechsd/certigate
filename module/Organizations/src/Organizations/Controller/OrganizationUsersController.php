@@ -26,7 +26,7 @@ class OrganizationUsersController extends ActionController
     public function onDispatch(\Zend\Mvc\MvcEvent $e)
     {
         parent::onDispatch($e);
-
+        
         $organizationId = $this->params('organizationId');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $userValidation = $organizationUserModel->validateOrganizationType($organizationId);
