@@ -48,10 +48,18 @@ return array(
                 'title_underscored' => "courses",
                 'children' => array(
                     array(
+                        "Course Events" => array(
+                            'depth' => 1,
+                            'path' => "/course-events",
+                            'weight' => 1,
+                            'title_underscored' => "course_events",
+                            'children' => array(
+                            )
+                        ),
                         "Resources" => array(
                             'depth' => 1,
                             'path' => "/resources",
-                            'weight' => 1,
+                            'weight' => 2,
                             'title_underscored' => "resources",
                             'children' => array(
                             )

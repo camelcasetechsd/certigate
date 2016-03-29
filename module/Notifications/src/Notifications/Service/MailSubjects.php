@@ -92,4 +92,9 @@ class MailSubjects
      */
     const ORGANIZATION_RENEWAL = "Organization Expiration Date ";
 
+    /**
+     * New Press Release Subject
+     */
+    const NEW_PRESS_RELEASE_SUBJECT = "New press release";
+
 }

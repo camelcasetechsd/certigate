@@ -5,9 +5,11 @@ namespace CMS\Model;
 use CMS\Entity\Page as PageEntity;
 use Utilities\Service\Random;
 use Zend\File\Transfer\Adapter\Http;
-use Utilities\Form\FormButtons;
 use Utilities\Service\Status;
 use CMS\Service\PageTypes;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Page Model
@@ -16,12 +18,14 @@ use CMS\Service\PageTypes;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property CMS\Model\PressReleaseSubscription $pressReleaseSubscriptionModel
  * 
  * @package cms
  * @subpackage model
  */
 class Page
 {
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     const UPLOAD_PATH = 'public/upload/pageContents/';
 
@@ -33,21 +37,31 @@ class Page
 
     /**
      *
-     * @var Utilities\Service\Random;
+     * @var Utilities\Service\Random
 
      */
     protected $random;
+
+    /**
+     *
+     * @var CMS\Model\PressReleaseSubscription
+
+     */
+    protected $pressReleaseSubscriptionModel;
 
     /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param CMS\Model\PressReleaseSubscription $pressReleaseSubscriptionModel
      */
-    public function __construct($query)
+    public function __construct($query, $pressReleaseSubscriptionModel)
     {
         $this->query = $query;
+        $this->pressReleaseSubscriptionModel = $pressReleaseSubscriptionModel;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
 
     /**
@@ -65,6 +79,10 @@ class Page
                 if ($dataKey == "body") {
                     $dummyPage->body = $dataValue;
                     $dataValue = $dummyPage->getBody();
+                }
+                if ($dataKey == "bodyAr") {
+                    $dummyPage->bodyAr = $dataValue;
+                    $dataValue = $dummyPage->getBodyAr();
                 }
             }
         }
@@ -122,19 +140,15 @@ class Page
      */
     public function save($page, $data = array(), $editFlag = false)
     {
-        if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $data)) {
-            $page->setStatus(Status::STATUS_ACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $data)) {
-            $page->setStatus(Status::STATUS_INACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::SAVE_BUTTON, $data) && $editFlag === false) {
-            $page->setStatus(Status::STATUS_INACTIVE);
-        }
+        Status::setStatus($page, $data, $editFlag);
         if ($editFlag === true) {
             $data = array();
         }
         $this->query->setEntity("CMS\Entity\Page")->save($page, $data);
+        
+        if($page->getType() == PageTypes::PRESS_RELEASE_TYPE && $page->getStatus() == Status::STATUS_ACTIVE && $editFlag === false){
+            $this->pressReleaseSubscriptionModel->notifySubscribers($page);
+        }
     }
     
     /**
@@ -155,6 +169,8 @@ class Page
                 $category->setRequired(false);
                 $summary = $inputFilter->get('summary');
                 $summary->setRequired(false);
+                $summaryAr = $inputFilter->get('summaryAr');
+                $summaryAr->setRequired(false);
                 $author = $inputFilter->get('author');
                 $author->setRequired(false);
                 $picture = $inputFilter->get('picture');
@@ -166,6 +182,20 @@ class Page
                 $picture = $inputFilter->get('picture');
                 $picture->setRequired(false);
             }
+    }
+    
+    /**
+     * Filter press releases
+     * 
+     * @access public
+     */
+    public function filterPressReleases()
+    {
+        $criteria = Criteria::create();
+        $expr = Criteria::expr();
+        $criteria->andWhere($expr->eq("type", PageTypes::PRESS_RELEASE_TYPE));
+        $criteria->andWhere($expr->eq("status", Status::STATUS_ACTIVE));
+        $this->setCriteria($criteria);
     }
 
 }

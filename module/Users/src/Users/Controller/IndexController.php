@@ -24,7 +24,52 @@ class IndexController extends ActionController
 {
 
     /**
-     * List users paginated
+     * List instructors paginated
+     * 
+     * 
+     * @access public
+     * @return ViewModel
+     */
+    public function instructorsAction()
+    {
+        $variables = array();
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $userModel = $this->getServiceLocator()->get('Users\Model\User');
+
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $userModel->filterInstructors();
+        $userModel->setPage($pageNumber);
+
+        $pageNumbers = $userModel->getPagesRange($pageNumber);
+        $variables['users'] = $objectUtilities->prepareForDisplay($userModel->getCurrentItems());
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $userModel->getNextPageNumber($pageNumber);
+        $variables['previousPageNumber'] = $userModel->getPreviousPageNumber($pageNumber);
+        return new ViewModel($variables);
+    }
+    
+    /**
+     * More user details
+     * 
+     * 
+     * @access public
+     * @return ViewModel
+     */
+    public function moreAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $user = $query->find('Users\Entity\User', $id);
+        $processedData = $objectUtilities->prepareForDisplay(array($user));
+        $variables['user'] = $processedData;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * List users
      * 
      * 
      * @access public
@@ -75,9 +120,10 @@ class IndexController extends ActionController
 
         $options = array();
         $options['query'] = $query;
-        $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        
         $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
@@ -180,9 +226,9 @@ class IndexController extends ActionController
         $userObj = new User();
         $options = array();
         $options['query'] = $query;
-        $locale = "en";
-        $options['countries'] = $countriesService->getAllCountries($locale);
-        $options['languages'] = $languagesService->getAllLanguages($locale);
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();

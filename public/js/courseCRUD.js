@@ -7,13 +7,12 @@
 function updateOutlines(addMoreSelector, isAdminUser) {
     var currentCount, newLabel, newRemoveButton;
     // update displayed outlines fieldsets
-    if ($('#course_form > fieldset > fieldset').length) {
-        $('#course_form > fieldset > fieldset').each(function (index) {
+    if ($('#course_form > fieldset.outlinesFieldset > fieldset').length) {
+        $('#course_form > fieldset.outlinesFieldset > fieldset').each(function (index) {
             if (index !== 0) {
                 currentCount = index;
                 newLabel = getOutlineLabel(currentCount);
                 $(this).before(newLabel);
-
                 if (isAdminUser === true) {
                     newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
                     $(this).after(newRemoveButton);
@@ -27,17 +26,19 @@ function updateOutlines(addMoreSelector, isAdminUser) {
  * Add more outline
  * 
  * @param {String} addMoreSelector
+ * @param {int} outlinesCount
  */
-function addMoreOutline(addMoreSelector) {
-    var currentCount = $('form > fieldset > fieldset').length;
-    var newLabel = getOutlineLabel(currentCount);
-    var newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
-
-    var template = $('form > fieldset > span').data('template');
-    template = template.replace(/__outlineNumber__/g, currentCount);
-
-    var outlineFieldset = newLabel + template + newRemoveButton;
-    $('form > fieldset').append(outlineFieldset);
+function addMoreOutline(addMoreSelector, outlinesCount) {
+    var template = $('form > fieldset.outlinesFieldset > span').data('template');
+    var tempTemplate, currentCount, newLabel, newRemoveButton, outlineFieldset;
+    for (var outlineCounter = 0; outlineCounter < outlinesCount; outlineCounter++) {
+        currentCount = $('form > fieldset.outlinesFieldset > fieldset').length;
+        newLabel = getOutlineLabel(currentCount);
+        newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
+        tempTemplate = template.replace(/__outlineNumber__/g, currentCount);
+        outlineFieldset = newLabel + tempTemplate + newRemoveButton;
+        $('form > fieldset.outlinesFieldset').append(outlineFieldset);
+    }
 }
 
 /**
@@ -69,7 +70,7 @@ function getOutlineLabel(currentCount) {
  * @returns {String} outline remove button html
  */
 function getOutlineRemoveButton(currentCount, addMoreSelector) {
-    // prepare new remove button
+// prepare new remove button
     var newRemoveButtonId = "removeOutline" + currentCount;
     return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).val("Remove").wrap("<div />").parent().html();
 }

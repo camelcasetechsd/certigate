@@ -74,7 +74,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'atcId',
+            'name' => 'atc',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'required' => 'required',
@@ -105,7 +105,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'courseId',
+            'name' => 'course',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'required' => 'required',
@@ -114,17 +114,12 @@ class BookExam extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Course',
-                'label_attributes' => array(
-                    'class' => ' ',
-                ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Courses\Entity\Course',
-                'property' => 'name',
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'display_empty_item' => true,
-                'label_generator' => function($targetEntity) {
-            return $targetEntity->getName();
-        },
+                'property' => 'name',
+                'is_method' => false,
             )
         ));
 

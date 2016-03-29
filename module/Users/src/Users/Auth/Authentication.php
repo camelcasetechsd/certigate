@@ -14,6 +14,7 @@ use Zend\Authentication\AuthenticationService;
  * 
  * @property Zend\Http\Request $request
  * @property Utilities\Service\Query\Query $query
+ * @property EStore\Service\Api $estoreApi
  * 
  * @package users
  * @subpackage auth
@@ -34,15 +35,23 @@ class Authentication
     private $query;
 
     /**
+     *
+     * @var EStore\Service\Api 
+     */
+    private $estoreApi;
+
+    /**
      * Set needed properties
      * 
      * 
      * @access public
      * @param Query $query
+     * @param EStore\Service\Api $estoreApi
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, $estoreApi)
     {
         $this->query = $query;
+        $this->estoreApi = $estoreApi;
     }
 
     /**
@@ -101,7 +110,6 @@ class Authentication
         }
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
-
         // here to add new entries to the session
         $storage->write(array(
             'id' => $user->id,
@@ -111,11 +119,27 @@ class Authentication
             'name' => $user->getFullName(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
+            'mobile' => $user->getMobile(),
             'photo' => $user->getPhoto(),
             'status' => $user->getStatus(),
             'roles' => $user->getRolesNames(),
-            'agreements' => $user->getRolesAgreementsStatus()
+            'agreements' => $user->getRolesAgreementsStatus(),
+            'customerId' => $user->getCustomerId()
         ));
+    }
+    
+    /**
+     * Clear authenticated session data
+     * 
+     * 
+     * @access public
+     * @uses AuthenticationService
+     */
+    public function clearSession()
+    {
+        $auth = new AuthenticationService();
+        // clear user-related data in session
+        $auth->clearIdentity();
     }
 
 }

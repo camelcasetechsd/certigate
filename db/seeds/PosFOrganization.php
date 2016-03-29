@@ -1,14 +1,12 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \Users\Entity\User as User;
-use \Users\Entity\Role;
+use db\AbstractSeed;
+use \Users\Entity\User;
+use Utilities\Service\Time;
 
-class Organization extends AbstractSeed
+class PosFOrganization extends AbstractSeed
 {
 
     /**
@@ -31,45 +29,52 @@ class Organization extends AbstractSeed
 
         // dummy user to use his id ad foreign key in orgs
         $normalUser = array(
-            "firstName" => $faker->firstName,
-            "middleName" => $faker->name,
-            "lastName" => $faker->lastName,
-            "country" => $faker->countryCode,
-            "language" => $faker->languageCode,
-            "username" => "testuser",
-            "password" => User::hashPassword("testuser"),
-            "mobile" => $faker->phoneNumber,
-            "addressOne" => $faker->address,
-            "addressTwo" => $faker->address,
-            "city" => $faker->city,
-            "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
-            "nationality" => $faker->countryCode,
-            "identificationType" => $faker->word,
-            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
-            "email" => $faker->freeEmail,
-            "securityQuestion" => $faker->sentence,
-            "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
-            "photo" => '/upload/images/userdefault.png',
-            "privacyStatement" => true,
-            "studentStatement" => false,
-            "proctorStatement" => false,
-            "instructorStatement" => false,
-            "testCenterAdministratorStatement" => false,
-            "trainingManagerStatement" => false,
-            "status" => true
-        );
-        $this->insert('user', $normalUser);
-        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-
-
-
+                "firstName" => $faker->firstName,
+                "firstNameAr" => $faker->firstName,
+                "middleName" => $faker->name,
+                "middleNameAr" => $faker->name,
+                "lastName" => $faker->lastName,
+                "lastNameAr" => $faker->lastName,
+                "country" => $faker->countryCode,
+                "language" => $faker->languageCode,
+                "username" => "testuser",
+                "password" => "testuser",
+                "mobile" => $faker->phoneNumber,
+                "addressOne" => $faker->address,
+                "addressOneAr" => $faker->address,
+                "addressTwo" => $faker->address,
+                "addressTwoAr" => $faker->address,
+                "city" => $faker->city,
+                "zipCode" => $faker->postcode,
+                "phone" => $faker->phoneNumber,
+                "nationality" => $faker->countryCode,
+                "identificationType" => $faker->word,
+                "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
+                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format(Time::DATE_FORMAT),
+                "email" => $faker->freeEmail,
+                "securityQuestion" => $faker->sentence,
+                "securityAnswer" => $faker->sentence,
+                "dateOfBirth" => date(Time::DATE_FORMAT),
+                "photo" => '/upload/images/userdefault.png',
+                "privacyStatement" => true,
+                "studentStatement" => false,
+                "proctorStatement" => false,
+                "instructorStatement" => false,
+                "testCenterAdministratorStatement" => false,
+                "trainingManagerStatement" => false,
+                "status" => true
+            );
+        $userModel = $this->serviceManager->get("Users\Model\User");
+        $userModel->saveUser($normalUser, $userObj = new User(), /*$isAdminUser =*/ true, /*$editFormFlag =*/ false);
+        $normalUserId = $userObj->getId();
+        
+        
         $atp[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -83,8 +88,11 @@ class Organization extends AbstractSeed
             'website' => $faker->url,
             'email' => $faker->email,
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             'zipCode' => $faker->randomNumber(),
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
@@ -121,8 +129,10 @@ class Organization extends AbstractSeed
 
         $atc[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -137,8 +147,11 @@ class Organization extends AbstractSeed
             'email' => $faker->email,
             'zipCode' => $faker->randomNumber(),
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             //AtpData
             'atpLicenseNo' => null,
             'atpLicenseExpiration' => null,
@@ -176,8 +189,10 @@ class Organization extends AbstractSeed
 
         $both[] = array(
             'commercialName' => $faker->userName,
+            'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
             'ownerNationalId' => $faker->randomNumber(),
             'longtitude' => $faker->randomFloat(),
             'latitude' => $faker->randomFloat(),
@@ -192,8 +207,11 @@ class Organization extends AbstractSeed
             'website' => $faker->url,
             'email' => $faker->email,
             'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
             'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
             'city' => $faker->city,
+            'cityAr' => $faker->city,
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
             'atpLicenseExpiration' => date('Y-m-d H:i:s'),

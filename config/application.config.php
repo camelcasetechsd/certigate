@@ -41,7 +41,9 @@ $config = array(
         'Versioning',
         'System',
         'Notifications',
-        'DOMPDFModule'
+        'DOMPDFModule',
+        'Translation',
+        'EStore'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

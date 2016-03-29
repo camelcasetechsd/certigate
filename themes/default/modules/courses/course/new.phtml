@@ -3,7 +3,7 @@
 {{$content}}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>New Course</h3>
+        <h3>{{#translate}}New Course{{/translate}}</h3>
     </div>
     <div class="panel-body">
 {{{courseForm}}}
@@ -11,4 +11,11 @@
 </div><!-- panel -->
 
 {{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+    updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
+    });
+</script>
+{{/scripts}}
 {{/layout}}

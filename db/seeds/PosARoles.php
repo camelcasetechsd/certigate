@@ -1,14 +1,11 @@
 <?php
 
-require_once 'init_autoloader.php';
-require_once 'module/Users/src/Users/Entity/User.php';
-require_once 'module/Users/src/Users/Entity/Role.php';
+require_once __DIR__.'/../AbstractSeed.php';
 
-use Phinx\Seed\AbstractSeed;
-use \Users\Entity\User;
+use db\AbstractSeed;
 use \Users\Entity\Role;
 
-class Users extends AbstractSeed
+class PosARoles extends AbstractSeed
 {
 
     /**
@@ -23,37 +20,66 @@ class Users extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-//        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
-//        $this->insert('role', $instructorRole);
-        $instructorRoleId = $this->fetchRow('select id from role where name = "Instructor"')['id'];
+        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE , 'nameAr' => Role::INSTRUCTOR_ROLE);
+        $this->insert('role', $instructorRole);
+        $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $proctorRole = array('name' => Role::PROCTOR_ROLE);
+        $proctorRole = array(
+            'name' => Role::PROCTOR_ROLE,
+            'nameAr' => Role::PROCTOR_ROLE
+        );
         $this->insert('role', $proctorRole);
         $proctorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $studentRole = array('name' => Role::STUDENT_ROLE);
+        $studentRole = array(
+            'name' => Role::STUDENT_ROLE,
+            'nameAr' => Role::STUDENT_ROLE
+        );
         $this->insert('role', $studentRole);
         $studentRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $testCenterAdminRole = array('name' => Role::TEST_CENTER_ADMIN_ROLE);
+        $testCenterAdminRole = array(
+            'name' => Role::TEST_CENTER_ADMIN_ROLE,
+            'nameAr' => Role::TEST_CENTER_ADMIN_ROLE
+        );
         $this->insert('role', $testCenterAdminRole);
         $testCenterAdminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $trainingManagerRole = array('name' => Role::TRAINING_MANAGER_ROLE);
+        $trainingManagerRole = array(
+            'name' => Role::TRAINING_MANAGER_ROLE,
+            'nameAr' => Role::TRAINING_MANAGER_ROLE
+        );
         $this->insert('role', $trainingManagerRole);
         $trainingManagerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $userRole = array('name' => Role::USER_ROLE);
+        $userRole = array(
+            'name' => Role::USER_ROLE,
+            'nameAr' => Role::USER_ROLE
+        );
         $this->insert('role', $userRole);
         $normalUserRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $adminRole = array('name' => Role::ADMIN_ROLE);
+        $adminRole = array(
+            'name' => Role::ADMIN_ROLE,
+            'nameAr' => Role::ADMIN_ROLE
+        );
         $this->insert('role', $adminRole);
-        $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
         $userModule = "Users";
         $userEditRoute = "userEdit";
+        $userInstructorsRoute = "userInstructors";
+        $userMoreRoute = "userMore";
         $userAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $userModule,
+                'route' => $userInstructorsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $userModule,
+                'route' => $userMoreRoute,
+            ),
             array(
                 'role_id' => $instructorRoleId,
                 'module' => $userModule,
@@ -89,23 +115,20 @@ class Users extends AbstractSeed
 
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
+        $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
-
         $coursesEnrollRoute = "coursesEnroll";
         $coursesLeaveRoute = "coursesLeave";
-        $coursesEditRoute = "coursesEdit";
-        $coursesNewRoute = "coursesNew";
-        $coursesPendingRoute = "coursesPending";
-        $coursesListRoute = "courses";
         $coursesVoteRoute = "studentEvaluation";
-        $courseEvaluation = "courseEvaluations";
-        $newCourseEvaluation = "newCourseEvaluation";
-        $editCourseEvaluation = "editCourseEvaluation";
-
+        $courseEventsRoute = "courseEvents";
+        $courseEventsNewRoute = "courseEventsNew";
+        $courseEventsEditRoute = "courseEventsEdit";
+        $courseEventsDeleteRoute = "courseEventsDelete";
         $instructorCalendar = "coursesInstructorCalendar";
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
         $examBookingRoute = "examBooking";
+        $myCoursesRoute = "myCourses";
         $coursesAcls = array(
             array(
                 'role_id' => $studentRoleId,
@@ -130,6 +153,26 @@ class Users extends AbstractSeed
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseOutlinesPdfRoute,
+            ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
                 'route' => $coursesMoreRoute,
             ),
             array(
@@ -186,46 +229,11 @@ class Users extends AbstractSeed
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
                 'route' => $coursesLeaveRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesNewRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesEditRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesListRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $coursesPendingRoute,
             ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
                 'route' => $coursesVoteRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $courseEvaluation,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $newCourseEvaluation,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $editCourseEvaluation,
             ),
             array(
                 'role_id' => $instructorRoleId,
@@ -267,29 +275,42 @@ class Users extends AbstractSeed
                 'module' => $courseModule,
                 'route' => $examBookingRoute,
             ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsDeleteRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsEditRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsNewRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsRoute,
+                ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
         );
         $this->insert('acl', $coursesAcls);
 
         $resourcesListPerCourseRoute = "resourcesListPerCourse";
         $resourcesResourceDownloadRoute = "resourcesResourceDownload";
-        $resourcesNewPerCourseRoute = "resourcesNewPerCourse";
-        $resourcesEditRoute = "resourcesEdit";
         $resourcesAcls = array(
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesListPerCourseRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesNewPerCourseRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $resourcesEditRoute,
-            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
@@ -490,82 +511,17 @@ class Users extends AbstractSeed
             ),
         );
         $this->insert('acl', $organizationAcls);
-
-        $adminUser = array(
-            "firstName" => $faker->firstName,
-            "middleName" => $faker->name,
-            "lastName" => $faker->lastName,
-            "country" => $faker->countryCode,
-            "language" => $faker->languageCode,
-            "username" => "admin",
-            "password" => User::hashPassword("adminadmin"),
-            "mobile" => $faker->phoneNumber,
-            "addressOne" => $faker->address,
-            "addressTwo" => $faker->address,
-            "city" => $faker->city,
-            "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
-            "nationality" => $faker->countryCode,
-            "identificationType" => $faker->word,
-            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
-            "email" => $faker->freeEmail,
-            "securityQuestion" => $faker->sentence,
-            "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
-            "photo" => '/upload/images/userdefault.png',
-            "privacyStatement" => true,
-            "studentStatement" => false,
-            "proctorStatement" => false,
-            "instructorStatement" => false,
-            "testCenterAdministratorStatement" => false,
-            "trainingManagerStatement" => false,
-            "status" => true
+        
+        $cmsModule = "CMS";
+        $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
+        $cmsAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $cmsModule,
+                'route' => $cmsPressReleaseSubscribeRoute,
+            ),
         );
-        $this->insert('user', $adminUser);
-        $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        $normalUser = array(
-            "firstName" => $faker->firstName,
-            "middleName" => $faker->name,
-            "lastName" => $faker->lastName,
-            "country" => $faker->countryCode,
-            "language" => $faker->languageCode,
-            "username" => "user",
-            "password" => User::hashPassword("useruser"),
-            "mobile" => $faker->phoneNumber,
-            "addressOne" => $faker->address,
-            "addressTwo" => $faker->address,
-            "city" => $faker->city,
-            "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
-            "nationality" => $faker->countryCode,
-            "identificationType" => $faker->word,
-            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
-            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
-            "email" => $faker->freeEmail,
-            "securityQuestion" => $faker->sentence,
-            "securityAnswer" => $faker->sentence,
-            "dateOfBirth" => date('Y-m-d H:i:s'),
-            "photo" => '/upload/images/userdefault.png',
-            "privacyStatement" => true,
-            "studentStatement" => false,
-            "proctorStatement" => false,
-            "instructorStatement" => false,
-            "testCenterAdministratorStatement" => false,
-            "trainingManagerStatement" => false,
-            "status" => true
-        );
-        $this->insert('user', $normalUser);
-        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-
-        $userRoles = array(array(
-                'user_id' => $adminUserId,
-                'role_id' => $adminRoleId
-            ), array(
-                'user_id' => $normalUserId,
-                'role_id' => $normalUserRoleId
-        ));
-        $this->insert('user_role', $userRoles);
+        $this->insert('acl', $cmsAcls);
     }
 
 }

@@ -32,7 +32,8 @@ class ObjectFactory implements FactoryInterface {
         $countriesService = $serviceLocator->get('losi18n-countries');
         $languagesService = $serviceLocator->get('losi18n-languages');
         $query = $serviceLocator->get('wrapperQuery');
-        $object = new Object($countriesService, $languagesService, $query);
+        $applicationLocale = $serviceLocator->get('applicationLocale');
+        $object = new Object($countriesService, $languagesService, $query, $applicationLocale);
         return $object;
     }
 

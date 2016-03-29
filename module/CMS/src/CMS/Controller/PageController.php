@@ -13,6 +13,7 @@ use Users\Entity\Role;
 use Zend\Form\FormInterface;
 use CMS\Service\PageTypes;
 use Utilities\Form\FormButtons;
+use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * Page Controller
@@ -66,12 +67,15 @@ class PageController extends ActionController
     public function newAction()
     {
         $variables = array();
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
+
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $pageObj = new Page();
 
         $options = array();
         $options['query'] = $query;
+        $options['translatorHandler'] = $translatorHandler;
         $form = new PageForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -84,8 +88,9 @@ class PageController extends ActionController
             $form->setData($data);
             $pageModel->setFormRequiredFields($form, $data, /* $editFlag = */ false);
             if ($form->isValid()) {
-                $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-                $pageModel->save($pageObj, $data, /* $editFlag = */ false);
+                $processedData = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $data["picture"] = $processedData["picture"];
+                $pageModel->save($pageObj, $data, /*$editFlag =*/ false);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -120,6 +125,7 @@ class PageController extends ActionController
         if (!$request->isPost()) {
             // extract body data to be able to display it in it's natural form
             $pageObj->body = $pageObj->getBody();
+            $pageObj->bodyAr = $pageObj->getBodyAr();
         }
 
         $options = array();
@@ -244,10 +250,24 @@ class PageController extends ActionController
             $this->redirect()->toUrl($url);
         }
 
-        $variables = array(
-            "title" => $page->getTitle(),
-            "body" => $page->getBody()
-        );
+        /* @var $applicationLocale ApplicationLocale */
+        $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
+        switch ($applicationLocale->getCurrentLocale()) {
+            case ApplicationLocale::LOCALE_AR_AR:
+                $variables = array(
+                    "title" => $page->getTitleAr(),
+                    "body" => $page->getBodyAr()
+                );
+                break;
+            case ApplicationLocale::LOCALE_EN_US:
+            default:
+                $variables = array(
+                    "title" => $page->getTitle(),
+                    "body" => $page->getBody()
+                );
+                break;
+        }
+
         return new ViewModel($variables);
     }
 

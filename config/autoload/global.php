@@ -27,6 +27,7 @@ return array(
         'template_map' => array(
             // This is where the global layout resides
             'layout/layout' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/layout.phtml',
+            'layout/messages' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME.'layout/messages.phtml',
             // This defines where we can find the templates
             // for the error messages
             'error/404' => __DIR__ . APPLICATION_THEMES.CURRENT_THEME. 'layout/error/error.phtml',
@@ -39,7 +40,7 @@ return array(
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
         'aliases' => array(
-            'translator' => 'MvcTranslator',
+//            'translator' => 'MvcTranslator',
             'entitymanager' => 'doctrine.entitymanager.orm_default',
         ),
     ),
@@ -56,16 +57,6 @@ return array(
                 )
             )
         )
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo',
-            ),
-        ),
     ),
     'mustache' => array(
         'suffix' => 'phtml',
@@ -87,5 +78,11 @@ return array(
             'password' => '74bbf394d82b6eb4c52a2cf97acf2fd3'
         ),
         'port' => 587,
+    ),
+    'dompdf_module' => array(
+        'default_font' => 'sans-serif',
+    ),
+    'website' => array(
+        'host' => 'local-certigate.com'
     )
 );

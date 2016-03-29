@@ -1,3 +1,4 @@
+<script>
 /**
  * Generate checkbox sentence with proper modal to display statement
  * Statement agreement action affect checkbox value
@@ -22,14 +23,14 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
             title: title,
             buttons: {
                 success: {
-                    label: "Agree",
+                    label: "{{#translate}}Agree{{/translate}}",
                     className: "btn-success",
                     callback: function () {
                         $(checkboxSelector).attr('checked', true);
                     }
                 },
                 cancel: {
-                    label: "Disagree",
+                    label: "{{#translate}}Disagree{{/translate}}",
                     className: "btn-primary",
                     callback: function () {
                         $(checkboxSelector).attr('checked', false);
@@ -74,5 +75,5 @@ function displayStatementCheckbox(roleSelector) {
         }
     });
 }
-
+</script>
 

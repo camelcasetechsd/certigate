@@ -5,82 +5,159 @@
 <br><br>
 
 <br><br>
-<!--make sure that user did not evaluated the course before-->
-{{#notEvaluatedBefore}}
-<!--making sure that course has evaluation-->
-{{#hasEvaluation}}
-<!--making sure that user is student-->
-{{#isStudent}}
+<!--making sure that user can evaluate-->
+{{#canEvaluate}}
+{{#courseEventId}}
 <!--this rule is only for students-->
-<a class="btn btn-info" href="/courses/vote/{{course.id}}" >Evaluate Course</a>
+<a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >{{#translate}}Evaluate Course{{/translate}}</a>
 <br><br>
-{{/isStudent}}
-{{/hasEvaluation}}
-{{/notEvaluatedBefore}}
+{{/courseEventId}}
+{{/canEvaluate}}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
+    <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">Course Events</a></li>
+    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">Course Outlines</a></li>
+    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">Course Resources</a></li>
 
-<div class="panel panel-default">
+</ul>
 
-    <div class="panel-heading">Course Info</div>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Course Details</h3>
+            </div>
+            <div class="panel-body">
 
-    <!-- Table -->
+                {{#course}}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 
-    {{#course}}
-    <table class="table">
-        <tbody>
-            <tr>
-                <td>Name</td><td>{{name}}</td>
-            </tr><tr>
-                <td>Brief</td><td>{{brief}}</td>
-            </tr><tr>
-                <td>Authorized Instructor</td><td>{{ai.firstName}} {{ai.lastName}}</td>
-            </tr><tr>
-                <td>Start Date</td><td>{{startDate}}</td>
-            </tr><tr>
-                <td>End Date</td><td>{{endDate}}</td>
-            </tr><tr>
-                <td>Time</td><td>{{time}}</td>
-            </tr><tr>
-                <td>Duration</td><td>{{duration}} Day(s)</td>
-            </tr><tr>
-                <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
-            </tr>
+    <div role="tabpanel" class="tab-pane fade" id="courseEvents">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Events{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
 
-            {{#outlines.count}}
-            <td>Outlines</td><td></td>
-            <tr>
-                <td>&ensp; Title</td>
-                <td>Duration (minutes)</td>
-            </tr>
-            {{/outlines.count}}
-            {{#outlines}}
-                {{#statusActive}}
-                <tr>
-                    <td>&ensp; {{title}}</td>
-                    <td>{{duration}}</td>
-                </tr>
-                {{/statusActive}}
-            {{/outlines}} 
+                {{#course}}
+                <table class="table">
+                    <thead>
 
-        {{#canDownloadResources}}
+                        {{#courseEvents.count}}
+                        <tr>
+                            <th>{{#translate}}Start Date{{/translate}}</th>
+                            <th>{{#translate}}End Date{{/translate}}</th>
+                            <th>{{#translate}}Instructor{{/translate}}</th>
+                            <th>{{#translate}}ATP Name{{/translate}}</th>
+                            <th>{{#translate}}ATP City{{/translate}}</th>
+                        </tr>
+                        {{/courseEvents.count}}
+                    </thead>
+                    <tbody>
+                        {{#courseEvents}}
+                            {{^hideFromCalendar}}
+                            {{^alreadyStarted}}
+                            <tr>
+                                <td>{{startDate}}</td>
+                                <td>{{endDate}}</td>
+                                <td>{{ai.firstName}} {{ai.lastName}}</td>
+                                <td>{{atp.commercialName}}</td>
+                                <td>{{atp.city}}</td>
+                            </tr>
+                            {{/alreadyStarted}}
+                            {{/hideFromCalendar}}
+                        {{/courseEvents}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 
-        {{#resources}}
-        <td>Resources</td><td></td>
-        {{/resources}}
-        {{#resources}}
-        <tr>
-            <td>&ensp; {{type}}</td>
-            <td>
-                {{#files}}
-                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
-                {{/files}}
-            </td>
-        </tr>
-        {{/resources}} 
-        {{/canDownloadResources}}
-        </tbody>
-    </table>
-    {{/course}}
+    <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Outlines{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
 
+                {{#course}}
+                <table class="table">
+                    <thead>
+                        {{#outlines.count}}
+                        <tr>
+                            <th>{{#translate}}Title{{/translate}}</th>
+                            <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                            <th>{{#translate}}Duration (minutes){{/translate}}</th>
+                        </tr>
+                        {{/outlines.count}}
+                    </thead>
+                    <tbody>
+                        {{#outlines}}
+                        {{#statusActive}}
+                        <tr>
+                            <td>{{title}}</td>
+                            <td>{{titleAr}}</td>
+                            <td>{{duration}}</td>
+                        </tr>
+                        {{/statusActive}}
+                        {{/outlines}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseResources">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Resources{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+
+                {{#course}}
+                <table class="table">
+                    <tbody>
+                        {{#canDownloadResources}}
+                        {{#resources}}
+                        <tr>
+                            <td>{{type}}</td>
+                            <td>
+                                {{#files}}
+                                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                                {{/files}}
+                            </td>
+                        </tr>
+                        {{/resources}} 
+                        {{/canDownloadResources}}
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
 </div>
 {{/content}}
 {{/layout}}

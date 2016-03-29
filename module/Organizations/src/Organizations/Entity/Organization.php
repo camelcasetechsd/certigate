@@ -19,10 +19,13 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
  * @property int    $status
- * @property string $commercialName
+ * @property int    $type 
+ * @property string $commertialName
+ * @property string $commertialNameAr
  * @property float  $longtitude
  * @property float  $latitude
  * @property string $ownerName
+ * @property string $ownerNameAr
  * @property string $ownerNationalId
  * @property string $CRNo
  * @property \DateTime $CRExpiration
@@ -36,9 +39,12 @@ use Utilities\Service\Time;
  * @property \DateTime $atcLicenseExpiration
  * @property string $atcLicenseAttachment
  * @property string $atcWireTransferAttachment
- * @property string $addressline1
- * @property string $addressline2
+ * @property string $addressLine1
+ * @property string $addressLine1Ar
+ * @property string $addressLine2
+ * @property string $addressLine2Ar
  * @property string $city
+ * @property string $cityAr
  * @property string $zipCode
  * @property string $phone1
  * @property string $phone2
@@ -89,6 +95,33 @@ class Organization
 
     /**
      *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'commercialName' => [
+            'en_US' => 'commercialName',
+            'ar_AR' => 'commercialNameAr'
+        ],
+        'ownerName' => [
+            'en_US' => 'ownerName',
+            'ar_AR' => 'ownerNameAr'
+        ],
+        'addressLine1' => [
+            'en_US' => 'addressLine1',
+            'ar_AR' => 'addressLine1Ar'
+        ],
+        'addressLine2' => [
+            'en_US' => 'addressLine2',
+            'ar_AR' => 'addressLine2Ar'
+        ],
+        'city' => [
+            'en_US' => 'city',
+            'ar_AR' => 'cityAr'
+        ]
+    ];
+
+    /**
+     *
      * @var InputFilter validation constraints 
      */
     private $inputFilter;
@@ -117,6 +150,13 @@ class Organization
 
     /**
      * @Gedmo\Versioned
+     * @ORM\Column(type="string", unique=true)
+     * @var string
+     */
+    public $commercialNameAr;
+
+    /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="float" , nullable=true )
      * @var string
      */
@@ -135,6 +175,13 @@ class Organization
      * @var string
      */
     public $ownerName;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string", nullable=true )
+     * @var string
+     */
+    public $ownerNameAr;
 
     /**
      * @Gedmo\Versioned
@@ -239,7 +286,28 @@ class Organization
      * @ORM\Column(type="string", nullable=true )
      * @var string
      */
+    public $addressLine1Ar;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string" , nullable=true)
+     * @var string
+     */
+    public $addressLine2Ar;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string", nullable=true )
+     * @var string
+     */
     public $city;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string", nullable=true )
+     * @var string
+     */
+    public $cityAr;
 
     /**
      * @Gedmo\Versioned
@@ -412,6 +480,11 @@ class Organization
         return $this->commercialName;
     }
 
+    function getCommercialNameAr()
+    {
+        return $this->commercialNameAr;
+    }
+
     function getLong()
     {
         return $this->longtitude;
@@ -425,6 +498,11 @@ class Organization
     function getOwnerName()
     {
         return $this->ownerName;
+    }
+
+    function getOwnerNameAr()
+    {
+        return $this->ownerNameAr;
     }
 
     function getOwnerNationalId()
@@ -505,6 +583,16 @@ class Organization
     function getAddressLine2()
     {
         return $this->addressLine2;
+    }
+
+    function getAddressLine1Ar()
+    {
+        return $this->addressLine1Ar;
+    }
+
+    function getAddressLine2Ar()
+    {
+        return $this->addressLine2Ar;
     }
 
     function getCity()
@@ -598,6 +686,12 @@ class Organization
             $this->regions->removeElement($outline);
         }
         return $this;
+    }
+        
+    function getCityAr()
+    {
+        return $this->cityAr;
+
     }
 
     function getZipCode()
@@ -705,6 +799,11 @@ class Organization
         $this->commercialName = $commercialName;
     }
 
+    function setCommercialNameAr($commercialNameAr)
+    {
+        $this->commercialNameAr = $commercialNameAr;
+    }
+
     function setLongtitude($longtitude)
     {
         $this->longtitude = $longtitude;
@@ -718,6 +817,11 @@ class Organization
     function setOwnerName($ownerName)
     {
         $this->ownerName = $ownerName;
+    }
+
+    function setOwnerNameAr($ownerNameAr)
+    {
+        $this->ownerNameAr = $ownerNameAr;
     }
 
     function setOwnerNationalId($ownerNationalId)
@@ -789,9 +893,24 @@ class Organization
         $this->addressLine2 = $addressLine2;
     }
 
+    function setAddressLine1Ar($addressLine1Ar)
+    {
+        $this->addressLine1Ar = $addressLine1Ar;
+    }
+
+    function setAddressLine2Ar($addressLine2Ar)
+    {
+        $this->addressLine2Ar = $addressLine2Ar;
+    }
+
     function setCity($city)
     {
         $this->city = $city;
+    }
+
+    function setCityAr($cityAr)
+    {
+        $this->cityAr = $cityAr;
     }
 
     function setZipCode($zipCode)
@@ -975,6 +1094,15 @@ class Organization
         if (array_key_exists('status', $data)) {
             $this->setStatus($data['status']);
         }
+        if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
+            $this->setCRAttachment($data["CRAttachment"]);
+        }
+        if (array_key_exists('atpWireTransferAttachment', $data) && is_string($data['atpWireTransferAttachment'])) {
+            $this->setAtpWireTransferAttachment($data["atpWireTransferAttachment"]);
+        }
+        if (array_key_exists('atcWireTransferAttachment', $data) && is_string($data['atcWireTransferAttachment'])) {
+            $this->setAtcWireTransferAttachment($data["atcWireTransferAttachment"]);
+        }
         if (array_key_exists('region', $data)) {
             $this->setRegions($data['region']);
         }
@@ -1020,15 +1148,11 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data['email']);
         }
-        if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
-            $this->setCRAttachment($data["CRAttachment"]);
-        }
-        if (array_key_exists('atpWireTransferAttachment', $data) && is_string($data['atpWireTransferAttachment'])) {
-            $this->setAtpWireTransferAttachment($data["atpWireTransferAttachment"]);
-        }
-        if (array_key_exists('atcWireTransferAttachment', $data) && is_string($data['atcWireTransferAttachment'])) {
-            $this->setAtcWireTransferAttachment($data["atcWireTransferAttachment"]);
-        }
+        $this->setType($data['type']);
+        $this->setCommercialNameAr($data['commercialNameAr']);
+        $this->setOwnerNameAr($data['ownerNameAr']);
+        $this->setCRNo($data['CRNo']);
+        
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
         }
@@ -1044,6 +1168,15 @@ class Organization
         if (array_key_exists('fax', $data)) {
             $this->setFax($data["fax"]);
         }
+        $this->setAddressLine1($data['addressLine1']);
+        $this->setAddressLine1Ar($data['addressLine1Ar']);
+        $this->setCity($data['city']);
+        $this->setCityAr($data['cityAr']);
+        $this->setZipCode($data['zipCode']);
+        $this->setPhone1($data['phone1']);
+        $this->setWebsite($data['website']);
+        $this->setEmail($data['email']);
+
         if (array_key_exists('longtitude', $data)) {
             $this->setLongtitude($data["longtitude"]);
         }
@@ -1124,25 +1257,6 @@ class Organization
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-//            $inputFilter->add(array(
-//                'name' => 'commercialName',
-//                'required' => true,
-//                'validators' => array(
-//                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-//                        'options' => array(
-//                            'use_context' => true,
-//                            'object_manager' => $query->entityManager,
-//                            'object_repository' => $query->entityRepository,
-//                            'fields' => array('commercialName'),
-//                            'messages' => array(
-////                                'objectFound' => 'Sorry, This commercial name already exists !'
-//                            ),
-//                        )
-//                    ),
-//                )
-//            ));
-
-
             $inputFilter->add(array(
                 'name' => 'longtitude',
                 'required' => false,
@@ -1155,6 +1269,16 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'ownerName',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'ownerNameAr',
                 'required' => true,
                 'filters' => array(
                     array(
@@ -1275,6 +1399,17 @@ class Organization
 
 
             $inputFilter->add(array(
+                'name' => 'cityAr',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+
+
+            $inputFilter->add(array(
                 'name' => 'atpLicenseNo',
                 'required' => true,
                 'filters' => array(
@@ -1333,6 +1468,24 @@ class Organization
                 )
             ));
 
+            $inputFilter->add(array(
+                'name' => 'addressLine1Ar',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'addressLine2Ar',
+                'required' => false,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
 
             $inputFilter->add(array(
                 'name' => 'zipCode',
@@ -1481,6 +1634,45 @@ class Organization
 
             $this->inputFilter = $inputFilter;
         }
+        $inputFilter->add(array(
+                'name' => 'type',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'commercialName',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(
+//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            ),
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'commercialNameAr',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(
+//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            ),
+                        )
+                    ),
+                )
+            ));
 
         return $this->inputFilter;
     }

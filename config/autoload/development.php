@@ -26,4 +26,7 @@ return array(
             )
         )
     ),
+    'website' => array(
+        'host' => 'certigate.camelcasetech.com'
+    )
 );

@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Utilities\Service\Status;
 
 /**
  * Course Entity
@@ -131,6 +132,31 @@ class Evaluation
         return False;
     }
 
+    /**
+     * Get approved questions
+     * 
+     * 
+     * @access public
+     * @return array approved questions and their ids
+     */
+    public function getApprovedQuestions()
+    {
+        $questions = $this->getQuestions()->toArray();
+        $questionIds = array();
+        foreach ($questions as $questionKey => $question) {
+            if ($question->getStatus() != Status::STATUS_NOT_APPROVED) {
+                array_push($questionIds, $question->getId());
+            }
+            else {
+                unset($questions[$questionKey]);
+            }
+        }
+        return array(
+            "questionIds" => $questionIds,
+            "questions" => $questions,
+        );
+    }
+    
     /**
      * Get status
      * 

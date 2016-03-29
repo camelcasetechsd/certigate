@@ -25,7 +25,18 @@ class Vote
         $this->query = $query;
     }
 
-    public function saveCourseVotes($questionIds, $values, $userObj, $evalObj)
+    /**
+     * Save course votes
+     * 
+     * @access public
+     * 
+     * @param array $questionIds
+     * @param array $values
+     * @param Users\Entity\User $userObj
+     * @param Courses\Entity\Evaluation $evalObj
+     * @param Courses\Entity\CourseEvent $courseEvent
+     */
+    public function saveCourseVotes($questionIds, $values, $userObj, $evalObj, $courseEvent)
     {
         // removing unset value form array
         unset($values['submit']);
@@ -35,6 +46,7 @@ class Vote
             $questionObj = $this->query->findOneBy('Courses\Entity\Question', array(
                 'id' => $questionIds[$i]
             ));
+            $vote->setCourseEvent($courseEvent);
             $vote->setEvaluation($evalObj);
             $vote->setUser($userObj);
             $vote->setQuestion($questionObj);
@@ -66,7 +78,7 @@ class Vote
         }
         $sum = array_sum($currentVotes);
         $users = count(array_unique($usersVoted));
-
+        
         return (($sum / ($questionCount * 5)) * 100) / $users;
     }
 

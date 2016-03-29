@@ -240,6 +240,7 @@ class OrganizationsController extends ActionController
     {
         $variables = array();
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $query = $cleanQuery->setEntity('Users\Entity\User');
         $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -318,6 +319,7 @@ class OrganizationsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');

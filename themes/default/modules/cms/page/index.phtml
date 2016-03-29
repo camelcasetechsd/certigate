@@ -1,21 +1,21 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/cms/page/new"class="btn btn-small btn-success create-new">Create new Page</a>
+<a href="/cms/page/new"class="btn btn-small btn-success create-new">{{#translate}}Create new Page{{/translate}}</a>
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Pages</div>
+    <div class="panel-heading">{{#translate}}Pages{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Path</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Path{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th>{{#translate}}Created{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -23,21 +23,22 @@
             <tr class="{{^status}}container-inactive{{/status}}" >
                 <td>{{title}}</td>         
                 <td>{{path}}</td>
-                <td>{{status}}</td>
+                <td>{{type}}</td>
+                <td>{{statusText}}</td>
                 <td>{{created}}</td>
                 <td>
-                    <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{^status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    <a href="/cms/page/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                     {{#isAdminUser}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="History"><span class="glyphicon glyphicon-time"></span></a>
+                    <a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}History{{/translate}}"><span class="glyphicon glyphicon-time"></span></a>
                     {{/isAdminUser}}
                 </td>
             </tr>
