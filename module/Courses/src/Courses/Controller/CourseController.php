@@ -119,10 +119,12 @@ class CourseController extends ActionController
     public function instructorTrainingAction()
     {
         $variables = array();
+        $token = $this->params('token');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+        $courseEventModel->approveEnroll($token);
+        
         $criteria = Criteria::create();
         $expr = Criteria::expr();
         $criteria->setMaxResults($maxResults = 1)
@@ -139,7 +141,7 @@ class CourseController extends ActionController
         else {
 
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-            $preparedCourseArray = $courseModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($data));
+            $preparedCourseArray = $courseEventModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($data));
             $preparedCourse = reset($preparedCourseArray);
 
             $resources = $preparedCourse->getResources();

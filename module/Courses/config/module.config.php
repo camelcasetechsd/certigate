@@ -319,12 +319,15 @@ return array(
             'coursesInstructorTraining' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/instructor-training',
+                    'route' => '/courses/instructor-training[/:token]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'instructorTraining',
                     ),
-                )
+                ),
+                'constraints' => array(
+                    'token' => '[0-9a-zA-Z]+',
+                ),
             ),
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
