@@ -56,7 +56,7 @@ class IssueCategory
      *
      * @ORM\ManyToOne(targetEntity="IssueTracker\Entity\IssueCategory")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id" , nullable=true)
-     * @var CMS\Entity\MenuItem
+     * @var IssueTracker\Entity\IssueCategory
      */
     public $parent;
 

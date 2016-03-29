@@ -64,4 +64,14 @@ class Status {
      */
     const STATUS_STATE_SAVED_TEXT = "State Saved";
 
+    /**
+     * Entity is state saved text
+     */
+    const STATUS_CLOSED = 0;
+
+    /**
+     * Entity is state saved text
+     */
+    const STATUS_CLOSED_TEXT = "CLOSED";
+
 }

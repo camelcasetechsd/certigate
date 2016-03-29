@@ -1,0 +1,49 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading"><h2>Reported Issues</h2></div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>parents</th>
+                <th>Status</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#issues}}
+            <tr>
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{#parent3}}{{#parent2}}{{#parent1}}{{title}} > {{/parent1}}{{title}} > {{/parent2}}{{title}}{{/parent3}}</td>
+                <td>{{statusText}}</td>
+                <td>
+                    <a href="/issues/view/{{id}}" data-toggle="tooltip" data-placement="left" title="view"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#isAdmin}}
+                    {{#status}}
+                    <a href="/issues/close/{{id}}" data-toggle="tooltip" data-placement="left" title="close"><span class="glyphicon glyphicon-ban-circle"></span></a>
+                    {{/status}}
+                    {{^status}}
+                    <a href="/issues/reopen/{{id}}" data-toggle="tooltip" data-placement="left" title="reopen"><span class=" glyphicon glyphicon-refresh"></span></a>
+                    {{/status}}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/issues/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isAdmin}}
+                </td>
+            </tr>
+            {{/issues}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

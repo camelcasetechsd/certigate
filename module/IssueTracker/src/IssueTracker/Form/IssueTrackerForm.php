@@ -32,18 +32,16 @@ class IssueTrackerForm extends Form
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct( $name = null, $options = null )
+    public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
-        unset( $options['query'] );
-        parent::__construct( $name, $options );
-//        $hiddenMenuItemsIds = array();
-//        if (isset( $options['hiddenMenuItemsIds'] )) {
-//            $hiddenMenuItemsIds = $options['hiddenMenuItemsIds'];
-//        }
-        $this->setAttribute( 'class', 'form form-horizontal' );
+        unset($options['query']);
+        parent::__construct($name, $options);
 
-        $this->add( array(
+        $this->setAttribute('class', 'form form-horizontal');
+        $this->setAttribute('enctype', 'multipart/form-data');
+
+        $this->add(array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -53,143 +51,72 @@ class IssueTrackerForm extends Form
             'options' => array(
                 'label' => 'Title',
             ),
-        ) );
+        ));
 
-//        $this->add( array(
-//            'type' => 'Zend\Form\Element\Radio',
-//            'name' => 'type',
-//            'options' => array(
-//                'label' => '<div class="required">Menu Item Type</div>',
-//                'label_options' => array(
-//                    'disable_html_escape' => true,
-//                ),
-//                'value_options' => array(
-//                    array(
-//                        'value' => MenuItem::TYPE_PAGE,
-//                        'label' => 'Page',
-//                        'checked' => false,
-//                        'attributes' => array(
-//                            'class' => 'menu_item_type',
-//                            'id' => 'type-page',
-//                        ),
-//                    ),
-//                    array(
-//                        'value' => MenuItem::TYPE_DIRECT_URL,
-//                        'label' => 'Direct Url',
-//                        'checked' => false,
-//                        'attributes' => array(
-//                            'class' => 'menu_item_type',
-//                            'id' => 'type-directUrl',
-//                        ),
-//                    ),
-//                ),
-//            ),
-//        ) );
-
-//        $this->add( array(
-//            'name' => 'directUrl',
-//            'type' => 'Zend\Form\Element\Text',
-//            'attributes' => array(
-//                'class' => 'form-control',
-//                'required' => 'required',
-//            ),
-//            'options' => array(
-//                'label' => 'Direct Url',
-//            ),
-//        ) );
-
-//        $this->add( array(
-//            'name' => 'page',
-//            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-//            'attributes' => array(
-//                'class' => 'form-control',
-//                'required' => 'required',
-//            ),
-//            'options' => array(
-//                'label' => 'Page',
-//                'object_manager' => $this->query->entityManager,
-//                'target_class' => 'CMS\Entity\Page',
-//                'property' => 'name',
-//                'empty_item_label' => self::EMPTY_SELECT_VALUE,
-//                'display_empty_item' => true,
-//                'label_generator' => function($targetEntity) {
-//                    return $targetEntity->getTitle();
-//                },
-//            ),
-//        ) );
-//
-//        $this->add( array(
-//            'name' => 'parent',
-//            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-//            'attributes' => array(
-//                'class' => 'form-control',
-//                'required' => 'required',
-//            ),
-//            'options' => array(
-//                'label' => 'Parent',
-//                'object_manager' => $this->query->entityManager,
-//                'target_class' => 'CMS\Entity\MenuItem',
-//                'label_generator' => function($targetEntity) {
-//                    return $targetEntity->getNestedTitle();
-//                },
-//                'find_method' => array(
-//                    'name' => 'getMenuItemsSorted',
-//                    'params' => array(
-//                        'hiddenMenuItemsIds' => $hiddenMenuItemsIds
-//                    )
-//                ),
-//                'display_empty_item' => true,
-//                'empty_item_label' => "- - ",
-//            ),
-//        ) );
-
-        $this->add( array(
-            'name' => 'weight',
-            'type' => 'Zend\Form\Element\Number',
+        $this->add(array(
+            'name' => 'description',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Lower value will be displayed at the Top',
                 'required' => 'required',
                 'class' => 'form-control',
-                'min' => '1',
             ),
             'options' => array(
-                'label' => 'Sort Order',
+                'label' => 'Description',
             ),
-        ) );
+        ));
 
-        $this->add( array(
-            'name' => 'status',
-            'type' => 'Zend\Form\Element\Checkbox',
+        $this->add(array(
+            'name' => 'parent',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => true,
             ),
             'options' => array(
-                'label' => 'Status',
-                'checked_value' => Status::STATUS_ACTIVE,
-                'unchecked_value' => Status::STATUS_INACTIVE
+                'label' => 'Parent',
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'IssueTracker\Entity\IssueCategory',
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getTitle();
+                },
+                'find_method' => array(
+                    'name' => 'getCategoriesSorted',
+                    'params' => array(
+                    )
+                ),
             ),
-        ) );
+        ));
 
-        $this->add( array(
-            'name' => 'menu',
-            'type' => 'Zend\Form\Element\Hidden',
-        ) );
+        $this->add(array(
+            'name' => 'filePath',
+            'type' => 'Zend\Form\Element\File',
+            'attributes' => array(
+                'accept' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/zip,application/octet-stream,application/pdf,pptx,potx,ppsx,thmx',
+                'multiple' => true
+            ),
+            'options' => array(
+                'label' => '<p class="required">File</p> <p>Supported Extensions: zip,pdf,ppt,pptx</p>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+        ));
 
-        $this->add( array(
+        $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
-        ) );
+        ));
 
-        $this->add( array(
+        $this->add(array(
             'name' => 'Create',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => 'Create',
             )
-        ) );
+        ));
 
-        $this->add( array(
+        $this->add(array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
@@ -197,7 +124,7 @@ class IssueTrackerForm extends Form
                 'value' => 'Reset',
                 'type' => 'button',
             )
-        ) );
+        ));
     }
 
 }
