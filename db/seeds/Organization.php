@@ -25,41 +25,41 @@ class Organization extends AbstractSeed
 
         // dummy user to use his id ad foreign key in orgs
         $normalUser = array(
-                "firstName" => $faker->firstName,
-                "middleName" => $faker->name,
-                "lastName" => $faker->lastName,
-                "country" => $faker->countryCode,
-                "language" => $faker->languageCode,
-                "username" => "testuser",
-                "password" => User::hashPassword("testuser"),
-                "mobile" => $faker->phoneNumber,
-                "addressOne" => $faker->address,
-                "addressTwo" => $faker->address,
-                "city" => $faker->city,
-                "zipCode" => $faker->postcode,
-                "phone" => $faker->phoneNumber,
-                "nationality" => $faker->countryCode,
-                "identificationType" => $faker->word,
-                "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
-                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format('Y-m-d H:i:s'),
-                "email" => $faker->freeEmail,
-                "securityQuestion" => $faker->sentence,
-                "securityAnswer" => $faker->sentence,
-                "dateOfBirth" => date('Y-m-d H:i:s'),
-                "photo" => '/upload/images/userdefault.png',
-                "privacyStatement" => true,
-                "studentStatement" => false,
-                "proctorStatement" => false,
-                "instructorStatement" => false,
-                "testCenterAdministratorStatement" => false,
-                "trainingManagerStatement" => false,
-                "status" => true
-            );
+            "firstName" => $faker->firstName,
+            "middleName" => $faker->name,
+            "lastName" => $faker->lastName,
+            "country" => $faker->countryCode,
+            "language" => $faker->languageCode,
+            "username" => "testuser",
+            "password" => User::hashPassword("testuser"),
+            "mobile" => 444 - 444 - 444,
+            "addressOne" => $faker->address,
+            "addressTwo" => $faker->address,
+            "city" => $faker->city,
+            "zipCode" => $faker->postcode,
+            "mobile" => 444 - 444 - 444,
+            "nationality" => $faker->countryCode,
+            "identificationType" => $faker->word,
+            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
+            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
+            "email" => $faker->freeEmail,
+            "securityQuestion" => $faker->sentence,
+            "securityAnswer" => $faker->sentence,
+            "dateOfBirth" => date('Y-m-d H:i:s'),
+            "photo" => '/upload/images/userdefault.png',
+            "privacyStatement" => true,
+            "studentStatement" => false,
+            "proctorStatement" => false,
+            "instructorStatement" => false,
+            "testCenterAdministratorStatement" => false,
+            "trainingManagerStatement" => false,
+            "status" => true
+        );
         $this->insert('user', $normalUser);
         $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
-        
-        
-        
+
+
+
         $atp[] = array(
             'commercialName' => $faker->userName,
             'status' => true,

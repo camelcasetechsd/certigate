@@ -42,30 +42,6 @@ class IssueTrackerForm extends Form
         $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Title',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'description',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Description',
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'parent',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
@@ -88,6 +64,18 @@ class IssueTrackerForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'title',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Title',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'filePath',
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
@@ -99,6 +87,20 @@ class IssueTrackerForm extends Form
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'description',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+                'rows' => 3,
+                'cols' => 100,
+            ),
+            'options' => array(
+                'label' => 'Description',
             ),
         ));
 

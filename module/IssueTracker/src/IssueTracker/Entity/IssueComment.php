@@ -5,28 +5,25 @@ namespace IssueTracker\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
-use IssueTracker\Service\DepthLevel;
 
 /**
  * issue Entity
  * @ORM\Entity
- * @ORM\Table(name="issue")
+ * @ORM\Table(name="issue_comment")
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
- * @property string $title
- * @property string $description
- * @property int $category
- * @property string $filePath
+ * @property string $comment
  * @property Users\Entity\User $creator
  * @property \DateTime $created
+ * @property int $status
  * 
  * 
  * @package issuetarcker
  * @subpackage entity
  */
-class Issue
+class IssueComment
 {
 
     /**
@@ -47,36 +44,10 @@ class Issue
      * @ORM\Column(type="string");
      * @var string
      */
-    public $title;
+    public $comment;
 
     /**
-     * @ORM\Column(type="string");
-     * @var string
-     */
-    public $description;
-
-    /**
-     *
-     * @ORM\ManyToOne(targetEntity="IssueTracker\Entity\IssueCategory")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id" , nullable=true)
-     * @var IssueTracker\Entity\IssueCategory
-     */
-    public $category;
-
-    /**
-     * @ORM\Column(type="string" , nullable=true);
-     * @var string
-     */
-    public $filePath;
-
-    /**
-     * @ORM\Column(type="integer");
-     * @var int
-     */
-    public $status;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User", inversedBy="issues")
+     * @ORM\ManyToOne(targetEntity="Users\Entity\User", inversedBy="issueComments")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     public $user;
@@ -88,43 +59,19 @@ class Issue
     public $created;
 
     /**
-     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\IssueComment", mappedBy="issue")
+     * @ORM\ManyToOne(targetEntity="IssueTracker\Entity\Issue", inversedBy="comments")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      */
-    public $comments;
-
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
+    public $issue;
 
     function getId()
     {
         return $this->id;
     }
 
-    function getTitle()
+    function getComment()
     {
-        return $this->title;
-    }
-
-    function getDescription()
-    {
-        return $this->description;
-    }
-
-    function getCategory()
-    {
-        return $this->category;
-    }
-
-    function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    function getStatus()
-    {
-        return $this->status;
+        return $this->comment;
     }
 
     function getUser()
@@ -144,39 +91,9 @@ class Issue
         return $this->created;
     }
 
-    function getComments()
+    function setComment($comment)
     {
-        return $this->comments;
-    }
-
-    function setComments($comments)
-    {
-        $this->comments = $comments;
-    }
-
-    function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    function setCategory(IssueCategory $category)
-    {
-        $this->category = $category;
-    }
-
-    function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
-    }
-
-    function setStatus($status)
-    {
-        $this->status = $status;
+        $this->comment = $comment;
     }
 
     function setUser($user)
@@ -195,6 +112,16 @@ class Issue
     {
         $this->created = new \DateTime();
         return $this;
+    }
+
+    function getIssue()
+    {
+        return $this->issue;
+    }
+
+    function setIssue($issue)
+    {
+        $this->issue = $issue;
     }
 
     /**
@@ -218,8 +145,7 @@ class Issue
      */
     public function exchangeArray($data = array())
     {
-        $this->setTitle($data['title']);
-        $this->setDescription($data['description']);
+        $this->setComment($data['comment']);
         $this->setCreated();
     }
 
@@ -253,17 +179,7 @@ class Issue
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'description',
-                'required' => true,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'title',
-                'required' => true,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'parent',
+                'name' => 'comment',
                 'required' => true,
             ));
 

@@ -87,6 +87,63 @@ class Users extends AbstractSeed
         );
         $this->insert('acl', $userAcls);
 
+
+
+
+        $issuesModule = "IssueTracker";
+        $issuesListRoute = 'issues';
+        $newIssuesRoute = 'newIssues';
+        $viewIssuesRoute = 'viewIssues';
+        $closeIssuesRoute = 'closeIssues';
+        $reopenIssuesRoute = 'reopenIssues';
+        $deleteIssuesRoute = 'deleteIssues';
+        $editIssueCommentRoute = 'editIssueComment';
+        $removeIssueCommentRoute = 'removeIssueComment';
+
+        $IssuesAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $issuesListRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $newIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $viewIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $closeIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $reopenIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $deleteIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $editIssueCommentRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $removeIssueCommentRoute,
+            ),
+        );
+        $this->insert('acl', $IssuesAcls);
+
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $coursesMoreRoute = "coursesMore";
@@ -475,12 +532,12 @@ class Users extends AbstractSeed
             "language" => $faker->languageCode,
             "username" => "admin",
             "password" => User::hashPassword("adminadmin"),
-            "mobile" => $faker->phoneNumber,
+            "mobile" => "444-444-4444",
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
+            "phone" => "444-444-4444",
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
@@ -508,12 +565,12 @@ class Users extends AbstractSeed
             "language" => $faker->languageCode,
             "username" => "user",
             "password" => User::hashPassword("useruser"),
-            "mobile" => $faker->phoneNumber,
+            "mobile" => "444-444-4444",
             "addressOne" => $faker->address,
             "addressTwo" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
-            "phone" => $faker->phoneNumber,
+            "phone" => "444-444-4444",
             "nationality" => $faker->countryCode,
             "identificationType" => $faker->word,
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),

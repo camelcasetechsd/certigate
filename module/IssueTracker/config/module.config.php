@@ -7,11 +7,15 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
+         'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ),
     'service_manager' => array(
         'factories' => array(
             'IssueTracker\Model\Categories' => 'IssueTracker\Model\CategoriesFactory',
             'IssueTracker\Model\Issues' => 'IssueTracker\Model\IssuesFactory',
+            'IssueTracker\Model\Comments' => 'IssueTracker\Model\CommentsFactory',
         )
     ),
     'doctrine' => array(
@@ -31,6 +35,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'IssueTracker\Controller\Issue' => 'IssueTracker\Controller\IssueController',
+            'IssueTracker\Controller\Comment' => 'IssueTracker\Controller\CommentController',
             'IssueTracker\Controller\IssueTracker' => 'IssueTracker\Controller\IssueTrackerController',
         ),
     ),
@@ -56,19 +61,19 @@ return array(
                     ),
                 ),
             ),
-            'editIssues' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/issues/edit[/:issueId]',
-                    'defaults' => array(
-                        'controller' => 'IssueTracker\Controller\IssueTracker',
-                        'action' => 'edit',
-                    ),
-                    'constraints' => array(
-                        'issueId' => '[0-9]*'
-                    ),
-                ),
-            ),
+//            'editIssues' => array(
+//                'type' => 'Zend\Mvc\Router\Http\Segment',
+//                'options' => array(
+//                    'route' => '/issues/edit[/:issueId]',
+//                    'defaults' => array(
+//                        'controller' => 'IssueTracker\Controller\IssueTracker',
+//                        'action' => 'edit',
+//                    ),
+//                    'constraints' => array(
+//                        'issueId' => '[0-9]*'
+//                    ),
+//                ),
+//            ),
             'viewIssues' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -177,6 +182,33 @@ return array(
                     ),
                 ),
             ),
+            'editIssueComment' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/issues/comments/edit[/:issueId[/:commentId]]',
+                    'defaults' => array(
+                        'controller' => 'IssueTracker\Controller\Comment',
+                        'action' => 'edit',
+                    ),
+                    'constraints' => array(
+                        'issueId' => '[0-9]*'
+                    ),
+                ),
+            ),
+            'removeIssueComment' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/issues/comments/remove[/:issueId[/:commentId]]',
+                    'defaults' => array(
+                        'controller' => 'IssueTracker\Controller\Comment',
+                        'action' => 'remove',
+                    ),
+                    'constraints' => array(
+                        'issueId' => '[0-9]*'
+                    ),
+                ),
+            ),
+            
         )
     )
 );

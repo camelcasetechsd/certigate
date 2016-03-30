@@ -10,6 +10,8 @@ use Zend\File\Transfer\Adapter\Http;
 use Utilities\Service\Random;
 use Utilities\Service\Status;
 use Doctrine\ORM\EntityRepository;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
 class Issues
 {
@@ -67,13 +69,19 @@ class Issues
         $parent = $this->query->findOneBy('IssueTracker\Entity\IssueCategory', array(
             'id' => $data['parent']
         ));
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $issueObj->setCreated();
+        $issueObj->setUser($this->query->findOneBy('Users\Entity\User', array('id' => $storage['id'])));
         $issueObj->setCategory($parent);
         $paths = array();
         foreach ($data['filePath'] as $file) {
-            $uploadResult = $this->uploadAttachment($file['name'], self::ISSUE_ATTACHMENT_PATH);
-            array_push($paths, $uploadResult);
+            if (!empty($file['name'])) {
+                $uploadResult = $this->uploadAttachment($file['name'], self::ISSUE_ATTACHMENT_PATH);
+                array_push($paths, $uploadResult);
+            }
+            $issueObj->setFilePath(serialize($paths));
         }
-        $issueObj->setFilePath(serialize($paths));
         $issueObj->setStatus(Status::STATUS_ACTIVE);
         $this->query->setEntity('IssueTracker\Entity\Issue')->save($issueObj, $data);
     }
@@ -121,6 +129,13 @@ class Issues
                 ->from('IssueTracker\Entity\Issue', 'i');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getIssue($issueId)
+    {
+        return $this->query->findOneBy('IssueTracker\Entity\Issue', array(
+                    'id' => $issueId
+        ));
     }
 
     /**
@@ -188,6 +203,25 @@ class Issues
         ));
         $issue->setStatus(Status::STATUS_ACTIVE);
         $this->query->save($issue);
+    }
+
+    public function validateUser()
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCurrentUser()
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        return $this->query->findOneBy('Users\Entity\User', array(
+                    'id' => $storage['id']
+        ));
     }
 
 }

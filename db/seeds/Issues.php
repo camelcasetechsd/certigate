@@ -6,10 +6,9 @@ require_once 'module/Users/src/Users/Entity/Role.php';
 
 use Phinx\Seed\AbstractSeed;
 use \Users\Entity\User as User;
-use \IssueTracker\Service\DepthLevel;
-use IssueTracker\Entity\IssueCategory;
+use \Utilities\Service\Status as Status;
 
-class IssueCategories extends AbstractSeed
+class Issues extends AbstractSeed
 {
 
     /**
@@ -24,6 +23,9 @@ class IssueCategories extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
+        /**
+         * Creating Issue Categories
+         */
         $defaultCategory = array(
             'title' => 'Default Category',
             'description' => $faker->sentence,
@@ -117,6 +119,104 @@ class IssueCategories extends AbstractSeed
         );
         $this->insert('issue_category', $Sub4);
         $Sub4Id = $this->getAdapter()->getConnection()->lastInsertId();
+
+
+
+        /**
+         * Creating Issues
+         * 
+         */
+        // dummy user to use his id ad foreign key in orgs
+        $normalUser = array(
+            "firstName" => "QA",
+            "middleName" => "Issue",
+            "lastName" => "Tester",
+            "country" => $faker->countryCode,
+            "language" => $faker->languageCode,
+            "username" => "creator",
+            "password" => User::hashPassword("creator"),
+            "mobile" =>"444-444-4444",
+            "addressOne" => $faker->address,
+            "addressTwo" => $faker->address,
+            "city" => $faker->city,
+            "zipCode" => $faker->postcode,
+            "phone" =>"444-444-4444",            "nationality" => $faker->countryCode,
+            "identificationType" => $faker->word,
+            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
+            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format('Y-m-d H:i:s'),
+            "email" => $faker->freeEmail,
+            "securityQuestion" => $faker->sentence,
+            "securityAnswer" => $faker->sentence,
+            "dateOfBirth" => date('Y-m-d H:i:s'),
+            "photo" => '/upload/images/userdefault.png',
+            "privacyStatement" => true,
+            "studentStatement" => false,
+            "proctorStatement" => false,
+            "instructorStatement" => false,
+            "testCenterAdministratorStatement" => false,
+            "trainingManagerStatement" => false,
+            "status" => true
+        );
+        $this->insert('user', $normalUser);
+        $normalUserId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $issue1 = array(
+            'title' => $faker->name,
+            'description' => implode(" ",$faker->sentences),
+            'category_id' => $Sub3Id,
+            'user_id' => $normalUserId,
+            'created' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'filePath' => null
+        );
+        $this->insert('issue', $issue1);
+
+
+        $issue2 = array(
+            'title' => $faker->name,
+            'description' => implode(" ",$faker->sentences),
+            'category_id' => $Sub4Id,
+            'user_id' => $normalUserId,
+            'created' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'filePath' => null
+        );
+        $this->insert('issue', $issue2);
+
+
+        $issue3 = array(
+            'title' => $faker->name,
+            'description' => implode(" ",$faker->sentences),
+            'category_id' => $Sub3Id,
+            'user_id' => $normalUserId,
+            'created' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'filePath' => null
+        );
+
+        $this->insert('issue', $issue3);
+
+        $issue4 = array(
+            'title' => $faker->name,
+            'description' => implode(" ",$faker->sentences),
+            'category_id' => $Sub3Id,
+            'user_id' => $normalUserId,
+            'created' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'filePath' => null
+        );
+        $this->insert('issue', $issue4);
+
+        $issue5 = array(
+            'title' => $faker->name,
+            'description' => implode(" ",$faker->sentences),
+            'category_id' => $Sub4Id,
+            'user_id' => $normalUserId,
+            'status' => 1,
+            'created' => date('Y-m-d H:i:s'),
+            'filePath' => null
+        );
+        $this->insert('issue', $issue5);
     }
 
 }

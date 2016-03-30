@@ -7,8 +7,9 @@ use Zend\View\Model\ViewModel;
 use IssueTracker\Form\IssueTrackerForm;
 use IssueTracker\Service\IssueCategories;
 use IssueTracker\Entity\Issue;
-use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use IssueTracker\Form\CommentForm as Comment;
+use IssueTracker\Entity\IssueComment as CommentEntity;
 
 /*
  * 
@@ -30,11 +31,7 @@ class IssueTrackerController extends ActionController
         $variables = array();
         $issuesModel = $this->getServiceLocator()->get('IssueTracker\Model\Issues');
         $variables['issues'] = $issuesModel->prepareIssuesToView($issuesModel->listIssues());
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $variables['isAdmin'] = true;
-        }
+        $variables['isAdmin'] = $issuesModel->validateUser();
         return new ViewModel($variables);
     }
 
@@ -66,7 +63,31 @@ class IssueTrackerController extends ActionController
 
     public function viewAction()
     {
-        
+        $variables = array();
+        $issueId = $this->params('issueId');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $commentsModel = $this->getServiceLocator()->get('IssueTracker\Model\Comments');
+        $issuesModel = $this->getServiceLocator()->get('IssueTracker\Model\Issues');
+        $commentForm = new Comment();
+        $commentObj = new CommentEntity();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $commentForm->setInputFilter($commentObj->getInputFilter($query));
+            $commentForm->setData($data);
+            if ($commentForm->isValid()) {
+                $commentsModel->saveComment($data, $issueId, null);
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'view', 'issueId' => $issueId), array('name' => 'viewIssues'));
+                return $this->redirect()->toUrl($url);
+            }
+        }
+        $variables['previousComments'] = $commentsModel->getIssueComments($issueId, true);
+        $variables['commentForm'] = $this->getFormView($commentForm);
+        $variables['issue'] = $issuesModel->prepareIssuesToView(array($issuesModel->getIssue($issueId)));
+        $variables['isAdmin'] = $issuesModel->validateUser();
+        $variables['currentUser'] = $issuesModel->getCurrentUser();
+
+        return new ViewModel($variables);
     }
 
     public function closeAction()

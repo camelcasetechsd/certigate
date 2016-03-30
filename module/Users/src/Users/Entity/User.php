@@ -300,6 +300,12 @@ class User
     public $votes;
 
     /**
+     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\Issue", mappedBy="user")
+     */
+    public $issues;
+
+    
+    /**
      * hash password
      * 
      * 
@@ -347,6 +353,7 @@ class User
         $this->courses = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->issues = new ArrayCollection();
     }
 
     /**
