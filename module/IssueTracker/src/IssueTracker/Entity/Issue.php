@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use IssueTracker\Service\DepthLevel;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * issue Entity

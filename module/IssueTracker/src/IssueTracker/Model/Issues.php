@@ -12,6 +12,11 @@ use Utilities\Service\Status;
 use Doctrine\ORM\EntityRepository;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Notifications\Service\MailSubjects;
+use Notifications\Service\MailTempates;
+use System\Service\Cache\CacheHandler;
+use System\Service\Settings;
+
 
 class Issues
 {
@@ -41,6 +46,12 @@ class Issues
     protected $random;
 
     /**
+     *
+     * @var System\Service\Cache\CacheHandler
+     */
+    protected $systemCacheHandler;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -49,10 +60,11 @@ class Issues
      * @param Utilities\Service\Query\Query $query
      * @param Notifications\Service\Notification $notification
      */
-    public function __construct($query, $notification)
+    public function __construct($query, $notification, $systemCacheHandler)
     {
         $this->query = $query;
         $this->notification = $notification;
+        $this->systemCacheHandler = $systemCacheHandler;
         $this->random = new Random();
     }
 
@@ -84,6 +96,7 @@ class Issues
         }
         $issueObj->setStatus(Status::STATUS_ACTIVE);
         $this->query->setEntity('IssueTracker\Entity\Issue')->save($issueObj, $data);
+        $this->sendMails($issueObj);
     }
 
     /**
@@ -222,6 +235,63 @@ class Issues
         return $this->query->findOneBy('Users\Entity\User', array(
                     'id' => $storage['id']
         ));
+    }
+
+    /**
+     * Send mail
+     * 
+     * @access private
+     * @param IssueTracker\Entity\Issue $issueObj issue data
+     * @throws \Exception From email is not set
+     * @throws \Exception Admin email is not set
+     */
+    private function sendMails($issueObj)
+    {
+        $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
+        $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
+        $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
+
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
+            $from = $settings[Settings::SYSTEM_EMAIL];
+        }
+
+        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
+            $adminEmail = $settings[Settings::ADMIN_EMAIL];
+        }
+
+        if (!isset($from)) {
+            throw new \Exception("From email is not set");
+        }
+
+        if (!isset($adminEmail)) {
+            throw new \Exception("Admin email is not set");
+        }
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        $templateParameters = array(
+            'issue' => $issueObj
+        );
+
+        $adminTemplateName = MailTempates::ADMIN_NEW_ISSUE;
+        $userTemplateName = MailTempates::USER_NEW_ISSUE;
+        $subject = MailSubjects::NEW_ISSUE;
+        $AdminNotificationMailArray = array(
+            'to' => $adminEmail,
+            'from' => $from,
+            'templateName' => $adminTemplateName,
+            'templateParameters' => $templateParameters,
+            'subject' => $subject,
+        );
+        $userNotificationMailArray = array(
+            'to' => $storage['email'],
+            'from' => $from,
+            'templateName' => $userTemplateName,
+            'templateParameters' => $templateParameters,
+            'subject' => $subject,
+        );
+        $this->notification->notify($AdminNotificationMailArray);
+        $this->notification->notify($userNotificationMailArray);
     }
 
 }

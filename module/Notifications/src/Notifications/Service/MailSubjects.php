@@ -87,5 +87,9 @@ class MailSubjects
      * Send to Friend
      */
     const SEND_TO_FRIEND = "send to firend";
+    /**
+     * new issue
+     */
+    const NEW_ISSUE = "Cerigate new Issue";
 
 }

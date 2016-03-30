@@ -13,7 +13,9 @@ class IssuesFactory implements FactoryInterface
     {
         $query = $serviceLocator->get('wrapperQuery');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
-        return new Issues($query, $notification);
+        $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
+
+        return new Issues($query, $notification, $systemCacheHandler);
     }
 
 }
