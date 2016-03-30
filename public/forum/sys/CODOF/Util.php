@@ -78,10 +78,13 @@ class Util {
         //initiate/update/destroy user sessions
         if (!self::$use_normal_sessions) {
 
-            new \CODOF\Session\Session();
+            $session = new \CODOF\Session\Session();
         }
-
+        
         session_start();
+        if (!empty($session->userId)) {
+            $_SESSION[UID . 'USER']['id'] = $session->userId;
+        }
     }
 
     /**

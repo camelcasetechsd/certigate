@@ -49,7 +49,8 @@ if (file_exists(DATA_PATH . 'config.php')) {
     //require ABSPATH . 'sys/Ext/limonade/limonade.php';
 
     require ABSPATH . 'sys/vendor/autoload.php';
-
+    require ABSPATH . '/../../vendor/autoload.php';
+    
     $capsule = new Capsule();
 
     $config = get_codo_db_conf();

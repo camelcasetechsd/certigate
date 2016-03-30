@@ -6,20 +6,34 @@
 
 namespace CODOF\Session;
 
-class Session {
+class Session
+{
 
     //put your code here
 
+    public $userId;
+    
     private $db;
+    
+    public function __construct()
+    {
 
-    public function __construct() {
-
+        // Access zend session
+        session_start();
+        if (is_array($_SESSION) && array_key_exists("Zend_Auth", $_SESSION)) {
+            $zendAuthData = $_SESSION["Zend_Auth"]->getArrayCopy();
+            if (is_array($zendAuthData) && array_key_exists("storage", $zendAuthData) && count($zendAuthData["storage"]) > 0 && array_key_exists("id", $zendAuthData["storage"])
+            ) {
+                $this->userId = $zendAuthData["storage"]["id"];
+            }
+        }
+        session_write_close();
         //get a persistent database connection
         $this->db = \DB::getPDO();
 
         // set our custom session functions.
         session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
-
+        
         // This line prevents unexpected effects when using objects as save handlers.
         register_shutdown_function('session_write_close');
     }
@@ -28,8 +42,8 @@ class Session {
      * Open the session
      * @return bool
      */
-    public function open($path, $name) {
-
+    public function open($path, $name)
+    {
         //delete old session handlers
         $limit = time() - (3600 * 12);
         $sql = "DELETE FROM codo_sessions WHERE last_active < $limit";
@@ -41,7 +55,8 @@ class Session {
      * Close the session
      * @return bool
      */
-    public function close() {
+    public function close()
+    {
 
         return $this->db = null;
     }
@@ -51,7 +66,8 @@ class Session {
      * @param int session id
      * @return string string of the sessoin
      */
-    public function read($id) {
+    public function read($id)
+    {
 
         $sql = "SELECT session_data FROM codo_sessions WHERE sid = :sid";
         $obj = $this->db->prepare($sql);
@@ -62,7 +78,7 @@ class Session {
         if (!empty($result)) {
 
             return $result['session_data'];
-        }        
+        }
         return false;
     }
 
@@ -71,11 +87,13 @@ class Session {
      * @param int session id
      * @param string data of the session
      */
-    public function write($id, $data) {
+    public function write($id, $data)
+    {
 
         if ($this->read($id) === false) {
             $sql = "INSERT INTO codo_sessions VALUES(:sid, :last_active, :data)";
-        } else {
+        }
+        else {
 
             $sql = "UPDATE codo_sessions SET last_active=:last_active, session_data=:data "
                     . " WHERE sid=:sid";
@@ -92,7 +110,8 @@ class Session {
      * @param int session id
      * @return bool
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $sql = "DELETE FROM codo_sessions WHERE sid = :sid";
         $obj = $this->db->prepare($sql);
@@ -112,7 +131,8 @@ class Session {
      * @usage execution rate 1/100
      *        (session.gc_probability/session.gc_divisor)
      */
-    public function gc($max) {
+    public function gc($max)
+    {
 
         $old = time() - intval($max);
         $sql = "DELETE FROM codo_sessions WHERE last_active < $old";
