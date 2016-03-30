@@ -7,7 +7,7 @@ nbproject
 .project
 .settings
 composer.lock
-vendor/
+/vendor/
 /.vagrant
 /logs/*
 !logs/.gitignore
