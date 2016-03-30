@@ -9,6 +9,7 @@ use Courses\Entity\Resource;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Form\FormInterface;
+use Utilities\Service\MessageTypes;
 
 /**
  * Resource Controller
@@ -115,6 +116,7 @@ class ResourceController extends ActionController
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['translatorHandler'] = $translatorHandler;
+        $options['resourceModel'] = $resourceModel;
         $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
 
@@ -151,6 +153,7 @@ class ResourceController extends ActionController
         }
         $variables['courseId'] = $courseId;
         $variables['resourceForm'] = $this->getFormView($form);
+        $variables['oneFileTypes'] = json_encode(Resource::$oneFileTypes);
         return new ViewModel($variables);
     }
 
@@ -159,15 +162,14 @@ class ResourceController extends ActionController
      * 
      * 
      * @access public
-     * @uses ResourceForm
      * 
      * @return ViewModel
      */
     public function editAction()
     {
         $variables = array();
-        $courseId = $this->params('courseId', /* $default = */ null);
-
+        $courseId = $this->params('courseId');
+        $messages = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $course = $query->find('Courses\Entity\Course', $courseId);
@@ -195,18 +197,26 @@ class ResourceController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $resourceModel->updateListedResources($data, $isAdminUser, $userEmail);
+            try {
+                $resourceModel->updateListedResources($data, $isAdminUser, $userEmail, $courseId);
+            } catch (\Exception $e) {
+                $messages[] = array(
+                    "message" => $e->getMessage(),
+                    "type" => MessageTypes::WARNING
+                );
+            }
         }
-
+        
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
 
         $variables['courseId'] = $courseId;
+        $variables['types'] = Resource::$types;
         $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
-        $variables['messages'] = $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl);
+        $variables['messages'] = array_merge($messages, $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl));
         return new ViewModel($variables);
     }
 

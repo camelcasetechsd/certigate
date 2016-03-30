@@ -9,6 +9,7 @@ use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
+use Courses\Entity\Resource as ResourceEntity;
 
 /**
  * Resource Model
@@ -20,6 +21,7 @@ use Notifications\Service\MailSubjects;
  * @property Zend\Log\Logger $logger
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
+ * @property Translation\Service\TranslatorHandler $translationHandler
  * 
  * @package courses
  * @subpackage model
@@ -52,6 +54,12 @@ class Resource
     protected $notification;
 
     /**
+     *
+     * @var Translation\Service\TranslatorHandler
+     */
+    protected $translationHandler;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -59,13 +67,15 @@ class Resource
      * @param Zend\Log\Logger $logger
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
+     * @param Translation\Service\TranslatorHandler $translationHandler
      */
-    public function __construct($query, $logger, $systemCacheHandler, $notification)
+    public function __construct($query, $logger, $systemCacheHandler, $notification, $translationHandler)
     {
         $this->query = $query;
         $this->logger = $logger;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->translationHandler = $translationHandler;
     }
 
     /**
@@ -123,6 +133,7 @@ class Resource
     public function validateResources($form, $resource, &$data)
     {
         $formErrors = new FormElementErrors();
+        $oneFileTypes = $this->getTranslatedResourceTypes();
 
         $validationOutput = array();
         // prepare data for validation
@@ -132,10 +143,12 @@ class Resource
         $originalData = $data;
         $originalFilter = $form->getInputFilter();
         $isValid = true;
+        $moreThanOneResource = false;
         // validate each added resource
         if (isset($data["nameAdded"]) && isset($data["nameArAddedAr"]) && isset($data["fileAdded"]) &&
                 is_array($data["nameAdded"]) && is_array($data["nameArAddedAr"]) && is_array($data["fileAdded"]) &&
                 (count($data["nameAdded"]) == count($data["nameArAddedAr"]) && count($data["nameArAddedAr"]) == count($data["fileAdded"]))) {
+            $moreThanOneResource = true;
             foreach ($data["nameAdded"] as $nameKey => $nameValue) {
                 foreach ($validatedFields as $validatedField) {
                     $validationOutput["addedResources"][$nameKey][$validatedField] = array(
@@ -175,6 +188,23 @@ class Resource
         $form->setInputFilter($originalFilter);
         foreach ($validatedFields as $validatedField) {
             $form->get($validatedField)->setMessages(array());
+        }
+        $currentType = $form->get("type")->getValue();
+        if (in_array($currentType, $oneFileTypes)) {
+            $moreThanOneFileType = false;
+            if ($moreThanOneResource === true) {
+                $moreThanOneFileType = true;
+            }
+            else {
+                $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $currentType, "course" => $courseId));
+                if (!is_null($existingResource)) {
+                    $moreThanOneFileType = true;
+                }
+            }
+            if ($moreThanOneFileType === true) {
+                $form->get("type")->setMessages(array("{$currentType} Type can not accept more than one file"));
+                $isValid = false;
+            }
         }
         // validate original resource
         $isValid &= $form->isValid();
@@ -240,9 +270,25 @@ class Resource
      * @param array $dataArray
      * @param bool $isAdminUser
      * @param string $userEmail
+     * @param int $courseId
+     * 
+     * @throws \Exception Type can not accept more than one file
      */
-    public function updateListedResources($dataArray, $isAdminUser, $userEmail)
+    public function updateListedResources($dataArray, $isAdminUser, $userEmail, $courseId)
     {
+        $oneFileTypes = $this->getTranslatedResourceTypes();
+        if (isset($dataArray['editedType'])) {
+            $editedResourceType = $dataArray['editedType'];
+            foreach ($editedResourceType as $key => $type) {
+                if (in_array($type, $oneFileTypes)) {
+                    $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $type, "course" => $courseId));
+                    if (!is_null($existingResource)) {
+                        throw new \Exception("{$type} Type can not accept more than one file");
+                    }
+                }
+            }
+        }
+
         if (isset($dataArray['editedName'])) {
             $editedResourceNames = $dataArray['editedName'];
             foreach ($editedResourceNames as $key => $name) {
@@ -290,11 +336,11 @@ class Resource
 
         if (isset($dataArray['editedType'])) {
             $editedResourceType = $dataArray['editedType'];
-            foreach ($editedResourceType as $key => $Type) {
+            foreach ($editedResourceType as $key => $type) {
                 $resource = $this->query->findOneBy('Courses\Entity\Resource', array(
                     'id' => $key
                 ));
-                $resource->setType($Type);
+                $resource->setType($type);
                 if ($isAdminUser === false) {
                     $resource->setStatus(Status::STATUS_NOT_APPROVED);
                 }
@@ -323,6 +369,21 @@ class Resource
             }
         }
         return $resources;
+    }
+
+    /**
+     * Get translated resources types
+     * 
+     * @access public
+     * @return array translated resource types
+     */
+    public function getTranslatedResourceTypes()
+    {
+        $typeValueOptions = array_combine(/* $keys = */ ResourceEntity::$types, /* $values = */ ResourceEntity::$types);
+        foreach ($typeValueOptions as &$type) {
+            $type = $this->translationHandler->translate($type);
+        }
+        return $typeValueOptions;
     }
 
     /**
