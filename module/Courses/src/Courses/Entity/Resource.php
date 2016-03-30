@@ -59,6 +59,43 @@ class Resource
     const TYPE_EXAMS = "Exams";
 
     /**
+     * Standards resource type
+     */
+    const TYPE_STANDARDS = "Standards";
+
+    /**
+     * Course Updates resource type
+     */
+    const TYPE_COURSE_UPDATES = "Course Updates";
+
+    /**
+     * Ice Breakers resource type
+     */
+    const TYPE_ICE_BREAKERS = "Ice Breakers";
+
+    /**
+     *
+     * @var array types that accept only one file 
+     */
+    public static $oneFileTypes = array(
+        self::TYPE_STANDARDS,
+        self::TYPE_ICE_BREAKERS
+    );
+
+    /**
+     *
+     * @var array types of all resources 
+     */
+    public static $types = array(
+            self::TYPE_PRESENTATIONS,
+            self::TYPE_ACTIVITIES,
+            self::TYPE_EXAMS,
+            self::TYPE_COURSE_UPDATES,
+            self::TYPE_STANDARDS,
+            self::TYPE_ICE_BREAKERS,
+        );
+    
+    /**
      *
      * @var InputFilter validation constraints 
      */
