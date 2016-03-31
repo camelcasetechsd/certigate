@@ -1,33 +1,33 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/cms/menuitem/new"class="btn btn-small btn-success create-new">Create new Menu Item</a>
+<a href="/cms/menuitem/new"class="btn btn-small btn-success create-new">{{#translate}}Create new Menu Item{{/translate}}</a>
 <br><br>
 <div class="panel-default">
 
-    <div class="panel-heading">Filter Menu Items</div>
+    <div class="panel-heading">{{#translate}}Filter Menu Items{{/translate}}</div>
     {{{filterForm}}}
 </div>
 <br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Menu Items</div>
+    <div class="panel-heading">{{#translate}}Menu Items{{/translate}}</div>
 
-    
+
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Menu Item Parent</th>
-                <th>Page Path</th>
-                <th>Direct Url</th>
-                <th>Menu</th>
-                <th>Sort order</th>
-                <th>Status</th>
-                <th>Menu Status</th>
-                <th>Created</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Menu Item Parent{{/translate}}</th>
+                <th>{{#translate}}Page Path{{/translate}}</th>
+                <th>{{#translate}}Direct Url{{/translate}}</th>
+                <th>{{#translate}}Menu{{/translate}}</th>
+                <th>{{#translate}}Sort order{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th>{{#translate}}Menu Status{{/translate}}</th>
+                <th>{{#translate}}Created{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -50,14 +50,14 @@
                 <td>{{menu.statusText}}</td>
                 <td>{{created}}</td>
                 <td>
-                    <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{^status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/menuitem/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="Activate"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    <a href="/cms/menuitem/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                 </td>
             </tr>
@@ -69,7 +69,7 @@
 </div>
 {{#hasPages}}
 <div class="pagination-bar">
-    <p > Pages :  </p>
+    <p > {{#translate}}Pages{{/translate}} :  </p>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <ul class="pagination">
         {{#previousPageNumber}}

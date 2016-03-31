@@ -4,7 +4,8 @@
 <div class="container static-cont">
     <h1 class="title-blue"> Courses Calendar</h1>
 
-    <hr>
+    <div class="panel-heading">{{#translate}}Courses Calendar{{/translate}}</div>
+
     {{#courses}}
     <div class="row">
         <div class="col-md-1">&nbsp;</div>
@@ -18,8 +19,9 @@
                     </div><div class="clearfix"></div>
                     <div>
                         <p>{{brief}}</p>
+                        <p>{{briefAr}}</p>
                         <ul class="list-inline list-unstyled">
-                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">Read more ...</p></a>
+                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
                         </ul>
                     </div>
 
@@ -28,48 +30,49 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>ATP Name</th>
-                                <th>ATP City</th>
+                                <th>{{#translate}}From{{/translate}}</th>
+                                <th>{{#translate}}To{{/translate}}</th>
+                                <th>{{#translate}}ATP Name{{/translate}}</th>
+                                <th>{{#translate}}ATP City{{/translate}}</th>
                                 <th>&nbsp;</th>
                                 <th colspan="2">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#courseEvents}}
-                            <tr>
-                                <td>
-                                    {{startDate}}
-                                </td>
-                                <td>
-                                    {{endDate}}
-                                </td>
-                                <td>
-                                    {{atp.commercialName}}
-                                </td>
-                                <td>
-                                    {{atp.city}}
-                                </td>
-                                <td>
-                                    <!-- <a href="#">Notify me before start</a> -->
-                                </td>
-                                <td>
-                                    {{#canEnroll}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">Enroll</button></a>
-                                    {{/canEnroll}}
-                                    {{#canLeave}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">Cancel</button></a>
-                                    {{/canLeave}}
-                                    {{#isFull}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    Course Full
-                                    {{/isFull}}
-                                </td>
-                            </tr>
-
+                                {{^hideFromCalendar}}
+                                <tr>
+                                    <td>
+                                        {{startDate}}
+                                    </td>
+                                    <td>
+                                        {{endDate}}
+                                    </td>
+                                    <td>
+                                        {{atp.commercialName}}
+                                    </td>
+                                    <td>
+                                        {{atp.city}}
+                                    </td>
+                                    <td>
+                                    <a href="#">{{#translate}}Notify me before start{{/translate}}</a>
+                                    </td>
+                                    <td>
+                                        {{#canEnroll}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Enroll{{/translate}}</button></a>
+                                        {{/canEnroll}}
+                                        {{#canLeave}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
+                                        {{/canLeave}}
+                                        {{#isFull}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Course Full
+                                        {{/isFull}}
+                                    </td>
+                                </tr>
+                                {{/hideFromCalendar}}
                             {{/courseEvents}}
 
                         </tbody>

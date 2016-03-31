@@ -1,18 +1,18 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<a href="/courses/ev-templates/new"><button class="btn btn-small btn-success">Create new Template Evaluation</button></a>
+<a href="/courses/ev-templates/new"><button class="btn btn-small btn-success">{{#translate}}Create new Template Evaluation{{/translate}}</button></a>
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Default Evaluation Templates</div>
+    <div class="panel-heading">{{#translate}}Default Evaluation Templates{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Question Title</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Question Title{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +20,9 @@
             <tr>
                 <td>{{questionTitle}}</td>
                 <td>
-                    <a href="/courses/ev-templates/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/courses/ev-templates/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/courses/ev-templates/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/courses/ev-templates/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
             {{/questions}}

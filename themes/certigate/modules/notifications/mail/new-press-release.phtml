@@ -2,7 +2,7 @@ Dear {{user.firstName}} {{user.lastName}},
 
 <br>
 <br>
-Check our new press release;
+{{#translate}}Check our new press release{{/translate}};
 
 {{#pressRelease}}
 <div>
@@ -11,7 +11,7 @@ Check our new press release;
             <h4>{{title}}</h4><p>By {{author}}</p>
             <p>{{summary}}</p>
             <ul>
-                <a href="{{pressReleaseUrl}}" target="_blank">Read more ...</a>
+                <a href="{{pressReleaseUrl}}" target="_blank"> {{#translate}}Read more{{/translate}} ...</a>
             </ul>
         </div>
         <hr>
@@ -19,4 +19,4 @@ Check our new press release;
 </div>
 {{/pressRelease}}
 
-If you want to unsubscribe, <a href="{{unsubscribeUrl}}" target="_blank">Click here</a>
+If you want to unsubscribe, <a href="{{unsubscribeUrl}}" target="_blank">{{#translate}}Click here{{/translate}}</a>

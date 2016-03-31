@@ -5,19 +5,19 @@
 <br><br>
 <div class="panel panel-default">
 
-    <div class="panel-heading">Course Events</div>
-    <div class="table-responsive">
+    <div class="panel-heading">{{#translate}}Course Events{{/translate}}</div>
+
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Instructor</th>
-                <th>ATP</th>
-                <th>Status</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Name{{/translate}}</th>
+                <th>{{#translate}}Start Date{{/translate}}</th>
+                <th>{{#translate}}End Date{{/translate}}</th>
+                <th>{{#translate}}Instructor{{/translate}}</th>
+                <th>{{#translate}}ATP{{/translate}}</th>
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -30,10 +30,10 @@
                 <td>{{atp.commercialName}}</td>
                 <td>{{statusText}}</td>
                 <td>
-                    <a href="/course-events/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/course-events/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/course-events/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="/course-events/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                 </td>
             </tr>
@@ -42,7 +42,6 @@
             </tr>
         </tbody>
     </table>
-</div>
 </div>
 {{/content}}
 {{/layout}}
