@@ -26,15 +26,20 @@ class Course extends AbstractSeed
         // dummy user to use his id ad foreign key in orgs
         $normalUser = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "newstudent",
             "password" => User::hashPassword("student"),
             "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => '555-555-5555',
@@ -107,21 +112,29 @@ class Course extends AbstractSeed
 
         // getting authorized Instuctor role id 
 
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE);
+        $instructorRole = array(
+            'name' => Role::INSTRUCTOR_ROLE,
+            'nameAr' => Role::INSTRUCTOR_ROLE
+        );
         $this->insert('role', $instructorRole);
         $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
         $instructor = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "instructor",
             "password" => User::hashPassword("useruser"),
             "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => '555-555-5555',
@@ -157,7 +170,9 @@ class Course extends AbstractSeed
 
         $course = array(
             "name" => $faker->firstName,
+            "nameAr" => $faker->firstName,
             "brief" => $faker->text,
+            "briefAr" => $faker->text,
             "time" => $faker->date('Y-m-d H:i:s'),
             "duration" => 20,
             "isForInstructor" => 0,
@@ -186,6 +201,7 @@ class Course extends AbstractSeed
         // creating outlines for the course
         $outline1 = array(
             "title" => "outline1",
+            "titleAr" => "outline1",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => 1,
@@ -196,6 +212,7 @@ class Course extends AbstractSeed
 
         $outline2 = array(
             "title" => "outline2",
+            "titleAr" => "outline2",
             "course_id" => $courseId,
             "duration" => 10,
             "status" => 1,

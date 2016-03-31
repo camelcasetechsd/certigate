@@ -9,12 +9,13 @@ use Zend\InputFilter\InputFilter;
 /**
  * Menu Entity
  * @ORM\Entity
- * @ORM\Table(name="menu",uniqueConstraints={@ORM\UniqueConstraint(name="title_idx", columns={"title"})})
+ * @ORM\Table(name="menu",uniqueConstraints={@ORM\UniqueConstraint(name="title_idx", columns={"title","titleAr"})})
  * @ORM\HasLifecycleCallbacks
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $title
+ * @property string $titleAr
  * @property int $status
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -22,18 +23,30 @@ use Zend\InputFilter\InputFilter;
  * @package cms
  * @subpackage entity
  */
-class Menu {
+class Menu
+{
 
     /**
      * Primary menu
      */
     const PRIMARY_MENU_UNDERSCORED = "primary_menu";
-    
+
     /**
      * Admin menu
      */
     const ADMIN_MENU_UNDERSCORED = "admin_menu";
-    
+
+    /**
+     *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'title' => [
+            'en_US' => 'title',
+            'ar_AR' => 'titleAr'
+        ],
+    ];
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -57,25 +70,32 @@ class Menu {
 
     /**
      *
+     * @ORM\Column(type="string", unique=true)
+     * @var string
+     */
+    public $titleAr;
+
+    /**
+     *
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
-    
+
     /**
      *
      * @ORM\Column(type="date")
      * @var \DateTime
      */
     public $created;
-    
+
     /**
      *
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
     public $modified = null;
-    
+
     /**
      * Get id
      * 
@@ -83,10 +103,11 @@ class Menu {
      * @access public
      * @return int id
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }  
-    
+    }
+
     /**
      * Get title
      * 
@@ -94,9 +115,10 @@ class Menu {
      * @access public
      * @return string title
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
-    }    
+    }
 
     /**
      * Set title
@@ -106,11 +128,38 @@ class Menu {
      * @param string $title
      * @return Menu current entity
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
         return $this;
     }
-    
+
+    /**
+     * Get title in arabic
+     * 
+     * 
+     * @access public
+     * @return string title
+     */
+    public function getTitleAr()
+    {
+        return $this->titleAr;
+    }
+
+    /**
+     * Set title in arabic
+     * 
+     * 
+     * @access public
+     * @param string $titleAr
+     * @return Menu current entity
+     */
+    public function setTitleAr($titleAr)
+    {
+        $this->titleAr = $titleAr;
+        return $this;
+    }
+
     /**
      * Get status
      * 
@@ -118,10 +167,11 @@ class Menu {
      * @access public
      * @return int status
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
-    
+
     /**
      * Set status
      * 
@@ -130,11 +180,12 @@ class Menu {
      * @param int $status
      * @return Menu current entity
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -142,10 +193,11 @@ class Menu {
      * @access public
      * @return \DateTime created
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
-    
+
     /**
      * Set created
      * 
@@ -153,11 +205,12 @@ class Menu {
      * @access public
      * @return Menu current entity
      */
-    public function setCreated() {
+    public function setCreated()
+    {
         $this->created = new \DateTime();
         return $this;
     }
-    
+
     /**
      * Get modified
      * 
@@ -165,10 +218,11 @@ class Menu {
      * @access public
      * @return \DateTime modified
      */
-    public function getModified() {
+    public function getModified()
+    {
         return $this->modified;
     }
-    
+
     /**
      * Set modified
      * 
@@ -176,7 +230,8 @@ class Menu {
      * @access public
      * @return Menu current entity
      */
-    public function setModified() {
+    public function setModified()
+    {
         $this->modified = new \DateTime();
         return $this;
     }
@@ -188,7 +243,8 @@ class Menu {
      * @access public
      * @return array current entity properties
      */
-    public function getArrayCopy() {
+    public function getArrayCopy()
+    {
         return get_object_vars($this);
     }
 
@@ -199,11 +255,15 @@ class Menu {
      * @access public
      * @param array $data ,default is empty array
      */
-    public function exchangeArray($data = array()) {
-        if(array_key_exists('title', $data)){
+    public function exchangeArray($data = array())
+    {
+        if (array_key_exists('title', $data)) {
             $this->setTitle($data["title"]);
         }
-        if(array_key_exists('status', $data)){
+        if (array_key_exists('titleAr', $data)) {
+            $this->setTitleAr($data["titleAr"]);
+        }
+        if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
     }
@@ -216,7 +276,8 @@ class Menu {
      * @param InputFilterInterface $inputFilter
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter) {
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
         throw new \Exception("Not used");
     }
 
@@ -230,7 +291,8 @@ class Menu {
      * @param Utilities\Service\Query\Query $query
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query) {
+    public function getInputFilter($query)
+    {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
@@ -240,7 +302,7 @@ class Menu {
                 'validators' => array(
                     array('name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context'   => true,
+                            'use_context' => true,
                             'object_manager' => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields' => array('title')
@@ -248,6 +310,21 @@ class Menu {
                     ),
                 )
             ));
+
+            $inputFilter->add(array(
+                'name' => 'titleAr',
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('titleAr')
+                        )
+                    ),
+                )
+            ));
+            
             $this->inputFilter = $inputFilter;
         }
 

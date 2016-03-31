@@ -1,7 +1,4 @@
-$(document).ready(function () {
-    $("#user_form_securityQuestion").after("<ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.</li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li><li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li></ul>");
-});
-
+<script>
 /**
  * Generate checkbox sentence with proper modal to display statement
  * Statement agreement action affect checkbox value
@@ -26,14 +23,14 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
             title: title,
             buttons: {
                 success: {
-                    label: "Agree",
+                    label: "{{#translate}}Agree{{/translate}}",
                     className: "btn-success",
                     callback: function () {
                         $(checkboxSelector).attr('checked', true);
                     }
                 },
                 cancel: {
-                    label: "Disagree",
+                    label: "{{#translate}}Disagree{{/translate}}",
                     className: "btn-primary",
                     callback: function () {
                         $(checkboxSelector).attr('checked', false);
@@ -79,5 +76,5 @@ function displayStatementCheckbox(roleSelector) {
         }
     });
 }
-
+</script>
 

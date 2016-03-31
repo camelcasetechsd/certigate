@@ -25,27 +25,45 @@ class Users extends AbstractSeed
 
         $instructorRoleId = $this->fetchRow('select id from role where name = "Instructor"')['id'];
 
-        $proctorRole = array('name' => Role::PROCTOR_ROLE);
+        $proctorRole = array(
+            'name' => Role::PROCTOR_ROLE,
+            'nameAr' => Role::PROCTOR_ROLE
+        );
         $this->insert('role', $proctorRole);
         $proctorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $studentRole = array('name' => Role::STUDENT_ROLE);
+        $studentRole = array(
+            'name' => Role::STUDENT_ROLE,
+            'nameAr' => Role::STUDENT_ROLE
+        );
         $this->insert('role', $studentRole);
         $studentRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $testCenterAdminRole = array('name' => Role::TEST_CENTER_ADMIN_ROLE);
+        $testCenterAdminRole = array(
+            'name' => Role::TEST_CENTER_ADMIN_ROLE,
+            'nameAr' => Role::TEST_CENTER_ADMIN_ROLE
+        );
         $this->insert('role', $testCenterAdminRole);
         $testCenterAdminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $trainingManagerRole = array('name' => Role::TRAINING_MANAGER_ROLE);
+        $trainingManagerRole = array(
+            'name' => Role::TRAINING_MANAGER_ROLE,
+            'nameAr' => Role::TRAINING_MANAGER_ROLE
+        );
         $this->insert('role', $trainingManagerRole);
         $trainingManagerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $userRole = array('name' => Role::USER_ROLE);
+        $userRole = array(
+            'name' => Role::USER_ROLE,
+            'nameAr' => Role::USER_ROLE
+        );
         $this->insert('role', $userRole);
         $normalUserRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
-        $adminRole = array('name' => Role::ADMIN_ROLE);
+        $adminRole = array(
+            'name' => Role::ADMIN_ROLE,
+            'nameAr' => Role::ADMIN_ROLE
+        );
         $this->insert('role', $adminRole);
         $adminRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
@@ -471,17 +489,32 @@ class Users extends AbstractSeed
         );
         $this->insert('acl', $cmsAcls);
 
+        $translationModule = "Translation";
+        $setLocalRoute = "translationSetLocale";
+        $translationAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $translationModule,
+                'route' => $setLocalRoute,
+            ),
+        );
+        $this->insert('acl', $translationAcls);
         $adminUser = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "admin",
             "password" => User::hashPassword("adminadmin"),
             "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => '555-555-5555',
@@ -506,15 +539,20 @@ class Users extends AbstractSeed
         $adminUserId = $this->getAdapter()->getConnection()->lastInsertId();
         $normalUser = array(
             "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
             "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
             "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
             "country" => $faker->countryCode,
             "language" => $faker->languageCode,
             "username" => "user",
             "password" => User::hashPassword("useruser"),
             "mobile" => '555-555-5555',
             "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
             "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
             "city" => $faker->city,
             "zipCode" => $faker->postcode,
             "phone" => '555-555-5555',

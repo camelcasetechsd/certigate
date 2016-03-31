@@ -163,6 +163,7 @@ class OrganizationsController extends ActionController
     {
         $variables = array();
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $query = $cleanQuery->setEntity('Users\Entity\User');
         $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -201,6 +202,7 @@ class OrganizationsController extends ActionController
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
+        $options['translatorHandler'] = $translatorHandler;
         $form = new OrgForm(/* $name = */ null, $options);
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
@@ -266,6 +268,7 @@ class OrganizationsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -298,6 +301,7 @@ class OrganizationsController extends ActionController
         $options['staticLangs'] = OrgEntity::getStaticLangs();
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
+        $options['translatorHandler'] = $translatorHandler;
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $form = new orgForm(/* $name = */ null, $options);

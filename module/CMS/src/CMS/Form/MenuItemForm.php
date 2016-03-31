@@ -58,6 +58,18 @@ class MenuItemForm extends Form
         ) );
 
         $this->add( array(
+            'name' => 'titleAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Title in Arabic',
+            ),
+        ) );
+
+        $this->add( array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'type',
             'options' => array(

@@ -60,6 +60,9 @@ return array(
             ),
             'cmsPressReleaseUnsubscribe' => array(
                 'resource' => 'CMS',
+            ),
+            'translationSetLocale' => array(
+                'resource' => 'Translation',
             )
         )
     )

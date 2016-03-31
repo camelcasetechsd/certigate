@@ -38,7 +38,7 @@ class Resource
      * @var Zend\Log\Logger
      */
     protected $logger;
-        
+
     /**
      *
      * @var System\Service\Cache\CacheHandler
@@ -100,11 +100,12 @@ class Resource
                 $uploadedFile = $filter->filter($fileValue);
                 $resource->setFile($uploadedFile);
                 $resource->setName($data["nameAdded"][$fileKey]);
+                $resource->setNameAr($data["nameArAddedAr"][$fileKey]);
                 $this->query->setEntity('Courses\Entity\Resource')->save($resource);
             }
         }
-        
-        if($notifyAdminFlag === true){
+//exit;
+        if ($notifyAdminFlag === true) {
             $this->sendMail($userEmail, $editFlag);
         }
     }
@@ -132,9 +133,9 @@ class Resource
         $originalFilter = $form->getInputFilter();
         $isValid = true;
         // validate each added resource
-        if (isset($data["nameAdded"]) && isset($data["fileAdded"]) &&
-                is_array($data["nameAdded"]) && is_array($data["fileAdded"]) &&
-                count($data["nameAdded"]) == count($data["fileAdded"])) {
+        if (isset($data["nameAdded"]) && isset($data["nameArAddedAr"]) && isset($data["fileAdded"]) &&
+                is_array($data["nameAdded"]) && is_array($data["nameArAddedAr"]) && is_array($data["fileAdded"]) &&
+                (count($data["nameAdded"]) == count($data["nameArAddedAr"]) && count($data["nameArAddedAr"]) == count($data["fileAdded"]))) {
             foreach ($data["nameAdded"] as $nameKey => $nameValue) {
                 foreach ($validatedFields as $validatedField) {
                     $validationOutput["addedResources"][$nameKey][$validatedField] = array(
@@ -146,7 +147,10 @@ class Resource
                 }
                 // manipulate data passed to form as if added resource is the original one
                 $data["name"] = $nameValue;
+                $nameArValue = $data["nameArAddedAr"][$nameKey];
+                $data["nameAr"] = $nameArValue;
                 $validationOutput["addedResources"][$nameKey]["name"]["value"] = $nameValue;
+                $validationOutput["addedResources"][$nameKey]["nameAr"]["value"] = $nameArValue;
                 $data["file"] = $data["fileAdded"][$nameKey];
                 $data["fileAdded"][$nameKey]["uploadOptions"] = array();
                 // update input filter after changing input values
@@ -246,13 +250,40 @@ class Resource
                     'id' => $key
                 ));
                 $resource->setName($name);
-                if($isAdminUser === false){
+                if ($isAdminUser === false) {
                     $resource->setStatus(Status::STATUS_NOT_APPROVED);
                 }
                 if (isset($dataArray['editedType'][$key])) {
                     $resource->setType($dataArray['editedType'][$key]);
                     unset($dataArray['editedType'][$key]);
                 }
+                if (isset($dataArray['editedNameAr'][$key])) {
+                    $resource->setNameAr($dataArray['editedNameAr'][$key]);
+                    unset($dataArray['editedNameAr'][$key]);
+                }
+                $this->query->save($resource);
+            }
+        }
+
+        if (isset($dataArray['editedNameAr'])) {
+            $editedResourceNames = $dataArray['editedNameAr'];
+            foreach ($editedResourceNames as $key => $name) {
+                $resource = $this->query->findOneBy('Courses\Entity\Resource', array(
+                    'id' => $key
+                ));
+                $resource->setNameAr($name);
+                if ($isAdminUser === false) {
+                    $resource->setStatus(Status::STATUS_NOT_APPROVED);
+                }
+                if (isset($dataArray['editedType'][$key])) {
+                    $resource->setType($dataArray['editedType'][$key]);
+                    unset($dataArray['editedType'][$key]);
+                }
+                if (isset($dataArray['editedName'][$key])) {
+                    $resource->setName($dataArray['editedName'][$key]);
+                    unset($dataArray['editedName'][$key]);
+                }
+
                 $this->query->save($resource);
             }
         }
@@ -264,15 +295,15 @@ class Resource
                     'id' => $key
                 ));
                 $resource->setType($Type);
-                if($isAdminUser === false){
+                if ($isAdminUser === false) {
                     $resource->setStatus(Status::STATUS_NOT_APPROVED);
                 }
                 $this->query->save($resource);
             }
         }
-        
-        if($isAdminUser === false){
-            $this->sendMail($userEmail, /*$editFlag =*/ true);
+
+        if ($isAdminUser === false) {
+            $this->sendMail($userEmail, /* $editFlag = */ true);
         }
     }
 
@@ -344,4 +375,5 @@ class Resource
         );
         $this->notification->notify($mailArray);
     }
+
 }
