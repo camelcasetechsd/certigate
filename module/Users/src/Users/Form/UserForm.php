@@ -7,6 +7,7 @@ use Users\Service\Statement;
 use Utilities\Service\Time;
 use Utilities\Form\ButtonsFieldset;
 use Translation\Service\Locale\Locale;
+use Users\Form\AgreementsFieldset;
 
 /**
  * User Form
@@ -73,7 +74,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter First Name in Arabic',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'First Name in Arabic',
@@ -95,7 +96,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Middle Name in Arabic',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Middle Name in Arabic',
@@ -119,7 +120,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Last Name in Arabic',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Last Name in Arabic',
@@ -342,7 +343,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Address Line 1 in Arabic',
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Address Line 1 in Arabic',
@@ -353,7 +354,7 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Address Line 2 in Arabic',
-                'class' => 'form-control',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Address Line 2 in Arabic',
@@ -432,16 +433,15 @@ class UserForm extends Form
             ),
         ));
 
-        $this->add(array(
-            'name' => 'agreements',
-            'type' => 'Users\Form\AgreementsFieldset',
-        ));
-
+        // Add agreements fieldset
+        $agreementsFieldset = new AgreementsFieldset(/*$name =*/ 'agreements', /*$options =*/ array("currentLocale" => $currentLocale));
+        $this->add($agreementsFieldset);
+        
         $this->add(array(
             'name' => 'privacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control' .(($currentLocale == Locale::LOCALE_AR_AR)? " pull-left":""),
                 'required' => 'required',
             ),
             'options' => array(

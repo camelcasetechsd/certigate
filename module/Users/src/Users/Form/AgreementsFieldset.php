@@ -4,6 +4,7 @@ namespace Users\Form;
 
 use Zend\Form\Fieldset;
 use Users\Service\Statement;
+use Translation\Service\Locale\Locale;
 
 /**
  * Agreements Fieldset
@@ -28,11 +29,13 @@ class AgreementsFieldset extends Fieldset
     {
         parent::__construct(/* $name = */ (!empty($name)) ? $name : "agreements", $options);
 
+        $currentLocale = $options["currentLocale"];
+        $class = 'form-control' .(($currentLocale == Locale::LOCALE_AR_AR)? " pull-left":"");
         $this->add(array(
             'name' => 'instructorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => $class,
             ),
             'options' => array(
                 'label' => '',
@@ -45,7 +48,7 @@ class AgreementsFieldset extends Fieldset
             'name' => 'proctorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => $class,
             ),
             'options' => array(
                 'label' => '',
@@ -58,7 +61,7 @@ class AgreementsFieldset extends Fieldset
             'name' => 'studentStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => $class,
             ),
             'options' => array(
                 'label' => '',
@@ -71,7 +74,7 @@ class AgreementsFieldset extends Fieldset
             'name' => 'testCenterAdministratorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => $class,
             ),
             'options' => array(
                 'label' => '',
@@ -84,7 +87,7 @@ class AgreementsFieldset extends Fieldset
             'name' => 'trainingManagerStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => $class,
             ),
             'options' => array(
                 'label' => '',
