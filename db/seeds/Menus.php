@@ -494,6 +494,7 @@ class Menus extends AbstractSeed
             'path' => $item['path'],
             'status' => TRUE,
             'body' => base64_encode(bzcompress($faker->text)),
+            'bodyAr' => base64_encode(bzcompress($faker->text)),
             'type' => PageTypes::PAGE_TYPE
         ]);
 

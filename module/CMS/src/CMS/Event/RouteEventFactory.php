@@ -32,7 +32,6 @@ class RouteEventFactory implements FactoryInterface {
        
         $cmsCacheHandler = $serviceLocator->get('cmsCacheHandler');
         $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
-        $menusArray[CacheHandler::MENUS_PATHS_KEY][] = "/2/2/";
         return new RouteEvent($menusArray[CacheHandler::MENUS_PATHS_KEY]);
     }
 
