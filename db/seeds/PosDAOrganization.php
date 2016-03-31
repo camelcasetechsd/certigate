@@ -1,12 +1,12 @@
 <?php
 
-require_once __DIR__.'/../AbstractSeed.php';
+require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
-use \Users\Entity\User;
+use \Users\Entity\Role;
 use Utilities\Service\Time;
 
-class PosFOrganization extends AbstractSeed
+class PosDAOrganization extends AbstractSeed
 {
 
     /**
@@ -26,51 +26,33 @@ class PosFOrganization extends AbstractSeed
         $typeAtpId = $this->fetchRow('select id from organization_type where title = "ATP"')['id'];
         $typeDistId = $this->fetchRow('select id from organization_type where title = "Distributor"')['id'];
         $typeResellerId = $this->fetchRow('select id from organization_type where title = "Re-Seller"')['id'];
+        //training manager user
+        $TMUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
+                    'username' => 'tmuser'
+                ))->getId();
 
-        // dummy user to use his id ad foreign key in orgs
-        $normalUser = array(
-                "firstName" => $faker->firstName,
-                "firstNameAr" => $faker->firstName,
-                "middleName" => $faker->name,
-                "middleNameAr" => $faker->name,
-                "lastName" => $faker->lastName,
-                "lastNameAr" => $faker->lastName,
-                "country" => $faker->countryCode,
-                "language" => $faker->languageCode,
-                "username" => "testuser",
-                "password" => "testuser",
-                "mobile" => $faker->phoneNumber,
-                "addressOne" => $faker->address,
-                "addressOneAr" => $faker->address,
-                "addressTwo" => $faker->address,
-                "addressTwoAr" => $faker->address,
-                "city" => $faker->city,
-                "zipCode" => $faker->postcode,
-                "phone" => $faker->phoneNumber,
-                "nationality" => $faker->countryCode,
-                "identificationType" => $faker->word,
-                "identificationNumber" => $faker->numberBetween(/*$min =*/ 999999),
-                "identificationExpiryDate" => $faker->dateTimeBetween(/*$startDate =*/ '+2 years', /*$endDate =*/ '+20 years')->format(Time::DATE_FORMAT),
-                "email" => $faker->freeEmail,
-                "securityQuestion" => $faker->sentence,
-                "securityAnswer" => $faker->sentence,
-                "dateOfBirth" => date(Time::DATE_FORMAT),
-                "photo" => '/upload/images/userdefault.png',
-                "privacyStatement" => true,
-                "studentStatement" => false,
-                "proctorStatement" => false,
-                "instructorStatement" => false,
-                "testCenterAdministratorStatement" => false,
-                "trainingManagerStatement" => false,
-                "status" => true
-            );
-        $userModel = $this->serviceManager->get("Users\Model\User");
-        $userModel->saveUser($normalUser, $userObj = new User(), /*$isAdminUser =*/ true, /*$editFormFlag =*/ false);
-        $normalUserId = $userObj->getId();
-        
-        
+        $TCAUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
+                    'username' => 'tcauser'
+                ))->getId();
+
+        $normalUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
+                    'username' => 'user'
+                ))->getId();
+
+
+        $TMRoleId = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array(
+            "name" => Role::TRAINING_MANAGER_ROLE
+        ));
+
+        $TCARoleId = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array(
+            "name" => Role::TEST_CENTER_ADMIN_ROLE
+        ));
+
+
+
+
         $atp[] = array(
-            'commercialName' => $faker->userName,
+            'commercialName' => 'atpDummy',
             'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
@@ -114,10 +96,19 @@ class PosFOrganization extends AbstractSeed
             'officeLang' => null,
             'officeVersion' => null,
             'focalContactPerson_id' => $normalUserId,
-            'creatorId' => $normalUserId
+            'creatorId' => $TMUserId
         );
         $this->insert('organization', $atp);
         $atpId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        //adding training manager to atp
+        $orgUser1 [] = array(
+            'role_id' => $TMRoleId,
+            'org_id' => $atpId,
+            'user_id' => $TMUserId
+        );
+        $this->insert('organization_user', $orgUser1);
+
 
         $atpMeta [] = array(
             'type_id' => $typeAtpId,
@@ -128,7 +119,7 @@ class PosFOrganization extends AbstractSeed
         $this->insert('organization_meta', $atpMeta);
 
         $atc[] = array(
-            'commercialName' => $faker->userName,
+            'commercialName' => 'atcDummy',
             'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
@@ -172,11 +163,19 @@ class PosFOrganization extends AbstractSeed
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
             'focalContactPerson_id' => $normalUserId,
-            'creatorId' => $normalUserId
+            'creatorId' => $TCAUserId
         );
 
         $this->insert('organization', $atc);
         $atcId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        //adding training manager to atp
+        $orgUser2 [] = array(
+            'role_id' => $TCARoleId,
+            'org_id' => $atcId,
+            'user_id' => $TCAUserId
+        );
+        $this->insert('organization_user', $orgUser2);
 
         $atcMeta [] = array(
             'type_id' => $typeAtcId,
@@ -188,7 +187,7 @@ class PosFOrganization extends AbstractSeed
 
 
         $both[] = array(
-            'commercialName' => $faker->userName,
+            'commercialName' => 'bothDummy',
             'commercialNameAr' => $faker->userName,
             'status' => true,
             'ownerName' => $faker->userName,
@@ -232,11 +231,31 @@ class PosFOrganization extends AbstractSeed
             'officeLang' => $faker->biasedNumberBetween(0, 5),
             'officeVersion' => $faker->biasedNumberBetween(0, 5),
             'focalContactPerson_id' => $normalUserId,
-            'creatorId' => $normalUserId
+            'creatorId' => $TMUserId
         );
 
         $this->insert('organization', $both);
         $bothId = $this->getAdapter()->getConnection()->lastInsertId();
+
+
+        //adding test center admin to atc part
+        $orgUser3 [] = array(
+            'role_id' => $TCARoleId,
+            'org_id' => $bothId,
+            'user_id' => $TCAUserId
+        );
+        $this->insert('organization_user', $orgUser3);
+
+
+        //adding training manager to atp part
+        $orgUser4 [] = array(
+            'role_id' => $TCARoleId,
+            'org_id' => $bothId,
+            'user_id' => $TMUserId
+        );
+        $this->insert('organization_user', $orgUser4);
+
+
 
 
         $bothMeta1 [] = array(

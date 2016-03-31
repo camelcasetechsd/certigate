@@ -11,7 +11,7 @@ use DoctrineModule\Validator\UniqueObject;
 
 /**
  * OrganziationMeta Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Organizations\Entity\OrganizationMetaRepository")
  * @ORM\Table(name="organization_meta")
  * @ORM\HasLifecycleCallbacks
  * 

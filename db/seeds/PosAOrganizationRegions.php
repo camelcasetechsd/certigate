@@ -6,7 +6,7 @@ require_once 'module/Users/src/Users/Entity/Role.php';
 
 use Phinx\Seed\AbstractSeed;
 
-class OrganizationRegions extends AbstractSeed
+class PosAOrganizationRegions extends AbstractSeed
 {
 
     /**

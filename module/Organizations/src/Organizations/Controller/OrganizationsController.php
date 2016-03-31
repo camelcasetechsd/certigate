@@ -19,7 +19,7 @@ use Organizations\Service\Messages;
  * 
  * Atps entries listing
  * 
- * 
+ *
  * 
  * @package organizations
  * @subpackage controller
@@ -592,9 +592,19 @@ class OrganizationsController extends ActionController
     public function myOrganizationsAction()
     {
         $variables = array();
-        $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $myOrganizations = $organizationModel->getMyOrganizations();
-        $variables['myOrganizations'] = $myOrganizations;
+        $organizationMetaModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationMeta');
+        $organizationMetaModel->filterOragnizations();
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $organizationMetaModel->setPage($pageNumber);
+
+        $pageNumbers = $organizationMetaModel->getPagesRange($pageNumber);
+        $nextPageNumber = $organizationMetaModel->getNextPageNumber($pageNumber);
+        $previousPageNumber = $organizationMetaModel->getPreviousPageNumber($pageNumber);
+        $variables['myOrganizations'] = $organizationMetaModel->getCurrentItems();
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $nextPageNumber;
+        $variables['previousPageNumber'] = $previousPageNumber;
         return new ViewModel($variables);
     }
 

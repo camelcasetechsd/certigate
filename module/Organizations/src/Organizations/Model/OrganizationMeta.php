@@ -9,6 +9,10 @@ use Utilities\Service\Time;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Settings;
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Doctrine\Common\Collections\Criteria;
+use Zend\Authentication\AuthenticationService;
 
 /**
  * OrganizationMeta Model
@@ -23,6 +27,8 @@ use System\Service\Settings;
  */
 class OrganizationMeta
 {
+
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     /**
      *
@@ -53,6 +59,7 @@ class OrganizationMeta
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "Organizations\Entity\OrganizationMeta"));
     }
 
     /**
@@ -90,9 +97,10 @@ class OrganizationMeta
         foreach ($types as $type) {
             if (!$editFlag) {
                 $orgMeta = new \Organizations\Entity\OrganizationMeta();
-            }else{
-                $orgMeta = $this->query->findOneBy('Organizations\Entity\OrganizationMeta',array(
-                    'organization'=> $orgEntity->getId(),
+            }
+            else {
+                $orgMeta = $this->query->findOneBy('Organizations\Entity\OrganizationMeta', array(
+                    'organization' => $orgEntity->getId(),
                     'type' => $type
                 ));
             }
@@ -229,6 +237,110 @@ class OrganizationMeta
             'subject' => MailSubjects::ORGANIZATION_RENEWAL,
         );
         $this->notification->notify($notificationMailArray);
+    }
+
+    /**
+     * function to get organizations assigned to current user
+     * 
+     * @param ActionController $action
+     * @return array Organizations\Entity\Organization
+     */
+    public function getMyOrganizations()
+    {/** normal case without dist& reseller */
+
+//        $auth = new AuthenticationService();
+//        $storage = $auth->getIdentity();
+//        $userOrganizations = $this->query->findBy('Organizations\Entity\OrganizationUser', array(
+//            'user' => $storage['id']
+//        ));
+//        $myOrganizations = array();
+//        foreach ($userOrganizations as $userOrganization) {
+//            $organizations = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+//                'organization' => $userOrganization->getOrganization()->getId()
+//            ));
+//            /**
+//             * those are organization meta objects not pure organizations
+//             */
+//            foreach ($organizations as $organization) {
+//                $organization->type = $organization->getType()->getTitle();
+//                $organization->expirationDate == null ? $organization->expirationDate = 'NO Expiration Date' : $organization->expirationDate = $organization->expirationDate->format('d/m/Y');
+//                array_push($myOrganizations, $organization);
+//            }
+//        }
+//        return $myOrganizations;
+
+
+
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+
+        $oragnizationUsers = $this->query->findBy('Organizations\Entity\OrganizationUser', array(
+            'user' => $storage['id']
+        ));
+
+        $userCreatedOrganizations = $this->query->findBy('Organizations\Entity\Organization', array(
+            'creatorId' => $storage['id']
+        ));
+
+        /**
+         * NOTE: by the following steps we overcome the problem of 
+         * having no organization users for Distributor & Reseller
+         * Ex : organization of type Reseller only can not show up in 
+         * listing my organization because it has no organization users
+         * although it has a record in organzation meta
+         * SO 
+         * merge & unique (myOrgUsers + mycreatedOrgs)
+         * then get my organizationsmetas    
+         */
+        $organizationList = array();
+        $myOrganizations = array();
+        foreach ($userCreatedOrganizations as $oragnization) {
+            array_push($organizationList, $oragnization->getId());
+        }
+        foreach ($oragnizationUsers as $oragnization) {
+            array_push($organizationList, $oragnization->getOrganization()->getId());
+        }
+
+        $organizationList = array_unique($organizationList);
+
+        foreach ($organizationList as $organizationId) {
+            $organizationMetas = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
+                'organization' => $organizationId
+            ));
+            /**
+             * one Organization my have more than 1 type
+             */
+            foreach ($organizationMetas as $meta) {
+                $meta->type = $meta->getType()->getTitle();
+                $meta->expirationDate == null ? $meta->expirationDate = 'NO Expiration Date' : $meta->expirationDate = $meta->expirationDate->format('d/m/Y');
+                array_push($myOrganizations, $meta);
+            }
+        }
+        return $myOrganizations;
+    }
+
+    /**
+     * call method that filters with my organizations criteria
+     * 
+     * @access public
+     */
+    public function filterOragnizations()
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        // we use the paginator adapter to set criterias that we filter with
+        // along with parameters and methods 
+        /**
+         * we call method getMyOrganizations in 
+         * organizationMeta repo which filter organization  
+         * metas and sending paramters to it
+         */
+        $adapter = $this->paginator->getAdapter();
+        $adapter->setQuery($this->query->setEntity('Organizations\Entity\OrganizationMeta')->entityRepository);
+        $adapter->setMethodName("getMyOrganizations");
+        $adapter->setParameters(array(
+            "currentUserId" => $storage['id']
+        ));
     }
 
 }
