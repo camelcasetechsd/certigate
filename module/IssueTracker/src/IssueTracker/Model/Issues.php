@@ -16,10 +16,13 @@ use Notifications\Service\MailSubjects;
 use Notifications\Service\MailTempates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
-
+use Utilities\Service\Paginator\PaginatorAdapter;
+use Zend\Paginator\Paginator;
 
 class Issues
 {
+
+    use \Utilities\Service\Paginator\PaginatorTrait;
 
     /**
      * path to save issue attachments 
@@ -66,6 +69,7 @@ class Issues
         $this->notification = $notification;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->random = new Random();
+        $this->paginator = new Paginator(new PaginatorAdapter($query, "IssueTracker\Entity\Issue"));
     }
 
     /**

@@ -92,7 +92,6 @@ class Course
         $this->notification = $notification;
         $this->version = $version;
         $this->estoreApi = $estoreApi;
-        $this->paginator = new Paginator(new PaginatorAdapter($query, "Courses\Entity\Course"));
     }
 
     /**

@@ -43,64 +43,20 @@ class PosBBIssues extends AbstractSeed
          * Creating Issues
          * 
          */
-        $issue1 = array(
-            'title' => $faker->name,
-            'description' => implode(" ", $faker->sentences),
-            'category_id' => $Sub3->getId(),
-            'user_id' => $normalUser->getId(),
-            'created' => date('Y-m-d H:i:s'),
-            'status' => 1,
-            'filePath' => null
-        );
-        $this->insert('issue', $issue1);
 
-
-        $issue2 = array(
-            'title' => $faker->name,
-            'description' => implode(" ", $faker->sentences),
-            'category_id' => $Sub4->getId(),
-            'user_id' => $normalUser->getId(),
-            'created' => date('Y-m-d H:i:s'),
-            'status' => 1,
-            'filePath' => null
-        );
-        $this->insert('issue', $issue2);
-
-
-        $issue3 = array(
-            'title' => $faker->name,
-            'description' => implode(" ", $faker->sentences),
-            'category_id' => $Sub3->getId(),
-            'user_id' => $normalUser->getId(),
-            'created' => date('Y-m-d H:i:s'),
-            'status' => 1,
-            'filePath' => null
-        );
-        $this->insert('issue', $issue3);
-
-
-        $issue4 = array(
-            'title' => $faker->name,
-            'description' => implode(" ", $faker->sentences),
-            'category_id' => $Sub3->getId(),
-            'user_id' => $normalUser->getId(),
-            'created' => date('Y-m-d H:i:s'),
-            'status' => 1,
-            'filePath' => null
-        );
-        $this->insert('issue', $issue4);
-
-
-        $issue5 = array(
-            'title' => $faker->name,
-            'description' => implode(" ", $faker->sentences),
-            'category_id' => $Sub4->getId(),
-            'user_id' => $normalUser->getId(),
-            'status' => 1,
-            'created' => date('Y-m-d H:i:s'),
-            'filePath' => null
-        );
-        $this->insert('issue', $issue5);
+        for ($i = 0; $i < 70; $i++) {
+            $i % 2 == 0 ? $categoryId = $Sub3->getId() : $categoryId = $Sub4->getId();
+            $issue = array(
+                'title' => $faker->name,
+                'description' => implode(" ", $faker->sentences),
+                'category_id' => $categoryId,
+                'user_id' => $normalUser->getId(),
+                'status' => 1,
+                'created' => date('Y-m-d H:i:s'),
+                'filePath' => null
+            );
+            $this->insert('issue', $issue);
+        }
     }
 
 }
