@@ -42,11 +42,11 @@ class PosDAOrganization extends AbstractSeed
 
         $TMRoleId = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array(
             "name" => Role::TRAINING_MANAGER_ROLE
-        ));
+        ))->getId();
 
         $TCARoleId = $this->serviceManager->get("wrapperQuery")->findOneBy("Users\Entity\Role", array(
             "name" => Role::TEST_CENTER_ADMIN_ROLE
-        ));
+        ))->getId();
 
 
 

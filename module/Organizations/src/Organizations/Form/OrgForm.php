@@ -8,6 +8,7 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Utilities\Service\Time;
 use Utilities\Service\Status;
+use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * User Form
@@ -33,9 +34,9 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
     /**
      *
-     * @var Translation\Helper\TranslatorHelper 
+     * @var Translation\Service\Locale\Locale
      */
-    protected $translatorHandler;
+    protected $applicationLocale;
 
     /**
      * setup form
@@ -49,9 +50,9 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     {
         $this->needAdminApproval = true;
         $this->query = $options['query'];
-        $this->translatorHandler = $options['translatorHandler'];
+        $this->applicationLocale = $options['applicationLocale'];
         unset($options['query']);
-        unset($options['translatorHandler']);
+        unset($options['applicationLocale']);
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
 
@@ -785,7 +786,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'display_empty_item' => true,
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
-                    if ($this->translatorHandler->getCurrentLocale() == 'en_Us') {
+                    if ($this->applicationLocale->getCurrentLocale() == ApplicationLocale::LOCALE_EN_US) {
                         return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                     }
                     else {
