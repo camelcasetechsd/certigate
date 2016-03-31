@@ -18,22 +18,12 @@
 <script>
     $(document).ready(function () {
         {{#rolesStatements}}   
-                generateStatementCheckboxContent('user_form_agreements_{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+                generateStatementCheckboxContent('user_form_{{type}}', '{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
         {{/rolesStatements}}
         {{#privacyStatement}}
-                generateStatementCheckboxContent('user_form_privacyStatement', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+                generateStatementCheckboxContent('user_form_privacyStatement','privacyStatement', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
 
         {{/privacyStatement}}
-        
-        
-            {{#success}}
-            
-            if({{success}}){
-                alert('Saved Successfully');
-            }
-            
-            {{/success}}
-            
     });
 </script>
 {{/scripts}}

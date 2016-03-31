@@ -4,17 +4,19 @@
  * Statement agreement action affect checkbox value
  * 
  * @param {string} checkboxId
+ * @param {statementType} statement type
  * @param {string} title statement title
  * @param {string} sentence checkbox sentence
  * @param {string} content whole statement content
  * @param {string} role statement related user role
  * @returns {undefined}
  */
-function generateStatementCheckboxContent(checkboxId, title, sentence, content, role) {
+function generateStatementCheckboxContent(checkboxId, statementType, title, sentence, content, role) {
     var divId = checkboxId + "Div";
     var checkboxSelector = "#" + checkboxId;
     var divSelector = "#" + divId;
     $(checkboxSelector).attr('data-role', role).after("<div id='" + divId + "'></div>");
+    $('input:hidden[name='+statementType+']').appendTo(divSelector);
     $(checkboxSelector).appendTo(divSelector);
     $(divSelector).append("<p>" + sentence + "</p>");
     $(divSelector + ' a').click(function () {
@@ -26,14 +28,14 @@ function generateStatementCheckboxContent(checkboxId, title, sentence, content, 
                     label: "{{#translate}}Agree{{/translate}}",
                     className: "btn-success",
                     callback: function () {
-                        $(checkboxSelector).attr('checked', true);
+                        $(checkboxSelector).prop('checked', true);
                     }
                 },
                 cancel: {
                     label: "{{#translate}}Disagree{{/translate}}",
                     className: "btn-primary",
                     callback: function () {
-                        $(checkboxSelector).attr('checked', false);
+                        $(checkboxSelector).prop('checked' , false);
                     }
                 }
             }

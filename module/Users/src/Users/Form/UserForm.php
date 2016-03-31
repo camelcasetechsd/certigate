@@ -7,7 +7,6 @@ use Users\Service\Statement;
 use Utilities\Service\Time;
 use Utilities\Form\ButtonsFieldset;
 use Translation\Service\Locale\Locale;
-use Users\Form\AgreementsFieldset;
 
 /**
  * User Form
@@ -433,15 +432,77 @@ class UserForm extends Form
             ),
         ));
 
-        // Add agreements fieldset
-        $agreementsFieldset = new AgreementsFieldset(/*$name =*/ 'agreements', /*$options =*/ array("currentLocale" => $currentLocale));
-        $this->add($agreementsFieldset);
+        $class = 'form-control' .(($currentLocale == Locale::LOCALE_AR_AR)? " pull-left":"");
+        $this->add(array(
+            'name' => 'instructorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proctorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'studentStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'testCenterAdministratorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'trainingManagerStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
         
         $this->add(array(
             'name' => 'privacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-                'class' => 'form-control' .(($currentLocale == Locale::LOCALE_AR_AR)? " pull-left":""),
+                'class' => $class,
                 'required' => 'required',
             ),
             'options' => array(

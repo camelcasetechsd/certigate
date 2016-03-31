@@ -1481,11 +1481,11 @@ class User
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
                 ->setPrivacyStatement($data["privacyStatement"])
-                ->setStudentStatement($data["agreements"]["studentStatement"])
-                ->setProctorStatement($data["agreements"]["proctorStatement"])
-                ->setInstructorStatement($data["agreements"]["instructorStatement"])
-                ->setTestCenterAdministratorStatement($data["agreements"]["testCenterAdministratorStatement"])
-                ->setTrainingManagerStatement($data["agreements"]["trainingManagerStatement"])
+                ->setStudentStatement($data["studentStatement"])
+                ->setProctorStatement($data["proctorStatement"])
+                ->setInstructorStatement($data["instructorStatement"])
+                ->setTestCenterAdministratorStatement($data["testCenterAdministratorStatement"])
+                ->setTrainingManagerStatement($data["trainingManagerStatement"])
         ;
     }
 
