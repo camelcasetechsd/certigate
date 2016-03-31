@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property string $entityName
  * 
  * @package utilities
- * @subpackage query
+ * @subpackage paginator
  */
 class PaginatorQuery extends \Utilities\Service\Query\Query
 {

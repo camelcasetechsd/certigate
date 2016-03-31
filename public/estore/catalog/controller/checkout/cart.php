@@ -17,6 +17,9 @@ class ControllerCheckoutCart extends Controller {
 			'text' => $this->language->get('heading_title')
 		);
 
+        if(! empty($this->request->get['cart'])){
+            $this->cart->addCartToCurrentUser($this->request->get['cart']);
+        }
 		if ($this->cart->hasProducts() || !empty($this->session->data['vouchers'])) {
 			$data['heading_title'] = $this->language->get('heading_title');
 

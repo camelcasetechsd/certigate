@@ -2,6 +2,8 @@
 
 namespace Utilities\Service;
 
+use Utilities\Form\FormButtons;
+
 /**
  * Status
  * 
@@ -63,6 +65,27 @@ class Status {
      * Entity is state saved text
      */
     const STATUS_STATE_SAVED_TEXT = "State Saved";
+    
+    /**
+     * Set status
+     * 
+     * @access public
+     * @param object $object
+     * @param array $data
+     * @param bool $editFlag ,default is false
+     */
+    public static function setStatus($object, $data, $editFlag = false){
+        $buttonsData = $data["buttons"];
+        if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $buttonsData)) {
+            $object->setStatus(self::STATUS_ACTIVE);
+        }
+        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $buttonsData)) {
+            $object->setStatus(self::STATUS_INACTIVE);
+        }
+        elseif (array_key_exists(FormButtons::SAVE_BUTTON, $buttonsData) && $editFlag === false) {
+            $object->setStatus(self::STATUS_INACTIVE);
+        }
+    }
 
     /**
      * Entity is state saved text

@@ -92,4 +92,9 @@ class MailSubjects
      */
     const NEW_ISSUE = "Cerigate new Issue";
 
+    /**
+     * New Press Release Subject
+     */
+    const NEW_PRESS_RELEASE_SUBJECT = "New press release";
+
 }

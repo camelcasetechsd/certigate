@@ -13,6 +13,8 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
  * 
  * Handles Object-related operations
  * 
+ * @property CountryService $countriesService
+ * @property LanguageService $languagesService
  * @property array $countries
  * @property array $languages
  * @property Utilities\Service\Query\Query $query
@@ -22,6 +24,18 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
  */
 class Object
 {
+
+    /**
+     *
+     * @var CountryService 
+     */
+    public $countriesService;
+
+    /**
+     *
+     * @var LanguageService 
+     */
+    public $languagesService;
 
     /**
      *
@@ -49,12 +63,14 @@ class Object
      * @param CountryService $countriesService
      * @param LanguageService $languagesService
      * @param Utilities\Service\Query\Query $query
+     * @param Translation\Service\Locale\Locale $applicationLocale
      */
-    public function __construct(CountryService $countriesService, LanguageService $languagesService, $query)
+    public function __construct(CountryService $countriesService, LanguageService $languagesService, $query, $applicationLocale)
     {
-        $locale = "en";
-        $this->countries = $countriesService->getAllCountries($locale);
-        $this->languages = $languagesService->getAllLanguages($locale);
+        $this->countriesService = $countriesService;
+        $this->languagesService = $languagesService;
+        $locale = $applicationLocale->getCurrentLanguageCode();
+        $this->setLocale($locale);
         $this->query = $query;
     }
 
@@ -189,6 +205,18 @@ class Object
             $id = $unknownTypeObject->getId();
         }
         return $id;
+    }
+
+    /**
+     * set locale
+     * 
+     * @access private
+     * @param string $locale
+     */
+    private function setLocale($locale)
+    {
+        $this->countries = $this->countriesService->getAllCountries($locale);
+        $this->languages = $this->languagesService->getAllLanguages($locale);
     }
 
 }

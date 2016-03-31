@@ -27,6 +27,8 @@ function displayPressReleaseFields(pressReleaseType) {
         $("#page_form_author").prop('required',true);
         $("#page_form_summary").parent().show();
         $("#page_form_summary").prop('required',true);
+        $("#page_form_summaryAr").parent().show();
+        $("#page_form_summaryAr").prop('required',true);
         $("#page_form_picture").parent().show();
     } else {
         // hide press release inputs at the beginning
@@ -36,6 +38,8 @@ function displayPressReleaseFields(pressReleaseType) {
         $("#page_form_author").prop('required',false);
         $("#page_form_summary").parent().hide();
         $("#page_form_summary").prop('required',false);
+        $("#page_form_summaryAr").parent().hide();
+        $("#page_form_summaryAr").prop('required',false);
         $("#page_form_picture").parent().hide();
     }
 }

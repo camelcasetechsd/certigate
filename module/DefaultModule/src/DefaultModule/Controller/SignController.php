@@ -62,7 +62,8 @@ class SignController extends ActionController
                     $forceFlush = (APPLICATION_ENV == "production" )? false : true;
                     $cmsCacheHandler->prepareCachedCMSData($forceFlush);
                     $systemCacheHandler->prepareCachedSystemData($forceFlush);
-                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                    $defaultUrl = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+                    $url = $this->params()->fromQuery('redirectBackUrl', $defaultUrl);
                     $this->redirect()->toUrl($url);
                 } else {
                     $errorMessages = array();
@@ -85,9 +86,9 @@ class SignController extends ActionController
      */
     public function outAction()
     {
-        $auth = new AuthenticationService();
-        // clear user-related data in session
-        $auth->clearIdentity();
+        $auth = $this->getServiceLocator()->get('Users\Auth\Authentication');
+        $auth->clearSession();
+        
         // Redirect to login page again 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'in'), array('name' => 'defaultSign'));
         $this->redirect()->toUrl($url);

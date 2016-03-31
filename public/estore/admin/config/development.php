@@ -26,7 +26,7 @@ define('DB_DRIVER', 'mysqli');
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'camelcasetech');
 define('DB_PASSWORD', 'c@m31C@$3T3c4');
-define('DB_DATABASE', 'certigate_estore');
+define('DB_DATABASE', 'certigate');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
 

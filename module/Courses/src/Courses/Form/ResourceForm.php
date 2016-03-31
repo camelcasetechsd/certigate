@@ -6,6 +6,7 @@ use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Courses\Entity\Resource;
 use Zend\Form\FormInterface;
+use Utilities\Form\ButtonsFieldset;
 
 /**
  * Resource Form
@@ -18,7 +19,8 @@ use Zend\Form\FormInterface;
  * @package courses
  * @subpackage form
  */
-class ResourceForm extends Form {
+class ResourceForm extends Form
+{
 
     /**
      *
@@ -33,6 +35,12 @@ class ResourceForm extends Form {
     protected $courseId;
 
     /**
+     *
+     * @var Translation\Helper\TranslatorHelper
+     */
+    protected $translatorHandler;
+
+    /**
      * setup form
      * 
      * 
@@ -40,20 +48,24 @@ class ResourceForm extends Form {
      * @param string $name ,default is null
      * @param array $options ,default is null
      */
-    public function __construct($name = null, $options = null) {
+    public function __construct($name = null, $options = null)
+    {
         $this->needAdminApproval = true;
         $this->query = $options['query'];
-        unset($options['query']);
+        $this->translatorHandler = $options['translatorHandler'];
         $this->courseId = $options['courseId'];
+
+        unset($options['query']);
+        unset($options['translatorHandler']);
         unset($options['courseId']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
-        
+
         $criteria = array();
         $readOnly = false;
         $displayEmptyItem = true;
-        if(! empty($this->courseId)){
+        if (!empty($this->courseId)) {
             $criteria["id"] = $this->courseId;
             $readOnly = true;
             $displayEmptyItem = false;
@@ -82,13 +94,13 @@ class ResourceForm extends Form {
                 'display_empty_item' => $displayEmptyItem,
             ),
         ));
-        
+
         $types = array(
-            Resource::TYPE_PRESENTATIONS,
-            Resource::TYPE_ACTIVITIES,
-            Resource::TYPE_EXAMS,
+            $this->translatorHandler->translate(Resource::TYPE_PRESENTATIONS),
+            $this->translatorHandler->translate(Resource::TYPE_ACTIVITIES),
+            $this->translatorHandler->translate(Resource::TYPE_EXAMS),
         );
-        $typeValueOptions = array_combine( /* $keys =*/ $types , /* $values =*/ $types );
+        $typeValueOptions = array_combine(/* $keys = */ $types, /* $values = */ $types);
         $this->add(array(
             'name' => 'type',
             'type' => 'Zend\Form\Element\Select',
@@ -99,10 +111,10 @@ class ResourceForm extends Form {
             'options' => array(
                 'label' => 'Type',
                 'value_options' => $typeValueOptions,
-                'empty_option' => self::EMPTY_SELECT_VALUE,
-            ),
+                'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
+            )
         ));
-        
+
         $this->add(array(
             'name' => 'name',
             'type' => 'Zend\Form\Element\Text',
@@ -114,7 +126,19 @@ class ResourceForm extends Form {
                 'label' => 'Name',
             ),
         ));
-        
+
+        $this->add(array(
+            'name' => 'nameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Name in Arabic',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'file',
             'type' => 'Zend\Form\Element\File',
@@ -128,7 +152,7 @@ class ResourceForm extends Form {
                 )
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'addMore',
             'type' => 'Zend\Form\Element',
@@ -136,10 +160,10 @@ class ResourceForm extends Form {
                 'class' => 'btn btn-primary',
                 'value' => 'Add More',
                 'type' => 'button',
-                'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_file', '', '', '', '', '')"
+                'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name','#resource_form_nameAr','#resource_form_file', '', '', '', '', '')"
             )
         ));
-        
+
         if ($this->isAdminUser === true) {
             $this->add(array(
                 'name' => 'status',
@@ -159,24 +183,9 @@ class ResourceForm extends Form {
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
-        $this->add(array(
-            'name' => 'Create',
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'btn btn-success',
-                'value' => 'Create',
-            )
-        ));
-
-        $this->add(array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ));
+        // Add buttons fieldset
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("create_button_only" => true));
+        $this->add($buttonsFieldset);
     }
 
     /**
@@ -195,4 +204,5 @@ class ResourceForm extends Form {
         // remove addMore button from edit form
         $this->remove("addMore");
     }
+
 }

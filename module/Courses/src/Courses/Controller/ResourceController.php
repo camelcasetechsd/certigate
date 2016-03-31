@@ -46,8 +46,7 @@ class ResourceController extends ActionController
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
         if (!is_null($courseId)) {
-            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
-            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
             if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
                 return $this->redirect()->toUrl($validationResult["redirectUrl"]);
             }
@@ -95,9 +94,9 @@ class ResourceController extends ActionController
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         if (!is_null($courseId)) {
-            $course = $query->find(/* $entityName = */'Courses\Entity\Course', $courseId);
-            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
             if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
                 return $this->redirect()->toUrl($validationResult["redirectUrl"]);
             }
@@ -115,6 +114,7 @@ class ResourceController extends ActionController
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
+        $options['translatorHandler'] = $translatorHandler;
         $options['courseId'] = $courseId;
         $form = new ResourceForm(/* $name = */ null, $options);
 
@@ -138,6 +138,7 @@ class ResourceController extends ActionController
             if ($validationOutput["isValid"]) {
                 $formData = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $formData["nameAdded"] = isset($data["nameAdded"]) ? $data["nameAdded"] : array();
+                $formData["nameArAddedAr"] = isset($data["nameArAddedAr"]) ? $data["nameArAddedAr"] : array();
                 $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
                 $resourceModel->save($resource, $formData, $isAdminUser);
 
@@ -182,7 +183,7 @@ class ResourceController extends ActionController
                 $isAdminUser = true;
             }
             if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
-                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $course->getAtp());
+                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
                 if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
                     return $this->redirect()->toUrl($validationResult["redirectUrl"]);
                 }
@@ -196,10 +197,10 @@ class ResourceController extends ActionController
             $data = $request->getPost()->toArray();
             $resourceModel->updateListedResources($data, $isAdminUser, $userEmail);
         }
-        
+
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
-        
+
         $variables['courseId'] = $courseId;
         $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
         $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
@@ -243,18 +244,17 @@ class ResourceController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
 
         $resource = $query->find('Courses\Entity\Resource', /* $criteria = */ $id);
-        $course = $resource->getCourse();
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
 
-        $courseArray = array($course);
-        $preparedCourseArray = $courseModel->setCanEnroll($courseArray);
+        $courseArray = array($resource->getCourse());
+        $preparedCourseArray = $courseEventModel->setCourseEventsPrivileges($courseArray);
         $preparedCourse = reset($preparedCourseArray);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $canDownload = true;
         if ($auth->hasIdentity()) {
-            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && $preparedCourse->canLeave === false) {
+            if (in_array(Role::STUDENT_ROLE, $storage['roles']) && is_object($preparedCourse) && property_exists($preparedCourse, 'canDownload') && $preparedCourse->canDownload === false) {
                 $canDownload = false;
             }
         }
@@ -310,7 +310,7 @@ class ResourceController extends ActionController
                     $url = $this->getEvent()->getRouter()->assemble(array("id" => $resource->getId(), "courseId" => $resource->getCourse()->getId()), array('name' => 'resourcesEditPerCourse'));
                     $this->redirect()->toUrl($url);
                 }
-                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $resource->getCourse()->getAtp());
+                $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
                 if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
                     return $this->redirect()->toUrl($validationResult["redirectUrl"]);
                 }

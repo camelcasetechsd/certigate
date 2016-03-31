@@ -3,6 +3,7 @@
 namespace Versioning\Model;
 
 use Utilities\Service\Status;
+use Utilities\Service\MessageTypes;
 
 /**
  * Version Model
@@ -236,7 +237,10 @@ class Version
         $messages = array();
         
         if($hasPendingChanges === true){
-            $messages[] = sprintf('There are <a target="_blank" href="%s">some changes</a> pending for Admin approval', $pendingUrl);
+            $messages[] = array( 
+                "message" => sprintf('There are <a target="_blank" href="%s">some changes</a> pending for Admin approval', $pendingUrl),
+                "type" => MessageTypes::WARNING
+                );
         }
         
         return $messages;

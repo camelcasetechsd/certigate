@@ -4,8 +4,11 @@ class ControllerCheckoutSuccess extends Controller {
 		$this->load->language('checkout/success');
 
 		if (isset($this->session->data['order_id'])) {
+			$redirectUrl = $this->cart->getProductRedirectUrl();
 			$this->cart->clear();
-
+            if(! empty($redirectUrl)){
+                return header("Location: $redirectUrl");
+            }
 			// Add to activity log
 			$this->load->model('account/activity');
 

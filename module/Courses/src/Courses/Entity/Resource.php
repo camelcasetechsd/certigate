@@ -18,6 +18,7 @@ use Utilities\Service\Random;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $name
+ * @property string $nameAr
  * @property string $type
  * @property Courses\Entity\Course $course
  * @property array $file
@@ -30,6 +31,17 @@ use Utilities\Service\Random;
  */
 class Resource
 {
+
+    /**
+     *
+     * @var Array translated properties
+     */
+    protected $translatedProperties = [
+        'name' => [
+            'en_US' => 'name',
+            'ar_AR' => 'nameAr'
+        ],
+    ];
 
     /**
      * Presentations resource type
@@ -66,6 +78,13 @@ class Resource
      * @var string
      */
     public $name;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $nameAr;
 
     /**
      * @Gedmo\Versioned
@@ -145,6 +164,32 @@ class Resource
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get Name in Arabic
+     * 
+     * 
+     * @access public
+     * @return string name
+     */
+    public function getNameAr()
+    {
+        return $this->nameAr;
+    }
+
+    /**
+     * Set Name in Arabic
+     * 
+     * 
+     * @access public
+     * @param string $nameAr
+     * @return Resource
+     */
+    public function setNameAr($nameAr)
+    {
+        $this->nameAr = $nameAr;
         return $this;
     }
 
@@ -330,6 +375,7 @@ class Resource
             $this->setFile($data["file"]);
         }
         $this->setName($data["name"])
+                ->setNameAr($data["nameAr"])
                 ->setType($data["type"])
                 ->setCourse($data["course"])
         ;
@@ -372,7 +418,12 @@ class Resource
                 'name' => 'name',
                 'required' => true,
             ));
-            
+
+            $inputFilter->add(array(
+                'name' => 'nameAr',
+                'required' => true,
+            ));
+
             $inputFilter->add(array(
                 'name' => 'type',
                 'required' => true,
@@ -395,7 +446,7 @@ class Resource
                 umask($oldUmask);
             }
             if (is_string($name) && strlen($name) > 0) {
-                $target .= $name."_".$unique;
+                $target .= $name . "_" . $unique;
                 $useUploadName = false;
             }
 

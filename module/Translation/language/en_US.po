@@ -1,0 +1,1126 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ar_Ar.po conversion\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
+"PO-Revision-Date: 2016-03-29 14:17+0200\n"
+"Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
+"Language-Team: \n"
+"Language: English\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 "
+"&& n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Loco-Source-Locale: ar_EG\n"
+"X-Loco-Parser: loco_parse_po\n"
+"X-Loco-Target-Locale: ar_AR\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "test"
+msgstr "Translated Test in english"
+
+msgid "Press Release"
+msgstr "Press Release"
+
+msgid "You don't have access to this , please contact the admin"
+msgstr "You don't have access to this , please contact the admin"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Activate"
+msgstr "Activate"
+
+msgid "Add More"
+msgstr "Add More"
+
+msgid "Add new Organization User"
+msgstr "Add new Organization User"
+
+msgid "Add Your Question Here"
+msgstr "Add Your Question Here"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Address 1"
+msgstr "Address 1"
+
+msgid "Address 2"
+msgstr "Address 2"
+
+msgid "Address line 1"
+msgstr "Address line 1"
+
+msgid "Address Line 1"
+msgstr "Address Line 1"
+
+msgid "Address line 2"
+msgstr "Address line 2"
+
+msgid "Address Line 2"
+msgstr "Address Line 2"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Approve all changes"
+msgstr "Approve all changes"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "ATC Info"
+msgstr "ATC Info"
+
+msgid "ATC License Attachment"
+msgstr "ATC License Attachment"
+
+msgid "ATC license attachment"
+msgstr "ATC license attachment"
+
+msgid "ATC License Expiration Date"
+msgstr "ATC License Expiration Date"
+
+msgid "ATC License Expiration"
+msgstr "ATC License Expiration"
+
+msgid "ATC license expiration"
+msgstr "ATC license expiration"
+
+msgid "ATC License No"
+msgstr "ATC License No"
+
+msgid "ATC license number"
+msgstr "ATC license number"
+
+msgid "ATC Organization"
+msgstr "ATC Organization"
+
+msgid "ATC Privacy Statement"
+msgstr "ATC Privacy Statement"
+
+msgid "ATC Resources"
+msgstr "ATC Resources"
+
+msgid "ATCs"
+msgstr "ATCs"
+
+msgid "ATP Info"
+msgstr "ATP Info"
+
+msgid "ATP License Attachment"
+msgstr "ATP License Attachment"
+
+msgid "ATP license attachment"
+msgstr "ATP license attachment"
+
+msgid "ATP License Expiration Date"
+msgstr "ATP License Expiration Date"
+
+msgid "ATP license expiration"
+msgstr "ATP license expiration"
+
+msgid "ATP License No"
+msgstr "ATP License No"
+
+msgid "ATP license number"
+msgstr "ATP license number"
+
+msgid "ATP Organization"
+msgstr "ATP Organization"
+
+msgid "ATP Privacy Statement"
+msgstr "ATP Privacy Statement"
+
+msgid "ATP Resources"
+msgstr "ATP Resources"
+
+msgid "ATP"
+msgstr "ATP"
+
+msgid "ATPs"
+msgstr "ATPs"
+
+msgid "Authenticated Test Center"
+msgstr "Authenticated Test Center"
+
+msgid "Author"
+msgstr "Author"
+
+msgid "Authorized Instructor"
+msgstr "Authorized Instructor"
+
+msgid "Authorized instructor"
+msgstr "Authorized instructor"
+
+msgid "Authorized Training Partner"
+msgstr "Authorized Training Partner"
+
+msgid "Authroized training partner"
+msgstr "Authroized training partner"
+
+msgid "Body"
+msgstr "Body"
+
+msgid "Brief"
+msgstr "Brief"
+
+msgid "Capacity"
+msgstr "Capacity"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Certified instructor logo"
+msgstr "Certified instructor logo"
+
+msgid "CertigatePro General Resources"
+msgstr "CertigatePro General Resources"
+
+msgid "City"
+msgstr "City"
+
+msgid "Classes No"
+msgstr "Classes No"
+
+msgid "Classes Number"
+msgstr "Classes Number"
+
+msgid "Classes number"
+msgstr "Classes number"
+
+msgid "click me if you accept"
+msgstr "click me if you accept"
+
+msgid "click me if you decline"
+msgstr "click me if you decline"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Commercial Name"
+msgstr "Commercial Name"
+
+msgid "Commercial name"
+msgstr "Commercial name"
+
+msgid "Confirm Email"
+msgstr "Confirm Email"
+
+msgid "Contacts"
+msgstr "Contacts"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "Course Details"
+msgstr "Course Details"
+
+msgid "Course Evaluation"
+msgstr "Course Evaluation"
+
+msgid "Course has no evaluation yet"
+msgstr "Course has no evaluation yet"
+
+msgid "Course Info"
+msgstr "Course Info"
+
+msgid "Course Name"
+msgstr "Course Name"
+
+msgid "Course name"
+msgstr "Course name"
+
+msgid "Course order form"
+msgstr "Course order form"
+
+msgid "Course Outlines"
+msgstr "Course Outlines"
+
+msgid "Course Resources"
+msgstr "Course Resources"
+
+msgid "Course roaster templates"
+msgstr "Course roaster templates"
+
+msgid "course Status"
+msgstr "course Status"
+
+msgid "Course Type"
+msgstr "Course Type"
+
+msgid "Course You Are Assigned To"
+msgstr "Course You Are Assigned To"
+
+msgid "Courses Calendar"
+msgstr "Courses Calendar"
+
+msgid "Courses"
+msgstr "Courses"
+
+msgid "CR Attachment"
+msgstr "CR Attachment"
+
+msgid "CR attachment"
+msgstr "CR attachment"
+
+msgid "CR Expiration Date"
+msgstr "CR Expiration Date"
+
+msgid "CR expiration"
+msgstr "CR expiration"
+
+msgid "CR No"
+msgstr "CR No"
+
+msgid "CR number"
+msgstr "CR number"
+
+msgid "Create Course Evaluation"
+msgstr "Create Course Evaluation"
+
+msgid "Create Evaluation"
+msgstr "Create Evaluation"
+
+msgid "Create new ATC"
+msgstr "Create new ATC"
+
+msgid "Create new ATP"
+msgstr "Create new ATP"
+
+msgid "Create new Course"
+msgstr "Create new Course"
+
+msgid "Create new Evaluation"
+msgstr "Create new Evaluation"
+
+msgid "Create new Menu Item"
+msgstr "Create new Menu Item"
+
+msgid "Create new Menu"
+msgstr "Create new Menu"
+
+msgid "Create new Organization"
+msgstr "Create new Organization"
+
+msgid "Create new Page"
+msgstr "Create new Page"
+
+msgid "Create new Role"
+msgstr "Create new Role"
+
+msgid "Create new Setting"
+msgstr "Create new Setting"
+
+msgid "Create new Template Evaluation"
+msgstr "Create new Template Evaluation"
+
+msgid "Create new User"
+msgstr "Create new User"
+
+msgid "created By"
+msgstr "created By"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Date Of Birth"
+msgstr "Date Of Birth"
+
+msgid "Day(s)"
+msgstr "Day(s)"
+
+msgid "Days"
+msgstr "Days"
+
+msgid "Default Evaluation Templates"
+msgstr "Default Evaluation Templates"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Direct Url"
+msgstr "Direct Url"
+
+msgid "Disapprove all changes"
+msgstr "Disapprove all changes"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Edit Course Evaluation"
+msgstr "Edit Course Evaluation"
+
+msgid "Edit Course"
+msgstr "Edit Course"
+
+msgid "Edit Evaluation Template"
+msgstr "Edit Evaluation Template"
+
+msgid "Edit Evaluation"
+msgstr "Edit Evaluation"
+
+msgid "Edit Menu Item"
+msgstr "Edit Menu Item"
+
+msgid "Edit Menu"
+msgstr "Edit Menu"
+
+msgid "Edit Organization User"
+msgstr "Edit Organization User"
+
+msgid "Edit Organization"
+msgstr "Edit Organization"
+
+msgid "Edit Page"
+msgstr "Edit Page"
+
+msgid "Edit Role"
+msgstr "Edit Role"
+
+msgid "Edit Setting"
+msgstr "Edit Setting"
+
+msgid "Edit User"
+msgstr "Edit User"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "End date"
+msgstr "End date"
+
+msgid "English"
+msgstr "English"
+
+msgid "Enroll"
+msgstr "Enroll"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Evaluate Course"
+msgstr "Evaluate Course"
+
+msgid "Evaluation Template"
+msgstr "Evaluation Template"
+
+msgid "Exam Date"
+msgstr "Exam Date"
+
+msgid "Exam Request"
+msgstr "Exam Request"
+
+msgid "Expand Body"
+msgstr "Expand Body"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "File"
+msgstr "File"
+
+msgid "Filter Menu Items"
+msgstr "Filter Menu Items"
+
+msgid "Find Us"
+msgstr "Find Us"
+
+msgid "First Name"
+msgstr "First Name"
+
+msgid "Focal Contact Person"
+msgstr "Focal Contact Person"
+
+msgid "Focal contact person"
+msgstr "Focal contact person"
+
+msgid "Google Maps"
+msgstr "Google Maps"
+
+msgid "Hello there"
+msgstr "Hello there"
+
+msgid "History"
+msgstr "History"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "translation"
+msgstr "translation"
+
+msgid "Identification Expiry Date"
+msgstr "Identification Expiry Date"
+
+msgid "Identification Number"
+msgstr "Identification Number"
+
+msgid "Identification Type"
+msgstr "Identification Type"
+
+msgid "Instructor Statement"
+msgstr "Instructor Statement"
+
+msgid "Internet Speed / Lab"
+msgstr "Internet Speed / Lab"
+
+msgid "Labs No"
+msgstr "Labs No"
+
+msgid "Labs Number"
+msgstr "Labs Number"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Last Name"
+msgstr "Last Name"
+
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Leave"
+msgstr "Leave"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "Logos"
+msgstr "Logos"
+
+msgid "Longtitude"
+msgstr "Longtitude"
+
+msgid "Manage Users"
+msgstr "Manage Users"
+
+msgid "Memorable"
+msgstr "Memorable"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Menu Item Parent"
+msgstr "Menu Item Parent"
+
+msgid "Menu Item Type"
+msgstr "Menu Item Type"
+
+msgid "Menu Items"
+msgstr "Menu Items"
+
+msgid "Menu Status"
+msgstr "Menu Status"
+
+msgid "Menus"
+msgstr "Menus"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Microseft Office Version"
+msgstr "Microseft Office Version"
+
+msgid "Microsoft office Language"
+msgstr "Microsoft office Language"
+
+msgid "Microsoft Office Language"
+msgstr "Microsoft Office Language"
+
+msgid "Microsoft Office Version"
+msgstr "Microsoft Office Version"
+
+msgid "Middle Name"
+msgstr "Middle Name"
+
+msgid "minutes"
+msgstr "minutes"
+
+msgid "Mobile Phone"
+msgstr "Mobile Phone"
+
+msgid "modified By"
+msgstr "modified By"
+
+msgid "More"
+msgstr "More"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "New Contact Message"
+msgstr "New Contact Message"
+
+msgid "New Course"
+msgstr "New Course"
+
+msgid "New Menu Item"
+msgstr "New Menu Item"
+
+msgid "New Menu"
+msgstr "New Menu"
+
+msgid "New Organization User"
+msgstr "New Organization User"
+
+msgid "New Page"
+msgstr "New Page"
+
+msgid "New User"
+msgstr "New User"
+
+msgid "Office language"
+msgstr "Office language"
+
+msgid "Office version"
+msgstr "Office version"
+
+msgid "Operating System"
+msgstr "Operating System"
+
+msgid "Operating System Language"
+msgstr "Operating System Language"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Order Forms"
+msgstr "Order Forms"
+
+msgid "Organization Type"
+msgstr "Organization Type"
+
+msgid "Organization Users"
+msgstr "Organization Users"
+
+msgid "Organizations"
+msgstr "Organizations"
+
+msgid "OS language"
+msgstr "OS language"
+
+msgid "OS Language"
+msgstr "OS Language"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "Our Address"
+msgstr "Our Address"
+
+msgid "Outlines"
+msgstr "Outlines"
+
+msgid "Owner Name"
+msgstr "Owner Name"
+
+msgid "Owner name"
+msgstr "Owner name"
+
+msgid "Owner national Id"
+msgstr "Owner national Id"
+
+msgid "Owner National Id"
+msgstr "Owner National Id"
+
+msgid "Owner Profile"
+msgstr "Owner Profile"
+
+msgid "Owner"
+msgstr "Owner"
+
+msgid "Page"
+msgstr "Page"
+
+msgid "Page Path"
+msgstr "Page Path"
+
+msgid "Pages History"
+msgstr "Pages History"
+
+msgid "Pages"
+msgstr "Pages"
+
+msgid "Parent"
+msgstr "Parent"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Password Confirm"
+msgstr "Password Confirm"
+
+msgid "Path"
+msgstr "Path"
+
+msgid "PCs Number / Class"
+msgstr "PCs Number / Class"
+
+msgid "PCs number / Lab"
+msgstr "PCs number / Lab"
+
+msgid "Pcs/Class"
+msgstr "Pcs/Class"
+
+msgid "Pcs/Lab"
+msgstr "Pcs/Lab"
+
+msgid "Phone 1"
+msgstr "Phone 1"
+
+msgid "Phone 2"
+msgstr "Phone 2"
+
+msgid "Phone 3"
+msgstr "Phone 3"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Photo"
+msgstr "Photo"
+
+msgid "Picture"
+msgstr "Picture"
+
+msgid "Please Sign In"
+msgstr "Please Sign In"
+
+msgid "Please verify you are human."
+msgstr "Please verify you are human."
+
+msgid "Privacy Statement"
+msgstr "Privacy Statement"
+
+msgid "Privileges of role"
+msgstr "Privileges of role"
+
+msgid "Privileges"
+msgstr "Privileges"
+
+msgid "Proctor Statement"
+msgstr "Proctor Statement"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Question Title"
+msgstr "Question Title"
+
+msgid "Rating"
+msgstr "Rating"
+
+msgid "Resource Not Found"
+msgstr "Resource Not Found"
+
+msgid "Resources"
+msgstr "Resources"
+
+msgid "Restore"
+msgstr "Restore"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Roles"
+msgstr "Roles"
+
+msgid "Save changes"
+msgstr "Save changes"
+
+msgid "Security Answer"
+msgstr "Security Answer"
+
+msgid "Security Question should be"
+msgstr "Security Question should be"
+
+msgid "Security Question"
+msgstr "Security Question"
+
+msgid "Send Us Message"
+msgstr "Send Us Message"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Shorten Body"
+msgstr "Shorten Body"
+
+msgid "Sort order"
+msgstr "Sort order"
+
+msgid "Sort"
+msgstr "Sort"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "Start date"
+msgstr "Start date"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Stored at"
+msgstr "Stored at"
+
+msgid "Student No"
+msgstr "Student No"
+
+msgid "Student Statement"
+msgstr "Student Statement"
+
+msgid "Students Number"
+msgstr "Students Number"
+
+msgid "Subject"
+msgstr "Subject"
+
+msgid "Submit Course Evaluation"
+msgstr "Submit Course Evaluation"
+
+msgid "Submit Evaluation Template"
+msgstr "Submit Evaluation Template"
+
+msgid "Submit for admin approval"
+msgstr "Submit for admin approval"
+
+msgid "Summary"
+msgstr "Summary"
+
+msgid "Supported Extensions"
+msgstr "Supported Extensions"
+
+msgid "Taken Action"
+msgstr "Taken Action"
+
+msgid "Templates"
+msgstr "Templates"
+
+msgid "Test Center Admin"
+msgstr "Test Center Admin"
+
+msgid "Test Center Administrator Statement"
+msgstr "Test Center Administrator Statement"
+
+msgid "Time Duration"
+msgstr "Time Duration"
+
+msgid "Time"
+msgstr "Time"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Train the Trainer"
+msgstr "Train the Trainer"
+
+msgid "Training Manager"
+msgstr "Training Manager"
+
+msgid "Training Manager Statement"
+msgstr "Training Manager Statement"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Url"
+msgstr "Url"
+
+msgid "User"
+msgstr "User"
+
+msgid "User Name"
+msgstr "User Name"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Users"
+msgstr "Users"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "View History"
+msgstr "View History"
+
+msgid "View"
+msgstr "View"
+
+msgid "Website"
+msgstr "Website"
+
+msgid "WebSite"
+msgstr "WebSite"
+
+msgid "Welcome Kit required for a new Instructor"
+msgstr "Welcome Kit required for a new Instructor"
+
+msgid "Welcome User"
+msgstr "Welcome User"
+
+msgid "Wire Transfer Attachment"
+msgstr "Wire Transfer Attachment"
+
+msgid "Wire transfer attachment"
+msgstr "Wire transfer attachment"
+
+msgid "You should be able to remember the answer"
+msgstr "You should be able to remember the answer"
+
+msgid "Zip Code"
+msgstr "Zip Code"
+
+msgid "TVTC Status"
+msgstr "TVTC Status"
+
+msgid "Admin Status"
+msgstr "Admin Status"
+
+msgid "New Course Event"
+msgstr "New Course Event"
+
+msgid "Courses Outlines"
+msgstr "Courses Outlines"
+
+msgid "Edit Resource"
+msgstr "Edit Resource"
+
+msgid "Bulk upload Resources"
+msgstr "Bulk upload Resources"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Process failed to complete"
+msgstr "Process failed to complete"
+
+msgid "Title in Arabic"
+msgstr "Title in Arabic"
+
+msgid "First Name in Arabic"
+msgstr "First Name in Arabic"
+
+msgid "Last Name in Arabic"
+msgstr "Last Name in Arabic"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Inactive"
+msgstr "Inactive"
+
+msgid "Deleted"
+msgstr "Deleted"
+
+msgid "Not Approved"
+msgstr "Not Approved"
+
+msgid "State Saved"
+msgstr "State Saved"
+
+msgid "Enter First Name"
+msgstr "Enter First Name"
+
+msgid "Middle Name in Arabic"
+msgstr "Middle Name in Arabic"
+
+msgid "Mobile"
+msgstr "Mobile"
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid ""
+"<p class=\"required\">Security Question</p> <p><ul><li>Security Question "
+"should be <strong>Memorable</strong>, You should be able to remember the "
+"answer.</li><li>Security Question should be <strong>Consistent</strong>, "
+"Answer should not change with time.</li><li>Security Question should be "
+"<strong>Safe</strong>, Answer should be hard to guess or research.</li></"
+"ul></p>"
+msgstr ""
+"<p class=\"required\">Security Question</p> <p><ul><li>Security Question "
+"should be <strong>Memorable</strong>, You should be able to remember the "
+"answer.</li><li>Security Question should be <strong>Consistent</strong>, "
+"Answer should not change with time.</li><li>Security Question should be "
+"<strong>Safe</strong>, Answer should be hard to guess or research.</li></"
+"ul></p>"
+
+msgid "Nationality"
+msgstr "Nationality"
+
+msgid "Address Line 1 in Arabic"
+msgstr "Address Line 1 in Arabic"
+
+msgid "Address Line 2 in Arabic"
+msgstr "Address Line 2 in Arabic"
+
+msgid "<label class=\"legendLabel\">Roles</label>"
+msgstr "<label class=\"legendLabel\">Roles</label>"
+
+msgid "Enter First Name in Arabic"
+msgstr "Enter First Name in Arabic"
+
+msgid "Enter Middle Name"
+msgstr "Enter Middle Name"
+
+msgid "Enter Middle Name in Arabic"
+msgstr "Enter Middle Name in Arabic"
+
+msgid "Enter Last Name"
+msgstr "Enter Last Name"
+
+msgid "Enter Last Name in Arabic"
+msgstr "Enter Last Name in Arabic"
+
+msgid "Enter User Name"
+msgstr "Enter User Name"
+
+msgid "Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
+msgstr "Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
+
+msgid "Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
+msgstr "Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
+
+msgid "Enter Email"
+msgstr "Enter Email"
+
+msgid "Confirm User Email"
+msgstr "Confirm User Email"
+
+msgid "Enter Password"
+msgstr "Enter Password"
+
+msgid "Confirm User Password"
+msgstr "Confirm User Password"
+
+msgid "Enter Security Question"
+msgstr "Enter Security Question"
+
+msgid "Enter Security Answer"
+msgstr "Enter Security Answer"
+
+msgid "Enter Identification Type (National ID, or Passport, etc)"
+msgstr "Enter Identification Type (National ID, or Passport, etc)"
+
+msgid "Enter Identification Number"
+msgstr "Enter Identification Number"
+
+msgid "Enter Address Line 1"
+msgstr "Enter Address Line 1"
+
+msgid "Enter Address Line 1 in Arabic"
+msgstr "Enter Address Line 1 in Arabic"
+
+msgid "Enter Address Line 2"
+msgstr "Enter Address Line 2"
+
+msgid "Enter Address Line 2 in Arabic"
+msgstr "Enter Address Line 2 in Arabic"
+
+msgid "Enter City"
+msgstr "Enter City"
+
+msgid "Enter Zip Code"
+msgstr "Enter Zip Code"
+
+msgid "-- Select --"
+msgstr "-- Select --"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Save and Publish"
+msgstr "Save and Publish"
+
+msgid "Unpublish"
+msgstr "Unpublish"
+
+msgid "Subscribe"
+msgstr "Subscribe"
+
+msgid "Unsubscribe"
+msgstr "Unsubscribe"
+
+msgid "Disagree"
+msgstr "Disagree"
+
+msgid "Agree"
+msgstr "Agree"
+
+msgid "dummy Privacy Statement content"
+msgstr "dummy Privacy Statement content"
+
+msgid "dummy Student Statement content"
+msgstr "dummy Student Statement content"
+
+msgid "dummy Proctor Statement content"
+msgstr "dummy Proctor Statement content"
+
+msgid "dummy Instructor Statement content"
+msgstr "dummy Instructor Statement content"
+
+msgid "dummy Test Center Administrator Statement content"
+msgstr "dummy Test Center Administrator Statement content"
+
+msgid "dummy Training Manager Statement content"
+msgstr "dummy Training Manager Statement content"
+
+msgid "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>"
+msgstr "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>"
+
+msgid "I agree to <a href=\"javascript:void(0)\">Student Statement</a>"
+msgstr "I agree to <a href=\"javascript:void(0)\">Student Statement</a>"
+
+msgid "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>"
+msgstr "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>"
+
+msgid "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>"
+msgstr "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>"
+
+msgid ""
+"I agree to <a href=\"javascript:void(0)\">Test Center Administrator "
+"Statement</a>"
+msgstr ""
+"I agree to <a href=\"javascript:void(0)\">Test Center Administrator "
+"Statement</a>"
+
+msgid ""
+"I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>"
+msgstr ""
+"I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>"
+
+msgid "Instructors"
+msgstr "Instructors"
+
+msgid "User Details"
+msgstr "User Details"

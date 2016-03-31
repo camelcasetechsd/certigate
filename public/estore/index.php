@@ -1,4 +1,7 @@
 <?php
+
+require __DIR__.'/../../vendor/autoload.php';
+
 // Version
 define('VERSION', '2.1.0.1');
 
@@ -253,6 +256,9 @@ foreach ($query->rows as $result) {
 
 // Front Controller
 $controller = new Front($registry);
+
+// Autologin
+$controller->addPreAction(new Action('common/autologin'));
 
 // Maintenance Mode
 $controller->addPreAction(new Action('common/maintenance'));

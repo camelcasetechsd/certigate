@@ -123,6 +123,18 @@ return array(
                     ),
                 ),
             ),
+            'testView' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/test',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'test',
+                    ),
+                    'constraints' => array(
+                    ),
+                ),
+            ),
         )
     )
 );

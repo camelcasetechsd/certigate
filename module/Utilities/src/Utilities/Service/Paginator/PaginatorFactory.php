@@ -14,7 +14,7 @@ use Utilities\Service\Paginator\PaginatorQuery ;
  * 
  * 
  * @package utilities
- * @subpackage query
+ * @subpackage paginator
  */
 class PaginatorFactory implements FactoryInterface {
 

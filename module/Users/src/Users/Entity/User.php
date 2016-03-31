@@ -24,8 +24,11 @@ use Zend\Validator\Identical;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $firstName
+ * @property string $firstNameAr
  * @property string $middleName
+ * @property string $middleNameAr
  * @property string $lastName
+ * @property string $lastNameAr
  * @property string $country
  * @property string $language
  * @property string $username
@@ -33,7 +36,9 @@ use Zend\Validator\Identical;
  * @property string $mobile
  * @property \DateTime $dateOfBirth
  * @property string $addressOne
+ * @property string $addressOneAr
  * @property string $addressTwo
+ * @property string $addressTwoAr
  * @property string $city
  * @property string $zipCode
  * @property string $phone
@@ -53,6 +58,8 @@ use Zend\Validator\Identical;
  * @property int $testCenterAdministratorStatement
  * @property int $trainingManagerStatement
  * @property int $status
+ * @property int $customerId
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * 
  * @package users
  * @subpackage entity
@@ -86,6 +93,13 @@ class User
      * @ORM\Column(type="string")
      * @var string
      */
+    public $firstNameAr;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
     public $middleName;
 
     /**
@@ -93,7 +107,21 @@ class User
      * @ORM\Column(type="string")
      * @var string
      */
+    public $middleNameAr;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
     public $lastName;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $lastNameAr;
 
     /**
      *
@@ -142,7 +170,21 @@ class User
      * @ORM\Column(type="string")
      * @var string
      */
+    public $addressOneAr;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
     public $addressTwo;
+
+    /**
+     *
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    public $addressTwoAr;
 
     /**
      *
@@ -278,9 +320,10 @@ class User
     public $trainingManagerStatement;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\Course", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventUser", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
      */
-    public $courses;
+    public $courseEventUsers;
 
     /**
      *
@@ -304,7 +347,12 @@ class User
      */
     public $issues;
 
-    
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $customerId;
+
     /**
      * hash password
      * 
@@ -350,7 +398,7 @@ class User
      */
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->issues = new ArrayCollection();
@@ -405,6 +453,18 @@ class User
     }
 
     /**
+     * Get firstNameAr
+     * 
+     * 
+     * @access public
+     * @return string firstNameAr
+     */
+    public function getFirstNameAr()
+    {
+        return $this->firstNameAr;
+    }
+
+    /**
      * Get middleName
      * 
      * 
@@ -417,6 +477,18 @@ class User
     }
 
     /**
+     * Get middleNameAr
+     * 
+     * 
+     * @access public
+     * @return string middleNameAr
+     */
+    public function getMiddleNameAr()
+    {
+        return $this->middleNameAr;
+    }
+
+    /**
      * Get lastName
      * 
      * 
@@ -426,6 +498,18 @@ class User
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * Get lastNameAr
+     * 
+     * 
+     * @access public
+     * @return string lastNameAr
+     */
+    public function getLastNameAr()
+    {
+        return $this->lastNameAr;
     }
 
     /**
@@ -689,6 +773,30 @@ class User
     }
 
     /**
+     * Get addressOneAr
+     * 
+     * 
+     * @access public
+     * @return string addressOneAr
+     */
+    public function getAddressOneAr()
+    {
+        return $this->addressOneAr;
+    }
+
+    /**
+     * Get addressTwoAr
+     * 
+     * 
+     * @access public
+     * @return string addressTwoAr
+     */
+    public function getAddressTwoAr()
+    {
+        return $this->addressTwoAr;
+    }
+
+    /**
      * Get phone
      * 
      * 
@@ -879,6 +987,48 @@ class User
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * Set firstNameAr
+     * 
+     * 
+     * @access public
+     * @param string $firstNameAr
+     * @return User current entity
+     */
+    public function setFirstNameAr($firstNameAr)
+    {
+        $this->firstNameAr = $firstNameAr;
+        return $this;
+    }
+
+    /**
+     * Set middleNameAr
+     * 
+     * 
+     * @access public
+     * @param string $middleNameAr
+     * @return User current entity
+     */
+    public function setMiddleNameAr($middleNameAr)
+    {
+        $this->middleNameAr = $middleNameAr;
+        return $this;
+    }
+
+    /**
+     * Set lastNameAr
+     * 
+     * 
+     * @access public
+     * @param string $lastNameAr
+     * @return User current entity
+     */
+    public function setLastNameAr($lastNameAr)
+    {
+        $this->lastNameAr = $lastNameAr;
         return $this;
     }
 
@@ -1107,6 +1257,34 @@ class User
     }
 
     /**
+     * Set addressOneAr
+     * 
+     * 
+     * @access public
+     * @param string $addressOneAr
+     * @return User current entity
+     */
+    public function setAddressOneAr($addressOneAr)
+    {
+        $this->addressOneAr = $addressOneAr;
+        return $this;
+    }
+
+    /**
+     * Set addressTwoAr
+     * 
+     * 
+     * @access public
+     * @param string $addressTwoAr
+     * @return User current entity
+     */
+    public function setAddressTwoAr($addressTwoAr)
+    {
+        $this->addressTwoAr = $addressTwoAr;
+        return $this;
+    }
+
+    /**
      * Set phone
      * 
      * 
@@ -1219,42 +1397,68 @@ class User
     }
 
     /**
-     * Get Courses
+     * Get CourseEventUsers
      * 
      * 
      * @access public
-     * @return ArrayCollection courses
+     * @return ArrayCollection courseEventUsers
      */
-    public function getCourses()
+    public function getCourseEventUsers()
     {
-        return $this->courses;
+        return $this->courseEventUsers;
     }
 
     /**
-     * Add Courses
+     * Add CourseEventUsers
      * 
      * 
      * @access public
-     * @param Courses\Entity\Course $course
+     * @param Courses\Entity\CourseEventUser $courseEventUser
      * @return User
      */
-    public function addCourses($course)
+    public function addCourseEventUsers($courseEventUser)
     {
-        $this->courses[] = $course;
+        $this->courseEventUsers[] = $courseEventUser;
         return $this;
     }
 
     /**
-     * Set Courses
+     * Set CourseEventUsers
      * 
      * 
      * @access public
-     * @param ArrayCollection $courses
+     * @param ArrayCollection $courseEventUsers
      * @return User
      */
-    public function setCourses($courses)
+    public function setCourseEventUsers($courseEventUsers)
     {
-        $this->courses = $courses;
+        $this->courseEventUsers = $courseEventUsers;
+        return $this;
+    }
+
+    /**
+     * Get CustomerId
+     * 
+     * 
+     * @access public
+     * @return int customerId
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set CustomerId
+     * 
+     * 
+     * @access public
+     * @param int $customerId
+     * @return CourseEvent
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
         return $this;
     }
 
@@ -1291,16 +1495,24 @@ class User
         if (array_key_exists('password', $data) && !empty($data['password'])) {
             $this->setPassword($data["password"]);
         }
+        if (array_key_exists('customerId', $data)) {
+            $this->setCustomerId($data["customerId"]);
+        }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setMobile($data["mobile"])
                 ->setFirstName($data["firstName"])
+                ->setFirstNameAr($data["firstNameAr"])
                 ->setLastName($data["lastName"])
+                ->setLastNameAr($data["lastNameAr"])
                 ->setMiddleName($data["middleName"])
+                ->setMiddleNameAr($data["middleNameAr"])
                 ->setCountry($data["country"])
                 ->setLanguage($data["language"])
                 ->setUsername($data["username"])
                 ->setAddressOne($data["addressOne"])
                 ->setAddressTwo($data["addressTwo"])
+                ->setAddressOneAr($data["addressOneAr"])
+                ->setAddressTwoAr($data["addressTwoAr"])
                 ->setCity($data["city"])
                 ->setEmail($data["email"])
                 ->setIdentificationExpiryDate($data["identificationExpiryDate"])
@@ -1402,6 +1614,15 @@ class User
                 )
             ));
             $inputFilter->add(array(
+                'name' => 'firstNameAr',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
                 'name' => 'lastName',
                 'required' => true,
                 'filters' => array(
@@ -1411,7 +1632,25 @@ class User
                 )
             ));
             $inputFilter->add(array(
+                'name' => 'lastNameAr',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
                 'name' => 'middleName',
+                'required' => false,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'middleNameAr',
                 'required' => false,
                 'filters' => array(
                     array(
@@ -1489,6 +1728,15 @@ class User
                 'required' => false,
             ));
             $inputFilter->add(array(
+                'name' => 'addressOneAr',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'addressTwoAr',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
                 'filters' => array(
@@ -1519,6 +1767,7 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,
@@ -1543,6 +1792,7 @@ class User
                 'name' => 'securityAnswer',
                 'required' => true,
             ));
+
             $inputFilter->add(array(
                 'name' => 'email',
                 'required' => true,

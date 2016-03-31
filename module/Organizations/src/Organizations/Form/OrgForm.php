@@ -32,6 +32,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     protected $query;
 
     /**
+     *
+     * @var Translation\Helper\TranslatorHelper 
+     */
+    protected $translatorHandler;
+
+    /**
      * setup form
      * 
      * 
@@ -43,7 +49,9 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     {
         $this->needAdminApproval = true;
         $this->query = $options['query'];
+        $this->translatorHandler = $options['translatorHandler'];
         unset($options['query']);
+        unset($options['translatorHandler']);
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
 
@@ -67,6 +75,19 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         );
 
         $this->add(array(
+            'name' => 'commercialNameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Commercial Name in Arabic',
+            ),
+                )
+        );
+
+        $this->add(array(
             'name' => 'ownerName',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
@@ -76,6 +97,18 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Owner Name',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'ownerNameAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Owner Name in Arabic',
             ),
         ));
 
@@ -273,6 +306,19 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label' => 'Address 1',
             ),
         ));
+
+        $this->add(array(
+            'name' => 'addressLine1Ar',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Address 1 in Arabic',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'addressLine2',
             'type' => 'Zend\Form\Element\Text',
@@ -285,6 +331,16 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
+        $this->add(array(
+            'name' => 'addressLine2Ar',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Address 2 in Arabic',
+            ),
+        ));
 
         $this->add(array(
             'name' => 'city',
@@ -296,6 +352,18 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'City',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'cityAr',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'City in Arabic',
             ),
         ));
 
@@ -664,7 +732,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'display_empty_item' => true,
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
-                    return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+                    if ($this->translatorHandler->getCurrentLocale() == 'en_Us') {
+                        return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
+                    }
+                    else {
+                        return $targetEntity->getFirstNameAr() . ' ' . $targetEntity->getMiddleNameAr() . ' ' . $targetEntity->getLastNameAr();
+                    }
                 },
             )
         ));

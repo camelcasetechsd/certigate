@@ -42,7 +42,6 @@ class ContactUsController extends ActionController
                 $contactUs = $this->getServiceLocator()->get('DefaultModule\Service\ContactUs');
                 $submissionResult = $contactUs->submitMessage($data, $form);
                 $variables['messages'] = $submissionResult['messages'];
-                $variables['status'] = $submissionResult['status'];
             }
         }
         $variables['form'] = $this->getFormView($form);

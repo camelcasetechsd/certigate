@@ -42,7 +42,9 @@ $config = array(
         'System',
         'Notifications',
         'DOMPDFModule',
-        'IssueTracker'
+        'IssueTracker',
+        'Translation',
+        'EStore'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

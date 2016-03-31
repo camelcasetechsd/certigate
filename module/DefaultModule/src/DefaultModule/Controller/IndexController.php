@@ -43,4 +43,9 @@ class IndexController extends ActionController
         return $fileUtilities->getFileResponse(/*$file =*/ $path.$fileName);
     }
 
+    public function testAction()
+    {
+        return new ViewModel();
+    }
+
 }

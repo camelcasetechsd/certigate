@@ -3,9 +3,9 @@
 
 {{$content}}
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#courseDetails" aria-controls="courseDetails" role="tab" data-toggle="tab">Course Details</a></li>
-    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">Course Evaluation</a></li>
-    <li role="presentation"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">Course Resources</a></li>
+    <li role="presentation" class="active"><a href="#courseDetails" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">{{#translate}}Course Evaluation{{/translate}}</a></li>
+    <li role="presentation"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -13,7 +13,7 @@
     <div role="tabpanel" class="tab-pane active" id="courseDetails">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Edit Course</h3>
+                <h3>{{#translate}}Edit Course{{/translate}}</h3>
             </div>
             <div class="panel-body">
                 {{{courseForm}}}
@@ -28,7 +28,7 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-    updateOutlines("#course_form_addMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
+    updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
     });
 </script>
 {{/scripts}}
