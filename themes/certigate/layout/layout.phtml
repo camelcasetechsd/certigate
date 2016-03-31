@@ -5,7 +5,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{#locale_ar}}
+        <link href="/concat/app_rtl.css" rel="stylesheet" type="text/css"/>
+        {{/locale_ar}}
+        {{#locale_en}}
         <link href="/concat/app.css" rel="stylesheet" type="text/css"/>
+        {{/locale_en}}
         <title>{{$title}}Certigate Pro{{/title}}</title>
         <!-- Additional styles to be added to specific views -->
         {{$styles}}{{/styles}}

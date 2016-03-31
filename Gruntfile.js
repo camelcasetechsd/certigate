@@ -75,7 +75,35 @@ module.exports = function (grunt) {
                     '<%= dirs.themes %>/certigate/assets/css/carousel.css'
 
                 ]
+            },
+            css_rtl: {
+                nonull: true,
+                dest: '<%= dirs.dest %>/app_rtl.css',
+                src: [
+                    '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
+                    '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+                    '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
+//                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
+                    '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
+                    '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
+                    '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/certigateTheme.css',
+                    '<%= dirs.cssSrc %>/form.css',
+                    '<%= dirs.cssSrc %>/userForm.css',
+                    '<%= dirs.cssSrc %>/courseForm.css',
+                    '<%= dirs.cssSrc %>/errors.css',
+                    '<%= dirs.cssSrc %>/inactive.css',
+                    '<%= dirs.cssSrc %>/CKEditor_Style.css',
+                    '<%= dirs.cssSrc %>/evaluation.css',
+                    '<%= dirs.cssSrc %>/diff.css',
+                    // certigate theme css
+                    '<%= dirs.themes %>/certigate/assets/css/carousel.css',
+                    // bootstrap rtl
+                    '<%= dirs.cssSrc %>/bootstrap.rtl.css',
+                    
+                ]
             }
+            
         },
         uglify: {
             options: {
@@ -98,7 +126,8 @@ module.exports = function (grunt) {
         cssmin: {
             dist: {
                 files: {
-                    '<%= dirs.dest %>/app.min.css': ['<%= dirs.dest %>/app.css']
+                    '<%= dirs.dest %>/app.min.css': ['<%= dirs.dest %>/app.css'],
+                    '<%= dirs.dest %>/app_rtl.min.css': ['<%= dirs.dest %>/app_rtl.css']
                 }
             }
         },

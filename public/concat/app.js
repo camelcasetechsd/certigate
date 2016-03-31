@@ -15735,6 +15735,16 @@ function submitFormAjax(formSelector, responseSelector) {
 }
 
 ;
+/* OriginalFileName : public/js/signin.js */ 
+
+$(document).ready(function () {
+    if($("form[name=signin_header_form]").length){
+        var form = $("form[name=signin_header_form]");
+        var action = form.attr("action");
+        var queryString = (window.location.href.indexOf('?') >= 0) ? window.location.href.slice(window.location.href.indexOf('?')) : '';
+        form.attr("action", action + queryString);
+    }
+});;
 /* OriginalFileName : public/js/reset.js */ 
 
 $(document).ready(function () {
@@ -15748,86 +15758,14 @@ $(document).ready(function () {
         closestForm.find("select").prop('selectedIndex',0);
     });
 });;
-/* OriginalFileName : public/js/userCRUD.js */ 
+/* OriginalFileName : public/js/menu.js */ 
 
-/**
- * Generate checkbox sentence with proper modal to display statement
- * Statement agreement action affect checkbox value
- * 
- * @param {string} checkboxId
- * @param {string} title statement title
- * @param {string} sentence checkbox sentence
- * @param {string} content whole statement content
- * @param {string} role statement related user role
- * @returns {undefined}
- */
-function generateStatementCheckboxContent(checkboxId, title, sentence, content, role) {
-    var divId = checkboxId + "Div";
-    var checkboxSelector = "#" + checkboxId;
-    var divSelector = "#" + divId;
-    $(checkboxSelector).attr('data-role', role).after("<div id='" + divId + "'></div>")
-    $(checkboxSelector).appendTo(divSelector);
-    $(divSelector).append("<p >" + sentence + "</p>");
-    $(divSelector + ' a').click(function () {
-        bootbox.dialog({
-            message: content,
-            title: title,
-            buttons: {
-                success: {
-                    label: "Agree",
-                    className: "btn-success",
-                    callback: function () {
-                        $(checkboxSelector).attr('checked', true);
-                    }
-                },
-                cancel: {
-                    label: "Disagree",
-                    className: "btn-primary",
-                    callback: function () {
-                        $(checkboxSelector).attr('checked', false);
-                    }
-                }
-            }
-        });
-    });
-    if (role !== '') {
-        $(divSelector).parent("div").hide();
-    }
-}
-
-/**
- * Display statement checkbox according to selected roles
- * 
- * @param {string} roleSelector
- * @returns {undefined}
- */
-function displayStatementCheckbox(roleSelector) {
-    var value, checkboxSelector;
-    $(roleSelector + ':checked').each(function (i, selected) {
-        value = $(selected).parent('label').text();
-        checkboxSelector = $("[data-role='" + value + "']");
-        if (checkboxSelector.length) {
-            checkboxSelector.parent("div").parent("div").show();
-        }
-    });
-    $(roleSelector).change(function () {
-        if($(this).is(":checked")){
-            value = $(this).parent('label').text();
-            checkboxSelector = $("[data-role='" + value + "']");
-            if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("div").show();
-            }
-        }else{
-            value = $(this).parent('label').text();
-            checkboxSelector = $("[data-role='" + value + "']");
-            if (checkboxSelector.length) {
-                checkboxSelector.parent("div").parent("div").hide();
-            }
-        }
-    });
-}
-
-
+$(document).ready(function(){
+  $('.dropdown a').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+  });
+});
 ;
 /* OriginalFileName : public/js/menuItemCRUD.js */ 
 
@@ -15892,6 +15830,8 @@ function displayPressReleaseFields(pressReleaseType) {
         $("#page_form_author").prop('required',true);
         $("#page_form_summary").parent().show();
         $("#page_form_summary").prop('required',true);
+        $("#page_form_summaryAr").parent().show();
+        $("#page_form_summaryAr").prop('required',true);
         $("#page_form_picture").parent().show();
     } else {
         // hide press release inputs at the beginning
@@ -15901,6 +15841,8 @@ function displayPressReleaseFields(pressReleaseType) {
         $("#page_form_author").prop('required',false);
         $("#page_form_summary").parent().hide();
         $("#page_form_summary").prop('required',false);
+        $("#page_form_summaryAr").parent().hide();
+        $("#page_form_summaryAr").prop('required',false);
         $("#page_form_picture").parent().hide();
     }
 };
@@ -15982,6 +15924,19 @@ function getOutlineRemoveButton(currentCount, addMoreSelector) {
     var newRemoveButtonId = "removeOutline" + currentCount;
     return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).val("Remove").wrap("<div />").parent().html();
 };
+/* OriginalFileName : public/js/courseEventCRUD.js */ 
+
+/**
+ * set course event students number with full available capacity
+ * 
+ * @param {string} studentsNoSelector
+ * @param {string} capacitySelector
+ * @returns {undefined}
+ */
+function setFullCapacity(studentsNoSelector, capacitySelector) {
+    $(studentsNoSelector).val($(capacitySelector).val());
+}
+;
 /* OriginalFileName : public/js/resourceCRUD.js */ 
 
 /**
@@ -15997,42 +15952,68 @@ function getOutlineRemoveButton(currentCount, addMoreSelector) {
  * @param {string} fileErrors
  * @returns {Boolean} false in case any field does not exist
  */
-function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, nameValue, nameClass, nameErrors, fileClass, fileErrors){
-    if(! $(addMoreSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector, fileInputSelector, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors) {
+
+    if (!$(addMoreSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
         return false;
     }
+
     // determine new fields iteration value
     var fileInputsCount = $(".addedResources").length;
     var newElementIdExtension = "Added_" + fileInputsCount;
+    var newElementIdArExtension = "Added_id_" + fileInputsCount;
     var newElementNameExtension = "Added[" + fileInputsCount + "]";
-    
+    var newElementNameArExtension = "AddedAr[" + fileInputsCount + "]";
+
     // This is a way to "htmlDecode" your string...  
     nameErrors = $("<div />").html(nameErrors).text();
+    nameArErrors = $("<div />").html(nameArErrors).text();
     fileErrors = $("<div />").html(fileErrors).text();
-    
-    // prepare new name field
+
+    // prepare new  name field
     var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
     var newNameInputName = $(nameInputSelector).attr("name") + newElementNameExtension;
     var oldNameInputClass = $(nameInputSelector).attr("class");
-    if(typeof oldNameInputClass !== "undefined"){
+    if (typeof oldNameInputClass !== "undefined") {
         oldNameInputClass.replace('input-error', '')
-    }else{
+    } else {
         oldNameInputClass = '';
     }
     var newNameInputClass = oldNameInputClass + " " + nameClass;
     var newNameInput = $(nameInputSelector).clone().attr('class', newNameInputClass).attr("id", newNameInputId).attr("name", newNameInputName).attr('value', nameValue);
-    if(nameValue === ""){
+    if (nameValue === "") {
         newNameInput.val("");
     }
     var newNameLabel = $(nameInputSelector).prev("label").clone();
     var newNameField = $("<div></div>").append(newNameLabel).append(newNameInput).append(nameErrors);
+
+
+    // prepare new arabic name field
+    var newNameArInputId = $(nameInputArSelector).attr("id") + newElementIdArExtension;
+    var newNameArInputName = $(nameInputArSelector).attr("name") + newElementNameArExtension;
+    var oldNameArInputClass = $(nameInputArSelector).attr("class");
+    if (typeof oldNameArInputClass !== "undefined") {
+        oldNameArInputClass.replace('input-error', '')
+    } else {
+        oldNameArInputClass = '';
+    }
+    var newNameArInputClass = oldNameArInputClass + " " + nameArClass;
+    var newNameArInput = $(nameInputArSelector).clone().attr('class', newNameArInputClass).attr("id", newNameArInputId).attr("name", newNameArInputName).attr('value', nameValue);
+    if (nameArValue === "") {
+        newNameArInput.val("");
+    }
+
+    var newNameArLabel = $(nameInputArSelector).prev("label").clone();
+    var newNameArField = $("<div></div>").append(newNameArLabel).append(newNameArInput).append(nameArErrors);
+
+
     // prepare new file field
     var newFileInputId = $(fileInputSelector).attr("id") + newElementIdExtension;
     var newFileInputName = $(fileInputSelector).attr("name") + newElementNameExtension;
     var oldFileInputClass = $(fileInputSelector).attr("class");
-    if(typeof oldFileInputClass !== "undefined"){
+    if (typeof oldFileInputClass !== "undefined") {
         oldFileInputClass.replace('input-error', '')
-    }else{
+    } else {
         oldFileInputClass = '';
     }
     var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
@@ -16043,12 +16024,12 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
     var newRemoveButtonSpacer = $(addMoreSelector).prev("dt").clone();
-    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
-    
-    
-    
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
+
+
+
     // prepare full new resource
-    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
     // add new resource before add button
     $(addMoreSelector).prev("dt").before(newResource);
 }
@@ -16061,8 +16042,8 @@ function addMoreResource(addMoreSelector, nameInputSelector, fileInputSelector, 
  * @param {string} fileInputSelector
  * @returns {Boolean} false in case any field does not exist
  */
-function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector){
-    if(! $(removeButtonSelector).length || ! $(nameInputSelector).length || ! $(fileInputSelector).length){
+function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector) {
+    if (!$(removeButtonSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
         return false;
     }
     $(nameInputSelector).parent("div").parent("div").remove();
@@ -16074,13 +16055,13 @@ function removeResource(removeButtonSelector, nameInputSelector, fileInputSelect
  * @param {object} deleteAnchorTag
  * @returns {undefined}
  */
-function deleteResourcePhysically(deleteAnchorTag){
-    bootbox.confirm("Are you sure you want to delete the resource ?", function(result) {
-        if(result){
+function deleteResourcePhysically(deleteAnchorTag) {
+    bootbox.confirm("Are you sure you want to delete the resource ?", function (result) {
+        if (result) {
             var deleteLink = deleteAnchorTag.attr("data-href");
             window.location.href = deleteLink;
         }
-    }); 
+    });
 }
 
 
@@ -16208,6 +16189,11 @@ $(document).ready(function () {
 $(document).ready(function () {
     if (typeof (CKEDITOR) !== "undefined") {
         CKEDITOR.replace('page_form_body', {
+            filebrowserBrowseUrl: '/cms/page/browse',
+            filebrowserUploadUrl: '/cms/page/upload'
+
+        });
+        CKEDITOR.replace('page_form_bodyAr', {
             filebrowserBrowseUrl: '/cms/page/browse',
             filebrowserUploadUrl: '/cms/page/upload'
 
