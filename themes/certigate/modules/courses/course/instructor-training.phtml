@@ -3,17 +3,17 @@
 {{$content}}
 {{#course}}
     {{#canEnroll}}
-        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="Enroll"><button class="btn btn-small btn-success">Enroll</button></a>
+        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Enroll{{/translate}}"><button class="btn btn-small btn-success">Enroll</button></a>
     {{/canEnroll}}
     {{#canLeave}}
-        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="Leave"><button class="btn btn-small btn-primary">Leave</button></a>
+        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Leave{{/translate}}"><button class="btn btn-small btn-primary">Leave</button></a>
     {{/canLeave}}
 {{/course}}
 <br><br>
 
 <div class="panel panel-default">
 
-    <div class="panel-heading">Course Info</div>
+    <div class="panel-heading">{{#translate}}Course Info{{/translate}}</div>
 
     <!-- Table -->
 
@@ -21,28 +21,37 @@
     <table class="table">
         <tbody>
             <tr>
-                <td>Name</td><td>{{name}}</td>
+                <td>{{#translate}}Name{{/translate}}</td>
+                <td>{{name}}</td>
             </tr><tr>
-                <td>Brief</td><td>{{brief}}</td>
+                <td>{{#translate}}Brief{{/translate}}</td>
+                <td>{{brief}}</td>
             </tr><tr>
-                <td>Authorized Instructor</td><td>{{ai.firstName}} {{ai.lastName}}</td>
+                <td>{{#translate}}Authorized Instructor{{/translate}}</td>
+                <td>{{ai.firstName}} {{ai.lastName}}</td>
             </tr><tr>
-                <td>Start Date</td><td>{{startDate}}</td>
+                <td>{{#translate}}Start Date{{/translate}}</td>
+                <td>{{startDate}}</td>
             </tr><tr>
-                <td>End Date</td><td>{{endDate}}</td>
+                <td>{{#translate}}End Date{{/translate}}</td>
+                <td>{{endDate}}</td>
             </tr><tr>
-                <td>Time</td><td>{{time}}</td>
+                <td>{{#translate}}Time{{/translate}}</td>
+                <td>{{time}}</td>
             </tr><tr>
-                <td>Duration</td><td>{{duration}} Day(s)</td>
+                <td>{{#translate}}Duration{{/translate}}</td>
+                <td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
             </tr><tr>
-                <td>Authorized Training Partner</td><td>{{atp.commercialName}}</td>
+                <td>{{#translate}}Authorized Training Partner{{/translate}}</td>
+                <td>{{atp.commercialName}}</td>
             </tr>
 
             {{#outlines.count}}
-        <td>Outlines</td><td></td>
+        <td>{{#translate}}Outlines{{/translate}}</td>
+        <td></td>
         <tr>
-            <td>&ensp; Title</td>
-            <td>Duration (minutes)</td>
+            <td>&ensp; {{#translate}}Title{{/translate}}</td>
+            <td>{{#translate}}Duration{{/translate}} ({{#translate}}minutes{{/translate}})</td>
         </tr>
         {{/outlines.count}}
         {{#outlines}}

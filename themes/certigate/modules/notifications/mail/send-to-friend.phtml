@@ -1,5 +1,13 @@
 {{#data}}
-<h2>{{subject}}</h2> 
-
-{{message}}
+<h2>{{#translate}}New Contact Message{{/translate}}</h2> 
+<table class="table">
+    <tbody>
+        <tr>
+            <td>{{#translate}}Subject{{/translate}}</td><td>{{subject}}</td>
+        </tr>
+        <tr>
+            <td>{{#translate}}Message{{/translate}}</td><td>{{message}}</td>
+        </tr>
+    </tbody>
+</table>
 {{/data}}

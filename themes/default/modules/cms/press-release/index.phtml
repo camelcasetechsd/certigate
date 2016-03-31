@@ -10,13 +10,16 @@
     </div>
     {{#pressReleaseSubscriptionForm}}
     <div class="row">
+    <h1 class="title-blue col-md-4"> Press Releases</h1>
+    {{#pressReleaseSubscriptionForm}}
         <div class="col-md-offset-10">
             {{{pressReleaseSubscriptionForm}}}
         </div>
     </div>
     <br>
     {{/pressReleaseSubscriptionForm}}
-
+    </div>
+    <hr>
 
     {{#pressReleases}}
 
@@ -41,6 +44,7 @@
 
 
     {{/pressReleases}}
+    <hr class="featurette-divider"> 
 </div>
 {{#hasPages}}
 <div class="pagination-bar">
