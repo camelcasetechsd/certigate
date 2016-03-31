@@ -83,6 +83,8 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
                     '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
+                    // bootstrap rtl
+                    '<%= dirs.cssSrc %>/bootstrap.rtl.css',
 //                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
                     '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
@@ -97,9 +99,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
                     // certigate theme css
-                    '<%= dirs.themes %>/certigate/assets/css/carousel.css',
-                    // bootstrap rtl
-                    '<%= dirs.cssSrc %>/bootstrap.rtl.css',
+                    '<%= dirs.themes %>/certigate/assets/css/carousel.rtl.css',
                     
                 ]
             }

@@ -66,3 +66,17 @@ body {
   border: 0px;
   border-radius: 0px;
 }
+
+.btn-menu {
+  color: #fff !important;
+}
+.btn-language-loggedin {
+  margin-top: -4px;
+}
+.btn-language-loggedout {
+  margin-top: 4px;
+}
+.btn-menu:hover,
+.btn-menu:focus {
+  text-decoration: none !important;
+}
