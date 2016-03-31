@@ -109,7 +109,6 @@ class PosDAOrganization extends AbstractSeed
         );
         $this->insert('organization_user', $orgUser1);
 
-
         $atpMeta [] = array(
             'type_id' => $typeAtpId,
             'org_id' => $atpId,
@@ -274,5 +273,4 @@ class PosDAOrganization extends AbstractSeed
         );
         $this->insert('organization_meta', $bothMeta2);
     }
-
 }
