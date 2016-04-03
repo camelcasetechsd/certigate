@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * issue Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="IssueTracker\Entity\IssueRepository")
  * @ORM\Table(name="issue")
  * 
  * 
@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property string $title
  * @property string $description
  * @property int $category
- * @property string $filePath
+ * @property text $filePath
  * @property Users\Entity\User $creator
  * @property \DateTime $created
  * 
@@ -65,8 +65,8 @@ class Issue
     public $category;
 
     /**
-     * @ORM\Column(type="string" , nullable=true);
-     * @var string
+     * @ORM\Column(type="text" , nullable=true);
+     * @var text
      */
     public $filePath;
 
@@ -89,7 +89,7 @@ class Issue
     public $created;
 
     /**
-     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\IssueComment", mappedBy="issue")
+     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\IssueComment", mappedBy="issue" , cascade="remove")
      */
     public $comments;
 

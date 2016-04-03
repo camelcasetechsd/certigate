@@ -30,9 +30,10 @@ class IssueTrackerController extends ActionController
     {
         $variables = array();
         $issuesModel = $this->getServiceLocator()->get('IssueTracker\Model\Issues');
-        $variables['issues'] = $issuesModel->prepareIssuesToView($issuesModel->getCurrentItems($issuesModel->listIssues()));
+        $variables['issues'] = $issuesModel->getCurrentItems();
         $variables['isAdmin'] = $issuesModel->validateUser();
 
+        $issuesModel->filterIssues();
         $pageNumber = $this->getRequest()->getQuery('page');
         $issuesModel->setPage($pageNumber);
 

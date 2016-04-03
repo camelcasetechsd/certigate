@@ -96,8 +96,8 @@ class Issues
                 $uploadResult = $this->uploadAttachment($file['name'], self::ISSUE_ATTACHMENT_PATH);
                 array_push($paths, $uploadResult);
             }
-            $issueObj->setFilePath(serialize($paths));
         }
+        $issueObj->setFilePath(base64_encode(serialize($paths)));
         $issueObj->setStatus(Status::STATUS_ACTIVE);
         $this->query->setEntity('IssueTracker\Entity\Issue')->save($issueObj, $data);
         $this->sendMails($issueObj);
@@ -163,6 +163,8 @@ class Issues
     public function prepareIssuesToView($issues)
     {
         foreach ($issues as $issue) {
+
+            $issue->filePath = unserialize(base64_decode($issue->filePath));
             // preparing status text
             switch ($issue->getStatus()) {
                 case 0:
@@ -296,6 +298,16 @@ class Issues
         );
         $this->notification->notify($AdminNotificationMailArray);
         $this->notification->notify($userNotificationMailArray);
+    }
+
+    public function filterIssues()
+    {
+        $adapter = $this->paginator->getAdapter();
+        $adapter->setQuery($this->query->setEntity("IssueTracker\Entity\Issue")->entityRepository);
+        $adapter->setMethodName("getIssues");
+        $adapter->setParameters(array(
+            "issueModelObj" => $this
+        ));
     }
 
 }
