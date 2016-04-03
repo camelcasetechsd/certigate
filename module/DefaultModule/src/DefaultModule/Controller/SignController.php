@@ -66,9 +66,7 @@ class SignController extends ActionController
                     $url = $this->params()->fromQuery('redirectBackUrl', $defaultUrl);
                     $this->redirect()->toUrl($url);
                 } else {
-                    $errorMessages = array();
-                    $errorMessages[]['message'] = "Username and password are invalid !";
-                    $variables['message'] = $errorMessages;
+                    $variables['message'] = $result->getMessages();
                 }
             }
         }
@@ -86,9 +84,9 @@ class SignController extends ActionController
      */
     public function outAction()
     {
-        $auth = new AuthenticationService();
-        // clear user-related data in session
-        $auth->clearIdentity();
+        $auth = $this->getServiceLocator()->get('Users\Auth\Authentication');
+        $auth->clearSession();
+        
         // Redirect to login page again 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'in'), array('name' => 'defaultSign'));
         $this->redirect()->toUrl($url);

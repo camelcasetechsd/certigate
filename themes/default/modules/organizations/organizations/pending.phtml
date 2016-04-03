@@ -76,16 +76,6 @@
                     {{/after.CRAttachmentChanged}}
                 </td>
             </tr>
-            <tr>
-                <td>{{#translate}}Wire transfer attachment{{/translate}}</td>
-                <td>
-                    <div class="pull-left">{{#after.wireTransferAttachmentChanged}}<del>{{/after.wireTransferAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment" >Current wire transfer</a>{{#after.wireTransferAttachmentChanged}}</del>{{/after.wireTransferAttachmentChanged}}</div>
-                    {{#after.wireTransferAttachmentChanged}}
-                    <div class="col-xs-1">&nbsp;</div>
-                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/wireTransferAttachment/true" >New wire transfer</a></ins></div>
-                    {{/after.wireTransferAttachmentChanged}}
-                </td>
-            </tr>
             <tr class="diffRow">
                 <td >{{#translate}}Phone 1{{/translate}}</td>
                 <td class="hidden original">{{before.phone1}}</td>
@@ -180,6 +170,18 @@
                 </td>
             </tr>
             {{/before.atpLicenseAttachment}}
+            {{#before.atpWireTransferAttachment}}
+            <tr>
+                <td>ATP Wire Transfer attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.atpWireTransferAttachmentChanged}}<del>{{/after.atpWireTransferAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment" >Current ATP Wire Transfer</a>{{#after.atpLicenseAttachmentChanged}}</del>{{/after.atpLicenseAttachmentChanged}}</div>
+                    {{#after.atpWireTransferAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/atpLicenseAttachment/true" >New ATP Wire Transfer</a></ins></div>
+                    {{/after.atpWireTransferAttachmentChanged}}
+                </td>
+            </tr>
+            {{/before.atpWireTransferAttachment}}
             {{#before.atcLicenseNo}}
             <tr class="diffRow">
                 <td >{{#translate}}ATC license number{{/translate}}</td>
@@ -208,6 +210,18 @@
                 </td>
             </tr>
             {{/before.atcLicenseAttachment}}
+            {{#before.atcWireTransferAttachment}}
+            <tr>
+                <td>ATC Wire Transfer attachment</td>
+                <td>
+                    <div class="pull-left">{{#after.atcWireTransferAttachmentChanged}}<del>{{/after.atcWireTransferAttachmentChanged}}<a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment" >Current ATC Wire Transfer</a>{{#after.atcLicenseAttachmentChanged}}</del>{{/after.atcLicenseAttachmentChanged}}</div>
+                    {{#after.atcWireTransferAttachmentChanged}}
+                    <div class="col-xs-1">&nbsp;</div>
+                    <div class="pull-left"><ins><a target="_blank" href="/organizations/download/{{before.id}}/atcLicenseAttachment/true" > New ATC Wire Transfer</a></ins></div>
+                    {{/after.atcWireTransferAttachmentChanged}}
+                </td>
+            </tr>
+            {{/before.atcWireTransferAttachment}}
             {{#before.labsNo}}
             <tr class="diffRow">
                 <td >{{#translate}}Labs number{{/translate}}</td>

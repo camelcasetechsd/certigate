@@ -1,0 +1,118 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+{{#userData}}
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6"><h1>{{commercialName}}</h1></div>
+        <div class="col-sm-6"><h1>{{commercialNameAr}}</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}Profile{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Commercial Name{{/translate}}</strong></span>{{commercialName}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Commercial Name in Arabic{{/translate}}</strong></span>{{commercialNameAr}}</li>
+            </ul> 
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}Owner Profile{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner{{/translate}}</strong></span>{{ownerName}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner in Arabic{{/translate}}</strong></span>{{ownerNameAr}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Owner National Id{{/translate}}</strong></span>{{ownerNationalId}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}CR No.{{/translate}}</strong></span>{{CRNo}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}CR Expiration Date{{/translate}}</strong></span>{{CRExpiration}}</li>
+            </ul> 
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}Contacts{{/translate}}</li>
+
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Phone{{/translate}}</strong></span>{{phone1}}</li>
+                {{#phone2}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Phone{{/translate}}</strong></span>{{phone2}}</li>
+                {{/phone2}}
+                {{#phone3}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Phone{{/translate}}</strong></span>{{phone3}}</li>
+                {{/phone3}}
+                {{#fax}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Fax{{/translate}}</strong></span>{{fax}}</li>
+                {{/fax}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Email{{/translate}}</strong></span> {{email}}</li>
+            </ul> 
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}Find Us{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address{{/translate}}</strong></span>{{addressLine1}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address in Arabic{{/translate}}</strong></span>{{addressLine1Ar}}</li>
+                {{#addressLine2}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address{{/translate}}</strong></span>{{addressLine2}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Address in Arabic{{/translate}}</strong></span>{{addressLine2Ar}}</li>
+                {{/addressLine2}}
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}City{{/translate}}</strong></span>{{city}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}City in Arabic{{/translate}}</strong></span>{{cityAr}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Zip Code{{/translate}}</strong></span>{{zipCode}}</li>
+
+            </ul>
+        </div>
+    </div>
+
+
+    {{#atpLicenseNo}}
+    <div class="row" >
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}ATP Info.{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}ATP License No.{{/translate}}</strong></span>{{atpLicenseNo}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}ATP License Expiration Date{{/translate}}</strong></span>{{atpLicenseExpiration}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}ATP Resources{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Classes No.{{/translate}}</strong></span>{{classesNo}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Pcs/Class{{/translate}}</strong></span>{{pcsNo_class}}</li>
+            </ul>
+        </div>
+    </div>
+    {{/atpLicenseNo}}
+
+
+    {{#atcLicenseNo}}
+    <div class="row" >
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}ATC Info.{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}ATC License No.{{/translate}}</strong></span>{{atcLicenseNo}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}ATC License Expiration Date{{/translate}}</strong></span>{{atcLicenseExpiration}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item text-muted">{{#translate}}ATC Resources{{/translate}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Labs No.{{/translate}}</strong></span>{{labsNo}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Pcs/Lab{{/translate}}</strong></span>{{pcsNo_lab}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}OS{{/translate}}</strong></span>{{operatingSystem}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}OS Language{{/translate}}</strong></span>{{operatingSystemLang}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Microsoft Office Version{{/translate}}</strong></span>{{officeVersion}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>{{#translate}}Microsoft Office Language{{/translate}}</strong></span>{{officeLang}}</li>
+            </ul>
+        </div>
+    </div>
+
+    {{/atcLicenseNo}}
+
+    {{/userData}}
+
+    {{/content}}
+
+    {{/layout}}

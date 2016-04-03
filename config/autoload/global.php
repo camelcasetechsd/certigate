@@ -81,5 +81,8 @@ return array(
     ),
     'dompdf_module' => array(
         'default_font' => 'sans-serif',
+    ),
+    'website' => array(
+        'host' => 'local-certigate.com'
     )
 );

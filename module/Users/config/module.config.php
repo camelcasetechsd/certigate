@@ -126,6 +126,29 @@ return array(
                     ),
                 )
             ),
+            'userInstructors' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/instructors',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'instructors',
+                    ),
+                )
+            ),
+            'userMore' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/more/:id',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'more',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'roles' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

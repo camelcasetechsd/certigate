@@ -3,6 +3,7 @@
 namespace Users\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Role Repository
@@ -30,7 +31,7 @@ class RoleRepository extends EntityRepository {
             $parameters['excludedRoles'] = $excludedRoles;
             $queryBuilder->andWhere($queryBuilder->expr()->notIn('r.name', ":excludedRoles"));
         }
-        $queryBuilder->setParameters($parameters);
+        $queryBuilder->orderBy('r.name', Criteria::DESC)->setParameters($parameters);
 
         $roles = $queryBuilder->getQuery()->getResult();
         return $roles;

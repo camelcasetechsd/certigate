@@ -68,8 +68,10 @@ class CourseController extends ActionController
     public function calendarAction()
     {
         $variables = array();
+        $token = $this->params('token');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+        $courseEventModel->approveEnroll($token);
 
         $pageNumber = $this->getRequest()->getQuery('page');
         $courseModel->filterCourses(/* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
@@ -513,8 +515,8 @@ class CourseController extends ActionController
         }
         else {
             $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
-            $courseEventModel->enrollCourse($courseEvent, /* $user = */ $currentUser);
-            $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName));
+            $redirectUrl = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName, 'force_canonical' => true));
+            $url = $courseEventModel->enrollCourse($courseEvent, /* $user = */ $currentUser, $redirectUrl);
         }
         $this->redirect()->toUrl($url);
     }

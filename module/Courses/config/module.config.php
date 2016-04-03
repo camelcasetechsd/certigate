@@ -257,10 +257,13 @@ return array(
             'coursesCalendar' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/calendar',
+                    'route' => '/courses/calendar[/:token]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'calendar',
+                    ),
+                    'constraints' => array(
+                        'token' => '[0-9a-zA-Z]+',
                     ),
                 )
             ),

@@ -24,6 +24,8 @@ use Utilities\Service\Time;
  * @property Doctrine\Common\Collections\ArrayCollection $outlines
  * @property Doctrine\Common\Collections\ArrayCollection $courseEvents
  * @property Doctrine\Common\Collections\ArrayCollection $exambooks
+ * @property string $price
+ * @property int $productId
  * @property string $brief
  * @property string $briefAr
  * @property \DateTime $time
@@ -82,6 +84,19 @@ class Course
      * @var string
      */
     public $nameAr;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @var string
+     */
+    public $price;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $productId;
 
     /**
      * @Gedmo\Versioned
@@ -245,6 +260,58 @@ class Course
     public function setBrief($brief)
     {
         $this->brief = $brief;
+        return $this;
+    }
+
+    /**
+     * Get Price
+     * 
+     * 
+     * @access public
+     * @return string price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set Price
+     * 
+     * 
+     * @access public
+     * @param float $price
+     * @return Course
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    /**
+     * Get ProductId
+     * 
+     * 
+     * @access public
+     * @return int productId
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    /**
+     * Set ProductId
+     * 
+     * 
+     * @access public
+     * @param int $productId
+     * @return Course
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
         return $this;
     }
 
@@ -694,6 +761,9 @@ class Course
         if (array_key_exists('isForInstructor', $data)) {
             $this->setIsForInstructor($data["isForInstructor"]);
         }
+        if (array_key_exists('productId', $data)) {
+            $this->setProductId($data["productId"]);
+        }
         if (array_key_exists('brief', $data)) {
             $this->setBrief($data["brief"]);
         }
@@ -702,7 +772,7 @@ class Course
         }
         $this->setDuration($data["duration"])
                 ->setTime($data["time"])
-        ;
+                ->setPrice($data["price"]);
     }
 
     /**
@@ -758,6 +828,10 @@ class Course
             ));
             $inputFilter->add(array(
                 'name' => 'duration',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'price',
                 'required' => true,
             ));
 

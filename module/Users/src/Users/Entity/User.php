@@ -58,7 +58,8 @@ use Zend\Validator\Identical;
  * @property int $testCenterAdministratorStatement
  * @property int $trainingManagerStatement
  * @property int $status
- * @property Courses\Entity\CourseEvent $courseEvents
+ * @property int $customerId
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * 
  * @package users
  * @subpackage entity
@@ -319,9 +320,10 @@ class User
     public $trainingManagerStatement;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Courses\Entity\CourseEvent", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventUser", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
      */
-    public $courseEvents;
+    public $courseEventUsers;
 
     /**
      *
@@ -340,6 +342,12 @@ class User
      */
     public $votes;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false);
+     * @var int
+     */
+    public $customerId;
+    
     /**
      * hash password
      * 
@@ -385,7 +393,7 @@ class User
      */
     public function __construct()
     {
-        $this->courseEvents = new ArrayCollection();
+        $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
@@ -1383,45 +1391,71 @@ class User
     }
 
     /**
-     * Get CourseEvents
+     * Get CourseEventUsers
      * 
      * 
      * @access public
-     * @return ArrayCollection courseEvents
+     * @return ArrayCollection courseEventUsers
      */
-    public function getCourseEvents()
+    public function getCourseEventUsers()
     {
-        return $this->courseEvents;
+        return $this->courseEventUsers;
     }
 
     /**
-     * Add CourseEvents
+     * Add CourseEventUsers
      * 
      * 
      * @access public
-     * @param Courses\Entity\CourseEvent $courseEvent
+     * @param Courses\Entity\CourseEventUser $courseEventUser
      * @return User
      */
-    public function addCourseEvents($courseEvent)
+    public function addCourseEventUsers($courseEventUser)
     {
-        $this->courseEvents[] = $courseEvent;
+        $this->courseEventUsers[] = $courseEventUser;
         return $this;
     }
 
     /**
-     * Set CourseEvents
+     * Set CourseEventUsers
      * 
      * 
      * @access public
-     * @param ArrayCollection $courseEvents
+     * @param ArrayCollection $courseEventUsers
      * @return User
      */
-    public function setCourseEvents($courseEvents)
+    public function setCourseEventUsers($courseEventUsers)
     {
-        $this->courseEvents = $courseEvents;
+        $this->courseEventUsers = $courseEventUsers;
         return $this;
     }
 
+    /**
+     * Get CustomerId
+     * 
+     * 
+     * @access public
+     * @return int customerId
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set CustomerId
+     * 
+     * 
+     * @access public
+     * @param int $customerId
+     * @return CourseEvent
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+        return $this;
+    }
+    
     /**
      * Convert the object to an array.
      * 
@@ -1454,6 +1488,9 @@ class User
         }
         if (array_key_exists('password', $data) && !empty($data['password'])) {
             $this->setPassword($data["password"]);
+        }
+        if (array_key_exists('customerId', $data)) {
+            $this->setCustomerId($data["customerId"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setMobile($data["mobile"])

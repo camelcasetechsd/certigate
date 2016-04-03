@@ -246,7 +246,7 @@ class PressReleaseSubscription
             $templateParameters = array(
                 "user" => $subscriptionUser,
                 "pressRelease" => $pressRelease,
-                "pressReleaseUrl" => $this->router->assemble(array("id" => $pressRelease->getId()), array('name' => 'press_details', 'force_canonical' => true)),
+                "pressReleaseUrl" => $this->router->assemble(array("id" => $pressRelease->getId()), array('name' => 'cmsPressReleaseDetails', 'force_canonical' => true)),
                 "unsubscribeUrl" => $this->router->assemble($unsubscribeUrlParameters, array('name' => 'cmsPressReleaseUnsubscribe', 'force_canonical' => true)),
             );
             $mailArray["templateParameters"] = $templateParameters;

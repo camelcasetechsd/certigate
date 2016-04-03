@@ -11,11 +11,19 @@ bin/doctrine orm:schema-tool:update --force;
 
 # seeding data
 app_env=${APPLICATION_ENV:-'vagrant'}
-php public/q2a/updateDB.php
-php public/estore/updateDB.php
-php public/forum/updateDB.php
-./vendor/bin/phinx seed:run -e $app_env
 
+# seeding estore first 
+APPLICATION_ENV=$app_env php public/estore/updateDB.php
+
+# running certigate seeds 
+# send app_env as environment variable and command variable 
+APPLICATION_ENV=$app_env ./vendor/bin/phinx seed:run -e $app_env 
+
+# seeding q2a
+APPLICATION_ENV=$app_env php public/q2a/updateDB.php
+
+# seeding forum
+APPLICATION_ENV=$app_env php public/forum/updateDB.php
 
 ## prepare public resources
 cd public

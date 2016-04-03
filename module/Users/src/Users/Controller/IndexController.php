@@ -25,7 +25,52 @@ class IndexController extends ActionController
 {
 
     /**
-     * List users paginated
+     * List instructors paginated
+     * 
+     * 
+     * @access public
+     * @return ViewModel
+     */
+    public function instructorsAction()
+    {
+        $variables = array();
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $userModel = $this->getServiceLocator()->get('Users\Model\User');
+
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $userModel->filterInstructors();
+        $userModel->setPage($pageNumber);
+
+        $pageNumbers = $userModel->getPagesRange($pageNumber);
+        $variables['users'] = $objectUtilities->prepareForDisplay($userModel->getCurrentItems());
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $userModel->getNextPageNumber($pageNumber);
+        $variables['previousPageNumber'] = $userModel->getPreviousPageNumber($pageNumber);
+        return new ViewModel($variables);
+    }
+    
+    /**
+     * More user details
+     * 
+     * 
+     * @access public
+     * @return ViewModel
+     */
+    public function moreAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+        $user = $query->find('Users\Entity\User', $id);
+        $processedData = $objectUtilities->prepareForDisplay(array($user));
+        $variables['user'] = $processedData;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * List users
      * 
      * 
      * @access public
@@ -95,14 +140,14 @@ class IndexController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
+            
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-
+            
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
@@ -156,7 +201,8 @@ class IndexController extends ActionController
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         $variables['photo'] = $photo;
         return new ViewModel($variables);
     }
@@ -223,18 +269,20 @@ class IndexController extends ActionController
                 $userModel->saveUser($data , /*$userObj =*/ null ,$isAdminUser);
 
                 if($isAdminUser){
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
-                    'name' => 'users'));
-                $this->redirect()->toUrl($url);
+                    $routeName = "users";
                 }else{
-                    $variables['success'] = true;
+                    $routeName = "home";
                 }
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => $routeName));
+                $this->redirect()->toUrl($url);
             }
         }
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         return new ViewModel($variables);
     }
 

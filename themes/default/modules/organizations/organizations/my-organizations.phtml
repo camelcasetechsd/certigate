@@ -1,0 +1,73 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<br/>
+<div class="panel panel-default atcs-list">
+    <div class="panel-heading">My Organizations</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Commercial Name</th>
+                <th>Type</th>
+                <th>License Expiration</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#myOrganizations}}
+            {{#expirationFlag}}
+            <tr class="warning">
+                {{/expirationFlag}}
+                {{^expirationFlag}}
+            <tr>
+             {{/expirationFlag}}    
+                <td>{{organization.commercialName}}</td>
+                <td>{{type}}</td>
+                <td>{{expirationDate}}</td>
+                <td>
+                    <a href="/organizations/more/{{organization.id}}">More</a>     
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Manage Users" href="/organization-users/{{organization.id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{organization.id}}"><span class="glyphicon glyphicon-edit" ></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Renewal" href="/organizations/renew/{{organization.id}}/{{id}}"><span class="glyphicon glyphicon-refresh"></span></a>
+                </td>
+            </tr>
+            {{/myOrganizations}}
+        </tbody>
+    </table>
+</div>
+
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+
+{{/layout}}

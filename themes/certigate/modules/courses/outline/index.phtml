@@ -1,0 +1,30 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Courses Outlines{{/translate}}</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Duration{{/translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#outlines}}
+            <tr>
+                <td>{{title}}</td>
+                <td>{{duration}} {{#translate}}mins{{/translate}}</td>
+            </tr>
+            {{/outlines}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
