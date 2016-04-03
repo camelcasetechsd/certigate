@@ -16,6 +16,8 @@ use Utilities\Service\Status;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Translation\Service\Translator\TranslatorHandler $translatorHandler
+ * @property Translation\Service\Locale\ApplicationLocale $applicationLocale
  * 
  * @package organizations
  * @subpackage form
@@ -33,9 +35,15 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
     /**
      *
-     * @var Translation\Helper\TranslatorHelper 
+     * @var Translation\Service\Translator\TranslatorHandler 
      */
     protected $translatorHandler;
+
+    /**
+     *
+     * @var Translation\Service\Locale\ApplicationLocale
+     */
+    protected $applicationLocale;
 
     /**
      * setup form
@@ -50,8 +58,10 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         $this->needAdminApproval = true;
         $this->query = $options['query'];
         $this->translatorHandler = $options['translatorHandler'];
+        $this->applicationLocale = $options['applicationLocale'];
         unset($options['query']);
         unset($options['translatorHandler']);
+        unset($options['applicationLocale']);
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
 
@@ -731,7 +741,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'display_empty_item' => true,
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
-                    if ($this->translatorHandler->getCurrentLocale() == 'en_Us') {
+                    if ($this->applicationLocale->getCurrentLocale() == 'en_Us') {
                         return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                     }
                     else {

@@ -203,6 +203,7 @@ class OrganizationsController extends ActionController
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
         $options['translatorHandler'] = $translatorHandler;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $form = new OrgForm(/* $name = */ null, $options);
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
@@ -302,6 +303,7 @@ class OrganizationsController extends ActionController
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
         $options['translatorHandler'] = $translatorHandler;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $atcSkippedParams = $this->getServiceLocator()->get('Config')['atcSkippedParams'];
         $atpSkippedParams = $this->getServiceLocator()->get('Config')['atpSkippedParams'];
         $form = new orgForm(/* $name = */ null, $options);
