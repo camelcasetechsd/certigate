@@ -21,7 +21,6 @@ class PosDAOrganization extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-
         $typeAtcId = $this->fetchRow('select id from organization_type where title = "ATC"')['id'];
         $typeAtpId = $this->fetchRow('select id from organization_type where title = "ATP"')['id'];
         $typeDistId = $this->fetchRow('select id from organization_type where title = "Distributor"')['id'];
@@ -63,9 +62,9 @@ class PosDAOrganization extends AbstractSeed
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
-            'phone1' => $faker->phoneNumber,
-            'phone2' => $faker->phoneNumber,
-            'phone3' => $faker->phoneNumber,
+            'phone1' => '555-555-5555',
+            'phone2' => '555-555-5555',
+            'phone3' => '555-555-5555',
             'fax' => $faker->randomNumber(),
             'website' => $faker->url,
             'email' => $faker->email,
@@ -129,9 +128,9 @@ class PosDAOrganization extends AbstractSeed
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
-            'phone1' => $faker->phoneNumber,
-            'phone2' => $faker->phoneNumber,
-            'phone3' => $faker->phoneNumber,
+            'phone1' => '555-555-5555',
+            'phone2' => '555-555-5555',
+            'phone3' => '555-555-5555',
             'fax' => $faker->randomNumber(),
             'website' => $faker->url,
             'email' => $faker->email,
@@ -197,9 +196,9 @@ class PosDAOrganization extends AbstractSeed
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
-            'phone1' => $faker->phoneNumber,
-            'phone2' => $faker->phoneNumber,
-            'phone3' => $faker->phoneNumber,
+            'phone1' => '555-555-5555',
+            'phone2' => '555-555-5555',
+            'phone3' => '555-555-5555',
             'fax' => $faker->randomNumber(),
             'zipCode' => $faker->randomNumber(),
             'website' => $faker->url,

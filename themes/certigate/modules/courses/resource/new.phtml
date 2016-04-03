@@ -1,0 +1,48 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails">{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation"><a href="/courses/evaluation/edit/{{courseId}}" aria-controls="courseEvaluation">{{#translate}}Course Evaluation{{/translate}}</a></li>
+    <li role="presentation" class="active"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="courseDetails">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Edit Course{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+                {{{courseForm}}}
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
+    <div role="tabpanel" class="tab-pane active" id="courseResources">
+        <br>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Upload Resources{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+                {{{resourceForm}}}
+            </div><!-- body -->
+        </div><!-- panel -->
+    </div>
+</div>
+
+
+
+{{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+    {{#addResourcesValidation}}
+    addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
+    {{/addResourcesValidation}}
+    });
+</script>
+{{/scripts}}
+{{/layout}}

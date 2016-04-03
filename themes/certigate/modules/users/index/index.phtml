@@ -1,0 +1,64 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br />
+<a href="/users/new"><button class="btn btn-small btn-success">{{#translate}}Create new User{{/translate}}</button></a>
+<br><br>
+<div class="panel panel-default users-list">
+    <div class="panel-heading">{{#translate}}Users{{/translate}}</div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{#translate}}Photo{{/translate}}</th>
+                    <th>{{#translate}}ID{{/translate}}</th>
+                    <th>{{#translate}}First Name{{/translate}}</th>
+                    <th>{{#translate}}First Name in Arabic{{/translate}}</th>
+                    <th>{{#translate}}Last Name{{/translate}}</th>
+                    <th>{{#translate}}Last Name in Arabic{{/translate}}</th>
+                    <th>{{#translate}}User Name{{/translate}}</th>
+                    <th>{{#translate}}Email{{/translate}}</th>
+                    <th>{{#translate}}Country{{/translate}}</th>
+                    <th>{{#translate}}Status{{/translate}}</th>
+                    <th colspan="2">{{#translate}}Actions{{/translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#userList}}
+                <tr>
+                    <th scope="row"><img src="{{photo}}" data-toggle="tooltip" data-placement="left" title="{{name}}" class="user-photos" style="height: 70px !important;width: 70px !important;"></th>
+                    <td>{{id}}</td>
+                    <td>{{firstName}}</td>
+                    <td>{{firstNameAr}}</td>
+                    <td>{{lastName}}</td>
+                    <td>{{lastNameAr}}</td>
+                    <td>{{username}}</td>
+                    <td>{{email}}</td>
+                    <td>{{countryText}}</td>
+                    <td>{{#translate}}{{statusText}}{{/translate}}</td>
+                    <td>
+
+                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                        {{#statusActive}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        {{/statusActive}}
+
+                        {{#statusDeleted}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}" href="/users/activate/{{id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                        {{/statusDeleted}}
+
+                    </td>
+                </tr>
+                {{/userList}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+{{/content}}
+
+{{/layout}}

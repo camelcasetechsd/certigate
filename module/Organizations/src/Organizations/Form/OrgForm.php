@@ -17,6 +17,8 @@ use Translation\Service\Locale\Locale as ApplicationLocale;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Translation\Service\Translator\TranslatorHandler $translatorHandler
+ * @property Translation\Service\Locale\ApplicationLocale $applicationLocale
  * 
  * @package organizations
  * @subpackage form
@@ -35,6 +37,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     /**
      *
      * @var Translation\Service\Locale\Locale
+     */
+    protected $applicationLocale;
+
+    /**
+     *
+     * @var Translation\Service\Locale\ApplicationLocale
      */
     protected $applicationLocale;
 
@@ -787,6 +795,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'empty_item_label' => self::EMPTY_SELECT_VALUE,
                 'label_generator' => function($targetEntity) {
                     if ($this->applicationLocale->getCurrentLocale() == ApplicationLocale::LOCALE_EN_US) {
+
                         return $targetEntity->getFirstName() . ' ' . $targetEntity->getMiddleName() . ' ' . $targetEntity->getLastName();
                     }
                     else {
@@ -851,7 +860,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
-                'class' => 'btn btn-success',
+                'class' => 'btn btn-success inline',
                 'value' => 'Create',
             )
         ));
@@ -860,7 +869,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'saveState',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-info',
+                'class' => 'btn btn-info saveStateButton',
                 'value' => 'Save State',
                 'type' => 'button',
             )
@@ -870,7 +879,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-danger resetButton',
+                'class' => 'btn btn-danger resetButton orgResetButton',
                 'value' => 'Reset',
                 'type' => 'button',
             )

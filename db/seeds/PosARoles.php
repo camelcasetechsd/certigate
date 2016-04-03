@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../AbstractSeed.php';
+require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
 use \Users\Entity\Role;
@@ -20,7 +20,7 @@ class PosARoles extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE , 'nameAr' => Role::INSTRUCTOR_ROLE);
+        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE, 'nameAr' => Role::INSTRUCTOR_ROLE);
         $this->insert('role', $instructorRole);
         $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
@@ -294,7 +294,7 @@ class PosARoles extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $courseEventsRoute,
-                ),
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
@@ -511,7 +511,7 @@ class PosARoles extends AbstractSeed
             ),
         );
         $this->insert('acl', $organizationAcls);
-        
+
         $cmsModule = "CMS";
         $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
         $cmsAcls = array(
