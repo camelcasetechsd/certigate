@@ -47,4 +47,24 @@ class File
         return $response;
     }
 
+    /**
+     * Create directory only if not exists
+     * 
+     * @access public
+     * @param string $target directory path
+     * @return bool creation result, false if already exists or creation failed
+     */
+    public static function createDir($target)
+    {
+        $creationResult = false;
+        if (!file_exists($target)) {
+            // PHP takes 0777 and substracts the current value of umask
+            $oldUmask = umask(0);
+            $creationResult = mkdir($target, 0777);
+            // return back umask to it's original value
+            umask($oldUmask);
+        }
+        return $creationResult;
+    }
+
 }
