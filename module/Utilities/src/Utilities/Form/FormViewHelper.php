@@ -124,6 +124,11 @@ class FormViewHelper extends OriginalFormViewHelper
      */
     public function renderFieldsetElement($form, $elementOrFieldset)
     {
+        // Add Id to all form elements
+        // When element has an Id, Label tag won't enclose form element
+        if (empty($elementOrFieldset->getAttribute('id'))) {
+            $elementOrFieldset->setAttribute('id', $form->getAttribute('name') . "_" . rtrim( str_replace(/*$search =*/ "[", /*$replace =*/ "_", $elementOrFieldset->getAttribute('name')), /*$character_mask =*/ ']'));
+        }
         // Change submit button text to edit if form is an edit form
         if ($elementOrFieldset instanceof Submit && $form->isEditForm === true && $elementOrFieldset->getValue() == FormButtons::CREATE_BUTTON_TEXT) {
             $elementOrFieldset->setValue(FormButtons::EDIT_BUTTON_TEXT);

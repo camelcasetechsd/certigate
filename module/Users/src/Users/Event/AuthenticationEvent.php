@@ -55,11 +55,7 @@ class AuthenticationEvent extends AbstractActionController {
         $controller = $routeMatch->getParam('controller');
         $action = $routeMatch->getParam('action');
 
-        if ($userAuth->hasIdentity() && isset($user['status']) && $user['status'] == 2) {
-            $userAuth->clearIdentity();
-            // redirect to sign/out
-            $url = $event->getRouter()->assemble(array('action' => 'out'), array('name' => 'defaultSign'));
-        } else if ($userAuth->hasIdentity() && $controller == $signInController &&
+        if ($userAuth->hasIdentity() && $controller == $signInController &&
                 $action == 'in') {
             // redirect to index
             $url = $event->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));

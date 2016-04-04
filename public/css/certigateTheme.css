@@ -1,0 +1,82 @@
+.title-top{
+    padding: 0px 0px !important; 
+    margin-top: 0px;
+}
+
+.text-normal{
+    font-weight: normal;
+    text-transform: none;
+}
+.page-container{
+    margin-right: 10%;
+    margin-left: 10%;
+}
+.panel-default > .panel-heading{
+    color: #1964B6;
+    background-color: #FFFFFF;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.page-container-wide{
+    margin-top: -0.2%; 
+    margin-right: -12.5%; 
+    margin-left: -12.5%;
+}
+/**
+Organization Form buttons
+**/
+.saveStateButton{
+    margin-top: -96px;
+    margin-left: 80px;
+}
+.orgResetButton{    
+    margin-top: -175px;
+    margin-left: 188px;
+}
+.navbar-toggle{
+    background-color: #1964B6;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin top by header height */
+    margin-top: 8.8%;
+    /* Margin bottom by footer height */
+    margin-bottom: 120px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 120px;
+}
+.btn {
+  border: 0px;
+  border-radius: 0px;
+}
+
+.panel {
+  background-color: rgba(238, 238, 238, 0.27);
+  border: 0px;
+  border-radius: 0px;
+}
+
+.btn-menu {
+  color: #fff !important;
+}
+.btn-language-loggedin {
+  margin-top: -4px;
+}
+.btn-language-loggedout {
+  margin-top: 4px;
+}
+.btn-menu:hover,
+.btn-menu:focus {
+  text-decoration: none !important;
+}

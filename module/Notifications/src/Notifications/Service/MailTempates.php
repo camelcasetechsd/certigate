@@ -100,7 +100,13 @@ class MailTempates
     const USER_NEW_ISSUE = "user-new-issue";
 
     /**
+     * 
+     */
+    const ORGANIZATION_RENEWAL_TEMPLATE = "organization-renewal";
+
+    /**
      * New Press Release Template
      */
     const NEW_PRESS_RELEASE_TEMPLATE = "new-press-release";
+
 }

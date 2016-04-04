@@ -1,0 +1,89 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+{{#course}}
+    {{#canEnroll}}
+        <a href="/courses/enroll/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Enroll{{/translate}}"><button class="btn btn-small btn-success">Enroll</button></a>
+    {{/canEnroll}}
+    {{#canLeave}}
+        <a href="/courses/leave/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Leave{{/translate}}"><button class="btn btn-small btn-primary">Leave</button></a>
+    {{/canLeave}}
+{{/course}}
+<br><br>
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Course Info{{/translate}}</div>
+
+    <!-- Table -->
+
+    {{#course}}
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>{{#translate}}Name{{/translate}}</td>
+                <td>{{name}}</td>
+            </tr><tr>
+                <td>{{#translate}}Brief{{/translate}}</td>
+                <td>{{brief}}</td>
+            </tr><tr>
+                <td>{{#translate}}Authorized Instructor{{/translate}}</td>
+                <td>{{ai.firstName}} {{ai.lastName}}</td>
+            </tr><tr>
+                <td>{{#translate}}Start Date{{/translate}}</td>
+                <td>{{startDate}}</td>
+            </tr><tr>
+                <td>{{#translate}}End Date{{/translate}}</td>
+                <td>{{endDate}}</td>
+            </tr><tr>
+                <td>{{#translate}}Time{{/translate}}</td>
+                <td>{{time}}</td>
+            </tr><tr>
+                <td>{{#translate}}Duration{{/translate}}</td>
+                <td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
+            </tr><tr>
+                <td>{{#translate}}Authorized Training Partner{{/translate}}</td>
+                <td>{{atp.commercialName}}</td>
+            </tr>
+
+            {{#outlines.count}}
+        <td>{{#translate}}Outlines{{/translate}}</td>
+        <td></td>
+        <tr>
+            <td>&ensp; {{#translate}}Title{{/translate}}</td>
+            <td>{{#translate}}Duration{{/translate}} ({{#translate}}minutes{{/translate}})</td>
+        </tr>
+        {{/outlines.count}}
+        {{#outlines}}
+        {{#status}}
+        <tr>
+            <td>&ensp; {{name}}</td>
+            <td>{{duration}}</td>
+        </tr>
+        {{/status}}
+        {{/outlines}} 
+
+        {{#canDownloadResources}}
+
+        {{#resources}}
+        <td>Resources</td><td></td>
+        {{/resources}}
+        {{#resources}}
+        <tr>
+            <td>&ensp; {{type}}</td>
+            <td>
+                {{#files}}
+                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                {{/files}}
+            </td>
+        </tr>
+        {{/resources}} 
+        {{/canDownloadResources}}
+
+        </tbody>
+    </table>
+    {{/course}}
+
+</div>
+{{/content}}
+{{/layout}}

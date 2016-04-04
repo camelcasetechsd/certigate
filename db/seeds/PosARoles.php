@@ -407,11 +407,15 @@ class PosARoles extends AbstractSeed
         $organizationsDownloadRoute = "organizationsDownload";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
+        $listDistOrgsRoute = "list_distributor_orgs";
+        $listResellerOrgsRoute = "list_reseller_orgs";
         $orgTypeRoute = "org_type";
         $orgMoreRoute = "more";
         $orgNewRoute = "new_org";
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
+        $myOrganization = "myOrganizations";
+        $renewal = "renew";
         $organizationAcls = array(
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -494,6 +498,16 @@ class PosARoles extends AbstractSeed
                 'route' => $listAtpOrgsRoute,
             ),
             array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
+            ),
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $orgTypeRoute,
@@ -542,6 +556,16 @@ class PosARoles extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $orgMoreRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
             ),
         );
         $this->insert('acl', $organizationAcls);

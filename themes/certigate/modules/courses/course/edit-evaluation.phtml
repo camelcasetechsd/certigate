@@ -1,0 +1,157 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="/courses/edit/{{courseId}}" aria-controls="courseDetails" >{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation" class="active"><a href="#courseEvaluation" aria-controls="courseEvaluation" role="tab" data-toggle="tab">{{#translate}}Course Evaluation{{/translate}}</a></li>
+    <li role="presentation"><a href="/courses/resources/edit/{{courseId}}" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
+    <div role="tabpanel" class="tab-pane active" id="courseEvaluation">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Edit Evaluation{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+                <ul>    
+                    {{#validationError}}
+                    <li class="error">{{.}}</li>
+                    {{/validationError}}
+                </ul>
+                {{#noEvaluation}}
+                <div class="alert alert-warning" role="alert">
+                    {{#translate}}Course has no evaluation yet{{/translate}}
+                </div>
+                <a href="/courses/evaluation/new/{{courseId}}"><input type="button" id="addmore" class=" btn btn-primary" value="{{#translate}}Create Course Evaluation{{/translate}}"></a>
+
+                {{/noEvaluation}}
+                {{^noEvaluation}}
+
+                <form id="editForm" class="form-horizontal" method="POST" action="">
+                    <fieldset>
+                        <br>
+                        <!-- Form Name -->
+                        {{#oldQuestions}}
+
+                        <div class="form-group" >
+                            <div class="questionContainer row">
+                                <label class="col-md-4 control-label englishLabel">{{#translate}}Question Title{{/translate}}</label>  
+                                <div class="col-md-4">
+                                    <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control editedInputs input-md" required="" value="{{questionTitle}}">
+                                    {{#isAdminUser}}<a href="#" class="deleteOldQuestion removeQ pull-left" >X</a>{{/isAdminUser}}                              
+                                    <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                            </div>
+
+                            <div class="questionContainer row">
+                                <label class="col-md-4 control-label">{{#translate}}Question Title in Arabic{{/translate}}</label>  
+                                <div class="col-md-4">
+                                    <input name="editedQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="arabicQuestion form-control editedInputs input-md" required="" value="{{questionTitleAr}}">
+                                    <input type="hidden" class="dummy" name="originalAr[]" value="{{questionTitleAr}}"/>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+                        </div>
+                        {{/oldQuestions}}
+                        <span id="endOfText"></span>
+                        {{#isAdminUser}}
+                        <div class=" row form-group">
+                            <label class="text-right col-md-4" for="evaluation_form_status">{{#translate}}Status{{/translate}}</label>
+                            <div class=" col-md-4"> 
+                                <input type="checkbox" name="status" class="form-control" id="evaluation_form_status" {{#status}}checked="checked"{{/status}}>
+                            </div>
+                        </div>
+                        {{/isAdminUser}}
+                        <!-- button -->
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
+                            </div>
+                        </div>
+                        <div class=" row form-group">
+                            <div class="col-md-4">
+                                <button id="singlebutton" name="submit" class="btn btn-success">{{^isAdminUser}}{{#translate}}Submit for admin approval{{/translate}}{{/isAdminUser}}{{#isAdminUser}}Submit Evaluation Template{{/isAdminUser}}</button>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </form>
+
+
+                {{/noEvaluation}}
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
+</div>
+
+{{/content}}
+
+{{/layout}}
+<script>
+    $(document).ready(function () {
+        //
+//    window.index = 1000;
+        numerateLabels();
+
+        $('#addmore').click(function () {
+            getMeNewInput();
+        });
+
+        function getMeNewInput() {
+            window.template = '<div class="form-group" > <div class="questionContainer row"> <label class="col-md-4 control-label englishLabel">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> <a href="#" class="deleteQuestion removeQ pull-left" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-4 control-label">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-4"> <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> </div> </div>';
+            $('#endOfText').before(window.template);
+            numerateLabels();
+        }
+
+        function numerateLabels() {
+            window.index = 1
+            $('.englishLabel').each(function () {
+                if ($(this).parent().is(":visible")) {
+                    $(this).text('Question Title ' + window.index)
+                    window.index++;
+                }
+            });
+        }
+
+        /**
+         * This action is meant to delete 
+         */
+        $('.deleteOldQuestion').click(function () {
+            // remove questionInputs class and replace it with deletedQuestion class
+//            $(this).prev().attr("class", "deletedquestion form-control input-md");
+            // change input name 
+            $(this).prev().prop("name", 'deleted[]');
+            $(this).parents('.form-group').find('.arabicQuestion').prop("name", 'deletedAr[]');
+            $(this).parents('.form-group').find('.arabicQuestion').next().remove();
+            // hide deleted input
+            $(this).parent().parent().parent().hide();
+             $(this).next().remove();    
+        numerateLabels();
+        });
+        $('.deleteInvalidQuestion').click(function () {
+            //delete input
+            $(this).parent().parent().remove();
+
+            numerateLabels();
+        });
+
+        // to delete run time created questions  
+        $(document).on("click", ".deleteQuestion", function () {
+            $(this).parent().parent().parent().remove();
+            numerateLabels();
+        });
+
+    });
+
+</script>

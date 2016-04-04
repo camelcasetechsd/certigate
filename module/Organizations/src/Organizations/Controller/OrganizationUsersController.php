@@ -23,6 +23,19 @@ use Organizations\Entity\Organization;
 class OrganizationUsersController extends ActionController
 {
 
+    public function onDispatch(\Zend\Mvc\MvcEvent $e)
+    {
+        parent::onDispatch($e);
+        
+        $organizationId = $this->params('organizationId');
+        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+        $userValidation = $organizationUserModel->validateOrganizationType($organizationId);
+        if (!$userValidation) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'noOrganizationUsers'), array('name' => 'noOrganizationUsers'));
+            return $this->redirect()->toUrl($url);
+        }
+    }
+
     /**
      * List organizationUsers
      * 
@@ -42,9 +55,9 @@ class OrganizationUsersController extends ActionController
         $storage = $auth->getIdentity();
 
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $rolesArray = $organizationModel->getRequiredRoles($organizationModel->getOrganizationTypes(null, $organization));
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $organization);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
 
@@ -78,18 +91,18 @@ class OrganizationUsersController extends ActionController
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $organizationId);
-        
-        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(),$rolesArray , $organization);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+
+        $rolesArray = $organizationModel->getRequiredRoles($organizationModel->getOrganizationTypes(null, $organization));
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $organization);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        
+
         $organizationUser = new OrganizationUser();
 
         $options = array();
         $options['query'] = $query;
-        $options['organizationType'] = $organization->getType();
+        $options['organizationType'] = $organizationModel->getOrganizationTypes(null, $organization);
         $form = new OrganizationUserForm(/* $name = */ null, $options);
         // in order to set hidden organization field with id
         $form->get("organization")->setValue($organizationId);
@@ -122,7 +135,7 @@ class OrganizationUsersController extends ActionController
     public function editAction()
     {
         $variables = array();
-        $id = $this->params('id');
+        $id = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
@@ -130,15 +143,15 @@ class OrganizationUsersController extends ActionController
         $organization = $organizationUser->getOrganization();
         $organizationId = $organization->getId();
 
-        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $rolesArray = $organizationModel->getRequiredRoles($organizationModel->getOrganizationTypes(null, $organization));
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $organization);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        
+
         $options = array();
         $options['query'] = $query;
-        $options['organizationType'] = $organization->getType();
+        $options['organizationType'] = $organizationModel->getOrganizationTypes(null, $organization);
         $form = new OrganizationUserForm(/* $name = */ null, $options);
         // in order to set hidden organization field with id
         $organizationUser->setOrganization($organizationId);
@@ -170,19 +183,19 @@ class OrganizationUsersController extends ActionController
      */
     public function deleteAction()
     {
-        $id = $this->params('id');
+        $id = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $organizationUser->getOrganization();
         $organizationId = $organization->getId();
 
-        $rolesArray = $organizationModel->getRequiredRoles($organization->getType());
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), $rolesArray, $organization);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+        $rolesArray = $organizationModel->getRequiredRoles($organizationModel->getOrganizationTypes(null, $organization));
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $organization);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        
+
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         if ($storage['id'] == $organizationUser->getUser()->getId()) {
@@ -212,7 +225,7 @@ class OrganizationUsersController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         if ($auth->hasIdentity() && (!in_array(Role::ADMIN_ROLE, $storage['roles']) )) {
             $currentUserOrganizationUser = $query->findOneBy('Organizations\Entity\OrganizationUser', /* $criteria = */ array("user" => $storage['id'], "organization" => $organization->getId()));
-            if ((!is_object($currentUserOrganizationUser)) || (!in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) && $organization->getType() == Organization::TYPE_ATC) || (!in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $organization->getType() == Organization::TYPE_ATP)) {
+            if ((!is_object($currentUserOrganizationUser)) || (!in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) && $organizationModel->getOrganizationTypes(null, $organization) == Organization::TYPE_ATC) || (!in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) && $organizationModel->getOrganizationTypes(null, $organization) == Organization::TYPE_ATP)) {
                 $accessValid = false;
             }
         }
