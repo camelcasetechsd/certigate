@@ -34,6 +34,7 @@ class CacheHandlerFactory implements FactoryInterface {
         $query = $serviceLocator->get('wrapperQuery');
         $menuItem = $serviceLocator->get('CMS\Model\MenuItem');
         $cacheHandler = new CacheHandler($cache, $query, $menuItem);
+        $cacheHandler->setServiceLocator($serviceLocator);
         return $cacheHandler;
     }
 
