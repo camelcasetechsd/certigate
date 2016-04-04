@@ -466,7 +466,7 @@ class PosCMenus extends AbstractSeed
         $menuItem['parent_id'] = $parentId;
         $menuItem['menu_id'] = $primaryMenuId;
         $menuItem['title'] = $item['title'];
-        $menuItem['titleAr'] = $item['titleAr'];
+        $menuItem['titleAr'] = $item['titleAr'] . ' ar';
         $menuItem['weight'] = (isset($item['weight'])) ? $item['weight'] : 1;
         $menuItem['status'] = true;
 
@@ -486,7 +486,7 @@ class PosCMenus extends AbstractSeed
 
         $this->insert('page', [
             'title' => $item['title'],
-            'titleAr' => $item['titleAr'],
+            'titleAr' => $item['titleAr'] . ' ar',
             'path' => $item['path'],
             'status' => TRUE,
             'body' => base64_encode(bzcompress($faker->text)),
