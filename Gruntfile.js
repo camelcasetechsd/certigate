@@ -9,7 +9,8 @@ module.exports = function (grunt) {
             bowerSrc: 'public/bower_components',
             nodeSrc: 'node_modules',
             public: 'public',
-            dest: 'public/concat'
+            dest: 'public/concat',
+            themes: 'themes'
         },
         concat: {
             options: {
@@ -27,9 +28,10 @@ module.exports = function (grunt) {
                 src: [
                     '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
                     '<%= dirs.bowerSrc %>/chosen/chosen.jquery.min.js',
-                    '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js' ,
-                    '<%= dirs.nodeSrc %>/bootbox/bootbox.js' ,
+                    '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js',
+                    '<%= dirs.nodeSrc %>/bootbox/bootbox.js',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+<<<<<<< HEAD
                     '<%= dirs.jsSrc %>/datepicker/jquery.calendars.js',
                     '<%= dirs.jsSrc %>/datepicker/jquery.calendars.plus.js',
                     '<%= dirs.jsSrc %>/datepicker/jquery.plugin.js',
@@ -44,6 +46,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/diff_match_patch.js',
                     '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
                     '<%= dirs.jsSrc %>/form.js',
+                    '<%= dirs.jsSrc %>/signin.js',
                     '<%= dirs.jsSrc %>/reset.js',
                     '<%= dirs.jsSrc %>/menu.js',
                     '<%= dirs.jsSrc %>/menuItemCRUD.js',
@@ -51,8 +54,9 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/courseCRUD.js',
                     '<%= dirs.jsSrc %>/courseEventCRUD.js',
                     '<%= dirs.jsSrc %>/resourceCRUD.js',
-                    '<%= dirs.jsSrc %>/orgReg.js',                    
-                    '<%= dirs.jsSrc %>/CKEditor_config.js',                    
+                    '<%= dirs.jsSrc %>/orgReg.js',
+                    '<%= dirs.jsSrc %>/CKEditor_config.js',
+                    '<%= dirs.jsSrc %>/homepage.js',
                 ]
 
             },
@@ -68,6 +72,7 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
                     '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/certigateTheme.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/userForm.css',
                     '<%= dirs.cssSrc %>/courseForm.css',
@@ -76,8 +81,39 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
                     '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
+                    // certigate theme css
+                    '<%= dirs.themes %>/certigate/assets/css/carousel.css'
+
+                ]
+            },
+            css_rtl: {
+                nonull: true,
+                dest: '<%= dirs.dest %>/app_rtl.css',
+                src: [
+                    '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
+                    '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+                    '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
+                    // bootstrap rtl
+                    '<%= dirs.cssSrc %>/bootstrap.rtl.css',
+//                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
+                    '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
+                    '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
+                    '<%= dirs.cssSrc %>/style.css',
+                    '<%= dirs.cssSrc %>/certigateTheme.css',
+                    '<%= dirs.cssSrc %>/form.css',
+                    '<%= dirs.cssSrc %>/userForm.css',
+                    '<%= dirs.cssSrc %>/courseForm.css',
+                    '<%= dirs.cssSrc %>/errors.css',
+                    '<%= dirs.cssSrc %>/inactive.css',
+                    '<%= dirs.cssSrc %>/CKEditor_Style.css',
+                    '<%= dirs.cssSrc %>/evaluation.css',
+                    '<%= dirs.cssSrc %>/diff.css',
+                    // certigate theme css
+                    '<%= dirs.themes %>/certigate/assets/css/carousel.rtl.css',
+                    
                 ]
             }
+            
         },
         uglify: {
             options: {
@@ -100,19 +136,29 @@ module.exports = function (grunt) {
         cssmin: {
             dist: {
                 files: {
-                    '<%= dirs.dest %>/app.min.css': ['<%= dirs.dest %>/app.css']
+                    '<%= dirs.dest %>/app.min.css': ['<%= dirs.dest %>/app.css'],
+                    '<%= dirs.dest %>/app_rtl.min.css': ['<%= dirs.dest %>/app_rtl.css']
                 }
             }
         },
         copy: {
             dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= dirs.bowerSrc %>/font-awesome',
-                    src: ['fonts/*.*'],
-                    dest: '<%= dirs.public %>'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= dirs.bowerSrc %>/font-awesome',
+                        src: ['fonts/*.*'],
+                        dest: '<%= dirs.public %>'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= dirs.themes %>/certigate/assets',
+                        src: ['images/*.*'],
+                        dest: '<%= dirs.public %>'
+                    }
+                ]
             }
         }
     });
@@ -121,7 +167,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task(s).
     grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'copy']);

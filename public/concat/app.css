@@ -6764,7 +6764,7 @@ button.close {
 /* OriginalFileName : public/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css */ 
 
 /*!
- * Datepicker for Bootstrap v1.5.1 (https://github.com/eternicode/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.6.0 (https://github.com/eternicode/bootstrap-datepicker)
  *
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
@@ -7113,7 +7113,8 @@ button.close {
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
-.datepicker table tr td span:hover {
+.datepicker table tr td span:hover,
+.datepicker table tr td span.focused {
   background: #eeeeee;
 }
 .datepicker table tr td span.disabled,
@@ -7235,7 +7236,7 @@ button.close {
   margin-left: -5px;
   margin-right: -5px;
 }
-
+/*# sourceMappingURL=bootstrap-datepicker.css.map */
 /* OriginalFileName : public/bower_components/chosen-bootstrap/chosen.bootstrap.css */ 
 
 /*!
@@ -7698,108 +7699,6 @@ button.close {
     transition: border linear .2s,box-shadow linear .2s;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-}
-
-/* OriginalFileName : public/bower_components/metisMenu/dist/metisMenu.css */ 
-
-/*
- * metismenu - v2.4.0
- * A jQuery menu plugin
- * https://github.com/onokumus/metisMenu#readme
- *
- * Made by Osman Nuri Okumuş <onokumus@gmail.com> (https://github.com/onokumus)
- * Under MIT License
- */
-
-.metismenu .arrow {
-  float: right;
-  line-height: 1.42857;
-}
-*[dir="rtl"] .metismenu .arrow {
-  float: left;
-}
-
-/*
- * Require Bootstrap
- * https://github.com/twbs/bootstrap
-*/
-
-.metismenu .glyphicon.arrow:before {
-  content: "\e079";
-}
-.metismenu .active > a > .glyphicon.arrow:before {
-  content: "\e114";
-}
-
-/*
- * Require Font-Awesome
- * http://fortawesome.github.io/Font-Awesome/
-*/
-
-.metismenu .fa.arrow:before {
-  content: "\f104";
-}
-.metismenu .active > a > .fa.arrow:before {
-  content: "\f107";
-}
-
-/*
- * Require Ionicons
- * http://ionicons.com/
-*/
-
-.metismenu .ion.arrow:before {
-  content: "\f3d2"
-}
-.metismenu .active > a > .ion.arrow:before {
-  content: "\f3d0";
-}
-.metismenu .plus-times {
-  float: right;
-}
-*[dir="rtl"] .metismenu .plus-times {
-  float: left;
-}
-.metismenu .fa.plus-times:before {
-  content: "\f067";
-}
-.metismenu .active > a > .fa.plus-times {
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-       -o-transform: rotate(45deg);
-          transform: rotate(45deg);
-}
-.metismenu .plus-minus {
-  float: right;
-}
-*[dir="rtl"] .metismenu .plus-minus {
-  float: left;
-}
-.metismenu .fa.plus-minus:before {
-  content: "\f067";
-}
-.metismenu .active > a > .fa.plus-minus:before {
-  content: "\f068";
-}
-.metismenu .collapse {
-  display: none;
-}
-.metismenu .collapse.in {
-  display: block;
-}
-.metismenu .collapsing {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  -webkit-transition-timing-function: ease;
-       -o-transition-timing-function: ease;
-          transition-timing-function: ease;
-  -webkit-transition-duration: .35s;
-       -o-transition-duration: .35s;
-          transition-duration: .35s;
-  -webkit-transition-property: height, visibility;
-  -o-transition-property: height, visibility;
-  transition-property: height, visibility;
 }
 
 /* OriginalFileName : public/bower_components/font-awesome/css/font-awesome.css */ 
@@ -9903,9 +9802,9 @@ button.close {
  */
 
 /* Move down content because we have a fixed navbar that is 50px tall */
-body {
+/*body {
   padding-top: 50px;
-}
+}*/
 
 /* Utility classes */
 .no-padding {
@@ -10034,6 +9933,77 @@ body {
     width: 300px;
     height: 150px;
 }
+
+/* OriginalFileName : public/css/certigateTheme.css */ 
+
+.title-top{
+    padding: 0px 0px !important; 
+    margin-top: 0px;
+}
+
+.text-normal{
+    font-weight: normal;
+    text-transform: none;
+}
+.page-container{
+    margin-right: 10%;
+    margin-left: 10%;
+}
+.panel-default > .panel-heading{
+    color: #1964B6;
+    background-color: #FFFFFF;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.page-container-wide{
+    margin-top: -0.2%; 
+    margin-right: -12.5%; 
+    margin-left: -12.5%;
+}
+/**
+Organization Form buttons
+**/
+.saveStateButton{
+    margin-top: -96px;
+    margin-left: 80px;
+}
+.orgResetButton{    
+    margin-top: -175px;
+    margin-left: 188px;
+}
+.navbar-toggle{
+    background-color: #1964B6;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin top by header height */
+    margin-top: 8.8%;
+    /* Margin bottom by footer height */
+    margin-bottom: 120px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 120px;
+}
+.btn {
+  border: 0px;
+  border-radius: 0px;
+}
+
+.panel {
+  background-color: rgba(238, 238, 238, 0.27);
+  border: 0px;
+  border-radius: 0px;
+}
 /* OriginalFileName : public/css/form.css */ 
 
 .required:after { 
@@ -10062,6 +10032,51 @@ input[type="checkbox"].form-control{
 .btn-inline{
     margin: 5px 5px 0px 0px;
 }
+
+.form-register{
+    width: 75%;
+    display: inline-block;
+    border-radius: 0px;
+    box-shadow: none;
+    background-color: #f5f5f5;
+    border: 0px;
+    height: 35px; margin:10px 0;
+
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;	
+}
+.register{   
+    /*text-align: center;*/
+}
+.register label{ 
+    display: inline-block !important;
+    width: 23%; color:#1964b6 ; font-weight:400; 
+}
+.register ul {    
+    list-style: none; 
+    font-size: 12px; margin-left:19%;
+}
+.mar label{ 
+    color:#777; 
+}
+.register #user_form_photo{ 
+    display: inline-block;     
+    margin: 10px 0; 
+}
+.mar{
+    margin:10px 0;
+}
+.register .btn{ 
+    min-width:100px;
+}
+
+
 
 /* OriginalFileName : public/css/userForm.css */ 
 
@@ -10135,3 +10150,373 @@ ins {
 del {
     background-color: #ffc6c6;
 }
+/* OriginalFileName : themes/certigate/assets/css/carousel.css */ 
+
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+
+  color: #5a5a5a;
+}
+
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  /*position: absolute;*/
+  background-color:#FFFFFF !important;
+  border-bottom:3px solid #0c85cf;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 20;
+}
+.white-bar{ background-color:#FFFFFF !important; border:none;}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper > .container {
+  padding-right: 0;
+  padding-left: 0;
+}
+.navbar-wrapper .navbar {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.navbar-wrapper .navbar .container {
+  width: auto;
+}
+
+/* MAINHOLDER
+-------------------------------------------------- */
+.main-holder{ margin-top: 100px;}
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  height: 500px;
+  /*margin-bottom: 60px; */
+ 
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+  bottom:60px;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 500px;
+  background-color: #777;
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 500px;
+}
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .col-lg-4 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+/* Featurettes
+------------------------- */
+hr.featurette-divider {     /*border-top: 1px solid #fff;*/ border:none; }
+.featurette-divider {
+  margin: 80px 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+  /* Navbar positioning foo */
+  .navbar-wrapper {
+/*    margin-top: 20px;
+*/  }
+  .navbar-wrapper .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .navbar-wrapper .navbar {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  /* The navbar becomes detached from the top, so we round the corners */
+  .navbar-wrapper .navbar {
+    border-radius: 4px;
+  }
+
+  /* Bump up size of carousel content */
+  .carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+  .featurette-heading {
+    margin-top: 120px;
+  }
+}
+
+.blue-wrapper{ 
+      background-color:#1964b6;
+	  }
+.navbar{ margin-bottom:0px;
+}
+.navbar-form .form-control{ background-color:#6ba3e0  !important;
+               height: 27px !important;
+			   border: none !important;
+			       color: #1964b6;
+	   
+	   
+	   
+	   }
+.navbar-form .btn-success{ background-color:#023d7d;
+                           color:#fff; border:none;
+						   line-height: 1.3;
+						   font-size: 12px;
+	
+	}
+	.navbar-nav{ float:right;
+	             padding-top: 11px;
+	}
+	.navbar-brand {
+		       height: 73px;
+               padding: 5px 15px;
+		}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus{
+	color:#023d7d; 
+   background-color: #fff; /*border-bottom:12px solid #023d7d; */
+	
+	}
+ .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:hover{
+	 color:#023d7d !important; background:none;
+	 
+	 
+	 }
+	 .navbar-inverse .navbar-nav>li>a {   
+	             text-transform: uppercase; 
+	             color:#3b3b3b ; 
+    font-size: 13px;
+
+    padding: 15px 13px;
+}
+ h1.slidefont{ 
+          text-transform: uppercase; 
+		  font-size:50px;}
+
+
+.center-content{ text-align:center; padding:30px 20px;
+                  
+
+}
+.text-upper{ 
+           text-transform:uppercase;     
+	        padding-top: 18px;
+}
+.center-content:hover{ 
+                        background-color:#62CBF7; 
+                        padding:30px 20px; 
+						color:#fff;}
+
+.gray-bg{ 
+        background-color:#f6f6f8;     
+		padding: 80px 0;
+	}
+	
+.course-item{
+	box-shadow: 7px 7px #f3f2f2; margin-bottom:10px;
+	
+	
+	
+	
+	}
+	.main-title{ 
+	     color:#0f7dca;
+		 text-transform:uppercase;
+		 text-align:left;
+		 font-size:27px;
+		 padding: 24px 15px;
+         font-weight: bold;
+				}
+				
+				
+div.desc{
+    background-color: #fafafa;
+    color: #fff;
+     width: 100%;
+}
+
+.fix{
+   /* width: 100%;
+    padding: 0px;*/
+}				
+
+.course-title{ background-color:#234fa6; 
+                color:#fff;
+
+	
+	}
+	h4.course-title{ margin:0; padding:10px 10px ; color:#fff; text-transform:uppercase; font-size:15px;}
+	.course-bg { background-color:#234fa6; 
+	}
+	.content-course{
+		background-color: #fafafa; 
+		padding:10px 10px; color:#5e5e5e;
+		}
+		
+p.desc_content{ color:#5e5e5e;}
+		
+.content-course a{ color:#a5a5a7; 
+font-size:12px; 
+text-transform:uppercase;}
+
+#carousel-example-generic, #carousel-example-generic .item{ height:360px;}
+
+
+.small-ca{ 
+            font-size:48px;
+			font-weight: bold; 
+             color:#fff; 
+}
+#carousel-example-generic p{
+	
+	font-size:30px;}
+	.btn-white{
+	border: 2px solid #fff;
+    text-transform: uppercase;
+    border-radius: 11px;
+    padding: 12px 40px;
+    background-color: transparent;
+    min-width: 23%;
+    font-size: 16px;
+	 }
+	 
+.news .input-group .form-control  {}
+.news .input-group{ display:inline-block; width: 70%;}
+.news .input-group .form-control{ float:none;border-radius: 10px;}
+.news input.form-control{box-shadow: none;
+            border: 2px solid #ccc;
+            height: 50px;}
+			
+			.news-btn{ height: 50px; 
+			border-bottom:3px solid #0170b0; 
+			background-color:#0484ce; 
+			border:0;  min-width: 19%;
+            border-radius: 10px;
+            text-transform: uppercase;}
+			.news-heading{ 
+			
+			font-size:34px;
+			text-transform: uppercase;
+			color:#4598d5;
+				
+				}
+.lead{ color:#575757;}
+.news{    margin-top: 52px;}
+
+		.footer{ background-color:#39393a; padding:30px 0;}
+		
+		.links-footer{padding-left: 0;
+                      margin: 12px 0;
+}
+.links-footer li{ 
+        font-size:12px;   
+        padding-right: 10px;
+    	display: inline-block;  
+    	text-transform: uppercase;
+       color: #dedddd;}
+	
+	.social li a i{ 	color: #bfbfc0;}
+	
+	.social li{padding-left: 22px;}
+	.footer p{ 
+	color: #dedddd;}
+	.social{ float:right;}
+	.links{ float:left;}
+	.navbar-inverse .navbar-nav>li>a:focus{ color:#023d7d; }
+	
+/* Coursers */	
+.image-course{ background-image:url("../images/image-bg.jpg");
+              height: 265px;
+              background-repeat: no-repeat;
+              background-size: cover;     padding: 41px;}
+  
+   
+  .course-name{ 
+  color:#fff; 
+  font-size:36px;
+  font-family:Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif; }
+  
+  .btn-course-enroll{    background-color: #FFFFFF;
+    border: 0px;
+    padding: 10px 18px;
+    color: #1964B6;
+    text-transform: uppercase;
+    font-weight: 700;}
+	
+	.btn-blue-enroll{   background-color: #1964B6;
+    border: 0px;
+    padding: 10px 18px;
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: 700;}
+	
+	.inner-cont{ padding:20px;}
+	.inner-cont span{ color:#fff;}
+	.course-date { background-color:#f6f6f8; padding:25px;}
+	
+	
+/*Tabs Class */		
+	.tab-content{ padding:30px 20px; }
+	.nav-tabs{background: #f6f6f8; border-bottom:0px;}
+	
+	
+	.title-blue { color:#1964B6; padding:18px 0px; 
+	font-weight: 600;
+	text-transform:uppercase;}
+	
+	.image-about{ background-image:url("../images/about.jpg");
+              height: 265px;
+              background-repeat: no-repeat;
+              background-size: cover;     padding: 41px;}
+			  
+	  .static-cont{ padding: 20px 34px;}
+	

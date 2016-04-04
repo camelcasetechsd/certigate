@@ -313,7 +313,7 @@ return array(
                     ),
                 )
             ),
-            'press_details' => array(
+            'cmsPressReleaseDetails' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/press[/:id]',

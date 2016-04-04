@@ -68,10 +68,10 @@ class RendererFactory implements FactoryInterface
         $path = $serviceLocator->get('request')->getUri()->getPath();
         $menuView->setActivePath($path);
 
-        $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
-        $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED);
-        $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
 
+        $menusArray = $cmsCacheHandler->getCachedCMSData( $forceFlush );
+        $menusViewArray = $menuView->prepareMenuView( $menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED, /*$divId =*/"navbar", /*$divClass =*/"navbar-collapse collapse" );
+        $config['helpers']['primaryMenu'] = isset( $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] ) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
 
         if ($auth->hasIdentity()) {
             $roles = $storage['roles'];
@@ -81,7 +81,15 @@ class RendererFactory implements FactoryInterface
             $adminMenu = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED);
             $config['helpers']['adminMenu'] = isset($adminMenu[Menu::ADMIN_MENU_UNDERSCORED]) ? $adminMenu[Menu::ADMIN_MENU_UNDERSCORED] : '';
         }
-
+        
+        // add current language helper
+        /* @var $applicationLocale \Translation\Service\Locale\Locale */
+        $applicationLocale = $serviceLocator->get('applicationLocale');
+        $currentLocale = $applicationLocale->getCurrentLocale();
+        $config['helpers']['currentLocale'] = $currentLocale;
+        $config['helpers']['locale_ar'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR) ;
+        $config['helpers']['locale_en'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US) ;
+                
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
         $pathResolver = clone $serviceLocator->get('ViewTemplatePathStack');
         $pathResolver->setDefaultSuffix($config['suffix']);

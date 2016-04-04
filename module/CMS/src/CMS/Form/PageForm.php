@@ -102,8 +102,8 @@ class PageForm extends Form
             'options' => array(
                 'label' => 'Type',
                 "value_options" => array(
-                    $this->translatorHandler->translate(PageTypes::PAGE_TYPE) => $this->translatorHandler->translate(PageTypes::PAGE_TYPE),
-                    $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE) => $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE)
+                    PageTypes::PAGE_TYPE => $this->translatorHandler->translate(PageTypes::PAGE_TYPE),
+                    PageTypes::PRESS_RELEASE_TYPE => $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE)
                 ),
                 'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
             ),
@@ -211,42 +211,11 @@ class PageForm extends Form
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
+        // Add buttons fieldset
         $this->add(array(
-            'name' => FormButtons::SAVE_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-primary',
-                'value' => FormButtons::SAVE_BUTTON_TEXT,
-            )
-        ));
-
-        $this->add(array(
-            'name' => FormButtons::SAVE_AND_PUBLISH_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-success',
-                'value' => FormButtons::SAVE_AND_PUBLISH_BUTTON_TEXT,
-            )
-        ));
-
-        $this->add(array(
-            'name' => FormButtons::UNPUBLISH_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-warning',
-                'value' => FormButtons::UNPUBLISH_BUTTON_TEXT,
-            )
-        ));
-
-        $this->add(array(
-            'name' => 'reset',
-            'type' => 'Zend\Form\Element',
-            'attributes' => array(
-                'class' => 'pull-left btn-inline btn btn-danger resetButton',
-                'value' => 'Reset',
-                'type' => 'button',
-            )
-        ));
+             'name' => 'buttons',
+             'type' => 'Utilities\Form\ButtonsFieldset'
+         ));
     }
 
 }

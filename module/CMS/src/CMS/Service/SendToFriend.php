@@ -5,7 +5,6 @@ namespace CMS\Service;
 use Notifications\Service\MailTempates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
-use Notifications\Service\MailSubjects;
 use Utilities\Service\MessageTypes;
 
 /**
@@ -78,7 +77,7 @@ class SendToFriend
             'templateParameters' => array(
                 "data" => $data,
             ),
-            'subject' => MailSubjects::SEND_TO_FRIEND,
+            'subject' => $data["subject"],
         );
         $this->notification->notify($mailArray);
 

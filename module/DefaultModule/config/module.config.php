@@ -123,13 +123,13 @@ return array(
                     ),
                 ),
             ),
-            'testView' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'noOrganizationUsers' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/test',
+                    'route' => '/no-organization-users',
                     'defaults' => array(
-                        'controller' => 'DefaultModule\Controller\Index',
-                        'action' => 'test',
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'noOrganizationUsers',
                     ),
                     'constraints' => array(
                     ),

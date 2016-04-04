@@ -58,6 +58,9 @@ return array(
             'cmsPressReleaseList' => array(
                 'resource' => 'CMS',
             ),
+            'cmsPressReleaseDetails' => array(
+                'resource' => 'CMS',
+            ),
             'cmsPressReleaseUnsubscribe' => array(
                 'resource' => 'CMS',
             ),
