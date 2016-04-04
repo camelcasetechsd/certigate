@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Time;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Organziation Entity
@@ -65,6 +66,7 @@ use Utilities\Service\Time;
  * @property string $officeVersion
  * @property string $officeLang
  * @property string $creatorId
+ * @property Doctrine\Common\Collections\ArrayCollection $organizationMetas
  * 
  * 
  * @package organizations
@@ -457,12 +459,19 @@ class Organization
      * @ORM\JoinTable(name="organization_regions")
      */
     public $regions;
-
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationMeta", mappedBy="organization") 
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $organizationMetas;
+    
     public function __construct()
     {
-        $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->governorates = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->regions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->organizationUser = new ArrayCollection();
+        $this->governorates = new ArrayCollection();
+        $this->regions = new ArrayCollection();
+        $this->organizationMetas = new ArrayCollection();
     }
 
     function getId()
@@ -686,6 +695,30 @@ class Organization
             $this->regions->removeElement($outline);
         }
         return $this;
+    }
+    
+    /**
+     * Set Organization metas
+     * 
+     * @access public
+     * @param ArrayCollection $organizationMetas
+     * @return Organization
+     */
+    public function setOrganizationMetas($organizationMetas)
+    {
+        $this->organizationMetas = $organizationMetas;
+        return $this;
+    }
+
+    /**
+     * Get Organization metas
+     * 
+     * @access public
+     * @return ArrayCollection Organization metas
+     */
+    public function getOrganizationMetas()
+    {
+        return $this->organizationMetas;
     }
         
     function getCityAr()

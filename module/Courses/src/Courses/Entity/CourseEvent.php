@@ -31,6 +31,8 @@ use Utilities\Service\String;
  * @property int $optionValueId
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
+ * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Courses\Entity\PrivateQuote $privateQuote
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -134,6 +136,18 @@ class CourseEvent
     public $courseEventUsers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PublicQuote", mappedBy="courseEvent")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $publicQuotes;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Courses\Entity\PrivateQuote", mappedBy="courseEvent")
+     * @var Courses\Entity\PrivateQuote
+     */
+    public $privateQuote;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="courseEvent")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
@@ -167,6 +181,7 @@ class CourseEvent
     public function __construct()
     {
         $this->courseEventUsers = new ArrayCollection();
+        $this->publicQuotes = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -509,6 +524,59 @@ class CourseEvent
     public function setCourseEventUsers($courseEventUsers)
     {
         $this->courseEventUsers = $courseEventUsers;
+        return $this;
+    }
+    
+    
+    /**
+     * Get PublicQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection publicQuotes
+     */
+    public function getPublicQuotes()
+    {
+        return $this->publicQuotes;
+    }
+
+    /**
+     * Set PublicQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $publicQuotes
+     * @return CourseEvent
+     */
+    public function setPublicQuotes($publicQuotes)
+    {
+        $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    /**
+     * Get PrivateQuote
+     * 
+     * 
+     * @access public
+     * @return Courses\Entity\PrivateQuote privateQuote
+     */
+    public function getPrivateQuote()
+    {
+        return $this->privateQuote;
+    }
+
+    /**
+     * Set PrivateQuote
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\PrivateQuote $privateQuote
+     * @return CourseEvent
+     */
+    public function setPrivateQuote($privateQuote)
+    {
+        $this->privateQuote = $privateQuote;
         return $this;
     }
     

@@ -43,6 +43,27 @@ class OrganizationType
      * authenticated re-seller
      */
     const TYPE_RESELLER = 4;
+    
+    
+    /**
+     * authenticated training center title
+     */
+    const TYPE_ATC_TITLE = "ATC";
+
+    /**
+     * authenticated training partner title
+     */
+    const TYPE_ATP_TITLE = "ATP";
+
+    /**
+     * distributor title
+     */
+    const TYPE_DISTRIBUTOR_TITLE = "Distributor";
+
+    /**
+     * re-seller title
+     */
+    const TYPE_RESELLER_TITLE = "Re-Seller";
 
     /**
      * @ORM\Id
