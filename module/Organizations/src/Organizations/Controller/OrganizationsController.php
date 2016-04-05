@@ -71,6 +71,7 @@ class OrganizationsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'));
+                var_dump($url.$data['type']);exit;
                 return $this->redirect()->toUrl($url . $data['type']);
             }
         }
@@ -206,9 +207,11 @@ class OrganizationsController extends ActionController
         $organizationId = $this->params('organizationId');
         $metaId = $this->params('metaId');
         $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-
+        $options=array();
+        $options['query'] = $this->getServiceLocator()->get('wrapperQuery');
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         if ($OrganizationModel->canBeRenewed($this, $organizationId, $metaId)) {
-            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId));
+            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId,$options));
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -352,7 +355,7 @@ class OrganizationsController extends ActionController
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
         $options['applicationLocale'] = $applicationLocale;
-        
+
         $customizedForm = $orgModel->customizeOrgEditForm($options, $this, $id);
         $customizedForm->bind($orgObj);
 

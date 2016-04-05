@@ -19,7 +19,6 @@ use Utilities\Service\Time;
  * @property InputFilter $inputFilter validation constraints 
  * @property int    $id
  * @property int    $status
- * @property int    $type 
  * @property string $commertialName
  * @property string $commertialNameAr
  * @property float  $longtitude
@@ -29,14 +28,17 @@ use Utilities\Service\Time;
  * @property string $ownerNationalId
  * @property string $CRNo
  * @property \DateTime $CRExpiration
+ * @property \DateTime $CRExpirationHj
  * @property string $CRAttachment
  * @property string $wireTransferAttachment
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
+ * @property \DateTime $atpLicenseExpirationHj
  * @property string $atpLicenseAttachment
  * @property string $atpWireTransferAttachment
  * @property string $atcLicenseNo
  * @property \DateTime $atcLicenseExpiration
+ * @property \DateTime $atcLicenseExpirationHj
  * @property string $atcLicenseAttachment
  * @property string $atcWireTransferAttachment
  * @property string $addressLine1
@@ -206,6 +208,13 @@ class Organization
 
     /**
      * @Gedmo\Versioned
+     * @ORM\Column(type="date", nullable=true )
+     * @var \DateTime
+     */
+    public $CRExpirationHj;
+
+    /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", nullable=true )
      * @var string
      */
@@ -224,6 +233,13 @@ class Organization
      * @var \DateTime
      */
     public $atpLicenseExpiration;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date" , nullable=true)
+     * @var \DateTime
+     */
+    public $atpLicenseExpirationHj;
 
     /**
      * @Gedmo\Versioned
@@ -252,6 +268,13 @@ class Organization
      * @var \DateTime
      */
     public $atcLicenseExpiration;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date" , nullable=true)
+     * @var \DateTime
+     */
+    public $atcLicenseExpirationHj;
 
     /**
      * @Gedmo\Versioned
@@ -520,6 +543,11 @@ class Organization
         return $this->CRExpiration;
     }
 
+    function getCRExpirationHj()
+    {
+        return $this->CRExpirationHj;
+    }
+
     function getCRAttachment()
     {
         return $this->CRAttachment;
@@ -535,6 +563,11 @@ class Organization
         return $this->atpLicenseExpiration;
     }
 
+    function getAtpLicenseExpirationHj()
+    {
+        return $this->atpLicenseExpirationHj;
+    }
+
     function getAtpLicenseAttachment()
     {
         return $this->atpLicenseAttachment;
@@ -548,6 +581,11 @@ class Organization
     function getAtcLicenseExpiration()
     {
         return $this->atcLicenseExpiration;
+    }
+
+    function getAtcLicenseExpirationHj()
+    {
+        return $this->atcLicenseExpirationHj;
     }
 
     function getAtcLicenseAttachment()
@@ -687,11 +725,10 @@ class Organization
         }
         return $this;
     }
-        
+
     function getCityAr()
     {
         return $this->cityAr;
-
     }
 
     function getZipCode()
@@ -842,6 +879,14 @@ class Organization
         $this->CRExpiration = $CRExpiration;
     }
 
+    function setCRExpirationHj($CRExpirationHj)
+    {
+        if (!is_object($CRExpirationHj) && !empty($CRExpirationHj)) {
+            $CRExpirationHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $CRExpirationHj);
+        }
+        $this->CRExpirationHj = $CRExpirationHj;
+    }
+
     function setCRAttachment($CRAttachment)
     {
         $this->CRAttachment = $CRAttachment;
@@ -860,6 +905,14 @@ class Organization
         $this->atpLicenseExpiration = $atpLicenseExpiration;
     }
 
+    function setAtpLicenseExpirationHj($atpLicenseExpirationHj)
+    {
+        if (!is_object($atpLicenseExpirationHj) && !empty($atpLicenseExpirationHj)) {
+            $atpLicenseExpirationHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $atpLicenseExpirationHj);
+        }
+        $this->atpLicenseExpirationHj = $atpLicenseExpirationHj;
+    }
+
     function setAtpLicenseAttachment($atpLicenseAttachment)
     {
         $this->atpLicenseAttachment = $atpLicenseAttachment;
@@ -876,6 +929,14 @@ class Organization
             $atcLicenseExpiration = \DateTime::createFromFormat(Time::DATE_FORMAT, $atcLicenseExpiration);
         }
         $this->atcLicenseExpiration = $atcLicenseExpiration;
+    }
+
+    function setAtcLicenseExpirationHj($atcLicenseExpirationHj)
+    {
+        if (!is_object($atcLicenseExpirationHj) && !empty($atcLicenseExpirationHj)) {
+            $atcLicenseExpirationHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $atcLicenseExpirationHj);
+        }
+        $this->atcLicenseExpirationHj = $atcLicenseExpirationHj;
     }
 
     function setAtcLicenseAttachment($atcLicenseAttachment)
@@ -1121,6 +1182,9 @@ class Organization
         if (array_key_exists('CRNo', $data)) {
             $this->setCRNo($data['CRNo']);
         }
+        if (array_key_exists('CRExpirationHj', $data)) {
+            $this->setCRExpirationHj($data['CRExpirationHj']);
+        }
         if (array_key_exists('CRExpiration', $data)) {
             $this->setCRExpiration($data['CRExpiration']);
         }
@@ -1148,11 +1212,15 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data['email']);
         }
-        $this->setType($data['type']);
-        $this->setCommercialNameAr($data['commercialNameAr']);
-        $this->setOwnerNameAr($data['ownerNameAr']);
-        $this->setCRNo($data['CRNo']);
-        
+        if (array_key_exists('commercialNameAr', $data)) {
+            $this->setCommercialNameAr($data['commercialNameAr']);
+        }
+        if (array_key_exists('ownerNameAr', $data)) {
+            $this->setOwnerNameAr($data['ownerNameAr']);
+        }
+        if (array_key_exists('CRNo', $data)) {
+            $this->setCRNo($data['CRNo']);
+        }
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
         }
@@ -1168,15 +1236,30 @@ class Organization
         if (array_key_exists('fax', $data)) {
             $this->setFax($data["fax"]);
         }
-        $this->setAddressLine1($data['addressLine1']);
-        $this->setAddressLine1Ar($data['addressLine1Ar']);
-        $this->setCity($data['city']);
-        $this->setCityAr($data['cityAr']);
-        $this->setZipCode($data['zipCode']);
-        $this->setPhone1($data['phone1']);
-        $this->setWebsite($data['website']);
-        $this->setEmail($data['email']);
-
+        if (array_key_exists('addressLine1', $data)) {
+            $this->setAddressLine1($data["addressLine1"]);
+        }
+        if (array_key_exists('addressLine1Ar', $data)) {
+            $this->setAddressLine1Ar($data["addressLine1Ar"]);
+        }
+        if (array_key_exists('city', $data)) {
+            $this->setCity($data["city"]);
+        }
+        if (array_key_exists('cityAr', $data)) {
+            $this->setCityAr($data["cityAr"]);
+        }
+        if (array_key_exists('zipCode', $data)) {
+            $this->setZipCode($data["zipCode"]);
+        }
+        if (array_key_exists('phone1', $data)) {
+            $this->setPhone1($data["phone1"]);
+        }
+        if (array_key_exists('website', $data)) {
+            $this->setWebsite($data["website"]);
+        }
+        if (array_key_exists('email', $data)) {
+            $this->setEmail($data["email"]);
+        }
         if (array_key_exists('longtitude', $data)) {
             $this->setLongtitude($data["longtitude"]);
         }
@@ -1219,6 +1302,9 @@ class Organization
         if (array_key_exists('atcLicenseExpiration', $data) && !empty($data['atcLicenseExpiration'])) {
             $this->setAtcLicenseExpiration($data["atcLicenseExpiration"]);
         }
+        if (array_key_exists('atcLicenseExpirationHj', $data) && !empty($data['atcLicenseExpirationHj'])) {
+            $this->setAtcLicenseExpirationHj($data["atcLicenseExpirationHj"]);
+        }
         if (array_key_exists('atpLicenseAttachment', $data) && is_string($data['atpLicenseAttachment'])) {
             $this->setAtpLicenseAttachment($data["atpLicenseAttachment"]);
         }
@@ -1227,6 +1313,9 @@ class Organization
         }
         if (array_key_exists('atpLicenseExpiration', $data) && !empty($data['atpLicenseExpiration'])) {
             $this->setAtpLicenseExpiration($data["atpLicenseExpiration"]);
+        }
+        if (array_key_exists('atpLicenseExpirationHj', $data) && !empty($data['atpLicenseExpirationHj'])) {
+            $this->setAtpLicenseExpirationHj($data["atpLicenseExpirationHj"]);
         }
     }
 
@@ -1635,44 +1724,44 @@ class Organization
             $this->inputFilter = $inputFilter;
         }
         $inputFilter->add(array(
-                'name' => 'type',
-                'required' => false,
-            ));
+            'name' => 'type',
+            'required' => false,
+        ));
 
-            $inputFilter->add(array(
-                'name' => 'commercialName',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('commercialName'),
-                            'messages' => array(
+        $inputFilter->add(array(
+            'name' => 'commercialName',
+            'required' => true,
+            'validators' => array(
+                array('name' => 'DoctrineModule\Validator\UniqueObject',
+                    'options' => array(
+                        'use_context' => true,
+                        'object_manager' => $query->entityManager,
+                        'object_repository' => $query->entityRepository,
+                        'fields' => array('commercialName'),
+                        'messages' => array(
 //                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
-            $inputFilter->add(array(
-                'name' => 'commercialNameAr',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('commercialName'),
-                            'messages' => array(
+                        ),
+                    )
+                ),
+            )
+        ));
+        $inputFilter->add(array(
+            'name' => 'commercialNameAr',
+            'required' => true,
+            'validators' => array(
+                array('name' => 'DoctrineModule\Validator\UniqueObject',
+                    'options' => array(
+                        'use_context' => true,
+                        'object_manager' => $query->entityManager,
+                        'object_repository' => $query->entityRepository,
+                        'fields' => array('commercialName'),
+                        'messages' => array(
 //                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
+                        ),
+                    )
+                ),
+            )
+        ));
 
         return $this->inputFilter;
     }

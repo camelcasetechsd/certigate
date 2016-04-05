@@ -221,6 +221,19 @@ class Organization
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
         }
+        if (!empty($orgInfo['CRExpirationHj'])) {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['CRExpirationHj']);
+            $orgInfo['CRExpirationHj'] = $date;
+        }
+        if (!empty($orgInfo['atcLicenseExpirationHj']) && $orgInfo['atcLicenseExpirationHj'] != "") {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpirationHj']);
+            $orgInfo['atcLicenseExpirationHj'] = $date;
+        }
+
+        if (!empty($orgInfo['atpLicenseExpirationHj']) && $orgInfo['atpLicenseExpirationHj'] != "") {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpirationHj']);
+            $orgInfo['atpLicenseExpirationHj'] = $date;
+        }
 
         /**
          * Handling User Forign keys
@@ -536,7 +549,7 @@ class Organization
      * Get required roles
      * 
      * @access public
-     * @param int $organizationType
+     * @param int $organizationTypes
      * 
      * @return array required roles
      */
@@ -563,6 +576,8 @@ class Organization
      */
     public function getOrganizationTypes($action = null, $organizationObj = null)
     {
+//        var_dump($organizationObj);
+//        exit;
         $params = array();
         if ($action != null) {
             for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
@@ -572,6 +587,7 @@ class Organization
             }
         }
         else if ($organizationObj != null) {
+            var_dump('here');
             $typesArray = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
                 'organization' => $organizationObj->getId()
             ));
@@ -579,6 +595,7 @@ class Organization
                 array_push($params, $type->getType()->getId());
             }
         }
+//        exit;
         return $params;
     }
 
@@ -959,10 +976,10 @@ class Organization
      * @param Int $metaId
      * @return FORM
      */
-    public function getCustomizedRenewalForm($action, $organizationId, $metaId)
+    public function getCustomizedRenewalForm($action, $organizationId, $metaId, $options)
     {
 
-        $form = new \Organizations\Form\RenewForm();
+        $form = new \Organizations\Form\RenewForm(null, $options);
         $atpFields = $action->getServiceLocator()->get('Config')['AtpRenewalFields'];
         $atcFields = $action->getServiceLocator()->get('Config')['AtcRenewalFields'];
 
@@ -1018,7 +1035,7 @@ class Organization
                 $isAdminUser = true;
             }
         }
-
         $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
+
 }

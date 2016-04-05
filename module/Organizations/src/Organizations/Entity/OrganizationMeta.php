@@ -62,6 +62,12 @@ class OrganizationMeta
      * @ORM\Column(type="date" , nullable=true)
      * @var \DateTime
      */
+    public $expirationDateHj;
+
+    /**
+     * @ORM\Column(type="date" , nullable=true)
+     * @var \DateTime
+     */
     public $expirationDate;
 
     /**
@@ -105,6 +111,11 @@ class OrganizationMeta
         return $this->expirationDate;
     }
 
+    function getExpirationDateHj()
+    {
+        return $this->expirationDateHj;
+    }
+
     function getExpirationFlag()
     {
         return $this->expirationFlag;
@@ -113,6 +124,11 @@ class OrganizationMeta
     function setExpirationDate($expirationDate)
     {
         $this->expirationDate = $expirationDate;
+    }
+
+    function setExpirationDateHj($expirationDateHj)
+    {
+        $this->expirationDateHj = $expirationDateHj;
     }
 
     function setExpirationFlag($expirationFlag)

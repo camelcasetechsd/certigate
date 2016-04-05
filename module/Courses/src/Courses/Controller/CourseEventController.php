@@ -43,7 +43,7 @@ class CourseEventController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
 
         $courseId = $this->params('courseId', /* $default = */ null);
-        $data = $query->filter(/* $entityName = */'Courses\Entity\CourseEvent', /*$criteria =*/$courseEventModel->getListingCriteria(/*$trainingManagerId =*/ false, $courseId));
+        $data = $query->filter(/* $entityName = */'Courses\Entity\CourseEvent', /* $criteria = */ $courseEventModel->getListingCriteria(/* $trainingManagerId = */ false, $courseId));
         $variables['courseEvents'] = $objectUtilities->prepareForDisplay($data);
         $variables['courseId'] = $this->params('courseId', /* $default = */ null);
         return new ViewModel($variables);
@@ -78,6 +78,7 @@ class CourseEventController extends ActionController
         $options['query'] = $query;
         $options['userId'] = $storage['id'];
         $options['courseId'] = $courseId = $this->params('courseId', /* $default = */ null);
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $form = new CourseEventForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();
@@ -119,7 +120,7 @@ class CourseEventController extends ActionController
         $courseEvent = $query->find('Courses\Entity\CourseEvent', $id);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        
+
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $courseEvent->getAtp());
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
@@ -171,7 +172,7 @@ class CourseEventController extends ActionController
         $url = $this->getIndexUrl();
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * Get index url
      *
@@ -183,10 +184,11 @@ class CourseEventController extends ActionController
     {
         $courseId = $this->params('courseId', /* $default = */ null);
         $params = array('action' => 'index');
-        if(! empty($courseId)){
+        if (!empty($courseId)) {
             $params["courseId"] = $courseId;
         }
         $url = $this->getEvent()->getRouter()->assemble($params, array('name' => 'courseEvents'));
         return $url;
     }
+
 }

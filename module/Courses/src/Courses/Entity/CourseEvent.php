@@ -74,7 +74,21 @@ class CourseEvent
      * @ORM\Column(type="date")
      * @var \DateTime
      */
+    public $startDateHj;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
     public $endDate;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $endDateHj;
 
     /**
      * @Gedmo\Versioned
@@ -150,14 +164,14 @@ class CourseEvent
      * @var int
      */
     public $optionValueId;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
-    
+
     /**
      * Prepare entity
      * 
@@ -207,7 +221,7 @@ class CourseEvent
         $this->course = $course;
         return $this;
     }
-    
+
     /**
      * Get Start Date
      * 
@@ -221,6 +235,18 @@ class CourseEvent
     }
 
     /**
+     * Get Start Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime startDate
+     */
+    public function getStartDateHj()
+    {
+        return $this->startDateHj;
+    }
+
+    /*
      * Set Start Date
      * 
      * 
@@ -228,12 +254,30 @@ class CourseEvent
      * @param \DateTime $startDate
      * @return CourseEvent
      */
+
     public function setStartDate($startDate)
     {
         if (!is_object($startDate)) {
             $startDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDate);
         }
         $this->startDate = $startDate;
+        return $this;
+    }
+
+    /**
+     * Set Start Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $startDateHj
+     * @return CourseEvent
+     */
+    public function setStartDateHj($startDateHj)
+    {
+        if (!is_object($startDateHj)) {
+            $startDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDateHj);
+        }
+        $this->startDateHj = $startDateHj;
         return $this;
     }
 
@@ -250,6 +294,18 @@ class CourseEvent
     }
 
     /**
+     * Get End Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime endDate
+     */
+    public function getEndDateHj()
+    {
+        return $this->endDateHj;
+    }
+
+    /**
      * Set End Date
      * 
      * 
@@ -263,6 +319,23 @@ class CourseEvent
             $endDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDate);
         }
         $this->endDate = $endDate;
+        return $this;
+    }
+
+    /**
+     * Set End Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $endDateHj
+     * @return CourseEvent
+     */
+    public function setEndDateHj($endDateHj)
+    {
+        if (!is_object($endDateHj)) {
+            $endDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDateHj);
+        }
+        $this->endDateHj = $endDateHj;
         return $this;
     }
 
@@ -471,7 +544,7 @@ class CourseEvent
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get CourseEventUsers
      * 
@@ -511,7 +584,7 @@ class CourseEvent
         $this->courseEventUsers = $courseEventUsers;
         return $this;
     }
-    
+
     /**
      * Get Votes
      * 
@@ -590,7 +663,7 @@ class CourseEvent
         return $this;
     }
 
-        /**
+    /**
      * Get detailed name
      * 
      * @access public
@@ -599,11 +672,11 @@ class CourseEvent
     public function getDetailedName()
     {
         $detailedName = $this->getCourse()->getName() . String::TEXT_SEPARATOR . "Start: " . $this->getStartDate()->format(Time::DATE_FORMAT)
-                            . " - End: " . $this->getEndDate()->format(Time::DATE_FORMAT)
-                            . " - ATP: " . $this->getAtp()->getCommercialName();
+                . " - End: " . $this->getEndDate()->format(Time::DATE_FORMAT)
+                . " - ATP: " . $this->getAtp()->getCommercialName();
         return $detailedName;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -641,7 +714,9 @@ class CourseEvent
                 ->setAtp($data["atp"])
                 ->setCapacity($data["capacity"])
                 ->setEndDate($data["endDate"])
+                ->setEndDateHj($data["endDateHj"])
                 ->setStartDate($data["startDate"])
+                ->setStartDateHj($data["startDateHj"])
                 ->setStudentsNo($data["studentsNo"])
                 ->setHideFromCalendar($data["hideFromCalendar"])
         ;
@@ -685,6 +760,15 @@ class CourseEvent
             ));
             $inputFilter->add(array(
                 'name' => 'endDate',
+                'required' => true,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'startDateHj',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'endDateHj',
                 'required' => true,
             ));
             $inputFilter->add(array(

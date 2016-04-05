@@ -59,6 +59,8 @@ class CourseEventForm extends Form
         unset($options['userId']);
         $this->courseId = $options['courseId'];
         unset($options['courseId']);
+        $locale = $options['applicationLocale'];
+        unset($options['applicationLocale']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');

@@ -35,6 +35,7 @@ use Zend\Validator\Identical;
  * @property string $password
  * @property string $mobile
  * @property \DateTime $dateOfBirth
+ * @property \DateTime $dateOfBirthHj
  * @property string $addressOne
  * @property string $addressOneAr
  * @property string $addressTwo
@@ -46,6 +47,7 @@ use Zend\Validator\Identical;
  * @property string $identificationType
  * @property string $identificationNumber
  * @property \DateTime $identificationExpiryDate
+ * @property \DateTime $identificationExpiryDateHj
  * @property string $email
  * @property string $securityQuestion
  * @property string $securityAnswer
@@ -237,6 +239,13 @@ class User
 
     /**
      *
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $identificationExpiryDateHj;
+
+    /**
+     *
      * @ORM\Column(type="string" , unique=true)
      * @var string
      */
@@ -262,6 +271,13 @@ class User
      * @var \DateTime
      */
     public $dateOfBirth;
+
+    /**
+     * hijri date
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $dateOfBirthHj;
 
     /**
      *
@@ -347,7 +363,7 @@ class User
      * @var int
      */
     public $customerId;
-    
+
     /**
      * hash password
      * 
@@ -423,6 +439,18 @@ class User
     }
 
     /**
+     * Get dateOfBirth
+     * 
+     * 
+     * @access public
+     * @return \DateTime dateOfBirth
+     */
+    public function getDateOfBirthHj()
+    {
+        return $this->dateOfBirthHj;
+    }
+
+    /**
      * Get mobile
      * 
      * 
@@ -445,7 +473,7 @@ class User
     {
         return $this->firstName;
     }
-    
+
     /**
      * Get firstNameAr
      * 
@@ -851,6 +879,18 @@ class User
     }
 
     /**
+     * Get identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @return \DateTime identificationExpiryDate
+     */
+    public function getIdentificationExpiryDateHj()
+    {
+        return $this->identificationExpiryDateHj;
+    }
+
+    /**
      * Get email
      * 
      * 
@@ -897,6 +937,21 @@ class User
     public function setDateOfBirth($dateOfBirth)
     {
         $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
+        return $this;
+    }
+
+
+    /**
+     * Set dateOfBirth
+     * 
+     * 
+     * @access public
+     * @param \DateTime $dateOfBirthHj
+     * @return User current entity
+     */
+    public function setDateOfBirthHj($dateOfBirthHj)
+    {
+        $this->dateOfBirthHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirthHj);
         return $this;
     }
 
@@ -1349,6 +1404,20 @@ class User
     }
 
     /**
+     * Set identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @param \DateTime $identificationExpiryDateHj
+     * @return User current entity
+     */
+    public function setIdentificationExpiryDateHj($identificationExpiryDateHj)
+    {
+        $this->identificationExpiryDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDateHj);
+        return $this;
+    }
+
+    /**
      * Set email
      * 
      * 
@@ -1455,7 +1524,7 @@ class User
         $this->customerId = $customerId;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -1493,6 +1562,7 @@ class User
             $this->setCustomerId($data["customerId"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
+                ->setDateOfBirthHj($data["dateOfBirthHj"])
                 ->setMobile($data["mobile"])
                 ->setFirstName($data["firstName"])
                 ->setFirstNameAr($data["firstNameAr"])
@@ -1510,6 +1580,7 @@ class User
                 ->setCity($data["city"])
                 ->setEmail($data["email"])
                 ->setIdentificationExpiryDate($data["identificationExpiryDate"])
+                ->setIdentificationExpiryDateHj($data["identificationExpiryDateHj"])
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
@@ -1691,6 +1762,18 @@ class User
                     )
                 )
             ));
+            $inputFilter->add(array(
+                'name' => 'dateOfBirthHj',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
+                    )
+                )
+            ));
 
             $inputFilter->add(array(
                 'name' => 'photo',
@@ -1729,7 +1812,7 @@ class User
                 'name' => 'addressTwoAr',
                 'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -1761,13 +1844,25 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'identificationExpiryDate',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'identificationExpiryDateHj',
                 'required' => true,
                 'validators' => array(
                     array(
