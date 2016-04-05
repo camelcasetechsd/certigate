@@ -334,15 +334,7 @@ class OrganizationsController extends ActionController
         $crAttachment = $orgObj->CRAttachment;
         $oldStatus = $orgObj->getStatus();
 //
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-
-        $isAdminUser = false;
-        if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-        }
+        $isAdminUser = $this->isAdminUser();
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
 
@@ -495,12 +487,7 @@ class OrganizationsController extends ActionController
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $id);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
 
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
