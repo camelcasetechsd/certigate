@@ -84,7 +84,7 @@ class RenewForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(

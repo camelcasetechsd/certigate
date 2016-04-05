@@ -8,6 +8,7 @@ use Users\Entity\Role;
 use Utilities\Service\Time;
 use Organizations\Entity\Organization;
 use Utilities\Form\ButtonsFieldset;
+use Translation\Service\Locale\Locale;
 
 /**
  * CourseEvent Form
@@ -59,7 +60,7 @@ class CourseEventForm extends Form
         unset($options['userId']);
         $this->courseId = $options['courseId'];
         unset($options['courseId']);
-        $locale = $options['applicationLocale'];
+        $locale = $options['applicationLocale']->getCurrentLocale();
         unset($options['applicationLocale']);
         parent::__construct($name, $options);
 
@@ -93,7 +94,7 @@ class CourseEventForm extends Form
             ));
         }
 
-        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
+//        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
         $userIds = array();
         if ($this->isAdminUser === false) {
             $userIds[] = $this->userId;
@@ -115,7 +116,7 @@ class CourseEventForm extends Form
                     'name' => 'getOrganizationsBy',
                     'params' => array(
                         'userIds' => $userIds,
-                        'types' => $types,
+//                        'types' => $types,
                         'status' => $status,
                     )
                 ),
@@ -174,7 +175,7 @@ class CourseEventForm extends Form
                 'label' => 'Students Number',
             ),
         ));
-        
+
         $this->add(array(
             'name' => "fullCapacity",
             'type' => 'Zend\Form\Element',
@@ -185,47 +186,130 @@ class CourseEventForm extends Form
                 'onclick' => 'setFullCapacity("#course_event_form_studentsNo","#course_event_form_capacity")',
             )
         ));
+        if ($locale == Locale::LOCALE_AR_AR) {
 
-        $this->add(array(
-            'name' => 'startDate',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'Start Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
-        $this->add(array(
-            'name' => 'endDate',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'End Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
-
-        $this->add(array(
-                'name' => 'hideFromCalendar',
-                'type' => 'Zend\Form\Element\Checkbox',
+            $this->add(array(
+                'name' => 'startDateHj',
+                'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'class' => 'form-control',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
                 ),
                 'options' => array(
-                    'label' => 'Hide From Calendar',
-                    'checked_value' => Status::STATUS_ACTIVE,
-                    'unchecked_value' => Status::STATUS_INACTIVE
+                    'label' => 'Hijri Start Date',
+                    'format' => Time::DATE_FORMAT,
                 ),
             ));
-        
+            $this->add(array(
+                'name' => 'startDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Start Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'startDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Start Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'startDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Start Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+
+        $this->add(array(
+            'name' => 'hideFromCalendar',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Hide From Calendar',
+                'checked_value' => Status::STATUS_ACTIVE,
+                'unchecked_value' => Status::STATUS_INACTIVE
+            ),
+        ));
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',

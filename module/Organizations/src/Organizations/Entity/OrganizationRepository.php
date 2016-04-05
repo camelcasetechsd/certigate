@@ -86,17 +86,17 @@ class OrganizationRepository extends EntityRepository
 
         $parameters = array(
             'status' => Status::STATUS_ACTIVE,
-            'types' => array(
-                $type,
-                Organization::TYPE_BOTH
-            )
+//            'types' => array(
+//                $type,
+//                Organization::TYPE_BOTH
+//            )
         );
         
         $queryBuilder->select("o")
                 ->from("Organizations\Entity\Organization", "o")
                 ->andWhere($queryBuilder->expr()->eq('o.status', ":status"))
-                ->andWhere($queryBuilder->expr()->in('o.type', ":types"));
-        
+//                ->andWhere($queryBuilder->expr()->in('o.type', ":types"));
+        ;
         $organizations = $queryBuilder->getQuery()->setParameters($parameters)->getResult();
         return $organizations;
     }

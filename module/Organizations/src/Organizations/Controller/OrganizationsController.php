@@ -71,7 +71,6 @@ class OrganizationsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array('name' => 'new_org'));
-                var_dump($url.$data['type']);exit;
                 return $this->redirect()->toUrl($url . $data['type']);
             }
         }

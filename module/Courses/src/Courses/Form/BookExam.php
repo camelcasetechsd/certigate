@@ -6,6 +6,7 @@ use Utilities\Form\Form;
 use Utilities\Service\Time;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Translation\Service\Locale\Locale;
 
 /**
  * BookExam Form
@@ -40,27 +41,80 @@ class BookExam extends Form implements ObjectManagerAwareInterface
     {
         $this->query = $options['query'];
         unset($options['query']);
-
+        $locale = $options['applicationLocale']->getCurrentLocale();
+        unset($options['applicationLocale']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
+        if ($locale == Locale::LOCALE_AR_AR) {
+            $this->add(array(
+                'name' => 'dateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required ',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Exam Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+                'validators' => array(
+                    'Courses\Form\TenDaysAfterValidator' => true
+                )
+            ));
+            $this->add(array(
+                'name' => 'date',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required ',
+                    'class' => 'form-control gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Exam Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+                'validators' => array(
+                    'Courses\Form\TenDaysAfterValidator' => true
+                )
+            ));
+        }
+        else {
+            $this->add(array(
+                'name' => 'dateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required ',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Exam Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+                'validators' => array(
+                    'Courses\Form\TenDaysAfterValidator' => true
+                )
+            ));
+            $this->add(array(
+                'name' => 'date',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required ',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Exam Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+                'validators' => array(
+                    'Courses\Form\TenDaysAfterValidator' => true
+                )
+            ));
+        }
 
-        $this->add(array(
-            'name' => 'date',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required ',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'Exam Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-            'validators' => array(
-                'Courses\Form\TenDaysAfterValidator' => true
-            )
-        ));
         $this->add(array(
             'name' => 'studentsNo',
             'type' => 'Zend\Form\Element\Number',

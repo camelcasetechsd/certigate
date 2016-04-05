@@ -280,7 +280,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate',
+                    'class' => 'form-register gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -309,7 +309,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate',
+                    'class' => 'form-register gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(

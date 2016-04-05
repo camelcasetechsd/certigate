@@ -125,6 +125,7 @@ class Exam
                     break;
             }
             $req->date = date_format($req->date, Time::DATE_FORMAT);
+            $req->dateHj = date_format($req->dateHj, Time::DATE_FORMAT);
         }
 
         return $requests;

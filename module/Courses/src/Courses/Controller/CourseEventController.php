@@ -129,6 +129,7 @@ class CourseEventController extends ActionController
         $options['query'] = $query;
         $options['userId'] = $storage['id'];
         $options['courseId'] = $courseId = $this->params('courseId', /* $default = */ null);
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $form = new CourseEventForm(/* $name = */ null, $options);
         $form->bind($courseEvent);
 

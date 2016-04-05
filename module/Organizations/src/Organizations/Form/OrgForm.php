@@ -270,7 +270,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter CR Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -533,7 +533,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate atcSet',
+                    'class' => 'form-control gregorianDate-ar atcSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -776,7 +776,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate atpSet',
+                    'class' => 'form-control gregorianDate-ar atpSet',
                     'type' => 'text',
                 ),
                 'options' => array(
