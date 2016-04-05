@@ -25,31 +25,36 @@ $.calendars.calendars.islamic.prototype.regional['ar'] = {
 $('.hijriDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('islamic', 'ar'),
     onClose: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var gregorianDate = $.calendars.instance('gregorian').fromJD(julianDate);
             console.log('hijri is ' + dateText.toLocaleString() + ' Leads to julian: ' + julianDate + ' which is in gregorian ' + gregorianDate);
-            $(this).next('#gregorianDate').val(gregorianDate.toLocaleString().replace(/-/g, '/'));
+            $(this).parent().next('div').find('.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).next('#gregorianDate').val("");
+            $(this).parent().next('div').find('.gregorianDate').val("");
         }
     }
 }));
 
 $('.hijriDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('islamic'),
+    onselect: function (dateText) {
+    },
     onClose: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
-            var gregorianDate = $.calendars.instance('gregorian').fromJD(julianDate);
+            var gregorianDate = $.calendars.instance('gregorian')
+                    .fromJD(julianDate);
             console.log('hijri is ' + dateText.toLocaleString() + ' Leads to julian: ' + julianDate + ' which is in gregorian ' + gregorianDate);
-            $(this).next('.gregorianDate').val(gregorianDate.toLocaleString().replace(/-/g, '/'));
+            $(this).parent().next('div').find('.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).next('.gregorianDate').val("");
+            $(this).parent().next('div').find('.gregorianDate').val("");
 
         }
 
@@ -59,15 +64,16 @@ $('.hijriDate').calendarsPicker($.extend({
 $('.gregorianDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian'),
     onClose: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var islamicDate = $.calendars.instance('islamic').fromJD(julianDate);
             console.log('gregorian is ' + dateText.toLocaleString() + ' Leads to julian: ' + julianDate + ' which is in islamic ' + islamicDate);
-            $(this).prev('.hijriDate').val(islamicDate.toLocaleString().replace(/-/g, '/'));
+            $(this).parent().prev('div').find('.hijriDate').val(islamicDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).prev('.hijriDate').val("");
+            $(this).parent().prev('div').find('.hijriDate').val("");
 
         }
 
