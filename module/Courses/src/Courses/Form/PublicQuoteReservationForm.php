@@ -28,7 +28,16 @@ class PublicQuoteReservationForm extends Form
     {
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-inline');
+        $this->setAttribute('action', $options["actionUrl"]);
 
+        $this->add(array(
+            'name' => 'courseEvent',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'value' => $options["courseEvent"],
+            ),
+        ));
+        
         $this->add(array(
             'name' => 'seatsNo',
             'type' => 'Zend\Form\Element\Number',

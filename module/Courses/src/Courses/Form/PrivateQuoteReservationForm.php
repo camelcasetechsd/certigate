@@ -47,7 +47,16 @@ class PrivateQuoteReservationForm extends Form
         
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-inline');
-
+        $this->setAttribute('action', $options["actionUrl"]);
+        
+        $this->add(array(
+            'name' => 'course',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'value' => $options["course"],
+            ),
+        ));
+        
         $this->add(array(
             'name' => 'venue',
             'type' => 'Zend\Form\Element\Select',
@@ -57,7 +66,7 @@ class PrivateQuoteReservationForm extends Form
             ),
             'options' => array(
                 'label' => 'Venue',
-                'value_options' => $this->privateQuoteModel->getTranslatedResourceTypes(),
+                'value_options' => $this->privateQuoteModel->getTranslatedVenueTypes(),
                 'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
             )
         ));

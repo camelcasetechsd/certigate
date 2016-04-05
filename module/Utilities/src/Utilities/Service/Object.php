@@ -18,6 +18,7 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
  * @property array $countries
  * @property array $languages
  * @property Utilities\Service\Query\Query $query
+ * @property array $statusConstants
  * 
  * @package utilities
  * @subpackage service
@@ -56,6 +57,12 @@ class Object
     public $query;
 
     /**
+     *
+     * @var array
+     */
+    public $statusConstants;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -72,6 +79,8 @@ class Object
         $locale = $applicationLocale->getCurrentLanguageCode();
         $this->setLocale($locale);
         $this->query = $query;
+        $statusReflection = new \ReflectionClass('Utilities\Service\Status');
+        $this->statusConstants = $statusReflection->getConstants();
     }
 
     /**
@@ -97,9 +106,10 @@ class Object
             }
             $objectProperties = $this->prepareForStatusDisplay($object);
             if (($notObject === false || ($notObject === true && !is_null($sampleObject))) && $depthLevel == 1) {
-                if(is_null($sampleObject)){
+                if (is_null($sampleObject)) {
                     $sampleObjectForWrapper = $object;
-                }else{
+                }
+                else {
                     $sampleObjectForWrapper = $sampleObject;
                 }
                 $wrapped = AbstractWrapper::wrap($sampleObjectForWrapper, $this->query->entityManager);
@@ -151,6 +161,10 @@ class Object
             $objectProperties = get_object_vars($object);
         }
         if (array_key_exists("status", $objectProperties)) {
+            $statusKey = array_search( $object->status , $this->statusConstants);
+            if($statusKey !== false){
+                $object->statusText = $this->statusConstants[$statusKey . "_TEXT"];
+            }
             $object->statusActive = false;
             $object->statusIsactive = false;
             $object->statusDeleted = false;
@@ -159,23 +173,18 @@ class Object
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
                     $object->statusActive = TRUE;
-                    $object->statusText = Status::STATUS_ACTIVE_TEXT;
                     break;
                 case Status::STATUS_INACTIVE:
                     $object->statusIsactive = TRUE;
-                    $object->statusText = Status::STATUS_INACTIVE_TEXT;
                     break;
                 case Status::STATUS_DELETED:
                     $object->statusDeleted = TRUE;
-                    $object->statusText = Status::STATUS_DELETED_TEXT;
                     break;
                 case Status::STATUS_NOT_APPROVED:
                     $object->statusNotApproved = TRUE;
-                    $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
                     break;
                 case Status::STATUS_STATE_SAVED:
                     $object->statusStateSaved = TRUE;
-                    $object->statusText = Status::STATUS_STATE_SAVED_TEXT;
                     break;
                 default:
                     break;

@@ -153,4 +153,14 @@ class FormButtons
      * cancel button text
      */
     const CANCEL_BUTTON_TEXT = "Cancel";
+
+    /**
+     * filter button
+     */
+    const FILTER_BUTTON = "filter";
+
+    /**
+     * filter button text
+     */
+    const FILTER_BUTTON_TEXT = "Filter";
 }
