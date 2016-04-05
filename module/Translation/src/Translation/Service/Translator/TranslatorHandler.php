@@ -31,5 +31,21 @@ class TranslatorHandler extends Translator
         $this->applicationLocale = $applicationLocale;
         $this->setLocale($applicationLocale->getCurrentLocale());
     }
+    
+    /**
+     * Get translated array
+     * 
+     * @access public
+     * @param array $array
+     * @return array translated array
+     */
+    public function getTranslatedArray($array)
+    {
+        $translatedArray = array_combine(/* $keys = */ $array, /* $values = */ $array);
+        foreach ($array as &$itemValue) {
+            $itemValue = $this->translate($itemValue);
+        }
+        return $translatedArray;
+    }
 
 }

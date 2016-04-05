@@ -36,6 +36,7 @@ use Utilities\Service\Time;
  */
 class PrivateQuote
 {
+    const QUOTE_TYPE = "Private";
 
     /**
      * customer premises venue

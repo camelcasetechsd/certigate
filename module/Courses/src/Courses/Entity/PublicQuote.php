@@ -33,7 +33,8 @@ use Utilities\Service\File;
  */
 class PublicQuote
 {
-
+    const QUOTE_TYPE = "Public";
+    
     /**
      *
      * @var InputFilter validation constraints 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Courses\Model;
+namespace Courses\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Courses\Model\QuoteGenerator;
+use Courses\Service\QuoteGenerator;
 
 /**
  * QuoteGenerator Factory
@@ -13,7 +13,7 @@ use Courses\Model\QuoteGenerator;
  * 
  * 
  * @package courses
- * @subpackage model
+ * @subpackage service
  */
 class QuoteGeneratorFactory implements FactoryInterface {
 

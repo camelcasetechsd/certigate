@@ -1,10 +1,10 @@
 <?php
 
-namespace Courses\Model;
+namespace Courses\Service;
 
 
 /**
- * QuoteGenerator Model
+ * QuoteGenerator Service
  * 
  * Handles Quote model generation
  * 
@@ -12,7 +12,7 @@ namespace Courses\Model;
  * @property Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
  * 
  * @package courses
- * @subpackage model
+ * @subpackage service
  */
 class QuoteGenerator
 {

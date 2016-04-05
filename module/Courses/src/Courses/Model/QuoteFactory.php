@@ -30,8 +30,9 @@ class QuoteFactory implements FactoryInterface {
         $query = $serviceLocator->get('wrapperQuery');
         $translationHandler = $serviceLocator->get('translatorHandler');
         $formView = $serviceLocator->get('Utilities\Service\View\FormView');
-        $quoteGenerator = $serviceLocator->get('Courses\Model\QuoteGenerator');
-        return new Quote($query, $translationHandler, $formView, $quoteGenerator);
+        $quoteGenerator = $serviceLocator->get('Courses\Service\QuoteGenerator');
+        $config = $serviceLocator->get('Config');
+        return new Quote($query, $translationHandler, $formView, $quoteGenerator, $config["quote"]);
     }
 
 }
