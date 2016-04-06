@@ -59,7 +59,7 @@ class CourseEventFieldset extends Fieldset implements InputFilterProviderInterfa
         $this->query = $query;
         $this->isAdminUser = $isAdminUser;
         $this->userId = $userId;
-        parent::__construct(/*$name =*/ "");
+        parent::__construct(/*$name =*/ "courseEvent");
 
         $this->setHydrator(new DoctrineHydrator($this->query->entityManager))
              ->setObject(new CourseEvent())

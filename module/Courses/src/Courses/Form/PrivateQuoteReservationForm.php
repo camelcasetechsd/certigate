@@ -5,6 +5,7 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Time;
 use Utilities\Form\FormButtons;
+use Zend\InputFilter\InputFilter;
 
 /**
  * PrivateQuoteReservation Form
@@ -13,6 +14,7 @@ use Utilities\Form\FormButtons;
  * 
  * @property Translation\Helper\TranslatorHelper $translatorHandler
  * @property Courses\Model\PrivateQuote $privateQuoteModel
+ * @property InputFilter $_inputFilter validation constraints 
  * @package courses
  * @subpackage form
  */
@@ -29,6 +31,12 @@ class PrivateQuoteReservationForm extends Form
      * @var Courses\Model\PrivateQuote
      */
     protected $privateQuoteModel;
+    
+    /**
+     *
+     * @var InputFilter validation constraints 
+     */
+    private $_inputFilter;
     
     /**
      * setup form
@@ -48,6 +56,14 @@ class PrivateQuoteReservationForm extends Form
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-inline');
         $this->setAttribute('action', $options["actionUrl"]);
+        
+        $this->add(array(
+            'name' => 'user',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'value' => $options["user"],
+            ),
+        ));
         
         $this->add(array(
             'name' => 'course',
@@ -93,6 +109,45 @@ class PrivateQuoteReservationForm extends Form
                 'value' => FormButtons::RESERVE_BUTTON_TEXT,
             )
         ));
+        
+        $this->setInputFilter($this->getInputFilter());
     }
 
+    /**
+     * set validation constraints
+     * 
+     * @uses InputFilter
+     * 
+     * @access public
+     * @return InputFilter validation constraints
+     */
+    public function getInputFilter() {
+        if (!$this->_inputFilter) {
+            $inputFilter = new InputFilter();
+            
+            $inputFilter->add(array(
+                'name' => 'user',
+                'required' => true,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'course',
+                'required' => true,
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'venue',
+                'required' => true,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'preferredDate',
+                'required' => true,
+            ));
+
+            $this->_inputFilter = $inputFilter;
+        }
+
+        return $this->_inputFilter;
+    }
 }
