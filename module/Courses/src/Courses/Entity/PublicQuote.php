@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Random;
 use Utilities\Service\File;
+use Utilities\Service\Status;
 
 /**
  * PublicQuote Entity
@@ -33,8 +34,9 @@ use Utilities\Service\File;
  */
 class PublicQuote
 {
+
     const QUOTE_TYPE = "Public";
-    
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -70,28 +72,28 @@ class PublicQuote
      * @var int
      */
     public $seatsNo;
-    
+
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true)
      * @var string
      */
     public $unitPrice;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true)
      * @var string
      */
     public $discount;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="array", nullable=true)
      * @var array
      */
     public $wireTransfer;
-    
+
     /**
      *
      * @ORM\Column(type="date")
@@ -150,7 +152,7 @@ class PublicQuote
         $this->courseEvent = $courseEvent;
         return $this;
     }
-    
+
     /**
      * Get User
      * 
@@ -202,7 +204,7 @@ class PublicQuote
         $this->seatsNo = (int) $seatsNo;
         return $this;
     }
-    
+
     /**
      * Get UnitPrice
      * 
@@ -228,8 +230,8 @@ class PublicQuote
         $this->unitPrice = $unitPrice;
         return $this;
     }
-    
-     /**
+
+    /**
      * Get Discount
      * 
      * 
@@ -254,7 +256,7 @@ class PublicQuote
         $this->discount = $discount;
         return $this;
     }
-    
+
     /**
      * Get WireTransfer
      * 
@@ -280,7 +282,7 @@ class PublicQuote
         $this->wireTransfer = $wireTransfer;
         return $this;
     }
-    
+
     /**
      * Get created
      * 
@@ -356,7 +358,7 @@ class PublicQuote
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -381,19 +383,24 @@ class PublicQuote
         if (array_key_exists('status', $data)) {
             $this->setStatus($data["status"]);
         }
-        if (array_key_exists('courseEvent', $data)) {
-            $this->setCourseEvent($data["courseEvent"]);
+        if (array_key_exists('unitPrice', $data)) {
+            $this->setUnitPrice($data["unitPrice"]);
         }
-        if (array_key_exists('discount', $data) && ! empty($data["discount"])) {
+        if (array_key_exists('discount', $data) && !empty($data["discount"])) {
             $this->setDiscount($data["discount"]);
         }
         if (array_key_exists('wireTransfer', $data) && !empty($data["wireTransfer"]["name"])) {
             $this->setWireTransfer($data["wireTransfer"]);
         }
-        $this->setUser($data["user"])
-                ->setUnitPrice($data["unitPrice"])
-                ->setSeatsNo($data["seatsNo"])
-        ;
+        if (array_key_exists('user', $data)) {
+            $this->setUser($data["user"]);
+        }
+        if (array_key_exists('courseEvent', $data)) {
+            $this->setCourseEvent($data["courseEvent"]);
+        }
+        if (array_key_exists('seatsNo', $data)) {
+            $this->setSeatsNo($data["seatsNo"]);
+        }
     }
 
     /**
@@ -416,59 +423,47 @@ class PublicQuote
      * @uses InputFilter
      * 
      * @access public
+     * @param int $status
      * @return InputFilter validation constraints
      */
-    public function getInputFilter()
+    public function getInputFilter($status)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
+            if ($status == Status::STATUS_PENDING_PRICING) {
+                $inputFilter->add(array(
+                    'name' => 'unitPrice',
+                    'required' => true,
+                ));
+            }
+            if ($status == Status::STATUS_PENDING_PAYMENT || $status == Status::STATUS_PENDING_REPAYMENT) {
+                $target = APPLICATION_PATH . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . 'quoteWireTransfer' . DIRECTORY_SEPARATOR;
+                File::createDir($target);
+                $fileUploadOptions = array(
+                    "target" => $target . Random::getRandomUniqueName(),
+                    "overwrite" => true,
+                    "use_upload_name" => false,
+                    "use_upload_extension" => true
+                );
 
-            $inputFilter->add(array(
-                'name' => 'courseEvent',
-                'required' => true
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'user',
-                'required' => true,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'unitPrice',
-                'required' => true,
-            ));
-            
-            $inputFilter->add(array(
-                'name' => 'seatsNo',
-                'required' => true,
-            ));
-            
-            $target = APPLICATION_PATH . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . 'quoteWireTransfer' . DIRECTORY_SEPARATOR;
-            File::createDir($target);
-
-            $fileUploadOptions = array(
-                "target" => $target . Random::getRandomUniqueName(),
-                "overwrite" => true,
-                "use_upload_name" => false,
-                "use_upload_extension" => true
-            );
-            $inputFilter->add(array(
-                'name' => 'file',
-                'required' => true,
-                'filters' => array(
-                    array(
-                        "name" => "Zend\Filter\File\RenameUpload",
-                        "options" => $fileUploadOptions
+                $inputFilter->add(array(
+                    'name' => 'wireTransfer',
+                    'required' => true,
+                    'filters' => array(
+                        array(
+                            "name" => "Zend\Filter\File\RenameUpload",
+                            "options" => $fileUploadOptions
+                        ),
                     ),
-                ),
-                'validators' => array(
-                    array('name' => 'Fileextension',
-                        'options' => array(
-                            'extension' => 'zip,gif,jpg,png,pdf'
-                        )
-                    ),
-                )
-            ));
+                    'validators' => array(
+                        array('name' => 'Fileextension',
+                            'options' => array(
+                                'extension' => 'zip,gif,jpg,png,pdf'
+                            )
+                        ),
+                    )
+                ));
+            }
             $this->inputFilter = $inputFilter;
         }
 

@@ -66,14 +66,14 @@ class CourseEvent
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $startDate;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $endDate;
@@ -154,13 +154,13 @@ class CourseEvent
     public $votes;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionId;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionValueId;
@@ -705,11 +705,20 @@ class CourseEvent
         if (array_key_exists('optionValueId', $data)) {
             $this->setOptionValueId($data["optionValueId"]);
         }
-        $this->setAi($data["ai"])
-                ->setAtp($data["atp"])
+        if (array_key_exists('ai', $data)) {
+            $this->setAi($data["ai"]);
+        }
+        if (array_key_exists('atp', $data)) {
+            $this->setAtp($data["atp"]);
+        }
+        if (array_key_exists('startDate', $data)) {
+            $this->setStartDate($data["startDate"]);
+        }
+        if (array_key_exists('endDate', $data)) {
+            $this->setEndDate($data["endDate"]);
+        }
+        $this
                 ->setCapacity($data["capacity"])
-                ->setEndDate($data["endDate"])
-                ->setStartDate($data["startDate"])
                 ->setStudentsNo($data["studentsNo"])
                 ->setHideFromCalendar($data["hideFromCalendar"])
         ;
