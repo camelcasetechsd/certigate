@@ -136,6 +136,20 @@ return array(
                     ),
                 )
             ),
+            'quoteDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote/download/:type/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'type' => $quoteTypeConstraint,
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'courseEvents' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

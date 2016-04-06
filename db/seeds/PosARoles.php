@@ -133,7 +133,13 @@ class PosARoles extends AbstractSeed
         $quoteTrainingRoute = "quoteTraining";
         $quoteProcessRoute = "quoteProcess";
         $quoteDeleteRoute = "quoteDelete";
+        $quoteDownloadRoute = "quoteDownload";
         $coursesAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteDownloadRoute,
+            ),
             array(
                 'role_id' => $normalUserRoleId,
                 'module' => $courseModule,
