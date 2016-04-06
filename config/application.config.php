@@ -44,7 +44,7 @@ $config = array(
         'DOMPDFModule',
         'Translation',
         'EStore',
-        'WebSockets'
+        'Chat'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

@@ -14,7 +14,7 @@
         "gedmo/doctrine-extensions": "^2.4",
         "slm/queue-doctrine": "~0.5",
         "dino/dompdf-module": "dev-master",
-        "stanislav-web/zf2-websocket-server-factory": "2.2.1"
+        "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
