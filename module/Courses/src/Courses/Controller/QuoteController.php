@@ -6,9 +6,6 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Utilities\Service\Status;
 use Courses\Form\QuoteFilterForm;
-// classes seam not in use, but they are in use via a class path generator
-use Courses\Entity\PublicQuote;
-use Courses\Entity\PrivateQuote;
 
 /**
  * Quote Controller
@@ -52,6 +49,7 @@ class QuoteController extends ActionController
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
         $variables['isAdminUser'] = $isAdminUser;
+        $variables['type'] = strtolower($quoteModel->getCurrentType());
 
         $variables['quotes'] = $objectUtilities->prepareForDisplay($quoteModel->getCurrentItems());
         $form = new QuoteFilterForm(/* $name = */ null, /* $options = */ array("quoteModel" => $quoteModel));
@@ -70,13 +68,13 @@ class QuoteController extends ActionController
      */
     public function trainingAction()
     {
+        $isAdminUser = $this->isAdminUser();
         $variables = array();
         $type = ucfirst($this->params('type'));
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
         $publicOrPrivateQuoteModel = $this->getServiceLocator()->get("Courses\Service\QuoteGenerator")->getModel($type);
-        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity("Courses\Entity\\{$type}Quote");
 
         $pageNumber = $this->getRequest()->getQuery('page');
         $courseModel->filterCourses(/* $criteria = */ array("status" => Status::STATUS_ACTIVE));
@@ -89,22 +87,85 @@ class QuoteController extends ActionController
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
         $variables['type'] = $type;
-        $variables['courses'] = $quoteModel->prepareQuoteForms($courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems()), $type, /* $actionUrl = */ $this->getTrainingUrl());
+        $variables['courses'] = $quoteModel->prepareReservationForms($courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems()), $type, /*$userId =*/ $this->storage['id'], /* $actionUrl = */ $this->getRedirectUrl());
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $quoteEntityClass = "{$type}Quote";
+            $quoteEntityClass = "Courses\Entity\\{$type}Quote";
             $quote = new $quoteEntityClass();
-            $quoteForm = $quoteModel->getForm($variables['courses'], $type);
-            $quoteForm->setInputFilter($quote->getInputFilter());
+            $quoteForm = $quoteModel->getReservationForm($variables['courses'], $type, $data);
             $quoteForm->setData($data);
-            if ($quoteForm->isValid() && $publicOrPrivateQuoteModel->isValid($quoteForm)) {
-                $query->save($quote);
+            if ($publicOrPrivateQuoteModel->isReservationValid($quoteForm) && $quoteForm->isValid()) {
+                $quoteModel->save($quote, $quoteForm, $data, $type, /*$editFlag =*/ false, $isAdminUser, /*$userEmail =*/ $this->storage['email']);
+                $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(),/* $options = */ array("name" => "quote", "query" => array("type" => $type)));
+                $this->redirect()->toUrl($url);
             }
+            $quoteModel->setForm($quoteForm, $variables['courses'], $type, $data);
         }
         return new ViewModel($variables);
     }
 
+    /**
+     * Process quote
+     * 
+     * 
+     * @access public
+     * @uses CourseEventForm
+     * 
+     * @return ViewModel
+     */
+    public function processAction()
+    {
+        $variables = array();
+        $type = ucfirst($this->params('type'));
+        $id = $this->params('id');
+        $isAdminUser = $this->isAdminUser();
+        
+        $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
+        $form = $quoteModel->getQuoteForm($type, $id, /*$userId =*/ $this->storage["id"]);
+        
+        $quoteModel->prepareQuoteForDisplay($quote = $form->getObject(), $type);
+        $variables["course"] = $quoteModel->prepareQuoteCourseForDisplay($quote, $type);
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+            );
+            $form->setInputFilter($quote->getInputFilter($quote->getStatus()));
+            $form->setData($data);
+
+            if ($quoteModel->isQuoteFormValid($form, $data, $type, $isAdminUser)) {
+                $quoteModel->save($quote, $form, $data, $type, /*$editFlag =*/ true, $isAdminUser, /*$userEmail =*/ $this->storage['email']);
+                $this->redirect()->toUrl($this->getRedirectUrl(/*$routeName =*/ "quote"));
+            }
+        }
+        $variables["isAdminUser"] = $isAdminUser;
+        $variables["quote"] = $quote;
+        $variables['form'] = $this->getFormView($form);
+        $variables['type'] = strtolower($type);
+        $variables['id'] = $id;
+        return new ViewModel($variables);
+    }
+    
+    /**
+     * Download quote
+     *
+     * 
+     * @access public
+     */
+    public function downloadAction()
+    {
+        $id = $this->params('id');
+        $type = ucfirst($this->params('type'));
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
+        
+        $quote = $query->find("Courses\Entity\\{$type}Quote", /* $criteria = */ $id);
+        $file = $quote->getWireTransfer()["tmp_name"];
+        return $fileUtilities->getFileResponse($file);
+    }
+    
     /**
      * Delete quote
      *
@@ -115,12 +176,10 @@ class QuoteController extends ActionController
     {
         $id = $this->params('id');
         $type = ucfirst($this->params('type'));
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $quote = $query->find("Courses\Entity\\{$type}Quote", $id);
+        $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
+        $quoteModel->delete($type, $id);
 
-        $query->remove($quote);
-
-        $this->redirect()->toUrl($this->getTrainingUrl());
+        $this->redirect()->toUrl($this->getRedirectUrl(/*$routeName =*/ "quote"));
     }
 
     /**
@@ -136,22 +195,23 @@ class QuoteController extends ActionController
     }
     
     /**
-     * Get training url
+     * Get redirect url
      *
      * 
      * @access private
-     * @return string training url
+     * @param string $routeName ,default is "quoteTraining"
+     * @return string redirect url
      */
-    private function getTrainingUrl()
+    private function getRedirectUrl($routeName = "quoteTraining" )
     {
-        $type = ucfirst($this->params('type'));
+        $type = $this->params('type');
         $filterQuery = $this->getFilterQuery();
         $pageNumber = $this->getRequest()->getQuery('page');
-        $options = array('name' => "quoteTraining");
+        $options = array('name' => $routeName);
         if(empty($pageNumber)){
             $pageNumber = 1;
         }
-        $options["page"] = $pageNumber;
+        $options["query"] = array("page" => $pageNumber, "type" => ucfirst($type));
         $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array("type" => $type), $options);
         if(! empty($filterQuery)){
            $url .= "&".$filterQuery; 

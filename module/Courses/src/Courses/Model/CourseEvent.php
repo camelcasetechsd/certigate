@@ -12,6 +12,7 @@ use EStore\Service\ApiCalls;
 use EStore\Service\OptionTypes;
 use Zend\Http\Request;
 use Utilities\Service\Random;
+use Utilities\Service\Object;
 
 /**
  * CourseEvent Model
@@ -91,8 +92,8 @@ class CourseEvent
     {
         if ($editFlag === true) {
             $estoreApiEdge = ApiCalls::OPTION_VALUE_EDIT;
-            $startDate = $courseEvent->getStartDate()->format("D, d M Y");
-            $endDate = $courseEvent->getEndDate()->format("D, d M Y");
+            $startDate = $courseEvent->getStartDate()->format(Object::DATE_DISPLAY_FORMAT);
+            $endDate = $courseEvent->getEndDate()->format(Object::DATE_DISPLAY_FORMAT);
             $organizationId = $courseEvent->getAtp();
             $instructorId = $courseEvent->getAi();
             $courseId = $courseEvent->getCourse();
