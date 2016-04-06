@@ -108,6 +108,11 @@ class MailTempates {
     const ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_TEMPLATE = "admin-public-quote-pending-review";
 
     /**
+     * Client public quote cancelled Template
+     */
+    const CLIENT_PUBLIC_QUOTE_CANCELLED_TEMPLATE = "client-public-quote-cancelled";
+    
+    /**
      * Client public quote pending payment Template
      */
     const CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_TEMPLATE = "client-public-quote-pending-payment";
@@ -131,6 +136,11 @@ class MailTempates {
      * Admin private quote pending review Template
      */
     const ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_TEMPLATE = "admin-private-quote-pending-review";
+
+    /**
+     * Client private quote cancelled Template
+     */
+    const CLIENT_PRIVATE_QUOTE_CANCELLED_TEMPLATE = "client-private-quote-cancelled";
 
     /**
      * Client private quote pending payment Template

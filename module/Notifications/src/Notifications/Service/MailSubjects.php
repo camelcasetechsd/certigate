@@ -106,7 +106,12 @@ class MailSubjects
      * Admin public quote pending review Subject
      */
     const ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_SUBJECT = "Public quote pending review";
-
+    
+    /**
+     * Client public quote cancelled Subject
+     */
+    const CLIENT_PUBLIC_QUOTE_CANCELLED_SUBJECT = "Public quote cancelled";
+    
     /**
      * Client public quote pending payment Subject
      */
@@ -132,6 +137,11 @@ class MailSubjects
      */
     const ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_SUBJECT = "Private quote pending review";
 
+    /**
+     * Client private quote cancelled Subject
+     */
+    const CLIENT_PRIVATE_QUOTE_CANCELLED_SUBJECT = "Private quote cancelled";
+    
     /**
      * Client private quote pending payment Subject
      */

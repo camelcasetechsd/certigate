@@ -26,6 +26,8 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
 class Object
 {
 
+    const DATE_DISPLAY_FORMAT = "D, d M Y";
+    
     /**
      *
      * @var CountryService 
@@ -126,7 +128,7 @@ class Object
                     }
                 }
                 elseif ($objectPropertyValue instanceof \DateTime) {
-                    $formattedString = $objectPropertyValue->format("D, d M Y");
+                    $formattedString = $objectPropertyValue->format(self::DATE_DISPLAY_FORMAT);
                     if ($formattedString == Time::UNIX_DATE_STRING) {
                         $formattedString = $objectPropertyValue->format("H:i");
                     }
