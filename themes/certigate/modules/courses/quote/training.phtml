@@ -22,7 +22,7 @@
                             <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
                         </ul>
                     </div>
-                    {{^form}}
+                    {{^formView}}
                         {{#courseEvents.count}}
                         <!-- Table -->
                         <table class="table">
@@ -53,7 +53,7 @@
                                     </td>
                                     <td>
                                         {{#canEnroll}}
-                                            {{{form}}}
+                                            {{{formView}}}
                                         {{/canEnroll}}
                                         {{#isFull}}
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,10 +67,10 @@
                             </tbody>
                         </table>
                         {{/courseEvents.count}}
-                    {{/form}}
-                    {{#form}}
-                        {{{form}}}
-                    {{/form}}
+                    {{/formView}}
+                    {{#formView}}
+                        {{{formView}}}
+                    {{/formView}}
 
                 </div>
             </div>
