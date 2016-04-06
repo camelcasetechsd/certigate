@@ -1,0 +1,23 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br><br>
+<br>
+<br>
+<br>
+
+Start Conversation :
+
+
+
+{{/content}}
+{{/layout}}
+<script>
+
+    $(document).ready(function () {
+        var connection = new WebSocket('wss://127.0.0.1:9001/WebSockets/open');
+        console.log(connection);
+   
+    });
+
+</script>

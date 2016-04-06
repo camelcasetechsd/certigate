@@ -135,6 +135,18 @@ return array(
                     ),
                 ),
             ),
+            'test' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/test',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Index',
+                        'action' => 'test',
+                    ),
+                    'constraints' => array(
+                    ),
+                ),
+            ),
         )
     )
 );

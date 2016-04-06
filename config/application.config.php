@@ -43,7 +43,8 @@ $config = array(
         'Notifications',
         'DOMPDFModule',
         'Translation',
-        'EStore'
+        'EStore',
+        'WebSockets'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
