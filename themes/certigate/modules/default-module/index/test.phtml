@@ -5,19 +5,112 @@
 <br>
 <br>
 <br>
+{{#loggedInUsername}}{{loggedInUsername}}{{/loggedInUsername}}
+<div id="history-continer"style="width:450px ; height: 500px;border-style: solid;
+     border-color: #ff0000 #0000ff;" >
+    <p id="history-start-point">Messages:</p>
+</div>
 
-Start Conversation :
 
+<div>
+    <button id="join-chat">Contact an admin</button>
+</div>
+<!--<div id="wrapper" class="toggled">
 
+     Sidebar 
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Chat Panel
+                </a>
+            </li>
+            <li>
+                <p>online admins</p>
+                <div id="online-container">
+                </div>
+            </li>
+            <li>
+                <p>Chat room</p>
+                <div id="chat-box">
+                </div>
+            </li>
+        </ul>
+    </div>
+     /#sidebar-wrapper 
+
+     Page Content 
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Simple Sidebar</h1>
+                    <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                    <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+     /#page-content-wrapper 
+
+</div>-->
 
 {{/content}}
 {{/layout}}
 <script>
 
     $(document).ready(function () {
-        var connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver');
-        console.log(connection);
-   
+
+//        $("#menu-toggle").click(function (e) {
+//            e.preventDefault();
+//            $wrapper = $("#wrapper");
+//            if ($wrapper.hasClass('toggled')) {
+//                $wrapper.removeClass('toggled');
+//            } else {
+//                $wrapper.addClass('toggled');
+//            }
+//        });
+
+        $('#join-chat').click(function () {
+            $(this).hide();
+            $(this).after('<input type="text" id="message"/><button id="send-message">Send</button>');
+            window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
+            window.userId = 1;
+//            
+//            widnow.connection.opopen = function(e){
+//              $message = {
+//                  
+//              }  
+//            };
+
+            window.connection.onmessage = function (e) {
+                $msg = JSON.parse(e.data);
+                if ("text" in $msg) {
+                    // user messages
+                    $('#history-start-point').append('<br><p style="float: right;">' + $msg.text + '</p>');
+                } else {
+                    // server messages
+                    console.log($msg.server);
+                }
+            };
+
+        });
+
+        $(document).on('click', '#send-message', function () {
+            //user message    
+            $message = {
+                'user': 'admin',
+                'text': $('#message').val(),
+                'time': new Date().getTime(),
+                'userId': window.userId,
+                'recipientId': 1
+            };
+            window.connection.send(JSON.stringify($message));
+            // empty text field
+            $('#history-start-point').append('<br><p style="float: left;">' + $('#message').val() + '</p>');
+            $('#message').val('');
+        });
     });
 
 </script>

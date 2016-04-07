@@ -12,6 +12,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
+            'Chat\Model\Chat' => 'Chat\Model\ChatFactory',
         ),
     ),
     'doctrine' => array(

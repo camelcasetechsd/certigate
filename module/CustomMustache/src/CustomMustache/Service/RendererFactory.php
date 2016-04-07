@@ -76,6 +76,7 @@ class RendererFactory implements FactoryInterface
         if ($auth->hasIdentity()) {
             $roles = $storage['roles'];
             $config['helpers']['loggedInUsername'] = $storage['username'];
+            $config['helpers']['loggedInUserId'] = $storage['id'];
         }
         if (isset($roles) && in_array(Role::ADMIN_ROLE, $roles)) {
             $adminMenu = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED);

@@ -5,10 +5,16 @@ namespace Chat\Service;
 use Ratchet\MessageComponentInterface;
 use SplObjectStorage;
 use Ratchet\ConnectionInterface;
-
+use Chat\Service\ChatHandler;
 
 class ChatServer implements MessageComponentInterface
 {
+
+    /**
+     *
+     * @var Chat\Service\ChatHandler
+     */
+    protected $chatHandler;
 
     /**
      * Stores connection objects for all clients
@@ -22,6 +28,24 @@ class ChatServer implements MessageComponentInterface
          * to store connection object for each clinet
          */
         $this->clients = new SplObjectStorage;
+        // handle messages ops
+        $this->chatHandler = new ChatHandler();
+    }
+
+    public function onOpen(ConnectionInterface $conn)
+    {
+        //store the new connection
+        $parameters = $conn->WebSocket->request->getQuery()->toArray();
+        // adding parameters to user connection
+        $preparedConn = $this->chatHandler->prepareClientConnection($conn, $parameters);
+        // add connection to connections array
+        $this->clients->attach($preparedConn);
+        //getting online admins
+        $onlineAdmins = $this->chatHandler->getOnlineAdmins($this->clients, $parameters);
+        // sending online admins to client
+        $conn->send(json_encode(array('server' => $onlineAdmins)));
+        var_dump($onlineAdmins);
+        echo "New User Connected!\n";
     }
 
     public function onClose(ConnectionInterface $conn)
@@ -47,15 +71,9 @@ class ChatServer implements MessageComponentInterface
         foreach ($this->clients as $client) {
             if ($from !== $client) {
                 $client->send($msg);
+                $this->chatHandler->saveMessage($msg);
             }
         }
-    }
-
-    public function onOpen(ConnectionInterface $conn)
-    {
-        //store the new connection
-        $this->clients->attach($conn);
-        echo "New User Connected!\n";
     }
 
 }

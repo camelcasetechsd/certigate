@@ -44,7 +44,8 @@ $config = array(
         'DOMPDFModule',
         'Translation',
         'EStore',
-        'Chat'
+        'Chat',
+        'ServiceLocatorFactory'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

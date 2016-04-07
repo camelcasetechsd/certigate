@@ -347,7 +347,17 @@ class User
      * @var int
      */
     public $customerId;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="Chat\Entity\Message", mappedBy="recipient")
+     */
+    public $messageTo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Chat\Entity\Message", mappedBy="sender")
+     */
+    public $messagefrom;
+
     /**
      * hash password
      * 
@@ -395,6 +405,8 @@ class User
     {
         $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
+        $this->messagefrom = new ArrayCollection();
+        $this->messageTo = new ArrayCollection();
         $this->roles = new ArrayCollection();
     }
 
@@ -445,7 +457,7 @@ class User
     {
         return $this->firstName;
     }
-    
+
     /**
      * Get firstNameAr
      * 
@@ -1455,7 +1467,7 @@ class User
         $this->customerId = $customerId;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -1729,7 +1741,7 @@ class User
                 'name' => 'addressTwoAr',
                 'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -1761,7 +1773,7 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,

@@ -1,10 +1,10 @@
 <?php
 
-namespace CMS\Model;
+namespace Chat\Model;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use CMS\Model\Page;
+use Chat\Model\Chat;
 
 /**
  * Page Factory
@@ -15,10 +15,11 @@ use CMS\Model\Page;
  * @package cms
  * @subpackage model
  */
-class PageFactory implements FactoryInterface {
+class ChatFactory implements FactoryInterface
+{
 
     /**
-     * Prepare Page service
+     * Prepare message service
      * 
      * @uses Page
      * 
@@ -26,10 +27,10 @@ class PageFactory implements FactoryInterface {
      * @param ServiceLocatorInterface $serviceLocator
      * @return Page
      */
-    public function createService(ServiceLocatorInterface $serviceLocator) {
-        $query = $serviceLocator->get('wrapperQuery')->setEntity('CMS\Entity\Page');
-        $pressReleaseSubscriptionModel = $serviceLocator->get('CMS\Model\PressReleaseSubscription');
-        return new Page($query, $pressReleaseSubscriptionModel);
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $query = $serviceLocator->get('wrapperQuery')->setEntity('Chat\Entity\Message');
+        return new Chat($query);
     }
 
 }
