@@ -1,0 +1,39 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/system/settings/new"class="btn btn-small btn-success create-new">{{#translate}}Create new Setting{{/translate}}</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Settings{{/translate}}</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{#translate}}Name{{/translate}}</th>
+                <th>{{#translate}}Value{{/translate}}</th>
+                <th>{{#translate}}Created{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#settings}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{value}}</td>
+                <td>{{created}}</td>
+                <td>
+                    <a href="/system/settings/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/system/settings/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            </tr>
+            {{/settings}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

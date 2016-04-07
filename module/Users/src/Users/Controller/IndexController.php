@@ -139,14 +139,14 @@ class IndexController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
+            
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-
+            
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
@@ -200,7 +200,8 @@ class IndexController extends ActionController
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         $variables['photo'] = $photo;
         return new ViewModel($variables);
     }
@@ -267,18 +268,20 @@ class IndexController extends ActionController
                 $userModel->saveUser($data , /*$userObj =*/ null ,$isAdminUser);
 
                 if($isAdminUser){
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
-                    'name' => 'users'));
-                $this->redirect()->toUrl($url);
+                    $routeName = "users";
                 }else{
-                    $variables['success'] = true;
+                    $routeName = "home";
                 }
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => $routeName));
+                $this->redirect()->toUrl($url);
             }
         }
 
         $variables['userForm'] = $this->getFormView($form);
         $statement = new Statement();
-        $variables['statements'] = $statement->statements;
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
         return new ViewModel($variables);
     }
 

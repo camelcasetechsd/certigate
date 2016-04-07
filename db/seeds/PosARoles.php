@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../AbstractSeed.php';
+require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
 use \Users\Entity\Role;
@@ -20,7 +20,7 @@ class PosARoles extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE , 'nameAr' => Role::INSTRUCTOR_ROLE);
+        $instructorRole = array('name' => Role::INSTRUCTOR_ROLE, 'nameAr' => Role::INSTRUCTOR_ROLE);
         $this->insert('role', $instructorRole);
         $instructorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
@@ -294,7 +294,7 @@ class PosARoles extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $courseEventsRoute,
-                ),
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
@@ -349,11 +349,15 @@ class PosARoles extends AbstractSeed
         $organizationsDownloadRoute = "organizationsDownload";
         $listAtcOrgsRoute = "list_atc_orgs";
         $listAtpOrgsRoute = "list_atp_orgs";
+        $listDistOrgsRoute = "list_distributor_orgs";
+        $listResellerOrgsRoute = "list_reseller_orgs";
         $orgTypeRoute = "org_type";
         $orgMoreRoute = "more";
         $orgNewRoute = "new_org";
         $orgEditRoute = "edit_org";
         $saveStateRoute = "saveState";
+        $myOrganization = "myOrganizations";
+        $renewal = "renew";
         $organizationAcls = array(
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -436,6 +440,16 @@ class PosARoles extends AbstractSeed
                 'route' => $listAtpOrgsRoute,
             ),
             array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
+            ),
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $orgTypeRoute,
@@ -484,10 +498,20 @@ class PosARoles extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $orgMoreRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
             ),
         );
         $this->insert('acl', $organizationAcls);
-        
+
         $cmsModule = "CMS";
         $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
         $cmsAcls = array(

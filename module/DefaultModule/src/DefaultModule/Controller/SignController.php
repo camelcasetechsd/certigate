@@ -66,9 +66,7 @@ class SignController extends ActionController
                     $url = $this->params()->fromQuery('redirectBackUrl', $defaultUrl);
                     $this->redirect()->toUrl($url);
                 } else {
-                    $errorMessages = array();
-                    $errorMessages[]['message'] = "Username and password are invalid !";
-                    $variables['message'] = $errorMessages;
+                    $variables['message'] = $result->getMessages();
                 }
             }
         }

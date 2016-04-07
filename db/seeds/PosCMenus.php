@@ -186,11 +186,6 @@ class PosCMenus extends AbstractSeed
                                                 "title" => "Publish Training Calendar",
                                                 "titleAr" => "Publish Training Calendar",
                                                 "path" => "/courses/new",
-                                            ],
-                                            [
-                                                "title" => "Order Material",
-                                                "titleAr" => "Order Material",
-                                                "path" => "/estore",
                                             ]
                                         ]
                                     ],
@@ -387,12 +382,6 @@ class PosCMenus extends AbstractSeed
                                         "weight" => 1,
                                     ],
                                     [
-                                        "title" => "Order Material",
-                                        "titleAr" => "Order Material",
-                                        "path" => "/estore",
-                                        "weight" => 2,
-                                    ],
-                                    [
                                         /**
                                          * Ask ali ???
                                          */
@@ -409,38 +398,6 @@ class PosCMenus extends AbstractSeed
                                     ],
                                 ]
                             ]
-                        ]
-                    ],
-                    [
-                        "title" => "eStore",
-                        "titleAr" => "eStore",
-                        "path" => "#",
-                        "weight" => 5,
-                        "children" => [
-                            [
-                                "title" => "Books",
-                                "titleAr" => "Books",
-                                "path" => "/estore",
-                                "weight" => 1,
-                            ],
-                            [
-                                "title" => "Exams",
-                                "titleAr" => "Exams",
-                                "path" => "/estore",
-                                "weight" => 2,
-                            ],
-                            [
-                                "title" => "Practice test",
-                                "titleAr" => "Practice test",
-                                "path" => "/estore",
-                                "weight" => 3,
-                            ],
-                            [
-                                "title" => "e-Learning",
-                                "titleAr" => "e-Learning",
-                                "path" => "/estore",
-                                "weight" => 4,
-                            ],
                         ]
                     ],
                     [
@@ -509,7 +466,7 @@ class PosCMenus extends AbstractSeed
         $menuItem['parent_id'] = $parentId;
         $menuItem['menu_id'] = $primaryMenuId;
         $menuItem['title'] = $item['title'];
-        $menuItem['titleAr'] = $item['titleAr'];
+        $menuItem['titleAr'] = $item['titleAr'] . ' ar';
         $menuItem['weight'] = (isset($item['weight'])) ? $item['weight'] : 1;
         $menuItem['status'] = true;
 
@@ -529,10 +486,11 @@ class PosCMenus extends AbstractSeed
 
         $this->insert('page', [
             'title' => $item['title'],
-            'titleAr' => $item['titleAr'],
+            'titleAr' => $item['titleAr'] . ' ar',
             'path' => $item['path'],
             'status' => TRUE,
             'body' => base64_encode(bzcompress($faker->text)),
+            'bodyAr' => base64_encode(bzcompress($faker->text)),
             'type' => PageTypes::PAGE_TYPE
         ]);
 

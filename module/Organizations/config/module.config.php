@@ -14,7 +14,8 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory',
-            'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory'
+            'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory',
+            'Organizations\Model\OrganizationMeta' => 'Organizations\Model\OrganizationMetaFactory'
         ),
     ),
     'doctrine' => array(
@@ -81,7 +82,7 @@ return array(
             'organizationUsersEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/edit/:id',
+                    'route' => '/organization-users/edit/:organizationId',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'edit',
@@ -94,7 +95,7 @@ return array(
             'organizationUsersDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/delete/:id',
+                    'route' => '/organization-users/delete/:organizationId',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'delete',
@@ -198,6 +199,26 @@ return array(
                     ),
                 )
             ),
+            'list_distributor_orgs' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/distributors',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'distributors'
+                    ),
+                )
+            ),
+            'list_reseller_orgs' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/resellers',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'resellers'
+                    ),
+                )
+            ),
             'more' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -214,11 +235,17 @@ return array(
             'new_org' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organizations/new',
+                    'route' => '/organizations/new[/:v1[/:v2[/:v3[/:v4]]]]',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\Organizations',
                         'action' => 'new'
-                    )
+                    ),
+                    'constraints' => array(
+                        'v1' => '[0-9]*',
+                        'v2' => '[0-9]*',
+                        'v3' => '[0-9]*',
+                        'v4' => '[0-9]*'
+                    ),
                 )
             ),
             'edit_org' => array(
@@ -256,6 +283,46 @@ return array(
                         'action' => 'saveState'
                     )
                 )
+            ),
+            'myOrganizations' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/myorganizations',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'myOrganizations'
+                    )
+                )
+            ),
+            'renew' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/organizations/renew[/:organizationId[/:metaId]]',
+                    'defaults' => array(
+                        'controller' => 'Organizations\Controller\Organizations',
+                        'action' => 'renew'
+                    ),
+                    'constraints' => array(
+                        'organizationId' => '[0-9]*',
+                        'metaId' => '[0-9]*'
+                    )
+                )
+            )
+        )
+    ),
+    // for cron tabs to update Expiration Flag status 
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'updateExpirationFlag' => array(
+                    'options' => array(
+                        'route' => 'updateExpirationFlag [--verbose|-v] ',
+                        'defaults' => array(
+                            'controller' => 'Organizations\Controller\Organizations',
+                            'action' => 'updateExpirationFlag'
+                        )
+                    )
+                )
             )
         )
     ),
@@ -263,14 +330,17 @@ return array(
         'atpLicenseNo',
         'atpLicenseExpiration',
         'atpLicenseAttachment',
+        'atpWireTransferAttachment',
         'classesNo',
         'pcsNo_class',
-        'trainingManager_id'
+        'trainingManager_id',
+        'atpPrivacyStatement'
     ),
     'atpSkippedParams' => array(
         'atcLicenseNo',
         'atcLicenseExpiration',
         'atcLicenseAttachment',
+        'atcWireTransferAttachment',
         'labsNo',
         'pcsNo_lab',
         'internetSpeed_lab',
@@ -278,6 +348,31 @@ return array(
         'operatingSystemLang',
         'officeVersion',
         'officeLang',
-        'testCenterAdmin_id'
+        'testCenterAdmin_id',
+        'atcPrivacyStatement'
+    ),
+    'atcEditSkippedParams' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+        'atcWireTransferAttachment',
+    ),
+    'atpEditSkippedParams' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+        'atpWireTransferAttachment',
+    ),
+    'AtcRenewalFields' => array(
+        'atcLicenseNo',
+        'atcLicenseExpiration',
+        'atcLicenseAttachment',
+        'atcWireTransferAttachment'
+    ),
+    'AtpRenewalFields' => array(
+        'atpLicenseNo',
+        'atpLicenseExpiration',
+        'atpLicenseAttachment',
+        'atpWireTransferAttachment',
     )
 );

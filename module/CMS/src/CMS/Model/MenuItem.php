@@ -8,6 +8,8 @@ use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
 use Doctrine\Common\Collections\Criteria;
 use CMS\Entity\MenuItem as MenuItemEntity;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * MenuItem Model
@@ -21,10 +23,11 @@ use CMS\Entity\MenuItem as MenuItemEntity;
  * @package cms
  * @subpackage model
  */
-class MenuItem
+class MenuItem implements ServiceLocatorAwareInterface
 {
+
     use \Utilities\Service\Paginator\PaginatorTrait;
-    
+
     /**
      *
      * @var Utilities\Service\Inflector
@@ -43,6 +46,12 @@ class MenuItem
     protected $staticMenus;
 
     /**
+     *
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -55,6 +64,16 @@ class MenuItem
         $this->query = $query;
         $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\MenuItem"));
         $this->staticMenus = $staticMenus;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
     }
 
     /**
@@ -87,14 +106,19 @@ class MenuItem
                     $tree = array_merge($tree, $menuItem->children);
                     unset($menuItem->children);
                 }
-            }
-            else {
-                $menuItemTitle = $menuItem->getTitle();
+            } else {
+                $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
+                $currentLocale = $applicationLocale->getCurrentLocale();
+                if($currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR){
+                    $menuItemTitle = $menuItem->getTitleAr();
+                } else if ($currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US) {
+                    $menuItemTitle = $menuItem->getTitle();
+                }
+                
                 $menuTitle = $this->inflector->underscore($menuItem->getMenu()->getTitle());
                 if ($menuItem->getType() == MenuItemEntity::TYPE_PAGE && is_object($menuItem->getPage())) {
                     $path = $menuItem->getPage()->getPath();
-                }
-                else {
+                } else {
                     $path = $menuItem->getDirectUrl();
                 }
                 $menuItemArray = array(
@@ -152,15 +176,14 @@ class MenuItem
             throw new Exception("query must be instance of Query");
         }
         // get dynamic menus
-        $menuItems = $this->query->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem')->entityRepository->getMenuItemsSorted(/* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ false, /* $select = */ null, /* $treeFlag = */ true);
+        $menuItems = $this->getMenuItemReporsitory()->getMenuItemsSorted(/* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ false, /* $select = */ null, /* $treeFlag = */ true);
         if ($includeStatic === true) {
             $weight = array();
             // merge static and dynamic menus
             foreach ($this->staticMenus as $staticMenuTitle => $staticMenuArray) {
                 if (array_key_exists($staticMenuTitle, $menuItems)) {
                     $menuItems[$staticMenuTitle] = array_merge($staticMenuArray, $menuItems[$staticMenuTitle]);
-                }
-                else {
+                } else {
                     $menuItems[$staticMenuTitle] = $staticMenuArray;
                 }
             }
@@ -245,6 +268,19 @@ class MenuItem
             $input = $inputFilter->get('directUrl');
             $input->setRequired(false);
         }
+    }
+    
+    
+    /**
+     * 
+     * @return \CMS\Entity\MenuItemRepository
+     */
+    public function getMenuItemReporsitory()
+    {
+        $menuItemRepository = $this->query->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem')->entityRepository;
+        $menuItemRepository->setServiceLocator($this->getServiceLocator());
+        return $menuItemRepository;
+        
     }
 
 }

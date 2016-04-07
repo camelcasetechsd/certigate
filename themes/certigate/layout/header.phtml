@@ -1,0 +1,72 @@
+{{$headerContainer}}
+<!-- bluebar-->
+<div class="main-nav navbar-fixed-top">
+    <div class="blue-wrapper navbar-inverse">
+        <div class="container">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bar" aria-expanded="false" aria-controls="bar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="{{^loggedInUsername}}navbar-collapse collapse{{/loggedInUsername}}{{#loggedInUsername}}navbar-form navbar-right{{/loggedInUsername}}">
+                <div class="navbar-collapse collapse navbar-right">
+                    <div class="dropdown pull-left" >
+                        <button class="btn btn-link btn-menu {{^loggedInUsername}}btn-language-loggedout{{/loggedInUsername}}{{#loggedInUsername}}btn-language-loggedin{{/loggedInUsername}} dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/trans/setlocale/en_US">{{#translate}}English{{/translate}}</a></li>
+                            <li><a href="/trans/setlocale/ar_AR">{{#translate}}Arabic{{/translate}}</a></li>
+                        </ul>
+                    </div>
+                    &nbsp;
+                    {{^loggedInUsername}}
+                    <form name="signin_header_form" method="post" action="/sign/in" class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input name="username" type="text" placeholder="Username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input name="password" type="password" placeholder="Password" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">Sign in</button>
+                    </form>
+                    {{/loggedInUsername}}
+                    {{#loggedInUsername}}
+                    {{! IMPORTANT: links style attribute is temporary }}
+                    <div class="form-group"><a style="color:#fff" href="#"><span class="glyphicon glyphicon-user"></span> {{loggedInUsername}}</a></div>
+                    &nbsp;
+                    <div class="form-group"><a style="color:#fff" href="/sign/out"><span class="glyphicon glyphicon-log-out"></span> Log out</a></div>
+                    {{/loggedInUsername}}
+                </div>
+
+            </div><!--/.navbar-collapse -->
+        </div>
+    </div>
+    <!-- endbluebar-->
+
+    <div class="navbar-wrapper">
+        <div class="container">
+
+            <nav class="navbar navbar-inverse white-bar">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><img src="/images/logo.png" width="223" height="65" alt=""/></a>
+                    </div>
+                    <div>
+                        {{{adminMenu}}}
+                    </div>
+                    <div>
+                        {{{primaryMenu}}}
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+</div>
+{{/headerContainer}}

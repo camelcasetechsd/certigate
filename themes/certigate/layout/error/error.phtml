@@ -1,0 +1,17 @@
+{{% BLOCKS }}
+{{<layout}}
+
+    {{$content}}
+    <h1>An error occurred</h1>
+    <p>{{message}}</p>
+        {{#exception}}
+            {{#display_exceptions}}
+                <h3>Exception information:</h3>
+                <p><b>Trace:</b> <pre>{{exception}}</pre></p>
+            {{/display_exceptions}}
+        {{/exception}}
+
+    {{/content}}
+
+{{/layout}}
+

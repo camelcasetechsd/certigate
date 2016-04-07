@@ -50,4 +50,9 @@ class ErrorController extends ActionController
         return new ViewModel();
     }
 
+    public function noOrganizationUsersAction()
+    {
+        return new ViewModel();
+    }
+
 }
