@@ -92,12 +92,15 @@ return array(
                 ),
             ),
             'resource_not_found' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resource_not_found',
+                    'route' => '/resource_not_found[/:message]',
                     'defaults' => array(
                         'controller' => 'DefaultModule\Controller\Error',
                         'action' => 'resourceNotFound',
+                    ),
+                    'constraints' => array(
+                        'message' => '[A-Z_]+'
                     ),
                 ),
             ),
