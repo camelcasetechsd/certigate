@@ -1148,7 +1148,6 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data['email']);
         }
-        $this->setType($data['type']);
         $this->setCommercialNameAr($data['commercialNameAr']);
         $this->setOwnerNameAr($data['ownerNameAr']);
         $this->setCRNo($data['CRNo']);
