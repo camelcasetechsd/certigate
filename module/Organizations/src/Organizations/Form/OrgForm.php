@@ -41,12 +41,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
     protected $applicationLocale;
 
     /**
-     *
-     * @var Translation\Service\Locale\ApplicationLocale
-     */
-    protected $applicationLocale;
-
-    /**
      * setup form
      * 
      * 

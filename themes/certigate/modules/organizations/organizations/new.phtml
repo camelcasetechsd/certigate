@@ -93,5 +93,8 @@ $(document).ready(function () {
         }
     });
 
+    $url = window.location.href;
+    $pieces = $url.split("/new/");
+    $('#org_form_type').val($pieces[1]);
 });
 </script>

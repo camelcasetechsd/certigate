@@ -1,0 +1,84 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h3>{{#translate}}User Details{{/translate}}</h3>
+        <img src="{{user.0.photo}}" data-toggle="tooltip" data-placement="left"  class="user-photos" style="height: 70px !important;width: 70px !important;">
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table">
+            <tbody>
+                {{#user}}
+                <tr>
+                    <td>{{#translate}}First Name{{/translate}}</td><td>{{firstName}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}First Name in Arabic{{/translate}}</td><td>{{firstNameAr}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Middle Name{{/translate}}</td><td>{{middleName}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Middle Name in Arabic{{/translate}}</td><td>{{middleNameAr}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Last Name{{/translate}}</td><td>{{lastName}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Last Name in Arabic{{/translate}}</td><td>{{lastNameAr}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Phone{{/translate}}</td><td>{{phone}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}City{{/translate}}</td><td>{{city}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Country{{/translate}}</td><td>{{countryText}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Nationality{{/translate}}</td><td>{{nationalityText}}</td>
+                </tr>
+                <tr>
+                    <td>{{#translate}}Language{{/translate}}</td><td>{{languageText}}</td>
+                </tr>
+                {{/user}}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > {{#translate}}Pages{{/translate}} :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+
+{{/layout}}

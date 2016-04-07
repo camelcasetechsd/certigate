@@ -1,0 +1,61 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<br />
+<a href="/organizations/new/{{resellersTypeId}}"><button class="btn btn-small btn-success create-new">Create new Re-sellers</button></a>
+<br/><br/>
+<div class="panel panel-default atps-list">
+    <div class="panel-heading">Re-Sellers</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Commercial Name</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th>WebSite</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#resellers}}
+            <tr>
+                <td>{{commercialName}}</td>
+                <td>{{city}}</td>
+                <td>{{phone1}}</td>
+                <td>{{website}}</td>
+                <td>
+                    <a href="/organizations/more/{{id}}">More</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#orgUser}}
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#status}}
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{/orgUser}}
+
+                    {{^orgUser}}
+                    {{#isAdmin}}
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="View"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#status}}
+                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{/isAdmin}}
+                    {{/orgUser}}
+                </td>
+            </tr>
+            {{/resellers}}
+        </tbody>
+    </table>
+</div>
+
+{{/content}}
+
+{{/layout}}
