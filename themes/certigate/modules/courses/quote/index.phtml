@@ -16,11 +16,11 @@
     <table class="table">
         <thead>
             <tr>
-                <th>{{#translate}}Course{{/translate}}</th>
-                <th>{{#translate}}Course in Arabic{{/translate}}</th>
+                <th>{{#translate}}Course Name{{/translate}}</th>
+                <th>{{#translate}}Course Name in Arabic{{/translate}}</th>
                 {{#isAdminUser}}
-                <th>{{#translate}}User{{/translate}}</th>
-                <th>{{#translate}}User in Arabic{{/translate}}</th>
+                <th>{{#translate}}User Name{{/translate}}</th>
+                <th>{{#translate}}User Name in Arabic{{/translate}}</th>
                 {{/isAdminUser}}
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
@@ -47,7 +47,7 @@
                 <th>{{user.firstName}} {{user.lastName}}</th>
                 <th>{{user.firstNameAr}} {{user.lastNameAr}}</th>
                 {{/isAdminUser}}
-                <td>{{statusText}}</td>
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>
                     <a href="/quote/process/{{type}}/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     {{^isAdminUser}}

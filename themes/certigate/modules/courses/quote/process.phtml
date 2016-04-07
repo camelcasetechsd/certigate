@@ -88,9 +88,13 @@
 
                 {{#quote.isWireTransferSet}}
                 <tr>
-                    <td>{{#translate}}Current Payment{{/translate}}</td><td><a target="_blank" href="/quote/download/{{type}}/{{id}}" >{{#translate}}Wire Transfer{{/translate}}</a></td>
+                    <td>{{#translate}}Current Payment{{/translate}}</td><td><a target="_blank" href="/quote/download/{{type}}/{{id}}" >{{#translate}}Wire Transfer Attachment{{/translate}}</a></td>
                 </tr>
                 {{/quote.isWireTransferSet}}
+                
+                <tr>
+                    <td>{{#translate}}Status{{/translate}}</td><td>{{#translate}}{{quote.statusText}}{{/translate}}</td>
+                </tr>
             </tbody>
         </table>
         {{{form}}}
