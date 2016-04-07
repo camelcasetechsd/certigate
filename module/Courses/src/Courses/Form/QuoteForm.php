@@ -52,7 +52,7 @@ class QuoteForm extends Form
                     'accept' => 'image/*,application/zip,application/octet-stream,application/pdf,',
                 ),
                 'options' => array(
-                    'label' => '<p class="required">File</p> <p>Supported Extensions: zip,pdf,gif,png,jpg,jpeg</p>',
+                    'label' => '<p class="required">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,png,jpg,jpeg</p>',
                     'label_options' => array(
                         'disable_html_escape' => true,
                     )

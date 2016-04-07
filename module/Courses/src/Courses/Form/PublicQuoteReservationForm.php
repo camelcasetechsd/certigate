@@ -60,10 +60,10 @@ class PublicQuoteReservationForm extends Form
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'min' => '0',
+                'min' => '1',
             ),
             'options' => array(
-                'label' => 'Seats Number',
+                'label' => 'Seats No',
             ),
         ));
 

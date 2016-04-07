@@ -4,8 +4,6 @@ namespace Courses\Form;
 
 use Utilities\Form\Form;
 use Utilities\Form\FormButtons;
-use Courses\Entity\PublicQuote;
-use Courses\Entity\PrivateQuote;
 
 /**
  * QuoteFilter Form
