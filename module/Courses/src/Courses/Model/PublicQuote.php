@@ -11,11 +11,12 @@ use Utilities\Service\Status;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Utilities\Service\Object $objectUtilities
  * 
  * @package courses
  * @subpackage model
  */
-class PublicQuote
+class PublicQuote implements QuoteInterface
 {
 
     /**
@@ -25,14 +26,22 @@ class PublicQuote
     protected $query;
 
     /**
+     *
+     * @var Utilities\Service\Object
+     */
+    protected $objectUtilities;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Utilities\Service\Object $objectUtilities
      */
-    public function __construct($query)
+    public function __construct($query, $objectUtilities)
     {
         $this->query = $query;
+        $this->objectUtilities = $objectUtilities;
     }
 
     /**
@@ -43,31 +52,43 @@ class PublicQuote
      * @param array $data
      * 
      */
-    public function saveDepsBeforeQuote($quote, $data)
+    public function preSave($quote, $data)
     {
         
     }
-    
+
     /**
      * Save quote dependencies after quote
      * 
      * @access public
      * @param Courses\Entity\PublicQuote $quote
-     * 
+     * @param array $data
      */
-    public function saveDepsAfterQuote($quote)
+    public function postSave($quote, $data)
     {
         if ($quote->getStatus() == Status::STATUS_PENDING_PRICING) {
             $courseEvent = $quote->getCourseEvent();
             $courseEvent->setStudentsNo((int) $courseEvent->getStudentsNo() + (int) $quote->getSeatsNo());
-            $courseEvent->setStartDate(new \DateTime($courseEvent->getStartDate()));
-            $courseEvent->setEndDate(new \DateTime($courseEvent->getEndDate()));
-            $courseEvent->setCreated(new \DateTime($courseEvent->getCreated()));
-            if (!is_null($courseEvent->getModified())) {
-                $courseEvent->setModified(new \DateTime($courseEvent->getModified()));
-            }
+            $courseEventArray = $this->objectUtilities->prepareForSave(array($courseEvent));
+            $courseEvent = reset($courseEventArray);
             $this->query->setEntity("Courses\Entity\CourseEvent")->save($courseEvent, /* $data = */ array());
         }
+    }
+
+    /**
+     * Validate quote form
+     * 
+     * @access public
+     * @param Courses\Form\PublicQuoteForm $form
+     * @param Courses\Entity\PublicQuote $quote
+     * @param array $data
+     * 
+     * @return bool true as form is always valid
+     */
+    public function isQuoteFormValid($form, $quote, $data)
+    {
+        // Do nothing as there is no quote validation in case of public quote
+        return true;
     }
 
     /**

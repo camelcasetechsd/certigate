@@ -28,7 +28,8 @@ class PublicQuoteFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\PublicQuote');
-        return new PublicQuote($query);
+        $objectUtilities = $serviceLocator->get('objectUtilities');
+        return new PublicQuote($query, $objectUtilities);
     }
 
 }

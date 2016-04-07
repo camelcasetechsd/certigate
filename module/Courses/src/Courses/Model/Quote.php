@@ -18,7 +18,6 @@ use System\Service\Cache\CacheHandler;
 use Courses\Form\PublicQuoteForm;
 use Courses\Form\PrivateQuoteForm;
 use Zend\Form\FormInterface;
-use Utilities\Service\Object;
 
 /**
  * Quote Model
@@ -181,20 +180,25 @@ class Quote
         }
         $this->setQuoteStatus($quote, $data, $isAdminUser);
 
-        if ($editFlag === true) {
-            $data = array();
-        }
         if ($isCancelled === false) {
             $quoteModel = $this->quoteGenerator->getModel($type);
-            $quoteModel->saveDepsBeforeQuote($quote, $data);
+            $quoteModel->preSave($quote, $data);
         }
-        $this->query->setEntity("Courses\Entity\\{$type}Quote")->save($quote, $data);
+
+        $quoteData = array();
+        if ($editFlag === false) {
+            $quoteData = $data;
+        }
+
+        $quoteArray = $this->objectUtilities->prepareForSave(array($quote));
+        $quote = reset($quoteArray);
+        $this->query->setEntity($this->getQuoteEntityClass($type))->save($quote, $quoteData);
 
         if ($isCancelled === false) {
-            $quoteModel->saveDepsAfterQuote($quote);
+            $quoteModel->postSave($quote, $data);
         }
         else {
-            $this->releaseReservedSeats($quote, $type);
+            $this->releaseReservedSeats($quote, $type, /* $onlyReleaseSeats = */ true);
         }
         $this->sendMail($type, $userEmail, $isAdminUser, $quote);
     }
@@ -296,9 +300,8 @@ class Quote
 
         $quote->total = $this->getQuoteTotalPrice($quote, $type);
 
-        if (property_exists($quote, "preferredDate")) {
-            $quote->preferredDate = $quote->getPreferredDate()->format(Object::DATE_DISPLAY_FORMAT);
-        }
+        $quoteArray = $this->objectUtilities->prepareForDisplay(array($quote));
+        $quote = reset($quoteArray);
     }
 
     /**
@@ -439,7 +442,7 @@ class Quote
      */
     public function getQuoteForm($type, $id, $userId)
     {
-        $quoteEntityClass = "Courses\Entity\\{$type}Quote";
+        $quoteEntityClass = $this->getQuoteEntityClass($type);
         $quote = $this->query->find($quoteEntityClass, $id);
         $options = array(
             'status' => $quote->getStatus()
@@ -483,11 +486,17 @@ class Quote
      * @param bool $isAdminUser
      * @return bool is form valid
      */
-    public function isQuoteFormValid($form, $data, $type, $isAdminUser)
+    public function isQuoteFormValid($form, $quote, $data, $type, $isAdminUser)
     {
         $isValid = true;
         if ($this->isQuoteCancelled($data, $isAdminUser) === false) {
+            $quoteModel = $this->quoteGenerator->getModel($type);
             $isValid = $form->isValid();
+            $isValid &= $quoteModel->isQuoteFormValid($form, $quote, $data);
+        }
+        if ($isValid == false) {
+            $quote->exchangeArray($data);
+            $form->bind($quote);
         }
         return $isValid;
     }
@@ -502,11 +511,11 @@ class Quote
      */
     public function delete($type, $id)
     {
-        $quoteEntityClass = "Courses\Entity\\{$type}Quote";
+        $quoteEntityClass = $this->getQuoteEntityClass($type);
         $quote = $this->query->find($quoteEntityClass, $id);
 
-        $this->releaseReservedSeats($quote, $type);
         $this->query->setEntity($quoteEntityClass)->remove($quote);
+        $this->releaseReservedSeats($quote, $type);
     }
 
     /**
@@ -515,16 +524,20 @@ class Quote
      * @access public
      * @param mixed $quote
      * @param string $type
+     * @param bool $onlyReleaseSeats no entity removal, just seats release ,default is false
+     * @param bool $onlyRemove no seats release, just entity removal ,default is false
      */
-    public function releaseReservedSeats($quote, $type)
+    public function releaseReservedSeats($quote, $type, $onlyReleaseSeats = false, $onlyRemove = false)
     {
         $courseEvent = $quote->getCourseEvent();
         $this->query->setEntity("Courses\Entity\CourseEvent");
-        if ($type == PublicQuote::QUOTE_TYPE) {
+        if ($type == PublicQuote::QUOTE_TYPE  && $onlyRemove === false) {
             $courseEvent->setStudentsNo((int) $courseEvent->getStudentsNo() - (int) $quote->getSeatsNo());
+            $courseEventArray = $this->objectUtilities->prepareForSave(array($courseEvent));
+            $courseEvent = reset($courseEventArray);
             $this->query->save($courseEvent);
         }
-        elseif ($type == PrivateQuote::QUOTE_TYPE) {
+        elseif ($type == PrivateQuote::QUOTE_TYPE && $onlyReleaseSeats === false) {
             $this->query->remove($courseEvent);
         }
     }
@@ -577,20 +590,16 @@ class Quote
     public function cleanup()
     {
         $publicQuotes = $this->getQuotes(/* $type = */ PublicQuote::QUOTE_TYPE, /* $status = */ Status::STATUS_CANCELLED, /* $lastModifiedDays = */ $this->quoteConfig["expireAfterDays"]);
-        foreach ($publicQuotes as $publicQuote) {
-            $this->releaseReservedSeats($publicQuote, /* $type = */ PublicQuote::QUOTE_TYPE);
-        }
-
         $privateQuotes = $this->getQuotes(/* $type = */ PrivateQuote::QUOTE_TYPE, /* $status = */ Status::STATUS_CANCELLED, /* $lastModifiedDays = */ $this->quoteConfig["expireAfterDays"]);
-        foreach ($publicQuotes as $publicQuote) {
-            $this->releaseReservedSeats($publicQuote, /* $type = */ PrivateQuote::QUOTE_TYPE);
-        }
-
         $quotes = array_merge($publicQuotes, $privateQuotes);
         foreach ($quotes as $quote) {
             $this->query->remove($quote, /* $noFlush = */ true);
         }
         $this->query->entityManager->flush();
+
+        foreach ($privateQuotes as $privateQuote) {
+            $this->releaseReservedSeats($privateQuote, /* $type = */ PrivateQuote::QUOTE_TYPE);
+        }
     }
 
     /**
@@ -604,7 +613,7 @@ class Quote
      */
     public function getQuotes($type, $status = null, $lastModifiedDays = null)
     {
-        $entityName = "Courses\Entity\\" . $type . "Quote";
+        $entityName = $this->getQuoteEntityClass($type);
         $repository = $this->query->setEntity($entityName)->entityRepository;
         $queryBuilder = $repository->createQueryBuilder("pq");
         $parameters = array();
@@ -624,6 +633,18 @@ class Quote
             $queryBuilder->setParameters($parameters);
         }
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * Get quote entity class
+     * 
+     * @access public
+     * @param string $type
+     * @return string quote entity class
+     */
+    public function getQuoteEntityClass($type)
+    {
+        return "Courses\Entity\\{$type}Quote";
     }
 
     /**
@@ -658,10 +679,10 @@ class Quote
             $user = $this->query->find("Users\Entity\User", $userId);
             $criteria->andWhere($expr->eq("user", $user));
         }
-        $entityName = "Courses\Entity\PublicQuote";
+        $entityName = $this->getQuoteEntityClass(PublicQuote::QUOTE_TYPE);
         $currentType = PublicQuote::QUOTE_TYPE;
         if (array_key_exists("type", $data) && !empty($data["type"])) {
-            $entityName = "Courses\Entity\\" . $data["type"] . "Quote";
+            $entityName = $this->getQuoteEntityClass($data["type"]);
             $currentType = $data["type"];
         }
         $this->setCurrentType($currentType);

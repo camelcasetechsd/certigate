@@ -29,7 +29,9 @@ class PrivateQuoteFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\PrivateQuote');
         $translationHandler = $serviceLocator->get('translatorHandler');
-        return new PrivateQuote($query, $translationHandler);
+        $courseEventModel = $serviceLocator->get('Courses\Model\CourseEvent');
+        $objectUtilities = $serviceLocator->get('objectUtilities');
+        return new PrivateQuote($query, $translationHandler, $courseEventModel, $objectUtilities);
     }
 
 }

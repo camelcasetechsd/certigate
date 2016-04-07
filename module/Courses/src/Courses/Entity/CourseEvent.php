@@ -717,11 +717,15 @@ class CourseEvent
         if (array_key_exists('endDate', $data)) {
             $this->setEndDate($data["endDate"]);
         }
-        $this
-                ->setCapacity($data["capacity"])
-                ->setStudentsNo($data["studentsNo"])
-                ->setHideFromCalendar($data["hideFromCalendar"])
-        ;
+        if (array_key_exists('capacity', $data)) {
+            $this->setCapacity($data["capacity"]);
+        }
+        if (array_key_exists('studentsNo', $data)) {
+            $this->setStudentsNo($data["studentsNo"]);
+        }
+        if (array_key_exists('hideFromCalendar', $data)) {
+            $this->setHideFromCalendar($data["hideFromCalendar"]);
+        }
     }
 
     /**

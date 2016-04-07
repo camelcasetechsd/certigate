@@ -14,11 +14,13 @@ use Courses\Entity\CourseEvent;
  * 
  * @property Utilities\Service\Query\Query $query
  * @property Translation\Service\Translator\TranslatorHandler $translationHandler
+ * @property Courses\Model\CourseEvent $courseEventModel
+ * @property Utilities\Service\Object $objectUtilities
  * 
  * @package courses
  * @subpackage model
  */
-class PrivateQuote
+class PrivateQuote implements QuoteInterface
 {
 
     /**
@@ -34,16 +36,32 @@ class PrivateQuote
     protected $translationHandler;
 
     /**
+     *
+     * @var Courses\Model\CourseEvent
+     */
+    protected $courseEventModel;
+
+    /**
+     *
+     * @var Utilities\Service\Object
+     */
+    protected $objectUtilities;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
      * @param Translation\Service\Translator\TranslatorHandler $translationHandler
+     * @param Courses\Model\CourseEvent $courseEventModel
+     * @param Utilities\Service\Object $objectUtilities
      */
-    public function __construct($query, $translationHandler)
+    public function __construct($query, $translationHandler, $courseEventModel, $objectUtilities)
     {
         $this->query = $query;
         $this->translationHandler = $translationHandler;
+        $this->courseEventModel = $courseEventModel;
+        $this->objectUtilities = $objectUtilities;
     }
 
     /**
@@ -54,7 +72,7 @@ class PrivateQuote
      * @param array $data
      * 
      */
-    public function saveDepsBeforeQuote($quote, $data)
+    public function preSave($quote, $data)
     {
         if ($quote->getStatus() == Status::STATUS_PENDING_PRICING) {
             $data = array(
@@ -67,11 +85,6 @@ class PrivateQuote
             $this->query->setEntity("Courses\Entity\CourseEvent")->save($courseEvent = new CourseEvent(), $data);
             $quote->setCourseEvent($courseEvent);
         }
-        $quote->setPreferredDate(new \DateTime($quote->preferredDate));
-        $quote->setCreated(new \DateTime($quote->getCreated()));
-        if (!is_null($quote->getModified())) {
-            $quote->setModified(new \DateTime($quote->getModified()));
-        }
     }
 
     /**
@@ -79,11 +92,17 @@ class PrivateQuote
      * 
      * @access public
      * @param Courses\Entity\PrivateQuote $quote
-     * 
+     * @param array $data
      */
-    public function saveDepsAfterQuote($quote)
+    public function postSave($quote, $data)
     {
-        
+        if ($quote->getStatus() == Status::STATUS_PENDING_PAYMENT && array_key_exists("courseEvent", $data)) {
+            $courseEventData = $data["courseEvent"];
+            $courseEvent = $quote->getCourseEvent();
+            $courseEventArray = $this->objectUtilities->prepareForSave(array($courseEvent));
+            $courseEvent = reset($courseEventArray);
+            $this->query->setEntity("Courses\Entity\CourseEvent")->save($courseEvent, /* $data = */ $courseEventData);
+        }
     }
 
     /**
@@ -98,6 +117,25 @@ class PrivateQuote
     {
         // Do nothing as there is no reservation validation in case of private quote
         return true;
+    }
+
+    /**
+     * Validate quote form
+     * 
+     * @access public
+     * @param Courses\Form\PrivateQuoteForm $form
+     * @param Courses\Entity\PrivateQuote $quote
+     * @param array $data
+     * 
+     * @return bool true as form is always valid
+     */
+    public function isQuoteFormValid($form, $quote, $data)
+    {
+        $isValid = true;
+        if ($quote->getStatus() == Status::STATUS_PENDING_PRICING && array_key_exists("courseEvent", $data)) {
+            $isValid = (bool) $this->courseEventModel->validateForm(/* $form = */ $form->get("courseEvent"), /* $data = */ $data["courseEvent"]);
+        }
+        return $isValid;
     }
 
     /**

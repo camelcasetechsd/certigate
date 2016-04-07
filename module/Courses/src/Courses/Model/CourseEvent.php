@@ -342,7 +342,7 @@ class CourseEvent
     public function validateForm($form, $data, $courseEvent = null, $isEditForm = true)
     {
         $isCustomValidationValid = true;
-        if ((int) $data['capacity'] < (int) $data['studentsNo']) {
+        if (array_key_exists('studentsNo', $data) && array_key_exists('capacity', $data) && (int) $data['capacity'] < (int) $data['studentsNo']) {
             $form->get('capacity')->setMessages(array("Capacity should be higher than enrolled students number"));
             $isCustomValidationValid = false;
         }

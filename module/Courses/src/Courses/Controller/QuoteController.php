@@ -91,7 +91,7 @@ class QuoteController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $quoteEntityClass = "Courses\Entity\\{$type}Quote";
+            $quoteEntityClass = $quoteModel->getQuoteEntityClass($type);
             $quote = new $quoteEntityClass();
             $quoteForm = $quoteModel->getReservationForm($variables['courses'], $type, $data);
             $quoteForm->setData($data);
@@ -135,7 +135,7 @@ class QuoteController extends ActionController
             $form->setInputFilter($quote->getInputFilter($quote->getStatus()));
             $form->setData($data);
 
-            if ($quoteModel->isQuoteFormValid($form, $data, $type, $isAdminUser)) {
+            if ($quoteModel->isQuoteFormValid($form, $quote, $data, $type, $isAdminUser)) {
                 $quoteModel->save($quote, $form, $data, $type, /*$editFlag =*/ true, $isAdminUser, /*$userEmail =*/ $this->storage['email']);
                 $this->redirect()->toUrl($this->getRedirectUrl(/*$routeName =*/ "quote"));
             }
@@ -160,8 +160,9 @@ class QuoteController extends ActionController
         $type = ucfirst($this->params('type'));
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $fileUtilities = $this->getServiceLocator()->get('fileUtilities');
+        $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
         
-        $quote = $query->find("Courses\Entity\\{$type}Quote", /* $criteria = */ $id);
+        $quote = $query->find($quoteModel->getQuoteEntityClass($type), /* $criteria = */ $id);
         $file = $quote->getWireTransfer()["tmp_name"];
         return $fileUtilities->getFileResponse($file);
     }
