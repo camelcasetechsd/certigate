@@ -27,7 +27,8 @@ class Object
 {
 
     const DATE_DISPLAY_FORMAT = "D, d M Y";
-    
+    const TIME_DISPLAY_FORMAT = "H:i";
+
     /**
      *
      * @var CountryService 
@@ -83,6 +84,30 @@ class Object
         $this->query = $query;
         $statusReflection = new \ReflectionClass('Utilities\Service\Status');
         $this->statusConstants = $statusReflection->getConstants();
+    }
+
+    /**
+     * prepare object for save
+     * 
+     * 
+     * @access public
+     * @param array $objectsArray
+     * @return array objects prepared for save
+     */
+    public function prepareForSave($objectsArray)
+    {
+        foreach ($objectsArray as &$object) {
+            $objectProperties = $this->getObjectProperties($object);
+            foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
+                if (is_string($objectPropertyValue) && !empty($objectPropertyValue)) {
+                    $dateTime = \DateTime::createFromFormat(self::DATE_DISPLAY_FORMAT, $objectPropertyValue);
+                    if ($dateTime !== FALSE) {
+                        $object->$objectPropertyName = $dateTime;
+                    }
+                }
+            }
+        }
+        return $objectsArray;
     }
 
     /**
@@ -156,15 +181,10 @@ class Object
      */
     public function prepareForStatusDisplay($object)
     {
-        if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
-            $objectProperties = $object->getArrayCopy();
-        }
-        else {
-            $objectProperties = get_object_vars($object);
-        }
+        $objectProperties = $this->getObjectProperties($object);
         if (array_key_exists("status", $objectProperties)) {
-            $statusKey = array_search( $object->status , $this->statusConstants);
-            if($statusKey !== false){
+            $statusKey = array_search($object->status, $this->statusConstants);
+            if ($statusKey !== false) {
                 $object->statusText = $this->statusConstants[$statusKey . "_TEXT"];
             }
             $object->statusActive = false;
@@ -191,6 +211,25 @@ class Object
                 default:
                     break;
             }
+        }
+        return $objectProperties;
+    }
+
+    /**
+     * Get object properties
+     * 
+     * @access public
+     * @param mixed $object
+     * 
+     * @return array object properties
+     */
+    public function getObjectProperties($object)
+    {
+        if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
+            $objectProperties = $object->getArrayCopy();
+        }
+        else {
+            $objectProperties = get_object_vars($object);
         }
         return $objectProperties;
     }
