@@ -112,6 +112,11 @@ class PosCMenus extends AbstractSeed
                                         "weight" => 1,
                                         "children" => [
                                             [
+                                                "title" => "Request Quotation",
+                                                "titleAr" => "Request Quotation",
+                                                "path" => "/quote/training/public",
+                                            ],
+                                            [
                                                 // need to be specific 
                                                 // not implemented yet
                                                 "title" => "Course Evaluation",
@@ -121,10 +126,29 @@ class PosCMenus extends AbstractSeed
                                         ]
                                     ],
                                     [
+                                        "title" => "Private Training",
+                                        "titleAr" => "Private Training",
+                                        "path" => "#",
+                                        "weight" => 2,
+                                        "children" => [
+                                            [
+                                                "title" => "Request Quotation",
+                                                "titleAr" => "Request Quotation",
+                                                "path" => "/quote/training/private",
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "title" => "Training Quotations",
+                                        "titleAr" => "Training Quotations",
+                                        "path" => "/quote",
+                                        "weight" => 3,
+                                    ],
+                                    [
                                         "title" => "Course Calendar",
                                         "titleAr" => "Course Calendar",
                                         "path" => "/courses/calendar",
-                                        "weight" => 2,
+                                        "weight" => 4,
                                         "children" => [
                                             [
                                                 "title" => "Register",
