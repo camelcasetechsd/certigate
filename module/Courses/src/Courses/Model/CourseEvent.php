@@ -427,17 +427,18 @@ class CourseEvent
     }
 
     /**
-     * Send calendar alert
+     * Send calendar alert periodically or shortly
      * 
      * @access public
-     * @param string $url
      * @param array $userData
+     * @param string $url ,default is null
+     * @param Courses\Entity\CourseEvent $courseEvent ,default is null
      * @return array mail result message
      * 
      * @throws \Exception From email is not set
      * @throws \Exception To email is not set
      */
-    public function sendCalendarAlert($url, $userData)
+    public function sendCalendarAlert($userData, $url = null, $courseEvent = null)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -452,19 +453,30 @@ class CourseEvent
         }
         $templateParameters = array(
             "userData" => $userData,
-            "url" => $url,
         );
+        if (!is_null($url)) {
+            $templateParameters["url"] = $url;
+            $mailTemplate = MailTempates::NEW_CALENDAR_EVENT_TEMPLATE;
+            $mailSubject = MailSubjects::NEW_CALENDAR_EVENT_SUBJECT;
+            $message = "Mail will be sent shortly!";
+        }
+        elseif (!is_null($courseEvent)) {
+            $templateParameters["courseName"] = $courseEvent->getCourse()->getName();
+            $mailTemplate = MailTempates::CALENDAR_EVENT_NOTIFICATION_TEMPLATE;
+            $mailSubject = MailSubjects::CALENDAR_EVENT_NOTIFICATION_SUBJECT;
+            $message = "Mail will be sent periodically!";
+        }
 
         $mailArray = array(
             'to' => $userData["email"],
             'from' => $from,
-            'templateName' => MailTempates::NEW_CALENDAR_EVENT_TEMPLATE,
+            'templateName' => $mailTemplate,
             'templateParameters' => $templateParameters,
-            'subject' => MailSubjects::NEW_CALENDAR_EVENT_SUBJECT,
+            'subject' => $mailSubject,
         );
         $this->notification->notify($mailArray);
 
-        $data["message"] = $this->translatorHandler->translate("Mail will be sent shortly!");
+        $data["message"] = $this->translatorHandler->translate($message);
         return $data;
     }
 

@@ -127,7 +127,7 @@ return array(
                     'route' => '/course-events/add-calendar',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\CourseEvent',
-                        'action' => 'addCalendar',
+                        'action' => 'addCalendarEvent',
                     ),
                 )
             ),

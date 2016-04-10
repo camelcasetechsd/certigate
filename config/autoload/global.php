@@ -84,5 +84,8 @@ return array(
     ),
     'website' => array(
         'host' => 'local-certigate.com'
-    )
+    ),
+    'courseEvent' => array(
+        'periodicNotification' => 5 //No. of days
+    ),
 );

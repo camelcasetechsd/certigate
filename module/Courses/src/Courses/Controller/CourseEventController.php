@@ -174,18 +174,18 @@ class CourseEventController extends ActionController
     }
 
     /**
-     * Add calendar for course event
+     * Add calendar event for course event
      *
      * 
      * @access public
      */
-    public function addCalendarAction()
+    public function addCalendarEventAction()
     {
         $url = $this->params()->fromQuery('url');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $auth = new AuthenticationService();
         
-        $data = $courseEventModel->sendCalendarAlert($url, /*$userData =*/ $auth->getIdentity());
+        $data = $courseEventModel->sendCalendarAlert(/*$userData =*/ $auth->getIdentity(), $url);
         
         return $this->getResponse()->setContent(Json::encode($data));
     }

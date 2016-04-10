@@ -116,6 +116,8 @@ class PosARoles extends AbstractSeed
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $courseEventsAddCalendarRoute = "courseEventsAddCalendar";
+        $courseEventsSubscribeRoute = "courseEventsSubscribe";
+        $courseEventsUnsubscribeRoute = "courseEventsUnsubscribe";
         $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
@@ -131,6 +133,46 @@ class PosARoles extends AbstractSeed
         $examBookingRoute = "examBooking";
         $myCoursesRoute = "myCourses";
         $coursesAcls = array(
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsUnsubscribeRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsUnsubscribeRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsUnsubscribeRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsUnsubscribeRoute,
+            ),
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsSubscribeRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsSubscribeRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsSubscribeRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsSubscribeRoute,
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
