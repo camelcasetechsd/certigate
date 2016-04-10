@@ -115,6 +115,7 @@ class PosARoles extends AbstractSeed
 
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
+        $courseEventsAddCalendarRoute = "courseEventsAddCalendar";
         $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
@@ -130,6 +131,26 @@ class PosARoles extends AbstractSeed
         $examBookingRoute = "examBooking";
         $myCoursesRoute = "myCourses";
         $coursesAcls = array(
+            array(
+                'role_id' => $studentRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsAddCalendarRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsAddCalendarRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsAddCalendarRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $courseEventsAddCalendarRoute,
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,

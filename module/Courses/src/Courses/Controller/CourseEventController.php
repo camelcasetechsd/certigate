@@ -9,6 +9,7 @@ use Courses\Entity\CourseEvent;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Zend\Json\Json;
 
 /**
  * Course event Controller
@@ -170,6 +171,23 @@ class CourseEventController extends ActionController
 
         $url = $this->getIndexUrl();
         $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * Add calendar for course event
+     *
+     * 
+     * @access public
+     */
+    public function addCalendarAction()
+    {
+        $url = $this->params()->fromQuery('url');
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+        $auth = new AuthenticationService();
+        
+        $data = $courseEventModel->sendCalendarAlert($url, /*$userData =*/ $auth->getIdentity());
+        
+        return $this->getResponse()->setContent(Json::encode($data));
     }
     
     /**

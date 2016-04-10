@@ -121,6 +121,16 @@ return array(
                     ),
                 )
             ),
+            'courseEventsAddCalendar' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-events/add-calendar',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEvent',
+                        'action' => 'addCalendar',
+                    ),
+                )
+            ),
             'resources' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
