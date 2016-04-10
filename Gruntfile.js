@@ -36,6 +36,8 @@ module.exports = function (grunt) {
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
                     '<%= dirs.jsSrc %>/diff_match_patch.js',
                     '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
+                    '<%= dirs.bowerSrc %>/addtocalendar/atc.min.js',
+                    '<%= dirs.jsSrc %>/addToCalendar.js',
                     '<%= dirs.jsSrc %>/form.js',
                     '<%= dirs.jsSrc %>/signin.js',
                     '<%= dirs.jsSrc %>/reset.js',
@@ -71,6 +73,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
                     '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
+                    '<%= dirs.cssSrc %>/atc-style-menu-wb.css',
                     // certigate theme css
                     '<%= dirs.themes %>/certigate/assets/css/carousel.css'
 
@@ -98,6 +101,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
                     '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
+                    '<%= dirs.cssSrc %>/atc-style-menu-wb.css',
                     // certigate theme css
                     '<%= dirs.themes %>/certigate/assets/css/carousel.rtl.css',
                     
