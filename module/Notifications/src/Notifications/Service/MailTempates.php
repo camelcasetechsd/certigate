@@ -102,5 +102,10 @@ class MailTempates {
      */
     const NEW_CALENDAR_EVENT_TEMPLATE = "new-calendar-event";
     
+    /**
+     * Calendar Event Notification Template
+     */
+    const CALENDAR_EVENT_NOTIFICATION_TEMPLATE = "calendar-event-notification";
+    
     
 }

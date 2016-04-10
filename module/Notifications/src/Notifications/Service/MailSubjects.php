@@ -102,4 +102,9 @@ class MailSubjects
      */
     const NEW_CALENDAR_EVENT_SUBJECT = "New calendar event";
 
+    /**
+     * Calendar Event Notification Subject
+     */
+    const CALENDAR_EVENT_NOTIFICATION_SUBJECT = "Calendar event notification";
+
 }
