@@ -548,6 +548,23 @@ class User
     }
 
     /**
+     * Get fullName in arabic
+     * 
+     * 
+     * @access public
+     * @return string fullName in arabic
+     */
+    public function getFullNameAr()
+    {
+        $fullName = $this->getFirstNameAr();
+        if (!empty($this->getMiddleNameAr())) {
+            $fullName .= " " . $this->getMiddleNameAr();
+        }
+        $fullName .= " " . $this->getLastNameAr();
+        return $fullName;
+    }
+
+    /**
      * Get password
      * 
      * 
