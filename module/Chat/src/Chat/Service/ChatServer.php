@@ -67,13 +67,14 @@ class ChatServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $from, $msg)
     {
-        //send the message to all the other clients except the one who sent.
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                $client->send($msg);
-                $this->chatHandler->saveMessage($msg);
-            }
-        }
+        // save the message
+        $this->chatHandler->saveMessage($msg);
+        // find requested recipient
+        $recipient = $this->chatHandler->findRecipient($this->clients, $msg);
+        // adding parameters to message before send again
+        $enhancedMsg = $this->chatHandler->enhanceMsg($from, $msg);
+        // send the message
+        $recipient->send($enhancedMsg);
     }
 
 }

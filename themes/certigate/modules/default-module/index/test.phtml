@@ -1,7 +1,7 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<br><br>
+<!--<br><br>
 <br>
 <br>
 <br>
@@ -14,52 +14,52 @@
 
 <div>
     <button id="join-chat">Contact an admin</button>
-</div>
+</div>-->
 
 {{/content}}
 {{/layout}}
 <script>
-
-    $(document).ready(function () {
-
-        $('#join-chat').click(function () {
-            $(this).hide();
-            $(this).after('<input type="text" id="message"/><button id="send-message">Send</button>');
-            window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
-            window.userId = 1;
-
-            window.connection.onmessage = function (e) {
-                $msg = JSON.parse(e.data);
-                if ("text" in $msg) {
-                    // user messages
-                    $('#history-start-point').append('<br><p style="float: right;">' + $msg.text + '</p>');
-                } else {
-                    // server messages
-                    console.log($msg.server);
- 
-
-                   $.each($msg.server,function(index , value){
-                       $('.online-admin-container').append('<div> <p class="admin-username">'+value['username']+'</p> <span class="admin-id">'+value['userId']+'</span> </div> </div>');
-                   });
-                }
-            };
-
-        });
-
-        $(document).on('click', '#send-message', function () {
-            //user message    
-            $message = {
-                'user': 'admin',
-                'text': $('#message').val(),
-                'time': new Date().getTime(),
-                'userId': window.userId,
-                'recipientId': 1
-            };
-            window.connection.send(JSON.stringify($message));
-            // empty text field
-            $('#history-start-point').append('<br><p style="float: left;">' + $('#message').val() + '</p>');
-            $('#message').val('');
-        });
-    });
+//
+//    $(document).ready(function () {
+//
+//        $('#join-chat').click(function () {
+//            $(this).hide();
+//            $(this).after('<input type="text" id="message"/><button id="send-message">Send</button>');
+//            window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
+//            window.userId = 1;
+//
+//            window.connection.onmessage = function (e) {
+//                $msg = JSON.parse(e.data);
+//                if ("text" in $msg) {
+//                    // user messages
+//                    $('#history-start-point').append('<br><p style="float: right;">' + $msg.text + '</p>');
+//                } else {
+//                    // server messages
+//                    console.log($msg.server);
+// 
+//
+//                   $.each($msg.server,function(index , value){
+//                       $('.online-admin-container').append('<div> <p class="admin-username">'+value['username']+'</p> <span class="admin-id">'+value['userId']+'</span> </div> </div>');
+//                   });
+//                }
+//            };
+//
+//        });
+//
+//        $(document).on('click', '#send-message', function () {
+//            //user message    
+//            $message = {
+//                'user': 'admin',
+//                'text': $('#message').val(),
+//                'time': new Date().getTime(),
+//                'userId': window.userId,
+//                'recipientId': 1
+//            };
+//            window.connection.send(JSON.stringify($message));
+//            // empty text field
+//            $('#history-start-point').append('<br><p style="float: left;">' + $('#message').val() + '</p>');
+//            $('#message').val('');
+//        });
+//    });
 
 </script>
