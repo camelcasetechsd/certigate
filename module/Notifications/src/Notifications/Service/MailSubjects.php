@@ -97,4 +97,9 @@ class MailSubjects
      */
     const NEW_PRESS_RELEASE_SUBJECT = "New press release";
 
+    /**
+     * New Calendar Event Subject
+     */
+    const NEW_CALENDAR_EVENT_SUBJECT = "New calendar event";
+
 }

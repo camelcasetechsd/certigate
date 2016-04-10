@@ -97,5 +97,10 @@ class MailTempates {
      */
     const NEW_PRESS_RELEASE_TEMPLATE = "new-press-release";
     
+    /**
+     * New Calendar Event Template
+     */
+    const NEW_CALENDAR_EVENT_TEMPLATE = "new-calendar-event";
+    
     
 }
