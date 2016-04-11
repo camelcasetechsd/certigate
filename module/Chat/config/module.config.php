@@ -13,6 +13,8 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Chat\Model\Chat' => 'Chat\Model\ChatFactory',
+            'Chat\Service\ChatHandler' => 'Chat\Service\ChatHandlerFactory',
+            'Chat\Service\ChatServer' => 'Chat\Service\ChatServerFactory',
         ),
     ),
     'doctrine' => array(

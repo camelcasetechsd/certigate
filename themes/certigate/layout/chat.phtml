@@ -72,8 +72,14 @@
         <!--admins list-->
         <div class="online-admin-container pull-right">
             <div class="online-admin-container-header"><p>  online Admins </p></div>
+            <div class="online-admins">
+                <!--contains all divs of online admins-->
+            </div>
             <hr>
             <div class="online-user-container-header"><p> Recent Users </p></div>
+            <div class="online-users">
+                <!--contains all divs of online users-->
+            </div>
 
         </div>
         <!--user-admin-chat-->
@@ -89,7 +95,7 @@ $(document).ready(function () {
 ///////////////////////////////////// Events ///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
     $('.join-chat').click(function () {
-        //selected admin username and id
+//selected admin username and id
         window.choosedUsername = '';
         window.choosedUserId = '';
         // hiding connect button
@@ -105,18 +111,33 @@ $(document).ready(function () {
             $msg = JSON.parse(e.data);
             if ("text" in $msg) {
                 //incomming message
-                console.log($msg);
                 handleIncommingMessgae($msg);
             } else {
                 // server messages
                 $onlineAdmins = $msg.server;
+                $('.online-admins').children().remove();
                 $.each($onlineAdmins, function (index, value) {
-                    $('.online-admin-container-header').after(getNewListAdmin(value['username'], value['userId']));
+                    if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
+                        $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
+                    }
                 });
             }
         };
+        /**
+         * updating online admins each 5 seconds  
+         */
+        setInterval(function () {
+            $message = {
+                'user': window.username,
+                'text': null,
+                'time': null,
+                'userId': window.userId,
+                'recipientId': null,
+                'type': 'update_admins'
+            };
+            window.connection.send(JSON.stringify($message));
+        }, 5000);
     });
-
     /**
      * sending message
      * @param {type} adminId
@@ -134,14 +155,14 @@ $(document).ready(function () {
             'text': $(this).prev('.user-message').val(),
             'time': new Date().getTime(),
             'userId': window.userId,
-            'recipientId': getChoosedUserId()
+            'recipientId': getChoosedUserId(),
+            'type': 'user_message'
         };
         window.connection.send(JSON.stringify($message));
         updateMessages(true, $(this).prev('.user-message').val());
         // empty text field
         $(this).prev('.user-message').val('');
     });
-
     /**
      * opening new chat window for specific user
      */
@@ -150,8 +171,6 @@ $(document).ready(function () {
         setChoosedUserId($(this).children('.admin-id').text());
         handleChatBoxes(true);
     });
-    
-
 //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// Handlers /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +208,7 @@ $(document).ready(function () {
         handleChatBoxes(false);
         // if not admin add to recent users list
         if (!msg.isAdmin) {
-            $('.online-user-container-header').after(getNewListUser(getChoosedUsername(), getChoosedUserId()));
+            $('.online-users').append(getNewListUser(getChoosedUsername(), getChoosedUserId()));
         }
         updateMessages(false, msg.text);
     }
@@ -246,14 +265,14 @@ $(document).ready(function () {
      * div in online admins container
      */
     function getNewListAdmin(username, userId) {
-        return '<div class="single-admin-container"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
+        return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
     }
     /**
      * returning html needed to build a div containing recent user 
      * div in recent users container
      */
     function getNewListUser(username, userId) {
-        return '<div class="single-admin-container"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
+        return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
     }
 
 

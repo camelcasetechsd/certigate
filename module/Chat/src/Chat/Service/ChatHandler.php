@@ -2,7 +2,6 @@
 
 namespace Chat\Service;
 
-use ServiceLocatorFactory\ServiceLocatorFactory;
 use Chat\Service\ConnectionParamters;
 
 class ChatHandler
@@ -10,20 +9,13 @@ class ChatHandler
 
     /**
      *
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
-     *
      * @var Chat\Model\Chat
      */
     protected $chatModel;
 
-    public function __construct()
+    public function __construct($chatModel)
     {
-        $this->serviceManager = ServiceLocatorFactory::getInstance();
-        $this->chatModel = $this->serviceManager->get('Chat\Model\Chat');
+        $this->chatModel = $chatModel;
     }
 
     /**
@@ -87,9 +79,8 @@ class ChatHandler
      */
     public function findRecipient($clients, $message)
     {
-        $decodedMessage = json_decode($message);
         foreach ($clients as $client) {
-            if ($client->userId == $decodedMessage->recipientId) {
+            if ($client->userId == $message->recipientId) {
                 return $client;
             }
         }
@@ -102,17 +93,21 @@ class ChatHandler
      */
     public function enhanceMsg($from, $message)
     {
-        $msg = json_decode($message);
         // checking if the message from an admin or from a normal user 
         // to know the status of the sender
         if ($from->isAdmin) {
             var_dump('isAdmin');
-            $msg->isAdmin = true;
+            $message->isAdmin = true;
         }
         else {
-            $msg->isAdmin = false;
+            $message->isAdmin = false;
         }
-        return json_encode($msg);
+        return json_encode($message);
+    }
+
+    public function getClosedMessage()
+    {
+        
     }
 
 }

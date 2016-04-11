@@ -5,7 +5,7 @@ namespace Chat\Service;
 use Ratchet\MessageComponentInterface;
 use SplObjectStorage;
 use Ratchet\ConnectionInterface;
-use Chat\Service\ChatHandler;
+use Chat\Service\ChatMessageType;
 
 class ChatServer implements MessageComponentInterface
 {
@@ -22,14 +22,14 @@ class ChatServer implements MessageComponentInterface
      */
     protected $clients;
 
-    public function __construct()
+    public function __construct($chatHandler)
     {
         /**
          * to store connection object for each clinet
          */
         $this->clients = new SplObjectStorage;
         // handle messages ops
-        $this->chatHandler = new ChatHandler();
+        $this->chatHandler = $chatHandler;
     }
 
     public function onOpen(ConnectionInterface $conn)
@@ -67,14 +67,36 @@ class ChatServer implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $from, $msg)
     {
-        // save the message
-        $this->chatHandler->saveMessage($msg);
-        // find requested recipient
-        $recipient = $this->chatHandler->findRecipient($this->clients, $msg);
-        // adding parameters to message before send again
-        $enhancedMsg = $this->chatHandler->enhanceMsg($from, $msg);
-        // send the message
-        $recipient->send($enhancedMsg);
+        $message = json_decode($msg);
+
+        switch ($message->type) {
+            //user to user message
+            case ChatMessageType::USER_MESSAGE_TEXT:
+                // save the message
+                $this->chatHandler->saveMessage($msg);
+                // find requested recipient
+                $recipient = $this->chatHandler->findRecipient($this->clients, $message);
+                // adding parameters to message before send again
+                $enhancedMsg = $this->chatHandler->enhanceMsg($from, $message);
+                if ($recipient) {
+                    // send the message if user is still online
+                    $recipient->send($enhancedMsg);
+                }
+                else {
+                    $from->send($this->chatHandler->getClosedMessage);
+                }
+                break;
+            //user to server message to update online admins
+            case ChatMessageType::UPDATE_ADMINS_TEXT:
+                $parameters = array(
+                    'username' => $message->user,
+                    'userId' => $message->userId
+                );
+                $onlineAdmins = $this->chatHandler->getOnlineAdmins($this->clients, $parameters);
+                // sending online admins to client
+                $from->send(json_encode(array('server' => $onlineAdmins)));
+                break;
+        }
     }
 
 }
