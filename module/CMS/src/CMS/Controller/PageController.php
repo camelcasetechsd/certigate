@@ -117,6 +117,7 @@ class PageController extends ActionController
     public function editAction()
     {
         $variables = array();
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $id = $this->params('id');
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery');
@@ -130,6 +131,7 @@ class PageController extends ActionController
 
         $options = array();
         $options['query'] = $query;
+        $options['translatorHandler'] = $translatorHandler;
         $form = new PageForm(/* $name = */ null, $options);
         // removing unpublish button in case of already unpublished page
         if ($pageObj->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {

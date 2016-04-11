@@ -34,9 +34,11 @@ use Utilities\Service\Time;
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
  * @property string $atpLicenseAttachment
+ * @property string $atpWireTransferAttachment
  * @property string $atcLicenseNo
  * @property \DateTime $atcLicenseExpiration
  * @property string $atcLicenseAttachment
+ * @property string $atcWireTransferAttachment
  * @property string $addressLine1
  * @property string $addressLine1Ar
  * @property string $addressLine2
@@ -82,9 +84,14 @@ class Organization
     const TYPE_ATP = 2;
 
     /**
-     * both ATP & ATC
+     * distribitror
      */
-    const TYPE_BOTH = 3;
+    const TYPE_DISTRIBUTOR = 3;
+
+    /**
+     * reselller
+     */
+    const TYPE_RESELLER = 4;
 
     /**
      *
@@ -126,13 +133,6 @@ class Organization
      * @var int
      */
     public $id;
-
-    /**
-     * @Gedmo\Versioned
-     * @ORM\Column(type="integer" )
-     * @var int
-     */
-    public $type;
 
     /**
      * @Gedmo\Versioned
@@ -213,13 +213,6 @@ class Organization
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string",nullable=true)
-     * @var string
-     */
-    public $wireTransferAttachment;
-
-    /**
-     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
@@ -241,6 +234,13 @@ class Organization
 
     /**
      * @Gedmo\Versioned
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    public $atpWireTransferAttachment;
+
+    /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="string" , nullable=true)
      * @var string
      */
@@ -259,6 +259,13 @@ class Organization
      * @var string
      */
     public $atcLicenseAttachment;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="string",nullable=true)
+     * @var string
+     */
+    public $atcWireTransferAttachment;
 
     /**
      * @Gedmo\Versioned
@@ -439,9 +446,23 @@ class Organization
      */
     public $creatorId;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="OrganizationGovernorate", inversedBy="organizations")
+     * @ORM\JoinTable(name="organization_governorates")
+     */
+    public $governorates;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="OrganizationRegion", inversedBy="organizations")
+     * @ORM\JoinTable(name="organization_regions")
+     */
+    public $regions;
+
     public function __construct()
     {
         $this->organizationUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->governorates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     function getId()
@@ -452,11 +473,6 @@ class Organization
     function getCreatorId()
     {
         return $this->creatorId;
-    }
-
-    function getType()
-    {
-        return $this->type;
     }
 
     function getCommercialName()
@@ -509,11 +525,6 @@ class Organization
         return $this->CRAttachment;
     }
 
-    function getWireTransferAttachment()
-    {
-        return $this->wireTransferAttachment;
-    }
-
     function getAtpLicenseNo()
     {
         return $this->atpLicenseNo;
@@ -544,6 +555,26 @@ class Organization
         return $this->atcLicenseAttachment;
     }
 
+    function getAtpWireTransferAttachment()
+    {
+        return $this->atpWireTransferAttachment;
+    }
+
+    function getAtcWireTransferAttachment()
+    {
+        return $this->atcWireTransferAttachment;
+    }
+
+    function setAtpWireTransferAttachment($atpWireTransferAttachment)
+    {
+        $this->atpWireTransferAttachment = $atpWireTransferAttachment;
+    }
+
+    function setAtcWireTransferAttachment($atcWireTransferAttachment)
+    {
+        $this->atcWireTransferAttachment = $atcWireTransferAttachment;
+    }
+
     function getAddressLine1()
     {
         return $this->addressLine1;
@@ -569,9 +600,98 @@ class Organization
         return $this->city;
     }
 
+    function getGovernorates()
+    {
+        return $this->governorates;
+    }
+
+    function getRegions()
+    {
+        return $this->regions;
+    }
+
+    function setGovernorates($governorates)
+    {
+        $this->governorates = $governorates;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function addGovernorate($outline)
+    {
+        $this->governorates[] = $outline;
+        return $this;
+    }
+
+    /**
+     * Remove Outlines
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function removeGovernorate($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setOrganization(null);
+            $this->governorates->removeElement($outline);
+        }
+        return $this;
+    }
+
+    /**
+     * Set $regions
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $regions
+     * @return Course
+     */
+    public function setRegions($regions)
+    {
+        $this->regions = $regions;
+    }
+
+    /**
+     * Add Outlines
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\Outline $outline
+     * @return Course
+     */
+    public function addRegions($outline)
+    {
+        $this->regions[] = $outline;
+        return $this;
+    }
+
+    /**
+     * Remove Outlines
+     * 
+     * @access public
+     * @param ArrayCollection $outlines
+     * @return Course
+     */
+    public function removeRegions($outlines)
+    {
+        foreach ($outlines as $outline) {
+            $outline->setOrganization(null);
+            $this->regions->removeElement($outline);
+        }
+        return $this;
+    }
+        
     function getCityAr()
     {
         return $this->cityAr;
+
     }
 
     function getZipCode()
@@ -613,11 +733,6 @@ class Organization
     {
         return $this->organizationUser;
     }
-
-//    function getTestCenterAdmin()
-//    {
-//        return $this->testCenterAdmin;
-//    }
 
     function getFocalContactPerson()
     {
@@ -679,11 +794,6 @@ class Organization
         $this->creatorId = $creatorId;
     }
 
-    function setType($type)
-    {
-        $this->type = $type;
-    }
-
     function setCommercialName($commercialName)
     {
         $this->commercialName = $commercialName;
@@ -735,11 +845,6 @@ class Organization
     function setCRAttachment($CRAttachment)
     {
         $this->CRAttachment = $CRAttachment;
-    }
-
-    function setWireTransferAttachment($wireTransferAttachment)
-    {
-        $this->wireTransferAttachment = $wireTransferAttachment;
     }
 
     function setAtpLicenseNo($atpLicenseNo)
@@ -989,19 +1094,78 @@ class Organization
         if (array_key_exists('status', $data)) {
             $this->setStatus($data['status']);
         }
-        $this->setType($data['type']);
-        $this->setCommercialName($data['commercialName']);
-        $this->setCommercialNameAr($data['commercialNameAr']);
-        $this->setOwnerName($data['ownerName']);
-        $this->setOwnerNameAr($data['ownerNameAr']);
-        $this->setOwnerNationalId($data['ownerNationalId']);
-        $this->setCRNo($data['CRNo']);
-        $this->setCRExpiration($data['CRExpiration']);
         if (array_key_exists('CRAttachment', $data) && is_string($data['CRAttachment'])) {
             $this->setCRAttachment($data["CRAttachment"]);
         }
-        if (array_key_exists('wireTransferAttachment', $data) && is_string($data['wireTransferAttachment'])) {
-            $this->setWireTransferAttachment($data["wireTransferAttachment"]);
+        if (array_key_exists('atpWireTransferAttachment', $data) && is_string($data['atpWireTransferAttachment'])) {
+            $this->setAtpWireTransferAttachment($data["atpWireTransferAttachment"]);
+        }
+        if (array_key_exists('atcWireTransferAttachment', $data) && is_string($data['atcWireTransferAttachment'])) {
+            $this->setAtcWireTransferAttachment($data["atcWireTransferAttachment"]);
+        }
+        if (array_key_exists('region', $data)) {
+            $this->setRegions($data['region']);
+        }
+        if (array_key_exists('governorate', $data)) {
+            $this->setGovernorates($data['governorate']);
+        }
+        if (array_key_exists('commercialName', $data)) {
+            $this->setCommercialName($data['commercialName']);
+        }
+        if (array_key_exists('ownerName', $data)) {
+            $this->setOwnerName($data['ownerName']);
+        }
+        if (array_key_exists('ownerNationalId', $data)) {
+            $this->setOwnerNationalId($data['ownerNationalId']);
+        }
+        if (array_key_exists('CRNo', $data)) {
+            $this->setCRNo($data['CRNo']);
+        }
+        if (array_key_exists('CRExpiration', $data)) {
+            $this->setCRExpiration($data['CRExpiration']);
+        }
+        if (array_key_exists('addressLine1', $data)) {
+            $this->setAddressLine1($data['addressLine1']);
+        }
+        if (array_key_exists('labsNo', $data)) {
+            $this->setLabsNo($data["labsNo"]);
+        }
+        if (array_key_exists('addressLine2', $data)) {
+            $this->setAddressLine2($data['addressLine2']);
+        }
+        if (array_key_exists('city', $data)) {
+            $this->setCity($data['city']);
+        }
+        if (array_key_exists('zipCode', $data)) {
+            $this->setZipCode($data['zipCode']);
+        }
+        if (array_key_exists('phone1', $data)) {
+            $this->setPhone1($data['phone1']);
+        }
+        if (array_key_exists('website', $data)) {
+            $this->setWebsite($data['website']);
+        }
+        if (array_key_exists('email', $data)) {
+            $this->setEmail($data['email']);
+        }
+        $this->setCommercialNameAr($data['commercialNameAr']);
+        $this->setOwnerNameAr($data['ownerNameAr']);
+        $this->setCRNo($data['CRNo']);
+        
+        if (array_key_exists('focalContactPerson_id', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson_id'];
+        }
+        elseif (array_key_exists('focalContactPerson', $data)) {
+            $this->focalContactPerson = $data['focalContactPerson'];
+        }
+        if (array_key_exists('phone2', $data)) {
+            $this->setPhone2($data["phone2"]);
+        }
+        if (array_key_exists('phone3', $data)) {
+            $this->setPhone3($data["phone3"]);
+        }
+        if (array_key_exists('fax', $data)) {
+            $this->setFax($data["fax"]);
         }
         $this->setAddressLine1($data['addressLine1']);
         $this->setAddressLine1Ar($data['addressLine1Ar']);
@@ -1012,39 +1176,11 @@ class Organization
         $this->setWebsite($data['website']);
         $this->setEmail($data['email']);
 
-        if (array_key_exists('focalContactPerson_id', $data)) {
-            $this->focalContactPerson = $data['focalContactPerson_id'];
-        }
-        elseif (array_key_exists('focalContactPerson', $data)) {
-            $this->focalContactPerson = $data['focalContactPerson'];
-        }
-
-        if (array_key_exists('phone2', $data)) {
-            $this->setPhone2($data["phone2"]);
-        }
-        if (array_key_exists('phone3', $data)) {
-            $this->setPhone3($data["phone3"]);
-        }
-        if (array_key_exists('fax', $data)) {
-            $this->setFax($data["fax"]);
-        }
-        if (array_key_exists('addressLine2', $data)) {
-            $this->setAddressLine2($data["addressLine2"]);
-        }
-        if (array_key_exists('addressLine2Ar', $data)) {
-            $this->setAddressLine2Ar($data["addressLine2Ar"]);
-        }
         if (array_key_exists('longtitude', $data)) {
             $this->setLongtitude($data["longtitude"]);
         }
         if (array_key_exists('latitude', $data)) {
             $this->setLat($data["latitude"]);
-        }
-        if (array_key_exists('trainingManager_id', $data)) {
-            $this->trainingManager = $data["trainingManager_id"];
-        }
-        if (array_key_exists('testCenterAdmin_id', $data)) {
-            $this->testCenterAdmin = $data["testCenterAdmin_id"];
         }
         if (array_key_exists('labsNo', $data)) {
             $this->setLabsNo($data["labsNo"]);
@@ -1076,9 +1212,6 @@ class Organization
         if (array_key_exists('atcLicenseAttachment', $data) && is_string($data['atcLicenseAttachment'])) {
             $this->setAtcLicenseAttachment($data["atcLicenseAttachment"]);
         }
-//        if (array_key_exists('atcLicenseAttachment', $data)) {
-//            $this->setAtcLicenseAttachment($data['atcLicenseAttachment']);
-//        }
         if (array_key_exists('atcLicenseNo', $data)) {
             $this->setAtcLicenseNo($data["atcLicenseNo"]);
         }
@@ -1122,47 +1255,6 @@ class Organization
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name' => 'type',
-                'required' => false,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'commercialName',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('commercialName'),
-                            'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
-            $inputFilter->add(array(
-                'name' => 'commercialNameAr',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
-                        'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
-                            'object_repository' => $query->entityRepository,
-                            'fields' => array('commercialName'),
-                            'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
-                            ),
-                        )
-                    ),
-                )
-            ));
-
 
             $inputFilter->add(array(
                 'name' => 'longtitude',
@@ -1541,6 +1633,45 @@ class Organization
 
             $this->inputFilter = $inputFilter;
         }
+        $inputFilter->add(array(
+                'name' => 'type',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'commercialName',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(
+//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            ),
+                        )
+                    ),
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'commercialNameAr',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(
+//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            ),
+                        )
+                    ),
+                )
+            ));
 
         return $this->inputFilter;
     }

@@ -1,0 +1,40 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>{{#translate}}Edit User{{/translate}}</h3>
+                 <img src="{{photo}}" data-toggle="tooltip" data-placement="left"  class="user-photos" style="height: 70px !important;width: 70px !important;">
+    </div>
+    <div class="panel-body">
+        {{{userForm}}}
+    </div>
+</div>
+{{/content}}
+
+{{$scripts}}
+{{> ../modules/users/index/userCRUD.js }}
+<script>
+    $(document).ready(function () {
+        {{#rolesStatements}}   
+                generateStatementCheckboxContent('user_form_{{type}}','{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+        {{/rolesStatements}}
+        {{#privacyStatement}}
+                generateStatementCheckboxContent('user_form_privacyStatement', 'privacyStatement','{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+
+        {{/privacyStatement}}
+        
+            {{#success}}
+            
+            if({{success}}){
+                alert('Saved Successfully');
+            }
+            
+            {{/success}}
+            
+            
+            });
+</script>
+{{/scripts}}
+{{/layout}}

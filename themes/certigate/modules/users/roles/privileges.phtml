@@ -1,0 +1,29 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Privileges of role{{/translate}} <strong>{{role.name}}</strong></div>
+
+    <form action="/roles/privileges/{{role.id}}" method="post">
+        {{#modulesRoutes}}
+
+        <fieldset>
+            <legend>{{module}}</legend>
+            <div class="input-group-sm">
+                {{#routes}}
+
+                <input id="privilege-{{module}}-{{name}}" name="privileges[]" type="checkbox" value="{{module}}-{{name}}" {{#checked}}checked{{/checked}}/>
+                <label for="privilege-{{module}}-{{name}}">{{name}}</label>
+
+                {{/routes}}
+            </div>
+        </fieldset>
+        {{/modulesRoutes}}
+
+        <input type="submit" type="button" class="btn-large btn btn-success" value="Save"/>
+    </form>
+
+</div>
+{{/content}}
+{{/layout}}

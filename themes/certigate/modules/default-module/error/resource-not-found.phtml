@@ -1,0 +1,13 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div>
+    <div class="alert alert-danger">
+        {{#message}}{{#translate}}{{message}}{{/translate}}{{/message}}
+        {{^message}}{{#translate}}Resource Not Found{{/translate}} !{{/message}}
+    </div>
+</div>
+
+
+{{/content}}
+{{/layout}}

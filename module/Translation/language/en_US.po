@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-03-30 14:19+0200\n"
+"PO-Revision-Date: 2016-04-11 17:44+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: English\n"
@@ -1148,6 +1148,9 @@ msgstr "ATP City"
 
 msgid "Cancel"
 msgstr "Cancel"
+
+msgid "No training found for instructor!"
+msgstr "No training found for instructor!"
 
 msgid "Standards"
 msgstr "Standards"

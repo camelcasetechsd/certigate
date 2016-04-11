@@ -8,7 +8,7 @@ use Zend\Form\Fieldset;
 /**
  * Buttons Fieldset
  * 
- * Handles Outline form setup
+ * Handles submission and reset buttons setup
  * 
  * @package utilities
  * @subpackage form

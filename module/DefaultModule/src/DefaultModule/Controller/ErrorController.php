@@ -4,6 +4,7 @@ namespace DefaultModule\Controller;
 
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
+use DefaultModule\Service\ErrorMessages;
 
 /**
  * Error Controller
@@ -46,6 +47,13 @@ class ErrorController extends ActionController
     }
 
     public function resourceNotFoundAction()
+    {
+        $variables = array();
+        $variables["message"] = ErrorMessages::getErrorMessage(/*$messageKey =*/ $this->params('message'));
+        return new ViewModel($variables);
+    }
+
+    public function noOrganizationUsersAction()
     {
         return new ViewModel();
     }

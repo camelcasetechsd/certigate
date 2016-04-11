@@ -1,0 +1,86 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<ul>    
+    {{#validationError}}
+    <li class="error">{{.}}</li>
+    {{/validationError}}
+</ul>
+<form id="questions" class="form-horizontal" method="POST" action="">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>{{#translate}}Evaluation Template{{/translate}}</legend>
+        <!-- Text input-->
+        <div class="form-group" >
+            <div class="questionContainer row">
+                <label class="col-md-4 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
+                <div class="col-md-4">
+                    <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="deleteQuestion  pull-left" >X</a>
+                </div>
+            </div>
+            <div class="questionContainer row">
+                <label class="col-md-4 control-label" for="newQuestion[]">{{#translate}}Question Title in Arabic{{/translate}}</label>  
+                <div class="col-md-4">
+                    <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="deleteQuestion  pull-left" >X</a>
+                </div>
+            </div>
+        </div>
+            <span id="endOfText"></span>
+            <!-- button -->
+            <div class=" row form-group">
+                <div class="col-md-4">
+                    <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Submit Evaluation Template{{/translate}}</button>
+                </div>
+            </div>
+
+    </fieldset>
+</form>
+
+<button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
+
+{{/content}}
+
+{{/layout}}
+<script>
+    $(document).ready(function () {
+        window.index = 1;
+        numerateLabels();
+
+        $('#addmore').click(function () {
+            getMeNewInput();
+        });
+
+        function getMeNewInput() {
+            window.template = '<div class="form-group" > <div class="questionContainer row"> <label class="col-md-4 control-label englishLabel" for="newQuestion[' + window.index + ']">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-4"> <a href="#" class="deleteQuestion  pull-left" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-4 control-label" for="newQuestionAr[' + window.index + ']">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-4"> <input name="newQuestionAr[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-4"> <a href="#" class="deleteQuestion  pull-left" >X</a> </div> </div> </div>'
+            $('#endOfText').before(window.template);
+            numerateLabels();
+        }
+
+        function numerateLabels() {
+            window.index = 1
+            $('.englishLabel').each(function () {
+                $(this).text('Question Title ' + window.index)
+                window.index++;
+            });
+        }
+
+        /**
+         * This action is meant to delete 
+         */
+        $(document).on("click", ".deleteQuestion", function () {
+            //         delete template 
+            $(this).parent().parent().parent().remove();
+            numerateLabels();
+        });
+
+    });
+
+</script>

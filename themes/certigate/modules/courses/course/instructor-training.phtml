@@ -1,0 +1,157 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+<br><br>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
+    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">{{#translate}}Course Outlines{{/translate}}</a></li>
+    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Details{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+
+    {{#course}}
+    <table class="table">
+        <tbody>
+            <tr>
+                            <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
+                        </tr><tr>
+                            <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
+            </tr><tr>
+                            <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
+            </tr><tr>
+                            <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
+            </tr><tr>
+                            <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+ 
+                <table class="table">
+                    <thead>
+
+                        {{#courseEvents.count}}
+                        <tr>
+                            <th>{{#translate}}Start Date{{/translate}}</th>
+                            <th>{{#translate}}End Date{{/translate}}</th>
+                            <th>{{#translate}}Instructor{{/translate}}</th>
+                            <th>{{#translate}}ATP Name{{/translate}}</th>
+                            <th>{{#translate}}ATP City{{/translate}}</th>
+                            <th>&nbsp;</th>
+                            <th colspan="2">&nbsp;</th>
+                        </tr>
+                        {{/courseEvents.count}}
+                    </thead>
+                    <tbody>
+                        {{#courseEvents}}
+                        {{^hideFromCalendar}}
+                        {{^alreadyStarted}}
+                        <tr>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                            <td>{{ai.firstName}} {{ai.lastName}}</td>
+                <td>{{atp.commercialName}}</td>
+                            <td>{{atp.city}}</td>
+                            <td>
+                                {{#canEnroll}}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Enroll{{/translate}}</button></a>
+                                {{/canEnroll}}
+                                {{#canLeave}}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
+                                {{/canLeave}}
+                                {{#isFull}}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {{#translate}}Course Full{{/translate}}
+                                {{/isFull}}
+                            </td>
+            </tr>
+                        {{/alreadyStarted}}
+                        {{/hideFromCalendar}}
+                        {{/courseEvents}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Outlines{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+
+                {{#course}}
+                <table class="table">
+                    <thead>
+            {{#outlines.count}}
+        <tr>
+                            <th>{{#translate}}Title{{/translate}}</th>
+                            <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                            <th>{{#translate}}Duration (minutes){{/translate}}</th>
+        </tr>
+        {{/outlines.count}}
+                    </thead>
+                    <tbody>
+        {{#outlines}}
+                        {{#statusActive}}
+        <tr>
+                            <td>{{title}}</td>
+                            <td>{{titleAr}}</td>
+            <td>{{duration}}</td>
+        </tr>
+                        {{/statusActive}}
+        {{/outlines}} 
+                    </tbody>
+                </table>
+                {{/course}}
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" id="courseResources">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{#translate}}Course Resources{{/translate}}</h3>
+            </div>
+            <div class="panel-body">
+
+                {{#course}}
+                <table class="table">
+                    <tbody>
+        {{#canDownloadResources}}
+        {{#resources}}
+        <tr>
+                            <td>{{type}}</td>
+            <td>
+                {{#files}}
+                <a target="_blank" href="/resources/download/{{id}}" >{{name}}</a> <br>
+                {{/files}}
+            </td>
+        </tr>
+        {{/resources}} 
+        {{/canDownloadResources}}
+
+        </tbody>
+    </table>
+    {{/course}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/content}}
+{{/layout}}

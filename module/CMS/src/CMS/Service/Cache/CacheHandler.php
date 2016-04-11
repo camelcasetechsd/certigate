@@ -4,6 +4,8 @@ namespace CMS\Service\Cache;
 
 use Utilities\Service\Cache\Cache;
 use Utilities\Service\Query\Query;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * CacheHandler
@@ -19,7 +21,7 @@ use Utilities\Service\Query\Query;
  * @package cms
  * @subpackage cache
  */
-class CacheHandler
+class CacheHandler implements ServiceLocatorAwareInterface
 {
 
     /**
@@ -48,6 +50,12 @@ class CacheHandler
      * @var Query 
      */
     public $query;
+    
+    /**
+     *
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
 
     /**
      * Set needed properties
@@ -63,6 +71,16 @@ class CacheHandler
         $this->cache = $cache;
         $this->query = $query;
         $this->menuItem = $menuItem;
+    }
+    
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
     }
 
     /**
@@ -86,7 +104,9 @@ class CacheHandler
         if ($forceFlush === true || ($forceFlush === false && count( $existingCachedCMSDataKeys ) !== count( $cachedCMSDataKeys ))) {
             $menuItems = $this->menuItem->getMenuItems();
 
-            $menuItemsPaths = $this->query->setEntity( /* $entityName = */ 'CMS\Entity\MenuItem' )->entityRepository->getMenuItemsSorted( /* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ true, /* $select = */ "p.path as path", /* $treeFlag = */ false );
+            $menuItemRepository = $this->query->setEntity( /* $entityName = */ 'CMS\Entity\MenuItem' )->entityRepository;
+            $menuItemRepository->setServiceLocator($this->getServiceLocator());
+            $menuItemsPaths = $menuItemRepository->getMenuItemsSorted( /* $hiddenMenuItemsIds = */ array(), /* $menuItemStatus = */ true, /* $menuStatus = */ true, /* $withPagesOnlyFlag = */ true, /* $select = */ "p.path as path", /* $treeFlag = */ false );
             $menuItemsPathsFlat = array();
             array_walk_recursive( $menuItemsPaths, function($value) use (&$menuItemsPathsFlat) {
                 $menuItemsPathsFlat[] = $value;

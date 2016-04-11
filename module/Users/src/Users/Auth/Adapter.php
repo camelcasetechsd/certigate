@@ -5,7 +5,8 @@ namespace Users\Auth;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Users\Entity\User;
 use Zend\Authentication\Adapter\Exception\RuntimeException;
-use Zend\Authentication\Result;
+use Users\Auth\AuthenticationResult;
+use Utilities\Service\Status;
 
 /**
  * Auth Adapter
@@ -169,15 +170,15 @@ class Adapter implements AdapterInterface
      * 
      * @access public
      * @throws RuntimeException if answering the authentication query is impossible
-     * @return Result
+     * @return AuthenticationResult
      */
     public function authenticate()
     {
         $this->authenticateSetup();
-        $entities = $this->_query->findBy(/*$userName = */'Users\Entity\User',array(
+        $entities = $this->_query->findBy(/* $userName = */'Users\Entity\User', array(
             'username' => $this->_identity,
         ));
-        
+
         return $this->validateResult($entities);
     }
 
@@ -196,13 +197,17 @@ class Adapter implements AdapterInterface
 
         if ($this->_query === null) {
             $exception = 'A database connection was not set, nor could one be created.';
-        } elseif ($this->_identityColumn == '') {
+        }
+        elseif ($this->_identityColumn == '') {
             $exception = 'An identity column must be supplied for the Adapter authentication adapter.';
-        } elseif ($this->_credentialColumn == '') {
+        }
+        elseif ($this->_credentialColumn == '') {
             $exception = 'A credential column must be supplied for the Adapter authentication adapter.';
-        } elseif ($this->_identity == '') {
+        }
+        elseif ($this->_identity == '') {
             $exception = 'A value for the identity was not provided prior to authentication with Adapter.';
-        } elseif ($this->_credential === null) {
+        }
+        elseif ($this->_credential === null) {
             $exception = 'A credential value was not provided prior to authentication with Adapter.';
         }
 
@@ -214,7 +219,7 @@ class Adapter implements AdapterInterface
         }
 
         $this->_authenticateResultInfo = array(
-            'code' => Result::FAILURE,
+            'code' => AuthenticationResult::FAILURE,
             'identity' => $this->_identity,
             'messages' => array()
         );
@@ -229,50 +234,60 @@ class Adapter implements AdapterInterface
      * 
      * @access protected
      * @param array $resultIdentities
-     * @return Result
+     * @return AuthenticationResult
      */
     protected function validateResult($resultIdentities)
-    {        
-        if (count($resultIdentities) < 1) {
-            $this->_authenticateResultInfo['code'] = Result::FAILURE_IDENTITY_NOT_FOUND;
-            $this->_authenticateResultInfo['messages'][] = 'A record with the supplied identity could not be found.';
-            return $this->authenticateCreateAuthResult();
-        } elseif (count($resultIdentities) > 1) {
-            $this->_authenticateResultInfo['code'] = Result::FAILURE_IDENTITY_AMBIGUOUS;
+    {
+        $resultIdentitiesCount = count($resultIdentities);
+        if ($resultIdentitiesCount < 1) {
+            $this->_authenticateResultInfo['code'] = AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND;
+            $this->_authenticateResultInfo['messages'][] = 'User could not be found.';
+        }
+        elseif ($resultIdentitiesCount > 1) {
+            $this->_authenticateResultInfo['code'] = AuthenticationResult::FAILURE_IDENTITY_AMBIGUOUS;
             $this->_authenticateResultInfo['messages'][] = 'More than one record matches the supplied identity.';
-            return $this->authenticateCreateAuthResult();
-        } elseif (count($resultIdentities) == 1) {
+        }
+        elseif ($resultIdentitiesCount == 1) {
             $resultIdentity = $resultIdentities[0];
-            $password = $resultIdentity->{$this->_credentialColumn};
-            
-            if (! User::verifyPassword($this->_credential, $password)) {
-                $this->_authenticateResultInfo['code'] = Result::FAILURE_CREDENTIAL_INVALID;
-                $this->_authenticateResultInfo['messages'][] = 'Supplied credential is invalid.';
-            } else {
-                $this->_authenticateResultInfo['code'] = Result::SUCCESS;
-                $this->_authenticateResultInfo['identity'] = $this->_identity;
-                $this->_authenticateResultInfo['messages'][] = 'Authentication successful.';
+            $status = $resultIdentity->getStatus();
+            if ($status != Status::STATUS_ACTIVE) {
+                $this->_authenticateResultInfo['code'] = AuthenticationResult::FAILURE_NOT_ACTIVE_STATUS;
+                $this->_authenticateResultInfo['messages'][] = 'User is not currently active.';
             }
-        } else {
-            $this->_authenticateResultInfo['code'] = Result::FAILURE_UNCATEGORIZED;
+            else {
+                $password = $resultIdentity->{$this->_credentialColumn};
+
+                if (!User::verifyPassword($this->_credential, $password)) {
+                    $this->_authenticateResultInfo['code'] = AuthenticationResult::FAILURE_CREDENTIAL_INVALID;
+                    $this->_authenticateResultInfo['messages'][] = 'Password is invalid.';
+                }
+                else {
+                    $this->_authenticateResultInfo['code'] = AuthenticationResult::SUCCESS;
+                    $this->_authenticateResultInfo['identity'] = $this->_identity;
+                    $this->_authenticateResultInfo['messages'][] = 'Authentication successful.';
+                }
+            }
+        }
+        else {
+            $this->_authenticateResultInfo['code'] = AuthenticationResult::FAILURE_UNCATEGORIZED;
         }
 
         return $this->authenticateCreateAuthResult();
     }
 
     /**
-     * Create a Result object 
+     * Create a AuthenticationResult object 
      * from the information that has been collected during the authenticate() attempt.
      * 
      * 
      * @access protected
-     * @uses Result
+     * @uses AuthenticationResult
      * 
-     * @return Result
+     * @return AuthenticationResult
      */
     protected function authenticateCreateAuthResult()
     {
-        return new Result(
+        return new AuthenticationResult(
                 $this->_authenticateResultInfo['code'], $this->_authenticateResultInfo['identity'], $this->_authenticateResultInfo['messages']
         );
     }

@@ -35,7 +35,7 @@ class Press
 
         foreach ($news as $singleNews) {
             $newsPicture = explode('/', $singleNews->picture['tmp_name']);
-            $singleNews->picture['tmp_name'] = $newsPicture[7];
+            $singleNews->picture['tmp_name'] = end($newsPicture);
             $singleNews->created = $singleNews->created->format('d-m-Y');
             $singleNews->body = $singleNews->getBody();
         }

@@ -135,7 +135,7 @@ class CourseController extends ActionController
 
         if (count($data) == 0) {
             $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_INSTRUCTOR_FOUND"), array('name' => 'resource_not_found'));
             $this->redirect()->toUrl($url);
         }
         else {
