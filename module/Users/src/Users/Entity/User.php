@@ -61,6 +61,7 @@ use Zend\Validator\Identical;
  * @property int $customerId
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEventSubscriptions
  * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
  * 
  * @package users
@@ -332,6 +333,12 @@ class User
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $publicQuotes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventSubscription", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $courseEventSubscriptions;
     
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="user")
@@ -411,6 +418,7 @@ class User
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->publicQuotes = new ArrayCollection();
+        $this->courseEventSubscriptions = new ArrayCollection();
         $this->privateQuotes = new ArrayCollection();
     }
 
@@ -1513,6 +1521,32 @@ class User
     public function setPublicQuotes($publicQuotes)
     {
         $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    /**
+     * Get CourseEventSubscriptions
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection courseEventSubscriptions
+     */
+    public function getCourseEventSubscriptions()
+    {
+        return $this->courseEventSubscriptions;
+    }
+
+    /**
+     * Set CourseEventSubscriptions
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $courseEventSubscriptions
+     * @return User
+     */
+    public function setCourseEventSubscriptions($courseEventSubscriptions)
+    {
+        $this->courseEventSubscriptions = $courseEventSubscriptions;
         return $this;
     }
     
