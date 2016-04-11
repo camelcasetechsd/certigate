@@ -48,10 +48,10 @@
                                         <input type="text" class="form-control editableInput resourceNameAr" value="{{nameAr}}">
                                     </td>
                                     <td>
-                                        <select class="resourceType form-control editableInput" value='{{type}}'>
-                                            <option value="1">{{#translate}}Presentations{{/translate}}</option>
-                                            <option value="2">{{#translate}}Activities{{/translate}}</option>
-                                            <option value="3">{{#translate}}Exams{{/translate}}</option>
+                                        <select class="resourceType resourceType-{{id}} form-control editableInput">
+                                            {{#types}}
+                                                <option value="{{.}}">{{#translate}}{{.}}{{/translate}}</option>
+                                            {{/types}}
                                         </select>
                                     </td>
                                     <td><a target="_blank" href="/resources/download/{{id}}" >{{#translate}}Download{{/translate}}</a></td>
@@ -76,19 +76,9 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-        $('.resourceType').each(function () {
-            switch ($(this).attr('value')) {
-                case 'Presentations':
-                    $(this).val('1');
-                    break;
-                case 'Activities':
-                    $(this).val('2');
-                    break;
-                case 'Exams':
-                    $(this).val('3');
-                    break;
-            }
-        });
+        {{#resources}}
+        $( ".resourceType-{{id}}" ).val('{{type}}');
+        {{/resources}}
         $('.removeResource').click(function () {
             var removeButton = $(this);
             bootbox.confirm("Are you sure you want to delete the resource ?", function (result) {
