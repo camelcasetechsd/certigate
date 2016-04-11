@@ -17,6 +17,7 @@ use System\Service\Settings;
 use Notifications\Service\MailTempates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
+use Utilities\Service\Object;
 
 /**
  * CourseEvent Model
@@ -123,8 +124,8 @@ class CourseEvent
     {
         if ($editFlag === true) {
             $estoreApiEdge = ApiCalls::OPTION_VALUE_EDIT;
-            $startDate = $courseEvent->getStartDate()->format("D, d M Y");
-            $endDate = $courseEvent->getEndDate()->format("D, d M Y");
+            $startDate = $courseEvent->getStartDate()->format(Object::DATE_DISPLAY_FORMAT);
+            $endDate = $courseEvent->getEndDate()->format(Object::DATE_DISPLAY_FORMAT);
             $organizationId = $courseEvent->getAtp();
             $instructorId = $courseEvent->getAi();
             $courseId = $courseEvent->getCourse();
@@ -376,7 +377,7 @@ class CourseEvent
     public function validateForm($form, $data, $courseEvent = null, $isEditForm = true)
     {
         $isCustomValidationValid = true;
-        if ((int) $data['capacity'] < (int) $data['studentsNo']) {
+        if (array_key_exists('studentsNo', $data) && array_key_exists('capacity', $data) && (int) $data['capacity'] < (int) $data['studentsNo']) {
             $form->get('capacity')->setMessages(array("Capacity should be higher than enrolled students number"));
             $isCustomValidationValid = false;
         }

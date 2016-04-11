@@ -58,7 +58,9 @@ class OrganizationRepository extends EntityRepository
         }
         if (count($types) > 0) {
             $parameters['types'] = $types;
-            $queryBuilder->andWhere($queryBuilder->expr()->in('o.type', ":types"));
+            $queryBuilder->join("o.organizationMetas", "om");
+            $queryBuilder->join("om.type", "ot");
+            $queryBuilder->andWhere($queryBuilder->expr()->in('ot.title', ":types"));
         }
         if (count($ids) > 0) {
             $parameters['ids'] = $ids;

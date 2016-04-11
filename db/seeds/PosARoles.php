@@ -132,7 +132,37 @@ class PosARoles extends AbstractSeed
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
         $examBookingRoute = "examBooking";
         $myCoursesRoute = "myCourses";
+        $quoteRoute = "quote";
+        $quoteTrainingRoute = "quoteTraining";
+        $quoteProcessRoute = "quoteProcess";
+        $quoteDeleteRoute = "quoteDelete";
+        $quoteDownloadRoute = "quoteDownload";
         $coursesAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteDownloadRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteDeleteRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteProcessRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteTrainingRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteRoute,
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,

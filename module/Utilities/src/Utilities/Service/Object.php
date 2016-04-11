@@ -18,12 +18,16 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
  * @property array $countries
  * @property array $languages
  * @property Utilities\Service\Query\Query $query
+ * @property array $statusConstants
  * 
  * @package utilities
  * @subpackage service
  */
 class Object
 {
+
+    const DATE_DISPLAY_FORMAT = "D, d M Y";
+    const TIME_DISPLAY_FORMAT = "H:i";
 
     /**
      *
@@ -56,6 +60,12 @@ class Object
     public $query;
 
     /**
+     *
+     * @var array
+     */
+    public $statusConstants;
+
+    /**
      * Set needed properties
      * 
      * 
@@ -72,6 +82,32 @@ class Object
         $locale = $applicationLocale->getCurrentLanguageCode();
         $this->setLocale($locale);
         $this->query = $query;
+        $statusReflection = new \ReflectionClass('Utilities\Service\Status');
+        $this->statusConstants = $statusReflection->getConstants();
+    }
+
+    /**
+     * prepare object for save
+     * 
+     * 
+     * @access public
+     * @param array $objectsArray
+     * @return array objects prepared for save
+     */
+    public function prepareForSave($objectsArray)
+    {
+        foreach ($objectsArray as &$object) {
+            $objectProperties = $this->getObjectProperties($object);
+            foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
+                if (is_string($objectPropertyValue) && !empty($objectPropertyValue)) {
+                    $dateTime = \DateTime::createFromFormat(self::DATE_DISPLAY_FORMAT, $objectPropertyValue);
+                    if ($dateTime !== FALSE) {
+                        $object->$objectPropertyName = $dateTime;
+                    }
+                }
+            }
+        }
+        return $objectsArray;
     }
 
     /**
@@ -97,9 +133,10 @@ class Object
             }
             $objectProperties = $this->prepareForStatusDisplay($object);
             if (($notObject === false || ($notObject === true && !is_null($sampleObject))) && $depthLevel == 1) {
-                if(is_null($sampleObject)){
+                if (is_null($sampleObject)) {
                     $sampleObjectForWrapper = $object;
-                }else{
+                }
+                else {
                     $sampleObjectForWrapper = $sampleObject;
                 }
                 $wrapped = AbstractWrapper::wrap($sampleObjectForWrapper, $this->query->entityManager);
@@ -116,7 +153,7 @@ class Object
                     }
                 }
                 elseif ($objectPropertyValue instanceof \DateTime) {
-                    $formattedString = $objectPropertyValue->format("D, d M Y");
+                    $formattedString = $objectPropertyValue->format(self::DATE_DISPLAY_FORMAT);
                     if ($formattedString == Time::UNIX_DATE_STRING) {
                         $formattedString = $objectPropertyValue->format("H:i");
                     }
@@ -144,13 +181,12 @@ class Object
      */
     public function prepareForStatusDisplay($object)
     {
-        if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
-            $objectProperties = $object->getArrayCopy();
-        }
-        else {
-            $objectProperties = get_object_vars($object);
-        }
+        $objectProperties = $this->getObjectProperties($object);
         if (array_key_exists("status", $objectProperties)) {
+            $statusKey = array_search($object->status, $this->statusConstants);
+            if ($statusKey !== false) {
+                $object->statusText = $this->statusConstants[$statusKey . "_TEXT"];
+            }
             $object->statusActive = false;
             $object->statusIsactive = false;
             $object->statusDeleted = false;
@@ -159,27 +195,41 @@ class Object
             switch ($object->status) {
                 case Status::STATUS_ACTIVE:
                     $object->statusActive = TRUE;
-                    $object->statusText = Status::STATUS_ACTIVE_TEXT;
                     break;
                 case Status::STATUS_INACTIVE:
                     $object->statusIsactive = TRUE;
-                    $object->statusText = Status::STATUS_INACTIVE_TEXT;
                     break;
                 case Status::STATUS_DELETED:
                     $object->statusDeleted = TRUE;
-                    $object->statusText = Status::STATUS_DELETED_TEXT;
                     break;
                 case Status::STATUS_NOT_APPROVED:
                     $object->statusNotApproved = TRUE;
-                    $object->statusText = Status::STATUS_NOT_APPROVED_TEXT;
                     break;
                 case Status::STATUS_STATE_SAVED:
                     $object->statusStateSaved = TRUE;
-                    $object->statusText = Status::STATUS_STATE_SAVED_TEXT;
                     break;
                 default:
                     break;
             }
+        }
+        return $objectProperties;
+    }
+
+    /**
+     * Get object properties
+     * 
+     * @access public
+     * @param mixed $object
+     * 
+     * @return array object properties
+     */
+    public function getObjectProperties($object)
+    {
+        if (method_exists($object, /* $method_name = */ "getArrayCopy")) {
+            $objectProperties = $object->getArrayCopy();
+        }
+        else {
+            $objectProperties = get_object_vars($object);
         }
         return $objectProperties;
     }

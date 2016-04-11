@@ -60,6 +60,8 @@ use Zend\Validator\Identical;
  * @property int $status
  * @property int $customerId
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
+ * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
  * 
  * @package users
  * @subpackage entity
@@ -326,6 +328,18 @@ class User
     public $courseEventUsers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PublicQuote", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $publicQuotes;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $privateQuotes;
+    
+    /**
      *
      * @ORM\Column(type="integer")
      * @var int
@@ -396,6 +410,8 @@ class User
         $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->publicQuotes = new ArrayCollection();
+        $this->privateQuotes = new ArrayCollection();
     }
 
     /**
@@ -1470,6 +1486,60 @@ class User
     public function setCustomerId($customerId)
     {
         $this->customerId = $customerId;
+        return $this;
+    }
+    
+    
+    /**
+     * Get PublicQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection publicQuotes
+     */
+    public function getPublicQuotes()
+    {
+        return $this->publicQuotes;
+    }
+
+    /**
+     * Set PublicQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $publicQuotes
+     * @return User
+     */
+    public function setPublicQuotes($publicQuotes)
+    {
+        $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    
+    /**
+     * Get PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection privateQuotes
+     */
+    public function getPrivateQuotes()
+    {
+        return $this->privateQuotes;
+    }
+
+    /**
+     * Set PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $privateQuotes
+     * @return User
+     */
+    public function setPrivateQuotes($privateQuotes)
+    {
+        $this->privateQuotes = $privateQuotes;
         return $this;
     }
     

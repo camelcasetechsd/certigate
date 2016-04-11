@@ -5,6 +5,7 @@ namespace CMS\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use CMS\Entity\MenuItem;
+use Utilities\Form\FormButtons;
 
 /**
  * MenuItemFilter Form
@@ -118,20 +119,20 @@ class MenuItemFilterForm extends Form
 
 
         $this->add(array(
-            'name' => 'filter',
+            'name' => FormButtons::FILTER_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Filter',
+                'value' => FormButtons::FILTER_BUTTON_TEXT,
             )
         ));
 
         $this->add(array(
-            'name' => 'reset',
+            'name' => FormButtons::RESET_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
+                'value' => FormButtons::RESET_BUTTON_TEXT,
                 'type' => 'button',
             )
         ));

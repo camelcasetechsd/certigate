@@ -39,12 +39,8 @@ class PageController extends ActionController
     public function indexAction()
     {
         $variables = array();
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
+        
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
 

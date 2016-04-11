@@ -6,7 +6,6 @@ use Zend\Form\View\Helper\Form as OriginalFormViewHelper;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\FormInterface;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Button;
 
 /**
  * FormView Helper

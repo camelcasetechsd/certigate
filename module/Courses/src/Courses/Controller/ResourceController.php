@@ -103,14 +103,7 @@ class ResourceController extends ActionController
         }
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = new Resource();
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-        }
+        $isAdminUser = $this->isAdminUser();
 
         $options = array();
         $options['query'] = $query->setEntity('Courses\Entity\Resource');

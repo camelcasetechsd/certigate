@@ -88,4 +88,7 @@ return array(
     'courseEvent' => array(
         'periodicNotification' => 5 //No. of days
     ),
+    'quote' => array(
+        'expireAfterDays' => 10
+    )
 );

@@ -98,6 +98,66 @@ class MailSubjects
     const NEW_PRESS_RELEASE_SUBJECT = "New press release";
 
     /**
+     * Admin public quote pending pricing Subject
+     */
+    const ADMIN_PUBLIC_QUOTE_PENDING_PRICING_SUBJECT = "New public quote";
+
+    /**
+     * Admin public quote pending review Subject
+     */
+    const ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_SUBJECT = "Public quote pending review";
+    
+    /**
+     * Client public quote cancelled Subject
+     */
+    const CLIENT_PUBLIC_QUOTE_CANCELLED_SUBJECT = "Public quote cancelled";
+    
+    /**
+     * Client public quote pending payment Subject
+     */
+    const CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_SUBJECT = "Public quote pending payment";
+
+    /**
+     * Client public quote pending repayment Subject
+     */
+    const CLIENT_PUBLIC_QUOTE_PENDING_REPAYMENT_SUBJECT = "Public quote pending re-payment";
+
+    /**
+     * Client public quote ready invoice Subject
+     */
+    const CLIENT_PUBLIC_QUOTE_READY_INVOICE_SUBJECT = "Public quote invoice";
+
+    /**
+     * Admin private quote pending pricing Subject
+     */
+    const ADMIN_PRIVATE_QUOTE_PENDING_PRICING_SUBJECT = "New private quote";
+
+    /**
+     * Admin private quote pending review Subject
+     */
+    const ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_SUBJECT = "Private quote pending review";
+
+    /**
+     * Client private quote cancelled Subject
+     */
+    const CLIENT_PRIVATE_QUOTE_CANCELLED_SUBJECT = "Private quote cancelled";
+    
+    /**
+     * Client private quote pending payment Subject
+     */
+    const CLIENT_PRIVATE_QUOTE_PENDING_PAYMENT_SUBJECT = "Private quote pending payment";
+
+    /**
+     * Client private quote pending repayment Subject
+     */
+    const CLIENT_PRIVATE_QUOTE_PENDING_REPAYMENT_SUBJECT = "Private quote pending re-payment";
+
+    /**
+     * Client private quote ready invoice Subject
+     */
+    const CLIENT_PRIVATE_QUOTE_READY_INVOICE_SUBJECT = "Private quote invoice";
+    
+    /**
      * New Calendar Event Subject
      */
     const NEW_CALENDAR_EVENT_SUBJECT = "New calendar event";

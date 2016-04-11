@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Random;
 use Utilities\Service\Uri;
+use Utilities\Service\File;
 
 /**
  * Page Entity
@@ -699,11 +700,7 @@ class Page
 
             $DirSep = DIRECTORY_SEPARATOR;
             $targetPath = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'pagePictures' . $DirSep;
-            if (!file_exists($targetPath)) {
-                $oldUmask = umask(0);
-                mkdir($targetPath, 0777);
-                umask($oldUmask);
-            }
+            File::createDir($targetPath);
             $random = new Random();
             $fileUploadOptions = array(
                 "target" => $targetPath . $random->getRandomUniqueName(),
