@@ -43,8 +43,9 @@ class ChatServer implements MessageComponentInterface
         //getting online admins
         $onlineAdmins = $this->chatHandler->getOnlineAdmins($this->clients, $parameters);
         // sending online admins to client
-        $conn->send(json_encode(array('server' => $onlineAdmins)));
-        var_dump($onlineAdmins);
+//        $conn->send(json_encode(array('server' => $onlineAdmins)));
+        $conn->send($this->chatHandler->getOnlineAdminsMessage($onlineAdmins));
+
         echo "New User Connected!\n";
     }
 
@@ -52,6 +53,9 @@ class ChatServer implements MessageComponentInterface
     {
         $this->clients->detach($conn);
         echo "User has been Disconnected!\n";
+        foreach ($this->clients as $client){
+            $client->send($this->chatHandler->getClosedMessage($conn->userId));
+        }
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e)
@@ -83,7 +87,9 @@ class ChatServer implements MessageComponentInterface
                     $recipient->send($enhancedMsg);
                 }
                 else {
-                    $from->send($this->chatHandler->getClosedMessage);
+                    // return message user has been disconnected
+                    // recipient is the disconnected person
+                    $from->send($this->chatHandler->getClosedMessage($message->recipientId));
                 }
                 break;
             //user to server message to update online admins
@@ -94,7 +100,7 @@ class ChatServer implements MessageComponentInterface
                 );
                 $onlineAdmins = $this->chatHandler->getOnlineAdmins($this->clients, $parameters);
                 // sending online admins to client
-                $from->send(json_encode(array('server' => $onlineAdmins)));
+                $from->send($this->chatHandler->getOnlineAdminsMessage($onlineAdmins));
                 break;
         }
     }

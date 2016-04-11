@@ -3,6 +3,8 @@
 namespace Chat\Service;
 
 use Chat\Service\ConnectionParamters;
+use Chat\Service\ServerMessages;
+use Chat\Service\ChatMessageType;
 
 class ChatHandler
 {
@@ -105,9 +107,21 @@ class ChatHandler
         return json_encode($message);
     }
 
-    public function getClosedMessage()
+    public function getClosedMessage($userId)
     {
-        
+        return json_encode(array(
+            'type' => ChatMessageType::USER_DISCONNECTED_TEXT,
+            'server' => ServerMessages::DISCONNECTED_USER_MESSAGE_TEXT,
+            'userId' => $userId
+        ));
+    }
+
+    public function getOnlineAdminsMessage($onlineAdmins)
+    {
+        return json_encode(array(
+            'type' => ChatMessageType::UPDATE_ADMINS_TEXT,
+            'server' => $onlineAdmins
+        ));
     }
 
 }

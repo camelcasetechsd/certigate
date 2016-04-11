@@ -59,12 +59,17 @@
         float: left;
     }
     .his-message{
+        color: #66aa66;
+        float: right;
+    }
+    .server-message{
         color: red;
         float: right;
     }
     .message{
         display: flex;
     }
+
 </style>
 <div class="chat-container">
     <div>
@@ -113,14 +118,29 @@ $(document).ready(function () {
                 //incomming message
                 handleIncommingMessgae($msg);
             } else {
-                // server messages
-                $onlineAdmins = $msg.server;
-                $('.online-admins').children().remove();
-                $.each($onlineAdmins, function (index, value) {
-                    if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
-                        $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
-                    }
-                });
+
+                console.log($msg);  
+                //server messages
+                switch ($msg.type) {
+                    // user-disconnected
+                    case 'user_disconnected':
+                        $(document)
+                                .find('#user-chat-box-' + $msg.userId)
+                                .children('.chat-box-body')
+                                .append('<div class="message"><p class="server-message pull-right">' + $msg.server + '</p></div>')
+                        break;
+                        // updating admins    
+                    case 'update_admins':
+                        $onlineAdmins = $msg.server;
+                        $('.online-admins').children().remove();
+                        $.each($onlineAdmins, function (index, value) {
+                            if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
+                                $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
+                            }
+                        });
+
+                        break;
+                }
             }
         };
         /**

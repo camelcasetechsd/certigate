@@ -15,4 +15,9 @@ class ChatMessageType
      */
     const UPDATE_ADMINS_TEXT = "update_admins";
 
+    /**
+     * kind of message sent by server if user disconnected
+     */
+    const USER_DISCONNECTED_TEXT = "user_disconnected";
+
 }
