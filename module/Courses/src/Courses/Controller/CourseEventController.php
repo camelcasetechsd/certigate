@@ -189,7 +189,7 @@ class CourseEventController extends ActionController
         
         return $this->getResponse()->setContent(Json::encode($data));
     }
-    
+
     /**
      * Get index url
      *

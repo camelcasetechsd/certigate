@@ -31,6 +31,7 @@ return array(
             'Courses\Model\PublicQuote' => 'Courses\Model\PublicQuoteFactory',
             'Courses\Model\PrivateQuote' => 'Courses\Model\PrivateQuoteFactory',
             'Courses\Service\QuoteGenerator' => 'Courses\Service\QuoteGeneratorFactory',
+            'Courses\Model\CourseEventSubscription' => 'Courses\Model\CourseEventSubscriptionFactory',
         )
     ),
     'doctrine' => array(
@@ -69,6 +70,15 @@ return array(
                             'action' => 'cleanup'
                         )
                     )
+                ),
+                'courseEventsNotify' => array(
+                    'options' => array(
+                        'route' => 'courseEventsNotify [--verbose|-v] ',
+                        'defaults' => array(
+                            'controller' => 'Courses\Controller\CourseEventSubscription',
+                            'action' => 'notifySubscribers'
+                        )
+                    )
                 )
             )
         )
@@ -81,6 +91,7 @@ return array(
             'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
             'Courses\Controller\CourseEvent' => 'Courses\Controller\CourseEventController',
             'Courses\Controller\Quote' => 'Courses\Controller\QuoteController',
+            'Courses\Controller\CourseEventSubscription' => 'Courses\Controller\CourseEventSubscriptionController',
         ),
     ),
     'router' => array(
@@ -211,6 +222,19 @@ return array(
                     'defaults' => array(
                         'controller' => 'Courses\Controller\CourseEvent',
                         'action' => 'addCalendarEvent',
+                    ),
+                )
+            ),
+            'courseEventsAlertSubscribe' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/course-event-subscription/alert-subscribe/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\CourseEventSubscription',
+                        'action' => 'alertSubscribe',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
                     ),
                 )
             ),

@@ -116,8 +116,7 @@ class PosARoles extends AbstractSeed
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $courseEventsAddCalendarRoute = "courseEventsAddCalendar";
-        $courseEventsSubscribeRoute = "courseEventsSubscribe";
-        $courseEventsUnsubscribeRoute = "courseEventsUnsubscribe";
+        $courseEventsAlertSubscribeRoute = "courseEventsAlertSubscribe";
         $courseOutlinesPdfRoute = "courseOutlinesPdf";
         $coursesMoreRoute = "coursesMore";
         $courseOutlines = "courseOutlines";
@@ -166,42 +165,22 @@ class PosARoles extends AbstractSeed
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,
-                'route' => $courseEventsUnsubscribeRoute,
+                'route' => $courseEventsAlertSubscribeRoute,
             ),
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $courseModule,
-                'route' => $courseEventsUnsubscribeRoute,
+                'route' => $courseEventsAlertSubscribeRoute,
             ),
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
-                'route' => $courseEventsUnsubscribeRoute,
+                'route' => $courseEventsAlertSubscribeRoute,
             ),
             array(
                 'role_id' => $instructorRoleId,
                 'module' => $courseModule,
-                'route' => $courseEventsUnsubscribeRoute,
-            ),
-            array(
-                'role_id' => $studentRoleId,
-                'module' => $courseModule,
-                'route' => $courseEventsSubscribeRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $courseModule,
-                'route' => $courseEventsSubscribeRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $courseModule,
-                'route' => $courseEventsSubscribeRoute,
-            ),
-            array(
-                'role_id' => $instructorRoleId,
-                'module' => $courseModule,
-                'route' => $courseEventsSubscribeRoute,
+                'route' => $courseEventsAlertSubscribeRoute,
             ),
             array(
                 'role_id' => $studentRoleId,
