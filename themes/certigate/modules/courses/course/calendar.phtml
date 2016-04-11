@@ -33,6 +33,7 @@
                                 <th>{{#translate}}ATP Name{{/translate}}</th>
                                 <th>{{#translate}}ATP City{{/translate}}</th>
                                 <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                                 <th colspan="2">&nbsp;</th>
                             </tr>
                         </thead>
@@ -53,8 +54,8 @@
                                     {{atp.city}}
                                 </td>
                                 <td>
-                                     <span class="addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">
-                                         <a class="atcb-link">{{#translate}}Calendar Alert{{/translate}}</a>
+                                    <span class="addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">
+                                        <a class="atcb-link">{{#translate}}Calendar Alert{{/translate}}</a>
                                         <var class="atc_event">
                                             <var class="atc_date_start">{{startDateIso}}</var>
                                             <var class="atc_date_end">{{endDateIso}}</var>
@@ -66,6 +67,9 @@
                                             <var class="atc_organizer_email">{{atp.email}}.com</var>
                                         </var>
                                     </span>
+                                </td>
+                                <td>
+                                    {{{formView}}}
                                 </td>
                                 <td>
                                     {{#canEnroll}}

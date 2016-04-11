@@ -31,6 +31,8 @@ use Utilities\Service\Object;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Translation\Service\Translator\TranslatorHandler $translatorHandler
+ * @property Utilities\Service\View\FormView $formView
+ * @property Courses\Model\CourseEventSubscription $courseEventSubscription
  * 
  * @package courses
  * @subpackage model
@@ -75,6 +77,18 @@ class CourseEvent
     protected $translatorHandler;
 
     /**
+     *
+     * @var Utilities\Service\View\FormView
+     */
+    protected $formView;
+
+    /**
+     *
+     * @var Courses\Model\CourseEventSubscription
+     */
+    protected $courseEventSubscription;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -84,8 +98,10 @@ class CourseEvent
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Translation\Service\Translator\TranslatorHandler $translatorHandler
+     * @param Utilities\Service\View\FormView $formView
+     * @param Courses\Model\CourseEventSubscription $courseEventSubscription
      */
-    public function __construct($query, $objectUtilities, $estoreApi, $systemCacheHandler, $notification, $translatorHandler)
+    public function __construct($query, $objectUtilities, $estoreApi, $systemCacheHandler, $notification, $translatorHandler, $formView, $courseEventSubscription)
     {
         $this->query = $query;
         $this->objectUtilities = $objectUtilities;
@@ -93,6 +109,8 @@ class CourseEvent
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->translatorHandler = $translatorHandler;
+        $this->formView = $formView;
+        $this->courseEventSubscription = $courseEventSubscription;
     }
 
     /**
@@ -190,9 +208,10 @@ class CourseEvent
      * 
      * @access public
      * @param array $courses
+     * @param bool $prepareForDisplayFlag ,default is false
      * @return array courseEvents with canRoll property added
      */
-    public function setCourseEventsPrivileges($courses)
+    public function setCourseEventsPrivileges($courses, $prepareForDisplayFlag = false)
     {
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
@@ -247,9 +266,6 @@ class CourseEvent
                 if ($course->canDownload === false && $canLeave === true) {
                     $course->canDownload = $course->currentUserEnrolled = true;
                 }
-                $courseEvent->startDateIso = $courseEvent->getStartDate()->format(DATE_ISO8601);
-                $courseEvent->endDateIso = $courseEvent->getEndDate()->format(DATE_ISO8601);
-                $courseEvent->timeZone = Time::DEFAULT_TIME_ZONE_ID;
             }
             $canEvaluate = false;
             $criteria = Criteria::create();
@@ -260,6 +276,9 @@ class CourseEvent
                 $canEvaluate = true;
             }
             $course->canEvaluate = $canEvaluate;
+            if ($prepareForDisplayFlag === true) {
+                $this->prepareCourseEventsForDisplay($courseEvents, $currentUser);
+            }
             $courseEvents = $this->objectUtilities->prepareForDisplay($courseEvents);
         }
         return $courses;
@@ -432,14 +451,13 @@ class CourseEvent
      * 
      * @access public
      * @param array $userData
-     * @param string $url ,default is null
-     * @param Courses\Entity\CourseEvent $courseEvent ,default is null
+     * @param string $url
      * @return array mail result message
      * 
      * @throws \Exception From email is not set
      * @throws \Exception To email is not set
      */
-    public function sendCalendarAlert($userData, $url = null, $courseEvent = null)
+    public function sendCalendarAlert($userData, $url)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -454,31 +472,42 @@ class CourseEvent
         }
         $templateParameters = array(
             "userData" => $userData,
+            "url" => $url
         );
-        if (!is_null($url)) {
-            $templateParameters["url"] = $url;
-            $mailTemplate = MailTempates::NEW_CALENDAR_EVENT_TEMPLATE;
-            $mailSubject = MailSubjects::NEW_CALENDAR_EVENT_SUBJECT;
-            $message = "Mail will be sent shortly!";
-        }
-        elseif (!is_null($courseEvent)) {
-            $templateParameters["courseName"] = $courseEvent->getCourse()->getName();
-            $mailTemplate = MailTempates::CALENDAR_EVENT_NOTIFICATION_TEMPLATE;
-            $mailSubject = MailSubjects::CALENDAR_EVENT_NOTIFICATION_SUBJECT;
-            $message = "Mail will be sent periodically!";
-        }
 
         $mailArray = array(
             'to' => $userData["email"],
             'from' => $from,
-            'templateName' => $mailTemplate,
+            'templateName' => MailTempates::NEW_CALENDAR_EVENT_TEMPLATE,
             'templateParameters' => $templateParameters,
-            'subject' => $mailSubject,
+            'subject' => MailSubjects::NEW_CALENDAR_EVENT_SUBJECT,
         );
         $this->notification->notify($mailArray);
 
-        $data["message"] = $this->translatorHandler->translate($message);
+        $data["message"] = $this->translatorHandler->translate("Mail will be sent shortly!");
         return $data;
+    }
+
+    /**
+     * Prepare course events for display
+     * 
+     * @access public
+     * @param array $courseEvents
+     * @param Users\Entity\User $currentUser
+     * @return array course events prepared for display
+     */
+    public function prepareCourseEventsForDisplay($courseEvents, $currentUser)
+    {
+        foreach ($courseEvents as $courseEvent) {
+            $courseEvent->startDateIso = $courseEvent->getStartDate()->format(DATE_ISO8601);
+            $courseEvent->endDateIso = $courseEvent->getEndDate()->format(DATE_ISO8601);
+            $courseEvent->timeZone = Time::DEFAULT_TIME_ZONE_ID;
+            if (!is_null($currentUser)) {
+                $courseEvent->formObject = $this->courseEventSubscription->getCourseEventSubscriptionForm($courseEvent, $currentUser);
+                $courseEvent->formView = $this->formView->getFormView($courseEvent->formObject);
+            }
+        }
+        return $courseEvents;
     }
 
     public function prepareCourseOccurrences($courseEvents)
