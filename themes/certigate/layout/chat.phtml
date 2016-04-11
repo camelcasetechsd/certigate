@@ -20,13 +20,14 @@
         background-color: rgba(82,168,236,0.6);
     }
     .chat-box-header{
-        /*border-style: solid;*/
-        /*border-width: 2px;*/
         margin-bottom: 1px;
         background-color: rgba(82,168,236,0.6);
     }
-    .chat-box-header > p{
-        margin-left: 3px;
+    .close-chat-box{
+        margin-left: 175px;
+    }
+    .chat-box-header > span{
+        margin-left: 5px;
     }
     .chat-box-body{
         border-style: solid;
@@ -34,7 +35,8 @@
         height: 253px;
         margin-left: 1%; 
         margin-right: 1%; 
-        margin-top: -8px;
+        margin-top: -1px;
+        overflow: scroll;
 
     }
     .chat-box-footer{
@@ -119,7 +121,7 @@ $(document).ready(function () {
                 handleIncommingMessgae($msg);
             } else {
 
-                console.log($msg);  
+                console.log($msg);
                 //server messages
                 switch ($msg.type) {
                     // user-disconnected
@@ -138,7 +140,6 @@ $(document).ready(function () {
                                 $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
                             }
                         });
-
                         break;
                 }
             }
@@ -191,6 +192,15 @@ $(document).ready(function () {
         setChoosedUserId($(this).children('.admin-id').text());
         handleChatBoxes(true);
     });
+
+    /**
+     * hide chat box window
+     */
+    $(document).on('click', '.close-chat-box', function () {
+        $(this).parents('.chat-box-container').hide();
+    });
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// Handlers /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +222,7 @@ $(document).ready(function () {
      * creating new chat window for each recipient
      */
     function newChatWindow() {
-        $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><p>' + getChoosedUsername() + '</p></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><input type="textarea" rows="4" cols="50" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
+        $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><span>' + getChoosedUsername() + '</span><a class="close-chat-box" href="javascript:void(0)">x</a></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><input type="textarea" rows="4" cols="50" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
         console.log('new chat window opened');
         $('.chat-windows-container').append($newChatWindow);
     }
@@ -226,8 +236,9 @@ $(document).ready(function () {
         setChoosedUserId(msg.userId);
         setChoosedUsername(msg.user);
         handleChatBoxes(false);
+        console.log(msg);
         // if not admin add to recent users list
-        if (!msg.isAdmin) {
+        if (!msg.isAdmin && $(document).find('#single-admin-container-' + msg.userId).length === 0) {
             $('.online-users').append(getNewListUser(getChoosedUsername(), getChoosedUserId()));
         }
         updateMessages(false, msg.text);
@@ -269,9 +280,9 @@ $(document).ready(function () {
         $recipientBox = $(document).find('#user-chat-box-' + getChoosedUserId());
         $boxBody = $recipientBox.find('.chat-box-body');
         if (!source) {
-            $boxBody.append('<div class="message"><p class="his-message pull-right">' + text + '</p></div>')
+            $boxBody.append('<div class="message"><p class="his-message pull-right">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
         } else {
-            $boxBody.append('<div class="message"><p class="my-message pull-left">' + text + '</p></div>')
+            $boxBody.append('<div class="message"><p class="my-message pull-left">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
 
         }
     }
