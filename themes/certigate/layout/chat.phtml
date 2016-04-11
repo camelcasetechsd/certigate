@@ -85,8 +85,11 @@
 <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 <script>
 $(document).ready(function () {
+////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// Events ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
     $('.join-chat').click(function () {
-//selected admin username and id
+        //selected admin username and id
         window.choosedUsername = '';
         window.choosedUserId = '';
         // hiding connect button
@@ -113,6 +116,7 @@ $(document).ready(function () {
             }
         };
     });
+
     /**
      * sending message
      * @param {type} adminId
@@ -137,6 +141,7 @@ $(document).ready(function () {
         // empty text field
         $(this).prev('.user-message').val('');
     });
+
     /**
      * opening new chat window for specific user
      */
@@ -145,7 +150,11 @@ $(document).ready(function () {
         setChoosedUserId($(this).children('.admin-id').text());
         handleChatBoxes(true);
     });
+    
 
+//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// Handlers /////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
     /**
      * function make sure that the current choosed user id & username  are 
      * for the same chat box 
@@ -160,13 +169,20 @@ $(document).ready(function () {
     }
 
 
-
+    /**
+     * creating new chat window for each recipient
+     */
     function newChatWindow() {
         $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><p>' + getChoosedUsername() + '</p></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><input type="textarea" rows="4" cols="50" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
         console.log('new chat window opened');
         $('.chat-windows-container').append($newChatWindow);
     }
 
+    /**
+     * function which handles users incomming messages 
+     * @param  msg
+     * @returns null
+     */
     function handleIncommingMessgae(msg) {
         setChoosedUserId(msg.userId);
         setChoosedUsername(msg.user);
@@ -176,8 +192,6 @@ $(document).ready(function () {
             $('.online-user-container-header').after(getNewListUser(getChoosedUsername(), getChoosedUserId()));
         }
         updateMessages(false, msg.text);
-
-
     }
 
     /**
@@ -205,6 +219,7 @@ $(document).ready(function () {
             }
         }
     }
+
     /**
      * 
      * @param {boolean} source true-> for my messages & false-> for recipient messages
@@ -222,12 +237,9 @@ $(document).ready(function () {
         }
     }
 
-
-
-
-
-
-///////////////////////////////// Parameters Setters & Getters /////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////// Parameters Setters & Getters //////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * returning html needed to build a div containing admin 
@@ -263,6 +275,5 @@ $(document).ready(function () {
         return window.choosedUserId;
     }
 });
-
 </script>
 {{/chatContainer}}
