@@ -19,7 +19,7 @@
     <body>
         {{>header}}
 
-        <div class="main-holder">
+        <div class="main-holder {{#isAdminUser}}admin-holder{{/isAdminUser}}">
             {{>messages}}
             <div class="page-container">
                 {{$content}}{{/content}}
