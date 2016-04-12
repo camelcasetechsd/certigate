@@ -24,7 +24,7 @@ $.calendars.calendars.islamic.prototype.regional['ar'] = {
 // rtl date pickers classes
 $('.hijriDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('islamic', 'ar'),
-    onClose: function (dateText, datePickerInstance) {
+    onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
@@ -41,7 +41,7 @@ $('.hijriDate-ar').calendarsPicker($.extend({
 
 $('.gregorianDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian'),
-    onClose: function (dateText, datePickerInstance) {
+    onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
@@ -61,7 +61,7 @@ $('.gregorianDate-ar').calendarsPicker($.extend({
 // ltr date pickers classes
 $('.hijriDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('islamic'),
-    onClose: function (dateText, datePickerInstance) {
+    onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
@@ -79,7 +79,7 @@ $('.hijriDate').calendarsPicker($.extend({
 
 $('.gregorianDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian'),
-    onClose: function (dateText, datePickerInstance) {
+    onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
         if (dateText.length > 0) {
