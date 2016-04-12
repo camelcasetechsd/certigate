@@ -19,6 +19,7 @@ use Gedmo\Tool\Wrapper\AbstractWrapper;
  * @property array $languages
  * @property Utilities\Service\Query\Query $query
  * @property array $statusConstants
+ * @property array $ignoredProperties
  * 
  * @package utilities
  * @subpackage service
@@ -64,6 +65,14 @@ class Object
      * @var array
      */
     public $statusConstants;
+
+    /**
+     *
+     * @var array
+     */
+    public $ignoredProperties = array(
+        "inputFilter"
+    );
 
     /**
      * Set needed properties
@@ -143,6 +152,10 @@ class Object
                 $meta = $wrapped->getMetadata();
             }
             foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
+                if(in_array($objectPropertyName, $this->ignoredProperties)){
+                    // skip ignored properties
+                    continue;
+                }
                 if (is_string($objectPropertyValue) && strlen($objectPropertyValue) <= 5) {
                     $textObjectPropertyName = $objectPropertyName . "Text";
                     if (array_key_exists($objectPropertyValue, $this->languages)) {

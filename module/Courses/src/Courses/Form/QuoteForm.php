@@ -36,7 +36,6 @@ class QuoteForm extends Form
                 'attributes' => array(
                     'maxlength' => 7,
                     'placeholder' => 'Discount is in US Dollar',
-                    'required' => 'required',
                     'class' => 'form-control',
                 ),
                 'options' => array(

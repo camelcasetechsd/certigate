@@ -124,8 +124,7 @@ class QuoteController extends ActionController
         
         $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
         $form = $quoteModel->getQuoteForm($type, $id, /*$userId =*/ $this->storage["id"]);
-        
-        $quoteModel->prepareQuoteForDisplay($quote = $form->getObject(), $type);
+        $quote = $form->getObject();
         $variables["course"] = $quoteModel->prepareQuoteCourseForDisplay($quote, $type);
         
         $request = $this->getRequest();
@@ -142,7 +141,7 @@ class QuoteController extends ActionController
             }
         }
         $variables["isAdminUser"] = $isAdminUser;
-        $variables["quote"] = $quote;
+        $variables["quote"] = $quoteModel->prepareQuoteForDisplay($quote, $type);
         $variables['form'] = $this->getFormView($form);
         $variables['type'] = strtolower($type);
         $variables['id'] = $id;
