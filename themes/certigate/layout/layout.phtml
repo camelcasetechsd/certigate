@@ -29,12 +29,13 @@
         <br>
         {{>footer}}
     </div>
-
+{{#locale_en}}
     <script src="/concat/app.js" type="text/javascript"></script>
-    <!-- Additional scripts to be added to specific views -->
-    {{#locale_ar}}
-    <script src="/js/datepicker/jquery.calendars.picker-ar.js" type="text/javascript"></script>
-    {{/locale_ar}}
+{{/locale_en}}
+{{^locale_en}}
+    <script src="/concat/app_rtl.js" type="text/javascript"></script>
+{{/locale_en}}
+    <!-- Additional scripts to be added to specific views -->   
     {{$scripts}}{{/scripts}}
 </body>
 </html>

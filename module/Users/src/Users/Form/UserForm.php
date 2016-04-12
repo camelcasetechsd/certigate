@@ -260,7 +260,7 @@ class UserForm extends Form
             ),
         ));
 
-        if ($currentLanguageCode == Locale::LOCALE_AR_AR) {
+        if ($currentLocale == Locale::LOCALE_AR_AR) {
 
             $this->add(array(
                 'name' => 'identificationExpiryDateHj',
@@ -275,6 +275,7 @@ class UserForm extends Form
                     'format' => Time::DATE_FORMAT,
                 ),
             ));
+            
             $this->add(array(
                 'name' => 'identificationExpiryDate',
                 'type' => 'Zend\Form\Element\Date',

@@ -11,17 +11,17 @@ and open the template in the editor.
     width: 132% !important; 
 }
 .calendars-month-header{
-    width: 133% !important; 
+    width: 134% !important; 
 
 }
 .calendars-month{
     float: right;
 }
 .calendars-cmd-clear  ,.calendars-cmd-prev ,.calendars-month-header > table , .calendars-month-year{
-    float:right !important ;
+    /*float:right !important ;*/
 }
 
 .calendars-cmd-clear , .calendars-cmd-prev{
-    float:left !important ;
+    /*float:left !important ;*/
 
 }

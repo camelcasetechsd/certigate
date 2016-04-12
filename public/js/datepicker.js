@@ -40,7 +40,7 @@ $('.hijriDate-ar').calendarsPicker($.extend({
 }));
 
 $('.gregorianDate-ar').calendarsPicker($.extend({
-    calendar: $.calendars.instance('gregorian'),
+    calendar: $.calendars.instance('gregorian','ar'),
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -95,3 +95,5 @@ $('.gregorianDate').calendarsPicker($.extend({
 
     }
 }));
+
+// $.calendars.setDefaults($.calendars.regionalOptions['ar']);
