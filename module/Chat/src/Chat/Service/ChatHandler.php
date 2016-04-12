@@ -98,7 +98,6 @@ class ChatHandler
         // checking if the message from an admin or from a normal user 
         // to know the status of the sender
         if ($from->isAdmin) {
-            var_dump('isAdmin');
             $message->isAdmin = true;
         }
         else {

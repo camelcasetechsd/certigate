@@ -53,9 +53,6 @@ class ChatServer implements MessageComponentInterface
     {
         $this->clients->detach($conn);
         echo "User has been Disconnected!\n";
-        foreach ($this->clients as $client){
-            $client->send($this->chatHandler->getClosedMessage($conn->userId));
-        }
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e)

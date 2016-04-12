@@ -4,8 +4,7 @@ namespace Chat;
 
 return array(
     'view_manager' => array(
-        'template_path_stack' => array(
-        ),
+        'template_path_stack' => array(),
         'strategies' => array(
             'ViewJsonStrategy',
         ),
@@ -35,6 +34,20 @@ return array(
         'invokables' => array(
             'Chat\Controller\Chat' => 'Chat\Controller\ChatController',
         ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'startChat' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/chat',
+                    'defaults' => array(
+                        'controller' => 'Chat\Controller\Chat',
+                        'action' => 'startChat',
+                    ),
+                ),
+            ),
+        )
     ),
     'console' => array(
         'router' => array(
