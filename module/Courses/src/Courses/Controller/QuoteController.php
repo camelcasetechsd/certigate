@@ -140,8 +140,9 @@ class QuoteController extends ActionController
                 $this->redirect()->toUrl($this->getRedirectUrl(/*$routeName =*/ "quote"));
             }
         }
+        $quoteModel->prepareQuoteForDisplay($quote, $type);
         $variables["isAdminUser"] = $isAdminUser;
-        $variables["quote"] = $quoteModel->prepareQuoteForDisplay($quote, $type);
+        $variables["quote"] = $quote;
         $variables['form'] = $this->getFormView($form);
         $variables['type'] = strtolower($type);
         $variables['id'] = $id;

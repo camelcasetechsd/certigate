@@ -2,7 +2,6 @@
 
 namespace Courses\Model;
 
-use Courses\Entity\PrivateQuote as PrivateQuoteEntity;
 use Utilities\Service\Status;
 use Courses\Entity\CourseEvent;
 
@@ -136,22 +135,6 @@ class PrivateQuote implements QuoteInterface
             $isValid = (bool) $this->courseEventModel->validateForm(/* $form = */ $form->get("courseEvent"), /* $data = */ $data["courseEvent"]);
         }
         return $isValid;
-    }
-
-    /**
-     * Get translated venue types
-     * 
-     * @access public
-     * @return array translated venue types
-     */
-    public function getTranslatedVenueTypes()
-    {
-        $venues = array(
-            PrivateQuoteEntity::VENUE_CUSTOMER_PREMISES,
-            PrivateQuoteEntity::VENUE_COMPANY_PREMISES,
-            PrivateQuoteEntity::VENUE_OTHER_PREMISES,
-        );
-        return $this->translationHandler->getTranslatedArray($venues);
     }
 
 }

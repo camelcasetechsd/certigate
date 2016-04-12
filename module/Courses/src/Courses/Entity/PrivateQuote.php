@@ -23,7 +23,7 @@ use Utilities\Service\Status;
  * @property Courses\Entity\CourseEvent $courseEvent
  * @property Courses\Entity\Course $course
  * @property Users\Entity\User $user
- * @property string $venue
+ * @property Courses\Entity\PrivateQuoteVenue $venue
  * @property string $price
  * @property string $discount
  * @property array $wireTransfer
@@ -39,21 +39,6 @@ class PrivateQuote
 {
 
     const QUOTE_TYPE = "Private";
-
-    /**
-     * customer premises venue
-     */
-    const VENUE_CUSTOMER_PREMISES = 'Customer premises';
-
-    /**
-     * company premises venue
-     */
-    const VENUE_COMPANY_PREMISES = 'Company premises';
-
-    /**
-     * hotel or other venue
-     */
-    const VENUE_OTHER_PREMISES = 'Hotel / Other venue';
 
     /**
      * @ORM\Id
@@ -86,8 +71,9 @@ class PrivateQuote
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
-     * @var string
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\PrivateQuoteVenue")
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
+     * @var Courses\Entity\PrivateQuoteVenue
      */
     public $venue;
 

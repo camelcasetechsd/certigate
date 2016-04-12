@@ -374,8 +374,7 @@ class Quote
         foreach ($courses as $course) {
             if ($type === PrivateQuote::QUOTE_TYPE) {
                 $options["course"] = $course->getId();
-                $options["translatorHandler"] = $this->translationHandler;
-                $options["privateQuoteModel"] = $this->quoteGenerator->getModel($type);
+                $options["query"] = $this->query;
                 $form = new PrivateQuoteReservationForm(/* $name = */ "private_quote_reservation_" . $course->getId(), /* $options = */ $options);
                 $course->formObject = $form;
                 $course->formView = $this->formView->getFormView($course->formObject);
@@ -831,7 +830,7 @@ class Quote
         }
         else {
             $templateParameters = array_merge($baseTemplateParameters, array(
-                "venue" => $quote->getVenue(),
+                "venue" => $quote->getVenue()->getName(),
                 "date" => $quote->getPreferredDate()->format(Object::DATE_DISPLAY_FORMAT),
                 "price" => $quote->getPrice(),
             ));

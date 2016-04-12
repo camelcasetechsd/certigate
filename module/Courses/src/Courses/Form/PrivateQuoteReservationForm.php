@@ -12,8 +12,7 @@ use Zend\InputFilter\InputFilter;
  * 
  * Handles PrivateQuote Reservation
  * 
- * @property Translation\Helper\TranslatorHelper $translatorHandler
- * @property Courses\Model\PrivateQuote $privateQuoteModel
+ * @property Utilities\Service\Query\Query $query
  * @property InputFilter $_inputFilter validation constraints 
  * @package courses
  * @subpackage form
@@ -23,14 +22,9 @@ class PrivateQuoteReservationForm extends Form
 
     /**
      *
-     * @var Translation\Helper\TranslatorHelper
+     * @var Utilities\Service\Query\Query
      */
-    protected $translatorHandler;
-    /**
-     *
-     * @var Courses\Model\PrivateQuote
-     */
-    protected $privateQuoteModel;
+    protected $query;
     
     /**
      *
@@ -48,11 +42,7 @@ class PrivateQuoteReservationForm extends Form
      */
     public function __construct($name = null, $options = null)
     {
-        $this->translatorHandler = $options['translatorHandler'];
-        $this->privateQuoteModel = $options['privateQuoteModel'];
-        unset($options['translatorHandler']);
-        unset($options['privateQuoteModel']);
-        
+        $this->query = $options['query'];
         parent::__construct($name, $options);
         $this->setAttribute('class', 'form form-inline');
         $this->setAttribute('action', $options["actionUrl"]);
@@ -75,16 +65,25 @@ class PrivateQuoteReservationForm extends Form
         
         $this->add(array(
             'name' => 'venue',
-            'type' => 'Zend\Form\Element\Select',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
-                'class' => 'form-control',
                 'required' => 'required',
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Venue',
-                'value_options' => $this->privateQuoteModel->getTranslatedVenueTypes(),
-                'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
-            )
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Courses\Entity\PrivateQuoteVenue',
+                'property' => 'name',
+                'is_method' => false,
+                'find_method' => array(
+                    'name' => 'findAll',
+                    'params' => array(
+                    )
+                ),
+                'empty_item_label' => Form::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
+            ),
         ));
         
         $this->add(array(
