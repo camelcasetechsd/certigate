@@ -87,21 +87,22 @@ class QuoteController extends ActionController
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
         $variables['type'] = $type;
-        $variables['courses'] = $quoteModel->prepareReservationForms($courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems()), $type, /*$userId =*/ $this->storage['id'], /* $actionUrl = */ $this->getRedirectUrl());
+        $courses = $quoteModel->prepareReservationForms(/*$courses =*/ $courseModel->getCurrentItems(), $type, /*$userId =*/ $this->storage['id'], /* $actionUrl = */ $this->getRedirectUrl());
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             $quoteEntityClass = $quoteModel->getQuoteEntityClass($type);
             $quote = new $quoteEntityClass();
-            $quoteForm = $quoteModel->getReservationForm($variables['courses'], $type, $data);
+            $quoteForm = $quoteModel->getReservationForm($courses, $type, $data);
             $quoteForm->setData($data);
             if ($publicOrPrivateQuoteModel->isReservationValid($quoteForm) && $quoteForm->isValid()) {
                 $quoteModel->save($quote, $quoteForm, $data, $type, /*$editFlag =*/ false, $isAdminUser, /*$userEmail =*/ $this->storage['email']);
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array(),/* $options = */ array("name" => "quote", "query" => array("type" => $type)));
                 $this->redirect()->toUrl($url);
             }
-            $quoteModel->setForm($quoteForm, $variables['courses'], $type, $data);
+            $quoteModel->setForm($quoteForm, $courses, $type, $data);
         }
+        $variables['courses'] = $courseEventModel->setCourseEventsPrivileges($courses);
         return new ViewModel($variables);
     }
 

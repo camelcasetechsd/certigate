@@ -18,6 +18,7 @@ use System\Service\Cache\CacheHandler;
 use Courses\Form\PublicQuoteForm;
 use Courses\Form\PrivateQuoteForm;
 use Zend\Form\FormInterface;
+use Utilities\Service\Object;
 
 /**
  * Quote Model
@@ -814,30 +815,26 @@ class Quote
         }
         $user = $quote->getUser();
         $total = $this->getQuoteTotalPrice($quote, $type);
-        if ($type == PublicQuote::QUOTE_TYPE) {
-            $templateParameters = array(
+        $baseTemplateParameters = array(
                 "userFullName" => $user->getFullName(),
                 "userFullNameAr" => $user->getFullNameAr(),
                 "courseName" => $quote->getCourseEvent()->getCourse()->getName(),
                 "courseNameAr" => $quote->getCourseEvent()->getCourse()->getNameAr(),
+                "discount" => $quote->getDiscount(),
+                "total" => $total,
+            );
+        if ($type == PublicQuote::QUOTE_TYPE) {
+            $templateParameters = array_merge($baseTemplateParameters, array(
                 "seatsNo" => $quote->getSeatsNo(),
                 "unitPrice" => $quote->getUnitPrice(),
-                "discount" => $quote->getDiscount(),
-                "total" => $total,
-            );
+            ));
         }
         else {
-            $templateParameters = array(
-                "userFullName" => $user->getFullName(),
-                "userFullNameAr" => $user->getFullNameAr(),
-                "courseName" => $quote->getCourse()->getName(),
-                "courseNameAr" => $quote->getCourse()->getNameAr(),
+            $templateParameters = array_merge($baseTemplateParameters, array(
                 "venue" => $quote->getVenue(),
-                "date" => $quote->getPreferredDate(),
+                "date" => $quote->getPreferredDate()->format(Object::DATE_DISPLAY_FORMAT),
                 "price" => $quote->getPrice(),
-                "discount" => $quote->getDiscount(),
-                "total" => $total,
-            );
+            ));
         }
         return array(
             "templateParameters" => $templateParameters,
