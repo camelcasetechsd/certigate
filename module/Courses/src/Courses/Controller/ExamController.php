@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Courses\Form\ExamBookProctorForm;
+use Utilities\Service\Status;
 
 /**
  * ExamController
@@ -200,6 +201,13 @@ class ExamController extends ActionController
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
 
+        $proctors = $query->setEntity("Users\Entity\User")->entityRepository->getUsers(/*$roles =*/ array(Role::PROCTOR_ROLE), /*$status =*/Status::STATUS_ACTIVE);
+        if (empty($proctors)) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_PROCTOR_FOUND"), array('name' => 'resource_not_found'));
+            $this->redirect()->toUrl($url);
+        }
+        
         $options = array();
         $options['query'] = $query;
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
