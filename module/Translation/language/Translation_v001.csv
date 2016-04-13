@@ -161,7 +161,7 @@ Latitude,Latitude
 Leave,Leave
 Location,Location
 Logos,Logos
-Longtitude,Longtitude
+Longitude,Longitude
 Manage Users,Manage Users
 Memorable,Memorable
 Menu,Menu
@@ -418,3 +418,5 @@ Brief in Arabic, Brief in Arabic
 Duration (minutes), Duration (minutes)
 No training found for instructor!, No training found for instructor!
 Manage Proctors, Manage Proctors
+Longitude is required, Longitude is required
+Latitude is required, Latitude is required

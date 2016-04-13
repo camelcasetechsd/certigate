@@ -11,6 +11,7 @@ use DoctrineModule\Validator\UniqueObject;
 use Utilities\Service\Inflector;
 use Utilities\Service\Status;
 use Zend\Validator\Identical;
+use Zend\Validator\NotEmpty;
 
 /**
  * User Entity
@@ -59,7 +60,7 @@ use Zend\Validator\Identical;
  * @property int $trainingManagerStatement
  * @property int $status
  * @property int $customerId
- * @property float  $longtitude
+ * @property float  $longitude
  * @property float  $latitude
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
@@ -375,7 +376,7 @@ class User
      * @ORM\Column(type="float" , nullable=true )
      * @var string
      */
-    public $longtitude;
+    public $longitude;
 
     /**
      * @ORM\Column(type="float" , nullable=true)
@@ -1512,28 +1513,28 @@ class User
     }
 
     /**
-     * Get Longtitude
+     * Get Longitude
      * 
      * 
      * @access public
-     * @return float longtitude
+     * @return float longitude
      */
-    public function getLongtitude()
+    public function getLongitude()
     {
-        return $this->longtitude;
+        return $this->longitude;
     }
 
     /**
-     * Set Longtitude
+     * Set Longitude
      * 
      * 
      * @access public
-     * @param float $longtitude
+     * @param float $longitude
      * @return User
      */
-    public function setLongtitude($longtitude)
+    public function setLongitude($longitude)
     {
-        $this->longtitude = $longtitude;
+        $this->longitude = $longitude;
         return $this;
     }
 
@@ -1677,8 +1678,8 @@ class User
         if (array_key_exists('customerId', $data)) {
             $this->setCustomerId($data["customerId"]);
         }
-        if (array_key_exists('longtitude', $data) && ! empty($data["longtitude"])) {
-            $this->setLongtitude($data["longtitude"]);
+        if (array_key_exists('longitude', $data) && ! empty($data["longitude"])) {
+            $this->setLongitude($data["longitude"]);
         }
         if (array_key_exists('latitude', $data) && ! empty($data["latitude"])) {
             $this->setLatitude($data["latitude"]);
@@ -2023,13 +2024,33 @@ class User
             ));
 
             $inputFilter->add(array(
-                'name' => 'longtitude',
+                'name' => 'longitude',
                 'required' => $hasProctorRole,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Longitude is required',
+                            ),
+                        ),
+                    ),
+                ),
             ));
-
+            
             $inputFilter->add(array(
                 'name' => 'latitude',
-                'required' => false,
+                'required' => $hasProctorRole,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Latitude is required',
+                            ),
+                        ),
+                    ),
+                ),
             ));
 
             $inputFilter->add(array(

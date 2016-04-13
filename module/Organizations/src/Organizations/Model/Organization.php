@@ -596,7 +596,7 @@ class Organization
         $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
 
         $locationChanged = false;
-        if ($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude) {
+        if ($organizationComparisonPreparedArray["before"]->longitude != $organizationComparisonPreparedArray["after"]->longitude || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude) {
             $locationChanged = true;
         }
         $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
