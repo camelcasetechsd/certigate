@@ -4,7 +4,7 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.4",
+        "zendframework/zendframework": "2.3.3",
         "doctrine/doctrine-orm-module": "0.*",
         "widmogrod/zf2-mustache-module": "dev-master",
         "robmorgan/phinx": "^0.5.1",
