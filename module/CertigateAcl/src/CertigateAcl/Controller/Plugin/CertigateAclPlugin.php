@@ -82,7 +82,7 @@ class CertigateAclPlugin extends AbstractPlugin
             }
 
             // Defining Permissions
-            $acl->allow('Admin'); // allow everything for Admin 
+            $acl->allow(Role::ADMIN_ROLE); // allow everything for Admin 
             foreach ($allRolesPriveleges as $role => $modules) {
                 foreach ($modules as $module => $routes) {
                     foreach ($routes as $r) {

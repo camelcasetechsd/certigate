@@ -5,6 +5,7 @@ namespace CertigateAcl\Service;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
+use Organizations\Entity\OrganizationType;
 
 /**
  * AclValidator
@@ -46,7 +47,7 @@ class AclValidator
     }
 
     /**
-     * Validate Access Control for actions
+     * Validate Non-Admin user ORganization-related actions Access Control
      * 
      * @access public
      * 
@@ -79,13 +80,14 @@ class AclValidator
                 foreach ($roleArray as $role) {
                     if (!(isset($storage["agreements"][$role]) && (int) $storage["agreements"][$role] === Status::STATUS_ACTIVE)) {
                         $notacceptedAgreementRoles[] = $role;
-                    }elseif ($atLeastOneRoleFlag === true) {
+                    }
+                    elseif ($atLeastOneRoleFlag === true) {
                         $acceptedAgreementRoles[] = $role;
                     }
                 }
                 if ((count($notacceptedAgreementRoles) > 0 && $atLeastOneRoleFlag === false) || ($atLeastOneRoleFlag === true && count($acceptedAgreementRoles) == 0)) {
                     $glue = ", ";
-                    if($atLeastOneRoleFlag === true){
+                    if ($atLeastOneRoleFlag === true) {
                         $glue = ", or ";
                     }
                     $notacceptedAgreementRolesString = implode($glue, $notacceptedAgreementRoles);
@@ -95,6 +97,37 @@ class AclValidator
             }
             if ($accessValid === false) {
                 $response->setStatusCode(302);
+            }
+        }
+        return array(
+            "isValid" => $accessValid,
+            "redirectUrl" => $url,
+        );
+    }
+
+    /**
+     * Validate Non-Admin user Exam-related actions Access Control
+     * 
+     * @access public
+     * 
+     * @param Zend\Http\PhpEnvironment\Response $response
+     * @param array $userData
+     * @param Courses\Entity\ExamBook $examBook
+     * @return array bool is access valid or not and redirect url if redirect is needed
+     */
+    public function validateExamAccessControl($response, $userData, $examBook)
+    {
+        $accessValid = true;
+        $url = null;
+        if (!in_array(Role::ADMIN_ROLE, $userData['roles'])) {
+            $types = array(OrganizationType::TYPE_ATC_TITLE);
+            $userIds = array($userData["id"]);
+            $ids = array($examBook->getAtc()->getId());
+            $userOrganizations = $this->query->setEntity("Organizations\Entity\Organization")->entityRepository->getOrganizationsBy($userIds, $types, Status::STATUS_ACTIVE, $ids);
+            if (empty($userOrganizations)) {
+                $response->setStatusCode(302);
+                $url = $this->router->assemble(array(), array('name' => 'noaccess'));
+                $accessValid = false;
             }
         }
         return array(

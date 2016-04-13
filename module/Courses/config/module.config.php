@@ -555,6 +555,20 @@ return array(
                     ),
                 )
             ),
+            // atc manage exam proctors
+            'examProctors' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/courses/exam/proctors/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Exam',
+                        'action' => 'proctors',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             // atc book an exam
             'examBooking' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
