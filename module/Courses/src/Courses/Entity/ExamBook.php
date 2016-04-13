@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Utilities\Service\Time;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Resource Entity
@@ -21,6 +22,7 @@ use Utilities\Service\Time;
  * @property int $studentsNo
  * @property int $adminStatus
  * @property int $tvtcStatus
+ * @property Doctrine\Common\Collections\ArrayCollection $proctors
  * @property \DateTime $created
  * @property \DateTime $modified
  * 
@@ -124,6 +126,21 @@ class ExamBook
      */
     public $tvtcStatus;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="proctorExamBooks") 
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $proctors;
+    
+    /**
+     * Set needed properties
+     * @access public
+     */
+    public function __construct()
+    {
+        $this->proctors = new ArrayCollection();
+    }
+    
     /**
      * Get id
      * 
@@ -272,6 +289,46 @@ class ExamBook
     }
 
     /**
+     * add Proctor
+     * 
+     * 
+     * @access public
+     * @param Users/Entity/User $proctor
+     * @return Courses\Entity\ExamBook
+     */
+    public function addProctor($proctor)
+    {
+        $this->proctors[] = $proctor;
+        return $this;
+    }
+
+    /**
+     * Set Proctors
+     * 
+     * 
+     * @access public
+     * @param array $proctors array of Users\Entity\User instances or just ids
+     * @return Courses\Entity\ExamBook
+     */
+    public function setProctors($proctors)
+    {
+        $this->proctors = $proctors;
+        return $this;
+    }
+    
+    /**
+     * Get Proctors
+     * 
+     * 
+     * @access public
+     * @return Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getProctors()
+    {
+        return $this->proctors;
+    }
+    
+    /**
      * Get created
      * 
      * 
@@ -348,11 +405,21 @@ class ExamBook
         if (array_key_exists("adminStatus", $data)) {
             $this->setAdminStatus($data["adminStatus"]);
         }
-        $this->setAtc($data["atc"])
-                ->setCourse($data["course"])
-                ->setDate($data["date"])
-                ->setStudentsNo($data["studentsNo"])
-        ;
+        if (array_key_exists("atc", $data)) {
+            $this->setAtc($data["atc"]);
+        }
+        if (array_key_exists("course", $data)) {
+            $this->setCourse($data["course"]);
+        }
+        if (array_key_exists("date", $data)) {
+            $this->setDate($data["date"]);
+        }
+        if (array_key_exists("studentsNo", $data)) {
+            $this->setStudentsNo($data["studentsNo"]);
+        }
+        if (array_key_exists('proctors', $data)) {
+            $this->setProctors($data["proctors"]);
+        }
     }
 
     /**

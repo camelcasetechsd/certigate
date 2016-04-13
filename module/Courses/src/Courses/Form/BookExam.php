@@ -6,6 +6,8 @@ use Utilities\Form\Form;
 use Utilities\Service\Time;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Utilities\Service\Status;
+use Organizations\Entity\OrganizationType;
 
 /**
  * BookExam Form
@@ -13,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * Handles BookExam setup
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property int $userId
  * 
  * @package courses
  * @subpackage form
@@ -29,6 +32,12 @@ class BookExam extends Form implements ObjectManagerAwareInterface
     protected $query;
 
     /**
+     *
+     * @var int
+     */
+    protected $userId;
+    
+    /**
      * setup form
      * 
      * 
@@ -40,7 +49,8 @@ class BookExam extends Form implements ObjectManagerAwareInterface
     {
         $this->query = $options['query'];
         unset($options['query']);
-
+        $this->userId = $options['userId'];
+        unset($options['userId']);
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
@@ -73,13 +83,17 @@ class BookExam extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
+        $types = array(OrganizationType::TYPE_ATC_TITLE);
+        $userIds = array();
+        if ($this->isAdminUser === false) {
+            $userIds[] = $this->userId;
+        }
         $this->add(array(
             'name' => 'atc',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'required' => 'required',
                 'class' => 'form-control',
-                'multiple' => false,
             ),
             'options' => array(
                 'label' => 'Authenticated Test Center',
@@ -88,22 +102,21 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 ),
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Organizations\Entity\Organization',
-                'property' => 'type',
-                'empty_item_label' => self::EMPTY_SELECT_VALUE,
-                'display_empty_item' => true,
-                'label_generator' => function($targetEntity) {
-            return $targetEntity->getCommercialName();
-        },
+                'property' => 'commercialName',
+                'is_method' => false,
                 'find_method' => array(
-                    'name' => 'listOrganizations',
+                    'name' => 'getOrganizationsBy',
                     'params' => array(
-                        'query' => $this->query,
-                        'type' => \Organizations\Entity\Organization::TYPE_ATC
+                        'userIds' => $userIds,
+                        'types' => $types,
+                        'status' => Status::STATUS_ACTIVE,
                     )
                 ),
-            )
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'display_empty_item' => true,
+            ),
         ));
-
+        
         $this->add(array(
             'name' => 'course',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
