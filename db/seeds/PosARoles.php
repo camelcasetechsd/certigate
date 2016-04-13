@@ -65,20 +65,32 @@ class PosARoles extends AbstractSeed
         );
         $this->insert('role', $adminRole);
 
+//
+//
+//
+//        $defaultModule = "DefaultModule";
+//        $testRoute = "test";
+//        $testAcl = array(
+//            array(
+//                'role_id' => $normalUserRoleId,
+//                'module' => $defaultModule,
+//                'route' => $testRoute,
+//            ),
+//        );
+//
+//        $this->insert('acl', $testAcl);
 
-
-
-        $defaultModule = "DefaultModule";
-        $testRoute = "test";
-        $testAcl = array(
+        $chatModule = "Chat";
+        $chatRoute = "startChat";
+        $chatAcl = array(
             array(
                 'role_id' => $normalUserRoleId,
-                'module' => $defaultModule,
-                'route' => $testRoute,
+                'module' => $chatModule,
+                'route' => $chatRoute,
             ),
         );
 
-        $this->insert('acl', $testAcl);
+        $this->insert('acl', $chatAcl);
 
 
         $userModule = "Users";
