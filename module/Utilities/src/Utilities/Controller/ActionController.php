@@ -61,9 +61,7 @@ class ActionController extends AbstractActionController
      */
     public function getFormView(FormInterface $form)
     {
-        if (is_null($this->formViewService)) {
-            $this->formViewService = $this->getServiceLocator()->get('Utilities\Service\View\FormView');
-        }
+        $this->setFormViewService();
         return $this->formViewService->getFormView($form);
     }
 
@@ -77,7 +75,21 @@ class ActionController extends AbstractActionController
      */
     public function setFormViewHelper(Form $formViewHelper)
     {
+        $this->setFormViewService();
         $this->formViewService->setFormViewHelper($formViewHelper);
+    }
+
+    /**
+     * Set form view service
+     * 
+     * 
+     * @access public
+     */
+    public function setFormViewService()
+    {
+        if (is_null($this->formViewService)) {
+            $this->formViewService = $this->getServiceLocator()->get('Utilities\Service\View\FormView');
+        }
     }
 
     /**
@@ -91,6 +103,7 @@ class ActionController extends AbstractActionController
      */
     public function getFormViewHelper()
     {
+        $this->setFormViewService();
         return $this->formViewService->getFormViewHelper();
     }
 
