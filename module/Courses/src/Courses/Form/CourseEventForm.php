@@ -6,7 +6,7 @@ use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Users\Entity\Role;
 use Utilities\Service\Time;
-use Organizations\Entity\Organization;
+use Organizations\Entity\OrganizationType;
 use Utilities\Form\ButtonsFieldset;
 
 /**
@@ -91,7 +91,7 @@ class CourseEventForm extends Form
             ));
         }
 
-        $types = array(Organization::TYPE_ATP, Organization::TYPE_BOTH);
+        $types = array(OrganizationType::TYPE_ATP_TITLE);
         $userIds = array();
         if ($this->isAdminUser === false) {
             $userIds[] = $this->userId;

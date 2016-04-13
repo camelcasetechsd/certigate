@@ -3,9 +3,10 @@
 namespace Utilities\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Utilities\Form\FormViewHelper;
 use Zend\Form\FormInterface;
 use Zend\Form\View\Helper\Form;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
 
 /**
  * Action Controller
@@ -14,16 +15,41 @@ use Zend\Form\View\Helper\Form;
  * It provides helpers for all controllers
  * And control how all controllers behave
  * 
- * @property Form $formViewHelper
+ * @property Utilities\Service\View\FormView $formViewService
+ * @property array $storage
  * 
  * @package utilities
  * @subpackage controller
  */
 class ActionController extends AbstractActionController
 {
-    
-    protected $formViewHelper;
-    
+
+    /**
+     *
+     * @var Utilities\Service\View\FormView 
+     */
+    protected $formViewService;
+
+    /**
+     *
+     * @var array 
+     */
+    protected $storage;
+
+    /**
+     * Set needed properties
+     * 
+     * @access public
+     */
+    public function __construct()
+    {
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if ($auth->hasIdentity()) {
+            $this->storage = $storage;
+        }
+    }
+
     /**
      * Get form HTML content
      * 
@@ -35,12 +61,10 @@ class ActionController extends AbstractActionController
      */
     public function getFormView(FormInterface $form)
     {
-        $formHelper = $this->getFormViewHelper();
-        $view = $this->getServiceLocator()->get('ViewRenderer');
-        $formHelper->setView($view);
-        return $formHelper->render($form);
+        $this->setFormViewService();
+        return $this->formViewService->getFormView($form);
     }
-    
+
     /**
      * Set form view helper
      * 
@@ -51,26 +75,38 @@ class ActionController extends AbstractActionController
      */
     public function setFormViewHelper(Form $formViewHelper)
     {
-        $this->formViewHelper = $formViewHelper;
+        $this->setFormViewService();
+        $this->formViewService->setFormViewHelper($formViewHelper);
     }
-    
+
+    /**
+     * Set form view service
+     * 
+     * 
+     * @access public
+     */
+    public function setFormViewService()
+    {
+        if (is_null($this->formViewService)) {
+            $this->formViewService = $this->getServiceLocator()->get('Utilities\Service\View\FormView');
+        }
+    }
+
     /**
      * Get form view helper
      * 
      * 
      * @access public
-     * @uses FormViewHelper
+     * @uses Utilities\Form\FormViewHelper
      * 
      * @return Form form view helper
      */
     public function getFormViewHelper()
     {
-        if(!$this->formViewHelper instanceof Form){
-            $this->formViewHelper = new FormViewHelper();
-        }
-        return $this->formViewHelper;
+        $this->setFormViewService();
+        return $this->formViewService->getFormViewHelper();
     }
-    
+
     /**
      * Get pdf view
      * 
@@ -91,14 +127,41 @@ class ActionController extends AbstractActionController
             if (substr($fileName, -4) != '.pdf') {
                 $fileName .= '.pdf';
             }
-            
+
             $this->getResponse()->getHeaders()->addHeaderLine(
-            	'Content-Disposition', 
-            	'attachment; filename=' . $fileName);
+                    'Content-Disposition', 'attachment; filename=' . $fileName);
         }
-        
+
         return $this->getResponse()->setContent($renderedPdf);
     }
 
-}
+    /**
+     * Has current logged in user admin permission
+     * 
+     * @access public
+     * @uses AuthenticationService
+     * @return bool is admin user
+     */
+    public function isAdminUser()
+    {
+        $isAdminUser = false;
+        if (!empty($this->storage)) {
+            if (in_array(Role::ADMIN_ROLE, $this->storage['roles'])) {
+                $isAdminUser = true;
+            }
+        }
+        return $isAdminUser;
+    }
 
+    /**
+     * Get filter query
+     * 
+     * @access public
+     * @return string query string without pagination parameter
+     */
+    public function getFilterQuery()
+    {
+        return preg_replace('/page=[\d]+(&)?/i', '', $this->getRequest()->getUri()->getQuery());
+    }
+
+}

@@ -18,6 +18,7 @@ return array(
             'Utilities\Service\Object' => 'Utilities\Service\ObjectFactory',
             'Utilities\Service\Logger' => 'Utilities\Service\Logger\LoggerFactory',
             'Utilities\Service\Fixture\FixtureLoader' => 'Utilities\Service\Fixture\FixtureLoaderFactory',
+            'Utilities\Service\View\FormView' => 'Utilities\Service\View\FormViewFactory',
         ),
         'invokables' => array(
             'Utilities\Service\File' => 'Utilities\Service\File',

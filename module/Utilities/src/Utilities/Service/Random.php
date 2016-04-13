@@ -20,7 +20,7 @@ class Random {
      * @access public
      * @return string random and almost unique value
      */
-    public function getRandomUniqueName() {
+    public static function getRandomUniqueName() {
         $uniqid = uniqid(mt_rand(), true);
         $cid = str_replace('.', '',$uniqid.md5($uniqid));
         return $cid;

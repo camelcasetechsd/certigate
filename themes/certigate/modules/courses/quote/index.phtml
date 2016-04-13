@@ -1,0 +1,92 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="panel-default">
+
+    <div class="panel-heading">{{#translate}}Filter Quotations{{/translate}}</div>
+    {{{filterForm}}}
+</div>
+<br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Quotations{{/translate}}</div>
+
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{#translate}}Course Name{{/translate}}</th>
+                <th>{{#translate}}Course Name in Arabic{{/translate}}</th>
+                {{#isAdminUser}}
+                <th>{{#translate}}User Name{{/translate}}</th>
+                <th>{{#translate}}User Name in Arabic{{/translate}}</th>
+                {{/isAdminUser}}
+                <th>{{#translate}}Status{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#quotes}}
+            <tr>
+                {{#course}}
+                <td>{{course.name}}</td>
+                {{/course}}
+                {{#course}}
+                <td>{{course.nameAr}}</td>
+                {{/course}}
+                {{^course}}
+                {{#courseEvent}}
+                <td>{{courseEvent.course.name}}</td>
+                {{/courseEvent}}
+                {{#courseEvent}}
+                <td>{{courseEvent.course.nameAr}}</td>
+                {{/courseEvent}}
+                {{/course}}
+                {{#isAdminUser}}
+                <th>{{user.firstName}} {{user.lastName}}</th>
+                <th>{{user.firstNameAr}} {{user.lastNameAr}}</th>
+                {{/isAdminUser}}
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
+                <td>
+                    <a href="/quote/process/{{type}}/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    {{^isAdminUser}}
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="/quote/delete/{{type}}/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isAdminUser}}
+                </td>
+            </tr>
+            {{/quotes}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > {{#translate}}Pages{{/translate}} :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}{{#filterQuery}}&{{filterQuery}}{{/filterQuery}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+{{/layout}}

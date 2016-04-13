@@ -1,0 +1,111 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="container static-cont">
+    <h1 class="title-blue"> {{#translate}}{{type}} Training{{/translate}}</h1>
+
+    {{#courses}}
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="media col-md-10">
+
+            <div class="media-body">
+                <div class="panel-default">
+
+
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue">{{name}}</h3></div> </div>
+                    </div><div class="clearfix"></div>
+                    <div>
+                        <p>{{brief}}</p>
+                        <p>{{briefAr}}</p>
+                        <ul class="list-inline list-unstyled">
+                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
+                        </ul>
+                    </div>
+                    {{^formView}}
+                        {{#courseEvents.count}}
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{#translate}}From{{/translate}}</th>
+                                    <th>{{#translate}}To{{/translate}}</th>
+                                    <th>{{#translate}}ATP Name{{/translate}}</th>
+                                    <th>{{#translate}}ATP City{{/translate}}</th>
+                                    <th colspan="2">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#courseEvents}}
+                                {{^hideFromCalendar}}
+                                <tr>
+                                    <td>
+                                        {{startDate}}
+                                    </td>
+                                    <td>
+                                        {{endDate}}
+                                    </td>
+                                    <td>
+                                        {{atp.commercialName}}
+                                    </td>
+                                    <td>
+                                        {{atp.city}}
+                                    </td>
+                                    <td>
+                                        {{#canEnroll}}
+                                            {{{formView}}}
+                                        {{/canEnroll}}
+                                        {{#isFull}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Course Full
+                                        {{/isFull}}
+                                    </td>
+                                </tr>
+                                {{/hideFromCalendar}}
+                                {{/courseEvents}}
+
+                            </tbody>
+                        </table>
+                        {{/courseEvents.count}}
+                    {{/formView}}
+                    {{#formView}}
+                        {{{formView}}}
+                    {{/formView}}
+
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="col-md-1">&nbsp;</div>
+    </div>
+    {{/courses}}
+</div>
+
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > Pages :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+{{/layout}}
