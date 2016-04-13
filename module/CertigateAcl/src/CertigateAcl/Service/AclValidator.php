@@ -72,30 +72,10 @@ class AclValidator
                 }
             }
             if ($accessValid === true) {
-                if (!is_array($roleArray)) {
-                    $roleArray = array($roleArray);
-                }
-                $notacceptedAgreementRoles = array();
-                $acceptedAgreementRoles = array();
-                foreach ($roleArray as $role) {
-                    if (!(isset($storage["agreements"][$role]) && (int) $storage["agreements"][$role] === Status::STATUS_ACTIVE)) {
-                        $notacceptedAgreementRoles[] = $role;
-                    }
-                    elseif ($atLeastOneRoleFlag === true) {
-                        $acceptedAgreementRoles[] = $role;
-                    }
-                }
-                if ((count($notacceptedAgreementRoles) > 0 && $atLeastOneRoleFlag === false) || ($atLeastOneRoleFlag === true && count($acceptedAgreementRoles) == 0)) {
-                    $glue = ", ";
-                    if ($atLeastOneRoleFlag === true) {
-                        $glue = ", or ";
-                    }
-                    $notacceptedAgreementRolesString = implode($glue, $notacceptedAgreementRoles);
-                    $url = $this->router->assemble(array('id' => $storage['id'], 'role' => $notacceptedAgreementRolesString), array('name' => 'noAgreement'));
-                    $accessValid = false;
-                }
+                $url = $this->getNotacceptedAgreementUrl($storage, $roleArray, $atLeastOneRoleFlag);
             }
-            if ($accessValid === false) {
+            if (!empty($url)) {
+                $accessValid = false;
                 $response->setStatusCode(302);
             }
         }
@@ -129,11 +109,54 @@ class AclValidator
                 $url = $this->router->assemble(array(), array('name' => 'noaccess'));
                 $accessValid = false;
             }
+            if ($accessValid === true) {
+                $url = $this->getNotacceptedAgreementUrl(/*$storage =*/ $userData, /*$roleArray =*/ array(Role::TEST_CENTER_ADMIN_ROLE), /*$atLeastOneRoleFlag =*/ false);
+            }
+            if (!empty($url)) {
+                $accessValid = false;
+                $response->setStatusCode(302);
+            }
         }
         return array(
             "isValid" => $accessValid,
             "redirectUrl" => $url,
         );
+    }
+
+    /**
+     * Generate url for missing agreements error
+     * 
+     * @access private
+     * @param array $storage
+     * @param mixed $roleArray
+     * @param bool $atLeastOneRoleFlag ,default is false
+     * @return string not accepted agreements error url
+     */
+    private function getNotacceptedAgreementUrl($storage, $roleArray, $atLeastOneRoleFlag = false)
+    {
+        $url = null;
+        if (!is_array($roleArray)) {
+            $roleArray = array($roleArray);
+        }
+        $notacceptedAgreementRoles = array();
+        $acceptedAgreementRoles = array();
+        foreach ($roleArray as $role) {
+            if (!(isset($storage["agreements"][$role]) && (int) $storage["agreements"][$role] === Status::STATUS_ACTIVE)) {
+                $notacceptedAgreementRoles[] = $role;
+            }
+            elseif ($atLeastOneRoleFlag === true) {
+                $acceptedAgreementRoles[] = $role;
+            }
+        }
+        if ((count($notacceptedAgreementRoles) > 0 && $atLeastOneRoleFlag === false) || ($atLeastOneRoleFlag === true && count($acceptedAgreementRoles) == 0)) {
+            $glue = ", ";
+            if ($atLeastOneRoleFlag === true) {
+                $glue = ", or ";
+            }
+            $notacceptedAgreementRolesString = implode($glue, $notacceptedAgreementRoles);
+            $url = $this->router->assemble(array('id' => $storage['id'], 'role' => $notacceptedAgreementRolesString), array('name' => 'noAgreement'));
+        }
+        return $url;
     }
 
 }
