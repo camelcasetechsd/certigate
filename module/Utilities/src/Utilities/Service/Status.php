@@ -65,6 +65,56 @@ class Status
      * Entity is state saved text
      */
     const STATUS_STATE_SAVED_TEXT = "State Saved";
+
+    /**
+     * Entity is pending pricing
+     */
+    const STATUS_PENDING_PRICING = 5;
+
+    /**
+     * Entity is pending pricing text
+     */
+    const STATUS_PENDING_PRICING_TEXT = "Pending Pricing";
+
+    /**
+     * Entity is pending payment
+     */
+    const STATUS_PENDING_PAYMENT = 6;
+
+    /**
+     * Entity is pending payment text
+     */
+    const STATUS_PENDING_PAYMENT_TEXT = "Pending Payment";
+
+    /**
+     * Entity is pending review
+     */
+    const STATUS_PENDING_REVIEW = 7;
+
+    /**
+     * Entity is pending review text
+     */
+    const STATUS_PENDING_REVIEW_TEXT = "Pending Review";
+
+    /**
+     * Entity is pending repayment
+     */
+    const STATUS_PENDING_REPAYMENT= 8;
+
+    /**
+     * Entity is pending repayment text
+     */
+    const STATUS_PENDING_REPAYMENT_TEXT = "Pending Repayment";
+
+    /**
+     * Entity is cancelled
+     */
+    const STATUS_CANCELLED= 9;
+
+    /**
+     * Entity is cancelled text
+     */
+    const STATUS_CANCELLED_TEXT = "Cancelled";
     
     /**
      * Set status

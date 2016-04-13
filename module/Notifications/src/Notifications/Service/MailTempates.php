@@ -97,5 +97,63 @@ class MailTempates {
      */
     const NEW_PRESS_RELEASE_TEMPLATE = "new-press-release";
     
+    /**
+     * Admin public quote pending pricing Template
+     */
+    const ADMIN_PUBLIC_QUOTE_PENDING_PRICING_TEMPLATE = "admin-public-quote-pending-pricing";
+
+    /**
+     * Admin public quote pending review Template
+     */
+    const ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_TEMPLATE = "admin-public-quote-pending-review";
+
+    /**
+     * Client public quote cancelled Template
+     */
+    const CLIENT_PUBLIC_QUOTE_CANCELLED_TEMPLATE = "client-public-quote-cancelled";
     
+    /**
+     * Client public quote pending payment Template
+     */
+    const CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_TEMPLATE = "client-public-quote-pending-payment";
+
+    /**
+     * Client public quote pending repayment Template
+     */
+    const CLIENT_PUBLIC_QUOTE_PENDING_REPAYMENT_TEMPLATE = "client-public-quote-pending-repayment";
+
+    /**
+     * Client public quote ready invoice Template
+     */
+    const CLIENT_PUBLIC_QUOTE_READY_INVOICE_TEMPLATE = "client-public-quote-ready-invoice";
+
+    /**
+     * Admin private quote pending pricing Template
+     */
+    const ADMIN_PRIVATE_QUOTE_PENDING_PRICING_TEMPLATE = "admin-private-quote-pending-pricing";
+
+    /**
+     * Admin private quote pending review Template
+     */
+    const ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_TEMPLATE = "admin-private-quote-pending-review";
+
+    /**
+     * Client private quote cancelled Template
+     */
+    const CLIENT_PRIVATE_QUOTE_CANCELLED_TEMPLATE = "client-private-quote-cancelled";
+
+    /**
+     * Client private quote pending payment Template
+     */
+    const CLIENT_PRIVATE_QUOTE_PENDING_PAYMENT_TEMPLATE = "client-private-quote-pending-payment";
+
+    /**
+     * Client private quote pending repayment Template
+     */
+    const CLIENT_PRIVATE_QUOTE_PENDING_REPAYMENT_TEMPLATE = "client-private-quote-pending-repayment";
+
+    /**
+     * Client private quote ready invoice Template
+     */
+    const CLIENT_PRIVATE_QUOTE_READY_INVOICE_TEMPLATE = "client-private-quote-ready-invoice";
 }

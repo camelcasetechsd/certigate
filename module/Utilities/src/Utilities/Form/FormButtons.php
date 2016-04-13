@@ -104,4 +104,63 @@ class FormButtons
      */
     const RESET_BUTTON_TEXT = "Reset";
 
+    /**
+     * accept button
+     */
+    const ACCEPT_BUTTON = "accept";
+
+    /**
+     * accept button text
+     */
+    const ACCEPT_BUTTON_TEXT = "Accept";
+
+    /**
+     * decline button
+     */
+    const DECLINE_BUTTON = "decline";
+
+    /**
+     * decline button text
+     */
+    const DECLINE_BUTTON_TEXT = "Decline";
+
+    /**
+     * reserve button
+     */
+    const RESERVE_BUTTON = "reserve";
+
+    /**
+     * reserve button text
+     */
+    const RESERVE_BUTTON_TEXT = "Reserve";
+
+    /**
+     * process button
+     */
+    const PROCESS_BUTTON = "process";
+
+    /**
+     * process button text
+     */
+    const PROCESS_BUTTON_TEXT = "Process";
+
+    /**
+     * cancel button
+     */
+    const CANCEL_BUTTON = "cancel";
+
+    /**
+     * cancel button text
+     */
+    const CANCEL_BUTTON_TEXT = "Cancel";
+
+    /**
+     * filter button
+     */
+    const FILTER_BUTTON = "filter";
+
+    /**
+     * filter button text
+     */
+    const FILTER_BUTTON_TEXT = "Filter";
 }

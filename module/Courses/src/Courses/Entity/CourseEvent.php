@@ -31,6 +31,8 @@ use Utilities\Service\String;
  * @property int $optionValueId
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
+ * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Courses\Entity\PrivateQuote $privateQuote
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -64,14 +66,14 @@ class CourseEvent
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $startDate;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $endDate;
@@ -134,19 +136,31 @@ class CourseEvent
     public $courseEventUsers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PublicQuote", mappedBy="courseEvent")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $publicQuotes;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Courses\Entity\PrivateQuote", mappedBy="courseEvent")
+     * @var Courses\Entity\PrivateQuote
+     */
+    public $privateQuote;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="courseEvent")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $votes;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionId;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionValueId;
@@ -167,6 +181,7 @@ class CourseEvent
     public function __construct()
     {
         $this->courseEventUsers = new ArrayCollection();
+        $this->publicQuotes = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -512,6 +527,59 @@ class CourseEvent
         return $this;
     }
     
+    
+    /**
+     * Get PublicQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection publicQuotes
+     */
+    public function getPublicQuotes()
+    {
+        return $this->publicQuotes;
+    }
+
+    /**
+     * Set PublicQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $publicQuotes
+     * @return CourseEvent
+     */
+    public function setPublicQuotes($publicQuotes)
+    {
+        $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    /**
+     * Get PrivateQuote
+     * 
+     * 
+     * @access public
+     * @return Courses\Entity\PrivateQuote privateQuote
+     */
+    public function getPrivateQuote()
+    {
+        return $this->privateQuote;
+    }
+
+    /**
+     * Set PrivateQuote
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\PrivateQuote $privateQuote
+     * @return CourseEvent
+     */
+    public function setPrivateQuote($privateQuote)
+    {
+        $this->privateQuote = $privateQuote;
+        return $this;
+    }
+    
     /**
      * Get Votes
      * 
@@ -637,14 +705,27 @@ class CourseEvent
         if (array_key_exists('optionValueId', $data)) {
             $this->setOptionValueId($data["optionValueId"]);
         }
-        $this->setAi($data["ai"])
-                ->setAtp($data["atp"])
-                ->setCapacity($data["capacity"])
-                ->setEndDate($data["endDate"])
-                ->setStartDate($data["startDate"])
-                ->setStudentsNo($data["studentsNo"])
-                ->setHideFromCalendar($data["hideFromCalendar"])
-        ;
+        if (array_key_exists('ai', $data)) {
+            $this->setAi($data["ai"]);
+        }
+        if (array_key_exists('atp', $data)) {
+            $this->setAtp($data["atp"]);
+        }
+        if (array_key_exists('startDate', $data)) {
+            $this->setStartDate($data["startDate"]);
+        }
+        if (array_key_exists('endDate', $data)) {
+            $this->setEndDate($data["endDate"]);
+        }
+        if (array_key_exists('capacity', $data)) {
+            $this->setCapacity($data["capacity"]);
+        }
+        if (array_key_exists('studentsNo', $data)) {
+            $this->setStudentsNo($data["studentsNo"]);
+        }
+        if (array_key_exists('hideFromCalendar', $data)) {
+            $this->setHideFromCalendar($data["hideFromCalendar"]);
+        }
     }
 
     /**

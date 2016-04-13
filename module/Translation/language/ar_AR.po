@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-04-07 16:03+0200\n"
+"PO-Revision-Date: 2016-04-13 12:55+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: Arabic\n"
@@ -1125,6 +1125,15 @@ msgstr "Instructors ar"
 msgid "User Details"
 msgstr "User Details ar"
 
+msgid "Process Quote"
+msgstr "Process Quote ar"
+
+msgid "Course Name in Arabic"
+msgstr "Course Name in Arabic ar"
+
+msgid "User Name in Arabic"
+msgstr "User Name in Arabic ar"
+
 msgid "Course Full"
 msgstr "Course Full ar"
 
@@ -1140,14 +1149,150 @@ msgstr "Duration (minutes) ar"
 msgid "Instructor"
 msgstr "Instructor ar"
 
+msgid "Instructor in Arabic"
+msgstr "Instructor in Arabic ar"
+
 msgid "ATP Name"
 msgstr "ATP Name ar"
+
+msgid "ATP Name in Arabic"
+msgstr "ATP Name in Arabic ar"
 
 msgid "ATP City"
 msgstr "ATP City ar"
 
+msgid "ATP City in Arabic"
+msgstr "ATP City in Arabic ar"
+
+msgid "Venue"
+msgstr "Venue ar"
+
+msgid "Preferred Date"
+msgstr "Preferred Date ar"
+
+msgid "Seats No"
+msgstr "Seats No ar"
+
+msgid "Price"
+msgstr "Price ar"
+
+msgid "Unit Price"
+msgstr "Unit Price ar"
+
+msgid "Discount"
+msgstr "Discount ar"
+
+msgid "Total"
+msgstr "Total ar"
+
+msgid "Filter Quotations"
+msgstr "Filter Quotations ar"
+
+msgid "Quotations"
+msgstr "Quotations ar"
+
+msgid "Public Training"
+msgstr "Public Training ar"
+
+msgid "Private Training"
+msgstr "Private Training ar"
+
+msgid "Current Payment"
+msgstr "Current Payment ar"
+
+msgid "Public quote invoice"
+msgstr "Public quote invoice ar"
+
+msgid "Public quote with unacceptable payment"
+msgstr "Public quote with unacceptable payment ar"
+
+msgid "Public quote"
+msgstr "Public quote ar"
+
+msgid "Public quote cancelled"
+msgstr "Public quote cancelled ar"
+
+msgid "Private quote invoice"
+msgstr "Private quote invoice ar"
+
+msgid "Private quote with unacceptable payment"
+msgstr "Private quote with unacceptable payment ar"
+
+msgid "Private quote"
+msgstr "Private quote ar"
+
+msgid "Private quote cancelled"
+msgstr "Private quote cancelled ar"
+
+msgid "Public quote has wire transfer"
+msgstr "Public quote has wire transfer ar"
+
+msgid "New public quote"
+msgstr "New public quote ar"
+
+msgid "Private quote has wire transfer"
+msgstr "Private quote has wire transfer ar"
+
+msgid "New private quote"
+msgstr "New private quote ar"
+
+msgid "Cancelled"
+msgstr "Cancelled ar"
+
+msgid "Pending Repayment"
+msgstr "Pending Repayment ar"
+
+msgid "Pending Review"
+msgstr "Pending Review ar"
+
+msgid "Pending Payment"
+msgstr "Pending Payment ar"
+
+msgid "Pending Pricing"
+msgstr "Pending Pricing ar"
+
+msgid "Accept"
+msgstr "Accept ar"
+
+msgid "Decline"
+msgstr "Decline ar"
+
+msgid "Reserve"
+msgstr "Reserve ar"
+
+msgid "Process"
+msgstr "Process ar"
+
 msgid "Cancel"
 msgstr "Cancel ar"
+
+msgid "Filter"
+msgstr "Filter ar"
+
+msgid "Public"
+msgstr "Public ar"
+
+msgid "Private"
+msgstr "Private ar"
+
+msgid "Hotel / Other venue"
+msgstr "Hotel / Other venue ar"
+
+msgid "Company premises"
+msgstr "Company premises ar"
+
+msgid "Customer premises"
+msgstr "Customer premises ar"
+
+msgid "Course does not have enough seats"
+msgstr "Course does not have enough seats ar"
+
+msgid ""
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
+"png,jpg,jpeg</p>"
+msgstr ""
+"<p class=\"required\">Wire Transfer ar</p> <p>Supported Extensions: zip,pdf,"
+"gif,png,jpg,jpeg</p>"
 
 msgid "No training found for instructor!"
 msgstr "No training found for instructor! ar"

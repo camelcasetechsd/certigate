@@ -24,6 +24,7 @@ use Utilities\Service\Time;
  * @property Doctrine\Common\Collections\ArrayCollection $outlines
  * @property Doctrine\Common\Collections\ArrayCollection $courseEvents
  * @property Doctrine\Common\Collections\ArrayCollection $exambooks
+ * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
  * @property string $price
  * @property int $productId
  * @property string $brief
@@ -184,7 +185,13 @@ class Course
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $exambooks;
-
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="course")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $privateQuotes;
+    
     /**
      * Prepare entity
      * 
@@ -197,6 +204,7 @@ class Course
         $this->outlines = new ArrayCollection();
         $this->courseEvents = new ArrayCollection();
         $this->exambooks = new ArrayCollection();
+        $this->privateQuotes = new ArrayCollection();
     }
 
     /**
@@ -728,6 +736,33 @@ class Course
         return $this;
     }
 
+        
+    /**
+     * Get PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection privateQuotes
+     */
+    public function getPrivateQuotes()
+    {
+        return $this->privateQuotes;
+    }
+
+    /**
+     * Set PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $privateQuotes
+     * @return Course
+     */
+    public function setPrivateQuotes($privateQuotes)
+    {
+        $this->privateQuotes = $privateQuotes;
+        return $this;
+    }
+    
     /**
      * Convert the object to an array.
      * 

@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Random;
+use Utilities\Service\File;
 
 /**
  * Resource Entity
@@ -438,13 +439,8 @@ class Resource
             $DirSep = DIRECTORY_SEPARATOR;
             $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
-            if (!file_exists($target)) {
-                // PHP takes 0777 and substracts the current value of umask
-                $oldUmask = umask(0);
-                mkdir($target, 0777);
-                // return back umask to it's original value
-                umask($oldUmask);
-            }
+            File::createDir($target);
+            
             if (is_string($name) && strlen($name) > 0) {
                 $target .= $name . "_" . $unique;
                 $useUploadName = false;
