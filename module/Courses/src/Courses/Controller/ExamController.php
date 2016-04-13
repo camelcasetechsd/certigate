@@ -6,6 +6,7 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Courses\Form\ExamBookProctorForm;
 
 /**
  * ExamController
@@ -53,6 +54,7 @@ class ExamController extends ActionController
         $config = $this->getServiceLocator()->get('Config');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $options['query'] = $query;
+        $options['userId'] = $this->storage["id"];
         $examBook = new \Courses\Entity\ExamBook();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
         
@@ -93,23 +95,13 @@ class ExamController extends ActionController
 
     public function requestsAction()
     {
+        $isAdminUser = $this->isAdminUser();
         $variables = array();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        //checking if user is admin or test center admin
-        if ($auth->hasIdentity()) {
-            // only admin can access this page
-            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                
-                $this->getResponse()->setStatusCode(302);
-                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
-                $this->redirect()->toUrl($url);
-            }
-        }
 
-        $requests = $examModel->listRequests();
+        $requests = $examModel->listRequests($isAdminUser, /*$userData =*/ $this->storage);
         $variables['requests'] = $requests;
+        $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
 
@@ -187,4 +179,45 @@ class ExamController extends ActionController
         $this->redirect()->toUrl($url);
     }
 
+    /**
+     * Edit Exam Proctors
+     * 
+     * 
+     * @access public
+     * @uses ExamBookProctorForm
+     * 
+     * @return ViewModel
+     */
+    public function proctorsAction()
+    {
+        $variables = array();
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $examBook = $query->find('Courses\Entity\ExamBook', $id);
+
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateExamAccessControl(/* $response = */$this->getResponse(), /* $userData = */$this->storage, $examBook);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
+        }
+
+        $options = array();
+        $options['query'] = $query;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        $form = new ExamBookProctorForm(/* $name = */ null, $options);
+        $form->bind($examBook);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $query->setEntity("Courses\Entity\ExamBook")->save($examBook, /*$data =*/ array(),/*$flushAll =*/ true);
+                $form->bind($examBook);
+            }
+        }
+
+        $variables['examBookProctorForm'] = $this->getFormView($form);
+        return new ViewModel($variables);
+    }
 }
