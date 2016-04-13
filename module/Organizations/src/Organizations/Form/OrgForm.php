@@ -176,7 +176,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'value' => 3,
             ),
             'options' => array(
-                'label' => 'Latitude',
+                'label' => '',
             ),
             'validators' => array(
                 'Empty' => true

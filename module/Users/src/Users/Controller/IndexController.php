@@ -142,9 +142,8 @@ class IndexController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            
             $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query));
+            $form->setInputFilter($userObj->getInputFilter($query, $data));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             $isCustomValidationValid = true;
@@ -246,7 +245,7 @@ class IndexController extends ActionController
             );
 
             $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query));
+            $form->setInputFilter($userObj->getInputFilter($query, $data));
             $form->setData($data);
             $isCustomValidationValid = true;
             if ($data['email'] != $data['confirmEmail']) {

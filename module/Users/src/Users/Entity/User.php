@@ -59,6 +59,8 @@ use Zend\Validator\Identical;
  * @property int $trainingManagerStatement
  * @property int $status
  * @property int $customerId
+ * @property float  $longtitude
+ * @property float  $latitude
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
  * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
@@ -333,19 +335,19 @@ class User
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $publicQuotes;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="user")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $privateQuotes;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="proctors")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $proctorExamBooks;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
@@ -368,7 +370,19 @@ class User
      * @var int
      */
     public $customerId;
-    
+
+    /**
+     * @ORM\Column(type="float" , nullable=true )
+     * @var string
+     */
+    public $longtitude;
+
+    /**
+     * @ORM\Column(type="float" , nullable=true)
+     * @var float
+     */
+    public $latitude;
+
     /**
      * hash password
      * 
@@ -469,7 +483,7 @@ class User
     {
         return $this->firstName;
     }
-    
+
     /**
      * Get firstNameAr
      * 
@@ -1489,15 +1503,66 @@ class User
      * 
      * @access public
      * @param int $customerId
-     * @return CourseEvent
+     * @return User
      */
     public function setCustomerId($customerId)
     {
         $this->customerId = $customerId;
         return $this;
     }
-    
-    
+
+    /**
+     * Get Longtitude
+     * 
+     * 
+     * @access public
+     * @return float longtitude
+     */
+    public function getLongtitude()
+    {
+        return $this->longtitude;
+    }
+
+    /**
+     * Set Longtitude
+     * 
+     * 
+     * @access public
+     * @param float $longtitude
+     * @return User
+     */
+    public function setLongtitude($longtitude)
+    {
+        $this->longtitude = $longtitude;
+        return $this;
+    }
+
+    /**
+     * Get Latitude
+     * 
+     * 
+     * @access public
+     * @return float latitude
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set Latitude
+     * 
+     * 
+     * @access public
+     * @param float $latitude
+     * @return User
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
     /**
      * Get PublicQuotes
      * 
@@ -1523,8 +1588,7 @@ class User
         $this->publicQuotes = $publicQuotes;
         return $this;
     }
-    
-    
+
     /**
      * Get PrivateQuotes
      * 
@@ -1550,7 +1614,7 @@ class User
         $this->privateQuotes = $privateQuotes;
         return $this;
     }
-        
+
     /**
      * Get ProctorExamBooks
      * 
@@ -1576,7 +1640,7 @@ class User
         $this->proctorExamBooks = $proctorExamBooks;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -1612,6 +1676,12 @@ class User
         }
         if (array_key_exists('customerId', $data)) {
             $this->setCustomerId($data["customerId"]);
+        }
+        if (array_key_exists('longtitude', $data) && ! empty($data["longtitude"])) {
+            $this->setLongtitude($data["longtitude"]);
+        }
+        if (array_key_exists('latitude', $data) && ! empty($data["latitude"])) {
+            $this->setLatitude($data["latitude"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setMobile($data["mobile"])
@@ -1668,13 +1738,21 @@ class User
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param array $data submittedData
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query)
+    public function getInputFilter($query, $data)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $proctorRole = $query->findOneBy("Users\Entity\Role", /* $criteria = */ array("name" => Role::PROCTOR_ROLE));
+            $hasProctorRole = false;
+            if (!empty($data["roles"]) && array_key_exists("roles", $data) && in_array($proctorRole->getId(), $data["roles"])) {
+                $hasProctorRole = true;
+            }
+
+            $query->setEntity("Users\Entity\User");
             $inputFilter->add(array(
                 'name' => 'username',
                 'required' => true,
@@ -1850,7 +1928,7 @@ class User
                 'name' => 'addressTwoAr',
                 'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -1882,7 +1960,7 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,
@@ -1941,6 +2019,16 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'roles',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'longtitude',
+                'required' => $hasProctorRole,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'latitude',
                 'required' => false,
             ));
 
