@@ -6,13 +6,13 @@ class ControllerApiCustomer extends Controller
     public function index()
     {
         $json = array();
-        $json["old"] = $this->session->getId();
-//        session_write_close();
-        session_id($this->request->post["session_id"]);
-//        if (session_status() != PHP_SESSION_ACTIVE) {
-//            session_start();
-//        }
-        $json["new"] = $this->session->getId();
+//        $json["old"] = $this->session->getId();
+////        session_write_close();
+//        session_id($this->request->post["session_id"]);
+////        if (session_status() != PHP_SESSION_ACTIVE) {
+////            session_start();
+////        }
+//        $json["new"] = $this->session->getId();
         $this->load->language('api/customer');
 
         // Delete past customer in case there is an error

@@ -343,7 +343,7 @@ class ModelCheckoutOrder extends Model {
 			}
 
             // making the default status is complete
-            $fraudFlag ? $order_status_id = $order_status_id : $order_status_id = reset($this->config->get('config_complete_status'));
+            $fraudFlag ? $order_status_id = $order_status_id : $order_status_id = current($this->config->get('config_complete_status'));
 			// Update the DB with the new statuses
 			$this->db->query("UPDATE `" . DB_PREFIX . "order` SET order_status_id = '" . (int)$order_status_id . "', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
 
