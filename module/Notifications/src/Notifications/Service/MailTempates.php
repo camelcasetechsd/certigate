@@ -11,14 +11,14 @@ namespace Notifications\Service;
  * @package notifications
  * @subpackage service
  */
-class MailTempates {
+class MailTempates
+{
 
-    
     /**
      * Exam Approval Request Template
      */
     const EXAM_APPROVAL_REQUEST_TEMPLATE = "exam-approval-request";
-    
+
     /**
      * New Exam Notification Template
      */
@@ -33,22 +33,22 @@ class MailTempates {
      * Updated Organization Notification Template
      */
     const UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE = "updated-organization-notification";
-    
+
     /**
      * New User Notification Template
      */
     const NEW_USER_NOTIFICATION_TEMPLATE = "new-user-notification";
-    
+
     /**
      * New Course Notification Template
      */
     const NEW_COURSE_NOTIFICATION_TEMPLATE = "new-course-notification";
-    
+
     /**
      * Updated Course Notification Template
      */
     const UPDATED_COURSE_NOTIFICATION_TEMPLATE = "updated-course-notification";
-           
+
     /**
      * New evaluation Notification Template
      */
@@ -58,7 +58,7 @@ class MailTempates {
      * Updated evaluation Notification Template
      */
     const UPDATED_EVALUATION_NOTIFICATION_TEMPLATE = "updated-evaluation-notification";
-           
+
     /**
      * New resource Notification Template
      */
@@ -68,30 +68,42 @@ class MailTempates {
      * Updated resource Notification Template
      */
     const UPDATED_RESOURCE_NOTIFICATION_TEMPLATE = "updated-resource-notification";
-    
+
     /**
      * New Instructor Welcome Kit Template
      */
     const NEW_INSTRUCTOR_WELCOME_KIT_TEMPLATE = "new-instructor-welcome-kit";
-    
+
     /**
      * New Organization Welcome Kit Template
      */
     const NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE = "new-organization-welcome-kit";
-    
+
     /**
      * Contact us Template
      */
     const CONTACT_US_TEMPLATE = "contact-us";
+
     /**
      * Send to Friend Template
      */
     const SEND_TO_FRIEND_TEMPLATE = "send-to-friend";
+
+    /**
+     * admin template to notify him about issues created
+     */
+    const ADMIN_NEW_ISSUE = "admin-new-issue";
+
+    /**
+     * user template for creating issues
+     */
+    const USER_NEW_ISSUE = "user-new-issue";
+
     /**
      * 
      */
     const ORGANIZATION_RENEWAL_TEMPLATE = "organization-renewal";
-    
+
     /**
      * New Press Release Template
      */

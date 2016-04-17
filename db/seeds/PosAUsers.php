@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
-use Users\Entity\User;
+use \Users\Entity\User;
 use Users\Entity\Role;
 use Utilities\Service\Time;
 

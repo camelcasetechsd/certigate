@@ -357,11 +357,16 @@ class User
     public $votes;
 
     /**
+     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\Issue", mappedBy="user")
+     */
+    public $issues;
+
+    /**
      * @ORM\Column(type="integer", nullable=false);
      * @var int
      */
     public $customerId;
-    
+
     /**
      * hash password
      * 
@@ -412,6 +417,7 @@ class User
         $this->roles = new ArrayCollection();
         $this->publicQuotes = new ArrayCollection();
         $this->privateQuotes = new ArrayCollection();
+        $this->issues = new ArrayCollection();
     }
 
     /**
@@ -461,7 +467,7 @@ class User
     {
         return $this->firstName;
     }
-    
+
     /**
      * Get firstNameAr
      * 
@@ -1489,7 +1495,6 @@ class User
         return $this;
     }
     
-    
     /**
      * Get PublicQuotes
      * 
@@ -1816,7 +1821,7 @@ class User
                 'name' => 'addressTwoAr',
                 'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -1848,7 +1853,7 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,

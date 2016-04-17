@@ -274,6 +274,18 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'required' => true,
             )
         ));
+        
+        $this->add(array(
+            'name' => 'wireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'Wire Transfer Attachment',
+                'required' => 'required',
+            ),
+            'attributes' => array(
+                'required' => true,
+            )
+        ));
 
         $this->add(array(
             'name' => 'phone1',

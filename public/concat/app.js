@@ -1,7 +1,7 @@
 /* OriginalFileName : public/bower_components/jquery/dist/jquery.js */ 
 
 /*!
- * jQuery JavaScript Library v2.2.1
+ * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -11,7 +11,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-02-22T19:11Z
+ * Date: 2016-04-05T19:26Z
  */
 
 (function( global, factory ) {
@@ -67,7 +67,7 @@ var support = {};
 
 
 var
-	version = "2.2.1",
+	version = "2.2.3",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -278,6 +278,7 @@ jQuery.extend( {
 	},
 
 	isPlainObject: function( obj ) {
+		var key;
 
 		// Not plain objects:
 		// - Any object or value whose internal [[Class]] property is not "[object Object]"
@@ -287,14 +288,18 @@ jQuery.extend( {
 			return false;
 		}
 
+		// Not own constructor property must be Object
 		if ( obj.constructor &&
-				!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
+				!hasOwn.call( obj, "constructor" ) &&
+				!hasOwn.call( obj.constructor.prototype || {}, "isPrototypeOf" ) ) {
 			return false;
 		}
 
-		// If the function hasn't returned already, we're confident that
-		// |obj| is a plain object, created by {} or constructed with new Object
-		return true;
+		// Own properties are enumerated firstly, so to speed up,
+		// if last one is own, then all properties are own
+		for ( key in obj ) {}
+
+		return key === undefined || hasOwn.call( obj, key );
 	},
 
 	isEmptyObject: function( obj ) {
@@ -7327,6 +7332,12 @@ jQuery.extend( {
 	}
 } );
 
+// Support: IE <=11 only
+// Accessing the selectedIndex property
+// forces the browser to respect setting selected
+// on the option
+// The getter ensures a default option is selected
+// when in an optgroup
 if ( !support.optSelected ) {
 	jQuery.propHooks.selected = {
 		get: function( elem ) {
@@ -7335,6 +7346,16 @@ if ( !support.optSelected ) {
 				parent.parentNode.selectedIndex;
 			}
 			return null;
+		},
+		set: function( elem ) {
+			var parent = elem.parentNode;
+			if ( parent ) {
+				parent.selectedIndex;
+
+				if ( parent.parentNode ) {
+					parent.parentNode.selectedIndex;
+				}
+			}
 		}
 	};
 }
@@ -7529,7 +7550,8 @@ jQuery.fn.extend( {
 
 
 
-var rreturn = /\r/g;
+var rreturn = /\r/g,
+	rspaces = /[\x20\t\r\n\f]+/g;
 
 jQuery.fn.extend( {
 	val: function( value ) {
@@ -7605,9 +7627,15 @@ jQuery.extend( {
 		option: {
 			get: function( elem ) {
 
-				// Support: IE<11
-				// option.value not trimmed (#14858)
-				return jQuery.trim( elem.value );
+				var val = jQuery.find.attr( elem, "value" );
+				return val != null ?
+					val :
+
+					// Support: IE10-11+
+					// option.text throws exceptions (#14686, #14858)
+					// Strip and collapse whitespace
+					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
+					jQuery.trim( jQuery.text( elem ) ).replace( rspaces, " " );
 			}
 		},
 		select: {
@@ -7660,7 +7688,7 @@ jQuery.extend( {
 				while ( i-- ) {
 					option = options[ i ];
 					if ( option.selected =
-							jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
+						jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1
 					) {
 						optionSet = true;
 					}
@@ -9355,18 +9383,6 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 
 
-// Support: Safari 8+
-// In Safari 8 documents created via document.implementation.createHTMLDocument
-// collapse sibling forms: the second one becomes a child of the first one.
-// Because of that, this security measure has to be disabled in Safari 8.
-// https://bugs.webkit.org/show_bug.cgi?id=137337
-support.createHTMLDocument = ( function() {
-	var body = document.implementation.createHTMLDocument( "" ).body;
-	body.innerHTML = "<form></form><form></form>";
-	return body.childNodes.length === 2;
-} )();
-
-
 // Argument "data" should be string of html
 // context (optional): If specified, the fragment will be created in this context,
 // defaults to document
@@ -9379,12 +9395,7 @@ jQuery.parseHTML = function( data, context, keepScripts ) {
 		keepScripts = context;
 		context = false;
 	}
-
-	// Stop scripts or inline event handlers from being executed immediately
-	// by using document.implementation
-	context = context || ( support.createHTMLDocument ?
-		document.implementation.createHTMLDocument( "" ) :
-		document );
+	context = context || document;
 
 	var parsed = rsingleTag.exec( data ),
 		scripts = !keepScripts && [];
@@ -9466,7 +9477,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}
@@ -15940,6 +15951,27 @@ function setFullCapacity(studentsNoSelector, capacitySelector) {
 /* OriginalFileName : public/js/resourceCRUD.js */ 
 
 /**
+ * Add more listener
+ * Hide add more button if one 
+ * 
+ * @param {string} addMoreSelector
+ * @param {string} typeSelector
+ * @param {array} oneFileTypes
+ * @returns {undefined}
+ */
+function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
+    oneFileTypes = $.parseJSON(oneFileTypes);
+    $(typeSelector).change(function () {
+        var typeValue = $(this).val();
+        if ($.inArray(typeValue, oneFileTypes) > -1) {
+            $(addMoreSelector).hide();
+        } else {
+            $(addMoreSelector).show();
+        }
+    });
+}
+
+/**
  * Add more resource above add more button
  * 
  * @param {string} addMoreSelector
@@ -16070,117 +16102,110 @@ function deleteResourcePhysically(deleteAnchorTag) {
 
 $(document).ready(function () {
 
-//    $('#org_form_saveState').click(function (e) {
+////    $('#org_form_saveState').click(function (e) {
+////
+////        if ($('#org_form_commercialName').val() !== "") {
+////            $state = $('#org_form').serialize();
+////            $.ajax({
+////                type: "POST",
+////                url: "/organizations/savestate",
+////                data: {
+////                    saveState: $state
+////                },
+////                dataType: "json"
+////            });
+////            window.location.replace("/organizations/atps");
+////        }
+////    });
+    // adding privacy statment modal
+    if ($('#org_form_atcPrivacyStatement').length > 0) {
+        $('#org_form_atcPrivacyStatement').after('&nbsp;<a href="" id="atcModalLink" class="checkboxAgreement" data-toggle="modal" data-target="#AtcModal">i agree to Atc\'s privacy statement</a>')
+    }
+    if ($('#org_form_atpPrivacyStatement').length > 0) {
+        $('#org_form_atpPrivacyStatement').after('&nbsp;<a href="" id="atpModalLink" class="checkboxAgreement atpSet" data-toggle="modal" data-target="#AtpModal">i agree to Atp\'s privacy statement</a>')
+    }
+
+
+//    // in organization create & delete
+//    if (window.location.href.indexOf("?organization=") > -1) {
 //
-//        if ($('#org_form_commercialName').val() !== "") {
-//            $state = $('#org_form').serialize();
-//            $.ajax({
-//                type: "POST",
-//                url: "/organizations/savestate",
-//                data: {
-//                    saveState: $state
-//                },
-//                dataType: "json"
-//            });
-//            window.location.replace("/organizations/atps");
+//        $orgType = getParameterByName('organization');
+//        switch ($orgType) {
+//            case '1' :
+//                $('#org_form_type').val("1");
+//                $('.atpSet').hide();
+//                $('.atpSet').removeAttr('required');
+//                $('#org_form_atcPrivacyStatement').after('&nbsp;<a href="" id="atcModalLink" class="checkboxAgreement" data-toggle="modal" data-target="#AtcModal">i agree to Atc\'s privacy statement</a>')
+//
+//                break;
+//            case '2' :
+//                $('#org_form_type').val("2");
+//                $('.atcSet').hide();
+//                $('.atcSet').removeAttr('required');
+//                $('#org_form_atpPrivacyStatement').after('&nbsp;<a href="" id="atpModalLink" class="checkboxAgreement atpSet" data-toggle="modal" data-target="#AtpModal">i agree to Atp\'s privacy statement</a>')
+//
+//                break;
+//            case '3' :
+//                $('#org_form_type').val("3");
+//                $('#org_form_atpPrivacyStatement').after('&nbsp;<a href="" id="atpModalLink" class="checkboxAgreement atpSet" data-toggle="modal" data-target="#AtpModal">i agree to Atp\'s privacy statement</a>')
+//                $('#org_form_atcPrivacyStatement').after('&nbsp;<a href="" id="atcModalLink" class="checkboxAgreement atcSet" data-toggle="modal" data-target="#AtcModal">i agree to Atc\'s privacy statement</a>')
+//
+//                break;
+//            default:
+//
+//                //for hacking
+//                alert('please select organization type');
+//                window.location.replace("/organizations/type");
+//                break;
 //        }
-//    });
-
-    // in organization create & delete
-    if (window.location.href.indexOf("?organization=") > -1) {
-
-        $orgType = getParameterByName('organization');
-        switch ($orgType) {
-            case '1' :
-                $('#org_form_type').val("1");
-                $('.atpSet').hide();
-                $('.atpSet').removeAttr('required');
-                $('#org_form_atcPrivacyStatement').after('&nbsp;<a href="" id="atcModalLink" class="checkboxAgreement" data-toggle="modal" data-target="#AtcModal">i agree to Atc\'s privacy statement</a>')
-
-                break;
-            case '2' :
-                $('#org_form_type').val("2");
-                $('.atcSet').hide();
-                $('.atcSet').removeAttr('required');
-                $('#org_form_atpPrivacyStatement').after('&nbsp;<a href="" id="atpModalLink" class="checkboxAgreement atpSet" data-toggle="modal" data-target="#AtpModal">i agree to Atp\'s privacy statement</a>')
-
-                break;
-            case '3' :
-                $('#org_form_type').val("3");
-                $('#org_form_atpPrivacyStatement').after('&nbsp;<a href="" id="atpModalLink" class="checkboxAgreement atpSet" data-toggle="modal" data-target="#AtpModal">i agree to Atp\'s privacy statement</a>')
-                $('#org_form_atcPrivacyStatement').after('&nbsp;<a href="" id="atcModalLink" class="checkboxAgreement atcSet" data-toggle="modal" data-target="#AtcModal">i agree to Atc\'s privacy statement</a>')
-
-                break;
-            default:
-
-                //for hacking
-                alert('please select organization type');
-                window.location.replace("/organizations/type");
-                break;
-        }
-
-    }
-
-    if (window.location.href.indexOf("/organizations/edit") > -1) {
-        $('.notReqOnEdit').hide();
-        $('.notReqOnEdit').removeAttr('required');
-        $('#org_form_saveState').hide();
-    }
-// in type page
-    if (window.location.href.indexOf("type?type=") > -1) {
-
-        $orgType = getParameterByName('type');
-        switch ($orgType) {
-            case '1' :
-                $('#type-1').prop("checked", "checked");
-                $('#type_form_type').val("1");
-                break;
-            case '2' :
-                $('#type-2').prop("checked", "checked");
-                $('#type_form_type').val("2");
-                break;
-            default:
-                //for hacking
-//            window.location.replace("/sign/out");
-                break;
-        }
-    }
-    // remove required for attachments on edit
-    if (window.location.href.indexOf("/organizations/edit/") > -1) {
-        $('#org_form_CRAttachment').removeAttr('required');
-        $('#org_form_wireTransferAttachment').removeAttr('required');
-        $('#org_form_atpLicenseAttachment').removeAttr('required');
-        $('#org_form_atcLicenseAttachment').removeAttr('required');
-    }
-
-
-    $('.orgType').change(function () {
-        $atcBox = $('input:checkbox[id=type-1]').is(":checked");
-        $atpBox = $('input:checkbox[id=type-2]').is(":checked");
-        if ($atcBox && !$atpBox) {
-            $('#type_form_type').val("1");
-        } else if (!$atcBox && $atpBox) {
-            $('#type_form_type').val("2");
-        }
-        else if ($atcBox && $atpBox) {
-            $('#type_form_type').val("3");
-        }
-        else if (!$atcBox && !$atpBox) {
-            alert("you need to choose type");
-            $('#type_form_type').val("");
-        }
-    });
-
-
-
-
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-
+//
+//    }
+//
+//    if (window.location.href.indexOf("/organizations/edit") > -1) {
+//        $('.notReqOnEdit').hide();
+//        $('.notReqOnEdit').removeAttr('required');
+//        $('#org_form_saveState').hide();
+//    }
+//// in type page
+//    if (window.location.href.indexOf("type?type=") > -1) {
+//
+//        $orgType = getParameterByName('type');
+//        switch ($orgType) {
+//            case '1' :
+//                $('#type-1').prop("checked", "checked");
+//                $('#type_form_type').val("1");
+//                break;
+//            case '2' :
+//                $('#type-2').prop("checked", "checked");
+//                $('#type_form_type').val("2");
+//                break;
+//            default:
+//                //for hacking
+////            window.location.replace("/sign/out");
+//                break;
+//        }
+//    }
+//    // remove required for attachments on edit
+//    if (window.location.href.indexOf("/organizations/edit/") > -1) {
+//        $('#org_form_CRAttachment').removeAttr('required');
+//        $('#org_form_wireTransferAttachment').removeAttr('required');
+//        $('#org_form_atpLicenseAttachment').removeAttr('required');
+//        $('#org_form_atcLicenseAttachment').removeAttr('required');
+//    }
+//
+//
+//    
+//
+//
+//
+//
+//    function getParameterByName(name) {
+//        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+//        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+//                results = regex.exec(location.search);
+//        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+//    }
+//
 
 });
 ;

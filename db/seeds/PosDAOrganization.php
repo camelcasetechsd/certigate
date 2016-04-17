@@ -47,9 +47,6 @@ class PosDAOrganization extends AbstractSeed
             "name" => Role::TEST_CENTER_ADMIN_ROLE
         ))->getId();
 
-
-
-
         $atp[] = array(
             'commercialName' => 'atpDummy',
             'commercialNameAr' => $faker->userName,
