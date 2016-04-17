@@ -5,7 +5,7 @@ namespace Courses\Form;
 use Utilities\Form\Form;
 use Users\Entity\Role;
 use Utilities\Form\ButtonsFieldset;
-use Utilities\Service\Status;
+use Doctrine\Common\Collections\Criteria;
 use Translation\Service\Locale\Locale;
 use Zend\InputFilter\InputFilter;
 
@@ -15,7 +15,7 @@ use Zend\InputFilter\InputFilter;
  * Handles ExamBookProctor form setup
  * 
  * @property Utilities\Service\Query\Query $query
- * @property InputFilter $_inputFilter validation constraints 
+ * @property InputFilter $inputFilter validation constraints 
  * 
  * @package courses
  * @subpackage form
@@ -33,7 +33,7 @@ class ExamBookProctorForm extends Form
      *
      * @var InputFilter validation constraints 
      */
-    private $_inputFilter;
+    private $inputFilter;
     
     /**
      * setup form
@@ -46,12 +46,16 @@ class ExamBookProctorForm extends Form
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
+        $organizationId = $options['organizationId'];
         $applicationLocale = $options['applicationLocale'];
         $currentLocale = $applicationLocale->getCurrentLocale();
         parent::__construct($name, $options);
 
         $this->setAttribute('class', 'form form-horizontal');
 
+        $role = $this->query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array(
+            'name' => Role::PROCTOR_ROLE,
+        ));
         $this->add(array(
             'name' => 'proctors',
             'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
@@ -62,14 +66,22 @@ class ExamBookProctorForm extends Form
             'options' => array(
                 'label' => '',
                 'object_manager' => $this->query->entityManager,
-                'target_class' => 'Users\Entity\User',
-                'property' => 'fullName'.(($currentLocale == Locale::LOCALE_AR_AR)? "Ar":""),
-                'is_method' => true,
+                'target_class' => 'Organizations\Entity\OrganizationUser',
+                'label_generator' => function($targetEntity)use($currentLocale) {
+                    $methodName = "getFullName".(($currentLocale == Locale::LOCALE_AR_AR)? "Ar":"");
+                    return $targetEntity->getUser()->$methodName();
+                },
                 'find_method' => array(
-                    'name' => 'getUsers',
+                    'name' => 'findBy',
                     'params' => array(
-                        'roles' => array(Role::PROCTOR_ROLE),
-                        'status' => Status::STATUS_ACTIVE,
+                        'criteria' => array(
+                            "role" => $role,
+                            "organization" => $organizationId
+                        ),
+                        'orderBy' => array(
+                            "distanceSort" => Criteria::ASC
+                        ),
+                        'limit' => 10,
                     )
                 ),
                 'label_options' => array(
@@ -99,7 +111,7 @@ class ExamBookProctorForm extends Form
      * @return InputFilter validation constraints
      */
     public function getInputFilter() {
-        if (!$this->_inputFilter) {
+        if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             
             $inputFilter->add(array(
@@ -107,9 +119,9 @@ class ExamBookProctorForm extends Form
                 'required' => true,
             ));
 
-            $this->_inputFilter = $inputFilter;
+            $this->inputFilter = $inputFilter;
         }
 
-        return $this->_inputFilter;
+        return $this->inputFilter;
     }
 }

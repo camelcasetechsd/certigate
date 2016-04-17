@@ -65,7 +65,7 @@ use Zend\Validator\NotEmpty;
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
  * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
- * @property Doctrine\Common\Collections\ArrayCollection $proctorExamBooks
+ * 
  * 
  * @package users
  * @subpackage entity
@@ -344,12 +344,6 @@ class User
     public $privateQuotes;
 
     /**
-     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="proctors")
-     * @var Doctrine\Common\Collections\ArrayCollection
-     */
-    public $proctorExamBooks;
-
-    /**
      *
      * @ORM\Column(type="integer")
      * @var int
@@ -434,7 +428,6 @@ class User
         $this->roles = new ArrayCollection();
         $this->publicQuotes = new ArrayCollection();
         $this->privateQuotes = new ArrayCollection();
-        $this->proctorExamBooks = new ArrayCollection();
     }
 
     /**
@@ -1613,32 +1606,6 @@ class User
     public function setPrivateQuotes($privateQuotes)
     {
         $this->privateQuotes = $privateQuotes;
-        return $this;
-    }
-
-    /**
-     * Get ProctorExamBooks
-     * 
-     * 
-     * @access public
-     * @return ArrayCollection proctorExamBooks
-     */
-    public function getProctorExamBooks()
-    {
-        return $this->proctorExamBooks;
-    }
-
-    /**
-     * Set ProctorExamBooks
-     * 
-     * 
-     * @access public
-     * @param ArrayCollection $proctorExamBooks
-     * @return User
-     */
-    public function setProctorExamBooks($proctorExamBooks)
-    {
-        $this->proctorExamBooks = $proctorExamBooks;
         return $this;
     }
 

@@ -127,7 +127,7 @@ class ExamBook
     public $tvtcStatus;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Users\Entity\User", inversedBy="proctorExamBooks") 
+     * @ORM\ManyToMany(targetEntity="Organizations\Entity\OrganizationUser", inversedBy="proctorExamBooks") 
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $proctors;
@@ -293,7 +293,7 @@ class ExamBook
      * 
      * 
      * @access public
-     * @param Users/Entity/User $proctor
+     * @param Organizations/Entity/OrganizationUser $proctor
      * @return Courses\Entity\ExamBook
      */
     public function addProctor($proctor)

@@ -210,6 +210,7 @@ class ExamController extends ActionController
         
         $options = array();
         $options['query'] = $query;
+        $options['organizationId'] = $examBook->getAtc()->getId();
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $form = new ExamBookProctorForm(/* $name = */ null, $options);
         $form->bind($examBook);
