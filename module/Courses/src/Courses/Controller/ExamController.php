@@ -53,19 +53,20 @@ class ExamController extends ActionController
         $config = $this->getServiceLocator()->get('Config');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $options['query'] = $query;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $examBook = new \Courses\Entity\ExamBook();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
-        
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/*$response =*/$this->getResponse(), /*$role =*/Role::TEST_CENTER_ADMIN_ROLE);
-        if($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])){
+
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TEST_CENTER_ADMIN_ROLE);
+        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
-        
+
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (! (in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']))) {
+            if (!(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']))) {
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -81,7 +82,7 @@ class ExamController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 // save exam rquest
-                $examModel->saveBookingRequest($data,$config);
+                $examModel->saveBookingRequest($data, $config);
                 // redirect
                 $url = $this->getEvent()->getRouter()->assemble(/* $params = */ array('action' => 'calendar'), /* $routeName = */ array('name' => "coursesCalendar"));
                 $this->redirect()->toUrl($url);
@@ -100,8 +101,8 @@ class ExamController extends ActionController
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
             // only admin can access this page
-            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                
+            if (!in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -125,8 +126,8 @@ class ExamController extends ActionController
         $storage = $auth->getIdentity();
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-               
+            if (!in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);
@@ -150,8 +151,8 @@ class ExamController extends ActionController
         $storage = $auth->getIdentity();
         //checking if user is admin or test center admin
         if ($auth->hasIdentity()) {
-            if (! in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-               
+            if (!in_array(Role::ADMIN_ROLE, $storage['roles'])) {
+
                 $this->getResponse()->setStatusCode(302);
                 $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
                 $this->redirect()->toUrl($url);

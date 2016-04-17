@@ -58,6 +58,7 @@ class PosDAOrganization extends AbstractSeed
             'latitude' => $faker->randomFloat(),
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpirationHj' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'phone1' => '555-555-5555',
             'phone2' => '555-555-5555',
@@ -75,6 +76,7 @@ class PosDAOrganization extends AbstractSeed
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
             'atpLicenseExpiration' => date('Y-m-d H:i:s'),
+            'atpLicenseExpirationHj' => date('Y-m-d H:i:s'),
             'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'classesNo' => $faker->randomDigitNotNull,
@@ -82,6 +84,7 @@ class PosDAOrganization extends AbstractSeed
             //atcData should be null
             'atcLicenseNo' => null,
             'atcLicenseExpiration' => null,
+            'atcLicenseExpirationHj' => null,
             'atcLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => null,
@@ -109,6 +112,7 @@ class PosDAOrganization extends AbstractSeed
             'type_id' => $typeAtpId,
             'org_id' => $atpId,
             'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationDateHj' => date('Y-m-d H:i:s'),
             'expirationFlag' => 0,
         );
         $this->insert('organization_meta', $atpMeta);
@@ -124,6 +128,7 @@ class PosDAOrganization extends AbstractSeed
             'latitude' => $faker->randomFloat(),
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpirationHj' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'phone1' => '555-555-5555',
             'phone2' => '555-555-5555',
@@ -141,6 +146,7 @@ class PosDAOrganization extends AbstractSeed
             //AtpData
             'atpLicenseNo' => null,
             'atpLicenseExpiration' => null,
+            'atpLicenseExpirationHj' => null,
             'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'classesNo' => null,
@@ -148,6 +154,7 @@ class PosDAOrganization extends AbstractSeed
             //atcData should be null
             'atcLicenseNo' => $faker->randomNumber(),
             'atcLicenseExpiration' => date('Y-m-d H:i:s'),
+            'atcLicenseExpirationHj' => date('Y-m-d H:i:s'),
             'atcLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => $faker->randomDigitNotNull,
@@ -176,6 +183,7 @@ class PosDAOrganization extends AbstractSeed
             'type_id' => $typeAtcId,
             'org_id' => $atcId,
             'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationDateHj' => date('Y-m-d H:i:s'),
             'expirationFlag' => 0,
         );
         $this->insert('organization_meta', $atcMeta);
@@ -192,6 +200,7 @@ class PosDAOrganization extends AbstractSeed
             'latitude' => $faker->randomFloat(),
             'CRNo' => $faker->randomNumber(),
             'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpirationHj' => date('Y-m-d H:i:s'),
             'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'phone1' => '555-555-5555',
             'phone2' => '555-555-5555',
@@ -209,6 +218,7 @@ class PosDAOrganization extends AbstractSeed
             //AtpData
             'atpLicenseNo' => $faker->randomNumber(),
             'atpLicenseExpiration' => date('Y-m-d H:i:s'),
+            'atpLicenseExpirationHj' => date('Y-m-d H:i:s'),
             'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'classesNo' => $faker->randomDigitNotNull,
@@ -216,6 +226,7 @@ class PosDAOrganization extends AbstractSeed
             //atcData should be null
             'atcLicenseNo' => $faker->randomNumber(),
             'atcLicenseExpiration' => date('Y-m-d H:i:s'),
+            'atcLicenseExpirationHj' => date('Y-m-d H:i:s'),
             'atcLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => $faker->randomDigitNotNull,
@@ -257,6 +268,7 @@ class PosDAOrganization extends AbstractSeed
             'type_id' => $typeAtpId,
             'org_id' => $bothId,
             'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationDateHj' => date('Y-m-d H:i:s'),
             'expirationFlag' => 0,
         );
         $this->insert('organization_meta', $bothMeta1);
@@ -265,6 +277,7 @@ class PosDAOrganization extends AbstractSeed
             'type_id' => $typeAtcId,
             'org_id' => $bothId,
             'expirationDate' => date('Y-m-d H:i:s'),
+            'expirationDateHj' => date('Y-m-d H:i:s'),
             'expirationFlag' => 0,
         );
         $this->insert('organization_meta', $bothMeta2);

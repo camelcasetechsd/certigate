@@ -16224,6 +16224,34 @@ if (typeof jQuery === 'undefined') {
 
 })(jQuery);
 ;
+/* OriginalFileName : public/js/datepicker/jquery.calendars-ar.js */ 
+
+/* http://keith-wood.name/calendars.html
+   Arabic localisation for Gregorian/Julian calendars for jQuery.
+   Khaled Al Horani -- خالد الحوراني -- koko.dw@gmail.com. */
+/* NOTE: monthNames are the original months names and they are the Arabic names,
+   not the new months name فبراير - يناير and there isn't any Arabic roots for these months */
+(function($) {
+	$.calendars.calendars.gregorian.prototype.regionalOptions['ar'] = {
+		name: 'Gregorian',
+		epochs: ['BCE', 'CE'],
+		monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'آذار', 'حزيران',
+		'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
+		monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+		dayNames: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		dayNamesShort: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		dayNamesMin: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		digits: $.calendars.substituteDigits(['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']),
+		dateFormat: 'dd/mm/yyyy',
+		firstDay: 6,
+		isRTL: true
+	};
+	if ($.calendars.calendars.julian) {
+		$.calendars.calendars.julian.prototype.regionalOptions['ar'] =
+			$.calendars.calendars.gregorian.prototype.regionalOptions['ar'];
+	}
+})(jQuery);
+;
 /* OriginalFileName : public/js/datepicker/jquery.calendars.plus.js */ 
 
 /* http://keith-wood.name/calendars.html
@@ -18849,6 +18877,30 @@ if (typeof jQuery === 'undefined') {
 
 })(jQuery);
 ;
+/* OriginalFileName : public/js/datepicker/jquery.calendars.picker-ar.js */ 
+
+/* http://keith-wood.name/calendars.html
+   Arabic localisation for calendars datepicker for jQuery.
+   Khaled Al Horani -- خالد الحوراني -- koko.dw@gmail.com */
+(function($) {
+	$.calendarsPicker.regionalOptions['ar'] = {
+		renderer: $.calendarsPicker.defaultRenderer,
+		prevText: '&#x3c;السابق', prevStatus: 'عرض الشهر السابق',
+		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
+		nextText: 'التالي&#x3e;', nextStatus: 'عرض الشهر القادم',
+		nextJumpText: '&#x3e;&#x3e;', nextJumpStatus: '',
+		currentText: 'اليوم', currentStatus: 'عرض الشهر الحالي',
+		todayText: 'اليوم', todayStatus: 'عرض الشهر الحالي',
+		clearText: 'مسح', clearStatus: 'امسح التاريخ الحالي',
+		closeText: 'إغلاق', closeStatus: 'إغلاق بدون حفظ',
+		yearStatus: 'عرض سنة آخرى', monthStatus: 'عرض شهر آخر',
+		weekText: 'أسبوع', weekStatus: 'أسبوع السنة',
+		dayStatus: 'اختر D, M d', defaultStatus: 'اختر يوم',
+		isRTL: true
+	};
+	$.calendarsPicker.setDefaults($.calendarsPicker.regionalOptions['ar']);
+})(jQuery);
+;
 /* OriginalFileName : public/js/datepicker/jquery.calendars.ummalqura.js */ 
 
 /* http://keith-wood.name/calendars.html
@@ -19202,6 +19254,27 @@ if (typeof jQuery === 'undefined') {
 		79990];
 
 })(jQuery);;
+/* OriginalFileName : public/js/datepicker/jquery.calendars.ummalqura-ar.js */ 
+
+/* http://keith-wood.name/calendars.html
+   Arabic localisation for UmmAlQura calendar for jQuery v2.0.2.
+   Written by Amro Osama March 2013. */
+(function ($) {
+	$.calendars.calendars.ummalqura.prototype.regionalOptions['ar'] = {
+		name: 'UmmAlQura', // The calendar name
+		epochs: ['BAM', 'AM'],
+		monthNames: ['المحرّم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الاول', 'جمادى الآخر', 'رجب', 'شعبان', 'رمضان', 'شوّال', 'ذو القعدة', 'ذو الحجة'],
+		monthNamesShort: ['المحرّم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الاول', 'جمادى الآخر', 'رجب', 'شعبان', 'رمضان', 'شوّال', 'ذو القعدة', 'ذو الحجة'],
+		dayNames: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		dayNamesMin: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		dayNamesShort: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+		digits: $.calendars.substituteDigits(['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']),
+		dateFormat: 'yyyy/mm/dd', // See format options on BaseCalendar.formatDate
+		firstDay: 6, // The first day of the week, Sat = 0, Sun = 1, ...
+		isRTL: true // True if right-to-left language, false if left-to-right
+	};
+})(jQuery);
+;
 /* OriginalFileName : public/js/datepicker.js */ 
 
 // rtl date pickers classes
