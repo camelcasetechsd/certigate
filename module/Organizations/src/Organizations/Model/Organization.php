@@ -27,6 +27,7 @@ use Zend\Authentication\AuthenticationService;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Versioning\Model\Version $version
+ * @property Organizations\Model\OrganizationUser $organizationUserModel
  * 
  * @package organizations
  * @subpackage model
@@ -67,6 +68,12 @@ class Organization
      * @var Versioning\Model\Version
      */
     protected $version;
+
+    /**
+     *
+     * @var Organizations\Model\OrganizationUser
+     */
+    protected $organizationUserModel;
     /*
      * saves number of organizations in this app
      */
@@ -83,13 +90,15 @@ class Organization
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Versioning\Model\Version $version
+     * @param Organizations\Model\OrganizationUser $organizationUserModel
      */
-    public function __construct($query, $systemCacheHandler, $notification, $version)
+    public function __construct($query, $systemCacheHandler, $notification, $version, $organizationUserModel)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->version = $version;
+        $this->organizationUserModel = $organizationUserModel;
         $this->random = new Random();
         $this->organizationTypesNumber = count($this->query->findAll('Organizations\Entity\OrganizationType'));
     }
@@ -176,12 +185,14 @@ class Organization
      * @param array $orgInfo
      * @param Organizations\Entity\Organization $orgObj ,default is null
      * @param int $oldStatus ,default is null
+     * @param float $oldLongitude ,default is null
+     * @param float $oldLatitude ,default is null
      * @param int $creatorId ,default is null
      * @param string $userEmail ,default is null
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($action, $orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
+    public function saveOrganization($action, $orgInfo, $orgObj = null, $oldStatus = null, $oldLongitude = null, $oldLatitude = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -312,6 +323,11 @@ class Organization
                 }
             }
 
+            if($editFlag === true && ($oldLatitude != $orgObj->getLatitude() || $oldLongitude != $orgObj->getLongitude() ))
+            {
+                $this->organizationUserModel->sortProctors(/*$organizationId =*/ $orgObj->getId());
+            }
+            
             if ($sendNotificationFlag === true) {
                 $this->sendMail($userEmail, $editFlag);
             }
@@ -1019,6 +1035,6 @@ class Organization
             }
         }
 
-        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
+        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
 }

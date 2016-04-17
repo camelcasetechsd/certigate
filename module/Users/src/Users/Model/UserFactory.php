@@ -34,7 +34,8 @@ class UserFactory implements FactoryInterface {
         $notification = $serviceLocator->get('Notifications\Service\Notification');
         $auth = $serviceLocator->get('Users\Auth\Authentication');
         $estoreApi = $serviceLocator->get('EStore\Service\Api');
-        return new User($query, $systemCacheHandler, $notification, $auth, $estoreApi);
+        $organizationUser = $serviceLocator->get('Organizations\Model\OrganizationUser');
+        return new User($query, $systemCacheHandler, $notification, $auth, $estoreApi, $organizationUser);
     }
 
 }

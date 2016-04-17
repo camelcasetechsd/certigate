@@ -16,7 +16,6 @@ use EStore\Service\ApiCalls;
 use Zend\Http\Request;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * User Model
@@ -31,14 +30,16 @@ use Doctrine\Common\Collections\Criteria;
  * @property Notifications\Service\Notification $notification
  * @property Users\Auth\Authentication $auth
  * @property EStore\Service\Api $estoreApi
+ * @property Organizations\Model\OrganizationUser $organizationUserModel
  * 
  * @package users
  * @subpackage model
  */
 class User
 {
+
     use \Utilities\Service\Paginator\PaginatorTrait;
-    
+
     /**
      *
      * @var Utilities\Service\Query\Query 
@@ -74,7 +75,13 @@ class User
      * @var EStore\Service\Api
      */
     protected $estoreApi;
-    
+
+    /**
+     *
+     * @var Organizations\Model\OrganizationUser
+     */
+    protected $organizationUserModel;
+
     /**
      * Set needed properties
      * 
@@ -87,14 +94,16 @@ class User
      * @param Notifications\Service\Notification $notification
      * @param Users\Auth\Authentication $auth
      * @param EStore\Service\Api $estoreApi
+     * @param Organizations\Model\OrganizationUser $organizationUserModel
      */
-    public function __construct($query, $systemCacheHandler, $notification, $auth, $estoreApi)
+    public function __construct($query, $systemCacheHandler, $notification, $auth, $estoreApi, $organizationUserModel)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->auth = $auth;
         $this->estoreApi = $estoreApi;
+        $this->organizationUserModel = $organizationUserModel;
         $this->random = new Random();
         $this->paginator = new Paginator(new PaginatorAdapter($query, "CMS\Entity\Page"));
     }
@@ -110,11 +119,13 @@ class User
      * @param UserEntity $userObj ,default is null in case new user is being created
      * @param bool $isAdminUser ,default is true
      * @param bool $editFormFlag ,default is null
+     * @param float $oldLongitude ,default is null
+     * @param float $oldLatitude ,default is null
      */
-    public function saveUser($userInfo, $userObj = null, $isAdminUser = true, $editFormFlag = null)
+    public function saveUser($userInfo, $userObj = null, $isAdminUser = true, $editFormFlag = null, $oldLongitude = null, $oldLatitude = null)
     {
         $sendNotificationFlag = false;
-        if(is_null($editFormFlag)){
+        if (is_null($editFormFlag)) {
             $editFormFlag = true;
         }
         if (is_null($userObj)) {
@@ -145,11 +156,16 @@ class User
         $this->saveUserCustomer($userObj, $userInfo, $editFormFlag);
         $this->query->setEntity("Users\Entity\User")->save($userObj, $userInfo);
 
+        $userRoles = $userObj->getRolesNames();
         if ($sendNotificationFlag === true) {
             $userEmail = $userObj->getEmail();
-            $userRoles = $userObj->getRolesNames();
             $this->sendMail($userEmail, $userRoles);
         }
+
+        if ($editFormFlag === true && in_array(Role::PROCTOR_ROLE, $userRoles) && ($oldLatitude != $userObj->getLatitude() || $oldLongitude != $userObj->getLongitude() )) {
+            $this->organizationUserModel->sortProctors(/* $organizationId = */ null,/* $userId = */ $userObj->getId());
+        }
+
         // update session if current logged in user is the updated one
         $authenticationService = new AuthenticationService();
         $storage = $authenticationService->getIdentity();
@@ -158,7 +174,7 @@ class User
             $this->auth->newSession($userObj);
         }
     }
-    
+
     /**
      * Save user customer
      * 
@@ -201,7 +217,7 @@ class User
             $user->setCustomerId($responseContent->customerId);
         }
     }
-    
+
     /**
      * Save user photo
      * 
@@ -348,6 +364,7 @@ class User
         $adapter->setParameters(array(
             "roles" => $roles,
             "status" => Status::STATUS_ACTIVE,
-                ));
+        ));
     }
+
 }
