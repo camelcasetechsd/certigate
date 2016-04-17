@@ -4,7 +4,7 @@ namespace Courses\Model;
 
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use Utilities\Service\Status;
 
@@ -228,11 +228,11 @@ class Evaluation
         );
 
         if ($editFlag === false) {
-            $templateName = MailTempates::NEW_EVALUATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_EVALUATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_EVALUATION_NOTIFICATION_SUBJECT;
         }
         else {
-            $templateName = MailTempates::UPDATED_EVALUATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::UPDATED_EVALUATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::UPDATED_EVALUATION_NOTIFICATION_SUBJECT;
         }
 

@@ -4,7 +4,7 @@ namespace Courses\Model;
 
 use Utilities\Service\Status;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Utilities\Service\Paginator\PaginatorAdapter;
@@ -284,11 +284,11 @@ class Course
         );
 
         if ($editFlag === false) {
-            $templateName = MailTempates::NEW_COURSE_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_COURSE_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_COURSE_NOTIFICATION_SUBJECT;
         }
         else {
-            $templateName = MailTempates::UPDATED_COURSE_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::UPDATED_COURSE_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::UPDATED_COURSE_NOTIFICATION_SUBJECT;
         }
 

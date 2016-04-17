@@ -12,7 +12,7 @@ use Courses\Form\PrivateQuoteReservationForm;
 use Utilities\Service\Status;
 use Utilities\Form\FormButtons;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Courses\Form\PublicQuoteForm;
@@ -753,61 +753,61 @@ class Quote
         switch ($status) {
             case Status::STATUS_PENDING_PRICING:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::ADMIN_PUBLIC_QUOTE_PENDING_PRICING_TEMPLATE;
+                    $templateName = MailTemplates::ADMIN_PUBLIC_QUOTE_PENDING_PRICING_TEMPLATE;
                     $subject = MailSubjects::ADMIN_PUBLIC_QUOTE_PENDING_PRICING_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::ADMIN_PRIVATE_QUOTE_PENDING_PRICING_TEMPLATE;
+                    $templateName = MailTemplates::ADMIN_PRIVATE_QUOTE_PENDING_PRICING_TEMPLATE;
                     $subject = MailSubjects::ADMIN_PRIVATE_QUOTE_PENDING_PRICING_SUBJECT;
                 }
                 break;
             case Status::STATUS_PENDING_PAYMENT:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::CLIENT_PRIVATE_QUOTE_PENDING_PAYMENT_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PRIVATE_QUOTE_PENDING_PAYMENT_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PRIVATE_QUOTE_PENDING_PAYMENT_SUBJECT;
                 }
                 break;
             case Status::STATUS_PENDING_REVIEW:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_TEMPLATE;
+                    $templateName = MailTemplates::ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_TEMPLATE;
                     $subject = MailSubjects::ADMIN_PUBLIC_QUOTE_PENDING_REVIEW_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_TEMPLATE;
+                    $templateName = MailTemplates::ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_TEMPLATE;
                     $subject = MailSubjects::ADMIN_PRIVATE_QUOTE_PENDING_REVIEW_SUBJECT;
                 }
                 break;
             case Status::STATUS_PENDING_REPAYMENT:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::CLIENT_PUBLIC_QUOTE_PENDING_REPAYMENT_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PUBLIC_QUOTE_PENDING_REPAYMENT_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PUBLIC_QUOTE_PENDING_REPAYMENT_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::CLIENT_PRIVATE_QUOTE_PENDING_REPAYMENT_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PRIVATE_QUOTE_PENDING_REPAYMENT_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PRIVATE_QUOTE_PENDING_REPAYMENT_SUBJECT;
                 }
                 break;
             case Status::STATUS_ACTIVE:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::CLIENT_PUBLIC_QUOTE_READY_INVOICE_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PUBLIC_QUOTE_READY_INVOICE_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PUBLIC_QUOTE_READY_INVOICE_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::CLIENT_PRIVATE_QUOTE_READY_INVOICE_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PRIVATE_QUOTE_READY_INVOICE_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PRIVATE_QUOTE_READY_INVOICE_SUBJECT;
                 }
                 break;
             case Status::STATUS_CANCELLED:
                 if ($type == PublicQuote::QUOTE_TYPE) {
-                    $templateName = MailTempates::CLIENT_PUBLIC_QUOTE_CANCELLED_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PUBLIC_QUOTE_CANCELLED_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PUBLIC_QUOTE_CANCELLED_SUBJECT;
                 }
                 else {
-                    $templateName = MailTempates::CLIENT_PRIVATE_QUOTE_CANCELLED_TEMPLATE;
+                    $templateName = MailTemplates::CLIENT_PRIVATE_QUOTE_CANCELLED_TEMPLATE;
                     $subject = MailSubjects::CLIENT_PRIVATE_QUOTE_CANCELLED_SUBJECT;
                 }
                 break;

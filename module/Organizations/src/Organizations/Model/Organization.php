@@ -9,7 +9,7 @@ use Users\Entity\Role;
 use Organizations\Entity\Organization as OrganizationEntity;
 use Utilities\Service\Time;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Organizations\Form\OrgForm as OrgForm;
@@ -690,11 +690,11 @@ class Organization
             "email" => $userEmail,
         );
         if ($editFlag === false) {
-            $templateName = MailTempates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_ORGANIZATION_NOTIFICATION_SUBJECT;
         }
         else {
-            $templateName = MailTempates::UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::UPDATED_ORGANIZATION_NOTIFICATION_SUBJECT;
         }
         $notificationMailArray = array(
@@ -710,7 +710,7 @@ class Organization
             $welcomeKitMailArray = array(
                 'to' => $operationsEmail,
                 'from' => $from,
-                'templateName' => MailTempates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
+                'templateName' => MailTemplates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
                 'templateParameters' => $templateParameters,
                 'subject' => MailSubjects::NEW_ORGANIZATION_WELCOME_KIT_SUBJECT,
             );

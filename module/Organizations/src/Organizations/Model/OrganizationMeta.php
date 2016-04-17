@@ -6,7 +6,7 @@ use Organizations\Entity\Organization;
 use Utilities\Service\DateNames;
 use Utilities\Service\Status;
 use Utilities\Service\Time;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
@@ -228,7 +228,7 @@ class OrganizationMeta
         $notificationMailArray = array(
             'to' => /* $organization->getOrganization()->getEmail() */ 'ahmedredamohamed01@gamil.com',
             'from' => /* $operationsEmail */'anawany@yahoo.com',
-            'templateName' => MailTempates::ORGANIZATION_RENEWAL_TEMPLATE,
+            'templateName' => MailTemplates::ORGANIZATION_RENEWAL_TEMPLATE,
             'templateParameters' => array(
                 'name' => $organization->getOrganization()->getCommercialName(),
                 'type' => $organization->getType() == Organization::TYPE_ATC ? Organization::TYPE_ATC : Organization::TYPE_ATP,

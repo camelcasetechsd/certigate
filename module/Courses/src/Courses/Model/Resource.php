@@ -7,7 +7,7 @@ use Zend\Filter\File\RenameUpload;
 use Utilities\Form\FormElementErrors;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use Courses\Entity\Resource as ResourceEntity;
 
@@ -419,11 +419,11 @@ class Resource
         );
 
         if ($editFlag === false) {
-            $templateName = MailTempates::NEW_RESOURCE_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_RESOURCE_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_RESOURCE_NOTIFICATION_SUBJECT;
         }
         else {
-            $templateName = MailTempates::UPDATED_RESOURCE_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::UPDATED_RESOURCE_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::UPDATED_RESOURCE_NOTIFICATION_SUBJECT;
         }
 
