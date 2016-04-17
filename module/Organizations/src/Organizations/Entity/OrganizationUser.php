@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineModule\Validator\UniqueObject;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * OrganziationUser Entity

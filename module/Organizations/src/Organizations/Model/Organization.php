@@ -323,7 +323,7 @@ class Organization
                 }
             }
 
-            if($editFlag === true && ($oldLatitude != $orgObj->getLatitude() || $oldLongitude != $orgObj->getLongitude() ))
+            if($editFlag === true && ($oldLatitude != $orgObj->getLat() || $oldLongitude != $orgObj->getLong() ))
             {
                 $this->organizationUserModel->sortProctors(/*$organizationId =*/ $orgObj->getId());
             }

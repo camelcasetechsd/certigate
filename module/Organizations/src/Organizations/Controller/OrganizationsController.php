@@ -333,8 +333,8 @@ class OrganizationsController extends ActionController
 //        // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $oldStatus = $orgObj->getStatus();
-        $oldLongitude = $orgObj->getLongitude();
-        $oldLatitude = $orgObj->getLatitude();
+        $oldLongitude = $orgObj->getLong();
+        $oldLatitude = $orgObj->getLat();
 //
         $isAdminUser = $this->isAdminUser();
         // allow access for admins for all users

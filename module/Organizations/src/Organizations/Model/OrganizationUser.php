@@ -2,7 +2,7 @@
 
 namespace Organizations\Model;
 
-use Organizations\Entity\Organization;
+use Organizations\Entity\OrganizationType;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 
@@ -49,7 +49,7 @@ class OrganizationUser
     {
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($organizationUser, $data);
         
-        $this->sortProctors(/* $organizationId = */ $organizationUser->getOrganization()->getId());
+        $this->sortProctors(/* $organizationId = */ $organizationUser->getOrganization()->getId(), /* $userId = */ $organizationUser->getUser()->getId());
         
         $roleExists = false;
         $user = $organizationUser->getUser();
@@ -79,9 +79,9 @@ class OrganizationUser
 
         $types = array();
         foreach ($organizationMeta as $org) {
-            array_push($types, $org->getType()->getId());
+            array_push($types, $org->getType()->getTitle());
         }
-        if (in_array(Organization::TYPE_ATC, $types) || in_array(Organization::TYPE_ATP, $types)) {
+        if (in_array(OrganizationType::TYPE_ATC_TITLE, $types) || in_array(OrganizationType::TYPE_ATP_TITLE, $types)) {
             return true;
         }
         return false;
@@ -151,11 +151,11 @@ class OrganizationUser
         if (! is_null($userId)) {
             $criteria["user"] = $userId;
         }
-
+        
         $proctors = $this->query->findBy(/* $entityName = */'Organizations\Entity\OrganizationUser', $criteria);
         foreach ($proctors as $proctor) {
-            $organizationLat = $proctor->getOrganization()->getLatitude();
-            $organizationLong = $proctor->getOrganization()->getLongitude();
+            $organizationLat = $proctor->getOrganization()->getLat();
+            $organizationLong = $proctor->getOrganization()->getLong();
             $proctorLat = $proctor->getUser()->getLatitude();
             $proctorLong = $proctor->getUser()->getLongitude();
 
@@ -164,6 +164,7 @@ class OrganizationUser
             $proctor->setDistanceSort((int)$distanceRepresentation);
             $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($proctor, /*$data =*/ array(), /*$flushAll =*/ false, /*$noFlush =*/ true);
         }
+        $this->query->entityManager->flush();
     }
 
 }
