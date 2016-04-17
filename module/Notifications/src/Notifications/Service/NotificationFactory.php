@@ -31,13 +31,13 @@ class NotificationFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator) {
 
         $queuePluginManager = $serviceLocator->get('SlmQueue\Queue\QueuePluginManager');
-        $defaultQueue = $queuePluginManager->get('default');
+        $mailQueue = $queuePluginManager->get('mail');
         
-        $jobPluginManager = $defaultQueue->getJobPluginManager();
+        $jobPluginManager = $mailQueue->getJobPluginManager();
         $sendEmailJob = $jobPluginManager->get('Notifications\Service\Job\SendEmailJob');
         
         $viewRenderer = $serviceLocator->get('Mustache\View\Renderer');
-        $notification = new Notification($defaultQueue, $sendEmailJob, $viewRenderer);
+        $notification = new Notification($mailQueue, $sendEmailJob, $viewRenderer);
         return $notification;
     }
 

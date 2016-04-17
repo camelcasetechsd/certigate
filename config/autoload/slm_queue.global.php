@@ -4,9 +4,6 @@
  * This is the config file for SlmQueue. Just drop this file into your config/autoload folder (don't
  * forget to remove the .dist extension from the file), and configure it as you want
  */
-
-use SlmQueue\Strategy\LogJobStrategy;
-use SlmQueue\Strategy\MaxMemoryStrategy;
 use SlmQueue\Strategy\ProcessQueueStrategy;
 
 return [
@@ -17,10 +14,11 @@ return [
          * Available options depends on the queue factory
          */
         'queues' => [
-            'default' => array(
-            )
+            'mail' => array(
+                'table_name' => 'queue_mail',
+                'buried_lifetime' => -1,
+            ),
         ],
-
         /**
          * This block is use to register and configure strategies to the worker event manager. The default key holds any
          * configuration for all instanciated workers. The ones configured within the 'queues' keys are specific to
@@ -51,14 +49,15 @@ return [
          * ],
          */
         'worker_strategies' => [
-            'default' => [ // per worker
-            ],
+            'default' => array(// per worker
+                0 => "SlmQueue\Strategy\AttachQueueListenersStrategy",
+            ),
             'queues' => [ // per queue
-                'default' => [
+                'mail' => [
+                    ProcessQueueStrategy::class,
                 ],
             ],
         ],
-
         /**
          * Allow to configure the plugin manager that manages strategies. This works like any other
          * PluginManager in Zend Framework 2.
@@ -72,7 +71,6 @@ return [
          * ],
          */
         'strategy_manager' => [],
-
         /**
          * Allow to configure dependencies for jobs that are pulled from any queue. This works like any other
          * PluginManager in Zend Framework 2. For instance, if you want to inject something into every job using
@@ -92,10 +90,9 @@ return [
          */
         'job_manager' => [
             'factories' => array(
-                'Notifications\Service\Job\SendEmailJob' => 'Notifications\Service\Job\SendEmailJobFactory'
+                'Notifications\Service\Job\SendEmailJob' => 'Notifications\Service\Job\SendEmailJobFactory',
             )
         ],
-
         /**
          * Allow to add queues. You need to have at least one queue. This works like any other PluginManager in
          * Zend Framework 2. For instance, if you have a queue whose name is "email", you can add it as an
@@ -112,7 +109,7 @@ return [
          */
         'queue_manager' => [
             'factories' => array(
-                'default' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
+                'mail' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             )
         ]
     ],

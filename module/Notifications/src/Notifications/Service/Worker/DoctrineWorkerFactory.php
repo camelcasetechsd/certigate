@@ -33,7 +33,6 @@ class DoctrineWorkerFactory extends WorkerFactory implements FactoryInterface
     {
         $config                = $serviceLocator->get('Config');
         $strategies            = $config['slm_queue']['worker_strategies']['default'];
-
         $eventManager          = $serviceLocator->get('EventManager');
         $listenerPluginManager = $serviceLocator->get(StrategyPluginManager::class);
         $this->attachWorkerListeners($eventManager, $listenerPluginManager, $strategies);
