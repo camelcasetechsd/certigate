@@ -386,13 +386,10 @@ class UserForm extends Form
 
         $this->add(array(
             'name' => 'longitude',
-            'continue_if_empty' => true,
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => 'Enter Longitude',
                 'class' => 'form-control gllpLongitude',
-                'allow_empty' => true,
-                'continue_if_empty' => false
             ),
             'options' => array(
                 'label' => 'Longitude',
@@ -407,9 +404,6 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Latitude',
-            ),
-            'validators' => array(
-                'Empty' => true
             )
         ));
         $this->add(array(

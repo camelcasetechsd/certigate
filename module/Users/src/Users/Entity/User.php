@@ -367,13 +367,13 @@ class User
     public $customerId;
 
     /**
-     * @ORM\Column(type="float" , nullable=true )
+     * @ORM\Column(type="float" , nullable=false)
      * @var string
      */
     public $longitude;
 
     /**
-     * @ORM\Column(type="float" , nullable=true)
+     * @ORM\Column(type="float" , nullable=false)
      * @var float
      */
     public $latitude;
@@ -1706,19 +1706,12 @@ class User
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
-     * @param array $data submittedData
      * @return InputFilter validation constraints
      */
-    public function getInputFilter($query, $data)
+    public function getInputFilter($query)
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-
-            $proctorRole = $query->findOneBy("Users\Entity\Role", /* $criteria = */ array("name" => Role::PROCTOR_ROLE));
-            $hasProctorRole = false;
-            if (!empty($data["roles"]) && array_key_exists("roles", $data) && in_array($proctorRole->getId(), $data["roles"])) {
-                $hasProctorRole = true;
-            }
 
             $query->setEntity("Users\Entity\User");
             $inputFilter->add(array(
@@ -1992,7 +1985,7 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'longitude',
-                'required' => $hasProctorRole,
+                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'NotEmpty',
@@ -2007,7 +2000,7 @@ class User
             
             $inputFilter->add(array(
                 'name' => 'latitude',
-                'required' => $hasProctorRole,
+                'required' => true,
                 'validators' => array(
                     array(
                         'name' => 'NotEmpty',

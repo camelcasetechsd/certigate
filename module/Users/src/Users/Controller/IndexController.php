@@ -145,7 +145,7 @@ class IndexController extends ActionController
                     $request->getPost()->toArray(), $fileData
             );
             $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query, $data));
+            $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
             $isCustomValidationValid = true;
@@ -247,7 +247,7 @@ class IndexController extends ActionController
             );
 
             $query->setEntity('Users\Entity\User');
-            $form->setInputFilter($userObj->getInputFilter($query, $data));
+            $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
             $isCustomValidationValid = true;
             if ($data['email'] != $data['confirmEmail']) {

@@ -65,7 +65,9 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
                 $adminRole->getId()
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
 
         $userModel = $this->serviceManager->get("Users\Model\User");
@@ -106,7 +108,9 @@ class PosAUsers extends AbstractSeed
             "trainingManagerStatement" => false,
             "status" => true,
             "roles" => array(
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
         $userModel->saveUser($normalUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -147,7 +151,9 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
                 $TMRole->getId()
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
         $userModel->saveUser($TMUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
         // test center admin
@@ -188,7 +194,9 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
                 $TCARole->getId()
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
         $userModel->saveUser($TCAUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -230,7 +238,9 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
                 $instructorRole->getId()
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
         $userModel->saveUser($instructorUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -271,7 +281,9 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
                 $studentRole->getId()
-            )
+            ),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
         );
         $userModel->saveUser($studentUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
     }
