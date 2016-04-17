@@ -14,6 +14,7 @@ use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Organizations\Form\OrgForm as OrgForm;
 use Zend\Authentication\AuthenticationService;
+use Organizations\Entity\OrganizationType;
 
 /**
  * Org Model
@@ -333,26 +334,7 @@ class Organization
             }
 
             // redirecting
-            $organizationTypes = $this->getOrganizationTypes(null, $entity);
-            // redirection is based on first type of organization
-            switch ($organizationTypes[0]) {
-                case 1:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atc_orgs'));
-                    break;
-
-                case 2:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atp_orgs'));
-                    break;
-
-                case 3:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'distributors'), array('name' => 'list_distributor_orgs'));
-                    break;
-
-                case 4:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'resellers'), array('name' => 'list_reseller_orgs'));
-                    break;
-            }
-
+            $url = $action->getEvent()->getRouter()->assemble(array(), array('name' => 'myOrganizations'));
             $action->redirect()->toUrl($url);
         }
     }
@@ -592,7 +574,7 @@ class Organization
                 'organization' => $organizationObj->getId()
             ));
             foreach ($typesArray as $type) {
-                array_push($params, $type->getType()->getId());
+                array_push($params, $type->getType()->getTitle());
             }
         }
         return $params;

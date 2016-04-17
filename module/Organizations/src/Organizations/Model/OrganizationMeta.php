@@ -133,9 +133,11 @@ class OrganizationMeta
         if ((int) $type == Organization::TYPE_ATC || (int) $type == Organization::TYPE_ATP) {
             //finding which Expiration date needed  
             $dateName = $this->getDateName((int) $type);
-            $dateValidation = $this->validateDate($data[$dateName], null);
-            $orgMeta->setExpirationFlag($dateValidation);
-            $orgMeta->setExpirationDate($data[$dateName]);
+            if (array_key_exists($dateName, $data)) {
+                $dateValidation = $this->validateDate($data[$dateName], null);
+                $orgMeta->setExpirationFlag($dateValidation);
+                $orgMeta->setExpirationDate($data[$dateName]);
+            }
         }
         else {
             // if type 3 or 4 they can not expire (has no expiration date)
