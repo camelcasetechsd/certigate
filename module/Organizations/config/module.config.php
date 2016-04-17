@@ -15,7 +15,7 @@ return array(
         'factories' => array(
             'Organizations\Model\Organization' => 'Organizations\Model\OrganizationFactory',
             'Organizations\Model\OrganizationUser' => 'Organizations\Model\OrganizationUserFactory',
-            'Organizations\Model\OrganizationMeta' => 'Organizations\Model\OrganizationMetaFactory'
+            'Organizations\Model\OrganizationMeta' => 'Organizations\Model\OrganizationMetaFactory',
         ),
     ),
     'doctrine' => array(

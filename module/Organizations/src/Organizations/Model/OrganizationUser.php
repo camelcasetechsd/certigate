@@ -48,6 +48,9 @@ class OrganizationUser
     public function save($organizationUser, $data = array())
     {
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($organizationUser, $data);
+        
+        $this->sortProctors(/* $organizationId = */ $organizationUser->getOrganization()->getId());
+        
         $roleExists = false;
         $user = $organizationUser->getUser();
         foreach ($user->getRoles() as $role) {
@@ -126,6 +129,40 @@ class OrganizationUser
                 return true;
             }
             return false;
+        }
+    }
+    
+    /**
+     * Sort proctors by distance
+     * 
+     * @access public
+     * @param int $organizationId ,default is null
+     * @param int $userId ,default is null
+     */
+    public function sortProctors($organizationId = null, $userId = null)
+    {
+        $role = $this->query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array(
+                'name' => Role::PROCTOR_ROLE,
+            ));
+        $criteria = array("role" => $role);
+        if (! is_null($organizationId)) {
+            $criteria["organization"] = $organizationId;
+        }
+        if (! is_null($userId)) {
+            $criteria["user"] = $userId;
+        }
+
+        $proctors = $this->query->findBy(/* $entityName = */'Organizations\Entity\OrganizationUser', $criteria);
+        foreach ($proctors as $proctor) {
+            $organizationLat = $proctor->getOrganization()->getLatitude();
+            $organizationLong = $proctor->getOrganization()->getLongitude();
+            $proctorLat = $proctor->getUser()->getLatitude();
+            $proctorLong = $proctor->getUser()->getLongitude();
+
+            $theta = $organizationLong - $proctorLong;
+            $distanceRepresentation = rad2deg(acos(sin(deg2rad($organizationLat)) * sin(deg2rad($proctorLat)) + cos(deg2rad($organizationLat)) * cos(deg2rad($proctorLat)) * cos(deg2rad($theta))));
+            $proctor->setDistanceSort((int)$distanceRepresentation);
+            $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($proctor, /*$data =*/ array(), /*$flushAll =*/ false, /*$noFlush =*/ true);
         }
     }
 
