@@ -82,12 +82,13 @@ return array(
             'organizationUsersEdit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/edit/:organizationId',
+                    'route' => '/organization-users/edit/:id/:organizationId',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'edit',
                     ),
                     'constraints' => array(
+                        'organizationId' => '[0-9]+',
                         'id' => '[0-9]+',
                     ),
                 )
