@@ -576,8 +576,6 @@ class Organization
      */
     public function getOrganizationTypes($action = null, $organizationObj = null)
     {
-//        var_dump($organizationObj);
-//        exit;
         $params = array();
         if ($action != null) {
             for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
@@ -587,7 +585,6 @@ class Organization
             }
         }
         else if ($organizationObj != null) {
-            var_dump('here');
             $typesArray = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
                 'organization' => $organizationObj->getId()
             ));
@@ -595,7 +592,6 @@ class Organization
                 array_push($params, $type->getType()->getId());
             }
         }
-//        exit;
         return $params;
     }
 

@@ -54,20 +54,21 @@ class OrganizationUserForm extends Form
 
         $types = array();
         $atcTypes = array(
-                Role::PROCTOR_ROLE,
-                Role::TEST_CENTER_ADMIN_ROLE,
-            );
+            Role::PROCTOR_ROLE,
+            Role::TEST_CENTER_ADMIN_ROLE,
+        );
         $atpTypes = array(
-                Role::TRAINING_MANAGER_ROLE,
-            );
-        if ($this->organizationType === Organization::TYPE_ATC) {
-            $types = $atcTypes;
+            Role::TRAINING_MANAGER_ROLE,
+        );
+
+        if (in_array(Organization::TYPE_ATC, $this->organizationType) && in_array(Organization::TYPE_ATP, $this->organizationType)) {
+            $types = array_merge($atpTypes, $atcTypes);
         }
-        elseif ($this->organizationType === Organization::TYPE_ATP) {
+        elseif (in_array(Organization::TYPE_ATP, $this->organizationType)) {
             $types = $atpTypes;
         }
-        else{
-            $types = array_merge($atpTypes, $atcTypes);
+        else if (in_array(Organization::TYPE_ATC, $this->organizationType)) {
+            $types = $atcTypes;
         }
 
         $this->add(array(
@@ -127,14 +128,14 @@ class OrganizationUserForm extends Form
             'name' => 'organization',
             'type' => 'Zend\Form\Element\Hidden',
         ));
-        
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
         // Add buttons fieldset
-        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("create_button_only" => true));
         $this->add($buttonsFieldset);
     }
 
