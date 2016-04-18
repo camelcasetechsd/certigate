@@ -254,7 +254,9 @@ class ModelCheckoutOrder extends Model {
 	}
 
 	public function addOrderHistory($order_id, $order_status_id, $comment = '', $notify = false, $override = false) {
-		$event_data = array(
+		
+        $fraudFlag = FALSE;
+        $event_data = array(
 			'order_id'		  => $order_id,
 			'order_status_id' => $order_status_id,
 			'comment'		  => $comment,
@@ -292,6 +294,8 @@ class ModelCheckoutOrder extends Model {
 
 						if ($fraud_status_id) {
 							$order_status_id = $fraud_status_id;
+                            $fraudFlag = true;
+
 						}
 					}
 				}
@@ -312,6 +316,7 @@ class ModelCheckoutOrder extends Model {
 					  // If the balance on the coupon, vouchers and reward points is not enough to cover the transaction or has already been used then the fraud order status is returned.
 					  if ($fraud_status_id) {
 						  $order_status_id = $fraud_status_id;
+                          $fraudFlag = true;
 					  }
 				  }
 				}
@@ -337,6 +342,8 @@ class ModelCheckoutOrder extends Model {
 				}
 			}
 
+            // making the default status is complete
+            $fraudFlag ? $order_status_id = $order_status_id : $order_status_id = current($this->config->get('config_complete_status'));
 			// Update the DB with the new statuses
 			$this->db->query("UPDATE `" . DB_PREFIX . "order` SET order_status_id = '" . (int)$order_status_id . "', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
 

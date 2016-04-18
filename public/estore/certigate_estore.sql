@@ -3101,7 +3101,7 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `ser
 (214, 0, 'config', 'config_cart_weight', '1', 0),
 (215, 0, 'config', 'config_checkout_guest', '1', 0),
 (216, 0, 'config', 'config_checkout_id', '5', 0),
-(217, 0, 'config', 'config_order_status_id', '1', 0),
+(217, 0, 'config', 'config_order_status_id', '5', 0),
 (218, 0, 'config', 'config_processing_status', '["5","1","2","12","3"]', 1),
 (219, 0, 'config', 'config_complete_status', '["5","3"]', 1),
 (220, 0, 'config', 'config_order_mail', '0', 0),
