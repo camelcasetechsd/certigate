@@ -30,7 +30,12 @@ class CourseEventFactory implements FactoryInterface {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Courses\Entity\CourseEvent');
         $objectUtilities = $serviceLocator->get('objectUtilities');
         $estoreApi = $serviceLocator->get('EStore\Service\Api');
-        return new CourseEvent($query, $objectUtilities, $estoreApi);
+        $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
+        $notification = $serviceLocator->get('Notifications\Service\Notification');
+        $translatorHandler = $serviceLocator->get('translatorHandler');
+        $formView = $serviceLocator->get('Utilities\Service\View\FormView');
+        $courseEventSubscription = $serviceLocator->get('Courses\Model\CourseEventSubscription');
+        return new CourseEvent($query, $objectUtilities, $estoreApi, $systemCacheHandler, $notification, $translatorHandler, $formView, $courseEventSubscription);
     }
 
 }

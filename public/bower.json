@@ -10,6 +10,7 @@
         "ckeditor": "#full/stable",
         "kcfinder": "3.20.4",
         "metisMenu": "^2.4.0",
-        "font-awesome": "fontawesome#^4.5.0"
+        "font-awesome": "fontawesome#^4.5.0",
+        "addtocalendar": "^1.5.1"
     }
 }

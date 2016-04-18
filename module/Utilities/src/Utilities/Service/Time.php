@@ -17,6 +17,12 @@ class Time {
      * UNIX date string
      */
     const UNIX_DATE_STRING = "Thu, 01 Jan 1970";
+
+    /**
+     * Saudi time zone id
+     */
+    const DEFAULT_TIME_ZONE_ID = "Asia/Riyadh";
+    
     /**
      * date format
      */

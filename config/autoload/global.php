@@ -85,6 +85,9 @@ return array(
     'website' => array(
         'host' => 'local-certigate.com'
     ),
+    'courseEventSubscription' => array(
+        'periodicNotificationDays' => 7 //No. of days
+    ),
     'quote' => array(
         'expireAfterDays' => 10
     )

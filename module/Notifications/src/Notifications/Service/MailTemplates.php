@@ -125,6 +125,17 @@ class MailTemplates
     const CLIENT_PUBLIC_QUOTE_CANCELLED_TEMPLATE = "client-public-quote-cancelled";
     
     /**
+     * New Calendar Event Template
+     */
+    const NEW_CALENDAR_EVENT_TEMPLATE = "new-calendar-event";
+    
+    /**
+     * Calendar Event Notification Template
+     */
+    const CALENDAR_EVENT_NOTIFICATION_TEMPLATE = "calendar-event-notification";
+    
+    
+    /**
      * Client public quote pending payment Template
      */
     const CLIENT_PUBLIC_QUOTE_PENDING_PAYMENT_TEMPLATE = "client-public-quote-pending-payment";

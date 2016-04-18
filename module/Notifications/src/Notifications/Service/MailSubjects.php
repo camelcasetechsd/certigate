@@ -162,4 +162,15 @@ class MailSubjects
      * Client private quote ready invoice Subject
      */
     const CLIENT_PRIVATE_QUOTE_READY_INVOICE_SUBJECT = "Private quote invoice";
+    
+    /**
+     * New Calendar Event Subject
+     */
+    const NEW_CALENDAR_EVENT_SUBJECT = "New calendar event";
+
+    /**
+     * Calendar Event Notification Subject
+     */
+    const CALENDAR_EVENT_NOTIFICATION_SUBJECT = "Calendar event notification";
+
 }

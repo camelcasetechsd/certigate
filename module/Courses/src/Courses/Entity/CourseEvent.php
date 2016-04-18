@@ -32,6 +32,7 @@ use Utilities\Service\String;
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Doctrine\Common\Collections\ArrayCollection $courseEventSubscriptions
  * @property Courses\Entity\PrivateQuote $privateQuote
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
@@ -156,6 +157,12 @@ class CourseEvent
     public $publicQuotes;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventSubscription", mappedBy="courseEvent")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $courseEventSubscriptions;
+
+    /**
      * @ORM\OneToOne(targetEntity="Courses\Entity\PrivateQuote", mappedBy="courseEvent")
      * @var Courses\Entity\PrivateQuote
      */
@@ -196,6 +203,7 @@ class CourseEvent
     {
         $this->courseEventUsers = new ArrayCollection();
         $this->publicQuotes = new ArrayCollection();
+        $this->courseEventSubscriptions = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -624,6 +632,32 @@ class CourseEvent
     public function setPublicQuotes($publicQuotes)
     {
         $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    /**
+     * Get CourseEventSubscriptions
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection courseEventSubscriptions
+     */
+    public function getCourseEventSubscriptions()
+    {
+        return $this->courseEventSubscriptions;
+    }
+
+    /**
+     * Set CourseEventSubscriptions
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $courseEventSubscriptions
+     * @return CourseEvent
+     */
+    public function setCourseEventSubscriptions($courseEventSubscriptions)
+    {
+        $this->courseEventSubscriptions = $courseEventSubscriptions;
         return $this;
     }
     
