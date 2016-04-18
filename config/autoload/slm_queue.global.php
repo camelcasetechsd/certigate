@@ -49,8 +49,7 @@ return [
          * ],
          */
         'worker_strategies' => [
-            'default' => array(// per worker
-                0 => "SlmQueue\Strategy\AttachQueueListenersStrategy",
+            'mail' => array(// per worker
             ),
             'queues' => [ // per queue
                 'mail' => [

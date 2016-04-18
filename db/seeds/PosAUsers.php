@@ -66,8 +66,8 @@ class PosAUsers extends AbstractSeed
             "roles" => array(
                 $adminRole->getId()
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
 
         $userModel = $this->serviceManager->get("Users\Model\User");
@@ -109,8 +109,8 @@ class PosAUsers extends AbstractSeed
             "status" => true,
             "roles" => array(
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
         $userModel->saveUser($normalUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -152,8 +152,8 @@ class PosAUsers extends AbstractSeed
             "roles" => array(
                 $TMRole->getId()
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
         $userModel->saveUser($TMUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
         // test center admin
@@ -195,8 +195,8 @@ class PosAUsers extends AbstractSeed
             "roles" => array(
                 $TCARole->getId()
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
         $userModel->saveUser($TCAUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -239,8 +239,8 @@ class PosAUsers extends AbstractSeed
             "roles" => array(
                 $instructorRole->getId()
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
         $userModel->saveUser($instructorUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
@@ -282,8 +282,8 @@ class PosAUsers extends AbstractSeed
             "roles" => array(
                 $studentRole->getId()
             ),
-            'longitude' => $faker->randomFloat(),
-            'latitude' => $faker->randomFloat(),
+            'longitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
+            'latitude' => $faker->randomFloat(/*$nbMaxDecimals =*/ 5, /*$min =*/ 111111, /*$max =*/ 999999),
         );
         $userModel->saveUser($studentUser, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
     }

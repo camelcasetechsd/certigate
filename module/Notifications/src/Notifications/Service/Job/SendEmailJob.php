@@ -64,7 +64,7 @@ class SendEmailJob extends AbstractJob {
             $cc = $payload['cc'];
             $message->addCc($cc);
         }
-        
+
         $this->transport->send($message);
     }
     
