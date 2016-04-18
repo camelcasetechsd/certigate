@@ -4,7 +4,7 @@
         width:150px;
         height: 430px;
         border-style: solid ;
-        border-width: 2px;
+        border-width: 1px;
         margin-bottom: 122px;
     }
     .admin-id{
@@ -24,7 +24,7 @@
         background-color: rgba(82,168,236,0.6);
     }
     .close-chat-box{
-        margin-left: 165px;
+        margin-left: 185px;
     }
     .chat-box-header > span{
         margin-left: 5px;
@@ -37,6 +37,7 @@
         margin-right: 1%; 
         margin-top: -1px;
         overflow: scroll;
+        max-width: 245px;
 
     }
     .chat-box-footer{
@@ -46,11 +47,12 @@
     }
     .dialogue{
         padding-bottom: 1px;
-        display: inline-block;        
+        display: inline-block;
+        height: 65px;
     }
     .user-message{
         width: 75%;
-        height: 27px;
+        height: 65px;
         margin-left: 2px;
     }
     .send{
@@ -71,11 +73,15 @@
     .message{
         display: flex;
     }
-
+    .single-admin-container :hover {
+        cursor: pointer;        
+    }
+    
+    
 </style>
 <div class="chat-container">
     <div>
-        <button class="join-chat btn btn-info pull-right" style="{{#chatStarted}}display: none;{{/chatStarted}}"> contact an admin</button>
+        <button class="join-chat btn btn-info pull-right" style="{{#chatStarted}}display: none;{{/chatStarted}}"> Join Chat</button>
 
         <!--admins list-->
         <div class="online-admin-container pull-right" style="{{^chatStarted}}display: none;{{/chatStarted}}">
@@ -132,6 +138,8 @@ $(document).ready(function () {
      * @returns {undefined}
      */
     $(document).on('click', '.send', function () {
+        //making sure empty messages not be sent
+        if(($(this).prev('.user-message').val()).length > 0){
         /**
          * making sure that message reach the right recipient in case
          * more than window are opened
@@ -150,7 +158,8 @@ $(document).ready(function () {
         updateMessages(true, $(this).prev('.user-message').val());
         // empty text field
         $(this).prev('.user-message').val('');
-    });
+        }
+        });
     /**
      * opening new chat window for specific user
      */
@@ -164,6 +173,22 @@ $(document).ready(function () {
      */
     $(document).on('click', '.close-chat-box', function () {
         $(this).parents('.chat-box-container').hide();
+    });
+    
+    /**
+     * press enter to send messages
+     */ 
+    $(document).on('keyup' , '.user-message' , function(e){
+        // shift+enter return new line
+        if(e.keyCode == 13 && e.shiftKey){
+             e.preventDefault();
+        }
+        // enter sends message
+        else
+            if(e.keyCode === 13){
+            console.log('enter only');
+            $(this).next('.send').click();
+        }
     });
 //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// Handlers /////////////////////////////////////////////
@@ -233,11 +258,9 @@ $(document).ready(function () {
                 'type': 'update_admins'
             };
             window.connection.send(JSON.stringify($message));
-        }, 5000);
+        }, 2000);
 
     }
-
-
 
 
     /**
@@ -258,8 +281,9 @@ $(document).ready(function () {
      * creating new chat window for each recipient
      */
     function newChatWindow() {
-        $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><span>' + getChoosedUsername() + '</span><a class="close-chat-box" href="javascript:void(0)">x</a></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><input type="textarea" rows="4" cols="50" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
+        $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><span>' + getChoosedUsername() + '</span><a class="close-chat-box" href="javascript:void(0)">x</a></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><textarea rows="5" cols="20" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
         $('.chat-windows-container').append($newChatWindow);
+        return $newChatWindow;
     }
 
     /**
@@ -319,7 +343,7 @@ $(document).ready(function () {
             $boxBody.append('<div class="message"><p class="my-message pull-left">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
         }
     }
-
+    
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// Parameters Setters & Getters //////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
