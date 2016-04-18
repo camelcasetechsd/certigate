@@ -159,11 +159,11 @@ class PosDAOrganization extends AbstractSeed
             'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => $faker->randomDigitNotNull,
             'pcsNo_lab' => $faker->randomDigitNotNull,
-            'operatingSystem' => $faker->biasedNumberBetween(0, 5),
-            'operatingSystemLang' => $faker->biasedNumberBetween(0, 5),
+            'operatingSystem' => $faker->biasedNumberBetween(1, 11),
+            'operatingSystemLang' => $faker->biasedNumberBetween(1, 6),
             'internetSpeed_lab' => $faker->randomNumber(),
-            'officeLang' => $faker->biasedNumberBetween(0, 5),
-            'officeVersion' => $faker->biasedNumberBetween(0, 5),
+            'officeLang' => $faker->biasedNumberBetween(1, 5),
+            'officeVersion' => $faker->biasedNumberBetween(1, 5),
             'focalContactPerson_id' => $normalUserId,
             'creatorId' => $TCAUserId
         );
@@ -231,11 +231,11 @@ class PosDAOrganization extends AbstractSeed
             'atcWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
             'labsNo' => $faker->randomDigitNotNull,
             'pcsNo_lab' => $faker->randomDigitNotNull,
-            'operatingSystem' => $faker->biasedNumberBetween(0, 5),
-            'operatingSystemLang' => $faker->biasedNumberBetween(0, 5),
+            'operatingSystem' => $faker->biasedNumberBetween(1, 11),
+            'operatingSystemLang' => $faker->biasedNumberBetween(1, 6),
             'internetSpeed_lab' => $faker->randomNumber(),
-            'officeLang' => $faker->biasedNumberBetween(0, 5),
-            'officeVersion' => $faker->biasedNumberBetween(0, 5),
+            'officeLang' => $faker->biasedNumberBetween(1, 5),
+            'officeVersion' => $faker->biasedNumberBetween(1, 5),
             'focalContactPerson_id' => $normalUserId,
             'creatorId' => $TMUserId
         );
