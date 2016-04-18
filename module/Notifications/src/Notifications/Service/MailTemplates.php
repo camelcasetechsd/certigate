@@ -3,15 +3,15 @@
 namespace Notifications\Service;
 
 /**
- * MailTempates
+ * MailTemplates
  * 
- * Hold MailTempates related constants
+ * Hold MailTemplates related constants
  * 
  * 
  * @package notifications
  * @subpackage service
  */
-class MailTempates
+class MailTemplates
 {
 
     /**

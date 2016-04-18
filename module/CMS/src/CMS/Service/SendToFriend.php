@@ -2,7 +2,7 @@
 
 namespace CMS\Service;
 
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Utilities\Service\MessageTypes;
@@ -73,7 +73,7 @@ class SendToFriend
         $mailArray = array(
             'from' => $fromArray,
             'to' => $data['email'],
-            'templateName' => MailTempates::SEND_TO_FRIEND_TEMPLATE,
+            'templateName' => MailTemplates::SEND_TO_FRIEND_TEMPLATE,
             'templateParameters' => array(
                 "data" => $data,
             ),

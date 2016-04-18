@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 use Zend\Authentication\AuthenticationService;
 use Utilities\Service\MessageTypes;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 
@@ -230,7 +230,7 @@ class PressReleaseSubscription
 
         $mailArray = array(
             'from' => $from,
-            'templateName' => MailTempates::NEW_PRESS_RELEASE_TEMPLATE,
+            'templateName' => MailTemplates::NEW_PRESS_RELEASE_TEMPLATE,
             'subject' => MailSubjects::NEW_PRESS_RELEASE_SUBJECT,
         );
         if(empty($subscriptions)){

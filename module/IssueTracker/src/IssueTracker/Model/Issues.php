@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Notifications\Service\MailSubjects;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
@@ -279,8 +279,8 @@ class Issues
             'issue' => $issueObj
         );
 
-        $adminTemplateName = MailTempates::ADMIN_NEW_ISSUE;
-        $userTemplateName = MailTempates::USER_NEW_ISSUE;
+        $adminTemplateName = MailTemplates::ADMIN_NEW_ISSUE;
+        $userTemplateName = MailTemplates::USER_NEW_ISSUE;
         $subject = MailSubjects::NEW_ISSUE;
         $AdminNotificationMailArray = array(
             'to' => $adminEmail,
