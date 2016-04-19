@@ -24,4 +24,14 @@ class DateNames
      */
     const ATP_EXPIRATION_DATE = "atpLicenseExpiration";
 
+    /**
+     * name of the field in the form
+     */
+    const HIJRI_ATC_EXPIRATION_DATE = "atcLicenseExpirationHj";
+
+    /**
+     * name of the field in the form
+     */
+    const HIJRI_ATP_EXPIRATION_DATE = "atpLicenseExpirationHj";
+
 }

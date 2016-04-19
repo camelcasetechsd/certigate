@@ -14,6 +14,8 @@ use Utilities\Form\ButtonsFieldset;
  * Handles Resource form setup
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Translation\Helper\TranslatorHelper $translatorHandler
+ * @property Courses\Model\Resource $resourceModel
  * @property int $courseId
  * 
  * @package courses
@@ -41,6 +43,12 @@ class ResourceForm extends Form
     protected $translatorHandler;
 
     /**
+     *
+     * @var Courses\Model\Resource
+     */
+    protected $resourceModel;
+
+    /**
      * setup form
      * 
      * 
@@ -53,10 +61,12 @@ class ResourceForm extends Form
         $this->needAdminApproval = true;
         $this->query = $options['query'];
         $this->translatorHandler = $options['translatorHandler'];
+        $this->resourceModel = $options['resourceModel'];
         $this->courseId = $options['courseId'];
 
         unset($options['query']);
         unset($options['translatorHandler']);
+        unset($options['resourceModel']);
         unset($options['courseId']);
         parent::__construct($name, $options);
 
@@ -95,12 +105,6 @@ class ResourceForm extends Form
             ),
         ));
 
-        $types = array(
-            $this->translatorHandler->translate(Resource::TYPE_PRESENTATIONS),
-            $this->translatorHandler->translate(Resource::TYPE_ACTIVITIES),
-            $this->translatorHandler->translate(Resource::TYPE_EXAMS),
-        );
-        $typeValueOptions = array_combine(/* $keys = */ $types, /* $values = */ $types);
         $this->add(array(
             'name' => 'type',
             'type' => 'Zend\Form\Element\Select',
@@ -110,7 +114,7 @@ class ResourceForm extends Form
             ),
             'options' => array(
                 'label' => 'Type',
-                'value_options' => $typeValueOptions,
+                'value_options' => $this->resourceModel->getTranslatedResourceTypes(),
                 'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
             )
         ));

@@ -78,6 +78,12 @@ class ExamBook
      * @ORM\Column(type="date")
      * @var \DateTime
      */
+    public $dateHj;
+
+    /**
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
     public $date;
 
     /**
@@ -180,6 +186,17 @@ class ExamBook
     }
 
     /**
+     * Get date
+     * 
+     * @access public
+     * @return \DateTime
+     */
+    public function getDateHj()
+    {
+        return $this->dateHj;
+    }
+
+    /**
      * Get atc
      * 
      * @access public
@@ -203,6 +220,22 @@ class ExamBook
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $date);
         }
         $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * Set dateHj
+     * 
+     * @access public
+     * @param \DateTime $dateHj
+     * @return Courses\Entity\ExamBook
+     */
+    public function setDateHj($dateHj)
+    {
+        if (!is_object($dateHj)) {
+            $dateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateHj);
+        }
+        $this->dateHj = $dateHj;
         return $this;
     }
 
@@ -350,9 +383,9 @@ class ExamBook
         }
         $this->setAtc($data["atc"])
                 ->setCourse($data["course"])
+                ->setDateHj($data["dateHj"])
                 ->setDate($data["date"])
-                ->setStudentsNo($data["studentsNo"])
-        ;
+                ->setStudentsNo($data["studentsNo"]);
     }
 
     /**
@@ -393,6 +426,10 @@ class ExamBook
                         )
                     ),
                 )
+            ));
+            $inputFilter->add(array(
+                'name' => 'dateHj',
+                'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'studentsNo',

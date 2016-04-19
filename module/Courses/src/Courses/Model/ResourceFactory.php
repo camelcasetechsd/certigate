@@ -31,7 +31,8 @@ class ResourceFactory implements FactoryInterface {
         $logger = $serviceLocator->get('loggerUtilities');
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
-        return new Resource($query, $logger, $systemCacheHandler, $notification);
+        $translationHandler = $serviceLocator->get('translatorHandler');
+        return new Resource($query, $logger, $systemCacheHandler, $notification, $translationHandler);
     }
 
 }

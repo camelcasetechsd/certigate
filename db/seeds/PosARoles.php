@@ -4,6 +4,7 @@ require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
 use \Users\Entity\Role;
+use \Users\Entity\User;
 
 class PosARoles extends AbstractSeed
 {
@@ -113,6 +114,63 @@ class PosARoles extends AbstractSeed
         );
         $this->insert('acl', $userAcls);
 
+
+
+
+        $issuesModule = "IssueTracker";
+        $issuesListRoute = 'issues';
+        $newIssuesRoute = 'newIssues';
+        $viewIssuesRoute = 'viewIssues';
+        $closeIssuesRoute = 'closeIssues';
+        $reopenIssuesRoute = 'reopenIssues';
+        $deleteIssuesRoute = 'deleteIssues';
+        $editIssueCommentRoute = 'editIssueComment';
+        $removeIssueCommentRoute = 'removeIssueComment';
+
+        $IssuesAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $issuesListRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $newIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $viewIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $closeIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $reopenIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $deleteIssuesRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $editIssueCommentRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $issuesModule,
+                'route' => $removeIssueCommentRoute,
+            ),
+        );
+        $this->insert('acl', $IssuesAcls);
+
         $courseModule = "Courses";
         $coursesCalendarRoute = "coursesCalendar";
         $courseOutlinesPdfRoute = "courseOutlinesPdf";
@@ -129,7 +187,37 @@ class PosARoles extends AbstractSeed
         $coursesInstructorTrainingRoute = "coursesInstructorTraining";
         $examBookingRoute = "examBooking";
         $myCoursesRoute = "myCourses";
+        $quoteRoute = "quote";
+        $quoteTrainingRoute = "quoteTraining";
+        $quoteProcessRoute = "quoteProcess";
+        $quoteDeleteRoute = "quoteDelete";
+        $quoteDownloadRoute = "quoteDownload";
         $coursesAcls = array(
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteDownloadRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteDeleteRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteProcessRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteTrainingRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $courseModule,
+                'route' => $quoteRoute,
+            ),
             array(
                 'role_id' => $studentRoleId,
                 'module' => $courseModule,

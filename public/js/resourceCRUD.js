@@ -1,4 +1,25 @@
 /**
+ * Add more listener
+ * Hide add more button if one 
+ * 
+ * @param {string} addMoreSelector
+ * @param {string} typeSelector
+ * @param {array} oneFileTypes
+ * @returns {undefined}
+ */
+function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
+    oneFileTypes = $.parseJSON(oneFileTypes);
+    $(typeSelector).change(function () {
+        var typeValue = $(this).val();
+        if ($.inArray(typeValue, oneFileTypes) > -1) {
+            $(addMoreSelector).hide();
+        } else {
+            $(addMoreSelector).show();
+        }
+    });
+}
+
+/**
  * Add more resource above add more button
  * 
  * @param {string} addMoreSelector

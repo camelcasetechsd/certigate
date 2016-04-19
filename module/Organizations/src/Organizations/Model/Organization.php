@@ -9,7 +9,7 @@ use Users\Entity\Role;
 use Organizations\Entity\Organization as OrganizationEntity;
 use Utilities\Service\Time;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Organizations\Form\OrgForm as OrgForm;
@@ -220,6 +220,19 @@ class Organization
         if (!empty($orgInfo['atpLicenseExpiration']) && $orgInfo['atpLicenseExpiration'] != "") {
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpiration']);
             $orgInfo['atpLicenseExpiration'] = $date;
+        }
+        if (!empty($orgInfo['CRExpirationHj'])) {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['CRExpirationHj']);
+            $orgInfo['CRExpirationHj'] = $date;
+        }
+        if (!empty($orgInfo['atcLicenseExpirationHj']) && $orgInfo['atcLicenseExpirationHj'] != "") {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atcLicenseExpirationHj']);
+            $orgInfo['atcLicenseExpirationHj'] = $date;
+        }
+
+        if (!empty($orgInfo['atpLicenseExpirationHj']) && $orgInfo['atpLicenseExpirationHj'] != "") {
+            $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $orgInfo['atpLicenseExpirationHj']);
+            $orgInfo['atpLicenseExpirationHj'] = $date;
         }
 
         /**
@@ -536,7 +549,7 @@ class Organization
      * Get required roles
      * 
      * @access public
-     * @param int $organizationType
+     * @param int $organizationTypes
      * 
      * @return array required roles
      */
@@ -690,11 +703,11 @@ class Organization
             "email" => $userEmail,
         );
         if ($editFlag === false) {
-            $templateName = MailTempates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_ORGANIZATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_ORGANIZATION_NOTIFICATION_SUBJECT;
         }
         else {
-            $templateName = MailTempates::UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::UPDATED_ORGANIZATION_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::UPDATED_ORGANIZATION_NOTIFICATION_SUBJECT;
         }
         $notificationMailArray = array(
@@ -710,7 +723,7 @@ class Organization
             $welcomeKitMailArray = array(
                 'to' => $operationsEmail,
                 'from' => $from,
-                'templateName' => MailTempates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
+                'templateName' => MailTemplates::NEW_ORGANIZATION_WELCOME_KIT_TEMPLATE,
                 'templateParameters' => $templateParameters,
                 'subject' => MailSubjects::NEW_ORGANIZATION_WELCOME_KIT_SUBJECT,
             );
@@ -959,10 +972,10 @@ class Organization
      * @param Int $metaId
      * @return FORM
      */
-    public function getCustomizedRenewalForm($action, $organizationId, $metaId)
+    public function getCustomizedRenewalForm($action, $organizationId, $metaId, $options)
     {
 
-        $form = new \Organizations\Form\RenewForm();
+        $form = new \Organizations\Form\RenewForm(null, $options);
         $atpFields = $action->getServiceLocator()->get('Config')['AtpRenewalFields'];
         $atcFields = $action->getServiceLocator()->get('Config')['AtcRenewalFields'];
 
@@ -1018,7 +1031,7 @@ class Organization
                 $isAdminUser = true;
             }
         }
-
         $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
+
 }

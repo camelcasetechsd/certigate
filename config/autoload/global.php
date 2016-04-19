@@ -84,5 +84,8 @@ return array(
     ),
     'website' => array(
         'host' => 'local-certigate.com'
+    ),
+    'quote' => array(
+        'expireAfterDays' => 10
     )
 );

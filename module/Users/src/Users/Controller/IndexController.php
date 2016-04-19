@@ -129,11 +129,7 @@ class IndexController extends ActionController
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
-        // remove captcha if admin
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
         
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
@@ -237,10 +233,7 @@ class IndexController extends ActionController
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
         $form = new UserForm(/* $name = */ null, $options);
 
         $request = $this->getRequest();

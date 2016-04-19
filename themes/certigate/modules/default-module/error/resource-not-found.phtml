@@ -3,7 +3,8 @@
 {{$content}}
 <div>
     <div class="alert alert-danger">
-        {{#translate}}Resource Not Found{{/translate}} !
+        {{#message}}{{#translate}}{{message}}{{/translate}}{{/message}}
+        {{^message}}{{#translate}}Resource Not Found{{/translate}} !{{/message}}
     </div>
 </div>
 

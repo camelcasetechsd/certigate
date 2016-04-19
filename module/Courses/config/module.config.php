@@ -2,6 +2,10 @@
 
 namespace Courses;
 
+use Courses\Entity\PublicQuote;
+use Courses\Entity\PrivateQuote;
+
+$quoteTypeConstraint = "(".strtolower(PublicQuote::QUOTE_TYPE)."|".strtolower(PrivateQuote::QUOTE_TYPE).")";
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
@@ -23,6 +27,10 @@ return array(
             'Courses\Model\Outline' => 'Courses\Model\OutlineFactory',
             'Courses\Model\Exam' => 'Courses\Model\ExamFactory',
             'Courses\Model\Vote' => 'Courses\Model\VoteFactory',
+            'Courses\Model\Quote' => 'Courses\Model\QuoteFactory',
+            'Courses\Model\PublicQuote' => 'Courses\Model\PublicQuoteFactory',
+            'Courses\Model\PrivateQuote' => 'Courses\Model\PrivateQuoteFactory',
+            'Courses\Service\QuoteGenerator' => 'Courses\Service\QuoteGeneratorFactory',
         )
     ),
     'doctrine' => array(
@@ -52,6 +60,15 @@ return array(
                             'action' => 'updateTvtcStatus'
                         )
                     )
+                ),
+                'quoteCleanup' => array(
+                    'options' => array(
+                        'route' => 'quoteCleanup [--verbose|-v] ',
+                        'defaults' => array(
+                            'controller' => 'Courses\Controller\Quote',
+                            'action' => 'cleanup'
+                        )
+                    )
                 )
             )
         )
@@ -63,10 +80,76 @@ return array(
             'Courses\Controller\Exam' => 'Courses\Controller\ExamController',
             'Courses\Controller\Outline' => 'Courses\Controller\OutlineController',
             'Courses\Controller\CourseEvent' => 'Courses\Controller\CourseEventController',
+            'Courses\Controller\Quote' => 'Courses\Controller\QuoteController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'quote' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'index',
+                    ),
+                )
+            ),
+            'quoteTraining' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote/training/:type',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'training',
+                    ),
+                    'constraints' => array(
+                        'type' => $quoteTypeConstraint,
+                    ),
+                )
+            ),
+            'quoteProcess' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote/process/:type/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'process',
+                    ),
+                    'constraints' => array(
+                        'type' => $quoteTypeConstraint,
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'quoteDelete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote/delete/:type/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'delete',
+                    ),
+                    'constraints' => array(
+                        'type' => $quoteTypeConstraint,
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'quoteDownload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/quote/download/:type/:id',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Quote',
+                        'action' => 'download',
+                    ),
+                    'constraints' => array(
+                        'type' => $quoteTypeConstraint,
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
             'courseEvents' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -319,12 +402,15 @@ return array(
             'coursesInstructorTraining' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/instructor-training',
+                    'route' => '/courses/instructor-training[/:token]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Course',
                         'action' => 'instructorTraining',
                     ),
-                )
+                ),
+                'constraints' => array(
+                    'token' => '[0-9a-zA-Z]+',
+                ),
             ),
             'coursesMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',

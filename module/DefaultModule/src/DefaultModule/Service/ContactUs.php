@@ -2,7 +2,7 @@
 
 namespace DefaultModule\Service;
 
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Notifications\Service\MailSubjects;
@@ -75,7 +75,7 @@ class ContactUs
         $mailArray = array(
             'to' => $toArray,
             'from' => $data['email'],
-            'templateName' => MailTempates::CONTACT_US_TEMPLATE,
+            'templateName' => MailTemplates::CONTACT_US_TEMPLATE,
             'templateParameters' => array(
                 "data" => $data,
             ),

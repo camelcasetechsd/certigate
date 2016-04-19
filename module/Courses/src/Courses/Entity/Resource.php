@@ -7,6 +7,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Random;
+use Utilities\Service\File;
 
 /**
  * Resource Entity
@@ -58,6 +59,43 @@ class Resource
      */
     const TYPE_EXAMS = "Exams";
 
+    /**
+     * Standards resource type
+     */
+    const TYPE_STANDARDS = "Standards";
+
+    /**
+     * Course Updates resource type
+     */
+    const TYPE_COURSE_UPDATES = "Course Updates";
+
+    /**
+     * Ice Breakers resource type
+     */
+    const TYPE_ICE_BREAKERS = "Ice Breakers";
+
+    /**
+     *
+     * @var array types that accept only one file 
+     */
+    public static $oneFileTypes = array(
+        self::TYPE_STANDARDS,
+        self::TYPE_ICE_BREAKERS
+    );
+
+    /**
+     *
+     * @var array types of all resources 
+     */
+    public static $types = array(
+            self::TYPE_PRESENTATIONS,
+            self::TYPE_ACTIVITIES,
+            self::TYPE_EXAMS,
+            self::TYPE_COURSE_UPDATES,
+            self::TYPE_STANDARDS,
+            self::TYPE_ICE_BREAKERS,
+        );
+    
     /**
      *
      * @var InputFilter validation constraints 
@@ -438,13 +476,8 @@ class Resource
             $DirSep = DIRECTORY_SEPARATOR;
             $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
-            if (!file_exists($target)) {
-                // PHP takes 0777 and substracts the current value of umask
-                $oldUmask = umask(0);
-                mkdir($target, 0777);
-                // return back umask to it's original value
-                umask($oldUmask);
-            }
+            File::createDir($target);
+            
             if (is_string($name) && strlen($name) > 0) {
                 $target .= $name . "_" . $unique;
                 $useUploadName = false;

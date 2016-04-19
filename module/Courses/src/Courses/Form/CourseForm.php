@@ -41,7 +41,7 @@ class CourseForm extends Form
         unset($options['query']);
         parent::__construct($name, $options);
 
-        // The form will hydrate an object of type "BlogPost"
+        // The form will hydrate an object of type "Outline"
         $this->setHydrator(new DoctrineHydrator($this->query->entityManager));
 
         $this->setAttribute('class', 'form form-horizontal');

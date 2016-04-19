@@ -6,7 +6,7 @@ use Organizations\Entity\Organization;
 use Utilities\Service\DateNames;
 use Utilities\Service\Status;
 use Utilities\Service\Time;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
@@ -132,15 +132,21 @@ class OrganizationMeta
 
         if ((int) $type == Organization::TYPE_ATC || (int) $type == Organization::TYPE_ATP) {
             //finding which Expiration date needed  
-            $dateName = $this->getDateName((int) $type);
-            $dateValidation = $this->validateDate($data[$dateName], null);
-            $orgMeta->setExpirationFlag($dateValidation);
-            $orgMeta->setExpirationDate($data[$dateName]);
+            $dates = $this->getDateName((int) $type);
+            // if for case of edit organization
+            if (isset($data[$dates['gregorian']]) || isset($data[$dates['hijri']])) {
+                // validate flag with only gregorian date
+                $dateValidation = $this->validateDate($data[$dates['gregorian']], null);
+                $orgMeta->setExpirationFlag($dateValidation);
+                $orgMeta->setExpirationDate($data[$dates['gregorian']]);
+                $orgMeta->setExpirationDateHj($data[$dates['hijri']]);
+            }
         }
         else {
             // if type 3 or 4 they can not expire (has no expiration date)
             $orgMeta->setExpirationFlag(Status::STATUS_NOT_YET_EXPIRED);
             $orgMeta->setExpirationDate(null);
+            $orgMeta->setExpirationDateHj(null);
         }
         return $orgMeta;
     }
@@ -152,15 +158,18 @@ class OrganizationMeta
      */
     private function getDateName($type)
     {
+        $dates = array();
         switch ((int) $type) {
             case Organization::TYPE_ATC :
-                $dateName = DateNames::ATC_EXPIRATION_DATE;
+                $dates['gregorian'] = DateNames::ATC_EXPIRATION_DATE;
+                $dates['hijri'] = DateNames::HIJRI_ATC_EXPIRATION_DATE;
                 break;
             case Organization::TYPE_ATP :
-                $dateName = DateNames::ATP_EXPIRATION_DATE;
+                $dates['gregorian'] = DateNames::ATP_EXPIRATION_DATE;
+                $dates['hijri'] = DateNames::HIJRI_ATP_EXPIRATION_DATE;
                 break;
         }
-        return $dateName;
+        return $dates;
     }
 
     /**
@@ -228,7 +237,7 @@ class OrganizationMeta
         $notificationMailArray = array(
             'to' => /* $organization->getOrganization()->getEmail() */ 'ahmedredamohamed01@gamil.com',
             'from' => /* $operationsEmail */'anawany@yahoo.com',
-            'templateName' => MailTempates::ORGANIZATION_RENEWAL_TEMPLATE,
+            'templateName' => MailTemplates::ORGANIZATION_RENEWAL_TEMPLATE,
             'templateParameters' => array(
                 'name' => $organization->getOrganization()->getCommercialName(),
                 'type' => $organization->getType() == Organization::TYPE_ATC ? Organization::TYPE_ATC : Organization::TYPE_ATP,

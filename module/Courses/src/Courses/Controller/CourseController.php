@@ -43,14 +43,7 @@ class CourseController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-        }
+        $isAdminUser = $this->isAdminUser();
         $data = $query->findAll(/* $entityName = */'Courses\Entity\Course');
         $variables['courses'] = $objectUtilities->prepareForDisplay($data);
         $variables['isAdminUser'] = $isAdminUser;
@@ -119,10 +112,12 @@ class CourseController extends ActionController
     public function instructorTrainingAction()
     {
         $variables = array();
+        $token = $this->params('token');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
-
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+        $courseEventModel->approveEnroll($token);
+        
         $criteria = Criteria::create();
         $expr = Criteria::expr();
         $criteria->setMaxResults($maxResults = 1)
@@ -133,13 +128,13 @@ class CourseController extends ActionController
 
         if (count($data) == 0) {
             $this->getResponse()->setStatusCode(302);
-            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_INSTRUCTOR_FOUND"), array('name' => 'resource_not_found'));
             $this->redirect()->toUrl($url);
         }
         else {
 
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
-            $preparedCourseArray = $courseModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($data));
+            $preparedCourseArray = $courseEventModel->setCourseEventsPrivileges($objectUtilities->prepareForDisplay($data));
             $preparedCourse = reset($preparedCourseArray);
 
             $resources = $preparedCourse->getResources();
@@ -354,12 +349,7 @@ class CourseController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $course = $query->find('Courses\Entity\Course', $id);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
 
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);

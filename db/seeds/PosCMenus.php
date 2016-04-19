@@ -112,6 +112,11 @@ class PosCMenus extends AbstractSeed
                                         "weight" => 1,
                                         "children" => [
                                             [
+                                                "title" => "Request Quotation",
+                                                "titleAr" => "Request Quotation",
+                                                "path" => "/quote/training/public",
+                                            ],
+                                            [
                                                 // need to be specific 
                                                 // not implemented yet
                                                 "title" => "Course Evaluation",
@@ -121,10 +126,29 @@ class PosCMenus extends AbstractSeed
                                         ]
                                     ],
                                     [
+                                        "title" => "Private Training",
+                                        "titleAr" => "Private Training",
+                                        "path" => "#",
+                                        "weight" => 2,
+                                        "children" => [
+                                            [
+                                                "title" => "Request Quotation",
+                                                "titleAr" => "Request Quotation",
+                                                "path" => "/quote/training/private",
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "title" => "Training Quotations",
+                                        "titleAr" => "Training Quotations",
+                                        "path" => "/quote",
+                                        "weight" => 3,
+                                    ],
+                                    [
                                         "title" => "Course Calendar",
                                         "titleAr" => "Course Calendar",
                                         "path" => "/courses/calendar",
-                                        "weight" => 2,
+                                        "weight" => 4,
                                         "children" => [
                                             [
                                                 "title" => "Register",
@@ -466,7 +490,7 @@ class PosCMenus extends AbstractSeed
         $menuItem['parent_id'] = $parentId;
         $menuItem['menu_id'] = $primaryMenuId;
         $menuItem['title'] = $item['title'];
-        $menuItem['titleAr'] = $item['titleAr'];
+        $menuItem['titleAr'] = $item['titleAr'] . ' ar';
         $menuItem['weight'] = (isset($item['weight'])) ? $item['weight'] : 1;
         $menuItem['status'] = true;
 
@@ -486,7 +510,7 @@ class PosCMenus extends AbstractSeed
 
         $this->insert('page', [
             'title' => $item['title'],
-            'titleAr' => $item['titleAr'],
+            'titleAr' => $item['titleAr'] . ' ar',
             'path' => $item['path'],
             'status' => TRUE,
             'body' => base64_encode(bzcompress($faker->text)),

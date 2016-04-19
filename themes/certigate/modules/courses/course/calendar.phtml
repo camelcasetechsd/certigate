@@ -13,7 +13,7 @@
                 <div class="panel-default">
 
 
-                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{name}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">Download Outlines</a> <!-- &nbsp; <a href="#">Periodical Notification</a> --></div></div>
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{name}} / {{nameAr}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a> <!-- &nbsp; <a href="#">{{#translate}}Periodical Notification{{/translate}}</a> --></div></div>
                     </div><div class="clearfix"></div>
                     <div>
                         <p>{{brief}}</p>
@@ -39,6 +39,7 @@
                         <tbody>
                             {{#courseEvents}}
                                 {{^hideFromCalendar}}
+                                {{^alreadyStarted}}
                                 <tr>
                                     <td>
                                         {{startDate}}
@@ -66,10 +67,11 @@
                                         {{/canLeave}}
                                         {{#isFull}}
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Course Full
+                                        {{#translate}}Course Full{{/translate}}
                                         {{/isFull}}
                                     </td>
                                 </tr>
+                                {{/alreadyStarted}}
                                 {{/hideFromCalendar}}
                             {{/courseEvents}}
 
@@ -77,7 +79,7 @@
                     </table>
                     {{/courseEvents.count}}
 
-                    
+
                 </div>
             </div>
             <hr>

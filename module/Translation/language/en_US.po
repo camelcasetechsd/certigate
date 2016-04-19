@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-03-29 14:17+0200\n"
+"PO-Revision-Date: 2016-04-13 15:36+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: English\n"
@@ -1124,3 +1124,184 @@ msgstr "Instructors"
 
 msgid "User Details"
 msgstr "User Details"
+
+msgid "Course Full"
+msgstr "Course Full"
+
+msgid "Name in Arabic"
+msgstr "Name in Arabic"
+
+msgid "Brief in Arabic"
+msgstr "Brief in Arabic"
+
+msgid "Duration (minutes)"
+msgstr "Duration (minutes)"
+
+msgid "Process Quote"
+msgstr "Process Quote"
+
+msgid "Course Name in Arabic"
+msgstr "Course Name in Arabic"
+
+msgid "User Name in Arabic"
+msgstr "User Name in Arabic"
+
+msgid "Instructor"
+msgstr "Instructor"
+
+msgid "ATP Name"
+msgstr "ATP Name"
+
+msgid "ATP City"
+msgstr "ATP City"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "No training found for instructor!"
+msgstr "No training found for instructor!"
+
+msgid "Standards"
+msgstr "Standards"
+
+msgid "Course Updates"
+msgstr "Course Updates"
+
+msgid "Ice Breakers"
+msgstr "Ice Breakers"
+
+msgid "Instructor in Arabic"
+msgstr "Instructor in Arabic"
+
+msgid "ATP Name in Arabic"
+msgstr "ATP Name in Arabic"
+
+msgid "ATP City in Arabic"
+msgstr "ATP City in Arabic"
+
+msgid "Venue"
+msgstr "Venue"
+
+msgid "Preferred Date"
+msgstr "Preferred Date"
+
+msgid "Seats No"
+msgstr "Seats No"
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Unit Price"
+msgstr "Unit Price"
+
+msgid "Discount"
+msgstr "Discount"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Filter Quotations"
+msgstr "Filter Quotations"
+
+msgid "Quotations"
+msgstr "Quotations"
+
+msgid "Public Training"
+msgstr "Public Training"
+
+msgid "Private Training"
+msgstr "Private Training"
+
+msgid "Current Payment"
+msgstr "Current Payment"
+
+msgid "Public quote invoice"
+msgstr "Public quote invoice"
+
+msgid "Public quote with unacceptable payment"
+msgstr "Public quote with unacceptable payment"
+
+msgid "Public quote"
+msgstr "Public quote"
+
+msgid "Public quote cancelled"
+msgstr "Public quote cancelled"
+
+msgid "Private quote invoice"
+msgstr "Private quote invoice"
+
+msgid "Private quote with unacceptable payment"
+msgstr "Private quote with unacceptable payment"
+
+msgid "Private quote"
+msgstr "Private quote"
+
+msgid "Private quote cancelled"
+msgstr "Private quote cancelled"
+
+msgid "Public quote has wire transfer"
+msgstr "Public quote has wire transfer"
+
+msgid "New public quote"
+msgstr "New public quote"
+
+msgid "Private quote has wire transfer"
+msgstr "Private quote has wire transfer"
+
+msgid "New private quote"
+msgstr "New private quote"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Pending Repayment"
+msgstr "Pending Repayment"
+
+msgid "Pending Review"
+msgstr "Pending Review"
+
+msgid "Pending Payment"
+msgstr "Pending Payment"
+
+msgid "Pending Pricing"
+msgstr "Pending Pricing"
+
+msgid "Accept"
+msgstr "Accept"
+
+msgid "Decline"
+msgstr "Decline"
+
+msgid "Reserve"
+msgstr "Reserve"
+
+msgid "Process"
+msgstr "Process"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Public"
+msgstr "Public"
+
+msgid "Private"
+msgstr "Private"
+
+msgid "Hotel / Other venue"
+msgstr "Hotel / Other venue"
+
+msgid "Company premises"
+msgstr "Company premises"
+
+msgid "Customer premises"
+msgstr "Customer premises"
+
+msgid "Course does not have enough seats"
+msgstr "Course does not have enough seats"
+
+msgid ""
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
+"png,jpg,jpeg</p>"
+msgstr ""
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
+"png,jpg,jpeg</p>"

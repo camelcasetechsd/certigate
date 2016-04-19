@@ -39,9 +39,10 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-    {{#addResourcesValidation}}
-    addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
-    {{/addResourcesValidation}}
+        addMoreListener('#resource_form_addMore', '#resource_form_type', '{{{oneFileTypes}}}');
+        {{#addResourcesValidation}}
+        addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
+        {{/addResourcesValidation}}
     });
 </script>
 {{/scripts}}

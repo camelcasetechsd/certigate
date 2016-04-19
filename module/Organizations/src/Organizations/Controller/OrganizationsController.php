@@ -206,9 +206,11 @@ class OrganizationsController extends ActionController
         $organizationId = $this->params('organizationId');
         $metaId = $this->params('metaId');
         $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-
+        $options=array();
+        $options['query'] = $this->getServiceLocator()->get('wrapperQuery');
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         if ($OrganizationModel->canBeRenewed($this, $organizationId, $metaId)) {
-            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId));
+            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId,$options));
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -334,15 +336,7 @@ class OrganizationsController extends ActionController
         $crAttachment = $orgObj->CRAttachment;
         $oldStatus = $orgObj->getStatus();
 //
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-
-        $isAdminUser = false;
-        if ($auth->hasIdentity()) {
-            if (in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-                $isAdminUser = true;
-            }
-        }
+        $isAdminUser = $this->isAdminUser();
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
 
@@ -352,7 +346,7 @@ class OrganizationsController extends ActionController
         $options['staticOss'] = OrgEntity::getOSs();
         $options['staticOfficeVersions'] = OrgEntity::getOfficeVersions();
         $options['applicationLocale'] = $applicationLocale;
-        
+
         $customizedForm = $orgModel->customizeOrgEditForm($options, $this, $id);
         $customizedForm->bind($orgObj);
 
@@ -495,12 +489,7 @@ class OrganizationsController extends ActionController
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $id);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $isAdminUser = false;
-        if ($auth->hasIdentity() && in_array(Role::ADMIN_ROLE, $storage['roles'])) {
-            $isAdminUser = true;
-        }
+        $isAdminUser = $this->isAdminUser();
 
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);

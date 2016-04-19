@@ -77,9 +77,12 @@ class RendererFactory implements FactoryInterface
             $roles = $storage['roles'];
             $config['helpers']['loggedInUsername'] = $storage['username'];
         }
+        $isAdminUser = false;
         if (isset($roles) && in_array(Role::ADMIN_ROLE, $roles)) {
+            $isAdminUser = true;
             $adminMenu = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED, Menu::ADMIN_MENU_UNDERSCORED);
             $config['helpers']['adminMenu'] = isset($adminMenu[Menu::ADMIN_MENU_UNDERSCORED]) ? $adminMenu[Menu::ADMIN_MENU_UNDERSCORED] : '';
+            $config['helpers']['isAdminUser'] = $isAdminUser;
         }
         
         // add current language helper

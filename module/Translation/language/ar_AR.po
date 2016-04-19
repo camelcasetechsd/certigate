@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-03-29 14:17+0200\n"
+"PO-Revision-Date: 2016-04-17 13:56+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: Arabic\n"
@@ -1124,3 +1124,265 @@ msgstr "Instructors ar"
 
 msgid "User Details"
 msgstr "User Details ar"
+
+msgid "Course Full"
+msgstr "Course Full ar"
+
+msgid "Name in Arabic"
+msgstr "Name in Arabic ar"
+
+msgid "Brief in Arabic"
+msgstr "Brief in Arabic ar"
+
+msgid "Duration (minutes)"
+msgstr "Duration (minutes) ar"
+
+msgid "Process Quote"
+msgstr "Process Quote ar"
+
+msgid "Course Name in Arabic"
+msgstr "Course Name in Arabic ar"
+
+msgid "User Name in Arabic"
+msgstr "User Name in Arabic ar"
+
+msgid "Instructor"
+msgstr "Instructor ar"
+
+msgid "ATP Name"
+msgstr "ATP Name ar"
+
+msgid "ATP City"
+msgstr "ATP City ar"
+
+msgid "Cancel"
+msgstr "Cancel ar"
+
+msgid "No training found for instructor!"
+msgstr "No training found for instructor! ar"
+
+msgid "Standards"
+msgstr "Standards ar"
+
+msgid "Course Updates"
+msgstr "Course Updates ar"
+
+msgid "Ice Breakers"
+msgstr "Ice Breakers ar"
+
+msgid "Instructor in Arabic"
+msgstr "Instructor in Arabic ar"
+
+msgid "ATP Name in Arabic"
+msgstr "ATP Name in Arabic ar"
+
+msgid "ATP City in Arabic"
+msgstr "ATP City in Arabic ar"
+
+msgid "Venue"
+msgstr "Venue ar"
+
+msgid "Preferred Date"
+msgstr "Preferred Date ar"
+
+msgid "Seats No"
+msgstr "Seats No ar"
+
+msgid "Price"
+msgstr "Price ar"
+
+msgid "Unit Price"
+msgstr "Unit Price ar"
+
+msgid "Discount"
+msgstr "Discount ar"
+
+msgid "Total"
+msgstr "Total ar"
+
+msgid "Filter Quotations"
+msgstr "Filter Quotations ar"
+
+msgid "Quotations"
+msgstr "Quotations ar"
+
+msgid "Public Training"
+msgstr "Public Training ar"
+
+msgid "Private Training"
+msgstr "Private Training ar"
+
+msgid "Current Payment"
+msgstr "Current Payment ar"
+
+msgid "Public quote invoice"
+msgstr "Public quote invoice ar"
+
+msgid "Public quote with unacceptable payment"
+msgstr "Public quote with unacceptable payment ar"
+
+msgid "Public quote"
+msgstr "Public quote ar"
+
+msgid "Public quote cancelled"
+msgstr "Public quote cancelled ar"
+
+msgid "Private quote invoice"
+msgstr "Private quote invoice ar"
+
+msgid "Private quote with unacceptable payment"
+msgstr "Private quote with unacceptable payment ar"
+
+msgid "Private quote"
+msgstr "Private quote ar"
+
+msgid "Private quote cancelled"
+msgstr "Private quote cancelled ar"
+
+msgid "Public quote has wire transfer"
+msgstr "Public quote has wire transfer ar"
+
+msgid "New public quote"
+msgstr "New public quote ar"
+
+msgid "Private quote has wire transfer"
+msgstr "Private quote has wire transfer ar"
+
+msgid "New private quote"
+msgstr "New private quote ar"
+
+msgid "Cancelled"
+msgstr "Cancelled ar"
+
+msgid "Pending Repayment"
+msgstr "Pending Repayment ar"
+
+msgid "Pending Review"
+msgstr "Pending Review ar"
+
+msgid "Pending Payment"
+msgstr "Pending Payment ar"
+
+msgid "Pending Pricing"
+msgstr "Pending Pricing ar"
+
+msgid "Accept"
+msgstr "Accept ar"
+
+msgid "Decline"
+msgstr "Decline ar"
+
+msgid "Reserve"
+msgstr "Reserve ar"
+
+msgid "Process"
+msgstr "Process ar"
+
+msgid "Filter"
+msgstr "Filter ar"
+
+msgid "Public"
+msgstr "Public ar"
+
+msgid "Private"
+msgstr "Private ar"
+
+msgid "Hotel / Other venue"
+msgstr "Hotel / Other venue ar"
+
+msgid "Company premises"
+msgstr "Company premises ar"
+
+msgid "Customer premises"
+msgstr "Customer premises ar"
+
+msgid "Course does not have enough seats"
+msgstr "Course does not have enough seats ar"
+
+msgid ""
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
+"png,jpg,jpeg</p>"
+msgstr ""
+"<p class=\"required\">Wire Transfer ar</p> <p>Supported Extensions: zip,pdf,"
+"gif,png,jpg,jpeg</p>"
+
+msgid "Create new Category"
+msgstr "Create new Category ar"
+
+msgid "Categories"
+msgstr "Categories ar"
+
+msgid "Weight"
+msgstr "Weight ar"
+
+msgid "Warning"
+msgstr "Warning ar"
+
+msgid "This category may have sub-Categories"
+msgstr "This category may have sub-Categories ar"
+
+msgid "This category has No sub-Categories"
+msgstr "This category has No sub-Categories ar"
+
+msgid "New Issues Category"
+msgstr "New Issues Category ar"
+
+msgid "Edit Issue Category"
+msgstr "Edit Issue Category ar"
+
+msgid "Create new Issue"
+msgstr "Create new Issue ar"
+
+msgid "Reported Issues"
+msgstr "Reported Issues ar"
+
+msgid "parents"
+msgstr "parents ar"
+
+msgid "close"
+msgstr "close ar"
+
+msgid "Are you sure you want to close this issue"
+msgstr "Are you sure you want to close this issue ar"
+
+msgid "Are you sure you want to reopen this issue"
+msgstr "Are you sure you want to reopen this issue ar"
+
+msgid "Dismiss this message"
+msgstr "Dismiss this message ar"
+
+msgid "Close Issue"
+msgstr "Close Issue ar"
+
+msgid "reopen"
+msgstr "reopen ar"
+
+msgid "Reopen Issue"
+msgstr "Reopen Issue ar"
+
+msgid "Are you sure you want to delete this issue"
+msgstr "Are you sure you want to delete this issue ar"
+
+msgid "Delete Issue"
+msgstr "Delete Issue ar"
+
+msgid "New Issue"
+msgstr "New Issue ar"
+
+msgid "Issue has no attachments"
+msgstr "Issue has no attachments ar"
+
+msgid "Are you sure you want to delete this comment"
+msgstr "Are you sure you want to delete this comment ar"
+
+msgid "Delete comment"
+msgstr "Delete comment ar"
+
+msgid "Bad request ... you cant edit this comment"
+msgstr "Bad request ... you cant edit this comment ar"
+
+msgid ">"
+msgstr "<"
+
+msgid "Attachments"
+msgstr "Attachments ar"

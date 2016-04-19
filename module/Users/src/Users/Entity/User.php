@@ -35,6 +35,7 @@ use Zend\Validator\Identical;
  * @property string $password
  * @property string $mobile
  * @property \DateTime $dateOfBirth
+ * @property \DateTime $dateOfBirthHj
  * @property string $addressOne
  * @property string $addressOneAr
  * @property string $addressTwo
@@ -46,6 +47,7 @@ use Zend\Validator\Identical;
  * @property string $identificationType
  * @property string $identificationNumber
  * @property \DateTime $identificationExpiryDate
+ * @property \DateTime $identificationExpiryDateHj
  * @property string $email
  * @property string $securityQuestion
  * @property string $securityAnswer
@@ -60,6 +62,8 @@ use Zend\Validator\Identical;
  * @property int $status
  * @property int $customerId
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
+ * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
  * 
  * @package users
  * @subpackage entity
@@ -237,6 +241,13 @@ class User
 
     /**
      *
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $identificationExpiryDateHj;
+
+    /**
+     *
      * @ORM\Column(type="string" , unique=true)
      * @var string
      */
@@ -262,6 +273,13 @@ class User
      * @var \DateTime
      */
     public $dateOfBirth;
+
+    /**
+     * hijri date
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $dateOfBirthHj;
 
     /**
      *
@@ -326,6 +344,18 @@ class User
     public $courseEventUsers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PublicQuote", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $publicQuotes;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="user")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $privateQuotes;
+    
+    /**
      *
      * @ORM\Column(type="integer")
      * @var int
@@ -343,11 +373,16 @@ class User
     public $votes;
 
     /**
+     * @ORM\OneToMany(targetEntity="IssueTracker\Entity\Issue", mappedBy="user")
+     */
+    public $issues;
+
+    /**
      * @ORM\Column(type="integer", nullable=false);
      * @var int
      */
     public $customerId;
-    
+
     /**
      * hash password
      * 
@@ -396,6 +431,9 @@ class User
         $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->publicQuotes = new ArrayCollection();
+        $this->privateQuotes = new ArrayCollection();
+        $this->issues = new ArrayCollection();
     }
 
     /**
@@ -423,6 +461,18 @@ class User
     }
 
     /**
+     * Get dateOfBirth
+     * 
+     * 
+     * @access public
+     * @return \DateTime dateOfBirth
+     */
+    public function getDateOfBirthHj()
+    {
+        return $this->dateOfBirthHj;
+    }
+
+    /**
      * Get mobile
      * 
      * 
@@ -445,7 +495,7 @@ class User
     {
         return $this->firstName;
     }
-    
+
     /**
      * Get firstNameAr
      * 
@@ -544,6 +594,23 @@ class User
             $fullName .= " " . $this->getMiddleName();
         }
         $fullName .= " " . $this->getLastName();
+        return $fullName;
+    }
+
+    /**
+     * Get fullName in arabic
+     * 
+     * 
+     * @access public
+     * @return string fullName
+     */
+    public function getFullNameAr()
+    {
+        $fullName = $this->getFirstNameAr();
+        if (!empty($this->getMiddleNameAr())) {
+            $fullName .= " " . $this->getMiddleNameAr();
+        }
+        $fullName .= " " . $this->getLastNameAr();
         return $fullName;
     }
 
@@ -851,6 +918,18 @@ class User
     }
 
     /**
+     * Get identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @return \DateTime identificationExpiryDate
+     */
+    public function getIdentificationExpiryDateHj()
+    {
+        return $this->identificationExpiryDateHj;
+    }
+
+    /**
      * Get email
      * 
      * 
@@ -897,6 +976,21 @@ class User
     public function setDateOfBirth($dateOfBirth)
     {
         $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
+        return $this;
+    }
+
+
+    /**
+     * Set dateOfBirth
+     * 
+     * 
+     * @access public
+     * @param \DateTime $dateOfBirthHj
+     * @return User current entity
+     */
+    public function setDateOfBirthHj($dateOfBirthHj)
+    {
+        $this->dateOfBirthHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirthHj);
         return $this;
     }
 
@@ -1349,6 +1443,20 @@ class User
     }
 
     /**
+     * Set identificationExpiryDate
+     * 
+     * 
+     * @access public
+     * @param \DateTime $identificationExpiryDateHj
+     * @return User current entity
+     */
+    public function setIdentificationExpiryDateHj($identificationExpiryDateHj)
+    {
+        $this->identificationExpiryDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDateHj);
+        return $this;
+    }
+
+    /**
      * Set email
      * 
      * 
@@ -1455,6 +1563,59 @@ class User
         $this->customerId = $customerId;
         return $this;
     }
+
+    /**
+     * Get PublicQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection publicQuotes
+     */
+    public function getPublicQuotes()
+    {
+        return $this->publicQuotes;
+    }
+
+    /**
+     * Set PublicQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $publicQuotes
+     * @return User
+     */
+    public function setPublicQuotes($publicQuotes)
+    {
+        $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    
+    /**
+     * Get PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection privateQuotes
+     */
+    public function getPrivateQuotes()
+    {
+        return $this->privateQuotes;
+    }
+
+    /**
+     * Set PrivateQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $privateQuotes
+     * @return User
+     */
+    public function setPrivateQuotes($privateQuotes)
+    {
+        $this->privateQuotes = $privateQuotes;
+        return $this;
+    }
     
     /**
      * Convert the object to an array.
@@ -1493,6 +1654,7 @@ class User
             $this->setCustomerId($data["customerId"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
+                ->setDateOfBirthHj($data["dateOfBirthHj"])
                 ->setMobile($data["mobile"])
                 ->setFirstName($data["firstName"])
                 ->setFirstNameAr($data["firstNameAr"])
@@ -1510,6 +1672,7 @@ class User
                 ->setCity($data["city"])
                 ->setEmail($data["email"])
                 ->setIdentificationExpiryDate($data["identificationExpiryDate"])
+                ->setIdentificationExpiryDateHj($data["identificationExpiryDateHj"])
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
@@ -1691,6 +1854,18 @@ class User
                     )
                 )
             ));
+            $inputFilter->add(array(
+                'name' => 'dateOfBirthHj',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
+                    )
+                )
+            ));
 
             $inputFilter->add(array(
                 'name' => 'photo',
@@ -1729,7 +1904,7 @@ class User
                 'name' => 'addressTwoAr',
                 'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -1761,13 +1936,25 @@ class User
                 'name' => 'identificationType',
                 'required' => true,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
                 'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'identificationExpiryDate',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'identificationExpiryDateHj',
                 'required' => true,
                 'validators' => array(
                     array(

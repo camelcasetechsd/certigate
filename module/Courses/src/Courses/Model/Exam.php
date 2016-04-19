@@ -4,7 +4,7 @@ namespace Courses\Model;
 
 use System\Service\Cache\CacheHandler;
 use Notifications\Service\Notification;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Zend\View\Helper\ServerUrl;
 use Utilities\Service\Time;
 use System\Service\Settings;
@@ -125,6 +125,7 @@ class Exam
                     break;
             }
             $req->date = date_format($req->date, Time::DATE_FORMAT);
+            $req->dateHj = date_format($req->dateHj, Time::DATE_FORMAT);
         }
 
         return $requests;
@@ -176,12 +177,12 @@ class Exam
         );
         // if tctv mail
         if ($notificationEmailFlag === false) {
-            $templateName = MailTempates::EXAM_APPROVAL_REQUEST_TEMPLATE;
+            $templateName = MailTemplates::EXAM_APPROVAL_REQUEST_TEMPLATE;
             $subject = MailSubjects::EXAM_APPROVAL_REQUEST_SUBJECT;
         }
         // if admin mail
         else {
-            $templateName = MailTempates::NEW_EXAM_NOTIFICATION_TEMPLATE;
+            $templateName = MailTemplates::NEW_EXAM_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_EXAM_NOTIFICATION_SUBJECT;
         }
         $mailArray = array(

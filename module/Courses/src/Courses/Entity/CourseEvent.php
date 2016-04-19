@@ -31,6 +31,8 @@ use Utilities\Service\String;
  * @property int $optionValueId
  * @property int $status
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
+ * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
+ * @property Courses\Entity\PrivateQuote $privateQuote
  * @property Doctrine\Common\Collections\ArrayCollection $votes
  * @property \DateTime $created
  * @property \DateTime $modified
@@ -64,10 +66,17 @@ class CourseEvent
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $startDate;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date", nullable=true)
+     * @var \DateTime
+     */
+    public $startDateHj;
 
     /**
      * @Gedmo\Versioned
@@ -75,6 +84,13 @@ class CourseEvent
      * @var \DateTime
      */
     public $endDate;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $endDateHj;
 
     /**
      * @Gedmo\Versioned
@@ -134,30 +150,42 @@ class CourseEvent
     public $courseEventUsers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\PublicQuote", mappedBy="courseEvent")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $publicQuotes;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Courses\Entity\PrivateQuote", mappedBy="courseEvent")
+     * @var Courses\Entity\PrivateQuote
+     */
+    public $privateQuote;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\Vote", mappedBy="courseEvent")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $votes;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionId;
 
     /**
-     * @ORM\Column(type="integer", nullable=false);
+     * @ORM\Column(type="integer", nullable=true);
      * @var int
      */
     public $optionValueId;
-    
+
     /**
      * @Gedmo\Versioned
      * @ORM\Column(type="integer")
      * @var int
      */
     public $status;
-    
+
     /**
      * Prepare entity
      * 
@@ -167,6 +195,7 @@ class CourseEvent
     public function __construct()
     {
         $this->courseEventUsers = new ArrayCollection();
+        $this->publicQuotes = new ArrayCollection();
         $this->votes = new ArrayCollection();
     }
 
@@ -207,7 +236,7 @@ class CourseEvent
         $this->course = $course;
         return $this;
     }
-    
+
     /**
      * Get Start Date
      * 
@@ -221,6 +250,18 @@ class CourseEvent
     }
 
     /**
+     * Get Start Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime startDate
+     */
+    public function getStartDateHj()
+    {
+        return $this->startDateHj;
+    }
+
+    /*
      * Set Start Date
      * 
      * 
@@ -228,12 +269,30 @@ class CourseEvent
      * @param \DateTime $startDate
      * @return CourseEvent
      */
+
     public function setStartDate($startDate)
     {
         if (!is_object($startDate)) {
             $startDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDate);
         }
         $this->startDate = $startDate;
+        return $this;
+    }
+
+    /**
+     * Set Start Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $startDateHj
+     * @return CourseEvent
+     */
+    public function setStartDateHj($startDateHj)
+    {
+        if (!is_object($startDateHj)) {
+            $startDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $startDateHj);
+        }
+        $this->startDateHj = $startDateHj;
         return $this;
     }
 
@@ -250,6 +309,18 @@ class CourseEvent
     }
 
     /**
+     * Get End Date
+     * 
+     * 
+     * @access public
+     * @return \DateTime endDate
+     */
+    public function getEndDateHj()
+    {
+        return $this->endDateHj;
+    }
+
+    /**
      * Set End Date
      * 
      * 
@@ -263,6 +334,23 @@ class CourseEvent
             $endDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDate);
         }
         $this->endDate = $endDate;
+        return $this;
+    }
+
+    /**
+     * Set End Date
+     * 
+     * 
+     * @access public
+     * @param \DateTime $endDateHj
+     * @return CourseEvent
+     */
+    public function setEndDateHj($endDateHj)
+    {
+        if (!is_object($endDateHj)) {
+            $endDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $endDateHj);
+        }
+        $this->endDateHj = $endDateHj;
         return $this;
     }
 
@@ -471,7 +559,7 @@ class CourseEvent
         $this->status = $status;
         return $this;
     }
-    
+
     /**
      * Get CourseEventUsers
      * 
@@ -509,6 +597,59 @@ class CourseEvent
     public function setCourseEventUsers($courseEventUsers)
     {
         $this->courseEventUsers = $courseEventUsers;
+        return $this;
+    }
+    
+    
+    /**
+     * Get PublicQuotes
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection publicQuotes
+     */
+    public function getPublicQuotes()
+    {
+        return $this->publicQuotes;
+    }
+
+    /**
+     * Set PublicQuotes
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $publicQuotes
+     * @return CourseEvent
+     */
+    public function setPublicQuotes($publicQuotes)
+    {
+        $this->publicQuotes = $publicQuotes;
+        return $this;
+    }
+    
+    /**
+     * Get PrivateQuote
+     * 
+     * 
+     * @access public
+     * @return Courses\Entity\PrivateQuote privateQuote
+     */
+    public function getPrivateQuote()
+    {
+        return $this->privateQuote;
+    }
+
+    /**
+     * Set PrivateQuote
+     * 
+     * 
+     * @access public
+     * @param Courses\Entity\PrivateQuote $privateQuote
+     * @return CourseEvent
+     */
+    public function setPrivateQuote($privateQuote)
+    {
+        $this->privateQuote = $privateQuote;
         return $this;
     }
     
@@ -590,7 +731,7 @@ class CourseEvent
         return $this;
     }
 
-        /**
+    /**
      * Get detailed name
      * 
      * @access public
@@ -599,11 +740,11 @@ class CourseEvent
     public function getDetailedName()
     {
         $detailedName = $this->getCourse()->getName() . String::TEXT_SEPARATOR . "Start: " . $this->getStartDate()->format(Time::DATE_FORMAT)
-                            . " - End: " . $this->getEndDate()->format(Time::DATE_FORMAT)
-                            . " - ATP: " . $this->getAtp()->getCommercialName();
+                . " - End: " . $this->getEndDate()->format(Time::DATE_FORMAT)
+                . " - ATP: " . $this->getAtp()->getCommercialName();
         return $detailedName;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -637,13 +778,29 @@ class CourseEvent
         if (array_key_exists('optionValueId', $data)) {
             $this->setOptionValueId($data["optionValueId"]);
         }
-        $this->setAi($data["ai"])
-                ->setAtp($data["atp"])
-                ->setCapacity($data["capacity"])
-                ->setEndDate($data["endDate"])
-                ->setStartDate($data["startDate"])
-                ->setStudentsNo($data["studentsNo"])
-                ->setHideFromCalendar($data["hideFromCalendar"])
+        if (array_key_exists('ai', $data)) {
+            $this->setAi($data["ai"]);
+        }
+        if (array_key_exists('atp', $data)) {
+            $this->setAtp($data["atp"]);
+        }
+        if (array_key_exists('startDate', $data)) {
+            $this->setStartDate($data["startDate"]);
+        }
+        if (array_key_exists('endDate', $data)) {
+            $this->setEndDate($data["endDate"]);
+        }
+        if (array_key_exists('capacity', $data)) {
+            $this->setCapacity($data["capacity"]);
+        }
+        if (array_key_exists('studentsNo', $data)) {
+            $this->setStudentsNo($data["studentsNo"]);
+        }
+        if (array_key_exists('hideFromCalendar', $data)) {
+            $this->setHideFromCalendar($data["hideFromCalendar"]);
+        }
+        $this->setEndDateHj($data["endDateHj"])
+            ->setStartDateHj($data["startDateHj"])
         ;
     }
 
@@ -685,6 +842,15 @@ class CourseEvent
             ));
             $inputFilter->add(array(
                 'name' => 'endDate',
+                'required' => true,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'startDateHj',
+                'required' => true,
+            ));
+            $inputFilter->add(array(
+                'name' => 'endDateHj',
                 'required' => true,
             ));
             $inputFilter->add(array(

@@ -2,7 +2,7 @@
 {{<layout}}
 {{$content}}
 <br />
-<a href="/organizations/new?organization=2"><button class="btn btn-small btn-success create-new">{{#translate}}Create new ATP{{/translate}}</button></a>
+<a href="/organizations/new/{{atpTypeId}}"><button class="btn btn-small btn-success create-new">{{#translate}}Create new ATP{{/translate}}</button></a>
 <br/>
 <div class="panel panel-default atps-list">
     <div class="panel-heading">{{#translate}}ATPs{{/translate}}</div>
@@ -41,7 +41,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#isAdmin}}
                     {{#status}}
@@ -55,7 +55,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}?organization={{type}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#status}}
                     <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>

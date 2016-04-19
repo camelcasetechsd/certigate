@@ -5,6 +5,7 @@ namespace CMS\Entity;
 use Doctrine\ORM\EntityRepository;
 use CMS\Model\MenuItem as MenuItemModel;
 use Doctrine\ORM\Query\Expr\Join;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * MenuItem Repository
@@ -12,9 +13,25 @@ use Doctrine\ORM\Query\Expr\Join;
  * @package cms
  * @subpackage entity
  */
-class MenuItemRepository extends EntityRepository
+class MenuItemRepository extends EntityRepository 
 {
+    
+    /**
+     *
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
 
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+    
     /**
      * Get menu items sorted by menu and menu items' parents
      * 
@@ -63,8 +80,7 @@ class MenuItemRepository extends EntityRepository
         $menuItems = $queryBuilder->getQuery()->getResult();
 
         if ($select === "mt") {
-
-            $menuItemModel = new MenuItemModel();
+            $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
             $menuItemsTree = $menuItemModel->getSortedMenuItems( $menuItems, /* $root = */ 0, $treeFlag );
         } else {
             $menuItemsTree = $menuItems;
