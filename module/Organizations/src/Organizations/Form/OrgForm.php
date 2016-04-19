@@ -247,27 +247,87 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'label' => 'CR',
             ),
         ));
+        if ($this->applicationLocale->getCurrentLocale() == ApplicationLocale::LOCALE_AR_AR) {
 
-        $this->add(array(
-            'name' => 'CRExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter CR Expiration Date',
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'CR Expiration Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+            $this->add(array(
+                'name' => 'CRExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter CR Expiration ',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri CR Expiration Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'CRExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter CR Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'CR Expiration Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+            $this->add(array(
+                'name' => 'CRExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter CR Expiration',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri CR Expiration Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'CRExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter CR Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'CR Expiration Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'CRAttachment',
             'type' => 'Zend\Form\Element\File',
             'options' => array(
                 'label' => 'CR Attachment',
+                'required' => 'required',
+            ),
+            'attributes' => array(
+                'required' => true,
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'wireTransferAttachment',
+            'type' => 'Zend\Form\Element\File',
+            'options' => array(
+                'label' => 'Wire Transfer Attachment',
                 'required' => 'required',
             ),
             'attributes' => array(
@@ -459,23 +519,81 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-        $this->add(array(
-            'name' => 'atcLicenseExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter License Expiration Date',
-                'required' => 'required',
-                'class' => 'form-control date atcSet',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'ATC License Expiration Date',
-                'label_attributes' => array(
-                    'class' => 'atcSet',
+
+        if ($this->applicationLocale->getCurrentLocale() == ApplicationLocale::LOCALE_AR_AR) {
+
+            $this->add(array(
+                'name' => 'atcLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate-ar atcSet',
+                    'type' => 'text',
                 ),
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+                'options' => array(
+                    'label' => 'Hijri ATC License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atcSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'atcLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate-ar atcSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATC License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atcSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'atcLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate atcSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri ATC License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atcSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'atcLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate atcSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATC License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atcSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'atcLicenseAttachment',
@@ -644,23 +762,81 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
         ));
 
-        $this->add(array(
-            'name' => 'atpLicenseExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter License Expiration Date',
-                'required' => 'required',
-                'class' => 'form-control date atpSet ',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'ATP License Expiration Date',
-                'label_attributes' => array(
-                    'class' => 'atpSet',
+
+        if ($this->applicationLocale->getCurrentLocale() == ApplicationLocale::LOCALE_AR_AR) {
+
+            $this->add(array(
+                'name' => 'atpLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate-ar atpSet',
+                    'type' => 'text',
                 ),
-                'format' => Time::DATE_FORMAT,
-            )
-        ));
+                'options' => array(
+                    'label' => 'Hijri ATP License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atpSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'atpLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate-ar atpSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATP License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atpSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'atpLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate atpSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri ATP License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atpSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'atpLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate atpSet',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATP License Expiration Date',
+                    'label_attributes' => array(
+                        'class' => 'atpSet',
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'atpLicenseAttachment',
@@ -676,8 +852,8 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ),
         ));
-        
-         $this->add(array(
+
+        $this->add(array(
             'name' => 'atpWireTransferAttachment',
             'type' => 'Zend\Form\Element\File',
             'options' => array(

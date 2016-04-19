@@ -18,7 +18,7 @@ class ControllerCheckoutCheckout extends Controller {
 				}
 			}
 
-			if ($product['minimum'] > $product_total) {
+            if ($product['minimum'] > $product_total) {
 				$this->response->redirect($this->url->link('checkout/cart'));
 			}
 		}

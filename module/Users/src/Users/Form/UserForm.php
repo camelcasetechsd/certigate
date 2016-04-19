@@ -66,7 +66,7 @@ class UserForm extends Form
                 'label' => 'First Name',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'firstNameAr',
             'type' => 'Zend\Form\Element\Text',
@@ -233,7 +233,7 @@ class UserForm extends Form
                 'label' => 'Security Answer',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'identificationType',
             'type' => 'Zend\Form\Element\Text',
@@ -259,32 +259,124 @@ class UserForm extends Form
                 'label' => 'Identification Number',
             ),
         ));
-        $this->add(array(
-            'name' => 'identificationExpiryDate',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-register date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'Identification Expiry Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
-        $this->add(array(
-            'name' => 'dateOfBirth',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-register date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'Date Of Birth',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+
+        if ($currentLocale == Locale::LOCALE_AR_AR) {
+
+            $this->add(array(
+                'name' => 'identificationExpiryDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register hijriDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Identification Expiry Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            
+            $this->add(array(
+                'name' => 'identificationExpiryDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Identification Expiry Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+
+
+            $this->add(array(
+                'name' => 'dateOfBirthHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register hijriDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Date Of Birth',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'dateOfBirth',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Date Of Birth',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'identificationExpiryDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Identification Expiry Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'identificationExpiryDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Identification Expiry Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+
+            $this->add(array(
+                'name' => 'dateOfBirthHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Date Of Birth',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'dateOfBirth',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-register gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Date Of Birth',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+
         $this->add(array(
             'name' => 'nationality',
             'type' => 'Zend\Form\Element\Select',
@@ -298,7 +390,7 @@ class UserForm extends Form
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'language',
             'type' => 'Zend\Form\Element\Select',
@@ -312,7 +404,7 @@ class UserForm extends Form
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-       
+
         $this->add(array(
             'name' => 'addressOne',
             'type' => 'Zend\Form\Element\Text',
@@ -459,7 +551,7 @@ class UserForm extends Form
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-       
+
         $this->add(array(
             'name' => 'photo',
             'type' => 'Zend\Form\Element\File',
@@ -478,7 +570,7 @@ class UserForm extends Form
                 'label' => '<label class="legendLabel"><div>Roles</div></label>',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Users\Entity\Role',
-                'property' => 'name'.(($currentLocale == Locale::LOCALE_AR_AR)? "Ar":""),
+                'property' => 'name' . (($currentLocale == Locale::LOCALE_AR_AR) ? "Ar" : ""),
                 'find_method' => array(
                     'name' => 'getRoles',
                     'params' => array(
@@ -494,7 +586,7 @@ class UserForm extends Form
             ),
         ));
 
-        $class = 'form-control' .(($currentLocale == Locale::LOCALE_AR_AR)? " pull-left":"");
+        $class = 'form-control' . (($currentLocale == Locale::LOCALE_AR_AR) ? " pull-left" : "");
         $this->add(array(
             'name' => 'instructorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -559,7 +651,7 @@ class UserForm extends Form
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'privacyStatement',
             'type' => 'Zend\Form\Element\Checkbox',

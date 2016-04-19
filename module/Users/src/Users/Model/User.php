@@ -8,7 +8,7 @@ use Zend\File\Transfer\Adapter\Http;
 use Users\Entity\Role;
 use Utilities\Service\Status;
 use System\Service\Settings;
-use Notifications\Service\MailTempates;
+use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Zend\Authentication\AuthenticationService;
@@ -328,7 +328,7 @@ class User
         $notificationMailArray = array(
             'to' => $adminEmail,
             'from' => $from,
-            'templateName' => MailTempates::NEW_USER_NOTIFICATION_TEMPLATE,
+            'templateName' => MailTemplates::NEW_USER_NOTIFICATION_TEMPLATE,
             'templateParameters' => $templateParameters,
             'subject' => MailSubjects::NEW_USER_NOTIFICATION_SUBJECT,
         );
@@ -341,7 +341,7 @@ class User
             $welcomeKitMailArray = array(
                 'to' => $operationsEmail,
                 'from' => $from,
-                'templateName' => MailTempates::NEW_INSTRUCTOR_WELCOME_KIT_TEMPLATE,
+                'templateName' => MailTemplates::NEW_INSTRUCTOR_WELCOME_KIT_TEMPLATE,
                 'templateParameters' => $templateParameters,
                 'subject' => MailSubjects::NEW_INSTRUCTOR_WELCOME_KIT_SUBJECT,
             );

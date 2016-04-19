@@ -1,0 +1,82 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<a href="/issues/categories/new"class="btn btn-small btn-success create-new">{{#translate}}Create new Category{{/translate}}</a>
+<br><br>
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}Categories{{/translate}}</div>
+
+    <!-- Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{#translate}}Title{{/translate}}</th>
+                <th>{{#translate}}Description{{/translate}}</th>
+                <th>{{#translate}}Parent{{/translate}}</th>
+                <th>{{#translate}}Weight{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#categories}}
+            <tr>
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{parent}}</td>
+                <td>{{weight}}</td>
+                <td>
+                    <a href="/issues/categories/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#hasChildren}}
+                    <a  class="delete_row"  data-toggle="modal" data-target="#hasChildrenModal_{{id}}" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+
+                    <div class="modal fade atcSet" id="hasChildrenModal_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {{#translate}}This category may have sub-Categories{{/translate}} ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
+                                    <a href="/issues/categories/remove/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete{{/translate}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/hasChildren}}
+                    {{^hasChildren}}
+                    <a href="" class="delete_row"  data-toggle="modal" data-target="#hasNoChildrenModal_{{id}}" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
+
+                    <div class="modal fade atcSet" id="hasNoChildrenModal_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {{#translate}}This category has No sub-Categories{{/translate}} ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
+                                    <a  href="/issues/categories/remove/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete{{/translate}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                    {{/hasChildren}}
+                </td>
+            </tr>
+            {{/categories}}
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{{/content}}
+{{/layout}}

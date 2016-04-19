@@ -330,6 +330,7 @@ return array(
     'atcSkippedParams' => array(
         'atpLicenseNo',
         'atpLicenseExpiration',
+        'atpLicenseExpirationHj',
         'atpLicenseAttachment',
         'atpWireTransferAttachment',
         'classesNo',
@@ -340,6 +341,7 @@ return array(
     'atpSkippedParams' => array(
         'atcLicenseNo',
         'atcLicenseExpiration',
+        'atcLicenseExpirationHj',
         'atcLicenseAttachment',
         'atcWireTransferAttachment',
         'labsNo',
@@ -355,24 +357,28 @@ return array(
     'atcEditSkippedParams' => array(
         'atcLicenseNo',
         'atcLicenseExpiration',
+        'atcLicenseExpirationHj',
         'atcLicenseAttachment',
         'atcWireTransferAttachment',
     ),
     'atpEditSkippedParams' => array(
         'atpLicenseNo',
         'atpLicenseExpiration',
+        'atpLicenseExpirationHj',
         'atpLicenseAttachment',
         'atpWireTransferAttachment',
     ),
     'AtcRenewalFields' => array(
         'atcLicenseNo',
         'atcLicenseExpiration',
+        'atcLicenseExpirationHj',
         'atcLicenseAttachment',
         'atcWireTransferAttachment'
     ),
     'AtpRenewalFields' => array(
         'atpLicenseNo',
         'atpLicenseExpiration',
+        'atpLicenseExpirationHj',
         'atpLicenseAttachment',
         'atpWireTransferAttachment',
     )

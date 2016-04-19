@@ -54,7 +54,9 @@ class PosDCourse extends AbstractSeed
         $courseEventData = array(
             "course" => $courseId,
             "startDate" => $startDate->format(Time::DATE_FORMAT),
+            "startDateHj" => $startDate->format(Time::DATE_FORMAT),
             "endDate" => $endDate->format(Time::DATE_FORMAT),
+            "endDateHj" => $endDate->format(Time::DATE_FORMAT),
             "capacity" => 100,
             "studentsNo" => 10,
             "atp" => $atp->getId(),

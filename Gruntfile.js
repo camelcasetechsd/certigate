@@ -31,8 +31,53 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js',
                     '<%= dirs.nodeSrc %>/bootbox/bootbox.js',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-//                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.plus.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.plugin.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.picker.js', // base calendar
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.ummalqura.js', // prototype and calcuations
                     '<%= dirs.jsSrc %>/datepicker.js',
+                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
+                    '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
+                    '<%= dirs.jsSrc %>/diff_match_patch.js',
+                    '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
+                    '<%= dirs.jsSrc %>/form.js',
+                    '<%= dirs.jsSrc %>/signin.js',
+                    '<%= dirs.jsSrc %>/reset.js',
+                    '<%= dirs.jsSrc %>/menu.js',
+                    '<%= dirs.jsSrc %>/menuItemCRUD.js',
+                    '<%= dirs.jsSrc %>/pageCRUD.js',
+                    '<%= dirs.jsSrc %>/courseCRUD.js',
+                    '<%= dirs.jsSrc %>/courseEventCRUD.js',
+                    '<%= dirs.jsSrc %>/resourceCRUD.js',
+                    '<%= dirs.jsSrc %>/orgReg.js',
+                    '<%= dirs.jsSrc %>/CKEditor_config.js',
+                    '<%= dirs.jsSrc %>/homepage.js',
+                ]
+
+            },
+            js_rtl: {
+                options: {
+                    separator: ';\n',
+                },
+                nonull: true,
+                dest: '<%= dirs.dest %>/app_rtl.js',
+                src: [
+                    '<%= dirs.bowerSrc %>/jquery/dist/jquery.js',
+                    '<%= dirs.bowerSrc %>/chosen/chosen.jquery.min.js',
+                    '<%= dirs.bowerSrc %>/bootstrap/dist/js/bootstrap.js',
+                    '<%= dirs.nodeSrc %>/bootbox/bootbox.js',
+                    '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars-ar.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.plus.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.plugin.js',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.picker.js', // base calendar
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.picker-ar.js', // base calendar
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.ummalqura.js', // prototype and calcuations
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.ummalqura-ar.js', // prototype and calcuations
+                    '<%= dirs.jsSrc %>/datepicker.js',
+                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
                     '<%= dirs.jsSrc %>/diff_match_patch.js',
                     '<%= dirs.nodeSrc %>/jquery-prettytextdiff/jquery.pretty-text-diff.js',
@@ -58,7 +103,9 @@ module.exports = function (grunt) {
                     '<%= dirs.bowerSrc %>/bootstrap/dist/css/bootstrap.css',
                     '<%= dirs.bowerSrc %>/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
                     '<%= dirs.bowerSrc %>/chosen-bootstrap/chosen.bootstrap.css',
-//                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
+                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.picker.css',
+                    '<%= dirs.cssSrc %>/custom.calendars.css',
                     '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
                     '<%= dirs.cssSrc %>/style.css',
@@ -88,6 +135,8 @@ module.exports = function (grunt) {
 //                    '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.css',
                     '<%= dirs.bowerSrc %>/font-awesome/css/font-awesome.css',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css',
+                    '<%= dirs.jsSrc %>/datepicker/jquery.calendars.picker.css',
+                    '<%= dirs.cssSrc %>/custom.calendars.rtl.css',
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/certigateTheme.css',
                     '<%= dirs.cssSrc %>/form.css',
@@ -100,10 +149,9 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/diff.css',
                     // certigate theme css
                     '<%= dirs.themes %>/certigate/assets/css/carousel.rtl.css',
-                    
                 ]
             }
-            
+
         },
         uglify: {
             options: {
@@ -119,7 +167,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    '<%= dirs.dest %>/app.min.js': ['<%= dirs.dest %>/app.js']
+                    '<%= dirs.dest %>/app.min.js': ['<%= dirs.dest %>/app.js'],
+                    '<%= dirs.dest %>/app_rtl.min.js': ['<%= dirs.dest %>/app_rtl.js']
                 }
             }
         },

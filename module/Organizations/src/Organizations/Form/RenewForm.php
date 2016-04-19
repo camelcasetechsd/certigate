@@ -5,6 +5,7 @@ namespace Organizations\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Time;
 use Zend\Form\FormInterface;
+use Translation\Service\Locale\Locale;
 
 /**
  * OrganizationUser Form
@@ -37,6 +38,7 @@ class RenewForm extends Form
     public function __construct($name = null, $options = null)
     {
         $this->query = $options['query'];
+        $locale = $options['applicationLocale'];
         unset($options['query']);
         parent::__construct($name, $options);
 
@@ -59,21 +61,74 @@ class RenewForm extends Form
             ),
         ));
 
-        $this->add(array(
-            'name' => 'atpLicenseExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter License Expiration Date',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'ATP License Expiration Date',
-                'label_attributes' => array(
+        if ($locale->getCurrentLocale() == Locale::LOCALE_AR_AR) {
+
+            $this->add(array(
+                'name' => 'atpLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
                 ),
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+                'options' => array(
+                    'label' => 'Hijri ATP License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'atpLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control gregorianDate-ar',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATP License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'atpLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri ATP License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'atpLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATP License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'atpLicenseAttachment',
@@ -87,7 +142,7 @@ class RenewForm extends Form
                 ),
             ),
         ));
-        
+
         /**
          * ATP Wire Transfer
          */
@@ -99,7 +154,7 @@ class RenewForm extends Form
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required'=>'required'
+                'required' => 'required'
             )
         ));
 
@@ -120,22 +175,74 @@ class RenewForm extends Form
             ),
         ));
 
-        $this->add(array(
-            'name' => 'atcLicenseExpiration',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'placeholder' => 'Enter License Expiration Date',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'ATC License Expiration Date',
-                'label_attributes' => array(
-                    'class' => 'atcSet',
+        if ($locale->getCurrentLocale() == Locale::LOCALE_AR_AR) {
+
+            $this->add(array(
+                'name' => 'atcLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control hijriDate-ar',
+                    'type' => 'text',
                 ),
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+                'options' => array(
+                    'label' => 'Hijri ATC License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'atcLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATC License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
+        else {
+
+            $this->add(array(
+                'name' => 'atcLicenseExpirationHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control hijriDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri ATC License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'atcLicenseExpiration',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'placeholder' => 'Enter License Expiration Date',
+                    'class' => 'form-control gregorianDate',
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'ATC License Expiration Date',
+                    'label_attributes' => array(
+                    ),
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'atcLicenseAttachment',
@@ -161,7 +268,7 @@ class RenewForm extends Form
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required'=>'required'
+                'required' => 'required'
             )
         ));
 
@@ -174,7 +281,7 @@ class RenewForm extends Form
             )
         ));
 
-        
+
         $this->add(array(
             'name' => 'reset',
             'type' => 'Zend\Form\Element',

@@ -13,6 +13,7 @@ bin/doctrine orm:schema-tool:update --force;
 app_env=${APPLICATION_ENV:-'vagrant'}
 
 # seeding estore first 
+bash public/estore/dropOcDB.sh
 APPLICATION_ENV=$app_env php public/estore/updateDB.php
 
 # running certigate seeds 

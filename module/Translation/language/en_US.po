@@ -1146,20 +1146,44 @@ msgstr "Brief in Arabic"
 msgid "Duration (minutes)"
 msgstr "Duration (minutes)"
 
+msgid "Process Quote"
+msgstr "Process Quote"
+
+msgid "Course Name in Arabic"
+msgstr "Course Name in Arabic"
+
+msgid "User Name in Arabic"
+msgstr "User Name in Arabic"
+
 msgid "Instructor"
 msgstr "Instructor"
-
-msgid "Instructor in Arabic"
-msgstr "Instructor in Arabic"
 
 msgid "ATP Name"
 msgstr "ATP Name"
 
-msgid "ATP Name in Arabic"
-msgstr "ATP Name in Arabic"
-
 msgid "ATP City"
 msgstr "ATP City"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "No training found for instructor!"
+msgstr "No training found for instructor!"
+
+msgid "Standards"
+msgstr "Standards"
+
+msgid "Course Updates"
+msgstr "Course Updates"
+
+msgid "Ice Breakers"
+msgstr "Ice Breakers"
+
+msgid "Instructor in Arabic"
+msgstr "Instructor in Arabic"
+
+msgid "ATP Name in Arabic"
+msgstr "ATP Name in Arabic"
 
 msgid "ATP City in Arabic"
 msgstr "ATP City in Arabic"
@@ -1262,9 +1286,6 @@ msgstr "Reserve"
 
 msgid "Process"
 msgstr "Process"
-
-msgid "Cancel"
-msgstr "Cancel"
 
 msgid "Filter"
 msgstr "Filter"

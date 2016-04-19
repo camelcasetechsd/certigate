@@ -80,6 +80,12 @@ class ExamBook
      * @ORM\Column(type="date")
      * @var \DateTime
      */
+    public $dateHj;
+
+    /**
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
     public $date;
 
     /**
@@ -197,6 +203,17 @@ class ExamBook
     }
 
     /**
+     * Get date
+     * 
+     * @access public
+     * @return \DateTime
+     */
+    public function getDateHj()
+    {
+        return $this->dateHj;
+    }
+
+    /**
      * Get atc
      * 
      * @access public
@@ -220,6 +237,22 @@ class ExamBook
             $date = \DateTime::createFromFormat(Time::DATE_FORMAT, $date);
         }
         $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * Set dateHj
+     * 
+     * @access public
+     * @param \DateTime $dateHj
+     * @return Courses\Entity\ExamBook
+     */
+    public function setDateHj($dateHj)
+    {
+        if (!is_object($dateHj)) {
+            $dateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateHj);
+        }
+        $this->dateHj = $dateHj;
         return $this;
     }
 
@@ -405,21 +438,14 @@ class ExamBook
         if (array_key_exists("adminStatus", $data)) {
             $this->setAdminStatus($data["adminStatus"]);
         }
-        if (array_key_exists("atc", $data)) {
-            $this->setAtc($data["atc"]);
-        }
-        if (array_key_exists("course", $data)) {
-            $this->setCourse($data["course"]);
-        }
-        if (array_key_exists("date", $data)) {
-            $this->setDate($data["date"]);
-        }
-        if (array_key_exists("studentsNo", $data)) {
-            $this->setStudentsNo($data["studentsNo"]);
-        }
-        if (array_key_exists('proctors', $data)) {
+        if (array_key_exists("proctors", $data)) {
             $this->setProctors($data["proctors"]);
         }
+        $this->setAtc($data["atc"])
+                ->setCourse($data["course"])
+                ->setDateHj($data["dateHj"])
+                ->setDate($data["date"])
+                ->setStudentsNo($data["studentsNo"]);
     }
 
     /**
@@ -460,6 +486,10 @@ class ExamBook
                         )
                     ),
                 )
+            ));
+            $inputFilter->add(array(
+                'name' => 'dateHj',
+                'required' => true,
             ));
             $inputFilter->add(array(
                 'name' => 'studentsNo',

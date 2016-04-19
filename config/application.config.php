@@ -42,6 +42,7 @@ $config = array(
         'System',
         'Notifications',
         'DOMPDFModule',
+        'IssueTracker',
         'Translation',
         'EStore'
     ),

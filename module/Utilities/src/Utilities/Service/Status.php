@@ -124,21 +124,29 @@ class Status
      * @param array $data
      * @param bool $editFlag ,default is false
      */
-    public static function setStatus($object, $data, $editFlag = false){
+    public static function setStatus($object, $data, $editFlag = false)
+    {
         $buttonsData = $data["buttons"];
         if (array_key_exists(FormButtons::SAVE_AND_PUBLISH_BUTTON, $buttonsData)) {
             $object->setStatus(self::STATUS_ACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $buttonsData)) {
+        } elseif (array_key_exists(FormButtons::UNPUBLISH_BUTTON, $buttonsData)) {
             $object->setStatus(self::STATUS_INACTIVE);
-        }
-        elseif (array_key_exists(FormButtons::SAVE_BUTTON, $buttonsData) && $editFlag === false) {
+        } elseif (array_key_exists(FormButtons::SAVE_BUTTON, $buttonsData) && $editFlag === false) {
             $object->setStatus(self::STATUS_INACTIVE);
         }
     }
 
     /**
-     * Entity is not yet expired(organization)
+     * Entity is state saved text
+     */
+    const STATUS_CLOSED = 0;
+
+    /**
+     * Entity is state saved text
+     */
+    const STATUS_CLOSED_TEXT = "CLOSED";
+
+    /*     * Entity is not yet expired(organization)
      */
     const STATUS_NOT_YET_EXPIRED = "0";
 
