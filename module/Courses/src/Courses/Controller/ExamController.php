@@ -201,7 +201,8 @@ class ExamController extends ActionController
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
 
-        $proctors = $query->setEntity("Users\Entity\User")->entityRepository->getUsers(/*$roles =*/ array(Role::PROCTOR_ROLE), /*$status =*/Status::STATUS_ACTIVE);
+        $proctorRole = $query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array('name' => Role::PROCTOR_ROLE));
+        $proctors = $query->findBy(/* $entityName = */"Users\Entity\OrganizationUser", /* $criteria = */ array("role" => $proctorRole ,"organization" => $examBook->getAtc()->getId() ));
         if (empty($proctors)) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_PROCTOR_FOUND"), array('name' => 'resource_not_found'));
