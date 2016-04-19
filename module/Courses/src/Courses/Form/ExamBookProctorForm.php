@@ -48,6 +48,7 @@ class ExamBookProctorForm extends Form
         $this->query = $options['query'];
         $organizationId = $options['organizationId'];
         $applicationLocale = $options['applicationLocale'];
+        $translatorHandler = $options['translatorHandler'];
         $currentLocale = $applicationLocale->getCurrentLocale();
         parent::__construct($name, $options);
 
@@ -56,6 +57,8 @@ class ExamBookProctorForm extends Form
         $role = $this->query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array(
             'name' => Role::PROCTOR_ROLE,
         ));
+        $awayWord = $translatorHandler->translate("km away");
+        $methodSuffix = (($currentLocale == Locale::LOCALE_AR_AR)? "Ar":"");
         $this->add(array(
             'name' => 'proctors',
             'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
@@ -67,9 +70,10 @@ class ExamBookProctorForm extends Form
                 'label' => '',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Organizations\Entity\OrganizationUser',
-                'label_generator' => function($targetEntity)use($currentLocale) {
-                    $methodName = "getFullName".(($currentLocale == Locale::LOCALE_AR_AR)? "Ar":"");
-                    return $targetEntity->getUser()->$methodName();
+                'label_generator' => function($targetEntity)use($methodSuffix, $awayWord) {
+                    $fullNameMethodName = "getFullName".$methodSuffix;
+                    $user = $targetEntity->getUser();
+                    return $user->$fullNameMethodName()." - ".$user->getCity()." <span class='".$targetEntity->getDistanceStyleClass()."'>[ ~ ".$targetEntity->getDistanceSort()." $awayWord]</span>";
                 },
                 'find_method' => array(
                     'name' => 'findBy',

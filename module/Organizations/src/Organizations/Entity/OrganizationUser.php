@@ -148,6 +148,26 @@ class OrganizationUser
     }
 
     /**
+     * Get Distance Corresponding class
+     * 
+     * @access public
+     * @return string bootstrap class
+     */
+    public function getDistanceStyleClass()
+    {
+        if($this->distanceSort <= 10){
+            $distanceStyleClass = "bg-success";
+        }elseif($this->distanceSort <= 100){
+            $distanceStyleClass = "bg-info";
+        }elseif($this->distanceSort <= 300){
+            $distanceStyleClass = "bg-warning";
+        }else{
+            $distanceStyleClass = "bg-danger";
+        }
+        return $distanceStyleClass;
+    }
+
+    /**
      * Set Role
      * 
      * @access public

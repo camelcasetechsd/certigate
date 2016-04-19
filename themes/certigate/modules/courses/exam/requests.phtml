@@ -46,6 +46,7 @@
                     <a href="/courses/exam/proctors/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Proctors{{/translate}}"><span class="glyphicon glyphicon-user"></span></a>
                     {{#isAdminUser}}
                         {{#isAdminPending}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Accept{{/translate}}"><span class="glyphicon glyphicon-ok"></span></a>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>

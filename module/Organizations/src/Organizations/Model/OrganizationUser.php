@@ -13,6 +13,7 @@ use Users\Entity\Role;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Utilities\Service\Distance $distance
  * 
  * @package organizations
  * @subpackage model
@@ -27,14 +28,22 @@ class OrganizationUser
     protected $query;
 
     /**
+     *
+     * @var Utilities\Service\Distance 
+     */
+    protected $distance;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Utilities\Service\Distance $distance
      */
-    public function __construct($query)
+    public function __construct($query, $distance)
     {
         $this->query = $query;
+        $this->distance = $distance;
     }
 
     /**
@@ -159,9 +168,9 @@ class OrganizationUser
             $proctorLat = $proctor->getUser()->getLatitude();
             $proctorLong = $proctor->getUser()->getLongitude();
 
-            $theta = $organizationLong - $proctorLong;
-            $distanceRepresentation = rad2deg(acos(sin(deg2rad($organizationLat)) * sin(deg2rad($proctorLat)) + cos(deg2rad($organizationLat)) * cos(deg2rad($proctorLat)) * cos(deg2rad($theta))));
-            $proctor->setDistanceSort((int)$distanceRepresentation);
+            // using Haversine formula to calculate the distance between two points (given the latitude/longitude of those points)
+            $distance = $this->distance->getDistance(/*$latitudeFrom =*/ $organizationLat, /*$longitudeFrom =*/ $organizationLong, /*$latitudeTo =*/ $proctorLat, /*$longitudeTo =*/ $proctorLong);
+            $proctor->setDistanceSort($distance);
             $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($proctor, /*$data =*/ array(), /*$flushAll =*/ false, /*$noFlush =*/ true);
         }
         $this->query->entityManager->flush();

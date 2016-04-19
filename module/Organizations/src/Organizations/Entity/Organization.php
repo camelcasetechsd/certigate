@@ -1288,8 +1288,8 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data["email"]);
         }
-        if (array_key_exists('longtitude', $data)) {
-            $this->setLongtitude($data["longtitude"]);
+        if (array_key_exists('longitude', $data)) {
+            $this->setLongitude($data["longitude"]);
         }
         if (array_key_exists('latitude', $data)) {
             $this->setLat($data["latitude"]);

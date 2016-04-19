@@ -7,7 +7,6 @@ use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Courses\Form\ExamBookProctorForm;
-use Utilities\Service\Status;
 
 /**
  * ExamController
@@ -203,7 +202,7 @@ class ExamController extends ActionController
         }
 
         $proctorRole = $query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array('name' => Role::PROCTOR_ROLE));
-        $proctors = $query->findBy(/* $entityName = */"Users\Entity\OrganizationUser", /* $criteria = */ array("role" => $proctorRole ,"organization" => $examBook->getAtc()->getId() ));
+        $proctors = $query->findBy(/* $entityName = */"Organizations\Entity\OrganizationUser", /* $criteria = */ array("role" => $proctorRole ,"organization" => $examBook->getAtc()->getId() ));
         if (empty($proctors)) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_PROCTOR_FOUND"), array('name' => 'resource_not_found'));
@@ -214,6 +213,7 @@ class ExamController extends ActionController
         $options['query'] = $query;
         $options['organizationId'] = $examBook->getAtc()->getId();
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        $options['translatorHandler'] = $this->getServiceLocator()->get('translatorHandler');
         $form = new ExamBookProctorForm(/* $name = */ null, $options);
         $form->bind($examBook);
 
