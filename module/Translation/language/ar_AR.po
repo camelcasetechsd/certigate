@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-04-17 13:56+0200\n"
+"PO-Revision-Date: 2016-04-19 17:10+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: Arabic\n"
@@ -1146,15 +1146,6 @@ msgstr "Brief in Arabic ar"
 msgid "Duration (minutes)"
 msgstr "Duration (minutes) ar"
 
-msgid "Process Quote"
-msgstr "Process Quote ar"
-
-msgid "Course Name in Arabic"
-msgstr "Course Name in Arabic ar"
-
-msgid "User Name in Arabic"
-msgstr "User Name in Arabic ar"
-
 msgid "Instructor"
 msgstr "Instructor ar"
 
@@ -1395,8 +1386,6 @@ msgstr "<"
 
 msgid "Attachments"
 msgstr "Attachments ar"
-msgid "No training found for instructor!"
-msgstr "No training found for instructor! ar"
 
 msgid "Manage Proctors"
 msgstr "Manage Proctors ar"
@@ -1406,3 +1395,6 @@ msgstr "Longitude is required ar"
 
 msgid "Latitude is required"
 msgstr "Latitude is required ar"
+
+msgid "km away"
+msgstr "km away ar"
