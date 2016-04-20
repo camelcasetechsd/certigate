@@ -9,7 +9,6 @@ use Users\Entity\User;
 use Users\Service\Statement;
 use Users\Entity\Role;
 use Zend\Authentication\AuthenticationService;
-use Zend\Json\Json;
 
 /**
  * Index Controller
@@ -293,23 +292,6 @@ class IndexController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
             'name' => 'users'));
         $this->redirect()->toUrl($url);
-    }
-
-    /**
-     * Details user
-     * 
-     * 
-     * @access public
-     */
-    public function detailsAction()
-    {
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
-        $id = $storage['id'];
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $userObj = $query->find('Users\Entity\User', $id);
-        
-        return $this->getResponse()->setContent(Json::encode($userObj->getArrayCopy()));
     }
 
     /**
