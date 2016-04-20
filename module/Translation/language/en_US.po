@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-04-18 16:12+0200\n"
+"PO-Revision-Date: 2016-04-19 17:10+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: English\n"
@@ -507,8 +507,8 @@ msgstr "Location"
 msgid "Logos"
 msgstr "Logos"
 
-msgid "Longtitude"
-msgstr "Longtitude"
+msgid "Longitude"
+msgstr "Longitude"
 
 msgid "Manage Users"
 msgstr "Manage Users"
@@ -1125,6 +1125,15 @@ msgstr "Instructors"
 msgid "User Details"
 msgstr "User Details"
 
+msgid "Process Quote"
+msgstr "Process Quote"
+
+msgid "Course Name in Arabic"
+msgstr "Course Name in Arabic"
+
+msgid "User Name in Arabic"
+msgstr "User Name in Arabic"
+
 msgid "Course Full"
 msgstr "Course Full"
 
@@ -1136,15 +1145,6 @@ msgstr "Brief in Arabic"
 
 msgid "Duration (minutes)"
 msgstr "Duration (minutes)"
-
-msgid "Process Quote"
-msgstr "Process Quote"
-
-msgid "Course Name in Arabic"
-msgstr "Course Name in Arabic"
-
-msgid "User Name in Arabic"
-msgstr "User Name in Arabic"
 
 msgid "Instructor"
 msgstr "Instructor"
@@ -1306,6 +1306,17 @@ msgstr ""
 "<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
 "png,jpg,jpeg</p>"
 
+msgid "Manage Proctors"
+msgstr "Manage Proctors"
+
+msgid "Longitude is required"
+msgstr "Longitude is required"
+
+msgid "Latitude is required"
+msgstr "Latitude is required"
+
+msgid "km away"
+msgstr "km away"
 msgid "Mail will be sent shortly!"
 msgstr "Mail will be sent shortly!"
 

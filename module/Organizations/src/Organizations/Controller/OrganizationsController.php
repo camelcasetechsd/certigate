@@ -301,7 +301,7 @@ class OrganizationsController extends ActionController
             $data['creatorId'] = $creatorId;
 
             if ($customizedForm->isValid()) {
-                $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, $creatorId, $userEmail, $isAdminUser);
+                $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, $creatorId, $userEmail, $isAdminUser);
             }
         }
 
@@ -335,6 +335,8 @@ class OrganizationsController extends ActionController
 //        // for checking on attachments 
         $crAttachment = $orgObj->CRAttachment;
         $oldStatus = $orgObj->getStatus();
+        $oldLongitude = $orgObj->getLong();
+        $oldLatitude = $orgObj->getLat();
 //
         $isAdminUser = $this->isAdminUser();
         // allow access for admins for all users
@@ -370,7 +372,7 @@ class OrganizationsController extends ActionController
             }
 
             if ($customizedForm->isValid()) {
-                $orgModel->saveOrganization($this, $data, $orgObj, $oldStatus, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
+                $orgModel->saveOrganization($this, $data, $orgObj, $oldStatus, $oldLongitude, $oldLatitude, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
             }
         }
         $variables['CRAttachment'] = $crAttachment;
@@ -456,7 +458,7 @@ class OrganizationsController extends ActionController
                      * save state = true .. now we will skip calling
                      * assignUserToOrg() method 
                      */
-                    $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
+                    $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
 
                     $data = array(
                         'result' => true,

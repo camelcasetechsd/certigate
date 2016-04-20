@@ -14,6 +14,7 @@ use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Organizations\Form\OrgForm as OrgForm;
 use Zend\Authentication\AuthenticationService;
+use Organizations\Entity\OrganizationType;
 
 /**
  * Org Model
@@ -27,6 +28,7 @@ use Zend\Authentication\AuthenticationService;
  * @property System\Service\Cache\CacheHandler $systemCacheHandler
  * @property Notifications\Service\Notification $notification
  * @property Versioning\Model\Version $version
+ * @property Organizations\Model\OrganizationUser $organizationUserModel
  * 
  * @package organizations
  * @subpackage model
@@ -67,6 +69,12 @@ class Organization
      * @var Versioning\Model\Version
      */
     protected $version;
+
+    /**
+     *
+     * @var Organizations\Model\OrganizationUser
+     */
+    protected $organizationUserModel;
     /*
      * saves number of organizations in this app
      */
@@ -83,13 +91,15 @@ class Organization
      * @param System\Service\Cache\CacheHandler $systemCacheHandler
      * @param Notifications\Service\Notification $notification
      * @param Versioning\Model\Version $version
+     * @param Organizations\Model\OrganizationUser $organizationUserModel
      */
-    public function __construct($query, $systemCacheHandler, $notification, $version)
+    public function __construct($query, $systemCacheHandler, $notification, $version, $organizationUserModel)
     {
         $this->query = $query;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->notification = $notification;
         $this->version = $version;
+        $this->organizationUserModel = $organizationUserModel;
         $this->random = new Random();
         $this->organizationTypesNumber = count($this->query->findAll('Organizations\Entity\OrganizationType'));
     }
@@ -176,12 +186,14 @@ class Organization
      * @param array $orgInfo
      * @param Organizations\Entity\Organization $orgObj ,default is null
      * @param int $oldStatus ,default is null
+     * @param float $oldLongitude ,default is null
+     * @param float $oldLatitude ,default is null
      * @param int $creatorId ,default is null
      * @param string $userEmail ,default is null
      * @param bool $isAdminUser ,default is true
      * @param bool $saveState ,default is false
      */
-    public function saveOrganization($action, $orgInfo, $orgObj = null, $oldStatus = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
+    public function saveOrganization($action, $orgInfo, $orgObj = null, $oldStatus = null, $oldLongitude = null, $oldLatitude = null, $creatorId = null, $userEmail = null, $isAdminUser = true, $saveState = false)
     {
         $editFlag = false;
         $roles = $this->query->findAll('Users\Entity\Role');
@@ -325,31 +337,17 @@ class Organization
                 }
             }
 
+            if($editFlag === true && ($oldLatitude != $orgObj->getLat() || $oldLongitude != $orgObj->getLong() ))
+            {
+                $this->organizationUserModel->sortProctors(/*$organizationId =*/ $orgObj->getId());
+            }
+            
             if ($sendNotificationFlag === true) {
                 $this->sendMail($userEmail, $editFlag);
             }
 
             // redirecting
-            $organizationTypes = $this->getOrganizationTypes(null, $entity);
-            // redirection is based on first type of organization
-            switch ($organizationTypes[0]) {
-                case 1:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atcs'), array('name' => 'list_atc_orgs'));
-                    break;
-
-                case 2:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'atps'), array('name' => 'list_atp_orgs'));
-                    break;
-
-                case 3:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'distributors'), array('name' => 'list_distributor_orgs'));
-                    break;
-
-                case 4:
-                    $url = $action->getEvent()->getRouter()->assemble(array('action' => 'resellers'), array('name' => 'list_reseller_orgs'));
-                    break;
-            }
-
+            $url = $action->getEvent()->getRouter()->assemble(array(), array('name' => 'myOrganizations'));
             $action->redirect()->toUrl($url);
         }
     }
@@ -589,7 +587,7 @@ class Organization
                 'organization' => $organizationObj->getId()
             ));
             foreach ($typesArray as $type) {
-                array_push($params, $type->getType()->getId());
+                array_push($params, $type->getType()->getTitle());
             }
         }
         return $params;
@@ -609,7 +607,7 @@ class Organization
         $organizationComparisonPreparedArray = $this->prepareForDisplay(reset($organizationComparisonArray));
 
         $locationChanged = false;
-        if ($organizationComparisonPreparedArray["before"]->longtitude != $organizationComparisonPreparedArray["after"]->longtitude || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude) {
+        if ($organizationComparisonPreparedArray["before"]->longitude != $organizationComparisonPreparedArray["after"]->longitude || $organizationComparisonPreparedArray["before"]->latitude != $organizationComparisonPreparedArray["after"]->latitude) {
             $locationChanged = true;
         }
         $organizationComparisonPreparedArray["after"]->locationChanged = $locationChanged;
@@ -1031,7 +1029,8 @@ class Organization
                 $isAdminUser = true;
             }
         }
-        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
+
+        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
 
 }

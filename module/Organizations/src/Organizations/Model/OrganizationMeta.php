@@ -2,16 +2,14 @@
 
 namespace Organizations\Model;
 
-use Organizations\Entity\Organization;
+use Organizations\Entity\Organization as OrganizationEntity;
 use Utilities\Service\DateNames;
 use Utilities\Service\Status;
-use Utilities\Service\Time;
 use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
-use Doctrine\Common\Collections\Criteria;
 use Zend\Authentication\AuthenticationService;
 
 /**
@@ -130,7 +128,7 @@ class OrganizationMeta
         ));
         $orgMeta->setType($typeObj);
 
-        if ((int) $type == Organization::TYPE_ATC || (int) $type == Organization::TYPE_ATP) {
+        if ((int) $type == OrganizationEntity::TYPE_ATC || (int) $type == OrganizationEntity::TYPE_ATP) {
             //finding which Expiration date needed  
             $dates = $this->getDateName((int) $type);
             // if for case of edit organization
@@ -160,11 +158,11 @@ class OrganizationMeta
     {
         $dates = array();
         switch ((int) $type) {
-            case Organization::TYPE_ATC :
+            case OrganizationEntity::TYPE_ATC :
                 $dates['gregorian'] = DateNames::ATC_EXPIRATION_DATE;
                 $dates['hijri'] = DateNames::HIJRI_ATC_EXPIRATION_DATE;
                 break;
-            case Organization::TYPE_ATP :
+            case OrganizationEntity::TYPE_ATP :
                 $dates['gregorian'] = DateNames::ATP_EXPIRATION_DATE;
                 $dates['hijri'] = DateNames::HIJRI_ATP_EXPIRATION_DATE;
                 break;
@@ -240,7 +238,7 @@ class OrganizationMeta
             'templateName' => MailTemplates::ORGANIZATION_RENEWAL_TEMPLATE,
             'templateParameters' => array(
                 'name' => $organization->getOrganization()->getCommercialName(),
-                'type' => $organization->getType() == Organization::TYPE_ATC ? Organization::TYPE_ATC : Organization::TYPE_ATP,
+                'type' => $organization->getType() == OrganizationEntity::TYPE_ATC ? OrganizationEntity::TYPE_ATC : OrganizationEntity::TYPE_ATP,
                 'expDate' => $organization->getExpirationDate()
             ),
             'subject' => MailSubjects::ORGANIZATION_RENEWAL,

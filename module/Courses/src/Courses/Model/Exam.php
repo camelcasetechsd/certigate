@@ -10,6 +10,9 @@ use Utilities\Service\Time;
 use System\Service\Settings;
 use Notifications\Service\MailSubjects;
 use Courses\Entity\ExamBook;
+use Organizations\Entity\OrganizationType;
+use Utilities\Service\Status;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Exam Model
@@ -86,13 +89,29 @@ class Exam
         }
         if (count($toBeNotifiedArray) > 0) {
             // send admin new mail
-            $this->sendMail($bookObj, $toBeNotifiedArray, /*$notificationEmailFlag =*/ true);
+            $this->sendMail($bookObj, $toBeNotifiedArray, /* $notificationEmailFlag = */ true);
         }
     }
 
-    public function listRequests()
+    /**
+     * List exam requests
+     * @access public
+     * 
+     * @param bool $isAdminUser
+     * @param array $userData
+     * @return array
+     */
+    public function listRequests($isAdminUser, $userData)
     {
-        $requests = $this->query->findAll('Courses\Entity\ExamBook');
+        $criteria = Criteria::create();
+        if ($isAdminUser === false) {
+            $types = array(OrganizationType::TYPE_ATC_TITLE);
+            $userIds = array($userData["id"]);
+            $userOrganizations = $this->query->setEntity("Organizations\Entity\Organization")->entityRepository->getOrganizationsBy($userIds, $types, Status::STATUS_ACTIVE);
+            $expr = Criteria::expr();
+            $criteria->andWhere($expr->in("atc", $userOrganizations));
+        }
+        $requests = $this->query->filter('Courses\Entity\ExamBook', $criteria);
         foreach ($requests as $req) {
             // showing tvtc status
             switch ($req->tvtcStatus) {
@@ -162,7 +181,7 @@ class Exam
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
         $settings = $cachedSystemData[CacheHandler::SETTINGS_KEY];
 
-        if (array_key_exists(Settings::SYSTEM_EMAIL , $settings)) {
+        if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
             $from = $settings[Settings::SYSTEM_EMAIL];
         }
 

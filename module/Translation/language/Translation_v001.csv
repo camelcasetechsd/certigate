@@ -161,7 +161,7 @@ Latitude,Latitude
 Leave,Leave
 Location,Location
 Logos,Logos
-Longtitude,Longtitude
+Longitude,Longitude
 Manage Users,Manage Users
 Memorable,Memorable
 Menu,Menu
@@ -432,3 +432,8 @@ will start in, will start in
 day(s), day(s)
 Unsubscribe periodic notifications, Unsubscribe periodic notifications
 Subscribe periodic notifications, Subscribe periodic notifications
+No training found for instructor!, No training found for instructor!
+Manage Proctors, Manage Proctors
+Longitude is required, Longitude is required
+Latitude is required, Latitude is required
+km away, km away

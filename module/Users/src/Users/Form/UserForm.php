@@ -52,7 +52,7 @@ class UserForm extends Form
         unset($options['excludedRoles']);
         parent::__construct($name, $options);
 
-        $this->setAttribute('class', 'form form-horizontal');
+        $this->setAttribute('class', 'form form-horizontal gllpLatlonPicker');
 
         $this->add(array(
             'name' => 'firstName',
@@ -451,6 +451,68 @@ class UserForm extends Form
                 'label' => 'Address Line 2 in Arabic',
             ),
         ));
+        $this->add(array(
+            'name' => 'mapSearch',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Search In Map',
+                'class' => 'form-control gllpSearchField',
+            ),
+            'options' => array(
+                'label' => '<div>Location</div><div class="gllpMap">Google Maps</div>',
+                'label_options' => array(
+                    'disable_html_escape' => true,
+                )
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'mapSearchButton',
+            'type' => 'Zend\Form\Element',
+            'attributes' => array(
+                'class' => 'gllpSearchButton btn btn-primary',
+                'value' => 'Search',
+                'type' => 'button',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'longitude',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'placeholder' => 'Enter Longitude',
+                'class' => 'form-control gllpLongitude',
+            ),
+            'options' => array(
+                'label' => 'Longitude',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'latitude',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'placeholder' => 'Enter Latitude',
+                'class' => 'form-control gllpLatitude',
+            ),
+            'options' => array(
+                'label' => 'Latitude',
+            )
+        ));
+        $this->add(array(
+            'name' => 'mapZoom',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'class' => 'form-control gllpZoom',
+                'value' => 3,
+            ),
+            'options' => array(
+                'label' => '',
+            ),
+            'validators' => array(
+                'Empty' => true
+            )
+        ));
+        
         $this->add(array(
             'name' => 'city',
             'type' => 'Zend\Form\Element\Text',

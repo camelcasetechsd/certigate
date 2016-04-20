@@ -141,17 +141,17 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'longtitude',
+            'name' => 'longitude',
             'continue_if_empty' => true,
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
-                'placeholder' => 'Enter Longtitude',
+                'placeholder' => 'Enter Longitude',
                 'class' => 'form-control gllpLongitude',
                 'allow_empty' => true,
                 'continue_if_empty' => false
             ),
             'options' => array(
-                'label' => 'Longtitude',
+                'label' => 'Longitude',
             ),
         ));
         $this->add(array(
@@ -176,7 +176,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'value' => 3,
             ),
             'options' => array(
-                'label' => 'Latitude',
+                'label' => '',
             ),
             'validators' => array(
                 'Empty' => true

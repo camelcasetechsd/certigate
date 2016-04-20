@@ -107,6 +107,8 @@ class IndexController extends ActionController
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = $query->find('Users\Entity\User', $id);
+        $oldLongitude = $userObj->getLongitude();
+        $oldLatitude = $userObj->getLatitude();
         $photo = $userObj->photo;
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
@@ -142,7 +144,6 @@ class IndexController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-            
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
@@ -180,7 +181,7 @@ class IndexController extends ActionController
             }
 
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $userModel->saveUser($data, $userObj, $isAdminUser);
+                $userModel->saveUser($data, $userObj, $isAdminUser, /*$editFormFlag =*/ null, $oldLongitude, $oldLatitude);
                 
                 if($isAdminUser){
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(

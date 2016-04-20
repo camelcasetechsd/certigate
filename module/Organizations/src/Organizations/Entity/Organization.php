@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property int    $status
  * @property string $commertialName
  * @property string $commertialNameAr
- * @property float  $longtitude
+ * @property float  $longitude
  * @property float  $latitude
  * @property string $ownerName
  * @property string $ownerNameAr
@@ -164,7 +164,7 @@ class Organization
      * @ORM\Column(type="float" , nullable=true )
      * @var string
      */
-    public $longtitude;
+    public $longitude;
 
     /**
      * @Gedmo\Versioned
@@ -519,7 +519,7 @@ class Organization
 
     function getLong()
     {
-        return $this->longtitude;
+        return $this->longitude;
     }
 
     function getLat()
@@ -874,9 +874,9 @@ class Organization
         $this->commercialNameAr = $commercialNameAr;
     }
 
-    function setLongtitude($longtitude)
+    function setLongitude($longitude)
     {
-        $this->longtitude = $longtitude;
+        $this->longitude = $longitude;
     }
 
     function setLat($latitude)
@@ -1288,8 +1288,8 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data["email"]);
         }
-        if (array_key_exists('longtitude', $data)) {
-            $this->setLongtitude($data["longtitude"]);
+        if (array_key_exists('longitude', $data)) {
+            $this->setLongitude($data["longitude"]);
         }
         if (array_key_exists('latitude', $data)) {
             $this->setLat($data["latitude"]);
@@ -1375,7 +1375,7 @@ class Organization
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'longtitude',
+                'name' => 'longitude',
                 'required' => false,
             ));
 

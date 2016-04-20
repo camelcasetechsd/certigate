@@ -11,6 +11,7 @@ use DoctrineModule\Validator\UniqueObject;
 use Utilities\Service\Inflector;
 use Utilities\Service\Status;
 use Zend\Validator\Identical;
+use Zend\Validator\NotEmpty;
 
 /**
  * User Entity
@@ -61,10 +62,13 @@ use Zend\Validator\Identical;
  * @property int $trainingManagerStatement
  * @property int $status
  * @property int $customerId
+ * @property float  $longitude
+ * @property float  $latitude
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventUsers
  * @property Doctrine\Common\Collections\ArrayCollection $publicQuotes
  * @property Doctrine\Common\Collections\ArrayCollection $courseEventSubscriptions
  * @property Doctrine\Common\Collections\ArrayCollection $privateQuotes
+ * 
  * 
  * @package users
  * @subpackage entity
@@ -361,7 +365,7 @@ class User
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $privateQuotes;
-    
+
     /**
      *
      * @ORM\Column(type="integer")
@@ -389,6 +393,18 @@ class User
      * @var int
      */
     public $customerId;
+
+    /**
+     * @ORM\Column(type="float" , nullable=false)
+     * @var string
+     */
+    public $longitude;
+
+    /**
+     * @ORM\Column(type="float" , nullable=false)
+     * @var float
+     */
+    public $latitude;
 
     /**
      * hash password
@@ -1564,11 +1580,63 @@ class User
      * 
      * @access public
      * @param int $customerId
-     * @return CourseEvent
+     * @return User
      */
     public function setCustomerId($customerId)
     {
         $this->customerId = $customerId;
+        return $this;
+    }
+
+    /**
+     * Get Longitude
+     * 
+     * 
+     * @access public
+     * @return float longitude
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set Longitude
+     * 
+     * 
+     * @access public
+     * @param float $longitude
+     * @return User
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
+    /**
+     * Get Latitude
+     * 
+     * 
+     * @access public
+     * @return float latitude
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set Latitude
+     * 
+     * 
+     * @access public
+     * @param float $latitude
+     * @return User
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
         return $this;
     }
 
@@ -1650,7 +1718,7 @@ class User
         $this->privateQuotes = $privateQuotes;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 
@@ -1686,6 +1754,12 @@ class User
         }
         if (array_key_exists('customerId', $data)) {
             $this->setCustomerId($data["customerId"]);
+        }
+        if (array_key_exists('longitude', $data) && ! empty($data["longitude"])) {
+            $this->setLongitude($data["longitude"]);
+        }
+        if (array_key_exists('latitude', $data) && ! empty($data["latitude"])) {
+            $this->setLatitude($data["latitude"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDateOfBirthHj($data["dateOfBirthHj"])
@@ -1751,6 +1825,7 @@ class User
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $query->setEntity("Users\Entity\User");
             $inputFilter->add(array(
                 'name' => 'username',
                 'required' => true,
@@ -2042,6 +2117,36 @@ class User
             $inputFilter->add(array(
                 'name' => 'roles',
                 'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'longitude',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Longitude is required',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
+            
+            $inputFilter->add(array(
+                'name' => 'latitude',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Latitude is required',
+                            ),
+                        ),
+                    ),
+                ),
             ));
 
             $inputFilter->add(array(

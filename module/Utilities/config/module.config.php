@@ -22,6 +22,7 @@ return array(
         ),
         'invokables' => array(
             'Utilities\Service\File' => 'Utilities\Service\File',
+            'Utilities\Service\Distance' => 'Utilities\Service\Distance',
         ),
     ),
     'validators' => array(

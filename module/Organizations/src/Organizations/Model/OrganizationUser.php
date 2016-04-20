@@ -2,7 +2,7 @@
 
 namespace Organizations\Model;
 
-use Organizations\Entity\Organization;
+use Organizations\Entity\OrganizationType;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 
@@ -13,6 +13,7 @@ use Users\Entity\Role;
  * 
  * 
  * @property Utilities\Service\Query\Query $query
+ * @property Utilities\Service\Distance $distance
  * 
  * @package organizations
  * @subpackage model
@@ -27,14 +28,22 @@ class OrganizationUser
     protected $query;
 
     /**
+     *
+     * @var Utilities\Service\Distance 
+     */
+    protected $distance;
+
+    /**
      * Set needed properties
      * 
      * @access public
      * @param Utilities\Service\Query\Query $query
+     * @param Utilities\Service\Distance $distance
      */
-    public function __construct($query)
+    public function __construct($query, $distance)
     {
         $this->query = $query;
+        $this->distance = $distance;
     }
 
     /**
@@ -48,6 +57,9 @@ class OrganizationUser
     public function save($organizationUser, $data = array())
     {
         $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($organizationUser, $data);
+        
+        $this->sortProctors(/* $organizationId = */ $organizationUser->getOrganization()->getId(), /* $userId = */ $organizationUser->getUser()->getId());
+        
         $roleExists = false;
         $user = $organizationUser->getUser();
         foreach ($user->getRoles() as $role) {
@@ -76,9 +88,9 @@ class OrganizationUser
 
         $types = array();
         foreach ($organizationMeta as $org) {
-            array_push($types, $org->getType()->getId());
+            array_push($types, $org->getType()->getTitle());
         }
-        if (in_array(Organization::TYPE_ATC, $types) || in_array(Organization::TYPE_ATP, $types)) {
+        if (in_array(OrganizationType::TYPE_ATC_TITLE, $types) || in_array(OrganizationType::TYPE_ATP_TITLE, $types)) {
             return true;
         }
         return false;
@@ -127,6 +139,41 @@ class OrganizationUser
             }
             return false;
         }
+    }
+    
+    /**
+     * Sort proctors by distance
+     * 
+     * @access public
+     * @param int $organizationId ,default is null
+     * @param int $userId ,default is null
+     */
+    public function sortProctors($organizationId = null, $userId = null)
+    {
+        $role = $this->query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array(
+                'name' => Role::PROCTOR_ROLE,
+            ));
+        $criteria = array("role" => $role);
+        if (! is_null($organizationId)) {
+            $criteria["organization"] = $organizationId;
+        }
+        if (! is_null($userId)) {
+            $criteria["user"] = $userId;
+        }
+        
+        $proctors = $this->query->findBy(/* $entityName = */'Organizations\Entity\OrganizationUser', $criteria);
+        foreach ($proctors as $proctor) {
+            $organizationLat = $proctor->getOrganization()->getLat();
+            $organizationLong = $proctor->getOrganization()->getLong();
+            $proctorLat = $proctor->getUser()->getLatitude();
+            $proctorLong = $proctor->getUser()->getLongitude();
+
+            // using Haversine formula to calculate the distance between two points (given the latitude/longitude of those points)
+            $distance = $this->distance->getDistance(/*$latitudeFrom =*/ $organizationLat, /*$longitudeFrom =*/ $organizationLong, /*$latitudeTo =*/ $proctorLat, /*$longitudeTo =*/ $proctorLong);
+            $proctor->setDistanceSort($distance);
+            $this->query->setEntity('Organizations\Entity\OrganizationUser')->save($proctor, /*$data =*/ array(), /*$flushAll =*/ false, /*$noFlush =*/ true);
+        }
+        $this->query->entityManager->flush();
     }
 
 }

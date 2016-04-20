@@ -14,7 +14,8 @@ class OrganizationFactory implements FactoryInterface
         $systemCacheHandler = $serviceLocator->get('systemCacheHandler');
         $notification = $serviceLocator->get('Notifications\Service\Notification');
         $version = $serviceLocator->get('Versioning\Model\Version');
-        return new Organization($query, $systemCacheHandler, $notification, $version);
+        $organizationUser = $serviceLocator->get('Organizations\Model\OrganizationUser');
+        return new Organization($query, $systemCacheHandler, $notification, $version, $organizationUser);
     }
 
 }

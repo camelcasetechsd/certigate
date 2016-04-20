@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineModule\Validator\UniqueObject;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * OrganziationUser Entity
@@ -19,10 +20,11 @@ use DoctrineModule\Validator\UniqueObject;
  * 
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
+ * @property int $distanceSort 
  * @property Users\Entity\Role $role 
  * @property Users\Entity\User $user 
  * @property Organizations\Entity\Organization $organization 
- * 
+ * @property Doctrine\Common\Collections\ArrayCollection $proctorExamBooks
  * 
  * @package organizations
  * @subpackage entity
@@ -38,11 +40,18 @@ class OrganizationUser
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer");
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     public $id;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int
+     */
+    public $distanceSort;
 
     /**
      * @Gedmo\Versioned
@@ -68,6 +77,23 @@ class OrganizationUser
      */
     public $organization;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Courses\Entity\ExamBook", mappedBy="proctors")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    public $proctorExamBooks;
+    
+    /**
+     * Prepare organizationUser entity
+     * 
+     * 
+     * @access public
+     */
+    public function __construct()
+    {
+        $this->proctorExamBooks = new ArrayCollection();
+    }
+    
     /**
      * Convert the object to an array.
      * 
@@ -95,6 +121,50 @@ class OrganizationUser
         $this->organization = $organization;
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * Set DistanceSort
+     * 
+     * @access public
+     * @param int $distanceSort
+     * @return \Organizations\Entity\OrganizationUser
+     */
+    public function setDistanceSort($distanceSort)
+    {
+        $this->distanceSort = $distanceSort;
+        return $this;
+    }
+
+    /**
+     * Get DistanceSort
+     * 
+     * @access public
+     * @return int distanceSort
+     */
+    public function getDistanceSort()
+    {
+        return $this->distanceSort;
+    }
+
+    /**
+     * Get Distance Corresponding class
+     * 
+     * @access public
+     * @return string bootstrap class
+     */
+    public function getDistanceStyleClass()
+    {
+        if($this->distanceSort <= 10){
+            $distanceStyleClass = "bg-success";
+        }elseif($this->distanceSort <= 100){
+            $distanceStyleClass = "bg-info";
+        }elseif($this->distanceSort <= 300){
+            $distanceStyleClass = "bg-warning";
+        }else{
+            $distanceStyleClass = "bg-danger";
+        }
+        return $distanceStyleClass;
     }
 
     /**
@@ -170,6 +240,32 @@ class OrganizationUser
     }
 
     /**
+     * Get ProctorExamBooks
+     * 
+     * 
+     * @access public
+     * @return ArrayCollection proctorExamBooks
+     */
+    public function getProctorExamBooks()
+    {
+        return $this->proctorExamBooks;
+    }
+
+    /**
+     * Set ProctorExamBooks
+     * 
+     * 
+     * @access public
+     * @param ArrayCollection $proctorExamBooks
+     * @return \Organizations\Entity\OrganizationUser
+     */
+    public function setProctorExamBooks($proctorExamBooks)
+    {
+        $this->proctorExamBooks = $proctorExamBooks;
+        return $this;
+    }
+    
+    /**
      * Populate from an array.
      * 
      * 
@@ -180,6 +276,9 @@ class OrganizationUser
     {
         if (array_key_exists("organization", $data)) {
             $this->setOrganization($data["organization"]);
+        }
+        if (array_key_exists("distanceSort", $data)) {
+            $this->setDistanceSort($data["distanceSort"]);
         }
         $this->setRole($data["role"])
                 ->setUser($data["user"]);

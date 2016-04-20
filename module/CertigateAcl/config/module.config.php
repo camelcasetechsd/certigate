@@ -49,6 +49,9 @@ return array(
             'home' => array(
                 'resource' => 'DefaultModule',
             ),
+            'noOrganizationUsers' => array(
+                'resource' => 'DefaultModule',
+            ),
             'userCreate' => array(
                 'resource' => 'Users',
             ),

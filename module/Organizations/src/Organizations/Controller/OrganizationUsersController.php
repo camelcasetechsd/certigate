@@ -135,7 +135,7 @@ class OrganizationUsersController extends ActionController
     public function editAction()
     {
         $variables = array();
-        $id = $this->params('organizationId');
+        $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');

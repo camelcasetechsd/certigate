@@ -14,6 +14,8 @@ class ErrorMessages
 {
 
     const NO_INSTRUCTOR_FOUND = "No training found for instructor!";
+    
+    const NO_PROCTOR_FOUND = "No proctors found!";
 
     /**
      * Get error message for key

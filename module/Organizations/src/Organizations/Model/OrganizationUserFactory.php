@@ -28,7 +28,8 @@ class OrganizationUserFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $query = $serviceLocator->get('wrapperQuery')->setEntity('Organizations\Entity\OrganizationUser');
-        return new OrganizationUser($query);
+        $distance = $serviceLocator->get('Utilities\Service\Distance');
+        return new OrganizationUser($query, $distance);
     }
 
 }
