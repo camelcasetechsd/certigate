@@ -1316,4 +1316,4 @@ msgid "Latitude is required"
 msgstr "Latitude is required"
 
 msgid "km away"
-msgstr "km away ar"
+msgstr "km away"
