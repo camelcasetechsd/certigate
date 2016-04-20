@@ -10,7 +10,8 @@ defined('IN_CODOF') or die();
 
 //Assumes config.php has been included before
 
-class Util {
+class Util
+{
 
     //Not used now, since logging is done in the database
     public static $log = 'logs/file.log';
@@ -22,7 +23,8 @@ class Util {
      * Logger function
      * @param type $message
      */
-    public static function log($message) {
+    public static function log($message)
+    {
 
         if (CODO_DEBUG) {
 
@@ -35,7 +37,8 @@ class Util {
      * Gets all configuration information 
      * @param type $db -> DB connection
      */
-    public static function get_config($db) {
+    public static function get_config($db)
+    {
 
         $qry = 'SELECT * FROM codo_config';
         $res = $db->query($qry);
@@ -49,7 +52,8 @@ class Util {
         self::$options = $info;
     }
 
-    public static function get_smileys($db) {
+    public static function get_smileys($db)
+    {
 
         $qry = 'SELECT symbol, image_name FROM codo_smileys';
         $res = $db->query($qry);
@@ -73,17 +77,18 @@ class Util {
      * starts custom session that works on database rather than file
      * for faster access/write speed
      */
-    public static function start_session() {
+    public static function start_session()
+    {
 
         //initiate/update/destroy user sessions
         if (!self::$use_normal_sessions) {
 
             $session = new \CODOF\Session\Session();
         }
-        
+
         session_start();
-        if (!empty($session->userId)) {
-            $_SESSION[UID . 'USER']['id'] = $session->userId;
+        if (!empty($session->mainAppUserData)) {
+            $_SESSION['mainAppUserData'] = $session->mainAppUserData;
         }
     }
 
@@ -96,28 +101,33 @@ class Util {
      * 
      * returns decoded json if valid string else returns the string itself
      */
-    public static function valid_JSON($str) {
+    public static function valid_JSON($str)
+    {
 
         //we want associative array so pass true
         $json = json_decode($str, true);
 
         if ($json == null) {
             return $str;
-        } else {
+        }
+        else {
             return $json;
         }
     }
 
-    public static function get_opt($option) {
+    public static function get_opt($option)
+    {
 
         if (empty(self::$options) || !isset(self::$options[$option])) {
             return 'The option ' . $option . ' does not exist in the table';
-        } else {
+        }
+        else {
             return self::$options[$option];
         }
     }
 
-    public static function trim($str, $len) {
+    public static function trim($str, $len)
+    {
 
         //make sure trimmed string does not exceed given length
         return (strlen(trim($str)) > $len);
@@ -130,7 +140,8 @@ class Util {
      * @param {array} $req_fields
      * @return boolean
      */
-    public static function is_set($array, $req_fields) {
+    public static function is_set($array, $req_fields)
+    {
 
         foreach ($req_fields as $req_field) {
 
@@ -142,7 +153,8 @@ class Util {
         return true;
     }
 
-    public static function is_empty($array, $req_fields) {
+    public static function is_empty($array, $req_fields)
+    {
 
         foreach ($req_fields as $req_field) {
 
@@ -162,7 +174,8 @@ class Util {
      * @param type $decPlaces -> precision
      * @return string -> abbreviated number
      */
-    public static function abbrev_no($number, $decPlaces) {
+    public static function abbrev_no($number, $decPlaces)
+    {
 
         // 2 decimal places => 100, 3 => 1000, etc
         $decPlaces = pow(10, $decPlaces);
@@ -205,7 +218,8 @@ class Util {
     /**
      * 
      */
-    public static function inc_global_views() {
+    public static function inc_global_views()
+    {
 
         $view = array('is there');
         $date = date('Y-m-d');
@@ -220,13 +234,15 @@ class Util {
 
             \DB::table(PREFIX . 'codo_views')->insert(array('date' => $date, 'views' => 1));
             $_SESSION[UID . 'view_inserted'] = true; //to prevent wasted queries
-        } else {
+        }
+        else {
 
             \DB::table(PREFIX . 'codo_views')->where('date', '=', $date)->increment('views');
         }
     }
 
-    public static function re_array_files(&$file_post) {
+    public static function re_array_files(&$file_post)
+    {
 
         $file_ary = array();
         $file_count = count($file_post['name']);
@@ -250,14 +266,16 @@ class Util {
      * @param array $params The array of substitution parameters
      * @return string The interpolated query
      */
-    public static function interpolate_query($query, $params) {
+    public static function interpolate_query($query, $params)
+    {
         $keys = array();
 
         # build a regular expression for each parameter
         foreach ($params as $key => $value) {
             if (is_string($key)) {
                 $keys[] = '/' . $key . '/';
-            } else {
+            }
+            else {
                 $keys[] = '/[?]/';
             }
         }
@@ -269,7 +287,8 @@ class Util {
         return $query;
     }
 
-    public static function count_children($cat) {
+    public static function count_children($cat)
+    {
 
         if (property_exists($cat, 'children')) {
 
@@ -295,14 +314,16 @@ class Util {
      * @param string $mid
      * @return string
      */
-    public static function mid_cut($text, $max_chars, $mid = "...") {
+    public static function mid_cut($text, $max_chars, $mid = "...")
+    {
 
         $text_len = strlen($text);
 
         if ($text_len > $max_chars) {
 
             return substr_replace($text, $mid, $max_chars / 2, $text_len - $max_chars);
-        } else {
+        }
+        else {
 
             return $text;
         }
@@ -314,7 +335,8 @@ class Util {
      * @param int $max_chars
      * @return string
      */
-    public static function start_cut($text, $max_chars) {
+    public static function start_cut($text, $max_chars)
+    {
 
         if (strlen($text) > $max_chars) {
 
@@ -324,7 +346,8 @@ class Util {
         return $text;
     }
 
-    public static function get_avatar_path($name, $id, $icon = true) {
+    public static function get_avatar_path($name, $id, $icon = true)
+    {
 
         if ($name == null) {
 
@@ -343,7 +366,8 @@ class Util {
         return DURI . PROFILE_IMG_PATH . $name;
     }
 
-    public static function is_field_present($value, $field) {
+    public static function is_field_present($value, $field)
+    {
 
         $db = \DB::getPDO();
         //no need for limit because the fields are always checked for uniqueness
@@ -366,7 +390,8 @@ class Util {
      * get all directories that need 0777 permissions
      */
 
-    public static function get_777s() {
+    public static function get_777s()
+    {
 
         return array("sites/default/assets/img/attachments",
             "sites/default/assets/img/cats",
@@ -396,7 +421,8 @@ class Util {
      *  
      * )
      */
-    public static function flatten_2d_to_1d() {
+    public static function flatten_2d_to_1d()
+    {
 
         //flattens the array 2D to 1D
     }
@@ -406,12 +432,14 @@ class Util {
      * just a dummy echo function
      * @param type $message
      */
-    public static function e($message) {
+    public static function e($message)
+    {
 
         echo $message;
     }
 
-    public static function set_promoted_or_demoted_rid() {
+    public static function set_promoted_or_demoted_rid()
+    {
 
         $user = User\User::get();
         $rids = \DB::table(PREFIX . 'codo_promotion_rules')

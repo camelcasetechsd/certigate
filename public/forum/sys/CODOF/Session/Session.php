@@ -11,7 +11,7 @@ class Session
 
     //put your code here
 
-    public $userId;
+    public $mainAppUserData;
     
     private $db;
     
@@ -22,9 +22,8 @@ class Session
         session_start();
         if (is_array($_SESSION) && array_key_exists("Zend_Auth", $_SESSION)) {
             $zendAuthData = $_SESSION["Zend_Auth"]->getArrayCopy();
-            if (is_array($zendAuthData) && array_key_exists("storage", $zendAuthData) && count($zendAuthData["storage"]) > 0 && array_key_exists("id", $zendAuthData["storage"])
-            ) {
-                $this->userId = $zendAuthData["storage"]["id"];
+            if (is_array($zendAuthData) && array_key_exists("storage", $zendAuthData) && count($zendAuthData["storage"]) > 0) {
+                $this->mainAppUserData = $zendAuthData["storage"];
             }
         }
         session_write_close();

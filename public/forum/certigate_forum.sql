@@ -550,7 +550,7 @@ CREATE TABLE `codo_plugins` (
 
 LOCK TABLES `codo_plugins` WRITE;
 /*!40000 ALTER TABLE `codo_plugins` DISABLE KEYS */;
-INSERT INTO `codo_plugins` VALUES ('sso','plugin',1,0,'2.x'),('uni_login','plugin',0,0,'1');
+INSERT INTO `codo_plugins` VALUES ('sso','plugin',1,0,'2.x'),('uni_login','plugin',0,0,'1'),('autologin','plugin',1,0,'1.x');
 /*!40000 ALTER TABLE `codo_plugins` ENABLE KEYS */;
 UNLOCK TABLES;
 
