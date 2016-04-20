@@ -555,11 +555,11 @@ class Organization
     {
         $requiredRoles = array();
         foreach ($organizationTypes as $organizationType) {
-            switch ((int) $organizationType) {
-                case OrganizationEntity::TYPE_ATP:
+            switch ($organizationType) {
+                case OrganizationType::TYPE_ATP_TITLE:
                     $requiredRoles[] = Role::TRAINING_MANAGER_ROLE;
                     break;
-                case OrganizationEntity::TYPE_ATC:
+                case OrganizationType::TYPE_ATC_TITLE:
                     $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
                     break;
             }

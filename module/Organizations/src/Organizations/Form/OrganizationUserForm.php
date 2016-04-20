@@ -7,6 +7,7 @@ use Users\Entity\Role;
 use Organizations\Entity\Organization;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Form\ButtonsFieldset;
+use Organizations\Entity\OrganizationType;
 
 /**
  * OrganizationUser Form
@@ -61,13 +62,13 @@ class OrganizationUserForm extends Form
             Role::TRAINING_MANAGER_ROLE,
         );
 
-        if (in_array(Organization::TYPE_ATC, $this->organizationType) && in_array(Organization::TYPE_ATP, $this->organizationType)) {
+        if (in_array(OrganizationType::TYPE_ATC_TITLE, $this->organizationType) && in_array(OrganizationType::TYPE_ATP_TITLE, $this->organizationType)) {
             $types = array_merge($atpTypes, $atcTypes);
         }
-        elseif (in_array(Organization::TYPE_ATP, $this->organizationType)) {
+        elseif (in_array(OrganizationType::TYPE_ATP_TITLE, $this->organizationType)) {
             $types = $atpTypes;
         }
-        else if (in_array(Organization::TYPE_ATC, $this->organizationType)) {
+        else if (in_array(OrganizationType::TYPE_ATC_TITLE, $this->organizationType)) {
             $types = $atcTypes;
         }
 
