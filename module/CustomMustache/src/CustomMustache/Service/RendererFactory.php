@@ -82,6 +82,7 @@ class RendererFactory implements FactoryInterface
             $config['helpers']['loggedInUserId'] = $storage['id'];
             if (!is_null($chatSessionContiner) && $chatSessionContiner->chatStarted) {
                 $config['helpers']['chatStarted'] = $chatSessionContiner->chatStarted;
+                $config['helpers']['minimized'] = $chatSessionContiner->minimized;
             }
         }
 

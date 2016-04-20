@@ -47,7 +47,17 @@ return array(
                     ),
                 ),
             ),
-        )
+            'minimizeChat' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/chat/minimize',
+                    'defaults' => array(
+                        'controller' => 'Chat\Controller\Chat',
+                        'action' => 'minimizeChat',
+                    ),
+                ),
+            ),
+        ),
     ),
     'console' => array(
         'router' => array(

@@ -82,11 +82,17 @@ class PosARoles extends AbstractSeed
 
         $chatModule = "Chat";
         $chatRoute = "startChat";
+        $minimizeChatRoute = "minimizeChat";
         $chatAcl = array(
             array(
                 'role_id' => $normalUserRoleId,
                 'module' => $chatModule,
                 'route' => $chatRoute,
+            ),
+            array(
+                'role_id' => $normalUserRoleId,
+                'module' => $chatModule,
+                'route' => $minimizeChatRoute,
             ),
         );
 
