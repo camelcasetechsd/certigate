@@ -31,7 +31,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property \DateTime $CRExpiration
  * @property \DateTime $CRExpirationHj
  * @property string $CRAttachment
- * @property string $wireTransferAttachment
  * @property string $atpLicenseNo
  * @property \DateTime $atpLicenseExpiration
  * @property \DateTime $atpLicenseExpirationHj
@@ -1448,23 +1447,7 @@ class Organization
                     ),
                 )
             ));
-            $inputFilter->add(array(
-                'name' => 'wireTransferAttachment',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Filesize',
-                        'options' => array(
-                            'max' => 2097152
-                        )
-                    ),
-                    array('name' => 'Fileextension',
-                        'options' => array(
-                            'extension' => 'gif,jpg,png,pdf,docx'
-                        )
-                    ),
-                )
-            ));
-//
+
             $inputFilter->add(array(
                 'name' => 'atcLicenseNo',
                 'required' => true,

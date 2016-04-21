@@ -822,9 +822,6 @@ class Organization
             array_push($typeIds, $type->getType()->getId());
         }
 
-//        $form->remove('wireTransferAttachment');
-//        $form->getInputFilter()->remove('wireTransferAttachment');
-
         $form->get('CRAttachment')->setAttribute('required', false);
 
         foreach ($typeIds as $type) {
