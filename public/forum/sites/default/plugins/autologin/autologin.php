@@ -21,7 +21,7 @@ if (array_key_exists("mainAppUserData", $_SESSION) && !isset($_SESSION[UID . 'US
         $register->login();
     }
     else {
-        $user->loginByMail($userData['email']);
+        $user->loginByUsername($userData['username']);
     }
     \CODOF\Hook::call('before_login');
 }

@@ -715,6 +715,15 @@ class User {
     }
 
     /**
+     * Log the user in by username
+     * @param string $username
+     */
+    public static function loginByUsername($username) {
+
+        self::_login($username, 'username');
+    }
+
+    /**
      * Logs the user in by setting the SESSION and last login time in database
      * @param string $value
      * @param string $col
