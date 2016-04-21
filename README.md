@@ -13,3 +13,6 @@ Add this line `10.10.10.49 local-certigate.com` to your /etc/hosts file then ope
 
 ### Update documentation after having code changes:
     bin/apigen
+
+### Run acceptance test cases after having code changes:
+    bin/behat
