@@ -3,7 +3,7 @@ Feature: test the login functionality
     Scenario: Failed Login
     Given I am on "/sign/in"
     When I fill in the following:
-      | username | nouser@nomail.com |
+      | username | nouser |
       | password | nopassword |
     And I press "login"
     Then I should be on "/sign/in"
@@ -13,6 +13,6 @@ Feature: test the login functionality
     When I fill in the following:
       | username | admin |
       | password | adminadmin |
-    And I press "login"
+    And I press "Sign in"
     Then I should be on "/"
 
