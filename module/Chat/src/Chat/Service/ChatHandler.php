@@ -81,11 +81,13 @@ class ChatHandler
      */
     public function findRecipient($clients, $message)
     {
+        $recipients = array();
         foreach ($clients as $client) {
             if ($client->userId == $message->recipientId) {
-                return $client;
+                array_push($recipients, $client);
             }
         }
+        return $recipients;
     }
 
     /**

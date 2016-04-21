@@ -217,8 +217,10 @@ $(document).ready(function () {
                     else if(event.code == 1005)
                         reason = "No status code was actually present.";
                     else if(event.code == 1006){
-                       reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
-                       connectToServer();
+                        reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
+                        // wating for 1 second to minimize the headache 
+                        setTimeout(function(){},1000);
+                        connectToServer();
                     }else if(event.code == 1007)
                         reason = "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).";
                     else if(event.code == 1008)

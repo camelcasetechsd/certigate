@@ -43,7 +43,6 @@ class ChatServer implements MessageComponentInterface
         //getting online admins
         $onlineAdmins = $this->chatHandler->getOnlineAdmins($this->clients, $parameters);
         // sending online admins to client
-//        $conn->send(json_encode(array('server' => $onlineAdmins)));
         $conn->send($this->chatHandler->getOnlineAdminsMessage($onlineAdmins));
 
         echo "New User Connected!\n";
@@ -76,12 +75,15 @@ class ChatServer implements MessageComponentInterface
                 // save the message
                 $this->chatHandler->saveMessage($msg);
                 // find requested recipient
-                $recipient = $this->chatHandler->findRecipient($this->clients, $message);
+                $recipients = $this->chatHandler->findRecipient($this->clients, $message);
                 // adding parameters to message before send again
                 $enhancedMsg = $this->chatHandler->enhanceMsg($from, $message);
-                if ($recipient) {
+                if ($recipients) {
                     // send the message if user is still online
-                    $recipient->send($enhancedMsg);
+                    // recipients are plural to overcome opening the same account fraud
+                    foreach ($recipients as $recipient) {
+                        $recipient->send($enhancedMsg);
+                    }
                 }
                 else {
                     // return message user has been disconnected
