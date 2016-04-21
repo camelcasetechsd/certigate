@@ -32,18 +32,18 @@
 <script>
 $(document).ready(function () {
 
-{{#minimized}}
-window.chatMinimized = true;
-{{/minimized}}
-{{^minimized}}
-window.chatMinimized = false;
-{{/minimized}}
+    {{#minimized}}
+    window.chatMinimized = true;
+    {{/minimized}}
+    {{^minimized}}
+    window.chatMinimized = false;
+    {{/minimized}}
 
-{{#chatStarted}}
-prepareChat();
-{{/chatStarted}}
-        
-prepareChatStatus();
+    {{#chatStarted}}
+    prepareChat();
+    {{/chatStarted}}
+
+    prepareChatStatus();
 ////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////// Events ///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,6 @@ prepareChatStatus();
                 dataType: 'json',
                 })
                 .done(function (data) {
-                    console.log(data.message);
                 })
                 .fail(function (data) {
                     alert('Bad request');
@@ -120,7 +119,6 @@ prepareChatStatus();
         }
         // enter sends message
         else if (e.keyCode === 13){
-            console.log('enter only');
             $(this).next('.send').click();
         }
     });
@@ -140,7 +138,6 @@ prepareChatStatus();
                 dataType: 'json',
         })
         .done(function (data) {
-        console.log(data.message);
         })
         .fail(function (data) {
         alert('Bad request');
@@ -163,7 +160,6 @@ prepareChatStatus();
                 dataType: 'json',
         })
         .done(function (data) {
-        console.log(data.message);
         })
         .fail(function (data) {
         alert('Bad request');
@@ -172,8 +168,111 @@ prepareChatStatus();
 //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// Handlers /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
+        /**
+         * function to handle connecting to the server && communication between 
+         *  user client and the server
+         *  it handles also accedentily closing of the server and makes trials 
+         *  to reconnect
+         */
+        function connectToServer(){
+                window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
 
-    /**
+                window.connection.onopen = function(){
+                    console.log('connected successfully');
+                    
+                    /**
+                     * updating online admins each 2 seconds  
+                     */
+                    setInterval(function () {
+                        $message = {
+                        'user': window.username,
+                                'text': null,
+                                'time': null,
+                                'userId': window.userId,
+                                'recipientId': null,
+                                'type': 'update_admins'
+                        };
+                        // in case of the connection closed accidently
+                        // so WS must be working to send 
+                        if(window.connection.readyState == 1){
+                            window.connection.send(JSON.stringify($message));
+                        }
+                        
+                    }, 2000);
+                };
+                
+                // in case of connection lost
+                window.connection.onclose = function (event) {
+                    var reason;
+                    if (event.code == 1000)
+                        reason = "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
+                    else if(event.code == 1001)
+                        reason = "An endpoint is \"going away\", such as a server going down or a browser having navigated away from a page.";
+                    else if(event.code == 1002)
+                        reason = "An endpoint is terminating the connection due to a protocol error";
+                    else if(event.code == 1003)
+                        reason = "An endpoint is terminating the connection because it has received a type of data it cannot accept (e.g., an endpoint that understands only text data MAY send this if it receives a binary message).";
+                    else if(event.code == 1004)
+                        reason = "Reserved. The specific meaning might be defined in the future.";
+                    else if(event.code == 1005)
+                        reason = "No status code was actually present.";
+                    else if(event.code == 1006){
+                       reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
+                       connectToServer();
+                    }else if(event.code == 1007)
+                        reason = "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).";
+                    else if(event.code == 1008)
+                        reason = "An endpoint is terminating the connection because it has received a message that \"violates its policy\". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.";
+                    else if(event.code == 1009)
+                       reason = "An endpoint is terminating the connection because it has received a message that is too big for it to process.";
+                    else if(event.code == 1010) // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
+                        reason = "An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake. <br /> Specifically, the extensions that are needed are: " + event.reason;
+                    else if(event.code == 1011)
+                        reason = "A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.";
+                    else if(event.code == 1015)
+                        reason = "The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).";
+                    else
+                        reason = "Unknown reason";
+
+                    console.log(reason);
+        }
+        
+  
+            // on message sent or recived
+            window.connection.onmessage = function (e) {
+                $msg = JSON.parse(e.data);
+                        if ("text" in $msg) {
+                //incomming message
+                handleIncommingMessgae($msg);
+                } else {
+                        //server messages
+                    switch ($msg.type) {
+                        // user-disconnected
+                        case 'user_disconnected':
+                            $(document)
+                            .find('#user-chat-box-' + $msg.userId)
+                            .children('.chat-box-body')
+                            .append('<div class="message"><p class="server-message pull-right">' + $msg.server + '</p></div>')
+                            break;
+                        // updating admins    
+                        case 'update_admins':
+                            $onlineAdmins = $msg.server;
+                            $('.online-admins').children().remove();
+                            $.each($onlineAdmins, function (index, value) {
+                                if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
+                                    $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
+                                }
+                            });
+                            break;
+                    }
+                }
+            };
+
+
+        }            
+    
+    
+     /**
      * this function meant to parepare ws and 
      * parameters and handling messages and 
      * sending periodic requests for online admins
@@ -185,60 +284,18 @@ prepareChatStatus();
             //selected admin username and id
             window.choosedUsername = '';
             window.choosedUserId = '';
-                    window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
+            window.connection = '';
 
+            connectToServer();
+            
             {{#loggedInUsername}}
             window.username = "{{loggedInUsername}}";
             {{/loggedInUsername}}
             {{#loggedInUserId}}
             window.userId = {{loggedInUserId}};
             {{/loggedInUserId}}
-            
-                // on message sent or recived
-                window.connection.onmessage = function (e) {
-                    $msg = JSON.parse(e.data);
-                            if ("text" in $msg) {
-                    //incomming message
-                    handleIncommingMessgae($msg);
-                    } else {
-                            //server messages
-                        switch ($msg.type) {
-                            // user-disconnected
-                            case 'user_disconnected':
-                                $(document)
-                                .find('#user-chat-box-' + $msg.userId)
-                                .children('.chat-box-body')
-                                .append('<div class="message"><p class="server-message pull-right">' + $msg.server + '</p></div>')
-                                break;
-                            // updating admins    
-                            case 'update_admins':
-                                $onlineAdmins = $msg.server;
-                                $('.online-admins').children().remove();
-                                $.each($onlineAdmins, function (index, value) {
-                                    if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
-                                        $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
-                                    }
-                                });
-                                break;
-                        }
-                    }
-                };
-
-                /**
-                 * updating online admins each 2 seconds  
-                 */
-                setInterval(function () {
-                    $message = {
-                    'user': window.username,
-                            'text': null,
-                            'time': null,
-                            'userId': window.userId,
-                            'recipientId': null,
-                            'type': 'update_admins'
-                    };
-                    window.connection.send(JSON.stringify($message));
-                }, 2000);                    
-            }
+                         
+    }
 
 
     /**
@@ -264,7 +321,7 @@ prepareChatStatus();
      * @returns 
      */
     function secureMessage(sendObject) {
-    $chatBoxContiner = sendObject.parent().parent().parent();
+            $chatBoxContiner = sendObject.parent().parent().parent();
             $chatBoxContinerId = $chatBoxContiner.attr('id');
             setChoosedUserId($chatBoxContinerId.split('-').pop());
             setChoosedUsername($chatBoxContiner.find('.chat-box-header > p').text());
