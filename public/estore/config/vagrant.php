@@ -6,17 +6,19 @@ define('HTTP_SERVER', 'http://local-certigate.com/estore/');
 define('HTTPS_SERVER', 'http://local-certigate.com/estore/');
 
 // DIR
-define('DIR_APPLICATION', '/var/www/html/public/estore/catalog/');
-define('DIR_SYSTEM', '/var/www/html/public/estore/system/');
-define('DIR_LANGUAGE', '/var/www/html/public/estore/catalog/language/');
-define('DIR_TEMPLATE', '/var/www/html/public/estore/catalog/view/theme/');
-define('DIR_CONFIG', '/var/www/html/public/estore/system/config/');
-define('DIR_IMAGE', '/var/www/html/public/estore/image/');
-define('DIR_CACHE', '/var/www/html/public/estore/system/storage/cache/');
-define('DIR_DOWNLOAD', '/var/www/html/public/estore/system/storage/download/');
-define('DIR_LOGS', '/var/www/html/public/estore/system/storage/logs/');
-define('DIR_MODIFICATION', '/var/www/html/public/estore/system/storage/modification/');
-define('DIR_UPLOAD', '/var/www/html/public/estore/system/storage/upload/');
+$dir = __DIR__;
+
+define('DIR_APPLICATION', $dir . '/../catalog/');
+define('DIR_SYSTEM', $dir . '/../system/');
+define('DIR_LANGUAGE', $dir . '/../catalog/language/');
+define('DIR_TEMPLATE', $dir . '/../catalog/view/theme/');
+define('DIR_CONFIG', $dir . '/../system/config/');
+define('DIR_IMAGE', $dir . '/../image/');
+define('DIR_CACHE', $dir . '/../system/storage/cache/');
+define('DIR_DOWNLOAD', $dir . '/../system/storage/download/');
+define('DIR_LOGS', $dir . '/../system/storage/logs/');
+define('DIR_MODIFICATION', $dir . '/../system/storage/modification/');
+define('DIR_UPLOAD', $dir . '/../system/storage/upload/');
 
 // DB
 define('DB_DRIVER', 'mysqli');

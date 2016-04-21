@@ -13,7 +13,8 @@
         "fzaninotto/faker": "^1.5",
         "gedmo/doctrine-extensions": "^2.4",
         "slm/queue-doctrine": "~0.5",
-        "dino/dompdf-module": "dev-master"
+        "dino/dompdf-module": "dev-master",
+        "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",

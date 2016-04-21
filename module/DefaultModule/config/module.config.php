@@ -143,7 +143,7 @@ return array(
                 'options' => array(
                     'route' => '/test',
                     'defaults' => array(
-                        'controller' => 'DefaultModule\Controller\index',
+                        'controller' => 'DefaultModule\Controller\Index',
                         'action' => 'test',
                     ),
                     'constraints' => array(
