@@ -13,7 +13,12 @@
         "fzaninotto/faker": "^1.5",
         "gedmo/doctrine-extensions": "^2.4",
         "slm/queue-doctrine": "~0.5",
-        "dino/dompdf-module": "dev-master"
+        "dino/dompdf-module": "dev-master",
+        "behat/behat": "2.5.x",
+        "behat/mink": "1.5.0",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "1.0.9",
+        "behat/mink-selenium2-driver": "1.1.1"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",

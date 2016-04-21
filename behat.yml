@@ -1,0 +1,21 @@
+##
+##  Configuration file for running acceptance tests
+## 
+
+default:
+    filters:
+        tags: "~@ignore"
+    paths:
+        features: '%behat.paths.base%/features'
+        bootstrap: '%behat.paths.features%/bootstrap'
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://local-certigate.com
+            files_path: '%behat.paths.features%/resources'
+            goutte: ~
+            selenium2: ~
+
+development:
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://certigate.camelcasetech.com
