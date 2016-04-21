@@ -1,0 +1,114 @@
+    .online-admin-container , .chat-box-container {
+        background-color: #FFF;
+    }
+    .online-admin-container{
+        width:150px;
+        height: 350px;
+        border-style: solid ;
+        border-width: 1px;
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px;         
+    }
+    .admin-id{
+        display: none;
+    }
+    .chat-box-container{
+        border-style: solid;
+        border-width: 1px;
+        display: inline-block;
+        margin-right: 3px;
+        height: 350px;
+        max-width: 245px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+    .online-admin-container-header{
+        background-color: rgba(82,168,236,0.6);
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px;
+        width: 100%;
+        display: inline-block;
+
+    }
+    .online-user-container-header{
+        background-color: rgba(82,168,236,0.6);
+    }
+    .hide-online-admins-container{
+        float: right;
+        margin-top: -28px;
+        margin-right: 10px;
+    }
+    .chat-box-header{
+        margin-bottom: 1px;
+        background-color: rgba(82,168,236,0.6);
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px; 
+
+    }
+    .close-chat-box{
+        position: relative;
+        float: right;
+        margin-right: 10px;
+    }
+    .chat-box-header > span{
+        margin-left: 5px;
+    }
+    .chat-box-body{
+        border-style: solid;
+        border-width: 1px;
+        height: 253px;
+        margin-left: 1%; 
+        margin-right: 1%; 
+        margin-top: -1px;
+        overflow: scroll;
+    }
+    .chat-box-footer{
+        margin-top: 1px;
+    }
+    /*    .dialogue{
+            padding-bottom: 1px;
+            display: inline-block;
+            height: 65px;
+        }*/
+    .user-message{
+        width: 74%;
+        height: 63px;
+        margin-left: 2.5px;
+        float: left;
+        margin-top: 3px;
+    }
+    .send{
+        margin-right: 2px;
+        height: 62px;
+        width: 23%;
+        margin-top: 3px;
+    }
+    .my-message{
+        color: #000;
+        float: left;
+    }
+    .his-message{
+        color: #66aa66;
+        float: right;
+    }
+    .server-message{
+        color: red;
+        float: right;
+    }
+    .message{
+        display: flex;
+    }
+    .single-admin-container :hover {
+        cursor: pointer;        
+    }
+
+    .chat-container{
+        position: fixed;
+        z-index: 10000;
+        bottom: 0;
+        right: 0;
+    }

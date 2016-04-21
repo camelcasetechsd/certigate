@@ -1,121 +1,4 @@
 {{$chatContainer}}
-<style>
-    .online-admin-container , .chat-box-container {
-        background-color: #FFF;
-    }
-    .online-admin-container{
-        width:150px;
-        height: 350px;
-        border-style: solid ;
-        border-width: 1px;
-        border-radius: 10px 10px 0px 0px; 
-        -moz-border-radius: 10px 10px 0px 0px; 
-        -webkit-border-radius: 10px 10px 0px 0px;         
-    }
-    .admin-id{
-        display: none;
-    }
-    .chat-box-container{
-        border-style: solid;
-        border-width: 1px;
-        display: inline-block;
-        margin-right: 3px;
-        height: 350px;
-        max-width: 245px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-    }
-    .online-admin-container-header{
-        background-color: rgba(82,168,236,0.6);
-        border-radius: 10px 10px 0px 0px; 
-        -moz-border-radius: 10px 10px 0px 0px; 
-        -webkit-border-radius: 10px 10px 0px 0px;
-        width: 100%;
-        display: inline-block;
-
-    }
-    .online-user-container-header{
-        background-color: rgba(82,168,236,0.6);
-    }
-    .hide-online-admins-container{
-        float: right;
-        margin-top: -28px;
-        margin-right: 10px;
-    }
-    .chat-box-header{
-        margin-bottom: 1px;
-        background-color: rgba(82,168,236,0.6);
-        border-radius: 10px 10px 0px 0px; 
-        -moz-border-radius: 10px 10px 0px 0px; 
-        -webkit-border-radius: 10px 10px 0px 0px; 
-
-    }
-    .close-chat-box{
-        position: relative;
-        float: right;
-        margin-right: 10px;
-    }
-    .chat-box-header > span{
-        margin-left: 5px;
-    }
-    .chat-box-body{
-        border-style: solid;
-        border-width: 1px;
-        height: 253px;
-        margin-left: 1%; 
-        margin-right: 1%; 
-        margin-top: -1px;
-        overflow: scroll;
-    }
-    .chat-box-footer{
-        margin-top: 1px;
-    }
-    /*    .dialogue{
-            padding-bottom: 1px;
-            display: inline-block;
-            height: 65px;
-        }*/
-    .user-message{
-        width: 74%;
-        height: 63px;
-        margin-left: 2.5px;
-        float: left;
-        margin-top: 3px;
-    }
-    .send{
-        margin-right: 2px;
-        height: 62px;
-        width: 23%;
-        margin-top: 3px;
-    }
-    .my-message{
-        color: #000;
-        float: left;
-    }
-    .his-message{
-        color: #66aa66;
-        float: right;
-    }
-    .server-message{
-        color: red;
-        float: right;
-    }
-    .message{
-        display: flex;
-    }
-    .single-admin-container :hover {
-        cursor: pointer;        
-    }
-
-    .chat-container{
-        position: fixed;
-        z-index: 10000;
-        bottom: 0;
-        right: 0;
-    }
-
-</style>
 
 <!--need to be logged in and decided to join chat-->
 <div class="chat-container">
@@ -146,9 +29,8 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 <script>
-        $(document).ready(function () {
+$(document).ready(function () {
 
 {{#minimized}}
 window.chatMinimized = true;
@@ -291,211 +173,211 @@ prepareChatStatus();
 ////////////////////////////// Handlers /////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-        /**
-         * this function meant to parepare ws and 
-         * parameters and handling messages and 
-         * sending periodic requests for online admins
-         * @returns null
-         */
-        function prepareChat() {
-                $('.join-chat').hide();
-                $('.online-admin-container').show();
-                //selected admin username and id
-                window.choosedUsername = '';
-                window.choosedUserId = '';
-                window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
+    /**
+     * this function meant to parepare ws and 
+     * parameters and handling messages and 
+     * sending periodic requests for online admins
+     * @returns null
+     */
+    function prepareChat() {
+            $('.join-chat').hide();
+            $('.online-admin-container').show();
+            //selected admin username and id
+            window.choosedUsername = '';
+            window.choosedUserId = '';
+                    window.connection = new WebSocket('ws://local-certigate.com:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
 
-                {{#loggedInUsername}}
-                window.username = "{{loggedInUsername}}";
-                {{/loggedInUsername}}
-                {{#loggedInUserId}}
-                window.userId = {{loggedInUserId}};
-                {{/loggedInUserId}}
-
+            {{#loggedInUsername}}
+            window.username = "{{loggedInUsername}}";
+            {{/loggedInUsername}}
+            {{#loggedInUserId}}
+            window.userId = {{loggedInUserId}};
+            {{/loggedInUserId}}
+            
                 // on message sent or recived
                 window.connection.onmessage = function (e) {
-                $msg = JSON.parse(e.data);
-                        if ("text" in $msg) {
-                //incomming message
-                handleIncommingMessgae($msg);
-                } else {
-                //server messages
-                switch ($msg.type) {
-                // user-disconnected
-                case 'user_disconnected':
-                        $(document)
-                        .find('#user-chat-box-' + $msg.userId)
-                        .children('.chat-box-body')
-                        .append('<div class="message"><p class="server-message pull-right">' + $msg.server + '</p></div>')
-                        break;
-                        // updating admins    
-                        case 'update_admins':
-                        $onlineAdmins = $msg.server;
-                        $('.online-admins').children().remove();
-                        $.each($onlineAdmins, function (index, value) {
-                        if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
-                        $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
+                    $msg = JSON.parse(e.data);
+                            if ("text" in $msg) {
+                    //incomming message
+                    handleIncommingMessgae($msg);
+                    } else {
+                            //server messages
+                        switch ($msg.type) {
+                            // user-disconnected
+                            case 'user_disconnected':
+                                $(document)
+                                .find('#user-chat-box-' + $msg.userId)
+                                .children('.chat-box-body')
+                                .append('<div class="message"><p class="server-message pull-right">' + $msg.server + '</p></div>')
+                                break;
+                            // updating admins    
+                            case 'update_admins':
+                                $onlineAdmins = $msg.server;
+                                $('.online-admins').children().remove();
+                                $.each($onlineAdmins, function (index, value) {
+                                    if ($(document).find('#single-admin-container-' + value['userId']).length === 0) {
+                                        $('.online-admins').append(getNewListAdmin(value['username'], value['userId']));
+                                    }
+                                });
+                                break;
                         }
-                        });
-                        break;
-                }
-                }
+                    }
                 };
 
                 /**
                  * updating online admins each 2 seconds  
                  */
                 setInterval(function () {
-                $message = {
-                'user': window.username,
-                        'text': null,
-                        'time': null,
-                        'userId': window.userId,
-                        'recipientId': null,
-                        'type': 'update_admins'
-                };
-                        window.connection.send(JSON.stringify($message));
-                }, 2000);
-        }
-
-
-        /**
-         * function to handle appearance of online admin containers in case of 
-         * it was minimized before 
-         */
-        function prepareChatStatus(){
-            if(window.chatMinimized){
-                $('#show-chat-container').show();
-                $('.online-admin-container').hide();
-                window.ChatMinimized = !window.ChatMinimized;
-            }else{
-                $('#show-chat-container').hide();
-                window.ChatMinimized = !window.ChatMinimized;
+                    $message = {
+                    'user': window.username,
+                            'text': null,
+                            'time': null,
+                            'userId': window.userId,
+                            'recipientId': null,
+                            'type': 'update_admins'
+                    };
+                    window.connection.send(JSON.stringify($message));
+                }, 2000);                    
             }
+
+
+    /**
+     * function to handle appearance of online admin containers in case of 
+     * it was minimized before 
+     */
+    function prepareChatStatus(){
+        if(window.chatMinimized){
+            $('#show-chat-container').show();
+            $('.online-admin-container').hide();
+            window.ChatMinimized = !window.ChatMinimized;
+        }else{
+            $('#show-chat-container').hide();
+            window.ChatMinimized = !window.ChatMinimized;
         }
+    }
 
 
-        /**
-         * function make sure that the current choosed user id & username  are 
-         * for the same chat box 
-         * @param {type} sendObject
-         * @returns 
-         */
-        function secureMessage(sendObject) {
-        $chatBoxContiner = sendObject.parent().parent().parent();
-                $chatBoxContinerId = $chatBoxContiner.attr('id');
-                setChoosedUserId($chatBoxContinerId.split('-').pop());
-                setChoosedUsername($chatBoxContiner.find('.chat-box-header > p').text());
+    /**
+     * function make sure that the current choosed user id & username  are 
+     * for the same chat box 
+     * @param {type} sendObject
+     * @returns 
+     */
+    function secureMessage(sendObject) {
+    $chatBoxContiner = sendObject.parent().parent().parent();
+            $chatBoxContinerId = $chatBoxContiner.attr('id');
+            setChoosedUserId($chatBoxContinerId.split('-').pop());
+            setChoosedUsername($chatBoxContiner.find('.chat-box-header > p').text());
+    }
+
+
+    /**
+     * creating new chat window for each recipient
+     */
+    function newChatWindow() {
+    $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><span>' + getChoosedUsername() + '</span><a class="close-chat-box" href="javascript:void(0)">x</a></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><textarea rows="5" cols="20" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
+            $('.chat-windows-container').append($newChatWindow);
+            return $newChatWindow;
+    }
+
+    /**
+     * function which handles users incomming messages 
+     * @param  msg
+     * @returns null
+     */
+    function handleIncommingMessgae(msg) {
+        setChoosedUserId(msg.userId);
+        setChoosedUsername(msg.user);
+        handleChatBoxes(false);
+        // if not admin add to recent users list
+        if (!msg.isAdmin && $(document).find('#single-admin-container-' + msg.userId).length === 0) {
+            $('.online-users').append(getNewListUser(getChoosedUsername(), getChoosedUserId()));
         }
+        updateMessages(false, msg.text);
+    }
 
-
-        /**
-         * creating new chat window for each recipient
-         */
-        function newChatWindow() {
-        $newChatWindow = '<div id="user-chat-box-' + getChoosedUserId() + '" class="chat-box-container"><div class="chat-box-header"><span>' + getChoosedUsername() + '</span><a class="close-chat-box" href="javascript:void(0)">x</a></div> <div class="chat-box-body"></div><div class="chat-box-footer"><div class="dialogue"><textarea rows="5" cols="20" class="user-message"/><button class="send btn-sm btn-info pull-right">send</button></div></div> </div>';
-                $('.chat-windows-container').append($newChatWindow);
-                return $newChatWindow;
-        }
-
-        /**
-         * function which handles users incomming messages 
-         * @param  msg
-         * @returns null
-         */
-        function handleIncommingMessgae(msg) {
-            setChoosedUserId(msg.userId);
-            setChoosedUsername(msg.user);
-            handleChatBoxes(false);
-            // if not admin add to recent users list
-            if (!msg.isAdmin && $(document).find('#single-admin-container-' + msg.userId).length === 0) {
-                $('.online-users').append(getNewListUser(getChoosedUsername(), getChoosedUserId()));
-            }
-            updateMessages(false, msg.text);
-        }
-
-        /**
-         * function checks if box existed or not
-         * if existed checks if is activated or not
-         * if not existed create it and activate it
-         * @param {boolean} caseFlag descripes the case of the function
-         * if true opening and closeing users in list container
-         * if false reciving messages
-         * @returns null
-         */
-        function handleChatBoxes(caseFlag) {
-            $recipientBox = $(document).find('#user-chat-box-' + getChoosedUserId());
-            if ($recipientBox.length === 0) {
-                // create new box 
-                newChatWindow();
-            } else {
-                // if already exists
-                if ($recipientBox.is(':visible')) {
-                    if (caseFlag) {
-                        $recipientBox.hide();
-                    }
-                } else {
-                    $recipientBox.show();
+    /**
+     * function checks if box existed or not
+     * if existed checks if is activated or not
+     * if not existed create it and activate it
+     * @param {boolean} caseFlag descripes the case of the function
+     * if true opening and closeing users in list container
+     * if false reciving messages
+     * @returns null
+     */
+    function handleChatBoxes(caseFlag) {
+        $recipientBox = $(document).find('#user-chat-box-' + getChoosedUserId());
+        if ($recipientBox.length === 0) {
+            // create new box 
+            newChatWindow();
+        } else {
+            // if already exists
+            if ($recipientBox.is(':visible')) {
+                if (caseFlag) {
+                    $recipientBox.hide();
                 }
-            }
-        }
-
-        /**
-         * 
-         * @param {boolean} source true-> for my messages & false-> for recipient messages
-         * @param {string} text
-         * @returns null
-         */
-        function updateMessages(source, text) {
-            $recipientBox = $(document).find('#user-chat-box-' + getChoosedUserId());
-            $boxBody = $recipientBox.find('.chat-box-body');
-            if (!source) {
-                $boxBody.append('<div class="message"><p class="his-message pull-right">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
             } else {
-                $boxBody.append('<div class="message"><p class="my-message pull-left">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
+                $recipientBox.show();
             }
         }
+    }
+
+    /**
+     * 
+     * @param {boolean} source true-> for my messages & false-> for recipient messages
+     * @param {string} text
+     * @returns null
+     */
+    function updateMessages(source, text) {
+        $recipientBox = $(document).find('#user-chat-box-' + getChoosedUserId());
+        $boxBody = $recipientBox.find('.chat-box-body');
+        if (!source) {
+            $boxBody.append('<div class="message"><p class="his-message pull-right">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
+        } else {
+            $boxBody.append('<div class="message"><p class="my-message pull-left">' + text + '</p></div>').animate({scrollTop: $boxBody.prop("scrollHeight")}, 100);
+        }
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// Parameters Setters & Getters //////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-        /**
-         * returning html needed to build a div containing admin 
-         * div in online admins container
-         */
-        function getNewListAdmin(username, userId) {
-            return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
-        }
-        /**
-         * returning html needed to build a div containing recent user 
-         * div in recent users container
-         */
-        function getNewListUser(username, userId) {
-            return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
-        }
+    /**
+     * returning html needed to build a div containing admin 
+     * div in online admins container
+     */
+    function getNewListAdmin(username, userId) {
+        return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
+    }
+    /**
+     * returning html needed to build a div containing recent user 
+     * div in recent users container
+     */
+    function getNewListUser(username, userId) {
+        return '<div class="single-admin-container" id="single-admin-container-' + userId + '"> <p class="admin-username">' + username + '</p> <span class="admin-id">' + userId + '</span> </div>';
+    }
 
 
-        /**
-         * setting parameters
-         * @param {type} username
-         * @returns {undefined}
-         */
-        function setChoosedUsername(username) {
-            window.choosedUsername = username;
-        }
-        
-        function setChoosedUserId(userId) {
-            window.choosedUserId = userId;
-        }
-        
-        function getChoosedUsername() {
-            return window.choosedUsername;
-        }
-        
-        function getChoosedUserId() {
-            return window.choosedUserId;
-        }
+    /**
+     * setting parameters
+     * @param {type} username
+     * @returns {undefined}
+     */
+    function setChoosedUsername(username) {
+        window.choosedUsername = username;
+    }
+
+    function setChoosedUserId(userId) {
+        window.choosedUserId = userId;
+    }
+
+    function getChoosedUsername() {
+        return window.choosedUsername;
+    }
+
+    function getChoosedUserId() {
+        return window.choosedUserId;
+    }
 });
 </script>
 {{/chatContainer}}

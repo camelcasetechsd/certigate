@@ -26,17 +26,17 @@
                 {{$content}}{{/content}}
             </div>
         </div>
-        <br>
-        {{#loggedInUsername}} 
-        {{>chat}}
-        {{/loggedInUsername}} 
-
+        <br>        
         <br>    
         <br>
         {{>footer}}
     </div>
 
     <script src="/concat/app.js" type="text/javascript"></script>
+    {{#loggedInUsername}} 
+    {{>chat}}
+    {{/loggedInUsername}} 
+
     <!-- Additional scripts to be added to specific views -->
     {{$scripts}}{{/scripts}}
 </body>
