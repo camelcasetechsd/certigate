@@ -395,6 +395,16 @@ class User
     public $customerId;
 
     /**
+     * @ORM\OneToMany(targetEntity="Chat\Entity\Message", mappedBy="recipient")
+     */
+    public $messageTo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Chat\Entity\Message", mappedBy="sender")
+     */
+    public $messagefrom;
+    
+    /*
      * @ORM\Column(type="float" , nullable=false)
      * @var string
      */
@@ -453,6 +463,8 @@ class User
     {
         $this->courseEventUsers = new ArrayCollection();
         $this->organizationUser = new ArrayCollection();
+        $this->messagefrom = new ArrayCollection();
+        $this->messageTo = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->publicQuotes = new ArrayCollection();
         $this->courseEventSubscriptions = new ArrayCollection();

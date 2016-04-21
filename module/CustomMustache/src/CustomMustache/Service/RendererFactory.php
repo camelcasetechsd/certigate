@@ -9,6 +9,7 @@ use CMS\Entity\Menu;
 use CMS\Service\Cache\CacheHandler;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
+use Zend\Session\Container; // We need this when using sessions
 
 /**
  * Renderer Factory
@@ -20,6 +21,7 @@ use Users\Entity\Role;
  * @package customMustache
  * @subpackage service
  */
+
 class RendererFactory implements FactoryInterface
 {
 
@@ -69,13 +71,19 @@ class RendererFactory implements FactoryInterface
         $menuView->setActivePath($path);
 
 
-        $menusArray = $cmsCacheHandler->getCachedCMSData( $forceFlush );
-        $menusViewArray = $menuView->prepareMenuView( $menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED, /*$divId =*/"navbar", /*$divClass =*/"navbar-collapse collapse" );
-        $config['helpers']['primaryMenu'] = isset( $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] ) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
+        $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
+        $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED, /* $divId = */ "navbar", /* $divClass = */ "navbar-collapse collapse");
+        $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
 
+        $chatSessionContiner = new Container('chat');
         if ($auth->hasIdentity()) {
             $roles = $storage['roles'];
             $config['helpers']['loggedInUsername'] = $storage['username'];
+            $config['helpers']['loggedInUserId'] = $storage['id'];
+            if (!is_null($chatSessionContiner) && $chatSessionContiner->chatStarted) {
+                $config['helpers']['chatStarted'] = $chatSessionContiner->chatStarted;
+                $config['helpers']['minimized'] = $chatSessionContiner->minimized;
+            }
         }
         $isAdminUser = false;
         if (isset($roles) && in_array(Role::ADMIN_ROLE, $roles)) {
@@ -84,15 +92,15 @@ class RendererFactory implements FactoryInterface
             $config['helpers']['adminMenu'] = isset($adminMenu[Menu::ADMIN_MENU_UNDERSCORED]) ? $adminMenu[Menu::ADMIN_MENU_UNDERSCORED] : '';
             $config['helpers']['isAdminUser'] = $isAdminUser;
         }
-        
+
         // add current language helper
         /* @var $applicationLocale \Translation\Service\Locale\Locale */
         $applicationLocale = $serviceLocator->get('applicationLocale');
         $currentLocale = $applicationLocale->getCurrentLocale();
         $config['helpers']['currentLocale'] = $currentLocale;
-        $config['helpers']['locale_ar'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR) ;
-        $config['helpers']['locale_en'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US) ;
-                
+        $config['helpers']['locale_ar'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR);
+        $config['helpers']['locale_en'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US);
+
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
         $pathResolver = clone $serviceLocator->get('ViewTemplatePathStack');
         $pathResolver->setDefaultSuffix($config['suffix']);

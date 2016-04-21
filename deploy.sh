@@ -23,6 +23,9 @@ APPLICATION_ENV=$app_env ./vendor/bin/phinx seed:run -e $app_env
 # seeding q2a
 APPLICATION_ENV=$app_env php public/q2a/updateDB.php
 
+# seeding forum
+APPLICATION_ENV=$app_env php public/forum/updateDB.php
+
 ## prepare public resources
 cd public
 bower install 
