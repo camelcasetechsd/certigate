@@ -7,6 +7,7 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
+
 if (!ini_get('date.timezone')) {
     date_default_timezone_set("UTC");
 }
@@ -92,13 +93,127 @@ class FeatureContext extends MinkContext
      * @param string $username optional username to login with ,default is bool false
      * @param string $password optional password to login with ,default is bool false
      */
-    public function iMockTheLoginSession($extraString = false, $username = false, $password = false) {
+    public function iMockTheLoginSession($extraString = false, $username = false, $password = false)
+    {
 
-        if($username === false && $password === false){
+        if ($username === false && $password === false) {
             $username = "admin";
             $password = "adminadmin";
         }
         $this->iAmOnHomepage();
+        $this->fillField('username', $username);
+        $this->fillField('password', $password);
+        $this->pressButton('Sign in');
+    }
+
+//    /**
+//     * @Given /^I mock the login session as admin$/
+//     * 
+//     * @param string $extraString extra credentials provided : ' with "username" "password"' ,default is bool false
+//     * @param string $username optional username to login with ,default is bool false
+//     * @param string $password optional password to login with ,default is bool false
+//     */
+//    public function iMockTheLoginSessionAsAdmin($extraString = false)
+//    {
+//
+//        $username = "admin";
+//        $password = "adminadmin";
+//        $this->visit('/sign/in');
+//        $this->fillField('username', $username);
+//        $this->fillField('password', $password);
+//        $this->pressButton('Sign in');
+//    }
+//
+//    /**
+//     * @Given /^I mock the login session as user$/
+//     * 
+//     * @param string $extraString extra credentials provided : ' with "username" "password"' ,default is bool false
+//     * @param string $username optional username to login with ,default is bool false
+//     * @param string $password optional password to login with ,default is bool false
+//     */
+//    public function iMockTheLoginSessionAsUser($extraString = false)
+//    {
+//
+//        $username = "user";
+//        $password = "useruser";
+//        $this->visit('/sign/in');
+//        $this->fillField('username', $username);
+//        $this->fillField('password', $password);
+//        $this->pressButton('Sign in');
+//    }
+//
+//    /**
+//     * @Given /^I mock the login session as tm$/
+//     * 
+//     * @param string $extraString extra credentials provided : ' with "username" "password"' ,default is bool false
+//     * @param string $username optional username to login with ,default is bool false
+//     * @param string $password optional password to login with ,default is bool false
+//     */
+//    public function iMockTheLoginSessionAsTM($extraString = false)
+//    {
+//
+//        $username = "tmuser";
+//        $password = "tmuser";
+//        $this->visit('/sign/in');
+//        $this->fillField('username', $username);
+//        $this->fillField('password', $password);
+//        $this->pressButton('Sign in');
+//    }
+//
+//    /**
+//     * @Given /^I mock the login session as tca$/
+//     * 
+//     * @param string $extraString extra credentials provided : ' with "username" "password"' ,default is bool false
+//     * @param string $username optional username to login with ,default is bool false
+//     * @param string $password optional password to login with ,default is bool false
+//     */
+//    public function iMockTheLoginSessionAsTca($extraString = false)
+//    {
+//
+//        $username = "tcauser";
+//        $password = "tcauser";
+//        $this->visit('/sign/in');
+//        $this->fillField('username', $username);
+//        $this->fillField('password', $password);
+//        $this->pressButton('Sign in');
+//    }
+
+    /**
+     * @Given /^I mock the login session as "([^"]*)"?$/
+     * 
+     * @param string $extraString extra credentials provided : ' with "username" "password"' ,default is bool false
+     * @param string $username optional username to login with ,default is bool false
+     * @param string $password optional password to login with ,default is bool false
+     */
+    public function iMockTheLoginSessionAs($role)
+    {
+        switch ($role) {
+            case 'admin':
+                $username = "admin";
+                $password = "adminadmin";
+                break;
+            case 'user':
+                $username = "user";
+                $password = "useruser";
+                break;
+            case 'tmuser':
+                $username = "tmuser";
+                $password = "tmuser";
+                break;
+            case 'tcauser':
+                $username = "tcauser";
+                $password = "tcauser";
+                break;
+            case 'instructor':
+                $username = "instructor";
+                $password = "instructor";
+                break;
+            case 'student':
+                $username = "student";
+                $password = "student";
+                break;
+        }
+        $this->visit('/sign/in');
         $this->fillField('username', $username);
         $this->fillField('password', $password);
         $this->pressButton('Sign in');
