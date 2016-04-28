@@ -1,7 +1,35 @@
 Feature: Pages Crud
 ### Page Crud Tests
 
-#Scenario: edit pages as Admin
+ Scenario: create pages as Admin
+
+    Given I mock the login session as "admin"
+    And I go to "/cms/page/new"
+    Then I should see "NEW PAGE"
+    When I fill in the following:
+      | title | testPage |
+      | titleAr | testPageAr |
+      | path | /testPage |
+      | body | This is page body |
+      | bodyAr | This is page body in Arabic |
+    And I select "Page" from "type"  
+    And I press "Save and Publish"
+    Then I should be on "/cms/page"
+    Then I should see "testPage"
+    Then I should see "/testPage"
+    #checking if the list page is fine
+    Then the response should not contain "<h1>An error occurred</h1>"
+    Then the response should not contain "<b>Warning</b>"
+    Then the response should not contain "<b>Notice</b>"
+    # checking if the created page works fine
+    When I go to "/testPage"
+    Then the response should contain "testPage</h1>"
+    Then the response should not contain "<h1>An error occurred</h1>"
+    Then the response should not contain "<b>Warning</b>"
+    Then the response should not contain "<b>Notice</b>"
+
+
+Scenario: edit pages as Admin
 
     Given I mock the login session as "admin"
     And I go to "/cms/page/edit/18"
@@ -18,18 +46,18 @@ Feature: Pages Crud
     Then I should see "NewtestPage"
     Then I should see "/newtestPage"
     #checking if the list page is fine
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
     # checking if the created page works fine (does not work for now)
     When I go to "/newtestPage"
     Then the response should contain "NewtestPage</h1>"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
 
 
-#Scenario: unpublish pages as Admin
+Scenario: unpublish pages as Admin
     
     Given I mock the login session as "admin"
     And I go to "/cms/page/edit/18"
@@ -37,55 +65,13 @@ Feature: Pages Crud
     And I press "Unpublish"
     Then I should be on "/cms/page"
     Then the response should contain "container-inactive"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
     # checking if the created page works fine
     When I go to "/newtestPage"
     Then the response should contain "Resource Not Found !"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
 
-@javascript
-Scenario: create Press page as Admin
-
-    Given I mock the login session as "admin"
-    And I go to "/cms/page/new"
-    Then I should see "NEW PAGE"
-    And I select "Press Release" from "type"  
-    And I select "Default" from "category"
-    When I attach the file "user.png" to "picture"
-    When I fill in the following:
-      | title | PressTest |
-      | titleAr | PressTestAr |
-      | path | /testPress |
-      | author | Certigate Tester |
-      | summary | This is press release summary |
-      | summaryAr | This is press release summary in Arabic |
-      | body | This is press release body |
-      | bodyAr | This is press release body in Arabic |
-    And I press "Save and Publish"
-    Then I should be on "/cms/page"
-    Then I should see "PressTest"
-    #checking if the list page is fine
-    Then the response should not contain "<b>Error</b>"
-    Then the response should not contain "<b>Warning</b>"
-    Then the response should not contain "<b>Notice</b>"
-    # checking if the created press page works fine
-    When I go to "/press/19"
-    Then the response should contain "PressTest</h3>"
-    Then the response should contain "<span>By: Certigate Tester</span>"
-    Then the response should contain "This is press release summary"
-    Then the response should contain "This is press release body"
-    Then the response should not contain "<b>Error</b>"
-    Then the response should not contain "<b>Warning</b>"
-    Then the response should not contain "<b>Notice</b>"
-    #checking if the arabic page is fine
-    Then the response should contain "PressTestAr</h3>"
-    Then the response should contain "<span>By: Certigate Tester</span>"
-    Then the response should contain "This is press release summary in Arabic"
-    Then the response should contain "This is press release body in Arabic"
-    Then the response should not contain "<b>Error</b>"
-    Then the response should not contain "<b>Warning</b>"
-    Then the response should not contain "<b>Notice</b>"

@@ -13,7 +13,7 @@ Scenario: create menus as Admin
     Then I should be on "/cms/menu"
     Then I should see "testMenu"
     Then I should see "testMenuAr"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
 
@@ -33,7 +33,7 @@ Scenario: edit menus as Admin
     Then I should be on "/cms/menu"
     Then I should see "NewTestMenu"
     Then I should see "NewTestMenuAr"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
 
@@ -44,6 +44,6 @@ Scenario: delete menus as Admin
     And I go to "/cms/menu/delete/3"
     Then I should be on "/cms/menu"
     Then the response should contain "container-inactive"
-    Then the response should not contain "<b>Error</b>"
+    Then the response should not contain "<h1>An error occurred</h1>"
     Then the response should not contain "<b>Warning</b>"
     Then the response should not contain "<b>Notice</b>"
