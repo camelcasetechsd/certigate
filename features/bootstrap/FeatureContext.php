@@ -16,7 +16,14 @@ require_once dirname(__FILE__) . '/../application/ControllerTestCase.php';
 class FeatureContext extends MinkContext
 {
 
+    /**
+     * bootstrap table class 
+     */
     const DEFAULT_TABLE_CLASS_TEXT = "table";
+
+    /**
+     * bootstrap class for deactivation
+     */
     const DEACTIVATION_CLASS_TEXT = "container-inactive";
 
     protected $app;
@@ -330,7 +337,8 @@ class FeatureContext extends MinkContext
             // option not found
             $message = sprintf('Row with %s text is Deactivated ', $text);
             throw new \Exception($message);
-        }else{
+        }
+        else {
             // is active
             return;
         }
