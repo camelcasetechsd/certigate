@@ -1,12 +1,9 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Behat\Event\SuiteEvent;
+use Behat\Behat\Event\ScenarioEvent;
+
 if (!ini_get('date.timezone')) {
     date_default_timezone_set("UTC");
 }
@@ -27,6 +24,28 @@ class FeatureContext extends MinkContext
     {
         $this->app = new ControllerTestCase();
         $this->app->setUp();
+    }
+
+    /**
+     * @BeforeSuite 
+     * @param SuiteEvent $event
+     */
+    public static function setup(SuiteEvent $event)
+    {
+        exec("bin/doctrine orm:schema-tool:drop --force");
+        exec("bin/doctrine orm:schema-tool:update --force");
+        exec("php public/estore/updateDB.php -e " . APPLICATION_ENV);
+        exec("APPLICATION_ENV=" . APPLICATION_ENV . " ./vendor/bin/phinx seed:run -e " . APPLICATION_ENV);
+    }
+
+    /** 
+     * @BeforeScenario 
+     * @param ScenarioEvent $event
+     */
+    public function before(ScenarioEvent $event)
+    {
+        $session = $this->getSession();
+        $session->getDriver()->getClient()->setServerParameter('APPLICATION_ENV', 'test');
     }
 
     /**
@@ -92,9 +111,10 @@ class FeatureContext extends MinkContext
      * @param string $username optional username to login with ,default is bool false
      * @param string $password optional password to login with ,default is bool false
      */
-    public function iMockTheLoginSession($extraString = false, $username = false, $password = false) {
+    public function iMockTheLoginSession($extraString = false, $username = false, $password = false)
+    {
 
-        if($username === false && $password === false){
+        if ($username === false && $password === false) {
             $username = "admin";
             $password = "adminadmin";
         }
@@ -102,6 +122,16 @@ class FeatureContext extends MinkContext
         $this->fillField('username', $username);
         $this->fillField('password', $password);
         $this->pressButton('Sign in');
+    }
+
+    /**
+     * @Given /^I fill in hidden "([^"]*)" with "([^"]*)"$/
+     * @param string $field field identifer
+     * @param string $value field value
+     */
+    public function iFillHiddenFieldWith($field, $value)
+    {
+        $this->getSession()->getPage()->find('css', 'input[name="' . $field . '"]')->setValue($value);
     }
 
 }

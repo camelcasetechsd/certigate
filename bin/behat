@@ -1,5 +1,2 @@
-#!/usr/bin/env php
-<?php
-
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../vendor/bin/behat';
+#!/bin/bash
+APPLICATION_ENV="test" vendor/bin/behat "$@"
