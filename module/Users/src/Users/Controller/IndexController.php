@@ -238,7 +238,7 @@ class IndexController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
+            
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 

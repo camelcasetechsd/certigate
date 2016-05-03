@@ -309,35 +309,35 @@ class User
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $studentStatement;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $proctorStatement;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $instructorStatement;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $testCenterAdministratorStatement;
 
     /**
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     public $trainingManagerStatement;
@@ -2175,6 +2175,26 @@ class User
                         ),
                     ),
                 ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'instructorStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'proctorStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'studentStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'testCenterAdministratorStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'trainingManagerStatement',
+                'required' => false,
             ));
 
             $this->inputFilter = $inputFilter;

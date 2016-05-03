@@ -666,7 +666,7 @@ class UserForm extends Form
             ),
         ));
 
-        if (!$this->isAdminUser) {
+        if (!$this->isAdminUser && APPLICATION_ENV != "test") {
             $this->add(array(
                 'type' => 'Zend\Form\Element\Captcha',
                 'name' => 'captcha',
