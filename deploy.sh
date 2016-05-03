@@ -10,11 +10,10 @@ bin/doctrine orm:schema-tool:drop --force;
 bin/doctrine orm:schema-tool:update --force;
 
 # seeding data
-app_env=${APPLICATION_ENV:-'vagrant'}
+app_env=${APPLICATION_ENV:-'vagrant'} 
 
 # seeding estore first 
-bash public/estore/dropOcDB.sh
-APPLICATION_ENV=$app_env php public/estore/updateDB.php
+APPLICATION_ENV=$app_env php public/estore/updateDB.php -e $app_env 
 
 # running certigate seeds 
 # send app_env as environment variable and command variable 
