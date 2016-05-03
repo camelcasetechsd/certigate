@@ -64,7 +64,13 @@ if (defined( 'APPLICATION_ENV' )) {
         define( 'QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4' );
         define( 'QA_MYSQL_DATABASE', 'certigate' );
         define( 'QA_MYSQL_PORT', '3306' );
-    }
+    } elseif (APPLICATION_ENV == "test") {
+        define( 'QA_MYSQL_HOSTNAME', 'localhost' );
+        define( 'QA_MYSQL_USERNAME', 'root' );
+        define( 'QA_MYSQL_PASSWORD', 'testpass' );
+        define( 'QA_MYSQL_DATABASE', 'certigate_test' );
+        define( 'QA_MYSQL_PORT', '3306' );
+    } 
 } else {
     define( 'QA_MYSQL_HOSTNAME', 'localhost' );
     define( 'QA_MYSQL_USERNAME', 'root' );

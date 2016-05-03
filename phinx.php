@@ -46,6 +46,15 @@ $config = [
             'port' => 3306,
             'charset' => 'utf8'
         ],
+        'test' => [
+            'adapter' => 'mysql',
+            'host' => 'localhost',
+            'name' => 'certigate_test',
+            'user' => 'root',
+            'pass' => 'testpass',
+            'port' => 3306,
+            'charset' => 'utf8'
+        ],
     ]
 ];
 
