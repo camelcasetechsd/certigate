@@ -3,6 +3,7 @@
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Event\SuiteEvent;
 use Behat\Behat\Event\ScenarioEvent;
+use Behat\Mink\Exception\ResponseTextException;
 
 if (!ini_get('date.timezone')) {
     date_default_timezone_set("UTC");
@@ -361,6 +362,58 @@ class FeatureContext extends MinkContext
         else {
             // is active
             return;
+        }
+    }
+    
+    /**
+     * Checks, that page contains specified text x times.
+     *
+     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" (?P<times>\d+) times$/
+     */
+    public function assertPageContainsTextWithNumber($text, $times)
+    {
+        $this->pageTextContainsWithNumber($this->fixStepArgument($text), $times);
+    }
+
+    /**
+     * Checks, that page contains text matching specified pattern x times.
+     *
+     * @Then /^(?:|I )should see text matching (?P<pattern>"(?:[^"]|\\")*") (?P<times>\d+) times$/
+     */
+    public function assertPageMatchesTextWithNumber($pattern, $times)
+    {
+        $this->pageTextMatchesWithNumber($this->fixStepArgument($pattern), $times);
+    }
+    
+    /**
+     * Checks that current page contains text for x times.
+     *
+     * @param string $text
+     * @param int $times
+     *
+     * @throws ResponseTextException
+     */
+    public function pageTextContainsWithNumber($text, $times)
+    {
+        $regex  = '/'.preg_quote($text, '/').'/ui';
+        $this->pageTextMatchesWithNumber($regex, $times);
+    }
+
+    /**
+     * Checks that current page text matches regex for x times.
+     *
+     * @param string $regex
+     * @param int $times
+     * 
+     * @throws ResponseTextException
+     */
+    public function pageTextMatchesWithNumber($regex, $times)
+    {
+        $actual = preg_replace('/\s+/u', ' ', $this->getSession()->getPage()->getText());
+        $actualCount = preg_match_all($regex, $actual);
+        if ($actualCount != intval($times)) {
+            $message = sprintf('The pattern %s was found "%d" not "%d" in the text of the current page.', $regex, $actualCount, $times);
+            throw new ResponseTextException($message, $this->getSession());
         }
     }
 

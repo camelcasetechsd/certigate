@@ -4,83 +4,43 @@ Feature: Users
     Testing with and without agreemens
     Test one user with multiple types
 
-Scenario: guest register without username
+Scenario: guest register without required fields
     Given I am on "/users/new"
         And I fill in "user_form_username" with ""
-        And I fill in "user_form_password" with "veryStrongP@$$w0rd"
-        And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
-        And I fill in "email" with "justfortestuser_certigate@gmail.com"
-        And I fill in "confirmEmail" with "justfortestuser_certigate@gmail.com"
-        And I fill in "firstName" with "User"
-        And I fill in "firstNameAr" with "User"
-        And I fill in "middleName" with "User"
-        And I fill in "middleNameAr" with "User"
-        And I fill in "lastName" with "User"
-        And I fill in "lastNameAr" with "User"
-        And I fill in "mobile" with "0111599198"
-        And I fill in "phone" with "0111599198"
-        And I fill in "addressOne" with "street one"
-        And I fill in "addressOneAr" with "street one"
-        And I fill in "addressTwo" with "street two"
-        And I fill in "addressTwoAr" with "street two"
-        And I fill in "city" with "cairo"
-        And I fill in "zipCode" with "11111"
-        And I fill in "identificationType" with "licence"
-        And I fill in "securityQuestion" with "licence"
-        And I fill in "securityAnswer" with "i do not have any"
-        And I fill in "identificationNumber" with "11111"
-        And I fill in "identificationExpiryDate" with "15/02/2020"
-        And I fill in "identificationExpiryDateHj" with "21/06/1441"
-        And I fill in "dateOfBirth" with "15/02/1980"
-        And I fill in "dateOfBirthHj" with "21/06/1401"
-        And I fill hidden field "longitude" with "31.23571160000006"
-        And I fill hidden field "latitude" with "30.0444196"
-        And I check "privacyStatement"
-        And I select "Egypt" from "country"
-        And I select "Egypt" from "nationality"
-        And I select "Arabic" from "language"
-        And I attach the file "user.png" to "photo"
-    Then I press "Create"
-        And I should be on "/users/new"
-
-Scenario: guest register without password
-    Given I am on "/users/new"
-        And I fill in "user_form_username" with "username"
         And I fill in "user_form_password" with ""
-        And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
-        And I fill in "email" with "justfortestuser_certigate@gmail.com"
-        And I fill in "confirmEmail" with "justfortestuser_certigate@gmail.com"
-        And I fill in "firstName" with "User"
-        And I fill in "firstNameAr" with "User"
+        And I fill in "confirmPassword" with ""
+        And I fill in "email" with ""
+        And I fill in "confirmEmail" with ""
+        And I fill in "firstName" with ""
+        And I fill in "firstNameAr" with ""
         And I fill in "middleName" with "User"
         And I fill in "middleNameAr" with "User"
-        And I fill in "lastName" with "User"
-        And I fill in "lastNameAr" with "User"
-        And I fill in "mobile" with "0111599198"
+        And I fill in "lastName" with ""
+        And I fill in "lastNameAr" with ""
+        And I fill in "mobile" with ""
         And I fill in "phone" with "0111599198"
-        And I fill in "addressOne" with "street one"
-        And I fill in "addressOneAr" with "street one"
+        And I fill in "addressOne" with ""
+        And I fill in "addressOneAr" with ""
         And I fill in "addressTwo" with "street two"
         And I fill in "addressTwoAr" with "street two"
-        And I fill in "city" with "cairo"
+        And I fill in "city" with ""
         And I fill in "zipCode" with "11111"
-        And I fill in "identificationType" with "licence"
-        And I fill in "securityQuestion" with "licence"
-        And I fill in "securityAnswer" with "i do not have any"
-        And I fill in "identificationNumber" with "11111"
-        And I fill in "identificationExpiryDate" with "15/02/2020"
-        And I fill in "identificationExpiryDateHj" with "21/06/1441"
-        And I fill in "dateOfBirth" with "15/02/1980"
-        And I fill in "dateOfBirthHj" with "21/06/1401"
-        And I fill hidden field "longitude" with "31.23571160000006"
-        And I fill hidden field "latitude" with "30.0444196"
-        And I check "privacyStatement"
-        And I select "Egypt" from "country"
-        And I select "Egypt" from "nationality"
-        And I select "Arabic" from "language"
+        And I fill in "identificationType" with ""
+        And I fill in "securityQuestion" with ""
+        And I fill in "securityAnswer" with ""
+        And I fill in "identificationNumber" with ""
+        And I fill in "identificationExpiryDate" with ""
+        And I fill in "identificationExpiryDateHj" with ""
+        And I fill in "dateOfBirth" with ""
+        And I fill in "dateOfBirthHj" with ""
+        And I fill hidden field "longitude" with ""
+        And I fill hidden field "latitude" with ""
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/users/new"
+        And I should see "Value is required and can't be empty" 25 times
+        And I should see "Latitude is required"
+        And I should see "Longitude is required"
 
 Scenario: guest register without type
     Given I am on "/users/new"
@@ -121,8 +81,90 @@ Scenario: guest register without type
     Then I press "Create"
         And I should be on "/"
 
-Scenario: guest register with multiple types
+Scenario: guest register with invalid fields
     Given I am on "/users/new"
+        And I fill in "user_form_username" with "justForTestUser"
+        And I fill in "user_form_password" with "xxxx"
+        And I fill in "confirmPassword" with "yyyy"
+        And I fill in "email" with "justfortestuser_certigate@gmail.com"
+        And I fill in "confirmEmail" with "yyyy"
+        And I fill in "firstName" with ""
+        And I fill in "firstNameAr" with ""
+        And I fill in "middleName" with "User"
+        And I fill in "middleNameAr" with "User"
+        And I fill in "lastName" with ""
+        And I fill in "lastNameAr" with ""
+        And I fill in "mobile" with "0111011101110111"
+        And I fill in "phone" with "0111011101110111"
+        And I fill in "addressOne" with ""
+        And I fill in "addressOneAr" with ""
+        And I fill in "addressTwo" with "street two"
+        And I fill in "addressTwoAr" with "street two"
+        And I fill in "city" with ""
+        And I fill in "zipCode" with "11111"
+        And I fill in "identificationType" with ""
+        And I fill in "securityQuestion" with ""
+        And I fill in "securityAnswer" with ""
+        And I fill in "identificationNumber" with ""
+        And I fill in "identificationExpiryDate" with "date"
+        And I fill in "identificationExpiryDateHj" with "date"
+        And I fill in "dateOfBirth" with "date"
+        And I fill in "dateOfBirthHj" with "date"
+        And I fill hidden field "longitude" with ""
+        And I fill hidden field "latitude" with ""
+        And I attach the file "text.pdf" to "photo"
+    Then I press "Create"
+        And I should be on "/users/new"
+        And I should see "This username is already in use"
+        And I should see "This email address is already in use"
+        And I should see "The input is not a valid email address."
+        And I should see "The input is less than 8 characters long" 2 times
+        And I should see "File has an incorrect extension"
+        And I should see text matching "Please enter valid (phone|mobile) number" 2 times
+        And I should see "The input does not appear to be a valid date" 4 times
+
+Scenario: guest register with failed confirmation fields
+    Given I am on "/users/new"
+        And I fill in "user_form_username" with "justForTestUser"
+        And I fill in "user_form_password" with "xxxx"
+        And I fill in "confirmPassword" with "yyyyyyyyyyyy"
+        And I fill in "email" with "justfortestuser_certigate"
+        And I fill in "confirmEmail" with "justfortestuser_certigate@gmail.com"
+        And I fill in "firstName" with ""
+        And I fill in "firstNameAr" with ""
+        And I fill in "middleName" with "User"
+        And I fill in "middleNameAr" with "User"
+        And I fill in "lastName" with ""
+        And I fill in "lastNameAr" with ""
+        And I fill in "mobile" with "0111011101110111"
+        And I fill in "phone" with "0111011101110111"
+        And I fill in "addressOne" with ""
+        And I fill in "addressOneAr" with ""
+        And I fill in "addressTwo" with "street two"
+        And I fill in "addressTwoAr" with "street two"
+        And I fill in "city" with ""
+        And I fill in "zipCode" with "11111"
+        And I fill in "identificationType" with ""
+        And I fill in "securityQuestion" with ""
+        And I fill in "securityAnswer" with ""
+        And I fill in "identificationNumber" with ""
+        And I fill in "identificationExpiryDate" with "date"
+        And I fill in "identificationExpiryDateHj" with "date"
+        And I fill in "dateOfBirth" with "date"
+        And I fill in "dateOfBirthHj" with "date"
+        And I fill hidden field "longitude" with ""
+        And I fill hidden field "latitude" with ""
+        And I attach the file "text.pdf" to "photo"
+    Then I press "Create"
+        And I should be on "/users/new"
+        And I should see "The input is not a valid email address."
+        And I should see "The input is less than 8 characters long"
+        And I should see "password doesnt match"
+        And I should see "email doesnt match"
+
+Scenario: guest register with multiple types with autologin
+    Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUserx"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -169,9 +211,13 @@ Scenario: guest register with multiple types
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUserx"
 
-Scenario: guest register with instructor type with agreement
+Scenario: guest register with instructor type with agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser2"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -210,9 +256,18 @@ Scenario: guest register with instructor type with agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser2"
 
-Scenario: guest register with instructor type without agreement
+Scenario: instructor forbidden new users registration
+    Given I mock the login session with "justForTestUser2" "veryStrongP@$$w0rd"
+        And I am on "/users/new"
+    Then I should be on "/noaccess"
+
+Scenario: guest register with instructor type without agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser3"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -250,9 +305,13 @@ Scenario: guest register with instructor type without agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser3"
 
-Scenario: guest register with student type with agreement
+Scenario: guest register with student type with agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser4"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -291,9 +350,18 @@ Scenario: guest register with student type with agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser4"
 
-Scenario: guest register with student type without agreement
+Scenario: student forbidden new users registration
+    Given I mock the login session with "justForTestUser4" "veryStrongP@$$w0rd"
+        And I am on "/users/new"
+    Then I should be on "/noaccess"
+
+Scenario: guest register with student type without agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser5"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -331,9 +399,13 @@ Scenario: guest register with student type without agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser5"
 
-Scenario: guest register with proctor type with agreement
+Scenario: guest register with proctor type with agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser6"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -372,9 +444,18 @@ Scenario: guest register with proctor type with agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser6"
 
-Scenario: guest register with proctor type without agreement
+Scenario: proctor forbidden new users registration
+    Given I mock the login session with "justForTestUser6" "veryStrongP@$$w0rd"
+        And I am on "/users/new"
+    Then I should be on "/noaccess"
+
+Scenario: guest register with proctor type without agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser7"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -412,9 +493,13 @@ Scenario: guest register with proctor type without agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser7"
 
-Scenario: guest register with training manager type with agreement
+Scenario: guest register with training manager type with agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser8"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -453,9 +538,13 @@ Scenario: guest register with training manager type with agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser8"
 
-Scenario: guest register with training manager type without agreement
+Scenario: guest register with training manager type without agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser9"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -493,9 +582,13 @@ Scenario: guest register with training manager type without agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser9"
 
-Scenario: guest register with testing center admin type with agreement
+Scenario: guest register with testing center admin type with agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser10"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -534,9 +627,13 @@ Scenario: guest register with testing center admin type with agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser10"
 
-Scenario: guest register with testing center admin type without agreement
+Scenario: guest register with testing center admin type without agreement with autologin
     Given I am on "/users/new"
+        And I should see 2 "input[name='username']" elements
         And I fill in "user_form_username" with "justForTestUser11"
         And I fill in "user_form_password" with "veryStrongP@$$w0rd"
         And I fill in "confirmPassword" with "veryStrongP@$$w0rd"
@@ -574,6 +671,9 @@ Scenario: guest register with testing center admin type without agreement
         And I attach the file "user.png" to "photo"
     Then I press "Create"
         And I should be on "/"
+        And I should see 0 "input[name='username']" elements
+        And I should see 0 "input[name='password']" elements
+        And I should see "justForTestUser11"
 
 @ignore
 Scenario: List create user
