@@ -1,7 +1,7 @@
 <?php
 
 use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Event\SuiteEvent;
+use Behat\Behat\Event\FeatureEvent;
 use Behat\Behat\Event\ScenarioEvent;
 use Behat\Mink\Exception\ResponseTextException;
 
@@ -38,10 +38,10 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @BeforeSuite 
-     * @param SuiteEvent $event
+     * @BeforeFeature 
+     * @param FeatureEvent $event
      */
-    public static function setup(SuiteEvent $event)
+    public static function setupFeature(FeatureEvent $event)
     {
         exec("bin/doctrine orm:schema-tool:drop --force");
         exec("bin/doctrine orm:schema-tool:update --force");
@@ -49,7 +49,7 @@ class FeatureContext extends MinkContext
         exec("APPLICATION_ENV=" . APPLICATION_ENV . " ./vendor/bin/phinx seed:run -e " . APPLICATION_ENV);
     }
 
-    /** 
+    /**
      * @BeforeScenario 
      * @param ScenarioEvent $event
      */
@@ -250,6 +250,44 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * Check if field exists
+     *
+     * @Given /^(?:|I )should see field "(?P<field>(?:[^"]|\\")*)"$/
+     * @param string $field field identifer
+     */
+    public function iSeeField($field)
+    {
+        $this->checkFieldExistance($field, /* $unexpectedExistanceStatus = */ false);
+    }
+
+    /**
+     * Check if field does not exist
+     *
+     * @Given /^(?:|I )should not see field "(?P<field>(?:[^"]|\\")*)"$/
+     * @param string $field field identifer
+     */
+    public function iCannotSeeField($field)
+    {
+        $this->checkFieldExistance($field, /* $unexpectedExistanceStatus = */ true);
+    }
+
+    /**
+     * Check if field does exist or not
+     *
+     * @param string $field field identifer
+     * @param bool $unexpectedExistanceStatus
+     */
+    public function checkFieldExistance($field, $unexpectedExistanceStatus)
+    {
+        $exists = $this->getSession()->getPage()->hasField($this->fixStepArgument($field));
+        if ($exists === $unexpectedExistanceStatus) {
+            $messageExistsOrNotString = ($unexpectedExistanceStatus === false) ? 'no' : 'a';
+            $message = sprintf('There\'s %s field %s.', $messageExistsOrNotString, $field);
+            throw new ResponseTextException($message, $this->getSession());
+        }
+    }
+
+    /**
      * Checks, number of rows is equal to specified.
      * @Then /^I should see only (\d+) row$/
      */
@@ -268,10 +306,10 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * Checks, preform action on specific row in table
-     * @When /^I preform "([^"]*)" action on row with "([^"]*)" value$/
+     * Checks, perform action on specific row in table
+     * @When /^I perform "([^"]*)" action on row with "([^"]*)" value$/
      */
-    public function iPreformActionOnRowWithValue($operation, $rowValue)
+    public function iPerformActionOnRowWithValue($operation, $rowValue)
     {
         $table = $this->getSession()->getPage()->find('css', 'table[class="' . self::DEFAULT_TABLE_CLASS_TEXT . '"]');
         if (is_null($table)) {
@@ -298,7 +336,7 @@ class FeatureContext extends MinkContext
             else {
                 $link = $myRow->findLink(ucfirst($operation));
                 if (is_null($link)) {
-                    $message = sprintf('%s Action does not supported ...', ucfirst($operation));
+                    $message = sprintf('%s Action is not supported ...', ucfirst($operation));
                     throw new \Exception($message);
                 }
                 else {
@@ -364,7 +402,7 @@ class FeatureContext extends MinkContext
             return;
         }
     }
-    
+
     /**
      * Checks, that page contains specified text x times.
      *
@@ -384,7 +422,7 @@ class FeatureContext extends MinkContext
     {
         $this->pageTextMatchesWithNumber($this->fixStepArgument($pattern), $times);
     }
-    
+
     /**
      * Checks that current page contains text for x times.
      *
@@ -395,7 +433,7 @@ class FeatureContext extends MinkContext
      */
     public function pageTextContainsWithNumber($text, $times)
     {
-        $regex  = '/'.preg_quote($text, '/').'/ui';
+        $regex = '/' . preg_quote($text, '/') . '/ui';
         $this->pageTextMatchesWithNumber($regex, $times);
     }
 

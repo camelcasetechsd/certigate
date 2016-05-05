@@ -56,7 +56,7 @@ Scenario: Edit Press page as Admin
 
    Given I mock the login session as "admin"
    And I go to "/cms/page"
-   When I preform "edit" action on row with "PressTest" value
+   When I perform "edit" action on row with "PressTest" value
    Then I should see "EDIT PAGE"
    Then I should see "Press Release" selected from "type"  
    Then I should see "Default" selected from "category"  
@@ -109,7 +109,7 @@ Scenario: deleting (deactivating) Release Page as Admin
    Given I mock the login session as "admin"
    When I go to "/cms/page"
    Then I should see "edited press test"
-   When I preform "delete" action on row with "edited press test" value
+   When I perform "delete" action on row with "edited press test" value
    Then I should be on "/cms/page"
    Then I should see row with "edited press test" text deactivated
    #checking if the list page is fine
@@ -133,7 +133,7 @@ Scenario: activating Release Page as Admin
    Given I mock the login session as "admin"
    When I go to "/cms/page"
    Then I should see "edited press test"
-   When I preform "activate" action on row with "edited press test" value
+   When I perform "activate" action on row with "edited press test" value
    Then I should be on "/cms/page"
    Then I should see row with "edited press test" text activated
    #checking if the list page is fine

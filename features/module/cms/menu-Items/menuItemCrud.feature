@@ -109,7 +109,7 @@ Scenario: Edit menu items as Admin
       | title | test Page MenuItem |
     And I press "Filter"
     Then I should see only 1 row
-    When I preform "edit" action on row with "test Page MenuItem" value
+    When I perform "edit" action on row with "test Page MenuItem" value
     Then I should see "EDIT MENU ITEM"
 
     ### 1 for "- About" parent menu item
@@ -148,7 +148,7 @@ Scenario: delete menuitem as Admin
       | title | edited page |
     And I press "Filter"
     Then I should see only 1 row
-    When I preform "delete" action on row with "edited page" value
+    When I perform "delete" action on row with "edited page" value
     When I fill in the following:
       | title | edited page |
     And I press "Filter"
@@ -167,7 +167,7 @@ Scenario: reactivate menuitem as Admin
       | title | edited page |
     And I press "Filter"
     Then I should see only 1 row
-    When I preform "activate" action on row with "edited page" value
+    When I perform "activate" action on row with "edited page" value
     When I fill in the following:
       | title | edited page |
     And I press "Filter"
