@@ -10,7 +10,7 @@ default:
         bootstrap: '%behat.paths.features%/bootstrap'
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://local-certigate.com
+            base_url: http://testing-local-certigate.com
             files_path: '%behat.paths.features%/resources'
             goutte: ~
             selenium2: ~

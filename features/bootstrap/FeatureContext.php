@@ -50,16 +50,6 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @BeforeScenario 
-     * @param ScenarioEvent $event
-     */
-    public function before(ScenarioEvent $event)
-    {
-        $session = $this->getSession();
-        $session->getDriver()->getClient()->setServerParameter('APPLICATION_ENV', 'test');
-    }
-
-    /**
      * @When /^I load the URL "([^"]*)"$/
      */
     public function iLoadTheURL($url)

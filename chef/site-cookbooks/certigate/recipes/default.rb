@@ -41,6 +41,14 @@ web_app "certigate" do
     environment "#{node.site.environment}"
 end
 
+# Initialize test web app
+web_app "certigateTest" do
+    template "default.conf.erb"
+    server_name "#{node.testSite.host}"
+    docroot "#{node.testSite.public_path}"
+    environment "#{node.testSite.environment}"
+end
+
 # manage some php module 
 apache_module "mpm_prefork" do
     enable true
@@ -50,9 +58,15 @@ apache_module "mpm_event" do
     enable false
 end
 
-# add record to hosts file
+# add web app record to hosts file
 hostsfile_entry '127.0.0.1' do
     hostname "#{node.site.host}"
+    action :append
+end
+
+# add test web app record to hosts file
+hostsfile_entry '127.0.0.1' do
+    hostname "#{node.testSite.host}"
     action :append
 end
 

@@ -24,6 +24,12 @@
                 }
             }
         },
+        "testSite": {
+            "name": "certigate",
+            "environment": "test",
+            "host": "testing-local-certigate.com",
+            "public_path": "/var/www/html/public"
+        },
         "estore": {
             "name": "certigate_estore",
             "environment": "vagrant",

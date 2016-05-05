@@ -14,7 +14,7 @@ if (php_sapi_name() === 'cli-server' && is_file( __DIR__ . parse_url( $_SERVER['
 
 
 // Define application environment
-$appEnv = (isset($_SERVER["HTTP_APPLICATION_ENV"])) ? $_SERVER["HTTP_APPLICATION_ENV"] : ((getenv( 'APPLICATION_ENV' )) ? getenv( 'APPLICATION_ENV' ) : 'production') ;
+$appEnv = (getenv( 'APPLICATION_ENV' )) ? getenv( 'APPLICATION_ENV' ) : 'production' ;
 defined( 'APPLICATION_ENV' ) || define( 'APPLICATION_ENV', $appEnv );
 switch (APPLICATION_ENV) {
     case 'vagrant':
