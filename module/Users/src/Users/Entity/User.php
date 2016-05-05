@@ -1773,6 +1773,21 @@ class User
         if (array_key_exists('latitude', $data) && ! empty($data["latitude"])) {
             $this->setLatitude($data["latitude"]);
         }
+        if (array_key_exists('studentStatement', $data)) {
+            $this->setStudentStatement($data["studentStatement"]);
+        }
+        if (array_key_exists('proctorStatement', $data)) {
+            $this->setProctorStatement($data["proctorStatement"]);
+        }
+        if (array_key_exists('instructorStatement', $data)) {
+            $this->setInstructorStatement($data["instructorStatement"]);
+        }
+        if (array_key_exists('testCenterAdministratorStatement', $data)) {
+            $this->setTestCenterAdministratorStatement($data["testCenterAdministratorStatement"]);
+        }
+        if (array_key_exists('trainingManagerStatement', $data)) {
+            $this->setTrainingManagerStatement($data["trainingManagerStatement"]);
+        }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDateOfBirthHj($data["dateOfBirthHj"])
                 ->setMobile($data["mobile"])
@@ -1801,11 +1816,6 @@ class User
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
                 ->setPrivacyStatement($data["privacyStatement"])
-                ->setStudentStatement($data["studentStatement"])
-                ->setProctorStatement($data["proctorStatement"])
-                ->setInstructorStatement($data["instructorStatement"])
-                ->setTestCenterAdministratorStatement($data["testCenterAdministratorStatement"])
-                ->setTrainingManagerStatement($data["trainingManagerStatement"])
         ;
     }
 
@@ -2173,6 +2183,13 @@ class User
                                 Identical::NOT_SAME => 'You must agree to the privacy statement',
                             ),
                         ),
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'You must agree to the privacy statement',
+                            ),
+                        ),
+                        
                     ),
                 ),
             ));

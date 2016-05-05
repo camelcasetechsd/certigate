@@ -184,14 +184,13 @@ class IndexController extends ActionController
                 $userModel->saveUser($data, $userObj, $isAdminUser, /*$editFormFlag =*/ null, $oldLongitude, $oldLatitude);
                 
                 if($isAdminUser){
-                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
-                    'name' => 'users'));
-                $this->redirect()->toUrl($url);
+                    $routeName = "users";
                 }else{
-                    // bind form with latest updated object
-                    $form->bind($userObj);
-                    $variables['success'] = true;
+                    $routeName = "home";
                 }
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => $routeName));
+                $this->redirect()->toUrl($url);
             }
         }
 
