@@ -13,7 +13,11 @@ default:
             base_url: http://testing-local-certigate.com
             files_path: '%behat.paths.features%/resources'
             goutte: ~
-            selenium2: ~
+            default_session: selenium2
+            javascript_session: 'selenium2'
+            browser_name: firefox
+            selenium2:
+                browser: firefox
 
 development:
     extensions:
