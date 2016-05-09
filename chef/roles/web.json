@@ -71,6 +71,8 @@
         "recipe[composer]",
         "recipe[memcached]",
         "recipe[git]",
+        "recipe[java]",
+        "recipe[phantomjs]",
         "recipe[certigate]"
     ]
 }
