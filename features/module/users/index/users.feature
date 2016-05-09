@@ -1,5 +1,7 @@
 Feature: Users
     Testing guest, user and admin available operations
+    As All available user roles
+    User is responsible for users management
 
 Scenario: guest register without required fields
     Given I am on "/users/new"

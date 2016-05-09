@@ -13,7 +13,9 @@ default:
             base_url: http://testing-local-certigate.com
             files_path: '%behat.paths.features%/resources'
             goutte: ~
-            selenium2: ~
+            selenium2: 
+                wd_host: "http://localhost:8643/wd/hub"
+                browser: "phantomjs"
 
 development:
     extensions:

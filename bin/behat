@@ -1,2 +1,4 @@
 #!/bin/bash
 APPLICATION_ENV="test" vendor/bin/behat "$@"
+# kill phantomjs browser 
+kill -9 $(pidof phantomjs)

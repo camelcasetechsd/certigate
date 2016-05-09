@@ -2,13 +2,17 @@
 
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Event\FeatureEvent;
-use Behat\Behat\Event\ScenarioEvent;
 use Behat\Mink\Exception\ResponseTextException;
+use Behat\Behat\Event\SuiteEvent;
+use Behat\Behat\Event\ScenarioEvent;
 
 if (!ini_get('date.timezone')) {
     date_default_timezone_set("UTC");
 }
 require_once dirname(__FILE__) . '/../application/ControllerTestCase.php';
+require_once dirname(__FILE__) . '/../../module/Utilities/src/Utilities/Service/Process.php';
+
+use Utilities\Service\Process;
 
 class FeatureContext extends MinkContext
 {
@@ -26,6 +30,12 @@ class FeatureContext extends MinkContext
     protected $app;
 
     /**
+     *
+     * @var int selenium server process id 
+     */
+    protected static $javaProcessId;
+
+    /**
      * Initializes context.
      * Every scenario gets it's own context object.
      * 
@@ -38,6 +48,30 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @BeforeSuite
+     * @param SuiteEvent $event
+     */
+    public static function prepare(SuiteEvent $event)
+    {
+        // start selenium server and phantomjs browser
+        self::$javaProcessId = Process::runBackgroundProcess(/* $cmd = */ "java -jar selenium/selenium-server-standalone-2.37.0.jar", /*$getProcessIdFlag = */true);
+        Process::runBackgroundProcess(/* $cmd = */ "phantomjs --webdriver=8643");
+    }
+
+    /**
+     * @AfterSuite 
+     * @param SuiteEvent $event
+     */
+    public static function teardown(SuiteEvent $event)
+    {
+        // kill selenium browser
+        // phantomjs browser will be killed after behat fully closes, as it is needed in behat till the end
+        if (!empty(self::$javaProcessId)) {
+            Process::killProcessByName(/*$processName =*/ "java");
+        }
+    }
+
+    /**
      * @BeforeFeature 
      * @param FeatureEvent $event
      */
@@ -47,6 +81,27 @@ class FeatureContext extends MinkContext
         exec("bin/doctrine orm:schema-tool:update --force");
         exec("php public/estore/updateDB.php -e " . APPLICATION_ENV);
         exec("APPLICATION_ENV=" . APPLICATION_ENV . " ./vendor/bin/phinx seed:run -e " . APPLICATION_ENV);
+    }
+
+    /**
+     * @BeforeScenario @javascript
+     * @param ScenarioEvent $event
+     */
+    public function before(ScenarioEvent $event)
+    {
+        // set browser view port size to large one, so that all page components are visible
+        $this->getSession()->resizeWindow(1440, 900, 'current');
+    }
+
+    /**
+     * @AfterScenario @javascript
+     * @param ScenarioEvent $event
+     */
+    public function after(ScenarioEvent $event)
+    {
+        // delete session, to avoid logged in user data in next scenarios, if in current scenario a user is logged in
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+        $session->deleteAllCookies();
     }
 
     /**

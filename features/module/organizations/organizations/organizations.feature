@@ -7,6 +7,7 @@ Scenario: admin select organization type without required fields
     Then I press "Start!"
         And I should see "Value is required and can't be empty"
 
+@javascript
 Scenario: admin create organization without required fields
     Given I mock the login session
         And I am on "/organizations/new/1/2/3/4"
@@ -15,8 +16,6 @@ Scenario: admin create organization without required fields
         And I fill in "ownerName" with ""
         And I fill in "ownerNameAr" with ""
         And I fill in "ownerNameAr" with ""
-        And I fill hidden field "longitude" with ""
-        And I fill hidden field "latitude" with ""
         And I select "" from "region[]"
         And I select "" from "governorate[]"
         And I fill in "ownerNationalId" with ""
