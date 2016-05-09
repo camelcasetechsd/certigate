@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a184d75ac82d8b964d4534072d112a62",
-    "content-hash": "59d11d6f433028f9f368bbf1ef95e743",
+    "hash": "5626d2e461e7d037301d4e234c142891",
+    "content-hash": "a95eb06ba455e0c97bc0d0595f9caee9",
     "packages": [
         {
             "name": "behat/behat",
@@ -2201,6 +2201,42 @@
             "time": "2016-03-07 14:09:22"
         },
         {
+            "name": "se/selenium-server-standalone",
+            "version": "v2.39.0+p1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
+                "reference": "24f50a3b2b3c367d6a6e82ed30a35f22d4629ff4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/24f50a3b2b3c367d6a6e82ed30a35f22d4629ff4",
+                "reference": "24f50a3b2b3c367d6a6e82ed30a35f22d4629ff4",
+                "shasum": ""
+            },
+            "bin": [
+                "composer/bin/selenium-server-standalone"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache 2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sven Eisenschmidt",
+                    "email": "sven.eisenschmidt@gmail.com"
+                }
+            ],
+            "description": "Composer distribution of Selenium Server Standalone, the browser automation framework. Adds a executable to your composer bin directory.",
+            "homepage": "https://github.com/sveneisenschmidt/selenium-server-standalone",
+            "keywords": [
+                "selenium",
+                "testing"
+            ],
+            "time": "2014-02-06 08:46:19"
+        },
+        {
             "name": "slm/queue",
             "version": "0.5.1",
             "source": {
@@ -3227,12 +3263,12 @@
             "version": "2.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/zf2.git",
+                "url": "https://github.com/zendframework/zendframework.git",
                 "reference": "88c9b6f566fc1097f64ead155625db9bdfee531e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/88c9b6f566fc1097f64ead155625db9bdfee531e",
+                "url": "https://api.github.com/repos/zendframework/zendframework/zipball/88c9b6f566fc1097f64ead155625db9bdfee531e",
                 "reference": "88c9b6f566fc1097f64ead155625db9bdfee531e",
                 "shasum": ""
             },

@@ -30,12 +30,6 @@ class FeatureContext extends MinkContext
     protected $app;
 
     /**
-     *
-     * @var int selenium server process id 
-     */
-    protected static $javaProcessId;
-
-    /**
      * Initializes context.
      * Every scenario gets it's own context object.
      * 
@@ -54,7 +48,7 @@ class FeatureContext extends MinkContext
     public static function prepare(SuiteEvent $event)
     {
         // start selenium server and phantomjs browser
-        self::$javaProcessId = Process::runBackgroundProcess(/* $cmd = */ "java -jar selenium/selenium-server-standalone-2.37.0.jar", /*$getProcessIdFlag = */true);
+        Process::runBackgroundProcess(/* $cmd = */ "vendor/bin/selenium-server-standalone");
         Process::runBackgroundProcess(/* $cmd = */ "phantomjs --webdriver=8643");
     }
 
@@ -66,9 +60,7 @@ class FeatureContext extends MinkContext
     {
         // kill selenium browser
         // phantomjs browser will be killed after behat fully closes, as it is needed in behat till the end
-        if (!empty(self::$javaProcessId)) {
-            Process::killProcessByName(/*$processName =*/ "java");
-        }
+        Process::killProcessByName(/*$processName =*/ "java");
     }
 
     /**
