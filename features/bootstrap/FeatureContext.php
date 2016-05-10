@@ -27,7 +27,7 @@ class FeatureContext extends MinkContext
      */
     const DEACTIVATION_CLASS_TEXT = "container-inactive";
 
-    protected $app;
+    protected $controllerInstance;
 
     /**
      * Initializes context.
@@ -37,8 +37,13 @@ class FeatureContext extends MinkContext
      */
     public function __construct(array $parameters)
     {
-        $this->app = new ControllerTestCase();
-        $this->app->setUp();
+
+        $this->controllerInstance = new ControllerTestCase();
+        $this->controllerInstance->setUp();
+        $this->useContext('organization_subcontext', new OrganizationSubContext(array(
+            'controllerInstance' => $this->controllerInstance,
+            'featureContext' => $this,
+        )));
     }
 
     /**
@@ -60,7 +65,7 @@ class FeatureContext extends MinkContext
     {
         // kill selenium browser
         // phantomjs browser will be killed after behat fully closes, as it is needed in behat till the end
-        Process::killProcessByName(/*$processName =*/ "java");
+        Process::killProcessByName(/* $processName = */ "java");
     }
 
     /**
@@ -101,7 +106,7 @@ class FeatureContext extends MinkContext
      */
     public function iLoadTheURL($url)
     {
-        $this->app->dispatch($url);
+        $this->controllerInstance->dispatch($url);
     }
 
     /**
@@ -109,7 +114,7 @@ class FeatureContext extends MinkContext
      */
     public function theModuleShouldBe($desiredModule)
     {
-        $this->app->assertModule($desiredModule);
+        $this->controllerInstance->assertModule($desiredModule);
     }
 
     /**
@@ -117,7 +122,7 @@ class FeatureContext extends MinkContext
      */
     public function theControllerShouldBe($desiredController)
     {
-        $this->app->assertController($desiredController);
+        $this->controllerInstance->assertController($desiredController);
     }
 
     /**
@@ -125,7 +130,7 @@ class FeatureContext extends MinkContext
      */
     public function theActionShouldBe($desiredAction)
     {
-        $this->app->assertAction($desiredAction);
+        $this->controllerInstance->assertAction($desiredAction);
     }
 
     /**
@@ -133,7 +138,7 @@ class FeatureContext extends MinkContext
      */
     public function thePageShouldContainATagThatContains($tag, $content)
     {
-        $this->app->assertQueryContentContains($tag, $content);
+        $this->controllerInstance->assertQueryContentContains($tag, $content);
     }
 
     /**
@@ -141,7 +146,7 @@ class FeatureContext extends MinkContext
      */
     public function theActionShouldNotRedirect()
     {
-        $this->app->assertNotRedirect();
+        $this->controllerInstance->assertNotRedirect();
     }
 
     /**
@@ -149,7 +154,7 @@ class FeatureContext extends MinkContext
      */
     public function theActionShouldRedirectTo($newUrl)
     {
-        $this->app->assertRedirectTo($newUrl);
+        $this->controllerInstance->assertRedirectTo($newUrl);
     }
 
     /**
@@ -206,6 +211,14 @@ class FeatureContext extends MinkContext
                 $username = "student";
                 $password = "student";
                 break;
+            case 'distributor':
+                $username = "distributor";
+                $password = "distributor";
+                break;
+            case 'reseller':
+                $username = "reseller";
+                $password = "reseller";
+                break;
         }
         $this->visit('/sign/in');
         $this->fillField('username', $username);
@@ -244,6 +257,22 @@ class FeatureContext extends MinkContext
         }
         else {
             throw new \Exception('wrong option to set');
+        }
+    }
+
+    /**
+     * @Given /^I Check the "([^"]*)" labeled checkbox$/
+     */
+    public function iCheckTheLabeledCheckbox($id)
+    {
+
+        $element = $this->getSession()->getPage()->find('css', "#$id");
+        if ($element) {
+            $element->check();
+            return;
+        }
+        else {
+            throw new \Exception('checkbox not found');
         }
     }
 
@@ -489,6 +518,75 @@ class FeatureContext extends MinkContext
         if ($actualCount != intval($times)) {
             $message = sprintf('The pattern %s was found "%d" not "%d" in the text of the current page.', $regex, $actualCount, $times);
             throw new ResponseTextException($message, $this->getSession());
+        }
+    }
+
+    /**
+     * @Then /^I should find field with name "([^"]*)"$/
+     */
+    public function shouldFindFieldWithName($text)
+    {
+        $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $text . "']");
+        if (null === $element) {
+            // option not found
+            $message = sprintf('element with %s name not found ', $text);
+            throw new \Exception($message);
+        }
+        return;
+    }
+
+    /**
+     * @Then /^I should not find field with name "([^"]*)"$/
+     */
+    public function shouldNotFindFieldWithName($text)
+    {
+        $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $text . "']");
+        if (null != $element) {
+            $message = sprintf('element with %s name is exist ', $text);
+            throw new \Exception($message);
+        }
+        return;
+    }
+
+    /**
+     * function to check if specific value is one of the values of a dropdown
+     * @Then dropdown "([^"]*)" should contain "([^"]*)" $/
+     */
+    public function DropdownShouldContain($name, $value)
+    {
+        $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $name . "']");
+        if (null != $element) {
+            $message = sprintf('element with %s name is exist ', $name);
+            throw new \Exception($message);
+        }
+        else {
+            $option = $element->find('xpath', "//*[@value='" . $value . "']");
+            if (null === $option) {
+                $message = sprintf('option with value %s does not exist in drop down %s', $value, $name);
+                throw new \Exception($message);
+            }
+            return;
+        }
+    }
+
+    /**
+     * function to check if specific value is one of the values of a dropdown
+     * @Then dropdown "([^"]*)" should not contain "([^"]*)" $/
+     */
+    public function DropdownShouldNotContain($name, $value)
+    {
+        $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $name . "']");
+        if (null != $element) {
+            $message = sprintf('element with %s name is exist ', $name);
+            throw new \Exception($message);
+        }
+        else {
+            $option = $element->find('xpath', "//*[@value='" . $value . "']");
+            if (null != $option) {
+                $message = sprintf('option with value %s is already exists in drop down %s', $value, $name);
+                throw new \Exception($message);
+            }
+            return;
         }
     }
 

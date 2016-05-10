@@ -12,8 +12,8 @@ class ControllerTestCase extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
-        $this->application = Application::init(require __DIR__.'/../../config/application.config.php');
         parent::setUp();
+        $this->application = Application::init(require __DIR__ . '/../../config/application.config.php');
     }
 
 }
