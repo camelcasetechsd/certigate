@@ -186,6 +186,7 @@ class FeatureContext extends MinkContext
      */
     public function iMockTheLoginSessionAs($role)
     {
+        $message = null;
         switch ($role) {
             case 'admin':
                 $username = "admin";
@@ -199,9 +200,17 @@ class FeatureContext extends MinkContext
                 $username = "tmuser";
                 $password = "tmuser";
                 break;
+            case 'tmuser2':
+                $username = "tmuser2";
+                $password = "tmuser2";
+                break;
             case 'tcauser':
                 $username = "tcauser";
                 $password = "tcauser";
+                break;
+            case 'tcauser2':
+                $username = "tcauser2";
+                $password = "tcauser2";
                 break;
             case 'instructor':
                 $username = "instructor";
@@ -215,15 +224,30 @@ class FeatureContext extends MinkContext
                 $username = "distributor";
                 $password = "distributor";
                 break;
+            case 'distributor2':
+                $username = "distributor2";
+                $password = "distributor2";
+                break;
             case 'reseller':
                 $username = "reseller";
                 $password = "reseller";
                 break;
+            case 'reseller2':
+                $username = "reseller2";
+                $password = "reseller2";
+                break;
+            default :
+                $message = sprintf('User %s not registered as a test users', $role);
+                throw new \Exception($message);
         }
         $this->visit('/sign/in');
         $this->fillField('username', $username);
         $this->fillField('password', $password);
         $this->pressButton('Sign in');
+        if (!$this->assertPageAddress('/')) {
+            $message = sprintf('User %s not found , Login failed', $role);
+            throw new \Exception($message);
+        }
     }
 
     /**
@@ -550,17 +574,17 @@ class FeatureContext extends MinkContext
 
     /**
      * function to check if specific value is one of the values of a dropdown
-     * @Then dropdown "([^"]*)" should contain "([^"]*)" $/
+     * @Then /^dropdown "([^"]*)" should contain "([^"]*)"$/
      */
     public function DropdownShouldContain($name, $value)
     {
         $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $name . "']");
-        if (null != $element) {
-            $message = sprintf('element with %s name is exist ', $name);
+        if (null === $element) {
+            $message = sprintf('element with name %s does not exist ', $name);
             throw new \Exception($message);
         }
         else {
-            $option = $element->find('xpath', "//*[@value='" . $value . "']");
+            $option = $element->find('xpath', "//*[text()='" . $value . "']");
             if (null === $option) {
                 $message = sprintf('option with value %s does not exist in drop down %s', $value, $name);
                 throw new \Exception($message);
@@ -571,17 +595,17 @@ class FeatureContext extends MinkContext
 
     /**
      * function to check if specific value is one of the values of a dropdown
-     * @Then dropdown "([^"]*)" should not contain "([^"]*)" $/
+     * @Then /^dropdown "([^"]*)" should not contain "([^"]*)"$/
      */
     public function DropdownShouldNotContain($name, $value)
     {
         $element = $this->getSession()->getPage()->find('xpath', "//*[@name='" . $name . "']");
-        if (null != $element) {
-            $message = sprintf('element with %s name is exist ', $name);
+        if (null === $element) {
+            $message = sprintf('element with name %s does not exist ', $name);
             throw new \Exception($message);
         }
         else {
-            $option = $element->find('xpath', "//*[@value='" . $value . "']");
+            $option = $element->find('xpath', "//*[@text()='" . $value . "']");
             if (null != $option) {
                 $message = sprintf('option with value %s is already exists in drop down %s', $value, $name);
                 throw new \Exception($message);
@@ -589,5 +613,4 @@ class FeatureContext extends MinkContext
             return;
         }
     }
-
 }
