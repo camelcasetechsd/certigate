@@ -186,7 +186,6 @@ class FeatureContext extends MinkContext
      */
     public function iMockTheLoginSessionAs($role)
     {
-        $message = null;
         switch ($role) {
             case 'admin':
                 $username = "admin";
@@ -244,10 +243,7 @@ class FeatureContext extends MinkContext
         $this->fillField('username', $username);
         $this->fillField('password', $password);
         $this->pressButton('Sign in');
-        if (!$this->assertPageAddress('/')) {
-            $message = sprintf('User %s not found , Login failed', $role);
-            throw new \Exception($message);
-        }
+        $this->assertHomepage();
     }
 
     /**
@@ -336,6 +332,25 @@ class FeatureContext extends MinkContext
         }
         else {
             $hiddenField->setValue($value);
+        }
+    }
+
+    /**
+     * @Then /^hidden field "([^"]*)" should be filled with "([^"]*)"$/
+     * @param string $field field identifer
+     * @param string $value field value
+     */
+    public function hiddenFieldShouldBeFilledWith($field, $value)
+    {
+        $hiddenField = $this->getSession()->getPage()->find('css', 'input[name="' . $field . '"]');
+        if (is_null($hiddenField)) {
+            throw new Exception("There's no hidden field with this name");
+        }
+        else {
+            if ($value != $hiddenField->getValue()) {
+                $message = sprintf('hidden field %s does not contain "%s" as expected it contains "%s" ', $field, $value , $hiddenField->getValue());
+                throw new ResponseTextException($message, $this->getSession());
+            }
         }
     }
 
