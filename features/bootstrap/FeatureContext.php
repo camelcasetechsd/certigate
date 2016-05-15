@@ -348,7 +348,7 @@ class FeatureContext extends MinkContext
         }
         else {
             if ($value != $hiddenField->getValue()) {
-                $message = sprintf('hidden field %s does not contain "%s" as expected it contains "%s" ', $field, $value , $hiddenField->getValue());
+                $message = sprintf('hidden field %s does not contain "%s" as expected it contains "%s" ', $field, $value, $hiddenField->getValue());
                 throw new ResponseTextException($message, $this->getSession());
             }
         }
@@ -452,6 +452,45 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * Checks that specific row in table does not has specific action
+     * @Then /^row with value "([^"]*)" should not contain "([^"]*)" action$/
+     */
+    public function rowWithValueShouldNotContainAction($rowValue, $operation)
+    {
+        $table = $this->getSession()->getPage()->find('css', 'table[class="' . self::DEFAULT_TABLE_CLASS_TEXT . '"]');
+        if (is_null($table)) {
+            throw new \Exception('No Tables have been found');
+        }
+        else {
+            $tbody = $table->find('css', 'tbody');
+            $rows = $tbody->findAll('css', 'tr');
+            $rawFlag = false;
+            $myRow = null;
+            foreach ($rows as $row) {
+                if ($row->has('xpath', "//td[text()='" . $rowValue . "']")) {
+                    $myRow = $row;
+                    if (!is_null($myRow)) {
+                        $rawFlag = true;
+                        break;
+                    }
+                }
+            }
+            if (!$rawFlag) {
+                $message = sprintf('There\'s no value in rows like %s', $rowValue);
+                throw new \Exception($message);
+            }
+            else {
+                $link = $myRow->findLink(ucfirst($operation));
+                if (!is_null($link)) {
+                    $message = sprintf('%s Action is supported ... , expected not to be supported for this row', ucfirst($operation));
+                    throw new \Exception($message);
+                }
+                return;
+            }
+        }
+    }
+
+    /**
      * @Then /^I should see "([^"]*)" selected from "([^"]*)"$/
      */
     public function iShouldSeeOptionSelectedFrom($option, $select)
@@ -511,7 +550,7 @@ class FeatureContext extends MinkContext
     /**
      * Checks, that page contains specified text x times.
      *
-     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" (?P<times>\d+) times$/
+     * @Then /^(?:|I )should ssee "(?P<text>(?:[^"]|\\")*)" (?P<times>\d+) times$/
      */
     public function assertPageContainsTextWithNumber($text, $times)
     {
@@ -628,4 +667,5 @@ class FeatureContext extends MinkContext
             return;
         }
     }
+
 }
