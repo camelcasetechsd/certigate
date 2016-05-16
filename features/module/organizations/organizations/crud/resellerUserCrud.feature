@@ -64,8 +64,22 @@ Scenario: Testing Managing user List
 
     Given I mock the login session as "reseller"
     And I go to "/organizations/myorganizations"
-#    Then row with value "reseller test 1" should not contain "Manage Users" action
-#    Then row with value "reseller test 1" should not contain "Renewal" action
+    Then row with value "reseller test 1" should not contain "Manage Users" action
+    Then row with value "reseller test 1" should not contain "Renewal" action
+
+
+
+Scenario: Admin approval
+
+    Given I mock the login session as "admin"
+    And I go to "/organizations/resllers"
+    Then I should not see "reseller test 1"
+    And I go to "/organizations"
+    When I perform "View" action on row with "reseller owner 1" value
+    And I press "Approve all changes"
+    Then I should be on "/organizations"
+    And I go to "/organizations/resellers"
+    Then I should see "reseller test 1"
 
 
 Scenario: Testing Oragnization Edit

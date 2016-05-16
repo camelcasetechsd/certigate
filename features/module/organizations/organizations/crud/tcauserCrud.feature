@@ -91,6 +91,19 @@ Scenario: Testing Managing user List
     Then I should see only 2 row
 
 
+Scenario: Admin approval
+
+    Given I mock the login session as "admin"
+    And I go to "/organizations/atcs"
+    Then I should not see "Atc test 1"
+    And I go to "/organizations"
+    When I perform "View" action on row with "atc owner 1" value
+    And I press "Approve all changes"
+    Then I should be on "/organizations"
+    And I go to "/organizations/atcs"
+    Then I should see "Atc test 1"
+
+
 Scenario: Testing Oragnization Edit
 
     Given I mock the login session as "tcauser"

@@ -68,6 +68,19 @@ Scenario: Testing Managing user List
     Then row with value "Distributor test 1" should not contain "Renewal" action
 
 
+Scenario: Admin approval
+
+    Given I mock the login session as "admin"
+    And I go to "/organizations/distributors"
+    Then I should not see "Distributor test 1"
+    And I go to "/organizations"
+    When I perform "View" action on row with "Distributor owner 1" value
+    And I press "Approve all changes"
+    Then I should be on "/organizations"
+    And I go to "/organizations/distributors"
+    Then I should see "Distributor test 1"
+
+
 Scenario: Testing Oragnization Edit
 
     Given I mock the login session as "distributor"
