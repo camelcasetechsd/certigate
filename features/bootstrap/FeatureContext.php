@@ -668,4 +668,15 @@ class FeatureContext extends MinkContext
         }
     }
 
+    /**
+     * function for pressing inputs type button
+     * @Given /^I press on input "([^"]*)"$/
+     */
+    public function iPressOnInput($id)
+    {
+        $page = $this->getSession()->getPage();
+        $element = $page->find('xpath', "//input[@id='".$id."']");
+        $element->click();
+    }
+
 }
