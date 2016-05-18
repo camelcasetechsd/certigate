@@ -185,13 +185,13 @@ class Course
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $exambooks;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="course")
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $privateQuotes;
-    
+
     /**
      * Prepare entity
      * 
@@ -332,7 +332,13 @@ class Course
      */
     public function getTime()
     {
-        return $this->time;
+        // this clause for the inablity of behat to fill input type time 
+        if ($this->time != null && APPLICATION_ENV === "test") {
+            return $this->time->format('H:i');
+        }
+        else {
+            return $this->time;
+        }
     }
 
     /**
@@ -736,7 +742,6 @@ class Course
         return $this;
     }
 
-        
     /**
      * Get PrivateQuotes
      * 
@@ -762,7 +767,7 @@ class Course
         $this->privateQuotes = $privateQuotes;
         return $this;
     }
-    
+
     /**
      * Convert the object to an array.
      * 

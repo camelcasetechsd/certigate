@@ -94,19 +94,37 @@ class CourseForm extends Form
             ),
         ));
 
-        $this->add(array(
-            'name' => 'time',
-            'type' => 'Zend\Form\Element\Time',
-            'attributes' => array(
-                'placeholder' => 'Example: 10:10',
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Time',
-                'format' => 'H:i'
-            ),
-        ));
+        // this clause for solving the inability of behat to fill input type time
+        if (APPLICATION_ENV === "test") {
+            $this->add(array(
+                'name' => 'time',
+                'type' => 'Zend\Form\Element\Text',
+                'attributes' => array(
+                    'placeholder' => 'Example: 10:10',
+                    'required' => 'required',
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Time',
+                    'format' => 'H:i'
+                ),
+            ));
+        }
+        else {
+            $this->add(array(
+                'name' => 'time',
+                'type' => 'Zend\Form\Element\Time',
+                'attributes' => array(
+                    'placeholder' => 'Example: 10:10',
+                    'required' => 'required',
+                    'class' => 'form-control',
+                ),
+                'options' => array(
+                    'label' => 'Time',
+                    'format' => 'H:i'
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'duration',

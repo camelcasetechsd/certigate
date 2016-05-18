@@ -675,8 +675,16 @@ class FeatureContext extends MinkContext
     public function iPressOnInput($id)
     {
         $page = $this->getSession()->getPage();
-        $element = $page->find('xpath', "//input[@id='".$id."']");
+        $element = $page->find('xpath', "//input[@id='" . $id . "']");
         $element->click();
+    }
+
+    /**
+     * @When /^I select "(?P<date>.+)" time from "(?P<id>.+)"$/
+     */
+    public function startDate($date, $id)
+    {
+        $this->getSession()->getPage()->find('css', '#' . $id)->setValue($date);
     }
 
 }

@@ -9,7 +9,7 @@ Scenario: Testing course creation by Admin
     And I fill in "nameAr" with "course name in Arabic"
     And I fill in "brief" with "course brief"
     And I fill in "briefAr" with "course brief in Arabic"
-    And I fill in "course_form_time" with "13:00"
+    And I fill in "course_form_time" with "17:39:57" 
     And I fill in "duration" with "885"
     And I fill in "price" with "13"
     
@@ -32,7 +32,6 @@ Scenario: Testing course creation by Admin
     And I press "Save and Publish"
 
     #checking if everything is alright
-    Then print last response
     Then I should be on "/courses"
     Then I should see "Hello 7"
     Then I should see "course name in Arabic"
