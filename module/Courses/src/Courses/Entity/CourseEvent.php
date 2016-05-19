@@ -12,7 +12,7 @@ use Utilities\Service\String;
 
 /**
  * CourseEvent Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Courses\Entity\CourseEventRepository")
  * @ORM\Table(name="course_event")
  * @ORM\HasLifecycleCallbacks
  * @Gedmo\Loggable
