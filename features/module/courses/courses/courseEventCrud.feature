@@ -79,5 +79,31 @@ Scenario:  creating the course event with TM who is not assigned to any ATP
     Then dropdown "atp" should not contain "bothDummy"
 
     
-
+@javascript    
+Scenario:  creating the course event on old date to check if it disappears from course more page
+    Given I mock the login session as "admin"
+    And I go to "/courses"
+    And I perform "Course Events" action on row with "Hello XYZ" value
+    Then I should see only 2 row
+    And I press "Create new Course Event"
     
+    And I select "atpDummy" from "atp"
+    When I select "5" from "course_event_form_ai"
+    And I fill in "capacity" with "50"
+    And I fill in "studentsNo" with "10"
+    And I fill in "startDateHj" with "05/06/1431"
+    And I fill in "startDate" with "19/05/2010"
+    And I fill in "endDateHj" with "16/06/1432"
+    And I fill in "endDate" with "19/05/2011"
+    And I press "Create"
+    Then I should be on "/course-events/2"
+    Then I should see only 3 row
+
+    #checking that the course event exists
+    Then I should see "Wed, 19 May 2010"
+    Then I should see "Thu, 19 May 2011"
+
+    #making sure it does not appear 
+    Then I go to "/courses/calendar"
+    Then I should not see "Wed, 19 May 2010"
+    Then I should not see "Thu, 19 May 2011"
