@@ -58,6 +58,18 @@ Scenario: Testing course pages as Admin
     And I go to "/courses/instructor-calendar"
     Then I should see "Course You Are Assigned To .."
 
+    #checking outlines page
+    And I go to "/courses/outlines/1"
+    Then I should see "COURSES OUTLINES"
+
+    #checking resources page
+    And I go "/resources"
+    Then I should see "RESOURCES"
+
+    #checking resources page
+    And I go "/resources/new"
+    Then I should see "UPLOAD RESOURCES"
+
 
 @javascript 
 Scenario: Testing course pages as TM
@@ -101,6 +113,19 @@ Scenario: Testing course pages as TM
 
     #checking instructor calendar page
     And I go to "/courses/instructor-calendar"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking outlines page
+    And I go to "/courses/outlines/1"
+    Then I should see "COURSES OUTLINES"
+
+
+    #checking resources page
+    And I go "/resources"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking resources page
+    And I go "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
 
 
@@ -148,6 +173,18 @@ Scenario: Testing course pages as TCA
     And I go to "/courses/instructor-calendar"
     Then I should see "You don't have access to this , please contact the admin !"
 
+    #checking outlines page
+    And I go to "/courses/outlines/1"
+    Then I should see "COURSES OUTLINES"
+
+    #checking resources page
+    And I go "/resources"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking resources page
+    And I go "/resources/new"
+    Then I should see "You don't have access to this , please contact the admin !"
+
 
 @javascript 
 Scenario: Testing course pages as instructor
@@ -193,6 +230,18 @@ Scenario: Testing course pages as instructor
     And I go to "/courses/instructor-calendar"
     Then I should see "Course You Are Assigned To .."
 
+    #checking outlines page
+    And I go to "/courses/outlines/1"
+    Then I should see "COURSES OUTLINES"
+
+    #checking resources page
+    And I go "/resources"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking resources page
+    And I go "/resources/new"
+    Then I should see "You don't have access to this , please contact the admin !"
+
     
 @javascript 
 Scenario: Testing course pages as student
@@ -236,4 +285,16 @@ Scenario: Testing course pages as student
 
     #checking instructor calendar page
     And I go to "/courses/instructor-calendar"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking outlines page
+    And I go to "/courses/outlines/1"
+    Then I should see "COURSES OUTLINES"
+
+    #checking resources page
+    And I go "/resources"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking resources page
+    And I go "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
