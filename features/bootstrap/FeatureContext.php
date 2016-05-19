@@ -355,6 +355,25 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then /^field "([^"]*)" should be filled with "([^"]*)"$/
+     * @param string $field field identifer
+     * @param string $value field value
+     */
+    public function fieldShouldBeFilledWith($field, $value)
+    {
+        $element = $this->getSession()->getPage()->find('css', 'input[name="' . $field . '"]');
+        if (is_null($element)) {
+            throw new Exception("There's no field with this name");
+        }
+        else {
+            if ($value != $element->getValue()) {
+                $message = sprintf('field %s does not contain "%s" as expected it contains "%s" ', $field, $value, $element->getValue());
+                throw new ResponseTextException($message, $this->getSession());
+            }
+        }
+    }
+
+    /**
      * Check if field exists
      *
      * @Given /^(?:|I )should see field "(?P<field>(?:[^"]|\\")*)"$/

@@ -35,4 +35,4 @@ Scenario: Testing course pages as Admin with only 1 outline
     And I press "Save"
     Then I should see "Value is required and can't be empty" 10 times
 
-    
+

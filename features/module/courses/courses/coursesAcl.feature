@@ -42,6 +42,23 @@ Scenario: Testing course pages as Admin
     And I go to "/courses/mycourses"
     Then I should see "My Courses"
 
+    #checking course-events list
+    And I go to "/course-events"
+    Then I should see "COURSE EVENTS"
+
+    #checking course-events creation
+    And I go to "/course-events/new"
+    Then I should see "NEW COURSE EVENT"
+
+    #checking instructor training page
+    And I go to "/courses/instructor-training"
+    Then I should see "No training found for instructor!"
+
+    #checking instructor calendar page
+    And I go to "/courses/instructor-calendar"
+    Then I should see "Course You Are Assigned To .."
+
+
 @javascript 
 Scenario: Testing course pages as TM
     Given I mock the login session as "tmuser"
@@ -69,7 +86,24 @@ Scenario: Testing course pages as TM
     # checking my courses page 
     And I go to "/courses/mycourses"
     Then I should see "My Courses"
+
+    #checking course-events list
+    And I go to "/course-events"
+    Then I should see "COURSE EVENTS"
+
+    #checking course-events creation
+    And I go to "/course-events/new"
+    Then I should see "NEW COURSE EVENT"
     
+    #checking instructor training page
+    And I go to "/courses/instructor-training"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking instructor calendar page
+    And I go to "/courses/instructor-calendar"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+
 @javascript 
 Scenario: Testing course pages as TCA
     Given I mock the login session as "tcauser"
@@ -97,7 +131,24 @@ Scenario: Testing course pages as TCA
     # checking my courses page 
     And I go to "/courses/mycourses"
     Then I should see "My Courses"
+
+    #checking course-events list
+    And I go to "/course-events"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking course-events creation
+    And I go to "/course-events/new"
+    Then I should see "You don't have access to this , please contact the admin !"
     
+    #checking instructor training page
+    And I go to "/courses/instructor-training"
+    Then I should see "You don't have access to this , please contact the admin !"   
+
+    #checking instructor calendar page
+    And I go to "/courses/instructor-calendar"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+
 @javascript 
 Scenario: Testing course pages as instructor
     Given I mock the login session as "instructor"
@@ -125,6 +176,23 @@ Scenario: Testing course pages as instructor
     # checking my courses page 
     And I go to "/courses/mycourses"
     Then I should see "My Courses"
+
+    #checking course-events list
+    And I go to "/course-events"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking course-events creation
+    And I go to "/course-events/new"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking instructor training page
+    And I go to "/courses/instructor-training"
+    Then I should see "No training found for instructor!"
+
+    #checking instructor calendar page
+    And I go to "/courses/instructor-calendar"
+    Then I should see "Course You Are Assigned To .."
+
     
 @javascript 
 Scenario: Testing course pages as student
@@ -153,3 +221,19 @@ Scenario: Testing course pages as student
     # checking my courses page 
     And I go to "/courses/mycourses"
     Then I should see "My Courses"
+
+    #checking course-events list
+    And I go to "/course-events"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking course-events creation
+    And I go to "/course-events/new"
+    Then I should see "You don't have access to this , please contact the admin !"
+    
+    #checking instructor training page
+    And I go to "/courses/instructor-training"
+    Then I should see "You don't have access to this , please contact the admin !"
+
+    #checking instructor calendar page
+    And I go to "/courses/instructor-calendar"
+    Then I should see "You don't have access to this , please contact the admin !"
