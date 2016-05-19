@@ -24,6 +24,8 @@ Scenario: Testing hide from calendar which should hide course event from calenda
         Then I should see "COURSE EVENTS"
         #one course event exists and should be visible in calendar, so dates should appear in calendar
         But I should see text matching "[A-Z]{1}[a-z]{2}, [0-9]{1,2} [A-Z]{1}[a-z]{2,} 2[0-9]{3}"
+    Then I go to "/courses/instructor-training"
+        And I should see "No training found for instructor!"
     And I go to "/course-events"
     Then I should see "COURSE EVENTS"
         And I perform "Edit" action on row with "Active" value
@@ -54,6 +56,13 @@ Scenario: Testing CIP and hide from calendar in both course calendar and instruc
         And I check "isForInstructor"
         Then I press "Save and Publish"
     Then the "isForInstructor" checkbox should be checked
+    And I go to "/course-events"
+    Then I should see "COURSE EVENTS"
+        And I perform "Edit" action on row with "Active" value
+    Then I should see "EDIT COURSE EVENT"
+        And I uncheck "course_event_form_hideFromCalendar"
+        Then I press "Edit"
+    Then I should be on "/course-events" 
     And I go to "/courses/instructor-training"
         Then I should see "COURSE DETAILS"
         #one course event exists and should be visible in instructor training, so dates should appear in instructor training

@@ -866,6 +866,11 @@ class CourseEvent
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
+                'name' => 'hideFromCalendar',
+                'required' => false
+            ));
+            
+            $inputFilter->add(array(
                 'name' => 'course',
                 'required' => true
             ));
