@@ -569,7 +569,7 @@ class FeatureContext extends MinkContext
     /**
      * Checks, that page contains specified text x times.
      *
-     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" (?P<times>\d+) times$/
+     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" (?P<times>\d+) times?$/
      */
     public function assertPageContainsTextWithNumber($text, $times)
     {
@@ -579,7 +579,7 @@ class FeatureContext extends MinkContext
     /**
      * Checks, that page contains text matching specified pattern x times.
      *
-     * @Then /^(?:|I )should see text matching (?P<pattern>"(?:[^"]|\\")*") (?P<times>\d+) times$/
+     * @Then /^(?:|I )should see text matching (?P<pattern>"(?:[^"]|\\")*") (?P<times>\d+) times?$/
      */
     public function assertPageMatchesTextWithNumber($pattern, $times)
     {
