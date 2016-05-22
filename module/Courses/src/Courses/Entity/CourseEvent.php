@@ -81,14 +81,14 @@ class CourseEvent
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $endDate;
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @var \DateTime
      */
     public $endDateHj;
@@ -824,6 +824,12 @@ class CourseEvent
         if (array_key_exists('endDate', $data)) {
             $this->setEndDate($data["endDate"]);
         }
+        if (array_key_exists('startDateHj', $data)) {
+            $this->setStartDateHj($data["startDateHj"]);
+        }
+        if (array_key_exists('endDateHj', $data)) {
+            $this->setEndDateHj($data["endDateHj"]);
+        }
         if (array_key_exists('capacity', $data)) {
             $this->setCapacity($data["capacity"]);
         }
@@ -833,9 +839,6 @@ class CourseEvent
         if (array_key_exists('hideFromCalendar', $data)) {
             $this->setHideFromCalendar($data["hideFromCalendar"]);
         }
-        $this->setEndDateHj($data["endDateHj"])
-            ->setStartDateHj($data["startDateHj"])
-        ;
     }
 
     /**

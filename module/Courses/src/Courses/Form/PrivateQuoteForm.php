@@ -44,7 +44,7 @@ class PrivateQuoteForm extends QuoteForm
             // The form will hydrate an object of type "CourseEvent"
             $this->setHydrator(new DoctrineHydrator($this->query->entityManager));
             // Add the course event fieldset
-            $courseEventFieldset = new CourseEventFieldset($this->query, $this->isAdminUser, $options['userId']);
+            $courseEventFieldset = new CourseEventFieldset($this->query, $this->isAdminUser, $options['userId'], $options['applicationLocale']);
             $this->add($courseEventFieldset);
 
             $this->add(array(

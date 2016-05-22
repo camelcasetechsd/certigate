@@ -11,6 +11,7 @@ use Users\Entity\Role;
 use Utilities\Form\Form;
 use Organizations\Entity\OrganizationType;
 use Utilities\Service\Status;
+use Translation\Service\Locale\Locale;
 
 /**
  * CourseEvent Fieldset
@@ -20,6 +21,7 @@ use Utilities\Service\Status;
  * @property Utilities\Service\Query\Query $query
  * @property bool $isAdminUser
  * @property int $userId
+ * @property string $locale
  * 
  * @package courses
  * @subpackage form
@@ -44,6 +46,12 @@ class CourseEventFieldset extends Fieldset implements InputFilterProviderInterfa
      * @var int
      */
     protected $userId;
+
+    /**
+     *
+     * @var string
+     */
+    protected $locale;
     
     /**
      * setup form
@@ -53,12 +61,18 @@ class CourseEventFieldset extends Fieldset implements InputFilterProviderInterfa
      * @param Utilities\Service\Query\Query  $query
      * @param bool $isAdminUser
      * @param int $userId
+     * @param Translation\Service\Locale\Locale $applicationLocale
      */
-    public function __construct($query, $isAdminUser, $userId)
+    public function __construct($query, $isAdminUser, $userId, $applicationLocale)
     {
         $this->query = $query;
         $this->isAdminUser = $isAdminUser;
         $this->userId = $userId;
+        $this->locale = $applicationLocale->getCurrentLocale();
+        $classExtension = "";
+        if ($this->locale == Locale::LOCALE_AR_AR) {
+            $classExtension = "-ar";
+        }
         parent::__construct(/*$name =*/ "courseEvent");
 
         $this->setHydrator(new DoctrineHydrator($this->query->entityManager))
@@ -122,31 +136,57 @@ class CourseEventFieldset extends Fieldset implements InputFilterProviderInterfa
         ));
 
         $this->add(array(
-            'name' => 'startDate',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'Start Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
-        $this->add(array(
-            'name' => 'endDate',
-            'type' => 'Zend\Form\Element\Date',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control date',
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'End Date',
-                'format' => Time::DATE_FORMAT,
-            ),
-        ));
+                'name' => 'startDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate'.$classExtension,
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri Start Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'startDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate'.$classExtension,
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Start Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDateHj',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control hijriDate'.$classExtension,
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'Hijri End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
+            $this->add(array(
+                'name' => 'endDate',
+                'type' => 'Zend\Form\Element\Date',
+                'attributes' => array(
+                    'required' => 'required',
+                    'class' => 'form-control gregorianDate'.$classExtension,
+                    'type' => 'text',
+                ),
+                'options' => array(
+                    'label' => 'End Date',
+                    'format' => Time::DATE_FORMAT,
+                ),
+            ));
 
     }
 
