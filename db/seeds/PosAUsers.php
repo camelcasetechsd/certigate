@@ -360,6 +360,53 @@ class PosAUsers extends AbstractSeed
         );
         $userModel->saveUser($TMUser2, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
+        // test center admin
+        $TCAUser2 = array(
+            "firstName" => $faker->firstName,
+            "firstNameAr" => $faker->firstName,
+            "middleName" => $faker->name,
+            "middleNameAr" => $faker->name,
+            "lastName" => $faker->lastName,
+            "lastNameAr" => $faker->lastName,
+            "country" => $faker->countryCode,
+            "language" => $faker->languageCode,
+            "username" => "tcauser2",
+            "password" => "tcauser2",
+            "mobile" => "555-555-5555",
+            "addressOne" => $faker->address,
+            "addressOneAr" => $faker->address,
+            "addressTwo" => $faker->address,
+            "addressTwoAr" => $faker->address,
+            "city" => $faker->city,
+            "zipCode" => $faker->postcode,
+            "phone" =>"555-555-5555",
+            "nationality" => $faker->countryCode,
+            "identificationType" => $faker->word,
+            "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
+            "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
+            "identificationExpiryDateHj" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
+            "email" => $faker->freeEmail,
+            "securityQuestion" => $faker->sentence,
+            "securityAnswer" => $faker->sentence,
+            "dateOfBirth" => date(Time::DATE_FORMAT),
+            "dateOfBirthHj" => date(Time::DATE_FORMAT),
+            "photo" => '/upload/images/userdefault.png',
+            "privacyStatement" => true,
+            "studentStatement" => false,
+            "proctorStatement" => false,
+            "instructorStatement" => false,
+            "testCenterAdministratorStatement" => true,
+            "trainingManagerStatement" => false,
+            "resellerStatement" => false,
+            "distributorStatement" => false,
+            "status" => true,
+            "roles" => array(
+                $TCARole->getId()
+            ),
+            'longitude' => $faker->randomFloat(/* $nbMaxDecimals = */ 5, /* $min = */ 111111, /* $max = */ 999999),
+            'latitude' => $faker->randomFloat(/* $nbMaxDecimals = */ 5, /* $min = */ 111111, /* $max = */ 999999),
+        );
+        $userModel->saveUser($TCAUser2, /* $userObj = */ new User(), /* $isAdminUser = */ true, /* $editFormFlag = */ false);
 
         $resellerUser = array(
             "firstName" => $faker->firstName,
