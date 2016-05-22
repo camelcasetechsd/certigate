@@ -60,6 +60,8 @@ use Zend\Validator\NotEmpty;
  * @property int $instructorStatement
  * @property int $testCenterAdministratorStatement
  * @property int $trainingManagerStatement
+ * @property int $distributorStatement
+ * @property int $resellerStatement
  * @property int $status
  * @property int $customerId
  * @property float  $longitude
@@ -341,6 +343,20 @@ class User
      * @var int
      */
     public $trainingManagerStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int
+     */
+    public $distributorStatement;
+
+    /**
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int
+     */
+    public $resellerStatement;
 
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\CourseEventUser", mappedBy="user")
@@ -807,6 +823,30 @@ class User
     public function getTrainingManagerStatement()
     {
         return $this->trainingManagerStatement;
+    }
+
+    /**
+     * Get resellerStatement
+     * 
+     * 
+     * @access public
+     * @return int resellerStatement
+     */
+    public function getResellerStatement()
+    {
+        return $this->resellerStatement;
+    }
+
+    /**
+     * Get distributorStatement
+     * 
+     * 
+     * @access public
+     * @return int distributorStatement
+     */
+    public function getDistributorStatement()
+    {
+        return $this->distributorStatement;
     }
 
     /**
@@ -1311,6 +1351,34 @@ class User
     }
 
     /**
+     * Set distributorStatement
+     * 
+     * 
+     * @access public
+     * @param int $distributorStatement
+     * @return User current entity
+     */
+    public function setDistributorStatement($distributorStatement)
+    {
+        $this->distributorStatement = $distributorStatement;
+        return $this;
+    }
+
+    /**
+     * Set resellerStatement
+     * 
+     * 
+     * @access public
+     * @param int $resellerStatement
+     * @return User current entity
+     */
+    public function setresellerStatement($resellerStatement)
+    {
+        $this->resellerStatement = $resellerStatement;
+        return $this;
+    }
+
+    /**
      * Set username
      * 
      * 
@@ -1788,6 +1856,12 @@ class User
         if (array_key_exists('trainingManagerStatement', $data)) {
             $this->setTrainingManagerStatement($data["trainingManagerStatement"]);
         }
+        if (array_key_exists('distributorStatement', $data)) {
+            $this->setDistributorStatement($data["distributorStatement"]);
+        }
+        if (array_key_exists('resellerStatement', $data)) {
+            $this->setresellerStatement($data["resellerStatement"]);
+        }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDateOfBirthHj($data["dateOfBirthHj"])
                 ->setMobile($data["mobile"])
@@ -2211,6 +2285,14 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'trainingManagerStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'distributorStatement',
+                'required' => false,
+            ));
+            $inputFilter->add(array(
+                'name' => 'resellerStatement',
                 'required' => false,
             ));
 

@@ -53,6 +53,20 @@ class PosARoles extends AbstractSeed
         $this->insert('role', $trainingManagerRole);
         $trainingManagerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        $distributorRole = array(
+            'name' => Role::DISTRIBUTOR_ROLE,
+            'nameAr' => Role::DISTRIBUTOR_ROLE
+        );
+        $this->insert('role', $distributorRole);
+        $distributorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $resellerRole = array(
+            'name' => Role::RESELLER_ROLE,
+            'nameAr' => Role::RESELLER_ROLE
+        );
+        $this->insert('role', $resellerRole);
+        $resellerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+
         $userRole = array(
             'name' => Role::USER_ROLE,
             'nameAr' => Role::USER_ROLE
@@ -515,178 +529,178 @@ class PosARoles extends AbstractSeed
         );
         $this->insert('acl', $resourcesAcls);
 
-        $organizationModule = "Organizations";
-        $organizationUsersRoute = "organizationUsers";
-        $organizationUsersListRoute = "organizationUsersList";
-        $organizationUsersNewRoute = "organizationUsersNew";
-        $organizationUsersEditRoute = "organizationUsersEdit";
-        $organizationUsersDeleteRoute = "organizationUsersDelete";
-        $organizationsPendingRoute = "organizationsPending";
-        $organizationsDownloadRoute = "organizationsDownload";
-        $listAtcOrgsRoute = "list_atc_orgs";
-        $listAtpOrgsRoute = "list_atp_orgs";
-        $listDistOrgsRoute = "list_distributor_orgs";
-        $listResellerOrgsRoute = "list_reseller_orgs";
-        $orgTypeRoute = "org_type";
-        $orgMoreRoute = "more";
-        $orgNewRoute = "new_org";
-        $orgEditRoute = "edit_org";
-        $saveStateRoute = "saveState";
-        $myOrganization = "myOrganizations";
-        $renewal = "renew";
-        $organizationAcls = array(
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationsDownloadRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationsDownloadRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationsPendingRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationsPendingRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersListRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersListRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersNewRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersNewRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersEditRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersEditRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersDeleteRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $organizationUsersDeleteRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $listAtcOrgsRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $listAtpOrgsRoute,
-            ),
-            array(
-                'role_id' => $normalUserRoleId,
-                'module' => $organizationModule,
-                'route' => $listResellerOrgsRoute,
-            ),
-            array(
-                'role_id' => $normalUserRoleId,
-                'module' => $organizationModule,
-                'route' => $listDistOrgsRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $orgTypeRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $orgTypeRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $saveStateRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $saveStateRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $orgEditRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $orgEditRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $orgNewRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $orgNewRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $orgMoreRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $orgMoreRoute,
-            ),
-            array(
-                'role_id' => $normalUserRoleId,
-                'module' => $organizationModule,
-                'route' => $renewal,
-            ),
-            array(
-                'role_id' => $normalUserRoleId,
-                'module' => $organizationModule,
-                'route' => $myOrganization,
-            ),
-        );
-        $this->insert('acl', $organizationAcls);
+//        $organizationModule = "Organizations";
+//        $organizationUsersRoute = "organizationUsers";
+//        $organizationUsersListRoute = "organizationUsersList";
+//        $organizationUsersNewRoute = "organizationUsersNew";
+//        $organizationUsersEditRoute = "organizationUsersEdit";
+//        $organizationUsersDeleteRoute = "organizationUsersDelete";
+//        $organizationsPendingRoute = "organizationsPending";
+//        $organizationsDownloadRoute = "organizationsDownload";
+//        $listAtcOrgsRoute = "list_atc_orgs";
+//        $listAtpOrgsRoute = "list_atp_orgs";
+//        $listDistOrgsRoute = "list_distributor_orgs";
+//        $listResellerOrgsRoute = "list_reseller_orgs";
+//        $orgTypeRoute = "org_type";
+//        $orgMoreRoute = "more";
+//        $orgNewRoute = "new_org";
+//        $orgEditRoute = "edit_org";
+//        $saveStateRoute = "saveState";
+//        $myOrganization = "myOrganizations";
+//        $renewal = "renew";
+//        $organizationAcls = array(
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationsDownloadRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationsDownloadRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationsPendingRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationsPendingRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersListRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersListRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersNewRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersNewRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersEditRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersEditRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersDeleteRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $organizationUsersDeleteRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $listAtcOrgsRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $listAtpOrgsRoute,
+//            ),
+//            array(
+//                'role_id' => $normalUserRoleId,
+//                'module' => $organizationModule,
+//                'route' => $listResellerOrgsRoute,
+//            ),
+//            array(
+//                'role_id' => $normalUserRoleId,
+//                'module' => $organizationModule,
+//                'route' => $listDistOrgsRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgTypeRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgTypeRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $saveStateRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $saveStateRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgEditRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgEditRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgNewRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgNewRoute,
+//            ),
+//            array(
+//                'role_id' => $testCenterAdminRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgMoreRoute,
+//            ),
+//            array(
+//                'role_id' => $trainingManagerRoleId,
+//                'module' => $organizationModule,
+//                'route' => $orgMoreRoute,
+//            ),
+//            array(
+//                'role_id' => $normalUserRoleId,
+//                'module' => $organizationModule,
+//                'route' => $renewal,
+//            ),
+//            array(
+//                'role_id' => $normalUserRoleId,
+//                'module' => $organizationModule,
+//                'route' => $myOrganization,
+//            ),
+//        );
+//        $this->insert('acl', $organizationAcls);
 
         $cmsModule = "CMS";
         $cmsPressReleaseSubscribeRoute = "cmsPressReleaseSubscribe";
