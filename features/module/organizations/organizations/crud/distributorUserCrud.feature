@@ -81,7 +81,7 @@ Scenario: Admin approval
     Then I should see "Distributor test 1"
 
 
-Scenario: Testing Oragnization Edit
+Scenario: Testing Organization Edit
 
     Given I mock the login session as "distributor"
     And I go to "/organizations/myorganizations"
@@ -91,7 +91,7 @@ Scenario: Testing Oragnization Edit
     Then I should not see atp renewal fields
     And I fill in "commercialName" with "Edited Distributor organization"
     And I press "Submit for admin approval"
-    #wating for admin approval
+    #waiting for admin approval
     Then I should be on "/organizations/myorganizations"
     Then I should see "Distributor test 1"
     Then I should not see "Edited Distributor organization"
