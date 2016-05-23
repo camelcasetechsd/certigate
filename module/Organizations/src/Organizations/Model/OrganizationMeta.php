@@ -11,6 +11,7 @@ use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Authentication\AuthenticationService;
+use Organizations\Entity\OrganizationType as OrgType;
 
 /**
  * OrganizationMeta Model
@@ -194,8 +195,12 @@ class OrganizationMeta
     // and sending notification Mail to Orgnization Users before week form the expiration 
     public function updateExpirationFlag()
     {
+        // Need to update status only for ATP & ATC Metas Only
+        $organizations = $this->query->entityManager->createQuery('SELECT u FROM Organizations\Entity\OrganizationMeta u '
+                        . 'WHERE u.type = ' . OrgType::TYPE_ATC . ' or'
+                        . ' u.type =' . OrgType::TYPE_ATP)
+                ->getResult();
 
-        $organizations = $this->query->findAll('Organizations\Entity\OrganizationMeta');
         /**
          * First Updating ExpirationFlag 
          */
