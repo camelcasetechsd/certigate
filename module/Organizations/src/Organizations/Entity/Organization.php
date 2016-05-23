@@ -11,6 +11,7 @@ use Utilities\Service\Time;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Validator\NotEmpty;
 use Zend\Validator\Identical;
+use Utilities\Service\Validator\UniqueObject;
 
 /**
  * Organziation Entity
@@ -1772,7 +1773,7 @@ class Organization
                         'object_repository' => $query->entityRepository,
                         'fields' => array('commercialName'),
                         'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "Sorry, This commercial name already exists !"
                         ),
                     )
                 ),
@@ -1789,7 +1790,7 @@ class Organization
                         'object_repository' => $query->entityRepository,
                         'fields' => array('commercialName'),
                         'messages' => array(
-//                                'objectFound' => 'Sorry, This commercial name already exists !'
+                            UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "Sorry, This commercial name already exists !"
                         ),
                     )
                 ),
