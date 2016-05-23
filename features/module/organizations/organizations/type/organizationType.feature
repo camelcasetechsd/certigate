@@ -140,32 +140,12 @@ Scenario: test selecting organization type as TCA
 
 @javascript
 Scenario: test selecting organization type as user
-
+    # user should not access type page
     Given I mock the login session as "user"
     Then I should be on "/"
     And I go to "/organizations/type"
     Then I should see "You don't have access to this , please contact the admin !"
 
-########
-
-    And I go to "/organizations/type"
-    And I Check the "type-2" labeled checkbox 
-    And I press "Start!"
-    Then I should see "You need to be Training Manager, And you need to accept the corresponding Agreement statement"
-
-#####
-
-    And I go to "/organizations/type"
-    And I Check the "type-3" labeled checkbox 
-    And I press "Start!"
-    Then I should see "You need to be Distributor, And you need to accept the corresponding Agreement statement"
-
-#####
-
-    And I go to "/organizations/type"
-    And I Check the "type-4" labeled checkbox 
-    And I press "Start!"
-    Then I should see "You need to be Re-Seller, And you need to accept the corresponding Agreement statement"
 
 ###########################
 

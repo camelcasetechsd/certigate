@@ -178,11 +178,11 @@ Scenario: List && create && edit  organization as instructor
 
     #all the following organizations with id 1,2,3,4 are ATC , ATP , Distributor , Re-seller 
     And I go to "/organizations/new/1"
-    Then I should see "You need to be Test Center Administrator, And you need to accept the corresponding Agreement statement"
+    Then I should see "You don't have access to this , please contact the admin !"
     And I go to "/organizations/new/2"
-    Then I should see "You need to be Training Manager, And you need to accept the corresponding Agreement statement"
+    Then I should see "You don't have access to this , please contact the admin !"
     And I go to "/organizations/new/3"
-    Then I should see "You need to be Distributor, And you need to accept the corresponding Agreement statement"
+    Then I should see "You don't have access to this , please contact the admin !"
     And I go to "/organizations/new/4"
-    Then I should see "You need to be Re-Seller, And you need to accept the corresponding Agreement statement"
-
+    Then I should see "You don't have access to this , please contact the admin !"
+    
