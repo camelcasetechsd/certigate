@@ -215,7 +215,7 @@ class OrganizationMeta
                 /**
                  * checking for expiration date before week to send notification
                  */
-                $weekBeforeStatus = $this->validateDate($organization->getDate(), '+7 days');
+                $weekBeforeStatus = $this->validateDate($organization->getExpirationDate(), '+7 days');
                 if ($weekBeforeStatus == Status::STATUS_EXPIRED) {
                     $this->notify($organization);
                 }
@@ -238,8 +238,8 @@ class OrganizationMeta
         }
 
         $notificationMailArray = array(
-            'to' => /* $organization->getOrganization()->getEmail() */ 'ahmedredamohamed01@gamil.com',
-            'from' => /* $operationsEmail */'anawany@yahoo.com',
+            'to' => $organization->getOrganization()->getEmail(),
+            'from' => $operationsEmail,
             'templateName' => MailTemplates::ORGANIZATION_RENEWAL_TEMPLATE,
             'templateParameters' => array(
                 'name' => $organization->getOrganization()->getCommercialName(),
