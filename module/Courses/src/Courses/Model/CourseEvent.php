@@ -499,12 +499,14 @@ class CourseEvent
     public function prepareCourseEventsForDisplay($courseEvents, $currentUser)
     {
         foreach ($courseEvents as $courseEvent) {
-            $courseEvent->startDateIso = $courseEvent->getStartDate()->format(DATE_ISO8601);
-            $courseEvent->endDateIso = $courseEvent->getEndDate()->format(DATE_ISO8601);
-            $courseEvent->timeZone = Time::DEFAULT_TIME_ZONE_ID;
-            if (!is_null($currentUser)) {
-                $courseEvent->formObject = $this->courseEventSubscription->getCourseEventSubscriptionForm($courseEvent, $currentUser);
-                $courseEvent->formView = $this->formView->getFormView($courseEvent->formObject);
+            if ($courseEvent->getHideFromCalendar() == false) {
+                $courseEvent->startDateIso = $courseEvent->getStartDate()->format(DATE_ISO8601);
+                $courseEvent->endDateIso = $courseEvent->getEndDate()->format(DATE_ISO8601);
+                $courseEvent->timeZone = Time::DEFAULT_TIME_ZONE_ID;
+                if (!is_null($currentUser)) {
+                    $courseEvent->formObject = $this->courseEventSubscription->getCourseEventSubscriptionForm($courseEvent, $currentUser);
+                    $courseEvent->formView = $this->formView->getFormView($courseEvent->formObject);
+                }
             }
         }
         return $courseEvents;
