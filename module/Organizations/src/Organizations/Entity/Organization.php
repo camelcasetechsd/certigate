@@ -133,6 +133,7 @@ class Organization
     private $inputFilter;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\Id
      * @ORM\Column(type="integer");
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -386,7 +387,7 @@ class Organization
     public $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="organization")
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationUser", mappedBy="organization", cascade={"remove"})
      */
     public $organizationUser;
 
@@ -486,7 +487,7 @@ class Organization
     public $regions;
     
     /**
-     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationMeta", mappedBy="organization") 
+     * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationMeta", mappedBy="organization", cascade={"remove"}) 
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $organizationMetas;
