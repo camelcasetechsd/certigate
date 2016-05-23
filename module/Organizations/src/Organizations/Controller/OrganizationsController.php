@@ -4,7 +4,6 @@ namespace Organizations\Controller;
 
 use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
-use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
@@ -244,7 +243,6 @@ class OrganizationsController extends ActionController
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
         $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
         $query = $cleanQuery->setEntity('Users\Entity\User');
-        $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         /**
@@ -267,7 +265,6 @@ class OrganizationsController extends ActionController
             $userEmail = $storage['email'];
         }
 
-        $orgObj = new OrgEntity();
         $options = array();
         $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this, null));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
@@ -299,7 +296,7 @@ class OrganizationsController extends ActionController
 
             $customizedForm->setData($data);
             $data['creatorId'] = $creatorId;
-
+            
             if ($customizedForm->isValid()) {
                 $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, $creatorId, $userEmail, $isAdminUser);
             }
@@ -365,7 +362,8 @@ class OrganizationsController extends ActionController
             );
 
             $customizedForm->setData($data);
-
+            $customizedForm->setInputFilter($orgObj->getInputFilter($query));
+            
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files

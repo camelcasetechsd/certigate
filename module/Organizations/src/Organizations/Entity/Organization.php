@@ -9,6 +9,8 @@ use Users\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Time;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zend\Validator\NotEmpty;
+use Zend\Validator\Identical;
 
 /**
  * Organziation Entity
@@ -1372,15 +1374,35 @@ class Organization
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-
+            $query->setEntity("Organizations\Entity\Organization");
             $inputFilter->add(array(
                 'name' => 'longitude',
-                'required' => false,
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Longitude is required',
+                            ),
+                        ),
+                    ),
+                ),
             ));
-
+            
             $inputFilter->add(array(
                 'name' => 'latitude',
-                'required' => false,
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY=> 'Latitude is required',
+                            ),
+                        ),
+                    ),
+                ),
             ));
 
             $inputFilter->add(array(
@@ -1773,6 +1795,36 @@ class Organization
                 ),
             )
         ));
+        
+        $inputFilter->add(array(
+                'name' => 'atcPrivacyStatement',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Identical',
+                        'options' => array(
+                            'token' => '1',
+                            'messages' => array(
+                                Identical::NOT_SAME => 'You must agree to the terms of use.',
+                            ),
+                        )
+                    ),
+                )
+            ));
+        
+        $inputFilter->add(array(
+                'name' => 'atpPrivacyStatement',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Identical',
+                        'options' => array(
+                            'token' => '1',
+                            'messages' => array(
+                                Identical::NOT_SAME => 'You must agree to the terms of use.',
+                            ),
+                        )
+                    ),
+                )
+            ));
 
         return $this->inputFilter;
     }

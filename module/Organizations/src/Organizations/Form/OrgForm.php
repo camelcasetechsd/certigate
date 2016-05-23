@@ -123,7 +123,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'class' => 'form-control gllpSearchField',
             ),
             'options' => array(
-                'label' => '<div>Location</div><div class="gllpMap">Google Maps</div>',
+                'label' => '<div class="required">Location</div><div class="gllpMap">Google Maps</div>',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
@@ -142,13 +142,10 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'longitude',
-            'continue_if_empty' => true,
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => 'Enter Longitude',
                 'class' => 'form-control gllpLongitude',
-                'allow_empty' => true,
-                'continue_if_empty' => false
             ),
             'options' => array(
                 'label' => 'Longitude',
@@ -163,9 +160,6 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             ),
             'options' => array(
                 'label' => 'Latitude',
-            ),
-            'validators' => array(
-                'Empty' => true
             )
         ));
         $this->add(array(
@@ -1018,7 +1012,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
-                'class' => 'btn btn-success inline',
+                'class' => 'btn btn-success pull-left inline',
                 'value' => 'Create',
             )
         ));
@@ -1027,7 +1021,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'saveState',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-info saveStateButton',
+                'class' => 'btn btn-info pull-left saveStateButton',
                 'value' => 'Save State',
                 'type' => 'button',
             )
@@ -1037,7 +1031,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-danger resetButton orgResetButton',
+                'class' => 'btn btn-danger pull-left resetButton orgResetButton',
                 'value' => 'Reset',
                 'type' => 'button',
             )

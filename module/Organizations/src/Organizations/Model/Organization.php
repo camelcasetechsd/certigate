@@ -799,19 +799,33 @@ class Organization
     public function customizeOrgForm($rolesArray, $options, $action)
     {
         $form = new OrgForm(/* name */null, $options);
-
-        if (!in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
-                !in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+        $orgObj = new OrganizationEntity();
+        $form->setInputFilter($orgObj->getInputFilter($options['query']));
+        $inputFilter = $form->getInputFilter();
+        if (!in_array(Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                !in_array(Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
             $form = $this->unsetAtpFields($form, $action);
             $form = $this->unsetAtcFields($form, $action);
         }
-        elseif (!in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
-                in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+        elseif (!in_array(Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                in_array(Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
             $form = $this->unsetAtpFields($form, $action);
         }
-        elseif (in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
-                !in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+        elseif (in_array(Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                !in_array(Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
             $form = $this->unsetAtcFields($form, $action);
+        }
+        if (in_array(Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+            $atcLicenseAttachment = $inputFilter->get('atcLicenseAttachment');
+            $atcLicenseAttachment->setRequired(true);
+            $atcWireTransferAttachment = $inputFilter->get('atcWireTransferAttachment');
+            $atcWireTransferAttachment->setRequired(true);
+        }
+        if (in_array(Role::TRAINING_MANAGER_ROLE, $rolesArray)) {
+            $atpLicenseAttachment = $inputFilter->get('atpLicenseAttachment');
+            $atpLicenseAttachment->setRequired(true);
+            $atpWireTransferAttachment = $inputFilter->get('atpWireTransferAttachment');
+            $atpWireTransferAttachment->setRequired(true);
         }
         return $form;
     }
