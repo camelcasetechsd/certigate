@@ -90,7 +90,7 @@ class OrganizationsController extends ActionController
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
 
-        $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC);
+        $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC, /*$status =*/ Status::STATUS_ACTIVE);
 
         foreach ($variables['atcs'] as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
@@ -113,7 +113,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP);
+        $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP, /*$status =*/ Status::STATUS_ACTIVE);
         foreach ($variables['atps'] as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -135,7 +135,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR);
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR, /*$status =*/ Status::STATUS_ACTIVE);
         foreach ($organizations as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -157,7 +157,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER);
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER, /*$status =*/ Status::STATUS_ACTIVE);
         foreach ($organizations as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -362,14 +362,13 @@ class OrganizationsController extends ActionController
             );
 
             $customizedForm->setData($data);
-            $customizedForm->setInputFilter($orgObj->getInputFilter($query));
             
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files
                 $customizedForm->getInputFilter()->get('CRAttachment')->setRequired(false);
             }
-
+            
             if ($customizedForm->isValid()) {
                 $orgModel->saveOrganization($this, $data, $orgObj, $oldStatus, $oldLongitude, $oldLatitude, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
             }
