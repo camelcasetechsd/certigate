@@ -62,6 +62,16 @@ class Role
     const TRAINING_MANAGER_ROLE = "Training Manager";
 
     /**
+     * Distributor role
+     */
+    const DISTRIBUTOR_ROLE = "Distributor";
+
+    /**
+     * Distributor role
+     */
+    const RESELLER_ROLE = "Re-Seller";
+
+    /**
      *
      * @var Array translated properties 
      */

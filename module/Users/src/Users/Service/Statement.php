@@ -69,6 +69,16 @@ class Statement
     const STATEMENT_TRAINING_MANAGER_TYPE = "trainingManagerStatement";
 
     /**
+     * Distributor statement type
+     */
+    const STATEMENT_DISTRIBUTOR_TYPE = "distributorStatement";
+
+    /**
+     * Re-seller statement type
+     */
+    const STATEMENT_RESELLER_TYPE = "resellerStatement";
+
+    /**
      * Privacy statement title
      */
     const STATEMENT_PRIVACY_TITLE = "Privacy Statement";
@@ -97,6 +107,16 @@ class Statement
      * TrainingManager statement title
      */
     const STATEMENT_TRAINING_MANAGER_TITLE = "Training Manager Statement";
+
+    /**
+     * TrainingManager statement title
+     */
+    const STATEMENT_DISTRIBUTOR_TITLE = "Distributor Statement";
+
+    /**
+     * TrainingManager statement title
+     */
+    const STATEMENT_RESELLER_TITLE = "Re-Seller Statement";
 
     /**
      * Statement role
@@ -173,6 +193,18 @@ class Statement
             self::STATEMENT_TYPE => self::STATEMENT_TRAINING_MANAGER_TYPE,
             self::STATEMENT_TITLE => self::STATEMENT_TRAINING_MANAGER_TITLE,
             self::STATEMENT_ROLE => Role::TRAINING_MANAGER_ROLE
+        ),
+        array(
+            self::STATEMENT_CONTENT => 'dummy Distributor Statement content',
+            self::STATEMENT_TYPE => self::STATEMENT_DISTRIBUTOR_TYPE,
+            self::STATEMENT_TITLE => self::STATEMENT_DISTRIBUTOR_TITLE,
+            self::STATEMENT_ROLE => Role::DISTRIBUTOR_ROLE
+        ),
+        array(
+            self::STATEMENT_CONTENT => 'dummy Reseller Statement content',
+            self::STATEMENT_TYPE => self::STATEMENT_RESELLER_TYPE,
+            self::STATEMENT_TITLE => self::STATEMENT_RESELLER_TITLE,
+            self::STATEMENT_ROLE => Role::RESELLER_ROLE
         ),
     );
 
