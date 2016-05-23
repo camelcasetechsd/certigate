@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-05-23 15:41+0200\n"
+"PO-Revision-Date: 2016-05-23 17:08+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: English\n"
@@ -1344,3 +1344,15 @@ msgstr "Subscribe periodic notifications"
 
 msgid "You must agree to the terms of use."
 msgstr "You must agree to the terms of use."
+
+msgid "Enter Commercial Name in Arabic"
+msgstr "Enter Commercial Name in Arabic"
+
+msgid "Enter Owner Name in Arabic"
+msgstr "Enter Owner Name in Arabic"
+
+msgid "Enter Address in Arabic"
+msgstr "Enter Address in Arabic"
+
+msgid "Enter City in Arabic"
+msgstr "Enter City in Arabic"

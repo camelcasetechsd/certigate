@@ -81,6 +81,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'commercialNameAr',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+                'placeholder' => 'Enter Commercial Name in Arabic',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -107,6 +108,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'ownerNameAr',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+                'placeholder' => 'Enter Owner Name in Arabic',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
@@ -383,6 +385,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'addressLine1Ar',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+                'placeholder' => 'Enter Address in Arabic',
                 'class' => 'form-control',
                 'required' => 'required',
             ),
@@ -407,6 +410,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'addressLine2Ar',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+                'placeholder' => 'Enter Address in Arabic',
                 'class' => 'form-control',
             ),
             'options' => array(
@@ -431,6 +435,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'cityAr',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+                'placeholder' => 'Enter City in Arabic',
                 'required' => 'required',
                 'class' => 'form-control',
             ),
