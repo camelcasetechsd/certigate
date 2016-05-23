@@ -902,15 +902,12 @@ class CourseController extends ActionController
         $auth = new AuthenticationService();
         // user id
         $id = $auth->getIdentity()['id'];
-        $user = $query->findOneBy('Users\Entity\User', array(
-            'id' => $id
-        ));
 
-        $userCourses = $user->getCourseEvents();
-        $courseEventModel = new \Courses\Model\CourseEvent($query, $this->getServiceLocator()->get('objectUtilities'));
-        $variables['courseEvents'] = $courseEventModel->prepareCourseOccurrences($userCourses);
+        $courseEvents = $query->setEntity("Courses\Entity\CourseEvent")->entityRepository->getCourseEventsBy($id);
+        $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
+        $variables['courseEvents'] = $courseEventModel->prepareCourseOccurrences($courseEvents);
         // if user did not enroll in any course
-        if (count($userCourses) < 1) {
+        if (count($courseEvents) < 1) {
             $variables['messages'] = array(
                 array(
                     'message' => 'Currently you are not enrolled in any courses',

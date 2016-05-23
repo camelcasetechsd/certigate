@@ -12,7 +12,7 @@ use Utilities\Service\String;
 
 /**
  * CourseEvent Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Courses\Entity\CourseEventRepository")
  * @ORM\Table(name="course_event")
  * @ORM\HasLifecycleCallbacks
  * @Gedmo\Loggable
@@ -865,6 +865,11 @@ class CourseEvent
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $inputFilter->add(array(
+                'name' => 'hideFromCalendar',
+                'required' => false
+            ));
+            
             $inputFilter->add(array(
                 'name' => 'course',
                 'required' => true
