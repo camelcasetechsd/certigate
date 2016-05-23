@@ -337,11 +337,10 @@ class Organization
                 }
             }
 
-            if($editFlag === true && ($oldLatitude != $orgObj->getLat() || $oldLongitude != $orgObj->getLong() ))
-            {
-                $this->organizationUserModel->sortProctors(/*$organizationId =*/ $orgObj->getId());
+            if ($editFlag === true && ($oldLatitude != $orgObj->getLat() || $oldLongitude != $orgObj->getLong() )) {
+                $this->organizationUserModel->sortProctors(/* $organizationId = */ $orgObj->getId());
             }
-            
+
             if ($sendNotificationFlag === true) {
                 $this->sendMail($userEmail, $editFlag);
             }
@@ -562,13 +561,22 @@ class Organization
                 case OrganizationType::TYPE_ATC_TITLE:
                     $requiredRoles[] = Role::TEST_CENTER_ADMIN_ROLE;
                     break;
+                case OrganizationType::TYPE_DISTRIBUTOR_TITLE:
+                    $requiredRoles[] = Role::DISTRIBUTOR_ROLE;
+                    break;
+                case OrganizationType::TYPE_RESELLER_TITLE:
+                    $requiredRoles[] = Role::RESELLER_ROLE;
+                    break;
             }
         }
         return $requiredRoles;
     }
 
     /**
-     * function to return array of parameters
+     * function to return array of organization types 
+     * in both cases
+     * to use it in new || edit send object of the controller 
+     * to use it otherwise send organization obj
      * @param type $action
      * @return array
      */
@@ -578,7 +586,11 @@ class Organization
         if ($action != null) {
             for ($i = 1; $i <= $this->organizationTypesNumber; $i++) {
                 if ($action->params('v' . $i) != null) {
-                    array_push($params, $action->params('v' . $i));
+                    $organizationTitle = $this->query->findOneBy('Organizations\Entity\OrganizationType', array(
+                                'id' => $action->params('v' . $i)
+                            ))->getTitle();
+
+                    array_push($params, $organizationTitle);
                 }
             }
         }
@@ -788,24 +800,18 @@ class Organization
     {
         $form = new OrgForm(/* name */null, $options);
 
-//        if there's no atp or atc organizations needed ex /3 or /4 or /3/4
-        if (empty($rolesArray)) {
+        if (!in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                !in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
             $form = $this->unsetAtpFields($form, $action);
             $form = $this->unsetAtcFields($form, $action);
         }
-        else if (!(in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
-                in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray))) {
-
-            foreach ($rolesArray as $role) {
-                switch ($role) {
-                    case \Users\Entity\Role::TRAINING_MANAGER_ROLE :
-                        $form = $this->unsetAtcFields($form, $action);
-                        break;
-                    case \Users\Entity\Role::TEST_CENTER_ADMIN_ROLE :
-                        $form = $this->unsetAtpFields($form, $action);
-                        break;
-                }
-            }
+        elseif (!in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+            $form = $this->unsetAtpFields($form, $action);
+        }
+        elseif (in_array(\Users\Entity\Role::TRAINING_MANAGER_ROLE, $rolesArray) &&
+                !in_array(\Users\Entity\Role::TEST_CENTER_ADMIN_ROLE, $rolesArray)) {
+            $form = $this->unsetAtcFields($form, $action);
         }
         return $form;
     }
@@ -1027,7 +1033,7 @@ class Organization
             }
         }
 
-        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
+        $this->saveOrganization($action, $data, $organizationObj, /* oldStatus */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
     }
 
 }

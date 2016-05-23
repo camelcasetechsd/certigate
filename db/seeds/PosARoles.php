@@ -53,6 +53,20 @@ class PosARoles extends AbstractSeed
         $this->insert('role', $trainingManagerRole);
         $trainingManagerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
 
+        $distributorRole = array(
+            'name' => Role::DISTRIBUTOR_ROLE,
+            'nameAr' => Role::DISTRIBUTOR_ROLE
+        );
+        $this->insert('role', $distributorRole);
+        $distributorRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $resellerRole = array(
+            'name' => Role::RESELLER_ROLE,
+            'nameAr' => Role::RESELLER_ROLE
+        );
+        $this->insert('role', $resellerRole);
+        $resellerRoleId = $this->getAdapter()->getConnection()->lastInsertId();
+
         $userRole = array(
             'name' => Role::USER_ROLE,
             'nameAr' => Role::USER_ROLE
@@ -535,6 +549,7 @@ class PosARoles extends AbstractSeed
         $myOrganization = "myOrganizations";
         $renewal = "renew";
         $organizationAcls = array(
+            // download attachments in pending page
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -546,6 +561,17 @@ class PosARoles extends AbstractSeed
                 'route' => $organizationsDownloadRoute,
             ),
             array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsDownloadRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsDownloadRoute,
+            ),
+            // Pending
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $organizationsPendingRoute,
@@ -555,6 +581,17 @@ class PosARoles extends AbstractSeed
                 'module' => $organizationModule,
                 'route' => $organizationsPendingRoute,
             ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsPendingRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationsPendingRoute,
+            ),
+            //Organization users List
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -566,6 +603,17 @@ class PosARoles extends AbstractSeed
                 'route' => $organizationUsersRoute,
             ),
             array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersRoute,
+            ),
+            //Organization users List
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $organizationUsersListRoute,
@@ -575,6 +623,17 @@ class PosARoles extends AbstractSeed
                 'module' => $organizationModule,
                 'route' => $organizationUsersListRoute,
             ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersListRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersListRoute,
+            ),
+            // organization user creation
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -588,12 +647,44 @@ class PosARoles extends AbstractSeed
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
+                'route' => $organizationUsersNewRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersNewRoute,
+            ),
+            // organization user edit
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
                 'route' => $organizationUsersEditRoute,
             ),
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $organizationUsersEditRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersEditRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersEditRoute,
+            ),
+            // organization user delete
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersDeleteRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $organizationUsersDeleteRoute,
             ),
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -605,6 +696,7 @@ class PosARoles extends AbstractSeed
                 'module' => $organizationModule,
                 'route' => $organizationUsersDeleteRoute,
             ),
+            // list atcs routes
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -613,19 +705,83 @@ class PosARoles extends AbstractSeed
             array(
                 'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
+                'route' => $listAtcOrgsRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtcOrgsRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtcOrgsRoute,
+            ),
+            // list atps
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
                 'route' => $listAtpOrgsRoute,
             ),
             array(
-                'role_id' => $normalUserRoleId,
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtpOrgsRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtpOrgsRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $listAtpOrgsRoute,
+            ),
+            // list resellers 
+            array(
+                'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $listResellerOrgsRoute,
             ),
             array(
-                'role_id' => $normalUserRoleId,
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $listResellerOrgsRoute,
+            ),
+            // list distributors 
+            array(
+                'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $listDistOrgsRoute,
             ),
             array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $listDistOrgsRoute,
+            ),
+            //organization type
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $orgTypeRoute,
@@ -635,6 +791,17 @@ class PosARoles extends AbstractSeed
                 'module' => $organizationModule,
                 'route' => $orgTypeRoute,
             ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $orgTypeRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgTypeRoute,
+            ),
+            // save state
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -646,6 +813,17 @@ class PosARoles extends AbstractSeed
                 'route' => $saveStateRoute,
             ),
             array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $saveStateRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $saveStateRoute,
+            ),
+            // EDIT ORGANIZATION
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $orgEditRoute,
@@ -655,6 +833,17 @@ class PosARoles extends AbstractSeed
                 'module' => $organizationModule,
                 'route' => $orgEditRoute,
             ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgEditRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $orgEditRoute,
+            ),
+            // new organization
             array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
@@ -666,6 +855,17 @@ class PosARoles extends AbstractSeed
                 'route' => $orgNewRoute,
             ),
             array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgNewRoute,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $orgNewRoute,
+            ),
+            // organization More
+            array(
                 'role_id' => $testCenterAdminRoleId,
                 'module' => $organizationModule,
                 'route' => $orgMoreRoute,
@@ -676,12 +876,58 @@ class PosARoles extends AbstractSeed
                 'route' => $orgMoreRoute,
             ),
             array(
-                'role_id' => $normalUserRoleId,
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $orgMoreRoute,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $orgMoreRoute,
+            ),
+            // renewal 
+            array(
+                'role_id' => $trainingManagerRoleId,
                 'module' => $organizationModule,
                 'route' => $renewal,
             ),
             array(
-                'role_id' => $normalUserRoleId,
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            /**
+             *Note : distributor && reseller organization cant be renewed 
+             *but role added to Acl just to make a descriptive message 
+             */
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
+                'module' => $organizationModule,
+                'route' => $renewal,
+            ),
+            //my organizations
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
+            ),
+            array(
+                'role_id' => $distributorRoleId,
+                'module' => $organizationModule,
+                'route' => $myOrganization,
+            ),
+            array(
+                'role_id' => $resellerRoleId,
                 'module' => $organizationModule,
                 'route' => $myOrganization,
             ),
