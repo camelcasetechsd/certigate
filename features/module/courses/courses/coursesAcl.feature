@@ -39,8 +39,8 @@ Scenario: Testing course pages as Admin
     Then I should see "COURSE DETAILS"
 
     # checking my courses page 
-    And I go to "/courses/mycourses"
-    Then I should see "My Courses"
+    And I go to "/courses/my-courses"
+    Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
     And I go to "/course-events"
@@ -63,11 +63,11 @@ Scenario: Testing course pages as Admin
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go "/resources"
+    And I go to "/resources"
     Then I should see "RESOURCES"
 
     #checking resources page
-    And I go "/resources/new"
+    And I go to "/resources/new"
     Then I should see "UPLOAD RESOURCES"
 
 
@@ -96,8 +96,8 @@ Scenario: Testing course pages as TM
     Then I should see "COURSE DETAILS"
 
     # checking my courses page 
-    And I go to "/courses/mycourses"
-    Then I should see "My Courses"
+    And I go to "/courses/my-courses"
+    Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
     And I go to "/course-events"
@@ -121,11 +121,11 @@ Scenario: Testing course pages as TM
 
 
     #checking resources page
-    And I go "/resources"
+    And I go to "/resources"
     Then I should see "You don't have access to this , please contact the admin !"
 
     #checking resources page
-    And I go "/resources/new"
+    And I go to "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
 
 
@@ -154,8 +154,8 @@ Scenario: Testing course pages as TCA
     Then I should see "COURSE DETAILS"
 
     # checking my courses page 
-    And I go to "/courses/mycourses"
-    Then I should see "My Courses"
+    And I go to "/courses/my-courses"
+    Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
     And I go to "/course-events"
@@ -178,11 +178,11 @@ Scenario: Testing course pages as TCA
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go "/resources"
+    And I go to "/resources"
     Then I should see "You don't have access to this , please contact the admin !"
 
     #checking resources page
-    And I go "/resources/new"
+    And I go to "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
 
 
@@ -211,8 +211,8 @@ Scenario: Testing course pages as instructor
     Then I should see "COURSE DETAILS"
 
     # checking my courses page 
-    And I go to "/courses/mycourses"
-    Then I should see "My Courses"
+    And I go to "/courses/my-courses"
+    Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
     And I go to "/course-events"
@@ -235,11 +235,11 @@ Scenario: Testing course pages as instructor
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go "/resources"
+    And I go to "/resources"
     Then I should see "You don't have access to this , please contact the admin !"
 
     #checking resources page
-    And I go "/resources/new"
+    And I go to "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
 
     
@@ -268,8 +268,8 @@ Scenario: Testing course pages as student
     Then I should see "COURSE DETAILS"
 
     # checking my courses page 
-    And I go to "/courses/mycourses"
-    Then I should see "My Courses"
+    And I go to "/courses/my-courses"
+    Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
     And I go to "/course-events"
@@ -292,9 +292,9 @@ Scenario: Testing course pages as student
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go "/resources"
+    And I go to "/resources"
     Then I should see "You don't have access to this , please contact the admin !"
 
     #checking resources page
-    And I go "/resources/new"
+    And I go to "/resources/new"
     Then I should see "You don't have access to this , please contact the admin !"
