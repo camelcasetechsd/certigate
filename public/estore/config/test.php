@@ -28,3 +28,5 @@ define('DB_PASSWORD', 'testpass');
 define('DB_DATABASE', 'certigate_test');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
+define('CONFIG_EMAIL', 'admin@testing-local-certigate.com');
+define('CONFIG_URL', 'http://testing-local-certigate.com/estore/');
