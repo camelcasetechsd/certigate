@@ -87,6 +87,10 @@ Scenario: reviewing changes approved by admin
     Given I mock the login session as "tmuser"
     And I go to "/organizations/myorganizations"
     Then I should find organization with name "Atp test 1" type "ATP" and expiration "18/02/2024"
-    And I go to "/organizations/atps"
-    Then I should find organization with name "Atp test 1" type "ATP" and expiration "18/02/2024"
-
+    And I perform "More" action on row with "Atp test 1" value
+    And I should see "Atp test 1"
+    And I should see "Atp test 1 arabic"
+    And I should see "atp owner 1"
+    And I should see "atp owner 1 in arabic"
+    And I should see "1548752617646"
+    And I should see "1564874653188"
