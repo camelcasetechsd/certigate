@@ -1876,7 +1876,8 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 8,
-                            'max' => 20
+                            'max' => 20,
+                            "encoding" => "utf-8"
                         )
                     )
                 )
@@ -1889,7 +1890,8 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 8,
-                            'max' => 20
+                            'max' => 20,
+                            "encoding" => "utf-8"
                         )
                     )
                 )
@@ -1902,6 +1904,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -1919,6 +1922,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -1936,6 +1940,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -1953,6 +1958,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -1970,6 +1976,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -1987,6 +1994,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 32,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2074,6 +2082,7 @@ class User
                         'options' => array(
                             'min' => 3,
                             'max' => 128,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2087,6 +2096,7 @@ class User
                         'options' => array(
                             'min' => 3,
                             'max' => 128,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2100,6 +2110,7 @@ class User
                         'options' => array(
                             'min' => 2,
                             'max' => 10,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2113,6 +2124,7 @@ class User
                         'options' => array(
                             'min' => 3,
                             'max' => 128,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2126,6 +2138,7 @@ class User
                         'options' => array(
                             'min' => 3,
                             'max' => 128,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2159,6 +2172,7 @@ class User
                         'options' => array(
                             'min' => 2,
                             'max' => 128,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2228,6 +2242,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 96,
+                            "encoding" => "utf-8"
                         )
                     )
                 ),
@@ -2247,6 +2262,7 @@ class User
                         'name' => 'StringLength',
                         'options' => array(
                             'max' => 96,
+                            "encoding" => "utf-8"
                         )
                     )
                 )
