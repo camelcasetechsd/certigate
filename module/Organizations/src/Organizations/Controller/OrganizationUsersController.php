@@ -26,13 +26,26 @@ class OrganizationUsersController extends ActionController
     public function onDispatch(\Zend\Mvc\MvcEvent $e)
     {
         parent::onDispatch($e);
-        
-        $organizationId = $this->params('organizationId');
-        $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $userValidation = $organizationUserModel->validateOrganizationType($organizationId);
-        if (!$userValidation) {
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'noOrganizationUsers'), array('name' => 'noOrganizationUsers'));
-            return $this->redirect()->toUrl($url);
+        if (!is_null($this->params('organizationId'))) {
+            $organizationId = $this->params('organizationId');
+            $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
+            $query = $this->getServiceLocator()->get('wrapperQuery');
+            // to avoid url manipulation for unkown organizations
+            $organization = $query->findOneBy('Organizations\Entity\Organization', array(
+                'id' => $organizationId
+            ));
+
+            if (is_null($organization)) {
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array('name' => 'resource_not_found'));
+                $this->redirect()->toUrl($url);
+            }
+            else {
+                $userValidation = $organizationUserModel->validateOrganizationType($organizationId);
+                if (!$userValidation) {
+                    $url = $this->getEvent()->getRouter()->assemble(array('action' => 'noOrganizationUsers'), array('name' => 'noOrganizationUsers'));
+                    return $this->redirect()->toUrl($url);
+                }
+            }
         }
     }
 
@@ -140,6 +153,10 @@ class OrganizationUsersController extends ActionController
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
+        if (is_null($organizationUser)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
         $organization = $organizationUser->getOrganization();
         $organizationId = $organization->getId();
 
