@@ -59,7 +59,10 @@ class IndexController extends ActionController
     public function moreAction()
     {
         $variables = array();
-        $id = $this->params('id');
+        $id = $this->params('id', /*$default =*/ false);
+        if($id === false){
+            $id = $this->storage["id"];
+        }
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $user = $query->find('Users\Entity\User', $id);

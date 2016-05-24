@@ -129,7 +129,7 @@ return array(
             'userMore' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/users/more/:id',
+                    'route' => '/users/more[/:id]',
                     'defaults' => array(
                         'controller' => 'Users\Controller\Index',
                         'action' => 'more',
