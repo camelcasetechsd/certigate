@@ -24,7 +24,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                <button type="button" class="btn btn-primary">{{#translate}}Save changes{{/translate}}</button>
+                <button type="button" class="btn btn-primary" id="atcModalLinkAgree" data-dismiss="modal" aria-label="Close">{{#translate}}I agree{{/translate}}</button>
             </div>
         </div>
     </div>
@@ -35,14 +35,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{#translate}}ATP Privacy Statement{{/translate}}</h4>
+                <h4 class="modal-title" id="myModalLabel" >{{#translate}}ATP Privacy Statement{{/translate}}</h4>
             </div>
             <div class="modal-body">
                 {{#translate}}ATP Privacy Statement{{/translate}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                <button type="button" class="btn btn-primary">{{#translate}}Save changes{{/translate}}</button>
+                <button type="button" class="btn btn-primary" id="atpModalLinkAgree" data-dismiss="modal" aria-label="Close">{{#translate}}I agree{{/translate}}</button>
             </div>
         </div>
     </div>
@@ -55,6 +55,15 @@
 
 <script>
 $(document).ready(function () {
+
+    $('#atpModalLinkAgree').click(function () {
+        $('#org_form_atpPrivacyStatement').prop('checked','checked');;
+    });
+
+    $('#atcModalLinkAgree').click(function () {
+        $('#org_form_atcPrivacyStatement').prop('checked','checked');;
+    });
+
     $('#org_form_saveState').click(function (e) {
 
         if ($('#org_form_commercialName').val() !== "") {

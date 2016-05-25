@@ -1421,3 +1421,6 @@ msgstr "Unsubscribe periodic notifications ar"
 
 msgid "Subscribe periodic notifications"
 msgstr "Subscribe periodic notifications ar"
+
+msgid "I agree"
+msgstr "I agree ar"
