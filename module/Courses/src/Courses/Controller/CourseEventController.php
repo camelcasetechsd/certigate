@@ -69,38 +69,58 @@ class CourseEventController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\CourseEvent');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
-        $courseEvent = new CourseEvent();
-        // setting default students number
-        $courseEvent->setStudentsNo(/* $studentsNo = */ 0);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
 
-        $options = array();
-        $options['query'] = $query;
-        $options['userId'] = $storage['id'];
-        $options['courseId'] = $courseId = $this->params('courseId', /* $default = */ null);
-        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
-        $form = new CourseEventForm(/* $name = */ null, $options);
+        $courseId = $this->params('courseId', /* $default = */ null);
+        $course = $query->findOneBy('Courses\Entity\Course', array(
+            'id' => $courseId
+        ));
+        /**
+         * Business Cases : 
+         * 1- form for scpecific course where course exists and of course
+         * course id is not null to prevent url manipulation
+         * 
+         * 2- generic form where course id is null 
+         */
+        if ((!is_null($course) && !is_null($courseId)) || is_null($courseId)) {
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-            if (!empty($courseId)) {
-                $data["course"] = $courseId;
+            $courseEvent = new CourseEvent();
+            // setting default students number
+            $courseEvent->setStudentsNo(/* $studentsNo = */ 0);
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+
+            $options = array();
+            $options['query'] = $query;
+            $options['userId'] = $storage['id'];
+            $options['courseId'] = $courseId;
+            $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+            $form = new CourseEventForm(/* $name = */ null, $options);
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $data = $request->getPost()->toArray();
+                if (!empty($courseId)) {
+                    $data["course"] = $courseId;
+                }
+                $form->setInputFilter($courseEvent->getInputFilter());
+                $form->setData($data);
+                $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent, /* $isEditForm = */ false);
+                if ($form->isValid() && $isCustomValidationValid === true) {
+                    $courseEventModel->save($courseEvent, $data);
+
+                    $url = $this->getIndexUrl();
+                    $this->redirect()->toUrl($url);
+                }
             }
-            $form->setInputFilter($courseEvent->getInputFilter());
-            $form->setData($data);
-            $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent, /* $isEditForm = */ false);
-            if ($form->isValid() && $isCustomValidationValid === true) {
-                $courseEventModel->save($courseEvent, $data);
 
-                $url = $this->getIndexUrl();
-                $this->redirect()->toUrl($url);
-            }
+            $variables['courseEventForm'] = $this->getFormView($form);
+            return new ViewModel($variables);
         }
-
-        $variables['courseEventForm'] = $this->getFormView($form);
-        return new ViewModel($variables);
+        else {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
     }
 
     /**
@@ -116,43 +136,56 @@ class CourseEventController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
+        $courseId = $this->params('courseId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
-        $courseEvent = $query->find('Courses\Entity\CourseEvent', $id);
-        $auth = new AuthenticationService();
-        $storage = $auth->getIdentity();
 
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $courseEvent->getAtp());
-        if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
-            return $this->redirect()->toUrl($validationResult["redirectUrl"]);
-        }
-        $options = array();
-        $options['query'] = $query;
-        $options['userId'] = $storage['id'];
-        $options['courseId'] = $courseId = $this->params('courseId', /* $default = */ null);
-        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
-        $form = new CourseEventForm(/* $name = */ null, $options);
-        $form->bind($courseEvent);
+        // checking case if courseid and eventid existed and valid  OR
+        // if only event id existed and valid
+        if ($courseEventModel->validateCourseEvent($courseId, $id)) {
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
-            if (!empty($courseId)) {
-                $data["course"] = $courseId;
-                $courseEvent->setCourse($courseId);
+            $courseEvent = $query->find('Courses\Entity\CourseEvent', $id);
+            $auth = new AuthenticationService();
+            $storage = $auth->getIdentity();
+
+            $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE, /* $organization = */ $courseEvent->getAtp());
+            if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
+                return $this->redirect()->toUrl($validationResult["redirectUrl"]);
             }
-            $form->setInputFilter($courseEvent->getInputFilter());
-            $form->setData($data);
 
-            $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent);
-            if ($form->isValid() && $isCustomValidationValid === true) {
-                $courseEventModel->save($courseEvent);
-                $url = $this->getIndexUrl();
-                $this->redirect()->toUrl($url);
+            $options = array();
+            $options['query'] = $query;
+            $options['userId'] = $storage['id'];
+            $options['courseId'] = $courseId;
+            $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+            $form = new CourseEventForm(/* $name = */ null, $options);
+            $form->bind($courseEvent);
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $data = $request->getPost()->toArray();
+                if (!empty($courseId)) {
+                    $data["course"] = $courseId;
+                    $courseEvent->setCourse($courseId);
+                }
+                $form->setInputFilter($courseEvent->getInputFilter());
+                $form->setData($data);
+
+                $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent);
+                if ($form->isValid() && $isCustomValidationValid === true) {
+                    $courseEventModel->save($courseEvent);
+                    $url = $this->getIndexUrl();
+                    $this->redirect()->toUrl($url);
+                }
             }
+            $variables['courseEventForm'] = $this->getFormView($form);
+            return new ViewModel($variables);
         }
-        $variables['courseEventForm'] = $this->getFormView($form);
-        return new ViewModel($variables);
+        else {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
     }
 
     /**
@@ -186,9 +219,9 @@ class CourseEventController extends ActionController
         $url = $this->params()->fromQuery('url');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $auth = new AuthenticationService();
-        
-        $data = $courseEventModel->sendCalendarAlert(/*$userData =*/ $auth->getIdentity(), $url);
-        
+
+        $data = $courseEventModel->sendCalendarAlert(/* $userData = */ $auth->getIdentity(), $url);
+
         return $this->getResponse()->setContent(Json::encode($data));
     }
 
