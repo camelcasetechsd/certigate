@@ -317,8 +317,8 @@ class PosDAOrganization extends AbstractSeed
             'atpLicenseNo' => null,
             'atpLicenseExpiration' => null,
             'atpLicenseExpirationHj' => null,
-            'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
-            'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'atpLicenseAttachment' => null,
+            'atpWireTransferAttachment' => null,
             'classesNo' => null,
             'pcsNo_class' => null,
             //atcData
@@ -344,8 +344,8 @@ class PosDAOrganization extends AbstractSeed
         $distributorOrgMeta [] = array(
             'type_id' => $typeDistId,
             'org_id' => $distributorOrgId,
-            'expirationDate' => date('Y-m-d H:i:s'),
-            'expirationDateHj' => date('Y-m-d H:i:s'),
+            'expirationDate' => null,
+            'expirationDateHj' => null,
             // always 0  ... no renewal for distributor or reseller
             'expirationFlag' => 0,
         );
@@ -383,8 +383,8 @@ class PosDAOrganization extends AbstractSeed
             'atpLicenseNo' => null,
             'atpLicenseExpiration' => null,
             'atpLicenseExpirationHj' => null,
-            'atpLicenseAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
-            'atpWireTransferAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'atpLicenseAttachment' => null,
+            'atpWireTransferAttachment' => null,
             'classesNo' => null,
             'pcsNo_class' => null,
             //atcData
@@ -410,8 +410,8 @@ class PosDAOrganization extends AbstractSeed
         $resellerOrgMeta [] = array(
             'type_id' => $typeResellerId,
             'org_id' => $resellerOrgId,
-            'expirationDate' => date('Y-m-d H:i:s'),
-            'expirationDateHj' => date('Y-m-d H:i:s'),
+            'expirationDate' => null,
+            'expirationDateHj' => null,
             // always 0  ... no renewal for distributor or reseller
             'expirationFlag' => 0,
         );
