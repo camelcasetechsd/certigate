@@ -172,4 +172,24 @@ class MenuItemController extends ActionController
         $this->redirect()->toUrl($url);
     }
 
+    /**
+     * activate menu item
+     *
+     * 
+     * @access public
+     */
+    public function activateAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
+
+        $menuItemObj->setStatus(Status::STATUS_ACTIVE);
+
+        $query->save($menuItemObj);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
+        $this->redirect()->toUrl($url);
+    }
+
 }
