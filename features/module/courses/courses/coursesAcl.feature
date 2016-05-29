@@ -77,11 +77,11 @@ Scenario: Testing course pages as TM
 
     #checking courses list page
     And I go to "/courses"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course creation page
     And I go to "/courses/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course events page
     And I go to "/course-events/new"
@@ -109,11 +109,11 @@ Scenario: Testing course pages as TM
     
     #checking instructor training page
     And I go to "/courses/instructor-training"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking instructor calendar page
     And I go to "/courses/instructor-calendar"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking outlines page
     And I go to "/courses/outlines/1"
@@ -122,11 +122,11 @@ Scenario: Testing course pages as TM
 
     #checking resources page
     And I go to "/resources"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking resources page
     And I go to "/resources/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
 
 @javascript 
@@ -135,15 +135,15 @@ Scenario: Testing course pages as TCA
 
     #checking courses list page
     And I go to "/courses"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course creation page
     And I go to "/courses/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course events page
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course calendar page 
     And I go to "/courses/calendar"
@@ -159,19 +159,19 @@ Scenario: Testing course pages as TCA
 
     #checking course-events list
     And I go to "/course-events"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking course-events creation
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
     
     #checking instructor training page
     And I go to "/courses/instructor-training"
-    Then I should see "You don't have access to this , please contact the admin !"   
+    Then I should see "You don't have access to this page , please contact the admin !"   
 
     #checking instructor calendar page
     And I go to "/courses/instructor-calendar"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking outlines page
     And I go to "/courses/outlines/1"
@@ -179,11 +179,11 @@ Scenario: Testing course pages as TCA
 
     #checking resources page
     And I go to "/resources"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking resources page
     And I go to "/resources/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
 
 @javascript 
@@ -192,15 +192,15 @@ Scenario: Testing course pages as instructor
 
     #checking courses list page
     And I go to "/courses"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course creation page
     And I go to "/courses/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course events page
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course calendar page 
     And I go to "/courses/calendar"
@@ -216,11 +216,11 @@ Scenario: Testing course pages as instructor
 
     #checking course-events list
     And I go to "/course-events"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking course-events creation
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking instructor training page
     And I go to "/courses/instructor-training"
@@ -236,11 +236,11 @@ Scenario: Testing course pages as instructor
 
     #checking resources page
     And I go to "/resources"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking resources page
     And I go to "/resources/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     
 @javascript 
@@ -249,15 +249,15 @@ Scenario: Testing course pages as student
 
     #checking courses list page
     And I go to "/courses"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course creation page
     And I go to "/courses/new"    
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course events page
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     # checking course calendar page 
     And I go to "/courses/calendar"
@@ -273,19 +273,19 @@ Scenario: Testing course pages as student
 
     #checking course-events list
     And I go to "/course-events"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking course-events creation
     And I go to "/course-events/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
     
     #checking instructor training page
     And I go to "/courses/instructor-training"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking instructor calendar page
     And I go to "/courses/instructor-calendar"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking outlines page
     And I go to "/courses/outlines/1"
@@ -293,8 +293,8 @@ Scenario: Testing course pages as student
 
     #checking resources page
     And I go to "/resources"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
     #checking resources page
     And I go to "/resources/new"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"

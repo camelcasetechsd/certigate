@@ -144,7 +144,7 @@ Scenario: test selecting organization type as user
     Given I mock the login session as "user"
     Then I should be on "/"
     And I go to "/organizations/type"
-    Then I should see "You don't have access to this , please contact the admin !"
+    Then I should see "You don't have access to this page , please contact the admin !"
 
 
 ###########################

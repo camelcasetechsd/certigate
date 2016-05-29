@@ -36,8 +36,8 @@ msgstr "صفحه "
 msgid "Press Release"
 msgstr "الاخبار "
 
-msgid "You don't have access to this , please contact the admin"
-msgstr "You don't have access to this , please contact the admin ar"
+msgid "You don't have access to this page , please contact the admin"
+msgstr "You don't have access to this page , please contact the admin ar"
 
 msgid "Actions"
 msgstr "Actions ar"
