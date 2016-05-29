@@ -269,7 +269,7 @@ class CourseEvent
         return $this->startDateHj;
     }
 
-    /*
+    /**
      * Set Start Date
      * 
      * 

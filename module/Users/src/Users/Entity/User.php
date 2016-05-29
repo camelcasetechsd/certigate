@@ -420,7 +420,7 @@ class User
      */
     public $messagefrom;
     
-    /*
+    /**
      * @ORM\Column(type="float" , nullable=false)
      * @var string
      */
