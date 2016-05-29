@@ -18,3 +18,11 @@ if (strpos($databaseStatus, "has tables") !== false) {
     exec("mysql -u " . DB_USERNAME . " $passwordPart -D " . DB_DATABASE . " -N -e 'DROP TABLE " . implode(/* $glue = */',', $tableNames) . ";' ");
 }
 exec("mysql -u " . DB_USERNAME . " $passwordPart -D " . DB_DATABASE . " < " . __DIR__ . "/certigate_estore.sql");
+
+$specificDomainData = array(
+    "config_email" => CONFIG_EMAIL,
+    "config_url" => CONFIG_URL,
+);
+foreach ($specificDomainData as $fieldName => $fieldValue){
+    shell_exec("mysql -u " . DB_USERNAME . " $passwordPart -D " . DB_DATABASE . " -e \"UPDATE " . DB_PREFIX . "setting SET value = '" . $fieldValue . "' WHERE code='config' AND \`key\`='" . $fieldName . "'\"");
+}

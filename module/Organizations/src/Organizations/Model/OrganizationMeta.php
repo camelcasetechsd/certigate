@@ -11,6 +11,7 @@ use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Authentication\AuthenticationService;
+use Organizations\Entity\OrganizationType as OrgType;
 
 /**
  * OrganizationMeta Model
@@ -194,8 +195,12 @@ class OrganizationMeta
     // and sending notification Mail to Orgnization Users before week form the expiration 
     public function updateExpirationFlag()
     {
+        // Need to update status only for ATP & ATC Metas Only
+        $organizations = $this->query->entityManager->createQuery('SELECT u FROM Organizations\Entity\OrganizationMeta u '
+                        . 'WHERE u.type = ' . OrgType::TYPE_ATC . ' or'
+                        . ' u.type =' . OrgType::TYPE_ATP)
+                ->getResult();
 
-        $organizations = $this->query->findAll('Organizations\Entity\OrganizationMeta');
         /**
          * First Updating ExpirationFlag 
          */
@@ -210,7 +215,7 @@ class OrganizationMeta
                 /**
                  * checking for expiration date before week to send notification
                  */
-                $weekBeforeStatus = $this->validateDate($organization->getDate(), '+7 days');
+                $weekBeforeStatus = $this->validateDate($organization->getExpirationDate(), '+7 days');
                 if ($weekBeforeStatus == Status::STATUS_EXPIRED) {
                     $this->notify($organization);
                 }
@@ -233,8 +238,8 @@ class OrganizationMeta
         }
 
         $notificationMailArray = array(
-            'to' => /* $organization->getOrganization()->getEmail() */ 'ahmedredamohamed01@gamil.com',
-            'from' => /* $operationsEmail */'anawany@yahoo.com',
+            'to' => $organization->getOrganization()->getEmail(),
+            'from' => $operationsEmail,
             'templateName' => MailTemplates::ORGANIZATION_RENEWAL_TEMPLATE,
             'templateParameters' => array(
                 'name' => $organization->getOrganization()->getCommercialName(),

@@ -152,7 +152,7 @@ class Object
                 $meta = $wrapped->getMetadata();
             }
             foreach ($objectProperties as $objectPropertyName => $objectPropertyValue) {
-                if(in_array($objectPropertyName, $this->ignoredProperties)){
+                if (in_array($objectPropertyName, $this->ignoredProperties)) {
                     // skip ignored properties
                     continue;
                 }
@@ -195,11 +195,20 @@ class Object
     public function prepareForStatusDisplay($object)
     {
         $objectProperties = $this->getObjectProperties($object);
+
         if (array_key_exists("status", $objectProperties)) {
             $statusKey = array_search($object->status, $this->statusConstants);
+
             if ($statusKey !== false) {
-                $object->statusText = $this->statusConstants[$statusKey . "_TEXT"];
+                $statusExplosionArray = explode('_', $statusKey);
+                if (in_array('TEXT', $statusExplosionArray)) {
+                    $object->statusText = $this->statusConstants[$statusKey];
+                }
+                else {
+                    $object->statusText = $this->statusConstants[$statusKey . "_TEXT"];
+                }
             }
+
             $object->statusActive = false;
             $object->statusIsactive = false;
             $object->statusDeleted = false;

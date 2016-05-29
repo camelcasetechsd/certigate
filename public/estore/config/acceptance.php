@@ -26,3 +26,6 @@ define('DB_PASSWORD', 'c@m31C@$3T3c4');
 define('DB_DATABASE', 'certigate');
 define('DB_PORT', '3306');
 define('DB_PREFIX', 'oc_');
+define('CONFIG_EMAIL', 'admin@certigate-acceptance.camelcasetech.com');
+define('CONFIG_URL', 'http://certigate-acceptance.camelcasetech.com/estore/');
+
