@@ -46,30 +46,45 @@ if (defined( 'APPLICATION_ENV' )) {
         define( 'QA_MYSQL_PASSWORD', '' );
         define( 'QA_MYSQL_DATABASE', 'production_db' );
         define( 'QA_MYSQL_PORT', '3306' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@certigate.com' );
+        define( 'CONFIG_SITE_TITLE', 'Certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://certigate.com/q2a/' );
     } elseif (APPLICATION_ENV == "acceptance") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
         define( 'QA_MYSQL_USERNAME', 'camelcasetech_acceptance' );
         define( 'QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4' );
         define( 'QA_MYSQL_DATABASE', 'certigate' );
         define( 'QA_MYSQL_PORT', '3306' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@certigate-acceptance.camelcasetech.com' );
+        define( 'CONFIG_SITE_TITLE', 'Certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://certigate-acceptance.camelcasetech.com/q2a/' );
     } elseif (APPLICATION_ENV == "vagrant") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
         define( 'QA_MYSQL_USERNAME', 'root' );
         define( 'QA_MYSQL_PASSWORD', 'testpass' );
         define( 'QA_MYSQL_DATABASE', 'certigate' );
         define( 'QA_MYSQL_PORT', '3306' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@local-certigate.com' );
+        define( 'CONFIG_SITE_TITLE', 'Local-certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://local-certigate.com/q2a/' );
     } elseif (APPLICATION_ENV == "development") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
         define( 'QA_MYSQL_USERNAME', 'camelcasetech' );
         define( 'QA_MYSQL_PASSWORD', 'c@m31C@$3T3c4' );
         define( 'QA_MYSQL_DATABASE', 'certigate' );
         define( 'QA_MYSQL_PORT', '3306' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@certigate.camelcasetech.com' );
+        define( 'CONFIG_SITE_TITLE', 'Certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://certigate.camelcasetech.com/q2a/' );
     } elseif (APPLICATION_ENV == "test") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
         define( 'QA_MYSQL_USERNAME', 'root' );
         define( 'QA_MYSQL_PASSWORD', 'testpass' );
         define( 'QA_MYSQL_DATABASE', 'certigate_test' );
         define( 'QA_MYSQL_PORT', '3306' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@testing-local-certigate.com' );
+        define( 'CONFIG_SITE_TITLE', 'Local-certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://testing-local-certigate.com/q2a/' );
     } 
 } else {
     define( 'QA_MYSQL_HOSTNAME', 'localhost' );
@@ -77,6 +92,9 @@ if (defined( 'APPLICATION_ENV' )) {
     define( 'QA_MYSQL_PASSWORD', 'testpass' );
     define( 'QA_MYSQL_DATABASE', 'certigate' );
     define( 'QA_MYSQL_PORT', '3306' );
+    define( 'CONFIG_FROM_EMAIL', 'no-reply@local-certigate.com' );
+    define( 'CONFIG_SITE_TITLE', 'Local-certigate Q&A' );
+    define( 'CONFIG_SITE_URL', 'http://local-certigate.com/q2a/' );
 }
 
 
