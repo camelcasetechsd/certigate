@@ -43,11 +43,19 @@ return array(
             ),
             "Courses" => array(
                 'depth' => 0,
-                'path' => "/courses",
+                'path' => "#",
                 'weight' => 3,
                 'title_underscored' => "courses",
                 'children' => array(
                     array(
+                        "Courses" => array(
+                            'depth' => 1,
+                            'path' => "/courses",
+                            'weight' => 0,
+                            'title_underscored' => "courses",
+                            'children' => array(
+                            )
+                        ),
                         "Course Events" => array(
                             'depth' => 1,
                             'path' => "/course-events",
@@ -55,25 +63,25 @@ return array(
                             'title_underscored' => "course_events",
                             'children' => array(
                             )
-                        ),
-                        "Resources" => array(
-                            'depth' => 1,
-                            'path' => "/resources",
-                            'weight' => 2,
-                            'title_underscored' => "resources",
-                            'children' => array(
-                            )
-                        ),
+                        )
                     )
                 )
             ),
             "Users" => array(
                 'depth' => 0,
-                'path' => "/users",
+                'path' => "#",
                 'weight' => 2,
                 'title_underscored' => "users",
                 'children' => array(
                     array(
+                        "Users" => array(
+                            'depth' => 1,
+                            'path' => "/users",
+                            'weight' => 0,
+                            'title_underscored' => "users",
+                            'children' => array(
+                            )
+                        ),
                         "Roles" => array(
                             'depth' => 1,
                             'path' => "/roles",
@@ -87,7 +95,7 @@ return array(
             ),
             "Organizations" => array(
                 'depth' => 0,
-                'path' => "/organizations",
+                'path' => "#",
                 'weight' => 2,
                 'title_underscored' => "organizations",
                 'children' => array(
@@ -97,6 +105,13 @@ return array(
                             'path' => "/organizations/type",
                             'weight' => 1,
                             'title_underscored' => "new_organization",
+                            'children' => array()
+                        ),
+                        "Organizations" => array(
+                            'depth' => 1,
+                            'path' => "/organizations",
+                            'weight' => 1,
+                            'title_underscored' => "organizations",
                             'children' => array()
                         ),
                         "ATPs" => array(

@@ -459,7 +459,7 @@ class UserForm extends Form
                 'class' => 'form-control gllpSearchField',
             ),
             'options' => array(
-                'label' => '<div>Location</div><div class="gllpMap">Google Maps</div>',
+                'label' => '<div class="required">Location</div><div class="gllpMap">Google Maps</div>',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )

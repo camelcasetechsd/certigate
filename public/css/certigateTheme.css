@@ -22,17 +22,7 @@
     margin-right: -12.5%; 
     margin-left: -12.5%;
 }
-/**
-Organization Form buttons
-**/
-.saveStateButton{
-    margin-top: -96px;
-    margin-left: 80px;
-}
-.orgResetButton{    
-    margin-top: -175px;
-    margin-left: 188px;
-}
+
 .navbar-toggle{
     background-color: #1964B6;
 }
