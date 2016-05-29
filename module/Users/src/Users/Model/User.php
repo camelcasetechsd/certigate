@@ -169,7 +169,7 @@ class User
         // update session if current logged in user is the updated one
         $authenticationService = new AuthenticationService();
         $storage = $authenticationService->getIdentity();
-        if ($authenticationService->hasIdentity() && $storage['id'] == $userObj->getId()) {
+        if (!$authenticationService->hasIdentity() || ($authenticationService->hasIdentity() && $storage['id'] == $userObj->getId())) {
             $authenticationService->clearIdentity();
             $this->auth->newSession($userObj);
         }
