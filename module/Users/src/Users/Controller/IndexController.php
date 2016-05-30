@@ -48,7 +48,7 @@ class IndexController extends ActionController
         $variables['previousPageNumber'] = $userModel->getPreviousPageNumber($pageNumber);
         return new ViewModel($variables);
     }
-    
+
     /**
      * More user details
      * 
@@ -60,12 +60,19 @@ class IndexController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
-        $query = $this->getServiceLocator()->get('wrapperQuery');
-        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        $user = $query->find('Users\Entity\User', $id);
-        $processedData = $objectUtilities->prepareForDisplay(array($user));
-        $variables['user'] = $processedData;
-        return new ViewModel($variables);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (in_array(Role::ADMIN_ROLE, $storage['roles']) || $id == $storage['id']) {
+            $query = $this->getServiceLocator()->get('wrapperQuery');
+            $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
+            $user = $query->find('Users\Entity\User', $id);
+            $processedData = $objectUtilities->prepareForDisplay(array($user));
+            $variables['user'] = $processedData;
+            return new ViewModel($variables);
+        }
+        $this->getResponse()->setStatusCode(302);
+        $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'noaccess'));
+        return $this->redirect()->toUrl($url);
     }
 
     /**
@@ -125,19 +132,19 @@ class IndexController extends ActionController
         $options['countriesService'] = $countriesService;
         $options['languagesService'] = $languagesService;
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
-        
+
         $options['excludedRoles'] = array(Role::USER_ROLE);
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
         $isAdminUser = $this->isAdminUser();
-        
+
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            
+
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 
@@ -181,11 +188,12 @@ class IndexController extends ActionController
             }
 
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $userModel->saveUser($data, $userObj, $isAdminUser, /*$editFormFlag =*/ null, $oldLongitude, $oldLatitude);
-                
-                if($isAdminUser){
+                $userModel->saveUser($data, $userObj, $isAdminUser, /* $editFormFlag = */ null, $oldLongitude, $oldLatitude);
+
+                if ($isAdminUser) {
                     $routeName = "users";
-                }else{
+                }
+                else {
                     $routeName = "home";
                 }
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
@@ -237,7 +245,7 @@ class IndexController extends ActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            
+
             // Make certain to merge the files info!
             $fileData = $request->getFiles()->toArray();
 
@@ -258,11 +266,12 @@ class IndexController extends ActionController
                 $isCustomValidationValid = false;
             }
             if ($form->isValid() && $isCustomValidationValid === true) {
-                $userModel->saveUser($data , /*$userObj =*/ null ,$isAdminUser);
+                $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
 
-                if($isAdminUser){
+                if ($isAdminUser) {
                     $routeName = "users";
-                }else{
+                }
+                else {
                     $routeName = "home";
                 }
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
