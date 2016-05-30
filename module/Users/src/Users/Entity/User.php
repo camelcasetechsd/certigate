@@ -1949,7 +1949,9 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 8
+                            'min' => 8,
+                            'max' => 20,
+                            "encoding" => "utf-8"
                         )
                     )
                 )
@@ -1961,7 +1963,9 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 8
+                            'min' => 8,
+                            'max' => 20,
+                            "encoding" => "utf-8"
                         )
                     )
                 )
@@ -1969,6 +1973,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'firstName',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1978,6 +1991,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'firstNameAr',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1987,6 +2009,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'lastName',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -1996,6 +2027,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'lastNameAr',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -2005,6 +2045,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'middleName',
                 'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -2014,6 +2063,15 @@ class User
             $inputFilter->add(array(
                 'name' => 'middleNameAr',
                 'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 32,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
@@ -2092,22 +2150,72 @@ class User
             $inputFilter->add(array(
                 'name' => 'addressOne',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 128,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'addressTwo',
                 'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 128,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'zipCode',
                 'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 2,
+                            'max' => 10,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'addressOneAr',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 128,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'addressTwoAr',
                 'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 128,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
@@ -2132,6 +2240,16 @@ class User
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 2,
+                            'max' => 128,
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'nationality',
@@ -2194,6 +2312,13 @@ class User
                             'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This email address is already in use")
                         )
                     ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 96,
+                            "encoding" => "utf-8"
+                        )
+                    )
                 ),
                 'filters' => array(
                     array(
@@ -2207,6 +2332,13 @@ class User
                 'validators' => array(
                     array('name' => 'EmailAddress',
                     ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'max' => 96,
+                            "encoding" => "utf-8"
+                        )
+                    )
                 )
             ));
 
