@@ -198,13 +198,26 @@ return array(
                     ),
                 )
             ),
-            'cmsMenuDelete' => array(
+            'cmsMenuDeactivate' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/menu/delete/:id',
+                    'route' => '/cms/menu/deactivate/:id',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\Menu',
-                        'action' => 'delete',
+                        'action' => 'deactivate',
+                    ),
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                )
+            ),
+            'cmsMenuActivate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/cms/menu/activate/:id',
+                    'defaults' => array(
+                        'controller' => 'CMS\Controller\Menu',
+                        'action' => 'activate',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',

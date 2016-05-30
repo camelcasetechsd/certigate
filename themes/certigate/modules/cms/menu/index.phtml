@@ -29,7 +29,11 @@
                     <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/menu/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        <a href="/cms/menu/deactivate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{^status}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="/cms/menu/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                 </td>
             </tr>

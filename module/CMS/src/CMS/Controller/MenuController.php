@@ -117,13 +117,33 @@ class MenuController extends ActionController
      * 
      * @access public
      */
-    public function deleteAction()
+    public function deactivateAction()
     {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuObj = $query->find('CMS\Entity\Menu', $id);
         
         $menuObj->setStatus(Status::STATUS_INACTIVE);
+
+        $query->save($menuObj);
+        
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
+        $this->redirect()->toUrl($url);
+    }
+    
+    /**
+     * activate menu
+     *
+     * 
+     * @access public
+     */
+    public function activateAction()
+    {
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $menuObj = $query->find('CMS\Entity\Menu', $id);
+        
+        $menuObj->setStatus(Status::STATUS_ACTIVE);
 
         $query->save($menuObj);
         
