@@ -298,8 +298,15 @@ class IndexController extends ActionController
         $id = $this->params('id');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userModel->deleteUser($id);
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
-            'name' => 'users'));
+
+        if ($id == $this->storage['id']) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'out'), array(
+                'name' => 'defaultSign'));
+        }
+        else {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                'name' => 'users'));
+        }
         $this->redirect()->toUrl($url);
     }
 
