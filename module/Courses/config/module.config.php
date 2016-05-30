@@ -238,23 +238,23 @@ return array(
                     ),
                 )
             ),
-            'resources' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/resources[/:action]',
-                    'defaults' => array(
-                        'controller' => 'Courses\Controller\Resource',
-                        'action' => 'index'
-                    ),
-                    'constraints' => array(
-                        'action' => '[^(false|true)][a-zA-Z][a-zA-Z0-9_-]*',
-                    ),
-                )
-            ),
+//            'resources' => array(
+//                'type' => 'Zend\Mvc\Router\Http\Segment',
+//                'options' => array(
+//                    'route' => '/resources[/:action]',
+//                    'defaults' => array(
+//                        'controller' => 'Courses\Controller\Resource',
+//                        'action' => 'index'
+//                    ),
+//                    'constraints' => array(
+//                        'action' => '[^(false|true)][a-zA-Z][a-zA-Z0-9_-]*',
+//                    ),
+//                )
+//            ),
             'resourcesList' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources[/:processResult]',
+                    'route' => '/courses/resources[/:processResult]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index'
@@ -267,7 +267,7 @@ return array(
             'resourcesListPerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/:courseId[/:processResult]',
+                    'route' => '/courses/resources/:courseId[/:processResult]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'index',
@@ -281,7 +281,7 @@ return array(
             'resourcesNewPerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/new/:courseId',
+                    'route' => '/courses/resources/new/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'new',
@@ -307,7 +307,7 @@ return array(
             'resourcesEditPerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/edit/:id/:courseId',
+                    'route' => '/courses/resources/edit/:id/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'editRecource',
@@ -321,7 +321,7 @@ return array(
             'resourcesDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/delete/:id',
+                    'route' => '/courses/resources/delete/:id',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'delete',
@@ -334,7 +334,7 @@ return array(
             'resourcesDeletePerCourse' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/delete/:id/:courseId',
+                    'route' => '/courses/resources/delete/:id/:courseId',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'delete',
@@ -348,7 +348,7 @@ return array(
             'resourcesResourceDownload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/resources/download/:id',
+                    'route' => '/courses/resources/download/:id',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Resource',
                         'action' => 'download',
