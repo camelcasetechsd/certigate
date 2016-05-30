@@ -4,7 +4,6 @@ namespace Organizations\Controller;
 
 use Zend\View\Model\ViewModel;
 use Utilities\Controller\ActionController;
-use Organizations\Form\OrgForm as OrgForm;
 use Organizations\Entity\Organization as OrgEntity;
 use Doctrine\Common\Collections\Criteria;
 use Utilities\Service\Time;
@@ -54,7 +53,7 @@ class OrganizationsController extends ActionController
     public function typeAction()
     {
         $query = $this->getServiceLocator()->get('wrapperQuery');
-        $rolesArray = array(Role::TEST_CENTER_ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE);
+        $rolesArray = array(Role::TEST_CENTER_ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE, Role::DISTRIBUTOR_ROLE, Role::RESELLER_ROLE);
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, /* $organization = */ null, /* $atLeastOneRoleFlag = */ true);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
@@ -206,11 +205,11 @@ class OrganizationsController extends ActionController
         $organizationId = $this->params('organizationId');
         $metaId = $this->params('metaId');
         $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
-        $options=array();
+        $options = array();
         $options['query'] = $this->getServiceLocator()->get('wrapperQuery');
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         if ($OrganizationModel->canBeRenewed($this, $organizationId, $metaId)) {
-            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId,$options));
+            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId, $options));
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -244,7 +243,6 @@ class OrganizationsController extends ActionController
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
         $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
         $query = $cleanQuery->setEntity('Users\Entity\User');
-        $orgsQuery = $cleanQuery->setEntity('Organizations\Entity\Organization');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         /**
@@ -267,7 +265,6 @@ class OrganizationsController extends ActionController
             $userEmail = $storage['email'];
         }
 
-        $orgObj = new OrgEntity();
         $options = array();
         $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes($this, null));
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray);
@@ -299,9 +296,9 @@ class OrganizationsController extends ActionController
 
             $customizedForm->setData($data);
             $data['creatorId'] = $creatorId;
-
+            
             if ($customizedForm->isValid()) {
-                $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, $creatorId, $userEmail, $isAdminUser);
+                $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, $creatorId, $userEmail, $isAdminUser);
             }
         }
 
@@ -328,7 +325,8 @@ class OrganizationsController extends ActionController
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes(null, $orgObj));
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj);
+        // you need to have only one role && ownership to edit organization 
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj,/* atLeastOneRoleFlag = */true);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
@@ -364,7 +362,8 @@ class OrganizationsController extends ActionController
             );
 
             $customizedForm->setData($data);
-
+            $customizedForm->setInputFilter($orgObj->getInputFilter($query));
+            
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files
@@ -458,7 +457,7 @@ class OrganizationsController extends ActionController
                      * save state = true .. now we will skip calling
                      * assignUserToOrg() method 
                      */
-                    $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /*$oldLongitude =*/ null, /*$oldLatitude =*/ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
+                    $orgModel->saveOrganization($stateArray, /* $orgObj = */ null, /* $oldStatus = */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, /* $creatorId = */ null, /* $userEmail = */ null, /* $isAdminUser = */ true, /* $saveState = */ true);
 
                     $data = array(
                         'result' => true,

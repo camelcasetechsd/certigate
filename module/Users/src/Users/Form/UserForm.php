@@ -275,7 +275,7 @@ class UserForm extends Form
                     'format' => Time::DATE_FORMAT,
                 ),
             ));
-            
+
             $this->add(array(
                 'name' => 'identificationExpiryDate',
                 'type' => 'Zend\Form\Element\Date',
@@ -459,7 +459,7 @@ class UserForm extends Form
                 'class' => 'form-control gllpSearchField',
             ),
             'options' => array(
-                'label' => '<div>Location</div><div class="gllpMap">Google Maps</div>',
+                'label' => '<div class="required">Location</div><div class="gllpMap">Google Maps</div>',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
@@ -512,7 +512,7 @@ class UserForm extends Form
                 'Empty' => true
             )
         ));
-        
+
         $this->add(array(
             'name' => 'city',
             'type' => 'Zend\Form\Element\Text',
@@ -641,6 +641,32 @@ class UserForm extends Form
 
         $this->add(array(
             'name' => 'trainingManagerStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'distributorStatement',
+            'type' => 'Zend\Form\Element\Checkbox',
+            'attributes' => array(
+                'class' => $class,
+            ),
+            'options' => array(
+                'label' => '',
+                'checked_value' => Statement::STATEMENT_AGREE,
+                'unchecked_value' => Statement::STATEMENT_DISAGREE
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'resellerStatement',
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
                 'class' => $class,

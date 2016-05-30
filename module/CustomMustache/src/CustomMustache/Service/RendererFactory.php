@@ -10,6 +10,7 @@ use CMS\Service\Cache\CacheHandler;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Session\Container; // We need this when using sessions
+use Zend\View\Helper\ServerUrl;
 
 /**
  * Renderer Factory
@@ -101,6 +102,10 @@ class RendererFactory implements FactoryInterface
         $config['helpers']['locale_ar'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR);
         $config['helpers']['locale_en'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US);
 
+        // add current host url
+        $serverUrl = new ServerUrl();
+        $config['helpers']['serverDomain'] = $serverUrl->getHost();
+        
         /** @var $pathResolver \Zend\View\Resolver\TemplatePathStack */
         $pathResolver = clone $serviceLocator->get('ViewTemplatePathStack');
         $pathResolver->setDefaultSuffix($config['suffix']);

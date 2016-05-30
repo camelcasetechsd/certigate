@@ -33,6 +33,12 @@ class PosDAOrganization extends AbstractSeed
         $TCAUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
                     'username' => 'tcauser'
                 ))->getId();
+        $distributorUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
+                    'username' => 'distributor'
+                ))->getId();
+        $resellerUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
+                    'username' => 'reseller'
+                ))->getId();
 
         $normalUserId = $this->serviceManager->get('wrapperQuery')->findOneBy('Users\Entity\User', array(
                     'username' => 'user'
@@ -255,13 +261,11 @@ class PosDAOrganization extends AbstractSeed
 
         //adding training manager to atp part
         $orgUser4 [] = array(
-            'role_id' => $TCARoleId,
+            'role_id' => $TMRoleId,
             'org_id' => $bothId,
             'user_id' => $TMUserId
         );
         $this->insert('organization_user', $orgUser4);
-
-
 
 
         $bothMeta1 [] = array(
@@ -280,6 +284,138 @@ class PosDAOrganization extends AbstractSeed
             'expirationDateHj' => date('Y-m-d H:i:s'),
             'expirationFlag' => 0,
         );
-        $this->insert('organization_meta', $bothMeta2);
+        $this->insert('organization_meta', $bothMeta2);        
+        
+        
+        $distributorOrg[] = array(
+            'commercialName' => 'distributorDummy',
+            'commercialNameAr' => $faker->userName,
+            'status' => true,
+            'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
+            'ownerNationalId' => $faker->randomNumber(),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
+            'CRNo' => $faker->randomNumber(),
+            'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpirationHj' => date('Y-m-d H:i:s'),
+            'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'phone1' => '555-555-5555',
+            'phone2' => '555-555-5555',
+            'phone3' => '555-555-5555',
+            'fax' => $faker->randomNumber(),
+            'website' => $faker->url,
+            'email' => $faker->email,
+            'zipCode' => $faker->randomNumber(),
+            'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
+            'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
+            'city' => $faker->city,
+            'cityAr' => $faker->city,
+            //AtpData
+            'atpLicenseNo' => null,
+            'atpLicenseExpiration' => null,
+            'atpLicenseExpirationHj' => null,
+            'atpLicenseAttachment' => null,
+            'atpWireTransferAttachment' => null,
+            'classesNo' => null,
+            'pcsNo_class' => null,
+            //atcData
+            'atcLicenseNo' => null,
+            'atcLicenseExpiration' => null,
+            'atcLicenseExpirationHj' => null,
+            'atcLicenseAttachment' => null,
+            'atcWireTransferAttachment' => null,
+            'labsNo' => null,
+            'pcsNo_lab' => null,
+            'operatingSystem' => null,
+            'operatingSystemLang' => null,
+            'internetSpeed_lab' => null,
+            'officeLang' => null,
+            'officeVersion' => null,
+            'focalContactPerson_id' => $normalUserId,
+            'creatorId' => $distributorUserId
+        );
+
+        $this->insert('organization', $distributorOrg);
+        $distributorOrgId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $distributorOrgMeta [] = array(
+            'type_id' => $typeDistId,
+            'org_id' => $distributorOrgId,
+            'expirationDate' => null,
+            'expirationDateHj' => null,
+            // always 0  ... no renewal for distributor or reseller
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $distributorOrgMeta);
+
+
+        
+        $resellerOrg[] = array(
+            'commercialName' => 'resellerDummy',
+            'commercialNameAr' => $faker->userName,
+            'status' => true,
+            'ownerName' => $faker->userName,
+            'ownerNameAr' => $faker->userName,
+            'ownerNationalId' => $faker->randomNumber(),
+            'longitude' => $faker->randomFloat(),
+            'latitude' => $faker->randomFloat(),
+            'CRNo' => $faker->randomNumber(),
+            'CRExpiration' => date('Y-m-d H:i:s'),
+            'CRExpirationHj' => date('Y-m-d H:i:s'),
+            'CRAttachment' => 'public/upload/attachments/crAttachments/1481954966569cc429ba594538397168ff703afaeed43172867529e3c1929a39_2016.01.18_10:53:29am.docx',
+            'phone1' => '555-555-5555',
+            'phone2' => '555-555-5555',
+            'phone3' => '555-555-5555',
+            'fax' => $faker->randomNumber(),
+            'website' => $faker->url,
+            'email' => $faker->email,
+            'zipCode' => $faker->randomNumber(),
+            'addressLine1' => $faker->address,
+            'addressLine1Ar' => $faker->address,
+            'addressLine2' => $faker->address,
+            'addressLine2Ar' => $faker->address,
+            'city' => $faker->city,
+            'cityAr' => $faker->city,
+            //AtpData
+            'atpLicenseNo' => null,
+            'atpLicenseExpiration' => null,
+            'atpLicenseExpirationHj' => null,
+            'atpLicenseAttachment' => null,
+            'atpWireTransferAttachment' => null,
+            'classesNo' => null,
+            'pcsNo_class' => null,
+            //atcData
+            'atcLicenseNo' => null,
+            'atcLicenseExpiration' => null,
+            'atcLicenseExpirationHj' => null,
+            'atcLicenseAttachment' => null,
+            'atcWireTransferAttachment' => null,
+            'labsNo' => null,
+            'pcsNo_lab' => null,
+            'operatingSystem' => null,
+            'operatingSystemLang' => null,
+            'internetSpeed_lab' => null,
+            'officeLang' => null,
+            'officeVersion' => null,
+            'focalContactPerson_id' => $normalUserId,
+            'creatorId' => $resellerUserId
+        );
+
+        $this->insert('organization', $resellerOrg);
+        $resellerOrgId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $resellerOrgMeta [] = array(
+            'type_id' => $typeResellerId,
+            'org_id' => $resellerOrgId,
+            'expirationDate' => null,
+            'expirationDateHj' => null,
+            // always 0  ... no renewal for distributor or reseller
+            'expirationFlag' => 0,
+        );
+        $this->insert('organization_meta', $resellerOrgMeta);
+
     }
 }
