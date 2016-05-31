@@ -8,6 +8,7 @@ use Zend\InputFilter\InputFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Utilities\Service\Random;
 use Utilities\Service\File;
+use Courses\Entity\ResourceType;
 
 /**
  * Resource Entity
@@ -20,7 +21,7 @@ use Utilities\Service\File;
  * @property int $id
  * @property string $name
  * @property string $nameAr
- * @property string $type
+ * @property Courses\Entity\ResourceType $type
  * @property Courses\Entity\Course $course
  * @property array $file
  * @property int $status
@@ -45,42 +46,12 @@ class Resource
     ];
 
     /**
-     * Presentations resource type
-     */
-    const TYPE_PRESENTATIONS = "Presentations";
-
-    /**
-     * Activities resource type
-     */
-    const TYPE_ACTIVITIES = "Activities";
-
-    /**
-     * Exams resource type
-     */
-    const TYPE_EXAMS = "Exams";
-
-    /**
-     * Standards resource type
-     */
-    const TYPE_STANDARDS = "Standards";
-
-    /**
-     * Course Updates resource type
-     */
-    const TYPE_COURSE_UPDATES = "Course Updates";
-
-    /**
-     * Ice Breakers resource type
-     */
-    const TYPE_ICE_BREAKERS = "Ice Breakers";
-
-    /**
      *
      * @var array types that accept only one file 
      */
     public static $oneFileTypes = array(
-        self::TYPE_STANDARDS,
-        self::TYPE_ICE_BREAKERS
+        ResourceType::STANDARDS_TYPE_TEXT,
+        ResourceType::ICE_BREAKERS_TYPE_TEXT
     );
 
     /**
@@ -88,14 +59,14 @@ class Resource
      * @var array types of all resources 
      */
     public static $types = array(
-            self::TYPE_PRESENTATIONS,
-            self::TYPE_ACTIVITIES,
-            self::TYPE_EXAMS,
-            self::TYPE_COURSE_UPDATES,
-            self::TYPE_STANDARDS,
-            self::TYPE_ICE_BREAKERS,
-        );
-    
+        ResourceType::ACTIVITIES_TYPE_TEXT,
+        ResourceType::COURSE_UPDATES_TYPE_TEXT,
+        ResourceType::EXAMS_TYPE_TEXT,
+        ResourceType::ICE_BREAKERS_TYPE_TEXT,
+        ResourceType::PRESENTATIONS_TYPE_TEXT,
+        ResourceType::STANDARDS_TYPE_TEXT,
+    );
+
     /**
      *
      * @var InputFilter validation constraints 
@@ -126,18 +97,19 @@ class Resource
 
     /**
      * @Gedmo\Versioned
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Courses\Entity\Course", inversedBy="resources")
      * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
      * @var Courses\Entity\Course
      */
     public $course;
+
+    /**
+     * @Gedmo\Versioned
+     * @ORM\ManyToOne(targetEntity="Courses\Entity\ResourceType")
+     * @ORM\JoinColumn(name="resource_type_id", referencedColumnName="id", nullable=false)
+     * @var Courses\Entity\ResourceType
+     */
+    public $type;
 
     /**
      * @Gedmo\Versioned
@@ -477,7 +449,7 @@ class Resource
             $target = APPLICATION_PATH . $DirSep . 'upload' . $DirSep . 'courseResources' . $DirSep . $courseId . $DirSep;
             $useUploadName = true;
             File::createDir($target);
-            
+
             if (is_string($name) && strlen($name) > 0) {
                 $target .= $name . "_" . $unique;
                 $useUploadName = false;
