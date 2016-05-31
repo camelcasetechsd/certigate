@@ -24,7 +24,13 @@
     </div>
     <div class=" col-lg-7 news_head">
         <blockquote>
+            {{#translationFlag}}
             <h3 class="title-blue title-top">{{title}}</h3>
+            {{/translationFlag}}
+            {{^translationFlag}}
+            <h3 class="title-blue title-top">{{titleAr}}</h3>
+            {{/translationFlag}}
+
             <footer>
                 <span>By: {{author}}</span><span class="pull-right">{{created}}</span>
             </footer>
@@ -32,13 +38,23 @@
 
 
         <div class="summary">
+            {{#translationFlag}}
             {{summary}}
+            {{/translationFlag}}
+            {{^translationFlag}}
+            {{summaryAr}}
+            {{/translationFlag}}
         </div>
     </div> 
 </div>
 <div class="row">
     <div class="col-lg-12 news_body">
-        {{{body}}}
+            {{#translationFlag}}
+            {{{body}}}
+            {{/translationFlag}}
+            {{^translationFlag}}
+            {{{bodyAr}}}
+            {{/translationFlag}}
     </div> 
 </div>
 
@@ -54,7 +70,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Send to friend</h3>
+                    <h3>{{#translate}}Send to friend{{/translate}}</h3>
                 </div>
                 <div class="panel-body">
                     {{{form}}}

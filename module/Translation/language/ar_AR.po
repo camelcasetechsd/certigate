@@ -1437,3 +1437,6 @@ msgstr "Enter Address in Arabic ar"
 
 msgid "Enter City in Arabic"
 msgstr "Enter City in Arabic ar"
+
+msgid "Send to friend"
+msgstr "Send to friend ar"
