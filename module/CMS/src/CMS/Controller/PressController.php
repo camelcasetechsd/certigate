@@ -6,6 +6,7 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
+use Utilities\Service\Status;
 
 class PressController extends ActionController
 {
@@ -18,8 +19,9 @@ class PressController extends ActionController
 
         $newsId = $this->params('id');
         $newsDetails = $pressModel->getMoreDetails($newsId);
+        $newsDetails = reset($newsDetails);
         // if type is page .. so it will return null
-        if (is_null($newsDetails)) {
+        if (is_null($newsDetails) || $newsDetails->getStatus() === Status::STATUS_INACTIVE) {
 
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array(
                 'name' => 'resource_not_found'));
@@ -35,9 +37,9 @@ class PressController extends ActionController
             $inputFilter = $form->getInputFilter();
 
             // adding custom value for ignored fields
-            $url = $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute().'/'.$newsId;
-            $data["subject"] = reset($newsDetails)->getTitle();
-            $data["message"] = 'A friend of yours wants you to check this out '.$url  ;
+            $url = $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute() . '/' . $newsId;
+            $data["subject"] = $newsDetails->getTitle();
+            $data["message"] = 'A friend of yours wants you to check this out ' . $url;
             $data["name"] = '';
 
             $form->setData($data);
