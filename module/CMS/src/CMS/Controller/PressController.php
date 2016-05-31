@@ -64,7 +64,6 @@ class PressController extends ActionController
             }
         }
         $variables['form'] = $this->getFormView($form);
-        $variables['translationFlag'] = $translatorHandler->getLocale() === Locale::LOCALE_AR_AR ? $translationFlag = false : $translationFlag = true;
         $variables['details'] = $newsDetails;
         return new ViewModel($variables);
     }
