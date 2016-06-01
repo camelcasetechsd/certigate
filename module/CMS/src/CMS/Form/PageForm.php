@@ -7,6 +7,7 @@ use CMS\Service\PageTypes;
 use CMS\Service\PageCategories;
 use Utilities\Form\FormButtons;
 use Translation\Service\Locale\Locale;
+use Utilities\Form\ButtonsFieldset;
 
 /**
  * Page Form
@@ -51,6 +52,12 @@ class PageForm extends Form
     {
         $this->query = $options['query'];
         $this->translatorHandler = $options['translatorHandler'];
+        $buttonFieldSetOptions = array();
+        if (isset($options['unpublishedFlag'])) {
+            $buttonFieldSetOptions = array(
+                'unpublishedFlag' => $options['unpublishedFlag']
+            );
+        }
         unset($options['query']);
         unset($options['locale']);
         unset($options['translatorHandler']);
@@ -210,12 +217,16 @@ class PageForm extends Form
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
-
+//
+//        // Add buttons fieldset
+//        $this->add(array(
+//             'name' => 'buttons',
+//             'type' => 'Utilities\Form\ButtonsFieldset'
+//         ));
         // Add buttons fieldset
-        $this->add(array(
-             'name' => 'buttons',
-             'type' => 'Utilities\Form\ButtonsFieldset'
-         ));
+
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ $buttonFieldSetOptions);
+        $this->add($buttonsFieldset);
     }
 
 }
