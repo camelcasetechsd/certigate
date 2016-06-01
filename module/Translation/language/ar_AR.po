@@ -1142,15 +1142,6 @@ msgstr "Cancel ar"
 msgid "No training found for instructor!"
 msgstr "No training found for instructor! ar"
 
-msgid "Standards"
-msgstr "Standards ar"
-
-msgid "Course Updates"
-msgstr "Course Updates ar"
-
-msgid "Ice Breakers"
-msgstr "Ice Breakers ar"
-
 msgid "Instructor in Arabic"
 msgstr "Instructor in Arabic ar"
 
@@ -1418,18 +1409,17 @@ msgstr "Enter City in Arabic ar"
 msgid "Presentation"
 msgstr "Presentation ar"
 
-msgid "Exam"
-msgstr "Exam ar"
-
 msgid "Activities"
 msgstr "Activities ar"
 
-msgid "Course Updates"
-msgstr "Course Updates ar"
+msgid "Exams"
+msgstr "Exams ar"
 
 msgid "Standards"
 msgstr "Standards ar"
 
+msgid "Course Updates"
+msgstr "Course Updates ar"
+
 msgid "Ice Breakers"
 msgstr "Ice Breakers ar"
-
