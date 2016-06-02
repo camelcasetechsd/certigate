@@ -80,20 +80,29 @@ class PosARoles extends AbstractSeed
         );
         $this->insert('role', $adminRole);
 
-//
-//
-//
-//        $defaultModule = "DefaultModule";
-//        $testRoute = "test";
-//        $testAcl = array(
-//            array(
-//                'role_id' => $normalUserRoleId,
-//                'module' => $defaultModule,
-//                'route' => $testRoute,
-//            ),
-//        );
-//
-//        $this->insert('acl', $testAcl);
+        $userModule = "Users";
+        $AdminUserCrationRoute = "userCreate";
+        $registrationRoute = "registration";
+
+
+        $usersAcl = array(
+            // ADMIN && TCA && TM only can create users
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $userModule,
+                'route' => $AdminUserCrationRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $userModule,
+                'route' => $AdminUserCrationRoute,
+            ),
+        );
+        
+        $this->insert('acl', $usersAcl);
+
+
+
 
         $chatModule = "Chat";
         $chatRoute = "startChat";
@@ -897,8 +906,8 @@ class PosARoles extends AbstractSeed
                 'route' => $renewal,
             ),
             /**
-             *Note : distributor && reseller organization cant be renewed 
-             *but role added to Acl just to make a descriptive message 
+             * Note : distributor && reseller organization cant be renewed 
+             * but role added to Acl just to make a descriptive message 
              */
             array(
                 'role_id' => $distributorRoleId,
