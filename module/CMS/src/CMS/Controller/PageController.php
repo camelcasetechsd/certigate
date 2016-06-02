@@ -40,7 +40,7 @@ class PageController extends ActionController
     {
         $variables = array();
         $isAdminUser = $this->isAdminUser();
-        
+
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
 
@@ -86,7 +86,7 @@ class PageController extends ActionController
             if ($form->isValid()) {
                 $processedData = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $data["picture"] = $processedData["picture"];
-                $pageModel->save($pageObj, $data, /*$editFlag =*/ false);
+                $pageModel->save($pageObj, $data, /* $editFlag = */ false);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
