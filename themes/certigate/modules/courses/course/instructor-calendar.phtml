@@ -11,7 +11,6 @@
         <thead>
             <tr>
                 <th>{{#translate}}Course name{{/translate}}</th>
-                <th>{{#translate}}Brief{{/translate}}</th>
                 <th>{{#translate}}Start Date{{/translate}}</th>
                 <th>{{#translate}}End Date{{/translate}}</th>
                 <th>{{#translate}}Duration{{/translate}} ({{#translate}}Days{{/translate}})</th>
@@ -29,9 +28,6 @@
                 </td>
 
                 <td>
-                    {{course.brief}}
-                </td>
-                <td>
                     {{startDate}}
                 </td>
                 <td>
@@ -47,11 +43,7 @@
                     {{course.evaluation.percentage}} %
                 </td>
                 <td>
-                    <a href="/courses/more/{{course.id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-folder-close"></span></a>
-                    &nbsp;
-                    <a href="/resources/{{course.id}}" data-toggle="tooltip" data-placement="left" title="Resources"><span class="glyphicon glyphicon glyphicon-film"></span></a>
-                    &nbsp;
-                    <a href="/courses/outlines/{{course.id}}" data-toggle="tooltip" data-placement="left" title="Outlines"><span class=" glyphicon glyphicon-list-alt"></span></a>
+                    <a href="/courses/more/{{course.id}}" data-toggle="tooltip" data-placement="left" title="More"><span class="glyphicon glyphicon-plus"></span></a>
                 </td>
             </tr>
 
