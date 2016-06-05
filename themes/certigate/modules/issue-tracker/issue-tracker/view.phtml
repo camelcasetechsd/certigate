@@ -18,46 +18,10 @@
 {{#isAdmin}}
 {{#status}}
 <br><br><br>
-<a href="" data-toggle="modal" data-target="#closeIssue"><button class="btn btn-sm btn-warning" data-placement="left">{{#translate}}Close Issue{{/translate}}</button></a>
-
-<div class="modal fade" id="closeIssue" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-            </div>
-            <div class="modal-body">
-                {{#translate}}Are you sure you want to close this issue{{/translate}} ?!
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                <a  href="/issues/close/{{id}}" type="button" class="btn btn-primary">{{#translate}}Close Issue{{/translate}}</a>
-            </div>
-        </div>
-    </div>
-</div>    
+                    <a  onclick="toggleIssue(false, {{id}})"data-placement="left" ><button class="btn btn-sm btn-warning" data-placement="left">{{#translate}}Close Issue{{/translate}}</button></a>
 {{/status}}
 {{^status}}
-<a href="" data-toggle="modal" data-target="#reopenIssue"><button class="btn btn-sm btn-success">{{#translate}}Reopen Issue{{/translate}}</button></a>
-
-<div class="modal fade" id="reopenIssue" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-            </div>
-            <div class="modal-body">
-                {{#translate}}Are you sure you want to reopen this issue{{/translate}} ?!
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                <a  href="/issues/reopen/{{id}}" type="button" class="btn btn-primary">{{#translate}}Reopen Issue{{/translate}}</a>
-            </div>
-        </div>
-    </div>
-</div>    
+                    <a  onclick="toggleIssue(true, {{id}})"data-placement="left"><button class="btn btn-sm btn-success">{{#translate}}Reopen Issue{{/translate}}</button></a>
 {{/status}}
 {{/isAdmin}}
 <br><br><br>
@@ -98,26 +62,7 @@
                 <div class="pull-right">
                     <a class="edit_comment" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;
-                    <a href="" title="{{#translate}}Delete{{/translate}}" data-toggle="modal" data-target="#deleteComment_{{id}}"><span class=" glyphicon glyphicon-remove"></span></a>
-
-                    <div class="modal fade" id="deleteComment_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}Are you sure you want to delete this comment{{/translate}} ?!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                                    <a  href="/issues/comments/remove/{{issue.id}}/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete comment{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <a  title="{{#translate}}Delete{{/translate}}" onclick="deleteComment({{issue.id}}, {{id}})" ><span class=" glyphicon glyphicon-remove"></span></a>
                 {{/isAdmin}}
                 {{^isAdmin}}
                 {{#commentCreator}}
@@ -148,7 +93,7 @@
 {{/content}}
 {{/layout}}
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
     $('.edit_comment').click(function () {
     $commentContainer = $(this).parents('.panel').find('p.comment_text');
             $comment = $commentContainer.text();
@@ -184,4 +129,42 @@
             });
     });
     });
+    
+             /**
+             * function to delete comments
+             * @param int issueId issue id
+             * @param int id comment id
+             */
+            function deleteComment(issueId, id) {
+            message = '{{#translate}}Are you sure you want to delete this comment{{/translate}}';
+                    bootbox.confirm(message + " ...?", function (result) {
+                        if (result) {
+                            window.location.assign('/issues/comments/remove/' + issueId + '/' + id);
+                        }
+                    });
+            }
+            
+            
+            
+            /**
+             * function to toggle status of an issue
+             * @param boolean status if isuue is closed or not 
+             * @param int id issue id
+             */
+            function toggleIssue(status, id) {
+            message = '';
+            if(status){
+                message = {{#translate}}"Are you sure you want to reopen this issue"{{/translate}};
+                url = "/issues/reopen/";
+            }else{
+                message = {{#translate}}"Are you sure you want to close this issue"{{/translate}};
+                url = "/issues/close/";
+            }
+           
+            bootbox.confirm(message + " ...?", function (result) {
+                if (result) {
+                    window.location.assign(url + id);
+                }
+            });
+            }
 </script>
