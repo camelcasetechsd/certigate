@@ -42,12 +42,13 @@
     </div> 
 </div>
 
-<button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Send to friend</button>
+<button type="button" class="btn btn-info"  onclick="getStfForm()">Send to friend</button>
+<!--<button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-example-modal-lg">Send to friend</button>-->
 
 <a href="/pdf/{{id}}"><button type="button" class="btn btn-success download_pdf">Download</button></a>
 
 
-
+<!--
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -62,17 +63,20 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 {{/details}}
 
 
 {{/content}}
 {{/layout}}
 <script>
-    $(document).ready(function () {
-        // hiding unneeded fields
-        $('#contact_us_form_name').removeAttr('required').parent().hide();
-        $('#contact_us_form_subject').removeAttr('required').parent().hide();
-        $('#contact_us_form_message').removeAttr('required').parent().hide();
-    });
+    function getStfForm() {
+        bootbox.alert('{{{form}}}');
+        document.getElementById('contact_us_form_name').removeAttribute('required');
+        document.getElementById('contact_us_form_name').parentNode.style.display = 'none';
+        document.getElementById('contact_us_form_subject').removeAttribute('required');
+        document.getElementById('contact_us_form_subject').parentNode.style.display = 'none';
+        document.getElementById('contact_us_form_message').removeAttribute('required');
+        document.getElementById('contact_us_form_message').parentNode.style.display = 'none';
+    }
 </script>

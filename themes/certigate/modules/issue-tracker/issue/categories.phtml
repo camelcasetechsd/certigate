@@ -29,46 +29,10 @@
                     <a href="/issues/categories/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#hasChildren}}
-                    <a  class="delete_row"  data-toggle="modal" data-target="#hasChildrenModal_{{id}}" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
-
-                    <div class="modal fade atcSet" id="hasChildrenModal_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}This category may have sub-Categories{{/translate}} ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                                    <a href="/issues/categories/remove/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a  class="delete_row"  onclick="deleteParentCategory(true, {{id}})"data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/hasChildren}}
                     {{^hasChildren}}
-                    <a href="" class="delete_row"  data-toggle="modal" data-target="#hasNoChildrenModal_{{id}}" data-placement="left" title="Delete"><span class="glyphicon glyphicon-remove"></span></a>
-
-                    <div class="modal fade atcSet" id="hasNoChildrenModal_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}This category has No sub-Categories{{/translate}} ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                                    <a  href="/issues/categories/remove/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>            
+                    <a  class="delete_row"  onclick="deleteParentCategory(false, {{id}})"data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/hasChildren}}
                 </td>
             </tr>
@@ -79,4 +43,23 @@
     </table>
 </div>
 {{/content}}
+{{$scripts}}
+<script type="text/javascript">
+    /**
+     * function to delete categories
+     * @param boolean hasChildren if category has children or not 
+     * @param int id category id 
+     */
+    function deleteParentCategory(hasChildren, id) {
+        message= '';
+        (hasChildren)? message="{{#translate}}This category may have sub-Categories{{/translate}}" : message="{{#translate}}This category has No sub-Categories{{/translate}}" ;
+        bootbox.confirm(message+" ...?", function (result) {
+            if (result) {
+                window.location.assign('/issues/categories/remove/'+id);
+            }
+        });
+    }
+</script>
+{{/scripts}}
 {{/layout}}
+
