@@ -199,14 +199,14 @@ class ResourceController extends ActionController
                 );
             }
         }
-        
+
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
 
         $variables['courseId'] = $courseId;
-        $variables['types'] = Resource::$types;
+        $variables['types'] = $query->findAll('Courses\Entity\ResourceType');
         $hasPendingChanges = $entitiesAndLogEntriesArray['hasPendingChanges'];
-        $variables['resources'] = $resourceModel->listResourcesForEdit($resources);
+        $variables['resources'] = $resources;
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $courseId), array('name' => 'coursesPending'));
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $variables['messages'] = array_merge($messages, $versionModel->getPendingMessages($hasPendingChanges, $pendingUrl));
@@ -301,6 +301,7 @@ class ResourceController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = $query->find('Courses\Entity\Resource', $id);
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $isAdminUser = false;
@@ -321,8 +322,10 @@ class ResourceController extends ActionController
         }
 
         $options = array();
+        $options['translatorHandler'] = $translatorHandler;
         $options['query'] = $query->setEntity('Courses\Entity\Resource');
         $options['courseId'] = $courseId;
+        $options['resourceModel'] = $resourceModel;
         $form = new ResourceForm(/* $name = */ null, $options);
         $form->bind($resource);
 

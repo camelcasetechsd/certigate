@@ -9,7 +9,7 @@
 </div>
 {{/processResult}}
 
-<a href="/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
+<a href="/courses/resources/new{{#courseId}}/{{courseId}}{{/courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
 <br><br>
 <div class="panel panel-default">
 
@@ -30,18 +30,18 @@
         <tbody>
             {{#resources}}
             <tr class="{{^status}}container-inactive{{/status}}">
-                <td><a target="_blank" href="/resources/download/{{id}}" >{{name}}</a></td>
-                <td><a target="_blank" href="/resources/download/{{id}}" >{{nameAr}}</a></td>
+                <td><a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a></td>
+                <td><a target="_blank" href="/courses/resources/download/{{id}}" >{{nameAr}}</a></td>
                 <td>{{type}}</td>
                 <td>{{course.name}}</td>
                 <td>{{statusText}}</td>
 
                 <td>  
                     {{#isInstructor}}
-                    <a href="/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/courses/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#isAdminUser}}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="#" data-href="/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="#" data-href="/courses/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/isInstructor}}
                     

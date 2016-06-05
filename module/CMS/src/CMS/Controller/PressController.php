@@ -6,6 +6,7 @@ use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
+use Translation\Service\Locale\Locale;
 use Utilities\Service\Status;
 
 class PressController extends ActionController
@@ -14,6 +15,7 @@ class PressController extends ActionController
     public function detailsAction()
     {
         $variables = array();
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $pressModel = new \CMS\Model\Press($query);
 
@@ -75,15 +77,20 @@ class PressController extends ActionController
         $newsId = $this->params('newsId');
         $newsDetails = $pressModel->getMoreDetails($newsId)[0];
         $dompdf = new \DOMPDF();
-
+        $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
+        $languageFlag = $translatorHandler->getLocale() === Locale::LOCALE_AR_AR ? $translationFlag = false : $translationFlag = true;
         $this->renderer = $this->getServiceLocator()->get('ViewRenderer');
         $content = $this->renderer->render('cms/press/pdf', array(
             'tmp_name' => $newsDetails->picture['tmp_name'],
             'created' => $newsDetails->created,
             'title' => $newsDetails->title,
+            'titleAr' => $newsDetails->titleAr,
             'body' => $newsDetails->body,
+            'bodyAr' => $newsDetails->bodyAr,
             'summary' => $newsDetails->summary,
-            'author' => $newsDetails->author
+            'summaryAr' => $newsDetails->summaryAr,
+            'author' => $newsDetails->author,
+            'language' => $languageFlag
         ));
         // make a header as html  
         $html = new MimePart($content);
@@ -95,8 +102,7 @@ class PressController extends ActionController
         $dompdf->load_html($html->getContent());
         $dompdf->set_paper("letter", "portrait");
         $dompdf->render();
-        //download popup
-        $dompdf->stream($newsDetails->title . '.pdf');
+        $languageFlag ? $dompdf->stream($newsDetails->title . '.pdf') : $dompdf->stream($newsDetails->titleAr . '.pdf');
     }
 
 }

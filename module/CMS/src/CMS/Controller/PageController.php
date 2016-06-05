@@ -126,6 +126,9 @@ class PageController extends ActionController
         }
 
         $options = array();
+        if (!$pageObj->getStatus()) {
+            $options['unpublishedFlag'] = true;
+        }
         $options['query'] = $query;
         $options['translatorHandler'] = $translatorHandler;
         $form = new PageForm(/* $name = */ null, $options);

@@ -39,6 +39,7 @@ class ButtonsFieldset extends Fieldset
             ));
         }
         else {
+
             $this->add(array(
                 'name' => FormButtons::SAVE_BUTTON,
                 'type' => 'Zend\Form\Element\Submit',
@@ -57,14 +58,17 @@ class ButtonsFieldset extends Fieldset
                 )
             ));
 
-            $this->add(array(
-                'name' => FormButtons::UNPUBLISH_BUTTON,
-                'type' => 'Zend\Form\Element\Submit',
-                'attributes' => array(
-                    'class' => 'pull-left btn-inline btn btn-warning',
-                    'value' => FormButtons::UNPUBLISH_BUTTON_TEXT,
-                )
-            ));
+            // prevent unpublish button from appearing for already unpublished pages
+            if (!array_key_exists("unpublishedFlag", $options)) {
+                $this->add(array(
+                    'name' => FormButtons::UNPUBLISH_BUTTON,
+                    'type' => 'Zend\Form\Element\Submit',
+                    'attributes' => array(
+                        'class' => 'pull-left btn-inline btn btn-warning',
+                        'value' => FormButtons::UNPUBLISH_BUTTON_TEXT,
+                    )
+                ));
+            }
         }
 
         $this->add(array(

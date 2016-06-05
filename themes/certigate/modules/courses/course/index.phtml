@@ -25,22 +25,21 @@
                 <td>{{statusText}}</td>
 
                 <td>
-                    <a href="/resources/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Resources{{/translate}}"><span class="glyphicon glyphicon-folder-close"></span></a>
-                    {{#evaluation}}
+                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;
+                    {{#evaluation}}
                     <a href="/courses/evaluation/edit/{{evaluation.course.id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit Course Evaluation{{/translate}}"><span class="glyphicon glyphicon-list-alt"></span></a>
                     {{/evaluation}}
                     {{^evaluation}}
-                    &nbsp;&nbsp;&nbsp;
                     <a href="/courses/evaluation/new/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Create Course Evaluation{{/translate}}"><span class="glyphicon glyphicon-list-alt"></span></a>
                     {{/evaluation}}
                     &nbsp;&nbsp;&nbsp;
+                    <a href="/courses/resources/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Resources{{/translate}}"><span class="glyphicon glyphicon-folder-close"></span></a>
+                    &nbsp;&nbsp;&nbsp;
                     <a href="/course-events/{{id}}" data-toggle="tooltip" data-placement="left" title="Course Events"><span class="glyphicon glyphicon-calendar"></span></a>
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     {{#isAdminUser}}
-                    &nbsp;&nbsp;&nbsp;
                     <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/status}}

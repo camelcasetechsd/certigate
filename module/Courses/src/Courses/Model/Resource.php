@@ -10,6 +10,7 @@ use System\Service\Settings;
 use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use Courses\Entity\Resource as ResourceEntity;
+use Courses\Entity\ResourceType as ResourceType;
 
 /**
  * Resource Model
@@ -276,14 +277,17 @@ class Resource
      */
     public function updateListedResources($dataArray, $isAdminUser, $userEmail, $courseId)
     {
-        $oneFileTypes = $this->getTranslatedResourceTypes();
+//        $oneFileTypes = $this->getTranslatedResourceTypes();
         if (isset($dataArray['editedType'])) {
             $editedResourceType = $dataArray['editedType'];
             foreach ($editedResourceType as $key => $type) {
-                if (in_array($type, $oneFileTypes)) {
+                $selectedTypeTitle = $this->query->findOneBy('Courses\Entity\ResourceType', array(
+                            'id' => $type
+                        ))->getTitle();
+                if (in_array($selectedTypeTitle, ResourceEntity::$oneFileTypes)) {
                     $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $type, "course" => $courseId));
                     if (!is_null($existingResource)) {
-                        throw new \Exception("{$type} Type can not accept more than one file");
+                        throw new \Exception("$selectedTypeTitle Type can not accept more than one file");
                     }
                 }
             }
@@ -340,7 +344,10 @@ class Resource
                 $resource = $this->query->findOneBy('Courses\Entity\Resource', array(
                     'id' => $key
                 ));
-                $resource->setType($type);
+                $newType = $this->query->findOneBy('Courses\Entity\ResourceType', array(
+                    'id' => $type
+                ));
+                $resource->setType($newType);
                 if ($isAdminUser === false) {
                     $resource->setStatus(Status::STATUS_NOT_APPROVED);
                 }
@@ -356,15 +363,15 @@ class Resource
     public function listResourcesForEdit($resources)
     {
         foreach ($resources as $resource) {
-            switch ($resource->getType()) {
+            switch ($resource->getType()->getId()) {
                 case 1:
-                    $resource->setType(\Courses\Entity\Resource::TYPE_PRESENTATIONS);
+                    $resource->setType(ResourceType::PRESENTATIONS_TYPE_TEXT);
                     break;
                 case 2:
-                    $resource->setType(\Courses\Entity\Resource::TYPE_ACTIVITIES);
+                    $resource->setType(ResourceType::ACTIVITIES_TYPE_TEXT);
                     break;
                 case 3:
-                    $resource->setType(\Courses\Entity\Resource::TYPE_EXAMS);
+                    $resource->setType(ResourceType::EXAMS_TYPE_TEXT);
                     break;
             }
         }
