@@ -1,0 +1,31 @@
+{{% BLOCKS }}
+{{<layout}}
+
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>{{#translate}}New User{{/translate}}</h3>
+    </div>
+    <div class="panel-body">
+        {{{userForm}}}
+    </div>
+</div>
+{{/content}}
+
+
+{{$scripts}}
+{{> ../modules/users/index/userCRUD.js }}
+<script>
+    $(document).ready(function () {
+        {{#rolesStatements}}   
+                generateStatementCheckboxContent('user_form_{{type}}', '{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+        {{/rolesStatements}}
+        {{#privacyStatement}}
+                generateStatementCheckboxContent('user_form_privacyStatement','privacyStatement', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
+
+        {{/privacyStatement}}
+    });
+</script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+{{/scripts}}
+{{/layout}}

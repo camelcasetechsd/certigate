@@ -211,7 +211,7 @@ class IndexController extends ActionController
     }
 
     /**
-     * Create new user
+     * Create new user By Admin TCA TM only
      * 
      * 
      * @access public
@@ -237,6 +237,97 @@ class IndexController extends ActionController
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+            $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
+        $isAdminUser = $this->isAdminUser();
+        $form = new UserForm(/* $name = */ null, $options);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            // Make certain to merge the files info!
+            $fileData = $request->getFiles()->toArray();
+
+            $data = array_merge_recursive(
+                    $request->getPost()->toArray(), $fileData
+            );
+
+            $query->setEntity('Users\Entity\User');
+            $form->setInputFilter($userObj->getInputFilter($query));
+            $form->setData($data);
+            $isCustomValidationValid = true;
+            if ($data['email'] != $data['confirmEmail']) {
+                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
+                $isCustomValidationValid = false;
+            }
+            if ($data['password'] != $data['confirmPassword']) {
+                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
+                $isCustomValidationValid = false;
+            }
+            if ($form->isValid() && $isCustomValidationValid === true) {
+                $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
+
+                if ($isAdminUser) {
+                    $routeName = "users";
+                }
+                else {
+                    $routeName = "home";
+                }
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => $routeName));
+                $this->redirect()->toUrl($url);
+            }
+        }
+
+        $variables['userForm'] = $this->getFormView($form);
+        $statement = new Statement();
+        $variables['rolesStatements'] = $statement->rolesStatements;
+        $variables['privacyStatement'] = $statement->privacyStatement;
+        return new ViewModel($variables);
+    }
+
+    /**
+     * Create new user for anyone
+     * 
+     * 
+     * @access public
+     * @uses User
+     * @uses UserForm
+     * 
+     * @return ViewModel
+     */
+    public function registrationAction()
+    {
+
+        $variables = array();
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
+        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
+        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
+        $userModel = $this->getServiceLocator()->get('Users\Model\User');
+        $userObj = new User();
+        $options = array();
+        $options['query'] = $query;
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        $options['excludedRoles'] = array(Role::USER_ROLE);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        // only admin can access register while he being logged in 
+        if ($auth->hasIdentity() && !(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) || in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']))) {
+
+            $url = $this->getEvent()->getRouter()->assemble(array(), array(
+                'name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array(
+                'name' => 'userCreate'));
+            $this->redirect()->toUrl($url);
+        }
+
+
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
