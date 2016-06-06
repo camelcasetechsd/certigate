@@ -1012,12 +1012,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 ),
             ));
         }
-
+        
         $this->add(array(
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
-                'class' => 'btn btn-success pull-left inline',
+                'class' => 'btn btn-success  btn-inline pull-left',
                 'value' => 'Create',
             )
         ));
@@ -1026,7 +1026,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'saveState',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-info pull-left saveStateButton',
+                'class' => 'btn btn-info  btn-inline pull-left',
                 'value' => 'Save State',
                 'type' => 'button',
             )
@@ -1036,7 +1036,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'reset',
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-danger pull-left resetButton orgResetButton',
+                'class' => 'btn btn-danger   btn-inline pull-left',
                 'value' => 'Reset',
                 'type' => 'button',
             )
