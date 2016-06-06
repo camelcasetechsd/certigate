@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-06-05 16:23+0200\n"
+"PO-Revision-Date: 2016-06-06 14:55+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: Arabic\n"
@@ -1414,41 +1414,5 @@ msgstr "Unsubscribe periodic notifications ar"
 msgid "Subscribe periodic notifications"
 msgstr "Subscribe periodic notifications ar"
 
-msgid "You must agree to the terms of use."
-msgstr "You must agree to the terms of use. ar"
-
-msgid "Enter Commercial Name in Arabic"
-msgstr "Enter Commercial Name in Arabic ar"
-
-msgid "Enter Owner Name in Arabic"
-msgstr "Enter Owner Name in Arabic ar"
-
-msgid "Enter Address in Arabic"
-msgstr "Enter Address in Arabic ar"
-
-msgid "Enter City in Arabic"
-msgstr "Enter City in Arabic ar"
-
-msgid "Presentation"
-msgstr "Presentation ar"
-
-msgid "Activities"
-msgstr "Activities ar"
-
-msgid "Exams"
-msgstr "Exams ar"
-
-msgid "Standards"
-msgstr "Standards ar"
-
-msgid "Course Updates"
-msgstr "Course Updates ar"
-
-msgid "Ice Breakers"
-msgstr "Ice Breakers ar"
-
-msgid "Send to friend"
-msgstr "Send to friend ar"
-
-msgid "I agree"
-msgstr "I agree ar"
+msgid "Create new course event"
+msgstr "Create new course event ar"

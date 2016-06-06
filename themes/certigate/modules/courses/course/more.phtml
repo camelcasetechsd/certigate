@@ -29,10 +29,10 @@
     <div class="tabs">
         <div class="container">
             <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
-    <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">{{#translate}}Course Events{{/translate}}</a></li>
-    <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">{{#translate}}Course Outlines{{/translate}}</a></li>
-    <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
+                <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
+                <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">{{#translate}}Course Events{{/translate}}</a></li>
+                <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">{{#translate}}Course Outlines{{/translate}}</a></li>
+                <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
 
             </ul>
 
@@ -69,6 +69,9 @@
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="courseEvents">
                     <div class="panel panel-default">
+                        {{#courseEventCreator}}
+                        <a class="btn btn-info" href="/course-events/new/{{course.id}}" >{{#translate}}Create new course event{{/translate}}</a>
+                        {{/courseEventCreator}}
                         <div class="panel-heading">
                             <h3>{{#translate}}Course Events{{/translate}}</h3>
                         </div>
@@ -93,7 +96,7 @@
                                 <tbody>
                                     {{#courseEvents}}
                                     {{^hideFromCalendar}}
-                            {{^alreadyStarted}}
+                                    {{^alreadyStarted}}
                                     <tr>
                                         <td>{{startDate}}</td>
                                         <td>{{endDate}}</td>
@@ -101,7 +104,7 @@
                                         <td>{{atp.commercialName}}</td>
                                         <td>{{atp.city}}</td>
                                     </tr>
-                            {{/alreadyStarted}}
+                                    {{/alreadyStarted}}
                                     {{/hideFromCalendar}}
                                     {{/courseEvents}} 
                                 </tbody>
