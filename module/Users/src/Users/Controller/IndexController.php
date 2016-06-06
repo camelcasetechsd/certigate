@@ -315,10 +315,15 @@ class IndexController extends ActionController
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         // only admin can access register while he being logged in 
-        if ($auth->hasIdentity() && (!in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+        if ($auth->hasIdentity() && !(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) || in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']))) {
 
             $url = $this->getEvent()->getRouter()->assemble(array(), array(
                 'name' => 'noaccess'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array(
+                'name' => 'userCreate'));
             $this->redirect()->toUrl($url);
         }
 

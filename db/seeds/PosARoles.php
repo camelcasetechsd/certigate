@@ -80,29 +80,6 @@ class PosARoles extends AbstractSeed
         );
         $this->insert('role', $adminRole);
 
-        $userModule = "Users";
-        $AdminUserCrationRoute = "userCreate";
-        $registrationRoute = "registration";
-
-
-        $usersAcl = array(
-            // ADMIN && TCA && TM only can create users
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $userModule,
-                'route' => $AdminUserCrationRoute,
-            ),
-            array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $userModule,
-                'route' => $AdminUserCrationRoute,
-            ),
-        );
-        
-        $this->insert('acl', $usersAcl);
-
-
-
 
         $chatModule = "Chat";
         $chatRoute = "startChat";
@@ -124,10 +101,22 @@ class PosARoles extends AbstractSeed
 
 
         $userModule = "Users";
+        $AdminUserCrationRoute = "userCreate";
         $userEditRoute = "userEdit";
         $userInstructorsRoute = "userInstructors";
         $userMoreRoute = "userMore";
         $userAcls = array(
+            // ADMIN && TCA && TM only can create users
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $userModule,
+                'route' => $AdminUserCrationRoute,
+            ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $userModule,
+                'route' => $AdminUserCrationRoute,
+            ),
             array(
                 'role_id' => $normalUserRoleId,
                 'module' => $userModule,
