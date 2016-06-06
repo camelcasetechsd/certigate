@@ -3,7 +3,7 @@
 namespace IssueTracker\Form;
 
 use Utilities\Form\Form;
-
+use Utilities\Form\FormButtons;
 class CommentForm extends Form
 {
 
@@ -36,11 +36,11 @@ class CommentForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'Create',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Comment',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
     }

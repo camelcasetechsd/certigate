@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Translation\Service\Locale\Locale;
 use Utilities\Service\Status;
 use Organizations\Entity\OrganizationType;
-
+use Utilities\Form\FormButtons;
 /**
  * BookExam Form
  * 
@@ -192,11 +192,11 @@ class BookExam extends Form implements ObjectManagerAwareInterface
         ));
 
         $this->add(array(
-            'name' => 'Create',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Book now!',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
     }
