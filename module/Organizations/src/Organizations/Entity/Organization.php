@@ -484,13 +484,13 @@ class Organization
      * @ORM\JoinTable(name="organization_regions")
      */
     public $regions;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Organizations\Entity\OrganizationMeta", mappedBy="organization") 
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $organizationMetas;
-    
+
     public function __construct()
     {
         $this->organizationUser = new ArrayCollection();
@@ -736,7 +736,7 @@ class Organization
         }
         return $this;
     }
-    
+
     /**
      * Set Organization metas
      * 
@@ -760,7 +760,7 @@ class Organization
     {
         return $this->organizationMetas;
     }
-        
+
     function getCityAr()
     {
         return $this->cityAr;
@@ -1223,14 +1223,8 @@ class Organization
         if (array_key_exists('CRExpiration', $data)) {
             $this->setCRExpiration($data['CRExpiration']);
         }
-        if (array_key_exists('addressLine1', $data)) {
-            $this->setAddressLine1($data['addressLine1']);
-        }
         if (array_key_exists('labsNo', $data)) {
             $this->setLabsNo($data["labsNo"]);
-        }
-        if (array_key_exists('addressLine2', $data)) {
-            $this->setAddressLine2($data['addressLine2']);
         }
         if (array_key_exists('city', $data)) {
             $this->setCity($data['city']);
@@ -1250,7 +1244,7 @@ class Organization
         $this->setCommercialNameAr($data['commercialNameAr']);
         $this->setOwnerNameAr($data['ownerNameAr']);
         $this->setCRNo($data['CRNo']);
-        
+
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
         }
@@ -1271,6 +1265,12 @@ class Organization
         }
         if (array_key_exists('addressLine1Ar', $data)) {
             $this->setAddressLine1Ar($data["addressLine1Ar"]);
+        }
+        if (array_key_exists('addressLine2', $data)) {
+            $this->setAddressLine2($data['addressLine2']);
+        }
+        if (array_key_exists('addressLine2Ar', $data)) {
+            $this->setAddressLine2Ar($data['addressLine2Ar']);
         }
         if (array_key_exists('city', $data)) {
             $this->setCity($data["city"]);
