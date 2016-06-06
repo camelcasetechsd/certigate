@@ -523,4 +523,23 @@ class CourseEvent
         return $courseEvents;
     }
 
+    /**
+     * function to check if course && event are existed to a course
+     * @param Int  $courseId
+     * @param Int  $courseEventId 
+     */
+    public function validateCourseEvent($courseId, $courseEventId)
+    {
+        $course = $this->query->findOneBy('Courses\Entity\Course', array(
+            'id' => $courseId
+        ));
+        $courseEvent = $this->query->findOneBy('Courses\Entity\CourseEvent', array(
+            'id' => $courseEventId
+        ));
+
+        if ((is_null($courseId) && !is_null($courseEvent)) || (!is_null($course) && !is_null($courseEvent))) {
+            return true;
+        }
+        return false;
+    }
 }

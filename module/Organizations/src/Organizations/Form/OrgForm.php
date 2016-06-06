@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Utilities\Service\Time;
 use Utilities\Service\Status;
 use Translation\Service\Locale\Locale as ApplicationLocale;
-
+use Utilities\Form\FormButtons;
 /**
  * User Form
  * 
@@ -1014,30 +1014,30 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         }
         
         $this->add(array(
-            'name' => 'submit',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
-                'class' => 'btn btn-success  btn-inline pull-left',
-                'value' => 'Create',
+                'class' => 'btn btn-success pull-left inline',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
 
         $this->add(array(
-            'name' => 'saveState',
+            'name' => FormButtons::SAVE_STATE_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-info  btn-inline pull-left',
-                'value' => 'Save State',
+                'class' => 'btn btn-info pull-left saveStateButton',
+                'value' =>  FormButtons::SAVE_STATE_BUTTON_TEXT,
                 'type' => 'button',
             )
         ));
 
         $this->add(array(
-            'name' => 'reset',
+            'name' => FormButtons::RESET_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
-                'class' => 'btn btn-danger   btn-inline pull-left',
-                'value' => 'Reset',
+                'class' => 'btn btn-danger pull-left resetButton orgResetButton',
+                'value' => FormButtons::RESET_BUTTON_TEXT,
                 'type' => 'button',
             )
         ));

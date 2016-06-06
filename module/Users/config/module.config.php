@@ -90,6 +90,16 @@ return array(
                     ),
                 )
             ),
+            'registration' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/register',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'registration',
+                    ),
+                )
+            ),
             'userDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

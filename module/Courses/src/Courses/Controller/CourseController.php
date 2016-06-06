@@ -77,7 +77,7 @@ class CourseController extends ActionController
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
 
-        $variables['courses'] = $courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems(), /*$prepareForDisplayFlag =*/ true);
+        $variables['courses'] = $courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems(), /* $prepareForDisplayFlag = */ true);
         return new ViewModel($variables);
     }
 
@@ -117,7 +117,7 @@ class CourseController extends ActionController
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
         $courseEventModel->approveEnroll($token);
-        
+
         $criteria = Criteria::create();
         $expr = Criteria::expr();
         $criteria->setMaxResults($maxResults = 1)
@@ -197,7 +197,12 @@ class CourseController extends ActionController
             if ($auth->hasIdentity() && $preparedCourse->canDownload === false && in_array(Role::STUDENT_ROLE, $storage['roles'])) {
                 $canDownloadResources = false;
             }
+            $courseEventCreator = false;
+            if ($auth->hasIdentity() && (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']) )) {
+                $courseEventCreator = true;
+            }
 
+            $variables['courseEventCreator'] = $courseEventCreator;
             $variables['canEvaluate'] = $preparedCourse->canEvaluate;
             $variables['courseEventId'] = $this->params('courseEventId');
             $variables['canDownloadResources'] = $canDownloadResources;
@@ -811,10 +816,10 @@ class CourseController extends ActionController
                 //delete deleted questions
                 if (isset($data['deleted']) && $isAdminUser === true) {
                     foreach ($data['deleted'] as $question) {
-                        $evaluationModel->removeQuestion($question , $eval->getId());
+                        $evaluationModel->removeQuestion($question, $eval->getId());
                     }
                 }
-                
+
                 // saving new Questions
                 if (isset($data['newQuestion'])) {
                     foreach ($data['newQuestion'] as $key => $new) {
@@ -824,7 +829,7 @@ class CourseController extends ActionController
                 // updating old questions
                 if (isset($data['editedQuestion']) && isset($data['original'])) {
                     for ($i = 0; $i < count($data['editedQuestion']); $i++) {
-                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i],$data['originalAr'][$i], $data['editedQuestionAr'][$i], $eval);
+                        $evaluationModel->updateQuestion($data['original'][$i], $data['editedQuestion'][$i], $data['originalAr'][$i], $data['editedQuestionAr'][$i], $eval);
                     }
                 }
 

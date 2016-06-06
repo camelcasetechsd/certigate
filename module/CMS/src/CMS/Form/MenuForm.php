@@ -73,7 +73,7 @@ class MenuForm extends Form {
         ));
 
         // Add buttons fieldset
-        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("create_button_only" => true));
+        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("save_button_only" => true));
         $this->add($buttonsFieldset);
     }
 

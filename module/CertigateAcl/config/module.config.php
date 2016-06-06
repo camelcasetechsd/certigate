@@ -52,9 +52,6 @@ return array(
             'noOrganizationUsers' => array(
                 'resource' => 'DefaultModule',
             ),
-            'userCreate' => array(
-                'resource' => 'Users',
-            ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
             ),
@@ -69,6 +66,9 @@ return array(
             ),
             'translationSetLocale' => array(
                 'resource' => 'Translation',
+            ),
+            'registration' => array(
+                'resource' => 'Users'
             )
         )
     )

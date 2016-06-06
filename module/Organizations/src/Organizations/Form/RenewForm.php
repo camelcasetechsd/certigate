@@ -6,7 +6,7 @@ use Utilities\Form\Form;
 use Utilities\Service\Time;
 use Zend\Form\FormInterface;
 use Translation\Service\Locale\Locale;
-
+use Utilities\Form\FormButtons;
 /**
  * OrganizationUser Form
  * 
@@ -273,21 +273,21 @@ class RenewForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'renew',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Renew',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
 
 
         $this->add(array(
-            'name' => 'reset',
+            'name' => FormButtons::RESET_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
+                'value' => FormButtons::RESET_BUTTON_TEXT,
                 'type' => 'button',
             )
         ));

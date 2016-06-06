@@ -4,6 +4,7 @@ namespace IssueTracker\Form;
 
 use Utilities\Form\Form;
 use IssueTracker\Service\DepthLevel;
+use Utilities\Form\FormButtons;
 
 class IssuesCategoriesForm extends Form
 {
@@ -86,21 +87,21 @@ class IssuesCategoriesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'Create',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Create',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
 
         $this->add(array(
-            'name' => 'reset',
+            'name' => FormButtons::RESET_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-danger resetButton',
-                'value' => 'Reset',
                 'type' => 'button',
+                'value' => FormButtons::RESET_BUTTON_TEXT,
             )
         ));
     }
