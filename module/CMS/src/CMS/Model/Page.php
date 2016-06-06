@@ -25,6 +25,7 @@ use Doctrine\Common\Collections\Criteria;
  */
 class Page
 {
+
     use \Utilities\Service\Paginator\PaginatorTrait;
 
     const UPLOAD_PATH = 'public/upload/pageContents/';
@@ -145,12 +146,12 @@ class Page
             $data = array();
         }
         $this->query->setEntity("CMS\Entity\Page")->save($page, $data);
-        
-        if($page->getType() == PageTypes::PRESS_RELEASE_TYPE && $page->getStatus() == Status::STATUS_ACTIVE && $editFlag === false){
+
+        if ($page->getType() == PageTypes::PRESS_RELEASE_TYPE && $page->getStatus() == Status::STATUS_ACTIVE && $editFlag === false) {
             $this->pressReleaseSubscriptionModel->notifySubscribers($page);
         }
     }
-    
+
     /**
      * Set page form required fields
      * 
@@ -162,28 +163,33 @@ class Page
     public function setFormRequiredFields($form, $data, $editFlag = false)
     {
         $inputFilter = $form->getInputFilter();
-            // type is not press release
-            if ($data['type'] != PageTypes::PRESS_RELEASE_TYPE ) {
-                // Change required flag to false for press release fields
-                $category = $inputFilter->get('category');
-                $category->setRequired(false);
-                $summary = $inputFilter->get('summary');
-                $summary->setRequired(false);
-                $summaryAr = $inputFilter->get('summaryAr');
-                $summaryAr->setRequired(false);
-                $author = $inputFilter->get('author');
-                $author->setRequired(false);
-                $picture = $inputFilter->get('picture');
-                $picture->setRequired(false);
-            }
-            // file not updated
-            if ($editFlag === true && isset($data['picture']['name']) && empty($data['picture']['name'])) {
-                // Change required flag to false for any previously uploaded files
-                $picture = $inputFilter->get('picture');
-                $picture->setRequired(false);
-            }
+        // type is not press release
+        if ($data['type'] != PageTypes::PRESS_RELEASE_TYPE) {
+            // Change required flag to false for press release fields
+            $category = $inputFilter->get('category');
+            $category->setRequired(false);
+            $summary = $inputFilter->get('summary');
+            $summary->setRequired(false);
+            $summaryAr = $inputFilter->get('summaryAr');
+            $summaryAr->setRequired(false);
+            $author = $inputFilter->get('author');
+            $author->setRequired(false);
+            $picture = $inputFilter->get('picture');
+            $picture->setRequired(false);
+        }
+        else {
+//            var_dump('here');exit;
+            $path = $inputFilter->get('path');
+            $path->setRequired(false);
+        }
+        // file not updated
+        if ($editFlag === true && isset($data['picture']['name']) && empty($data['picture']['name'])) {
+            // Change required flag to false for any previously uploaded files
+            $picture = $inputFilter->get('picture');
+            $picture->setRequired(false);
+        }
     }
-    
+
     /**
      * Filter press releases
      * 

@@ -87,17 +87,6 @@ class PageForm extends Form
                 'label' => 'Title in Arabic',
             ),
         ));
-        $this->add(array(
-            'name' => 'path',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'required' => 'required',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Path',
-            ),
-        ));
 
         $this->add(array(
             'name' => 'type',
@@ -113,6 +102,18 @@ class PageForm extends Form
                     PageTypes::PRESS_RELEASE_TYPE => $this->translatorHandler->translate(PageTypes::PRESS_RELEASE_TYPE)
                 ),
                 'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'path',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Path',
             ),
         ));
 
@@ -217,13 +218,6 @@ class PageForm extends Form
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
-//
-//        // Add buttons fieldset
-//        $this->add(array(
-//             'name' => 'buttons',
-//             'type' => 'Utilities\Form\ButtonsFieldset'
-//         ));
-        // Add buttons fieldset
 
         $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ $buttonFieldSetOptions);
         $this->add($buttonsFieldset);

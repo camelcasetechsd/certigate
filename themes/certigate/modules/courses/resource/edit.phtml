@@ -22,7 +22,7 @@
                 <h3>Edit Resources</h3>
             </div>
             <div class="panel-body">
-                <a href="/resources/new/{{courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
+                <a href="/courses/resources/new/{{courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
                 <br><br>
                 <form id="resourcesForm" action="" method="POST" >
                     <div class="panel panel-default">
@@ -50,11 +50,11 @@
                                     <td>
                                         <select class="resourceType resourceType-{{id}} form-control editableInput">
                                             {{#types}}
-                                                <option value="{{.}}">{{#translate}}{{.}}{{/translate}}</option>
+                                            <option value="{{id}}">{{#translate}}{{title}}{{/translate}}</option>
                                             {{/types}}
                                         </select>
                                     </td>
-                                    <td><a target="_blank" href="/resources/download/{{id}}" >{{#translate}}Download{{/translate}}</a></td>
+                                    <td><a target="_blank" href="/courses/resources/download/{{id}}" >{{#translate}}Download{{/translate}}</a></td>
                                     <td>
                                         <button  type="button" class="btn btn-danger removeResource" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}">{{#translate}}Remove{{/translate}}</a>
                                     </td>
@@ -76,9 +76,10 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-        {{#resources}}
-        $( ".resourceType-{{id}}" ).val('{{type}}');
-        {{/resources}}
+    {{#resources}}
+    $(".resourceType-{{id}}").val('{{type.id}}');
+    {{/resources}}
+
         $('.removeResource').click(function () {
             var removeButton = $(this);
             bootbox.confirm("Are you sure you want to delete the resource ?", function (result) {
@@ -86,7 +87,7 @@
                     var resourceId = removeButton.closest('tr').attr("id");
                     $.ajax({
                         dataType: "json",
-                        url: "/resources/delete/" + resourceId,
+                        url: "/courses/resources/delete/" + resourceId,
                         data: "",
                     });
                     removeButton.closest('tr').remove();

@@ -30,67 +30,13 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#isAdmin}}
                     {{#status}}
-                    <a href="" data-toggle="modal" data-target="#closeIssue_{{id}}" data-placement="left" title="{{#translate}}close{{/translate}}"><span class="glyphicon glyphicon-ban-circle"></span></a>
-
-                    <div class="modal fade" id="closeIssue_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}Are you sure you want to close this issue{{/translate}} ?!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                                    <a  href="/issues/close/{{id}}" type="button" class="btn btn-primary">{{#translate}}Close Issue{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a  onclick="toggleIssue(false, {{id}})"data-placement="left" title="{{#translate}}close{{/translate}}"><span class="glyphicon glyphicon-ban-circle"></span></a>
                     {{/status}}
                     {{^status}}
-                    <a href="" data-toggle="modal" data-target="#reopenIssue_{{id}}" data-placement="left" title="{{#translate}}reopen{{/translate}}"><span class=" glyphicon glyphicon-refresh"></span></a>
-
-                    <div class="modal fade" id="reopenIssue_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}Are you sure you want to reopen this issue{{/translate}} ?!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                                    <a  href="/issues/reopen/{{id}}" type="button" class="btn btn-primary">{{#translate}}Reopen Issue{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>    
+                    <a  onclick="toggleIssue(true, {{id}})"data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-refresh"></span></a>
                     {{/status}}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="" data-toggle="modal" data-target="#deleteIssue_{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
-                    
-                    <div class="modal fade" id="deleteIssue_{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">{{#translate}}Warning{{/translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{#translate}}Are you sure you want to delete this issue{{/translate}} ?!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Dismiss this message{{/translate}}</button>
-                                    <a  href="/issues/delete/{{id}}" type="button" class="btn btn-primary">{{#translate}}Delete Issue{{/translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a  onclick="deleteIssue({{id}})"data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdmin}}
                 </td>
             </tr>
@@ -127,4 +73,43 @@
 <br>
 {{/hasPages}}
 {{/content}}
+{{$scripts}}
+<script type="text/javascript">
+            /**
+             * function to delete issues
+             * @param int id issue id
+             */
+            function deleteIssue(id) {
+            message = '{{#translate}}Are you sure you want to delete this issue{{/translate}}';
+                    bootbox.confirm(message + " ...?", function (result) {
+                    if (result) {
+                    window.location.assign('/issues/delete/' + id);
+                    }
+                    });
+            }
+
+            /**
+             * function to toggle status of an issue
+             * @param boolean status if isuue is closed or not 
+             * @param int id issue id
+             */
+            function toggleIssue(status, id) {
+            message = '';
+            if(status){
+                message = "{{#translate}}Are you sure you want to reopen this issue{{/translate}}";
+                url = "/issues/reopen/";
+            }else{
+                message = "{{#translate}}Are you sure you want to close this issue{{/translate}}";
+                url = "/issues/close/";
+            }
+           
+            bootbox.confirm(message + " ...?", function (result) {
+                if (result) {
+                    window.location.assign(url + id);
+                }
+            });
+    }
+</script>
+{{/scripts}}
+
 {{/layout}}

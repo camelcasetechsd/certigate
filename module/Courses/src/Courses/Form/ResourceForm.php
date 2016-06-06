@@ -107,15 +107,21 @@ class ResourceForm extends Form
 
         $this->add(array(
             'name' => 'type',
-            'type' => 'Zend\Form\Element\Select',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',
                 'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Type',
-                'value_options' => $this->resourceModel->getTranslatedResourceTypes(),
-                'empty_option' => $this->translatorHandler->translate(self::EMPTY_SELECT_VALUE),
+                'object_manager' => $this->query->entityManager,
+                'target_class' => 'Courses\Entity\ResourceType',
+                'property' => 'name',
+                'display_empty_item' => true,
+                'empty_item_label' => self::EMPTY_SELECT_VALUE,
+                'label_generator' => function($targetEntity) {
+                    return $targetEntity->getTitle();
+                },
             )
         ));
 

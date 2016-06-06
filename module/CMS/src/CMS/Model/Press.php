@@ -38,6 +38,7 @@ class Press
             $singleNews->picture['tmp_name'] = end($newsPicture);
             $singleNews->created = $singleNews->created->format('d-m-Y');
             $singleNews->body = $singleNews->getBody();
+            $singleNews->bodyAr = $singleNews->getBodyAr();
         }
         return $news;
     }

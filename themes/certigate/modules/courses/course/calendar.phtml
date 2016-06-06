@@ -19,7 +19,7 @@
                         <p>{{brief}}</p>
                         <p>{{briefAr}}</p>
                         <ul class="list-inline list-unstyled">
-                            <a href="/courses/more/{{id}}" target="_blank"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
+                            <a href="/courses/more/{{id}}" target="_blank" title="More"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
                         </ul>
                     </div>
 
@@ -80,15 +80,15 @@
                                     {{#canLeave}}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
-                                        {{/canLeave}}
-                                        {{#isFull}}
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        {{#translate}}Course Full{{/translate}}
-                                        {{/isFull}}
-                                    </td>
-                                </tr>
-                                {{/alreadyStarted}}
-                                {{/hideFromCalendar}}
+                                    {{/canLeave}}
+                                    {{#isFull}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{#translate}}Course Full{{/translate}}
+                                    {{/isFull}}
+                                </td>
+                            </tr>
+                            {{/alreadyStarted}}
+                            {{/hideFromCalendar}}
                             {{/courseEvents}}
 
                         </tbody>
@@ -103,6 +103,10 @@
         <div class="col-md-1">&nbsp;</div>
     </div>
     {{/courses}}
+    {{^courses}}
+    No Courses Yet !
+    {{/courses}}
+
 </div>
 
 {{#hasPages}}
@@ -130,6 +134,9 @@
     </ul>
 </div>
 <br>
+{{/hasPages}}
+{{^hasPages}}
+No Courses Yet !
 {{/hasPages}}
 {{/content}}
 {{/layout}}
