@@ -8,9 +8,9 @@ $('.hijriDate-ar').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var gregorianDate = $.calendars.instance('gregorian').fromJD(julianDate);
-            $(this).parent().next('div').find('.gregorianDate-ar').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('next', this, '.gregorianDate-ar').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().next('div').find('.gregorianDate-ar').val("");
+            getOtherDateInput('next', this, '.gregorianDate-ar').val("");
         }
     }
 }));
@@ -24,9 +24,9 @@ $('.gregorianDate-ar').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
-            $(this).parent().prev('div').find('.hijriDate-ar').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('prev', this, '.hijriDate-ar').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().prev('div').find('.hijriDate-ar').val("");
+            getOtherDateInput('prev', this, '.hijriDate-ar').val("");
 
         }
 
@@ -44,9 +44,9 @@ $('.hijriDate').calendarsPicker($.extend({
             // creating gregorian date out of julain date
             var gregorianDate = $.calendars.instance('gregorian')
                     .fromJD(julianDate);
-            $(this).parent().next('div').find('.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('next', this, '.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().next('div').find('.gregorianDate').val("");
+            getOtherDateInput('next', this, '.gregorianDate').val("");
         }
     }
 }));
@@ -60,11 +60,25 @@ $('.gregorianDate').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
-            $(this).parent().prev('div').find('.hijriDate').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('prev', this, '.hijriDate').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().prev('div').find('.hijriDate').val("");
-
+            getOtherDateInput('prev', this, '.hijriDate').val("");
         }
 
     }
 }));
+
+/**
+ * Get other date input from current date
+ * @param {string} relativePostion
+ * @param {object} currentDate
+ * @param {string} otherDateSelector
+ * @returns {getOtherDateInput.otherDateInput}
+ */
+function getOtherDateInput(relativePostion, currentDate, otherDateSelector){
+    var otherDateInput = $(currentDate).parent()[relativePostion]("div").find(otherDateSelector);
+    if(otherDateInput.length === 0){
+        otherDateInput = $(currentDate)[relativePostion]()[relativePostion](otherDateSelector);
+    }
+    return otherDateInput;
+}

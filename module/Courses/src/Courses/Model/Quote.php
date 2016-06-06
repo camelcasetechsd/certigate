@@ -36,6 +36,7 @@ use Utilities\Service\Object;
  * @property string $currentType
  * @property Courses\Model\CourseEvent $courseEventModel
  * @property Utilities\Service\Object $objectUtilities
+ * @property Translation\Service\Locale\Locale $applicationLocale
  * 
  * @package courses
  * @subpackage model
@@ -106,6 +107,12 @@ class Quote
     protected $objectUtilities;
 
     /**
+     *
+     * @var Translation\Service\Locale\Locale
+     */
+    protected $applicationLocale;
+
+    /**
      * Set needed properties
      * 
      * @access public
@@ -118,8 +125,9 @@ class Quote
      * @param Notifications\Service\Notification $notification
      * @param Courses\Model\CourseEvent $courseEventModel
      * @param Utilities\Service\Object $objectUtilities
+     * @param Translation\Service\Locale\Locale $applicationLocale
      */
-    public function __construct($query, $translationHandler, $formView, $quoteGenerator, $quoteConfig, $systemCacheHandler, $notification, $courseEventModel, $objectUtilities)
+    public function __construct($query, $translationHandler, $formView, $quoteGenerator, $quoteConfig, $systemCacheHandler, $notification, $courseEventModel, $objectUtilities, $applicationLocale)
     {
         $this->query = $query;
         $this->translationHandler = $translationHandler;
@@ -130,6 +138,7 @@ class Quote
         $this->notification = $notification;
         $this->courseEventModel = $courseEventModel;
         $this->objectUtilities = $objectUtilities;
+        $this->applicationLocale = $applicationLocale;
     }
 
     /**
@@ -453,6 +462,7 @@ class Quote
         elseif ($type == PrivateQuote::QUOTE_TYPE) {
             $options["query"] = $this->query;
             $options["userId"] = $userId;
+            $options["applicationLocale"] = $this->applicationLocale;
             $form = new PrivateQuoteForm(/* $name = */ null, $options);
         }
         $form->bind($quote);
