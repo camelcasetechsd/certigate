@@ -1452,3 +1452,45 @@ msgstr "Send to friend ar"
 
 msgid "I agree"
 msgstr "I agree ar"
+
+msgid "Are you sure you want to delete this quote"
+msgstr "Are you sure you want to delete this quote ar"
+
+msgid "Are you sure you want to delete this settings"
+msgstr "Are you sure you want to delete this settings ar"
+
+msgid "Are you sure you want to delete this role"
+msgstr "Are you sure you want to delete this role ar"
+
+msgid "Are you sure you want to delete this organization"
+msgstr "Are you sure you want to delete this organization ar"
+
+msgid "Are you sure you want to delete this course"
+msgstr "Are you sure you want to delete this course ar"
+
+msgid "Are you sure you want to delete this course event"
+msgstr "Are you sure you want to delete this course event ar"
+
+msgid "Are you sure you want to deactivate this menu"
+msgstr "Are you sure you want to deactivate this menu ar"
+
+msgid "Are you sure you want to activate this menu"
+msgstr "Are you sure you want to activate this menu ar"
+
+msgid "Are you sure you want to deactivate this menu item"
+msgstr "Are you sure you want to deactivate this menu item ar"
+
+msgid "Are you sure you want to activate this menu item"
+msgstr "Are you sure you want to activate this menu item ar"
+
+msgid "Are you sure you want to deactivate this page"
+msgstr "Are you sure you want to deactivate this page ar"
+
+msgid "Are you sure you want to activate this page"
+msgstr "Are you sure you want to activate this page ar"
+
+msgid "Are you sure you want to deactivate this user"
+msgstr "Are you sure you want to deactivate this user ar"
+
+msgid "Are you sure you want to activate this user"
+msgstr "Are you sure you want to activate this user ar"

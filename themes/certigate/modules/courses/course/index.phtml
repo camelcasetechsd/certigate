@@ -40,7 +40,7 @@
                     &nbsp;&nbsp;&nbsp;
                     {{#status}}
                     {{#isAdminUser}}
-                    <a href="/courses/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="deleteCourse({{id}})" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/status}}
 
@@ -54,3 +54,14 @@
 </div>
 {{/content}}
 {{/layout}}
+<script>
+    function deleteCourse(id){
+            message = "{{#translate}}Are you sure you want to delete this course{{/translate}} ..?!";
+            url = '/courses/delete/'+id;
+            bootbox.confirm(message, function(result) {
+                if (result){
+                    window.location.assign(url);
+                }
+            });
+    }    
+</script>

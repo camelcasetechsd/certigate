@@ -53,11 +53,11 @@
                     <a href="/cms/menuitem/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/menuitem/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="toogleMenuItem(false, {{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Deactivate{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{^status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/menuitem/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    <a onclick="toogleMenuItem(true, {{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                 </td>
             </tr>
@@ -95,3 +95,22 @@
 {{/hasPages}}
 {{/content}}
 {{/layout}}
+<script>
+    function toogleMenuItem(status, id){
+            message = '';
+            url = '';
+            if (status){
+                message = "{{#translate}}Are you sure you want to activate this menu item{{/translate}} ..?!";
+                url = '/cms/menuitem/activate/' + id;
+            } else{
+                message = "{{#translate}}Are you sure you want to deactivate this menu item{{/translate}} ..?!";
+                url = '/cms/menuitem/deactivate/' + id;
+            }
+            bootbox.confirm(message, function(result) {
+                if (result){
+                    window.location.assign(url);
+                }
+            });
+    }    
+</script>
+    

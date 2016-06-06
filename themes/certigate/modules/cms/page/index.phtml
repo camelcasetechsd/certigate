@@ -31,11 +31,11 @@
                     <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a  onclick="tooglePage(false,{{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Deactivate{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{^status}}
                     &nbsp;&nbsp;&nbsp;
-                    <a href="/cms/page/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    <a onclick="tooglePage(true,{{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                     {{#isAdminUser}}
                     &nbsp;&nbsp;&nbsp;
@@ -51,3 +51,21 @@
 </div>
 {{/content}}
 {{/layout}}
+<script>
+    function tooglePage(status, id){
+            message = '';
+            url = '';
+            if (status){
+                message = "{{#translate}}Are you sure you want to activate this page{{/translate}} ..?!";
+                url = '/cms/page/activate/' + id;
+            } else{
+                message = "{{#translate}}Are you sure you want to deactivate this page{{/translate}} ..?!";
+                url = '/cms/page/deactivate/' + id;
+            }
+            bootbox.confirm(message, function(result) {
+                if (result){
+                    window.location.assign(url);
+                }
+            });
+    }    
+</script>

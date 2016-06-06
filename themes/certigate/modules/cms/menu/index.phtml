@@ -28,12 +28,12 @@
                 <td>
                     <a href="/cms/menu/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/menu/deactivate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="toogleMenu(false,{{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Deactivate{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{^status}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/cms/menu/activate/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="toogleMenu(true,{{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
                     {{/status}}
                 </td>
             </tr>
@@ -45,3 +45,22 @@
 </div>
 {{/content}}
 {{/layout}}
+<script>
+
+    function toogleMenu(status, id){
+            message = '';
+            url = '';
+            if (status){
+                message = "{{#translate}}Are you sure you want to activate this menu{{/translate}} ..?!";
+                url = '/cms/menu/activate/' + id;
+            } else{
+                message = "{{#translate}}Are you sure you want to deactivate this menu{{/translate}} ..?!";
+                url = '/cms/menu/deactivate/' + id;
+            }
+            bootbox.confirm(message, function(result) {
+                if (result){
+                    window.location.assign(url);
+                }
+            });
+    }
+</script>    

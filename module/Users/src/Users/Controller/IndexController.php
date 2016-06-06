@@ -293,7 +293,7 @@ class IndexController extends ActionController
      * 
      * @access public
      */
-    public function deleteAction()
+    public function deactivateAction()
     {
         $id = $this->params('id');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');

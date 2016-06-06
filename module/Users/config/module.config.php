@@ -93,10 +93,10 @@ return array(
             'userDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/users/delete/:id',
+                    'route' => '/users/deactivate/:id',
                     'defaults' => array(
                         'controller' => 'Users\Controller\Index',
-                        'action' => 'delete',
+                        'action' => 'deactivate',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',

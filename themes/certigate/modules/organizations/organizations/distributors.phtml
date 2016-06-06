@@ -44,7 +44,7 @@
                     <a data-toggle="tooltip" data-placement="left" title="Edit" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#status}}
-                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="deleteOrganization({{id}}) "data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/status}}
                     {{/isAdmin}}
                     {{/orgUser}}
@@ -58,3 +58,15 @@
 {{/content}}
 
 {{/layout}}
+<script>
+    function deleteOrganization(id) {
+
+        message = "{{#translate}}Are you sure you want to delete this organization{{/translate}} ..?!";
+        url = '/organizations/delete/' + id;
+        bootbox.confirm(message, function (result) {
+            if (result) {
+                window.location.assign(url);
+            }
+        });
+    }
+</script>

@@ -26,7 +26,7 @@
                 <td>
                     <a href="/system/settings/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/system/settings/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="deleteSettings({{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
             {{/settings}}
@@ -37,3 +37,15 @@
 </div>
 {{/content}}
 {{/layout}}
+<script>
+    function deleteSettings(id) {
+        
+        message = "{{#translate}}Are you sure you want to delete this settings{{/translate}} ..?!";
+        url = '/system/settings/delete/' + id;
+        bootbox.confirm(message, function (result) {
+            if (result) {
+                window.location.assign(url);
+            }
+        });
+    }
+</script>

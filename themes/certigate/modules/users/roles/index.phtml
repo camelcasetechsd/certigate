@@ -26,7 +26,7 @@
                     &nbsp;
                     <a href="/roles/privileges/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Privileges{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/roles/delete/{{id}}" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="deleteRole({{id}})" class="delete_row" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
             {{/roles}}
@@ -37,3 +37,15 @@
 </div>
 {{/content}}
 {{/layout}}
+<script>
+    function deleteRole(id) {
+        
+        message = "{{#translate}}Are you sure you want to delete this role{{/translate}} ..?!";
+        url = '/roles/delete/' + id;
+        bootbox.confirm(message, function (result) {
+            if (result) {
+                window.location.assign(url);
+            }
+        });
+    }
+</script>

@@ -110,10 +110,10 @@ return array(
             'cmsPageDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/page/delete/:id',
+                    'route' => '/cms/page/deactivate/:id',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\Page',
-                        'action' => 'delete',
+                        'action' => 'deactivate',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',
@@ -266,10 +266,10 @@ return array(
             'cmsMenuItemDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/menuitem/delete/:id',
+                    'route' => '/cms/menuitem/deactivate/:id',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\MenuItem',
-                        'action' => 'delete',
+                        'action' => 'deactivate',
                     ),
                     'constraints' => array(
                         'id' => '[0-9]+',

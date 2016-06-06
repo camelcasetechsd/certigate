@@ -43,12 +43,11 @@
                         <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/users/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
                         {{#statusActive}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/users/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                        <a onclick="toogleUsers(false,{{id}})" data-toggle="tooltip" data-placement="left" title="{{#translate}}Deactivate{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                         {{/statusActive}}
-
                         {{#statusDeleted}}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}" href="/users/activate/{{id}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                        <a onclick="toogleUsers(true,{{id}})" data-toggle="tooltip" data-placement="left" title="{{#translate}}Activate{{/translate}}""><span class="glyphicon glyphicon-arrow-up"></span></a>
                         {{/statusDeleted}}
 
                     </td>
@@ -62,3 +61,22 @@
 {{/content}}
 
 {{/layout}}
+
+<script>
+    function toogleUsers(status, id){
+            message = '';
+            url = '';
+            if (status){
+                message = "{{#translate}}Are you sure you want to activate this user{{/translate}} ..?!";
+                url = '/users/activate/' + id;
+            } else{
+                message = "{{#translate}}Are you sure you want to deactivate this user{{/translate}} ..?!";
+                url = '/users/deactivate/' + id;
+            }
+            bootbox.confirm(message, function(result) {
+                if (result){
+                    window.location.assign(url);
+                }
+            });
+    }    
+</script>

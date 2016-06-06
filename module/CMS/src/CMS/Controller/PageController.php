@@ -171,7 +171,7 @@ class PageController extends ActionController
      * 
      * @access public
      */
-    public function deleteAction()
+    public function deactivateAction()
     {
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');

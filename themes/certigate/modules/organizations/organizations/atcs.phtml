@@ -35,37 +35,34 @@
                     <a href="/organizations/more/{{id}}" title="More">{{#translate}}More{{/translate}}</a>     
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {{#orgUser}}
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
-                        
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
-                    
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {{#isAdmin}}
-                        {{#status}}
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
-                        {{/status}}
-                        {{/isAdmin}}
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#isAdmin}}
+                    {{#status}}
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
+                    {{/isAdmin}}
                     {{/orgUser}}
-                    
+
                     {{^orgUser}}
-                        {{#isAdmin}}
-                      
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
-                      
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
-                     
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {{#status}}
-                       
-                        <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}" href="/organizations/delete/{{id}}"><span class="glyphicon glyphicon-remove"></span></a>
-                        {{/status}}
+                    {{#isAdmin}}
+
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}" href="/organizations/edit/{{id}}"><span class="glyphicon glyphicon-edit"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{#status}}
+                    <a onclick="deleteOrganization({{id}}) "data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/status}}
                     {{/isAdmin}}
                     {{/orgUser}}
 
@@ -79,3 +76,15 @@
 {{/content}}
 
 {{/layout}}
+<script>
+    function deleteOrganization(id) {
+
+        message = "{{#translate}}Are you sure you want to delete this organization{{/translate}} ..?!";
+        url = '/organizations/delete/' + id;
+        bootbox.confirm(message, function (result) {
+            if (result) {
+                window.location.assign(url);
+            }
+        });
+    }
+</script>
