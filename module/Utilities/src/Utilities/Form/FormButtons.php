@@ -13,16 +13,15 @@ namespace Utilities\Form;
  */
 class FormButtons
 {
-
     /**
      * create button
      */
-    const CREATE_BUTTON = "create";
+//    const CREATE_BUTTON = "create";
 
     /**
      * create button text
      */
-    const CREATE_BUTTON_TEXT = "Create";
+//    const CREATE_BUTTON_TEXT = "Create";
 
     /**
      * edit button
@@ -163,4 +162,15 @@ class FormButtons
      * filter button text
      */
     const FILTER_BUTTON_TEXT = "Filter";
+
+    /**
+     * save state button
+     */
+    const SAVE_STATE_BUTTON = "saveState";
+
+    /**
+     * filter button text
+     */
+    const SAVE_STATE_BUTTON_TEXT = "Save State";
+
 }

@@ -3,7 +3,7 @@
 namespace Organizations\Form;
 
 use Utilities\Form\Form;
-
+use Utilities\Form\FormButtons;
 /**
  * User Form
  * 
@@ -79,11 +79,11 @@ class TypeForm extends Form
 
 
         $this->add(array(
-            'name' => 'submit',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Start!',
+                'value' => FormButtons::SAVE_BUTTON_TEXT
             )
         ));
     }

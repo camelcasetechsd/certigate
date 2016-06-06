@@ -28,13 +28,13 @@ class ButtonsFieldset extends Fieldset
     {
         parent::__construct(/* $name = */ (!empty($name)) ? $name : "buttons", $options);
 
-        if (array_key_exists("create_button_only", $options) && $options["create_button_only"] === true) {
+        if (array_key_exists("save_button_only", $options) && $options["save_button_only"] === true) {
             $this->add(array(
-                'name' => FormButtons::CREATE_BUTTON,
+                'name' => FormButtons::SAVE_BUTTON,
                 'type' => 'Zend\Form\Element\Submit',
                 'attributes' => array(
                     'class' => 'pull-left btn-inline btn btn-success',
-                    'value' => FormButtons::CREATE_BUTTON_TEXT,
+                    'value' => FormButtons::SAVE_BUTTON_TEXT,
                 )
             ));
         }

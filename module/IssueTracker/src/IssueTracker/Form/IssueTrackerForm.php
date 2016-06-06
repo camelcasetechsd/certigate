@@ -4,7 +4,7 @@ namespace IssueTracker\Form;
 
 use Utilities\Form\Form;
 use Utilities\Service\Status;
-
+use Utilities\Form\FormButtons;
 /**
  * MenuItem Form
  * 
@@ -110,21 +110,21 @@ class IssueTrackerForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'Create',
+            'name' => FormButtons::SAVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => 'Create',
+                'value' => FormButtons::SAVE_BUTTON_TEXT,
             )
         ));
 
         $this->add(array(
-            'name' => 'reset',
+            'name' => FormButtons::RESET_BUTTON,
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-danger resetButton',
                 'value' => 'Reset',
-                'type' => 'button',
+                'type' => FormButtons::RESET_BUTTON_TEXT,
             )
         ));
     }
