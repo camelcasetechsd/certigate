@@ -22,6 +22,7 @@ function displayPressReleaseFields(pressReleaseType) {
     if ($('#page_form_type :selected').val() == pressReleaseType) {
         $("#page_form_path").parent().hide();
         $("#page_form_path").prop('required',false);
+        $("#page_form_path").val('');
         // show press release inputs at the beginning
         $("#page_form_category").parent().show();
         $("#page_form_category").prop('required',true);
