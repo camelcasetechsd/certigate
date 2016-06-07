@@ -99,7 +99,7 @@ Scenario: Admin approval
 
 
 
-Scenario: Testing Oragnization Edit
+Scenario: Testing Organization Edit
 
     Given I mock the login session as "tmuser"
     And I go to "/organizations/myorganizations"
@@ -111,7 +111,7 @@ Scenario: Testing Oragnization Edit
     And I fill in "pcsNo_class" with "858"
     And I check "atpPrivacyStatement"
     And I press "Submit for admin approval"
-    #wating for admin approval
+    #waiting for admin approval
     Then I should be on "/organizations/myorganizations"
     Then I should see "Atp test 1"
     Then I should not see "Edited organization"

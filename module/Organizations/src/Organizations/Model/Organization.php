@@ -160,9 +160,10 @@ class Organization
      * at the same time
      * 
      * @param int $type
+     * @param int $status ,default is null
      * @return array organizations
      */
-    public function listOrganizations($type)
+    public function listOrganizations($type, $status = null)
     {
         $organizations = $this->query->findBy("Organizations\Entity\OrganizationMeta", array(
             'type' => $type
@@ -172,10 +173,13 @@ class Organization
         foreach ($organizations as $singleOrg) {
             array_push($organizationIds, $singleOrg->getOrganization()->getId());
         }
-
-        return $this->query->findBy("Organizations\Entity\Organization", array(
-                    'id' => $organizationIds
-        ));
+        $criteria = array(
+            "id" => $organizationIds,
+        );
+        if(!is_null($status)){
+            $criteria["status"] = $status;
+        }
+        return $this->query->findBy("Organizations\Entity\Organization", $criteria);
     }
 
     /**
@@ -517,8 +521,13 @@ class Organization
      */
     private function prepareOrganizationTypesForDisplay($organization)
     {
+        if(method_exists($organization, "getId")){
+            $id = $organization->getId();
+        }else{
+            $id = $organization->id;
+        }
         $organizationMetas = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
-            'organization' => $organization->getId()
+            'organization' => $id
         ));
         $types = array();
         foreach ($organizationMetas as $meta) {
@@ -833,6 +842,8 @@ class Organization
     public function customizeOrgEditForm($options, $action, $orgId)
     {
         $form = new OrgForm(/* name */null, $options);
+        $orgObj = new OrganizationEntity();
+        $form->setInputFilter($orgObj->getInputFilter($options['query']));
         $organizationTypes = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
             'organization' => $orgId
         ));

@@ -104,7 +104,7 @@ Scenario: Admin approval
     Then I should see "Atc test 1"
 
 
-Scenario: Testing Oragnization Edit
+Scenario: Testing Organization Edit
 
     Given I mock the login session as "tcauser"
     And I go to "/organizations/myorganizations"
@@ -119,7 +119,7 @@ Scenario: Testing Oragnization Edit
     And I select "Office 2013" from "officeVersion"
     And I check "atcPrivacyStatement"
     And I press "Submit for admin approval"
-    #wating for admin approval
+    #waiting for admin approval
     Then I should be on "/organizations/myorganizations"
     Then I should see "Atc test 1"
     Then I should not see "Edited atc organization"
