@@ -330,7 +330,7 @@ return array(
             'cmsPressReleaseDetails' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/press-release[/:id]',
+                    'route' => '/cms/press-release/details[/:id]',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\PressRelease',
                         'action' => 'details',
