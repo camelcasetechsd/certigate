@@ -326,7 +326,7 @@ class OrganizationsController extends ActionController
 
         $rolesArray = $orgModel->getRequiredRoles($orgModel->getOrganizationTypes(null, $orgObj));
         // you need to have only one role && ownership to edit organization 
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj,/* atLeastOneRoleFlag = */true);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, $orgObj, /* atLeastOneRoleFlag = */ true);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
@@ -490,6 +490,13 @@ class OrganizationsController extends ActionController
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $id);
+
+        // url manipulation
+        if (is_null($organization)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
+
         $isAdminUser = $this->isAdminUser();
 
         $organizationArray = array($organization);
@@ -516,7 +523,11 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organization = $query->find('Organizations\Entity\Organization', $id);
-
+        // url manipulation
+        if (is_null($organization)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);
         $versionModel->approveChanges($organizationArray, $organizationLogs);
@@ -537,6 +548,12 @@ class OrganizationsController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $organization = $query->find('Organizations\Entity\Organization', $id);
+
+        // url manipulation
+        if (is_null($organization)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'resourceNotFound'), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
 
         $organizationArray = array($organization);
         $organizationLogs = $versionModel->getLogEntriesPerEntities(/* $entities = */ $organizationArray, /* $objectIds = */ array(), /* $objectClass = */ null, /* $status = */ Status::STATUS_NOT_APPROVED);

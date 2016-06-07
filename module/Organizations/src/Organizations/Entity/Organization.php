@@ -1241,10 +1241,15 @@ class Organization
         if (array_key_exists('email', $data)) {
             $this->setEmail($data['email']);
         }
-        $this->setCommercialNameAr($data['commercialNameAr']);
-        $this->setOwnerNameAr($data['ownerNameAr']);
-        $this->setCRNo($data['CRNo']);
-
+        if (array_key_exists('commercialNameAr', $data)) {
+            $this->setCommercialNameAr($data['commercialNameAr']);
+        }
+        if (array_key_exists('CRNo', $data)) {
+            $this->setCRNo($data['CRNo']);
+        }
+        if (array_key_exists('ownerNameAr', $data)) {
+            $this->setOwnerNameAr($data['ownerNameAr']);
+        }
         if (array_key_exists('focalContactPerson_id', $data)) {
             $this->focalContactPerson = $data['focalContactPerson_id'];
         }
