@@ -150,6 +150,16 @@ return array(
                     ),
                 ),
             ),
+            'somethingWentWrong' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/something_went_wrong',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'somethingWentWrong',
+                    ),
+                ),
+            ),
         )
     )
 );

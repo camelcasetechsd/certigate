@@ -57,5 +57,9 @@ class ErrorController extends ActionController
     {
         return new ViewModel();
     }
+    public function somethingWentWrongAction()
+    {
+        return new ViewModel();
+    }
 
 }

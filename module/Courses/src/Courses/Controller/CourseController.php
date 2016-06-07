@@ -512,6 +512,11 @@ class CourseController extends ActionController
             $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
             $redirectUrl = $this->getEvent()->getRouter()->assemble(/* $params = */ array(), array('name' => $routeName, 'force_canonical' => true));
             $url = $courseEventModel->enrollCourse($courseEvent, /* $user = */ $currentUser, $redirectUrl);
+            // in case of throwing error "linit trails reached"
+            if (is_null($url)) {
+                $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'somethingWentWrong'));
+                return $this->redirect()->toUrl($url);
+            }
         }
         $this->redirect()->toUrl($url);
     }

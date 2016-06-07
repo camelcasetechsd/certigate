@@ -1416,3 +1416,6 @@ msgstr "Subscribe periodic notifications ar"
 
 msgid "Create new course event"
 msgstr "Create new course event ar"
+
+msgid "Oops sorry it looks like something went wrong and an error has occurred .. please try again later"
+msgstr "Oops sorry it looks like something went wrong and an error has occurred .. please try again later ar"
