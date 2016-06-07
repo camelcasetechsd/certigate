@@ -22,6 +22,7 @@ return array(
             'CMS\Model\Page' => 'CMS\Model\PageFactory',
             'CMS\Model\PressReleaseSubscription' => 'CMS\Model\PressReleaseSubscriptionFactory',
             'CMS\Model\MenuItem' => 'CMS\Model\MenuItemFactory',
+            'CMS\Model\Press' => 'CMS\Model\PressFactory',
             'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
             'CMS\Event\RouteEvent' => 'CMS\Event\RouteEventFactory',
         ),
@@ -329,9 +330,9 @@ return array(
             'cmsPressReleaseDetails' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/press[/:id]',
+                    'route' => '/cms/press-release[/:id]',
                     'defaults' => array(
-                        'controller' => 'CMS\Controller\Press',
+                        'controller' => 'CMS\Controller\PressRelease',
                         'action' => 'details',
                     ),
                     'constraints' => array(
@@ -342,9 +343,9 @@ return array(
             'pdf' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/pdf[/:newsId]',
+                    'route' => '/cms/press-release/pdf[/:newsId]',
                     'defaults' => array(
-                        'controller' => 'CMS\Controller\Press',
+                        'controller' => 'CMS\Controller\PressRelease',
                         'action' => 'pdf',
                     ),
                     'constraints' => array(
