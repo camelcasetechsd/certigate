@@ -16,12 +16,12 @@ class FormButtons
     /**
      * create button
      */
-//    const CREATE_BUTTON = "create";
+    const CREATE_BUTTON = "create";
 
     /**
      * create button text
      */
-//    const CREATE_BUTTON_TEXT = "Create";
+    const CREATE_BUTTON_TEXT = "Create";
 
     /**
      * edit button

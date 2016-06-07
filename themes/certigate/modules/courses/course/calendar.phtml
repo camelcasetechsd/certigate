@@ -23,7 +23,6 @@
                         </ul>
                     </div>
 
-                    {{#courseEvents.count}}
                     <!-- Table -->
                     <table class="table">
                         <thead>
@@ -39,6 +38,7 @@
                         </thead>
                         <tbody>
                             {{#courseEvents}}
+                            {{#status}}
                             {{^hideFromCalendar}}
                             {{^alreadyStarted}}
                             <tr>
@@ -89,12 +89,11 @@
                             </tr>
                             {{/alreadyStarted}}
                             {{/hideFromCalendar}}
+                            {{/status}}
                             {{/courseEvents}}
 
                         </tbody>
                     </table>
-                    {{/courseEvents.count}}
-
 
                 </div>
             </div>
@@ -140,3 +139,17 @@ No Courses Yet !
 {{/hasPages}}
 {{/content}}
 {{/layout}}
+
+<script>
+    $(document).ready(function () {
+        /**
+         * hide courses without valid course events 
+         * to overcome listing all course events 
+         */
+        $.each($('tbody'), function () {
+            if ($(this).children().length === 0) {
+                $(this).parents('.row').hide();
+            }
+        })
+    });
+</script>
