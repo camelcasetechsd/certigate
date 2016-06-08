@@ -12,6 +12,7 @@ use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Utilities\Service\Status;
 use Organizations\Service\Messages;
+use Utilities\Service\MessageTypes;
 
 /**
  * Atps Controller
@@ -90,7 +91,7 @@ class OrganizationsController extends ActionController
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
 
-        $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC, /*$status =*/ Status::STATUS_ACTIVE);
+        $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC, /* $status = */ Status::STATUS_ACTIVE);
 
         foreach ($variables['atcs'] as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
@@ -113,7 +114,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP, /*$status =*/ Status::STATUS_ACTIVE);
+        $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP, /* $status = */ Status::STATUS_ACTIVE);
         foreach ($variables['atps'] as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -135,7 +136,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR, /*$status =*/ Status::STATUS_ACTIVE);
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_DISTRIBUTOR, /* $status = */ Status::STATUS_ACTIVE);
         foreach ($organizations as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -157,7 +158,7 @@ class OrganizationsController extends ActionController
     {
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
-        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER, /*$status =*/ Status::STATUS_ACTIVE);
+        $organizations = $organizationModel->listOrganizations(OrgEntity::TYPE_RESELLER, /* $status = */ Status::STATUS_ACTIVE);
         foreach ($organizations as $org) {
             $variables['orgUser'] = $organizationUserModel->isOrganizationUser($this, $org);
             $variables['isAdmin'] = $organizationUserModel->isAdmin();
@@ -222,8 +223,12 @@ class OrganizationsController extends ActionController
             $variables['renewForm'] = $customizedForm;
         }
         else {
-            $variables['messages'] = Messages::NO_RENEWAL_TYPE;
-            $variables['type'] = 'warning'; // TODO : change it after merging new layout messages
+//            $variables['messages'] = Messages::NO_RENEWAL_TYPE;
+//            $variables['type'] = 'warning'; // TODO : change it after merging new layout messages
+            $variables['messages'] = array(
+            'message' => Messages::NO_RENEWAL_TYPE,
+            'type' => MessageTypes::WARNING
+            );
         }
 
         return new ViewModel($variables);
@@ -296,7 +301,7 @@ class OrganizationsController extends ActionController
 
             $customizedForm->setData($data);
             $data['creatorId'] = $creatorId;
-            
+
             if ($customizedForm->isValid()) {
                 $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, $creatorId, $userEmail, $isAdminUser);
             }
@@ -362,13 +367,13 @@ class OrganizationsController extends ActionController
             );
 
             $customizedForm->setData($data);
-            
+
             // file not updated
             if (isset($fileData['CRAttachment']['name']) && empty($fileData['CRAttachment']['name'])) {
                 // Change required flag to false for any previously uploaded files
                 $customizedForm->getInputFilter()->get('CRAttachment')->setRequired(false);
             }
-            
+
             if ($customizedForm->isValid()) {
                 $orgModel->saveOrganization($this, $data, $orgObj, $oldStatus, $oldLongitude, $oldLatitude, /* $creatorId = */ null, /* $userEmail = */ null, $isAdminUser);
             }
