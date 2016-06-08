@@ -53,6 +53,7 @@ class Issues
      * @var System\Service\Cache\CacheHandler
      */
     protected $systemCacheHandler;
+    protected $router;
 
     /**
      * Set needed properties
@@ -62,14 +63,17 @@ class Issues
      * 
      * @param Utilities\Service\Query\Query $query
      * @param Notifications\Service\Notification $notification
+     * @param System\Service\Cache\CacheHandler $systemCacheHandler
+     * @param Zend\Mvc\Router\RouteInterface $router
      */
-    public function __construct($query, $notification, $systemCacheHandler)
+    public function __construct($query, $notification, $systemCacheHandler, $router)
     {
         $this->query = $query;
         $this->notification = $notification;
         $this->systemCacheHandler = $systemCacheHandler;
         $this->random = new Random();
         $this->paginator = new Paginator(new PaginatorAdapter($query, "IssueTracker\Entity\Issue"));
+        $this->router = $router;
     }
 
     /**
@@ -276,7 +280,7 @@ class Issues
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $templateParameters = array(
-            'issue' => $issueObj
+            'issueUrl' => $this->router->assemble(array("issueId" => $issueObj->getId()), array('name' => 'viewIssues', 'force_canonical' => true))
         );
 
         $adminTemplateName = MailTemplates::ADMIN_NEW_ISSUE;

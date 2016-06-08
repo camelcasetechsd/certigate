@@ -322,7 +322,7 @@ class IndexController extends ActionController
          * 2- other roles will be be redirected ti /no-access
          */
         if ($auth->hasIdentity()) {
-            // only admin can access register while he being logged in 
+
             if (!(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) || in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']))) {
 
                 $url = $this->getEvent()->getRouter()->assemble(array(), array(
