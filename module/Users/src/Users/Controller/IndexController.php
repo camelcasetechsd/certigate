@@ -314,19 +314,27 @@ class IndexController extends ActionController
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        // only admin can access register while he being logged in 
-        if ($auth->hasIdentity() && !(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) || in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']))) {
+        
+        /**
+         * page is anonymous , but if we're dealing with logged in user it should 
+         * act as this ACL Rules :
+         * 1- Admin && TCA && TM will be redirected to /users/new
+         * 2- other roles will be be redirected ti /no-access
+         */
+        if ($auth->hasIdentity()) {
+            // only admin can access register while he being logged in 
+            if (!(in_array(Role::ADMIN_ROLE, $storage['roles']) || in_array(Role::TEST_CENTER_ADMIN_ROLE, $storage['roles']) || in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']))) {
 
-            $url = $this->getEvent()->getRouter()->assemble(array(), array(
-                'name' => 'noaccess'));
-            $this->redirect()->toUrl($url);
+                $url = $this->getEvent()->getRouter()->assemble(array(), array(
+                    'name' => 'noaccess'));
+                $this->redirect()->toUrl($url);
+            }
+            else {
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array(
+                    'name' => 'userCreate'));
+                $this->redirect()->toUrl($url);
+            }
         }
-        else {
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'new'), array(
-                'name' => 'userCreate'));
-            $this->redirect()->toUrl($url);
-        }
-
 
         if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
             $options['excludedRoles'][] = Role::ADMIN_ROLE;

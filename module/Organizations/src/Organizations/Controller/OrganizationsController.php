@@ -223,8 +223,6 @@ class OrganizationsController extends ActionController
             $variables['renewForm'] = $customizedForm;
         }
         else {
-//            $variables['messages'] = Messages::NO_RENEWAL_TYPE;
-//            $variables['type'] = 'warning'; // TODO : change it after merging new layout messages
             $variables['messages'] = array(
             'message' => Messages::NO_RENEWAL_TYPE,
             'type' => MessageTypes::WARNING
