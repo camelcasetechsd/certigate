@@ -223,7 +223,11 @@ class CourseEvent
             $courseEvents = $course->getCourseEvents();
             $course->canDownload = false;
             $course->currentUserEnrolled = false;
-            foreach ($courseEvents as $courseEvent) {
+            foreach ($courseEvents as $key => $courseEvent) {
+                // to unset deleted course events 
+                if ($courseEvent->getStatus() === Status::STATUS_INACTIVE) {
+                    unset($courseEvents[$key]);
+                }
                 $nonAuthorizedEnroll = false;
                 $courseFull = false;
                 $canEnroll = true;
@@ -267,6 +271,7 @@ class CourseEvent
                     $course->canDownload = $course->currentUserEnrolled = true;
                 }
             }
+
             $canEvaluate = false;
             $criteria = Criteria::create();
             $expr = Criteria::expr();
@@ -356,14 +361,14 @@ class CourseEvent
                 'redirectUrl' => $redirectBackUrl . "/" . $token
             ),
         );
-        
+
         try {
             $responseContent = $this->estoreApi->callEdge(/* $edge = */ ApiCalls::CART_ADD, /* $method = */ Request::METHOD_POST, /* $queryParameters = */ array(), $parameters);
         } catch (\Exception $e) {
             if ($e->getMessage() === "trials limit reached") {
-                return ;
+                return;
             }
-            
+
             if (property_exists($responseContent, "success")) {
                 if (is_null($existingCourseEventUser)) {
                     $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
@@ -546,6 +551,28 @@ class CourseEvent
         ));
 
         if ((is_null($courseId) && !is_null($courseEvent)) || (!is_null($course) && !is_null($courseEvent))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * function to handle showing message if courses exists but with no 
+     * course evnets
+     * @param type Zend\Paginator\Paginator
+     * @return boolean
+     */
+    public function handleNoCourseEvents($courses)
+    {
+        // to handle displaying message if all courses without course events 
+        $emptyCoursesCount = null;
+        foreach ($courses as $course) {
+            if (count($course->getCourseEvents()) == 0) {
+                $emptyCoursesCount++;
+            }
+        }
+//        var_dump($emptyCoursesCount === count($courses));exit;
+        if ($emptyCoursesCount === count($courses)) {
             return true;
         }
         return false;

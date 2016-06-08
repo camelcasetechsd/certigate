@@ -78,6 +78,8 @@ class CourseController extends ActionController
         $variables['previousPageNumber'] = $previousPageNumber;
 
         $variables['courses'] = $courseEventModel->setCourseEventsPrivileges($courseModel->getCurrentItems(), /* $prepareForDisplayFlag = */ true);
+        // to handle if courses already exists  but with no course events 
+        $variables['emptyFlag'] = $courseEventModel->handleNoCourseEvents($variables['courses']);
         return new ViewModel($variables);
     }
 

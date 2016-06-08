@@ -3,8 +3,19 @@
 {{$content}}
 <div class="container static-cont">
     <h1 class="title-blue"> {{#translate}}Courses Calendar{{/translate}}</h1>
-
+     <!--if courses exist but without ant course events-->
+    {{#emptyFlag}}
+    No Courses Yet !
+    {{/emptyFlag}}
+    
+    <!--to handle if no courses exist--> 
+    {{^courses.count}}
+    No Courses Yet !
+    {{/courses.count}}
+    
     {{#courses}}
+
+    {{#courseEvents.count}}
     <div class="row">
         <div class="col-md-1">&nbsp;</div>
         <div class="media col-md-10">
@@ -21,8 +32,7 @@
                         <ul class="list-inline list-unstyled">
                             <a href="/courses/more/{{id}}" target="_blank" title="More"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
                         </ul>
-                    </div>
-
+                    </div>  
                     <!-- Table -->
                     <table class="table">
                         <thead>
@@ -38,7 +48,6 @@
                         </thead>
                         <tbody>
                             {{#courseEvents}}
-                            {{#status}}
                             {{^hideFromCalendar}}
                             {{^alreadyStarted}}
                             <tr>
@@ -89,12 +98,11 @@
                             </tr>
                             {{/alreadyStarted}}
                             {{/hideFromCalendar}}
-                            {{/status}}
                             {{/courseEvents}}
 
                         </tbody>
                     </table>
-
+                    {{/courseEvents.count}}
                 </div>
             </div>
             <hr>
@@ -102,9 +110,7 @@
         <div class="col-md-1">&nbsp;</div>
     </div>
     {{/courses}}
-    {{^courses}}
-    No Courses Yet !
-    {{/courses}}
+
 
 </div>
 
@@ -134,22 +140,5 @@
 </div>
 <br>
 {{/hasPages}}
-{{^hasPages}}
-No Courses Yet !
-{{/hasPages}}
 {{/content}}
 {{/layout}}
-
-<script>
-    $(document).ready(function () {
-        /**
-         * hide courses without valid course events 
-         * to overcome listing all course events 
-         */
-        $.each($('tbody'), function () {
-            if ($(this).children().length === 0) {
-                $(this).parents('.row').hide();
-            }
-        })
-    });
-</script>
