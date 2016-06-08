@@ -364,18 +364,17 @@ class CourseEvent
 
         try {
             $responseContent = $this->estoreApi->callEdge(/* $edge = */ ApiCalls::CART_ADD, /* $method = */ Request::METHOD_POST, /* $queryParameters = */ array(), $parameters);
-        } catch (\Exception $e) {
-            if ($e->getMessage() === "trials limit reached") {
-                return;
-            }
-
             if (property_exists($responseContent, "success")) {
                 if (is_null($existingCourseEventUser)) {
                     $this->query->setEntity('Courses\Entity\CourseEventUser')->save($courseEventUser, $courseEventUserData);
                 }
                 return $responseContent->redirectUrl;
             }
-            throw new \Exception("Adding course to cart failed");
+        } catch (\Exception $e) {
+            if ($e->getMessage() === "trials limit reached") {
+                return;
+            }            
+//            throw new \Exception("Adding course to cart failed");
         }
     }
 
