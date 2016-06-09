@@ -24,6 +24,7 @@
             <div class="panel-body">
                 <a href="/courses/resources/new/{{courseId}}"><button class="btn btn-small btn-success">{{#translate}}Bulk upload Resources{{/translate}}</button></a>
                 <br><br>
+                {{#resources.count}}
                 <form id="resourcesForm" action="" method="POST" >
                     <div class="panel panel-default">
                         <div class="panel-heading">{{#translate}}Resources{{/translate}}</div>
@@ -67,6 +68,10 @@
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit" >{{^isAdminUser}}Submit for admin approval{{/isAdminUser}}{{#isAdminUser}}Save Resources{{/isAdminUser}} </button>
                 </form>
+                {{/resources.count}}
+                {{^resources.count}}
+                <b>No Resources Yet !</b>
+                {{/resources.count}}
             </div>
         </div>
     </div>

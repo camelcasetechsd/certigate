@@ -11,7 +11,10 @@ function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
     oneFileTypes = $.parseJSON(oneFileTypes);
     $(typeSelector).change(function () {
         var typeValue = $(this).val();
-        if ($.inArray(typeValue, oneFileTypes) > -1) {
+        var slectedText = $(this).find('option[value=' + typeValue + ']').text();
+        if ($.inArray(slectedText, oneFileTypes) > -1) {
+            // remove all previously added sub-forms
+            $('input[value="Remove"]').click();
             $(addMoreSelector).hide();
         } else {
             $(addMoreSelector).show();
