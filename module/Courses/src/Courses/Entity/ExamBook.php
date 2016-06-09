@@ -441,11 +441,21 @@ class ExamBook
         if (array_key_exists("proctors", $data)) {
             $this->setProctors($data["proctors"]);
         }
-        $this->setAtc($data["atc"])
-                ->setCourse($data["course"])
-                ->setDateHj($data["dateHj"])
-                ->setDate($data["date"])
-                ->setStudentsNo($data["studentsNo"]);
+        if (array_key_exists("atc", $data)) {
+            $this->setAtc($data["atc"]);
+        }
+        if (array_key_exists("course", $data)) {
+            $this->setCourse($data["course"]);
+        }
+        if (array_key_exists("dateHj", $data)) {
+            $this->setDateHj($data["dateHj"]);
+        }
+        if (array_key_exists("date", $data)) {
+            $this->setDate($data["date"]);
+        }
+        if (array_key_exists("studentsNo", $data)) {
+            $this->setStudentsNo($data["studentsNo"]);
+        }
     }
 
     /**
