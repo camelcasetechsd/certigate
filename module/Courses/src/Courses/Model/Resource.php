@@ -115,7 +115,7 @@ class Resource
                 $this->query->setEntity('Courses\Entity\Resource')->save($resource);
             }
         }
-//exit;
+
         if ($notifyAdminFlag === true) {
             $this->sendMail($userEmail, $editFlag);
         }
@@ -134,7 +134,7 @@ class Resource
     public function validateResources($form, $resource, &$data)
     {
         $formErrors = new FormElementErrors();
-        $oneFileTypes = $this->getTranslatedResourceTypes();
+        $oneFileTypes = ResourceEntity::$oneFileTypes;
 
         $validationOutput = array();
         // prepare data for validation
@@ -190,14 +190,15 @@ class Resource
         foreach ($validatedFields as $validatedField) {
             $form->get($validatedField)->setMessages(array());
         }
-        $currentType = $form->get("type")->getValue();
+        $currentTypeId = $form->get("type")->getValue();
+        $currentType = $this->getResourceTypeTitle($currentTypeId);
         if (in_array($currentType, $oneFileTypes)) {
             $moreThanOneFileType = false;
             if ($moreThanOneResource === true) {
                 $moreThanOneFileType = true;
             }
             else {
-                $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $currentType, "course" => $courseId));
+                $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $currentTypeId, "course" => $courseId));
                 if (!is_null($existingResource)) {
                     $moreThanOneFileType = true;
                 }
@@ -300,14 +301,6 @@ class Resource
                     }
                 }
             }
-
-//            /**
-//             * validate existance of one type file in DB other than the requested
-//             * one  
-//             */
-//            foreach ($editedResourceType as $key => $type) {
-//                $selectedTypeTitle = $this->getResourceTypeTitle($key);
-//            }
         }
 
         if (isset($dataArray['editedName'])) {

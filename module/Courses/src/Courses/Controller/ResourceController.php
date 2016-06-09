@@ -195,7 +195,7 @@ class ResourceController extends ActionController
             } catch (\Exception $e) {
                 $messages[] = array(
                     "message" => $e->getMessage(),
-                    "type" => MessageTypes::WARNING
+                    "type" => MessageTypes::DANGER
                 );
             }
         }
