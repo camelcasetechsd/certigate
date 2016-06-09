@@ -277,20 +277,37 @@ class Resource
      */
     public function updateListedResources($dataArray, $isAdminUser, $userEmail, $courseId)
     {
-//        $oneFileTypes = $this->getTranslatedResourceTypes();
+
         if (isset($dataArray['editedType'])) {
             $editedResourceType = $dataArray['editedType'];
-            foreach ($editedResourceType as $key => $type) {
-                $selectedTypeTitle = $this->query->findOneBy('Courses\Entity\ResourceType', array(
-                            'id' => $type
-                        ))->getTitle();
-                if (in_array($selectedTypeTitle, ResourceEntity::$oneFileTypes)) {
-                    $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $type, "course" => $courseId));
-                    if (!is_null($existingResource)) {
-                        throw new \Exception("$selectedTypeTitle Type can not accept more than one file");
+
+            /**
+             * validate number of requested changes to make sure that user ask
+             * for more than one type of "One type files" 
+             */
+            $valuesCount = array_count_values($editedResourceType);
+            foreach ($valuesCount as $key => $value) {
+                $selectedTypeTitle = $this->getResourceTypeTitle($key);
+                if (in_array($selectedTypeTitle, ResourceEntity::$oneFileTypes) && $value > 1) {
+                    throw new \Exception("$selectedTypeTitle Type can not accept more than one file");
+                }
+                else {
+                    if (in_array($selectedTypeTitle, ResourceEntity::$oneFileTypes)) {
+                        $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $key, "course" => $courseId));
+                        if (!is_null($existingResource)) {
+                            throw new \Exception("$selectedTypeTitle Type can not accept more than one file , already one exists");
+                        }
                     }
                 }
             }
+
+//            /**
+//             * validate existance of one type file in DB other than the requested
+//             * one  
+//             */
+//            foreach ($editedResourceType as $key => $type) {
+//                $selectedTypeTitle = $this->getResourceTypeTitle($key);
+//            }
         }
 
         if (isset($dataArray['editedName'])) {
@@ -358,6 +375,17 @@ class Resource
         if ($isAdminUser === false) {
             $this->sendMail($userEmail, /* $editFlag = */ true);
         }
+    }
+
+    /**
+     * function to return title of specified resource type 
+     * @param string $typeId
+     */
+    public function getResourceTypeTitle($typeId)
+    {
+        return $this->query->findOneBy('Courses\Entity\ResourceType', array(
+                    'id' => $typeId
+                ))->getTitle();
     }
 
     public function listResourcesForEdit($resources)
