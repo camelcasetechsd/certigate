@@ -3,6 +3,7 @@
 namespace IssueTracker\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\Criteria;
 
 class IssueRepository extends EntityRepository
 {
@@ -20,8 +21,9 @@ class IssueRepository extends EntityRepository
             $select = $queryBuilder->expr()->count('i');
         }
         $queryBuilder->select($select)
-                ->from("IssueTracker\Entity\Issue", "i");
-
+                ->from("IssueTracker\Entity\Issue", "i")
+                ->orderBy('i.created', Criteria::DESC)
+        ;
         if ($countFlag === false) {
             if (is_numeric($offset)) {
                 $queryBuilder->setFirstResult($offset);
