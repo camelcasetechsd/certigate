@@ -18,6 +18,7 @@ use System\Service\Cache\CacheHandler;
 use System\Service\Settings;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
+use IssueTracker\Service\IssueMailStatuses;
 
 class Issues
 {
@@ -104,7 +105,7 @@ class Issues
         $issueObj->setFilePath(base64_encode(serialize($paths)));
         $issueObj->setStatus(Status::STATUS_ACTIVE);
         $this->query->setEntity('IssueTracker\Entity\Issue')->save($issueObj, $data);
-        $this->sendMails($issueObj);
+        $this->sendMails($issueObj, IssueMailStatuses::MAIL_CREATE_STATUS_TEXT);
     }
 
     /**
@@ -217,6 +218,7 @@ class Issues
         ));
         $issue->setStatus(Status::STATUS_CLOSED);
         $this->query->save($issue);
+        $this->sendMails($issue, IssueMailStatuses::MAIL_CLOSE_STATUS_TEXT);
     }
 
     public function reopenIssue($issueId)
@@ -255,7 +257,7 @@ class Issues
      * @throws \Exception From email is not set
      * @throws \Exception Admin email is not set
      */
-    private function sendMails($issueObj)
+    private function sendMails($issueObj, $statusText)
     {
         $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
         $cachedSystemData = $this->systemCacheHandler->getCachedSystemData($forceFlush);
@@ -282,10 +284,17 @@ class Issues
         $templateParameters = array(
             'issueUrl' => $this->router->assemble(array("issueId" => $issueObj->getId()), array('name' => 'viewIssues', 'force_canonical' => true))
         );
+        if ($statusText === IssueMailStatuses::MAIL_CREATE_STATUS_TEXT) {
+            $adminTemplateName = MailTemplates::ADMIN_NEW_ISSUE;
+            $userTemplateName = MailTemplates::USER_NEW_ISSUE;
+            $subject = MailSubjects::NEW_ISSUE;
+        }
+        else if ($statusText === IssueMailStatuses::MAIL_CLOSE_STATUS_TEXT) {
+            $adminTemplateName = MailTemplates::ADMIN_CLOSE_ISSUE;
+            $userTemplateName = MailTemplates::USER_CLOSE_ISSUE;
+            $subject = MailSubjects::CLOSE_ISSUE;
+        }
 
-        $adminTemplateName = MailTemplates::ADMIN_NEW_ISSUE;
-        $userTemplateName = MailTemplates::USER_NEW_ISSUE;
-        $subject = MailSubjects::NEW_ISSUE;
         $AdminNotificationMailArray = array(
             'to' => $adminEmail,
             'from' => $from,

@@ -100,6 +100,16 @@ class MailTemplates
     const USER_NEW_ISSUE = "user-new-issue";
 
     /**
+     * admin template to notify him about issues created
+     */
+    const ADMIN_CLOSE_ISSUE = "admin-issue-closed";
+
+    /**
+     * user template for creating issues
+     */
+    const USER_CLOSE_ISSUE = "user-issue-closed";
+
+    /**
      * 
      */
     const ORGANIZATION_RENEWAL_TEMPLATE = "organization-renewal";
