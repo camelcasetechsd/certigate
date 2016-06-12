@@ -101,11 +101,11 @@ class PrivateQuoteReservationForm extends Form
         ));
         
         $this->add(array(
-            'name' => FormButtons::SAVE_BUTTON,
+            'name' => FormButtons::RESERVE_BUTTON,
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
-                'value' => FormButtons::SAVE_BUTTON_TEXT,
+                'value' => FormButtons::RESERVE_BUTTON_TEXT,
             )
         ));
         
