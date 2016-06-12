@@ -66,7 +66,7 @@ class Exam
     public function saveBookingRequest($data, $config)
     {
         $bookObj = new ExamBook();
-        // admin pending request
+// admin pending request
         $bookObj->setAdminStatus(ExamBook::ADMIN_PENDING);
         $this->query->setEntity('Courses\Entity\ExamBook')->save($bookObj, $data);
 
@@ -84,11 +84,11 @@ class Exam
         }
 
         if (isset($tvtcMail)) {
-            // send tvtc new mail
+// send tvtc new mail
             $this->sendMail($bookObj, $tvtcMail);
         }
         if (count($toBeNotifiedArray) > 0) {
-            // send admin new mail
+// send admin new mail
             $this->sendMail($bookObj, $toBeNotifiedArray, /* $notificationEmailFlag = */ true);
         }
     }
@@ -113,7 +113,7 @@ class Exam
         }
         $requests = $this->query->filter('Courses\Entity\ExamBook', $criteria);
         foreach ($requests as $req) {
-            // showing tvtc status
+// showing tvtc status
             switch ($req->tvtcStatus) {
                 case 1 :
                     $req->tvtcStatus = "Approved";
@@ -129,7 +129,7 @@ class Exam
                     $req->tvtcStatus = "";
                     break;
             }
-            // showing admin status
+// showing admin status
             switch ($req->adminStatus) {
                 case 1 :
                     $req->adminStatus = "Approved";
@@ -150,21 +150,30 @@ class Exam
         return $requests;
     }
 
-    public function respondeToExamRequest($response, $requestId, $tvtcResponse = null)
+    public function respondeToExamRequest($response, $requestId, $tvtcResponse = null, $token = null)
     {
         $request = $this->query->findOneBy('Courses\Entity\ExamBook', array(
             'id' => $requestId
         ));
-        // tvtc response 
+// tvtc response 
         if ($tvtcResponse != null) {
-            $request->setTvtcStatus($response);
-            $this->query->save($request);
+            if ($this->validateTvtcToken($request, $token)) {
+                $request->setTvtcStatus($response);
+// set token equal null to prevent using it again
+                $request->setToken(false);
+                $this->query->save($request);
+            }
+            else {
+                return false;
+            }
         }
-        // admin response
+// admin response
         else {
             $request->setAdminStatus($response);
             $this->query->save($request);
         }
+
+        return true;
     }
 
     /**
@@ -192,14 +201,16 @@ class Exam
         $serverUrlString = $serverUrl();
         $templateParameters = array(
             "request" => $request,
-            "serverUrl" => $serverUrlString
+            "serverUrl" => $serverUrlString,
+            "token" => $request->getToken()
         );
-        // if tctv mail
+
+// if tctv mail
         if ($notificationEmailFlag === false) {
             $templateName = MailTemplates::EXAM_APPROVAL_REQUEST_TEMPLATE;
             $subject = MailSubjects::EXAM_APPROVAL_REQUEST_SUBJECT;
         }
-        // if admin mail
+// if admin mail
         else {
             $templateName = MailTemplates::NEW_EXAM_NOTIFICATION_TEMPLATE;
             $subject = MailSubjects::NEW_EXAM_NOTIFICATION_SUBJECT;
@@ -212,6 +223,20 @@ class Exam
             'subject' => $subject,
         );
         $this->notification->notify($mailArray);
+    }
+
+    /**
+     * function to validate tvtc acceptance or rejection mail response token
+     * @param Curses\Entity\ExamBook $requestObj 
+     * @param string $token 
+     * @return boolean
+     */
+    private function validateTvtcToken($requestObj, $token)
+    {
+        if ($requestObj->getToken() === $token) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -25,6 +25,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @property Doctrine\Common\Collections\ArrayCollection $proctors
  * @property \DateTime $created
  * @property \DateTime $modified
+ * @property string $token
  * 
  * @package courses
  * @subpackage entity
@@ -137,7 +138,13 @@ class ExamBook
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $proctors;
-    
+
+    /**
+     * @ORM\Column(type="string" , nullable=true)
+     * @var string
+     */
+    public $token;
+
     /**
      * Set needed properties
      * @access public
@@ -146,7 +153,7 @@ class ExamBook
     {
         $this->proctors = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      * 
@@ -222,6 +229,17 @@ class ExamBook
     public function getAtc()
     {
         return $this->atc;
+    }
+
+    /**
+     * Get secutity token
+     * 
+     * @access public
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 
     /**
@@ -348,7 +366,7 @@ class ExamBook
         $this->proctors = $proctors;
         return $this;
     }
-    
+
     /**
      * Get Proctors
      * 
@@ -360,7 +378,7 @@ class ExamBook
     {
         return $this->proctors;
     }
-    
+
     /**
      * Get created
      * 
@@ -412,6 +430,18 @@ class ExamBook
     }
 
     /**
+     * function to insert security token if true set hash for unique token 
+     * if false set token equal null to make 1 time URL 
+     * @param boolean $token falg for token 
+     * @return \Courses\Entity\ExamBook
+     */
+    public function setToken($token)
+    {
+        $token ? $this->token = sha1(uniqid(rand(), true)) : $this->token = null;
+        return $this;
+    }
+
+    /**
      * Convert the object to an array.
      * 
      * 
@@ -456,6 +486,7 @@ class ExamBook
         if (array_key_exists("studentsNo", $data)) {
             $this->setStudentsNo($data["studentsNo"]);
         }
+        $this->setToken(true);
     }
 
     /**
