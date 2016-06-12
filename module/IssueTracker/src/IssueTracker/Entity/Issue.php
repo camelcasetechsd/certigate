@@ -83,7 +83,7 @@ class Issue
     public $user;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      * @var \DateTime
      */
     public $created;

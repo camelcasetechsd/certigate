@@ -94,6 +94,11 @@ class MailSubjects
     const NEW_ISSUE = "Cerigate new Issue";
 
     /**
+     * new issue
+     */
+    const CLOSE_ISSUE = "Cerigate Issue has been closed";
+
+    /**
      * Organization expiration 1 week before subject
      */
     const ORGANIZATION_RENEWAL = "Organization Expiration Date ";

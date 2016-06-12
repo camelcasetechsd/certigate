@@ -71,6 +71,7 @@ class IssueTrackerController extends ActionController
                 return $this->redirect()->toUrl($url);
             }
         }
+        $variables['descriptions'] = json_encode($query->findAll('IssueTracker\Entity\IssueCategory'));
         $variables['trackerForm'] = $this->getFormView($issueTrackerForm);
         return new ViewModel($variables);
     }

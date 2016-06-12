@@ -5,6 +5,7 @@ namespace IssueTracker\Form;
 use Utilities\Form\Form;
 use Utilities\Service\Status;
 use Utilities\Form\FormButtons;
+
 /**
  * MenuItem Form
  * 
@@ -49,9 +50,11 @@ class IssueTrackerForm extends Form
                 'required' => true,
             ),
             'options' => array(
-                'label' => 'Parent',
+                'label' => 'Category',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'IssueTracker\Entity\IssueCategory',
+                'display_empty_item' => true,
+                'empty_item_label' => "-- Select --",
                 'label_generator' => function($targetEntity) {
                     return $targetEntity->getTitle();
                 },
