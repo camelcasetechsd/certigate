@@ -10,6 +10,8 @@ use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
 use Translation\Service\Locale\Locale;
 use Utilities\Service\Status;
+use Utilities\Service\MessageTypes;
+
 /**
  * PressReleaseController Controller
  * 
@@ -58,9 +60,11 @@ class PressReleaseController extends ActionController
             $pressReleaseSubscriptionForm = new PressReleaseSubscriptionForm(/* $name = */ null, /* $options = */ reset($subscriptionsStatus));
             $variables['pressReleaseSubscriptionForm'] = $this->getFormView($pressReleaseSubscriptionForm);
         }
-        $failureMessage = $this->params('failureMessage', null);
-        $status = $this->params('status', null);
-        $unsubscribeFlag = $this->params('unsubscribeFlag', null);
+
+        $failureMessage = $this->flashMessenger()->getErrorMessages()[0];
+        $status = $this->flashMessenger()->getInfoMessages()[0];
+        $unsubscribeFlag = $this->flashMessenger()->getInfoMessages()[1];
+
         if (!is_null($failureMessage) || !is_null($status) || !is_null($unsubscribeFlag)) {
             $variables["messages"] = $pressReleaseSubscriptionModel->getSubscriptionResult((bool) $status, (bool) $unsubscribeFlag, $failureMessage);
         }
@@ -102,14 +106,16 @@ class PressReleaseController extends ActionController
             else {
                 $failureMessage = $pressReleaseSubscriptionForm->getMessagesAsString(/* $includeFieldNameFlag = */ false);
             }
+
+            // delete all perivious messages
+            $this->flashMessenger()->clearMessages();
+            // falier maeesage 
+            $this->flashMessenger()->addErrorMessage($failureMessage);
+            // status and unsubscripeFlag
+            $this->flashMessenger()->addInfoMessage($status)->addInfoMessage(0);
         }
 
-        $url = $this->getEvent()->getRouter()->assemble(array(
-            'action' => 'index',
-            'failureMessage' => $failureMessage,
-            'status' => (int) $status,
-            'unsubscribeFlag' => 0,
-                ), array('name' => 'cmsPressReleaseList'));
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsPressReleaseList'));
         return $this->redirect()->toUrl($url);
     }
 
@@ -137,12 +143,14 @@ class PressReleaseController extends ActionController
             $status = true;
         }
 
-        $url = $this->getEvent()->getRouter()->assemble(array(
-            'action' => 'index',
-            'failureMessage' => $message,
-            'status' => (int) $status,
-            'unsubscribeFlag' => 1,
-                ), array('name' => 'cmsPressReleaseList'));
+        // delete all perivious messages
+        $this->flashMessenger()->clearMessages();
+        // falier maeesage 
+        $this->flashMessenger()->addErrorMessage($message);
+        // status and unsubscripeFlag
+        $this->flashMessenger()->addInfoMessage($status)->addInfoMessage(1);
+
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsPressReleaseList'));
         return $this->redirect()->toUrl($url);
     }
 
@@ -243,4 +251,4 @@ class PressReleaseController extends ActionController
         $languageFlag ? $dompdf->stream($newsDetails->title . '.pdf') : $dompdf->stream($newsDetails->titleAr . '.pdf');
     }
 
-}               
+}
