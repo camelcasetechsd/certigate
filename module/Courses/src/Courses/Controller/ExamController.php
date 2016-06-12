@@ -100,7 +100,7 @@ class ExamController extends ActionController
         $variables = array();
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
 
-        $requests = $examModel->listRequests($isAdminUser, /*$userData =*/ $this->storage);
+        $requests = $examModel->listRequests($isAdminUser, /* $userData = */ $this->storage);
         $variables['requests'] = $requests;
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
@@ -162,10 +162,16 @@ class ExamController extends ActionController
     public function tvtcAcceptAction()
     {
         $requestId = $this->params('id');
+        $token = $this->params('token');
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
-        $examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_APPROVED, $requestId, true);
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
-        $this->redirect()->toUrl($url);
+        if ($examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_APPROVED, $requestId, true, $token)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'invalidToken'));
+            $this->redirect()->toUrl($url);
+        }
     }
 
     /**
@@ -174,10 +180,16 @@ class ExamController extends ActionController
     public function tvtcDeclineAction()
     {
         $requestId = $this->params('id');
+        $token = $this->params('token');
         $examModel = $this->getServiceLocator()->get('Courses\Model\Exam');
-        $examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_DECLINED, $requestId, true);
-        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
-        $this->redirect()->toUrl($url);
+        if ($examModel->respondeToExamRequest(\Courses\Entity\ExamBook::TVTC_DECLINED, $requestId, true, $token)) {
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
+            $this->redirect()->toUrl($url);
+        }
+        else {
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'invalidToken'));
+            $this->redirect()->toUrl($url);
+        }
     }
 
     /**
@@ -196,19 +208,19 @@ class ExamController extends ActionController
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $examBook = $query->find('Courses\Entity\ExamBook', $id);
 
-        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateExamAccessControl(/* $response = */$this->getResponse(), /* $userData = */$this->storage, $examBook);
+        $validationResult = $this->getServiceLocator()->get('aclValidator')->validateExamAccessControl(/* $response = */$this->getResponse(), /* $userData = */ $this->storage, $examBook);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
             return $this->redirect()->toUrl($validationResult["redirectUrl"]);
         }
 
         $proctorRole = $query->findOneBy(/* $entityName = */'Users\Entity\Role', /* $criteria = */ array('name' => Role::PROCTOR_ROLE));
-        $proctors = $query->findBy(/* $entityName = */"Organizations\Entity\OrganizationUser", /* $criteria = */ array("role" => $proctorRole ,"organization" => $examBook->getAtc()->getId() ));
+        $proctors = $query->findBy(/* $entityName = */"Organizations\Entity\OrganizationUser", /* $criteria = */ array("role" => $proctorRole, "organization" => $examBook->getAtc()->getId()));
         if (empty($proctors)) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array("message" => "NO_PROCTOR_FOUND"), array('name' => 'resource_not_found'));
             $this->redirect()->toUrl($url);
         }
-        
+
         $options = array();
         $options['query'] = $query;
         $options['organizationId'] = $examBook->getAtc()->getId();
@@ -223,7 +235,7 @@ class ExamController extends ActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $query->setEntity("Courses\Entity\ExamBook")->save($examBook, /*$data =*/ array(),/*$flushAll =*/ true);
+                $query->setEntity("Courses\Entity\ExamBook")->save($examBook, /* $data = */ array(), /* $flushAll = */ true);
                 $form->bind($examBook);
             }
         }
@@ -231,4 +243,5 @@ class ExamController extends ActionController
         $variables['examBookProctorForm'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
+
 }

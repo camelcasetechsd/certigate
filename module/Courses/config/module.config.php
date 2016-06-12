@@ -5,7 +5,7 @@ namespace Courses;
 use Courses\Entity\PublicQuote;
 use Courses\Entity\PrivateQuote;
 
-$quoteTypeConstraint = "(".strtolower(PublicQuote::QUOTE_TYPE)."|".strtolower(PrivateQuote::QUOTE_TYPE).")";
+$quoteTypeConstraint = "(" . strtolower(PublicQuote::QUOTE_TYPE) . "|" . strtolower(PrivateQuote::QUOTE_TYPE) . ")";
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
@@ -657,7 +657,7 @@ return array(
             'tvtcaccept' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/exam/tvtc/accept[/:id]',
+                    'route' => '/courses/exam/tvtc/accept[/:id[/:token]]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Exam',
                         'action' => 'tvtcAccept',
@@ -671,7 +671,7 @@ return array(
             'tvtcdecline' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/courses/exam/tvtc/decline[/:id]',
+                    'route' => '/courses/exam/tvtc/decline[/:id[/:token]]',
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Exam',
                         'action' => 'tvtcDecline',

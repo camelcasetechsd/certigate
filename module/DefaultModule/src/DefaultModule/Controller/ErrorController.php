@@ -49,7 +49,7 @@ class ErrorController extends ActionController
     public function resourceNotFoundAction()
     {
         $variables = array();
-        $variables["message"] = ErrorMessages::getErrorMessage(/*$messageKey =*/ $this->params('message'));
+        $variables["message"] = ErrorMessages::getErrorMessage(/* $messageKey = */ $this->params('message'));
         return new ViewModel($variables);
     }
 
@@ -57,7 +57,13 @@ class ErrorController extends ActionController
     {
         return new ViewModel();
     }
+
     public function somethingWentWrongAction()
+    {
+        return new ViewModel();
+    }
+
+    public function invalidTokenAction()
     {
         return new ViewModel();
     }

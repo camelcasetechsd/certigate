@@ -160,6 +160,16 @@ return array(
                     ),
                 ),
             ),
+            'invalidToken' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/invalid-token',
+                    'defaults' => array(
+                        'controller' => 'DefaultModule\Controller\Error',
+                        'action' => 'invalidToken',
+                    ),
+                ),
+            ),
         )
     )
 );
