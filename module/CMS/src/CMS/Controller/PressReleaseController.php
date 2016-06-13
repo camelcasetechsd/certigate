@@ -10,6 +10,8 @@ use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
 use Translation\Service\Locale\Locale;
 use Utilities\Service\Status;
+use TCPDF;
+
 /**
  * PressReleaseController Controller
  * 
@@ -214,7 +216,7 @@ class PressReleaseController extends ActionController
         $pressModel = $this->getServiceLocator()->get('CMS\Model\Press');
         $newsId = $this->params('newsId');
         $newsDetails = $pressModel->getMoreDetails($newsId)[0];
-        $dompdf = new \DOMPDF();
+
         $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         $languageFlag = $translatorHandler->getLocale() === Locale::LOCALE_AR_AR ? $translationFlag = false : $translationFlag = true;
         $this->renderer = $this->getServiceLocator()->get('ViewRenderer');
@@ -230,17 +232,20 @@ class PressReleaseController extends ActionController
             'author' => $newsDetails->author,
             'language' => $languageFlag
         ));
-        // make a header as html  
+
+        $tcpdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $tcpdf->AddPage();
+        $tcpdf->SetFont('aealarabiya', '', 12);
+        $tcpdf->setRTL(!true);
+
         $html = new MimePart($content);
         $html->type = "text/html";
-        $body = new MimeMessage("Hello");
+        $body = new MimeMessage();
         $body->setParts(array($html));
-
-        // add html to convert it to pdf
-        $dompdf->load_html($html->getContent());
-        $dompdf->set_paper("letter", "portrait");
-        $dompdf->render();
-        $languageFlag ? $dompdf->stream($newsDetails->title . '.pdf') : $dompdf->stream($newsDetails->titleAr . '.pdf');
+        // render html with our variables 
+        $tcpdf->writeHTML($html->getContent(), true, 0, true, 0);
+        // creating the output PDF  && D for download 
+        $languageFlag ? $tcpdf->Output($newsDetails->title . '.pdf', 'D') : $tcpdf->Output($newsDetails->titleAr . '.pdf', 'D');
     }
 
-}               
+}
