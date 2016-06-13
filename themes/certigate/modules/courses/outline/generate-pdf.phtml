@@ -1,9 +1,9 @@
-{{% BLOCKS }}
+<!--{{% BLOCKS }}
 {{<layout}}
-<!--hide header-->
+hide header
 {{$headerContainer}}
 {{/headerContainer}}
-<!--hide footer-->
+hide footer
 {{$footerContainer}}
 {{/footerContainer}}
 {{$content}}
@@ -36,4 +36,33 @@
     </div>
 </div>
 {{/content}}
-{{/layout}}
+{{/layout}}-->
+
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Course Outlines</h1>
+        <table class="table">
+            <tr>
+                <th>Outline Title</th>
+                <th>Duration in minutes</th>
+            </tr>
+            <?php foreach ($this->outlines as $outline) { ?>
+                <?php if ($outline->getStatus()) : ?>
+                    <tr>
+                        <td>
+                            <?php echo $outline->getTitle(); ?>
+                        </td>
+                        <td>
+                            <?php echo $outline->getDuration(); ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            <?php } ?>
+        </table>
+
+    </body>
+
+</html>
