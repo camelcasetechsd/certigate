@@ -216,12 +216,20 @@ class ModelCatalogOption extends Model
 
         if (array_key_exists("product_id", $data)) {
             $product_id = (int) $data['product_id'];
-            if ($data['type'] == 'select' || $data['type'] == 'radio' || $data['type'] == 'checkbox' || $data['type'] == 'image') {
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int) $product_id . "', option_id = '" . (int) $option_id . "', required = '" . (int) $data['required'] . "'");
-                $product_option_id = $this->db->getLastId();
+            // if adding new option value to list 
+            if (array_key_exists('additionOperation', $data)) {
+                if ($data['additionOperation']) {
+                    $product_option = $this->db->query("SELECT * FROM `" . DB_PREFIX . "product_option` WHERE product_id = '" . (int) $product_id . "' ");
+                    $product_option_id = $product_option->row['product_option_id'];
+                }
+                // adding the first one
+                else {
+                    $product_option_id = $this->saveProductOption($data, $product_id, $option_id);
+                }
             }
+            // if key does not exist -> working from admin panel
             else {
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int) $product_id . "', option_id = '" . (int) $option_id . "', value = '" . $this->db->escape($data['value']) . "', required = '" . (int) $data['required'] . "'");
+                $product_option_id = $this->saveProductOption($data, $product_id, $option_id);
             }
         }
 
@@ -244,7 +252,7 @@ class ModelCatalogOption extends Model
         return array(
             "option_value_id" => $product_option_value_id,
             "option_id" => $product_option_id,
-                );
+        );
     }
 
     public function editOptionValue($option_value_id, $data)
@@ -255,6 +263,18 @@ class ModelCatalogOption extends Model
                 $this->db->query("UPDATE " . DB_PREFIX . "option_value_description SET language_id = '" . (int) $language_id . "', name = '" . $this->db->escape($option_value_description['name']) . "' WHERE option_value_id = '" . (int) $option_value_id . "'");
             }
         }
+    }
+
+    private function saveProductOption($data, $product_id, $option_id)
+    {
+        if ($data['type'] == 'select' || $data['type'] == 'radio' || $data['type'] == 'checkbox' || $data['type'] == 'image') {
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int) $product_id . "', option_id = '" . (int) $option_id . "', required = '" . (int) $data['required'] . "'");
+            $product_option_id = $this->db->getLastId();
+        }
+        else {
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_option SET product_id = '" . (int) $product_id . "', option_id = '" . (int) $option_id . "', value = '" . $this->db->escape($data['value']) . "', required = '" . (int) $data['required'] . "'");
+        }
+        return $product_option_id;
     }
 
 }
