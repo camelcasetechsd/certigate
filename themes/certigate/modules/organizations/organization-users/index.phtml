@@ -19,12 +19,26 @@
         <tbody>
             {{#organizationUsers}}
             <tr>
-                <td>{{user.firstName}}{{#user.middleName}} {{user.middleName}}{{/user.middleName}} {{user.lastName}}</td>
-                <td>{{role.name}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{user.firstName}}{{#user.middleName}} {{user.middleName}}{{/user.middleName}} {{user.lastName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{user.firstNameAr}}{{#user.middleNameAr}} {{user.middleNameAr}}{{/user.middleNameAr}} {{user.lastNameAr}}
+                    {{/locale_ar}}
+                </td>
+                <td>
+                    {{#locale_en}}
+                    {{role.name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{role.nameAr}}
+                    {{/locale_ar}}        
+                </td>
                 <td>
                     {{^isCurrentUser}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/organization-users/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/organization-users/delete/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isCurrentUser}}
                 </td>
             </tr>

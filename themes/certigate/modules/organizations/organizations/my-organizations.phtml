@@ -4,16 +4,16 @@
 
 <br/>
 <div class="panel panel-default atcs-list">
-    <div class="panel-heading">My Organizations</div>
+    <div class="panel-heading">{{#translate}}My Organizations{{/translate}}</div>
 
     <!-- Table -->
     <table class="table">
         <thead>
             <tr>
-                <th>Commercial Name</th>
-                <th>Type</th>
-                <th>License Expiration</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Commercial Name{{/translate}}</th>
+                <th>{{#translate}}Type{{/translate}}</th>
+                <th>{{#translate}}License Expiration{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -23,9 +23,18 @@
                 {{/expirationFlag}}
                 {{^expirationFlag}}
             <tr>
-             {{/expirationFlag}}    
-                <td>{{organization.commercialName}}</td>
-                <td>{{type}}</td>
+                {{/expirationFlag}}    
+                <td>
+                    {{#locale_en}}
+                    {{organization.commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{organization.commercialNameAr}}
+                    {{/locale_ar}}        
+                </td>
+                <td>
+                    {{#translate}}{{type}}{{/translate}}
+                </td>
                 <td>{{expirationDate}}</td>
                 <td>
                     <a href="/organizations/more/{{organization.id}}" title="More">More</a>     

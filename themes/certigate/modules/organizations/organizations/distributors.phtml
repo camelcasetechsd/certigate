@@ -11,18 +11,32 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Commercial Name</th>
-                <th>City</th>
-                <th>Phone</th>
-                <th>WebSite</th>
-                <th colspan="2">Actions</th>
+                <th>{{#translate}}Commercial Name{{/translate}}</th>
+                <th>{{#translate}}City{{/translate}}</th>
+                <th>{{#translate}}Phone{{/translate}}</th>
+                <th>{{#translate}}WebSite{{/translate}}</th>
+                <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
             {{#distributors}}
             <tr>
-                <td>{{commercialName}}</td>
-                <td>{{city}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{commercialName}}
+                    {{/locale_ar}}        
+                </td>
+                <td>
+                    {{#locale_en}}
+                    {{city}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{city}}
+                    {{/locale_ar}}        
+                </td>
                 <td>{{phone1}}</td>
                 <td>{{website}}</td>
                 <td>

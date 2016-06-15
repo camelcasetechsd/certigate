@@ -12,9 +12,7 @@
         <thead>
             <tr>
                 <th>{{#translate}}Commercial Name{{/translate}}</th>
-                <th>{{#translate}}Commercial Name in Arabic{{/translate}}</th>
                 <th>{{#translate}}City{{/translate}}</th>
-                <th>{{#translate}}City in Arabic{{/translate}}</th>
                 <th>{{#translate}}Phone{{/translate}}</th>
                 <th>{{#translate}}WebSite{{/translate}}</th>
                 <th>{{#translate}}ATP License Expiration{{/translate}}</th>
@@ -24,10 +22,22 @@
         <tbody>
             {{#atps}}
             <tr>
-                <td>{{commercialName}}</td>
-                <td>{{commercialNameAr}}</td>
-                <td>{{city}}</td>
-                <td>{{cityAr}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{commercialName}}
+                    {{/locale_ar}}        
+                </td>
+                <td>
+                    {{#locale_en}}
+                    {{city}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{city}}
+                    {{/locale_ar}}        
+                </td>
                 <td>{{phone1}}</td>
                 <td>{{website}}</td>
                 <td>{{atpLicenseExpiration}}</td>

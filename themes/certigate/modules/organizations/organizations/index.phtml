@@ -12,13 +12,10 @@
         <thead>
             <tr>
                 <th>{{#translate}}Commercial name{{/translate}}</th>
-                <th>{{#translate}}Commercial name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Owner name{{/translate}}</th>
-                <th>{{#translate}}Owner name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Type{{/translate}}</th>
                 <th>{{#translate}}E-mail{{/translate}}</th>
                 <th>{{#translate}}City{{/translate}}</th>
-                <th>{{#translate}}City in Arabic{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
@@ -26,15 +23,35 @@
         <tbody>
             {{#organizations}}
             <tr class="{{^status}}container-inactive{{/status}}">
-                <td><a href="{{website}}" target="_blank">{{commercialName}}</a></td>
-                <td><a href="{{website}}" target="_blank">{{commercialNameAr}}</a></td>
-                <td>{{ownerName}}</td>
-                <td>{{ownerNameAr}}</td>
-                <td>{{typeText}}</td>
+                <td>
+                    <a href="{{website}}" target="_blank">
+                        {{#locale_en}}
+                        {{commercialName}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{commercialNameAr}}
+                        {{/locale_ar}}        
+                    </a>
+                </td>
+                <td>
+                    {{#locale_en}}
+                    {{ownerName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{ownerNameAr}}
+                    {{/locale_ar}}        
+                </td>
+                <td>{{#translate}}{{typeText}}{{/translate}}</td>
                 <td><a href="mailto:{{email}}" target="_blank">{{email}}</a></td>
-                <td>{{city}}</td>
-                <td>{{cityAr}}</td>
-                <td>{{statusText}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{city}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{city}}
+                    {{/locale_ar}}
+                </td>
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>
                     <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
                     &nbsp;&nbsp;&nbsp;
@@ -56,14 +73,14 @@
 {{/content}}
 {{/layout}}
 <script>
-    function deleteOrganization(id) {
+            function deleteOrganization(id) {
 
-        message = "{{#translate}}Are you sure you want to delete this organization{{/translate}} ..?!";
-        url = '/organizations/delete/' + id;
-        bootbox.confirm(message, function (result) {
-            if (result) {
-                window.location.assign(url);
+            message = "{{#translate}}Are you sure you want to delete this organization{{/translate}} ..?!";
+                    url = '/organizations/delete/' + id;
+                    bootbox.confirm(message, function (result) {
+                    if (result) {
+                    window.location.assign(url);
+                    }
+                    });
             }
-        });
-    }
 </script>
