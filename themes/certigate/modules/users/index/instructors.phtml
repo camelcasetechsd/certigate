@@ -15,9 +15,7 @@
                 <tr>
                     <th>{{#translate}}Photo{{/translate}}</th>
                     <th>{{#translate}}First Name{{/translate}}</th>
-                    <th>{{#translate}}First Name in Arabic{{/translate}}</th>
                     <th>{{#translate}}Last Name{{/translate}}</th>
-                    <th>{{#translate}}Last Name in Arabic{{/translate}}</th>
                     <th>{{#translate}}User Name{{/translate}}</th>
                     <th>{{#translate}}Email{{/translate}}</th>
                     <th>{{#translate}}Country{{/translate}}</th>
@@ -28,10 +26,22 @@
                 {{#users}}
                 <tr>
                     <th scope="row"><img src="{{photo}}" data-toggle="tooltip" data-placement="left" title="{{name}}" class="user-photos" style="height: 70px !important;width: 70px !important;"></th>
-                    <td>{{firstName}}</td>
-                    <td>{{firstNameAr}}</td>
-                    <td>{{lastName}}</td>
-                    <td>{{lastNameAr}}</td>
+                    <td>
+                        {{#locale_en}}
+                        {{firstName}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{firstNameAr}}
+                        {{/locale_ar}}        
+                    </td>
+                    <td>
+                        {{#locale_en}}
+                        {{lastName}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{lastNameAr}}
+                        {{/locale_ar}}        
+                    </td>
                     <td>{{username}}</td>
                     <td>{{email}}</td>
                     <td>{{countryText}}</td>

@@ -15,9 +15,7 @@
                     <th>{{#translate}}Photo{{/translate}}</th>
                     <th>{{#translate}}ID{{/translate}}</th>
                     <th>{{#translate}}First Name{{/translate}}</th>
-                    <th>{{#translate}}First Name in Arabic{{/translate}}</th>
                     <th>{{#translate}}Last Name{{/translate}}</th>
-                    <th>{{#translate}}Last Name in Arabic{{/translate}}</th>
                     <th>{{#translate}}User Name{{/translate}}</th>
                     <th>{{#translate}}Email{{/translate}}</th>
                     <th>{{#translate}}Country{{/translate}}</th>
@@ -30,10 +28,22 @@
                 <tr>
                     <th scope="row"><img src="{{photo}}" data-toggle="tooltip" data-placement="left" title="{{name}}" class="user-photos" style="height: 70px !important;width: 70px !important;"></th>
                     <td>{{id}}</td>
-                    <td>{{firstName}}</td>
-                    <td>{{firstNameAr}}</td>
-                    <td>{{lastName}}</td>
-                    <td>{{lastNameAr}}</td>
+                    <td>
+                        {{#locale_en}}
+                        {{firstName}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{firstNameAr}}
+                        {{/locale_ar}}        
+                    </td>
+                    <td>
+                        {{#locale_en}}
+                        {{lastName}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{lastNameAr}}
+                        {{/locale_ar}}        
+                    </td>
                     <td>{{username}}</td>
                     <td>{{email}}</td>
                     <td>{{countryText}}</td>
@@ -63,20 +73,20 @@
 {{/layout}}
 
 <script>
-    function toogleUsers(status, id){
+            function toogleUsers(status, id){
             message = '';
-            url = '';
-            if (status){
-                message = "{{#translate}}Are you sure you want to activate this user{{/translate}} ..?!";
-                url = '/users/activate/' + id;
+                    url = '';
+                    if (status){
+            message = "{{#translate}}Are you sure you want to activate this user{{/translate}} ..?!";
+                    url = '/users/activate/' + id;
             } else{
-                message = "{{#translate}}Are you sure you want to deactivate this user{{/translate}} ..?!";
-                url = '/users/deactivate/' + id;
+            message = "{{#translate}}Are you sure you want to deactivate this user{{/translate}} ..?!";
+                    url = '/users/deactivate/' + id;
             }
             bootbox.confirm(message, function(result) {
-                if (result){
-                    window.location.assign(url);
-                }
+            if (result){
+            window.location.assign(url);
+            }
             });
-    }    
+            }
 </script>

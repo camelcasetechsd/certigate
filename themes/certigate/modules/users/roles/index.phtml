@@ -12,15 +12,20 @@
         <thead>
             <tr>
                 <th>{{#translate}}Title{{/translate}}</th>
-                <th>{{#translate}}Title in Arabic{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
             {{#roles}}
             <tr>
-                <td>{{name}}</td>
-                <td>{{nameAr}}</td>
+                <td> 
+                    {{#locale_en}}
+                    {{name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{nameAr}}
+                    {{/locale_ar}}        
+                </td>
                 <td>
                     <a href="/roles/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;
@@ -38,14 +43,14 @@
 {{/content}}
 {{/layout}}
 <script>
-    function deleteRole(id) {
-        
-        message = "{{#translate}}Are you sure you want to delete this role{{/translate}} ..?!";
-        url = '/roles/delete/' + id;
-        bootbox.confirm(message, function (result) {
-            if (result) {
-                window.location.assign(url);
+            function deleteRole(id) {
+
+            message = "{{#translate}}Are you sure you want to delete this role{{/translate}} ..?!";
+                    url = '/roles/delete/' + id;
+                    bootbox.confirm(message, function (result) {
+                    if (result) {
+                    window.location.assign(url);
+                    }
+                    });
             }
-        });
-    }
 </script>

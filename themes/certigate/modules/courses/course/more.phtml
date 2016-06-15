@@ -7,16 +7,9 @@
         <div class="container">
             <div class="row row-centered">
                 <div class="col-xs-12 col-centered  text-center">
-                    <h1 class="course-name">
-                        {{#locale_en}}
-                        {{course.name}}
-                        {{/locale_en}}
-                        {{#locale_ar}}
-                        {{course.nameAr}}
-                        {{/locale_ar}}
-                    </h1>
+                    <h1 class="course-name">{{course.name}}</h1>
                     <div class="inner-cont">
-                        <span>{{course.duration}} {{#translate}}day{{/translate}}(s). </span>
+                        <span>{{course.duration}} day(s). </span>
                     </div>
                 </div>
             </div>
@@ -56,23 +49,9 @@
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <td>{{#translate}}Name{{/translate}}</td>
-                                        <td>
-                                            {{#locale_en}}
-                                            {{name}}
-                                            {{/locale_en}}
-                                            {{#locale_ar}}
-                                            {{nameAr}}
-                                            {{/locale_ar}}                                        </td>
+                                        <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
                                     </tr><tr>
-                                        <td>{{#translate}}Brief{{/translate}}</td>
-                                        <td>
-                                            {{#locale_en}}
-                                            {{brief}}
-                                            {{/locale_en}}
-                                            {{#locale_ar}}
-                                            {{briefAr}}
-                                            {{/locale_ar}}                                        </td>
+                                        <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
                                     </tr><tr>
                                         <td>{{#translate}}Time{{/translate}}</td>
                                         <td>
@@ -123,25 +102,9 @@
                                     <tr>
                                         <td>{{startDate}}</td>
                                         <td>{{endDate}}</td>
-                                        <td>
-                                            {{ai.firstName}} {{ai.lastName}}
-                                        </td>
-                                        <td>
-                                            {{#locale_en}}
-                                            {{atp.commercialName}}
-                                            {{/locale_en}}
-                                            {{#locale_ar}}
-                                            {{atp.commercialNameAr}}
-                                            {{/locale_ar}}
-                                        </td>
-                                        <td>
-                                            {{#locale_en}}
-                                            {{atp.city}}
-                                            {{/locale_en}}
-                                            {{#locale_ar}}
-                                            {{atp.cityAr}}
-                                            {{/locale_ar}}
-                                        </td>
+                                        <td>{{ai.firstName}} {{ai.lastName}}</td>
+                                        <td>{{atp.commercialName}}</td>
+                                        <td>{{atp.city}}</td>
                                     </tr>
                                     {{/alreadyStarted}}
                                     {{/hideFromCalendar}}
@@ -170,6 +133,7 @@
                                     {{#outlines.count}}
                                     <tr>
                                         <th>{{#translate}}Title{{/translate}}</th>
+                                        <th>{{#translate}}Title in Arabic{{/translate}}</th>
                                         <th>{{#translate}}Duration (minutes){{/translate}}</th>
                                     </tr>
                                     {{/outlines.count}}
@@ -178,16 +142,9 @@
                                     {{#outlines}}
                                     {{#statusActive}}
                                     <tr>
-                                        <td>
-                                            {{#locale_en}}
-                                            {{title}}
-                                            {{/locale_en}}
-                                            {{#locale_ar}}
-                                            {{titleAr}}
-                                            {{/locale_ar}}                                                          </td>
-                                        <td>
-                                            {{duration}}
-                                        </td>
+                                        <td>{{title}}</td>
+                                        <td>{{titleAr}}</td>
+                                        <td>{{duration}}</td>
                                     </tr>
                                     {{/statusActive}}
                                     {{/outlines}} 
