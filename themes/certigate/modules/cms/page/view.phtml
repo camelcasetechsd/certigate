@@ -2,10 +2,20 @@
 {{<layout}}
 {{$content}}
 <div class="container static-cont">
-    <h1 class="title-blue"> {{title}}</h1>
+    {{#locale_en}}
+    <h1 class="title-blue">{{title}}</h1>
+    {{/locale_en}}
+    {{#locale_ar}}
+    <h1 class="title-blue">{{titleAr}}</h1>
+    {{/locale_ar}}
     <div class=" row">
         <div class="col-lg-10 centered">
-            {{{body}}}
+            {{#locale_en}}
+                {{{body}}}
+            {{/locale_en}}
+            {{#locale_ar}}
+                {{{bodyAr}}}
+            {{/locale_ar}}
         </div>
     </div>
     <hr class="featurette-divider">   

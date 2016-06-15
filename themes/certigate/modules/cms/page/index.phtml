@@ -11,7 +11,12 @@
     <table class="table">
         <thead>
             <tr>
+                {{#locale_en}}
                 <th>{{#translate}}Title{{/translate}}</th>
+                {{/locale_en}}
+                {{#locale_ar}}
+                <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                {{/locale_ar}}
                 <th>{{#translate}}Path{{/translate}}</th>
                 <th>{{#translate}}Type{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
@@ -22,10 +27,15 @@
         <tbody>
             {{#pages}}
             <tr class="{{^status}}container-inactive{{/status}}" >
-                <td>{{title}}</td>         
+                {{#locale_en}}
+                    <td>{{title}}</td>         
+                {{/locale_en}}
+                {{#locale_ar}}
+                    <td>{{titleAr}}</td>         
+                {{/locale_ar}}
                 <td>{{path}}</td>
-                <td>{{type}}</td>
-                <td>{{statusText}}</td>
+                <td>{{#translate}}{{type}}{{/translate}}</td>
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>{{created}}</td>
                 <td>
                     <a href="/cms/page/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>

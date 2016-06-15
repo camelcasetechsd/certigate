@@ -18,7 +18,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th>{{#translate}}Title{{/translate}}</th>
+                {{#locale_en}}
+                    <th>{{#translate}}Title{{/translate}}</th>
+                {{/locale_en}}
+                {{#locale_ar}}
+                    <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                {{/locale_ar}}
                 <th>{{#translate}}Menu Item Parent{{/translate}}</th>
                 <th>{{#translate}}Page Path{{/translate}}</th>
                 <th>{{#translate}}Direct Url{{/translate}}</th>
@@ -33,10 +38,20 @@
         <tbody>
             {{#menuItems}}
             <tr class="{{^status}}container-inactive{{/status}} {{^menu.status}}container-inactive{{/menu.status}}" >
-                <td>{{title}}</td>
+                {{#locale_en}}
+                    <td>{{title}}</td>
+                {{/locale_en}}
+                {{#locale_ar}}
+                    <td>{{titleAr}}</td>
+                {{/locale_ar}}
                 <td>
                     {{#parent}}
-                    {{parent.title}}
+                        {{#locale_en}}
+                            {{parent.title}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                            {{parent.titleAr}}
+                        {{/locale_ar}}
                     {{/parent}}
                     {{^parent}}
                     Root
@@ -44,7 +59,12 @@
                 </td>
                 <td>{{page.path}}</td>
                 <td>{{directUrl}}</td>
-                <td>{{menu.title}}</td>
+                {{#locale_en}}
+                    <td>{{menu.title}}</td>
+                {{/locale_en}}
+                {{#locale_ar}}
+                    <td>{{menu.titleAr}}</td>
+                {{/locale_ar}}
                 <td>{{weight}}</td>
                 <td>{{statusText}}</td>
                 <td>{{menu.statusText}}</td>
@@ -96,21 +116,21 @@
 {{/content}}
 {{/layout}}
 <script>
-    function toogleMenuItem(status, id){
+            function toogleMenuItem(status, id){
             message = '';
-            url = '';
-            if (status){
-                message = "{{#translate}}Are you sure you want to activate this menu item{{/translate}} ..?!";
-                url = '/cms/menuitem/activate/' + id;
+                    url = '';
+                    if (status){
+            message = "{{#translate}}Are you sure you want to activate this menu item{{/translate}} ..?!";
+                    url = '/cms/menuitem/activate/' + id;
             } else{
-                message = "{{#translate}}Are you sure you want to deactivate this menu item{{/translate}} ..?!";
-                url = '/cms/menuitem/deactivate/' + id;
+            message = "{{#translate}}Are you sure you want to deactivate this menu item{{/translate}} ..?!";
+                    url = '/cms/menuitem/deactivate/' + id;
             }
             bootbox.confirm(message, function(result) {
-                if (result){
-                    window.location.assign(url);
-                }
+            if (result){
+            window.location.assign(url);
+            }
             });
-    }    
+            }
 </script>
-    
+

@@ -11,8 +11,12 @@
     <table class="table">
         <thead>
             <tr>
+                {{#locale_en}}                
                 <th>{{#translate}}Title{{/translate}}</th>
+                {{/locale_en}}
+                {{#locale_ar}}
                 <th>{{#translate}}Title in Arabic{{/translate}}</th>
+                {{/locale_ar}}
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th>{{#translate}}Created{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
@@ -21,8 +25,12 @@
         <tbody>
             {{#menus}}
             <tr class="{{^status}}container-inactive{{/status}}">
+                {{#locale_en}}
                 <td>{{title}}</td>
+                {{/locale_en}}
+                {{#locale_ar}}
                 <td>{{titleAr}}</td>
+                {{/locale_ar}}
                 <td>{{statusText}}</td>
                 <td>{{created}}</td>
                 <td>
