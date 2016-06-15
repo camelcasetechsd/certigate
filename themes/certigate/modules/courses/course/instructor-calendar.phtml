@@ -24,7 +24,12 @@
             {{#courseEvents}}
             <tr>
                 <td>
+                    {{#locale_en}}
                     {{course.name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{course.nameAr}}
+                    {{/locale_ar}}
                 </td>
 
                 <td>
@@ -37,7 +42,12 @@
                     {{course.duration}} {{#translate}}Days{{/translate}}
                 </td>
                 <td>
+                    {{#locale_en}}
                     {{atp.commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{atp.commercialNameAr}}
+                    {{/locale_ar}}
                 </td>
                 <td>
                     {{course.evaluation.percentage}} %

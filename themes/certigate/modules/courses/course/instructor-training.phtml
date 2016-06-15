@@ -23,13 +23,25 @@
                 <table class="table">
                     <tbody>
                         <tr>
-                            <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
+                            <td>{{#translate}}Name{{/translate}}</td>
+                            <td>
+                                {{#locale_en}}
+                                {{name}}
+                                {{/locale_en}}    
+                                {{#locale_ar}}
+                                {{nameAr}}
+                                {{/locale_ar}}    
+                            </td>
                         </tr><tr>
-                            <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
-                        </tr><tr>
-                            <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
-                        </tr><tr>
-                            <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
+                            <td>{{#translate}}Brief{{/translate}}</td>
+                            <td>
+                                {{#locale_en}}
+                                {{brief}}
+                                {{/locale_en}}    
+                                {{#locale_ar}}
+                                {{briefAr}}
+                                {{/locale_ar}}    
+                            </td>
                         </tr><tr>
                             <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
                         </tr><tr>
@@ -37,7 +49,7 @@
                         </tr>
                     </tbody>
                 </table>
- 
+
                 <table class="table">
                     <thead>
 
@@ -58,11 +70,31 @@
                         {{^hideFromCalendar}}
                         {{^alreadyStarted}}
                         <tr>
-                            <td>{{startDate}}</td>
-                            <td>{{endDate}}</td>
-                            <td>{{ai.firstName}} {{ai.lastName}}</td>
-                            <td>{{atp.commercialName}}</td>
-                            <td>{{atp.city}}</td>
+                            <td>
+                                {{startDate}}
+                            </td>
+                            <td>
+                                {{endDate}}
+                            </td>
+                            <td>
+                                {{ai.firstName}} {{ai.lastName}}
+                            </td>
+                            <td>
+                                {{#locale_en}}
+                                {{atp.commercialName}}
+                                {{/locale_en}}
+                                {{#locale_ar}}
+                                {{atp.commercialNameAr}}
+                                {{/locale_ar}}
+                            </td>
+                            <td>
+                                {{#locale_en}}
+                                {{atp.city}}
+                                {{/locale_en}}
+                                {{#locale_ar}}
+                                {{atp.cityAr}}
+                                {{/locale_ar}}
+                            </td>
                             <td>
                                 {{#canEnroll}}
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -101,7 +133,6 @@
                         {{#outlines.count}}
                         <tr>
                             <th>{{#translate}}Title{{/translate}}</th>
-                            <th>{{#translate}}Title in Arabic{{/translate}}</th>
                             <th>{{#translate}}Duration (minutes){{/translate}}</th>
                         </tr>
                         {{/outlines.count}}
@@ -110,9 +141,17 @@
                         {{#outlines}}
                         {{#statusActive}}
                         <tr>
-                            <td>{{title}}</td>
-                            <td>{{titleAr}}</td>
-                            <td>{{duration}}</td>
+                            <td>
+                                {{#locale_en}}
+                                {{title}}
+                                {{/locale_en}}
+                                {{#locale_ar}}
+                                {{titleAr}}
+                                {{/locale_ar}}
+                            </td>
+                            <td>
+                                {{duration}}
+                            </td>
                         </tr>
                         {{/statusActive}}
                         {{/outlines}} 

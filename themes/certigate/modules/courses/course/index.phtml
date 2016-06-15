@@ -12,7 +12,6 @@
         <thead>
             <tr>
                 <th>{{#translate}}Name{{/translate}}</th>
-                <th>{{#translate}}Name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
@@ -20,10 +19,13 @@
         <tbody>
             {{#courses}}
             <tr class="{{^status}}container-inactive{{/status}}">
+                {{#locale_en}}
                 <td>{{name}}</td>
+                {{/locale_en}}            
+                {{#locale_ar}}
                 <td>{{nameAr}}</td>
-                <td>{{statusText}}</td>
-
+                {{/locale_ar}}            
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>
                     <a href="/courses/edit/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     &nbsp;&nbsp;&nbsp;

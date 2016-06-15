@@ -17,7 +17,15 @@
         <tbody>
             {{#outlines}}
             <tr>
-                <td>{{title}}</td>
+
+                <td>
+                    {{#locale_en}}
+                    {{title}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{titleAr}}
+                    {{/locale_ar}}        
+                </td>
                 <td>{{duration}} {{#translate}}mins{{/translate}}</td>
             </tr>
             {{/outlines}}

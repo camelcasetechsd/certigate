@@ -20,7 +20,6 @@
         <thead>
             <tr>
                 <th>{{#translate}}Name{{/translate}}</th>
-                <th>{{#translate}}Name in Arabic{{/translate}}</th>
                 <th>{{#translate}}Type{{/translate}}</th>
                 <th>{{#translate}}Course{{/translate}}</th>
                 <th>{{#translate}}Status{{/translate}}</th>
@@ -30,12 +29,26 @@
         <tbody>
             {{#resources}}
             <tr class="{{^status}}container-inactive{{/status}}">
-                <td><a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a></td>
-                <td><a target="_blank" href="/courses/resources/download/{{id}}" >{{nameAr}}</a></td>
-                <td>{{type.title}}</td>
-                <td>{{course.name}}</td>
-                <td>{{statusText}}</td>
-
+                <td>
+                    <a target="_blank" href="/courses/resources/download/{{id}}" >
+                        {{#locale_en}}
+                        {{name}}
+                        {{/locale_en}}
+                        {{#locale_ar}}
+                        {{nameAr}}
+                        {{/locale_ar}}
+                    </a>
+                </td>
+                <td>{{#translate}}{{type.title}}{{/translate}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{course.name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{course.nameAr}}
+                    {{/locale_ar}}
+                </td>
+                <td>{{#translate}}{{statusText}}{{#translate}}</td>
                 <td>  
                     {{#isInstructor}}
                     <a href="/courses/resources/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
@@ -44,8 +57,6 @@
                     <a href="#" data-href="/courses/resources/delete/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" onclick="deleteResourcePhysically($(this))" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                     {{/isInstructor}}
-                    
-
                 </td>
             </tr>
             {{/resources}}

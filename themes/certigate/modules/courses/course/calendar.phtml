@@ -3,16 +3,16 @@
 {{$content}}
 <div class="container static-cont">
     <h1 class="title-blue"> {{#translate}}Courses Calendar{{/translate}}</h1>
-     <!--if courses exist but without ant course events-->
+    <!--if courses exist but without any course events-->
     {{#emptyFlag}}
-    No Courses Yet !
+    {{#translate}}No Courses Yet !{{/translate}}
     {{/emptyFlag}}
-    
+
     <!--to handle if no courses exist--> 
     {{^courses.count}}
-    No Courses Yet !
+    {{#translate}}No Courses Yet !{{/translate}}
     {{/courses.count}}
-    
+
     {{#courses}}
 
     {{#courseEvents.count}}
@@ -23,122 +23,142 @@
             <div class="media-body">
                 <div class="panel-default">
 
+                    {{#locale_en}}
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{name}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a></div></div>
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                        <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{nameAr}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a></div></div>
+                    {{/locale_ar}}
 
-                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{name}} / {{nameAr}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a> <!-- &nbsp; <a href="#">{{#translate}}Periodical Notification{{/translate}}</a> --></div></div>
-                    </div><div class="clearfix"></div>
-                    <div>
-                        <p>{{brief}}</p>
-                        <p>{{briefAr}}</p>
-                        <ul class="list-inline list-unstyled">
-                            <a href="/courses/more/{{id}}" target="_blank" title="More"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
-                        </ul>
-                    </div>  
-                    <!-- Table -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>{{#translate}}From{{/translate}}</th>
-                                <th>{{#translate}}To{{/translate}}</th>
-                                <th>{{#translate}}ATP Name{{/translate}}</th>
-                                <th>{{#translate}}ATP City{{/translate}}</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                                <th colspan="2">&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#courseEvents}}
-                            {{^hideFromCalendar}}
-                            {{^alreadyStarted}}
-                            <tr>
-                                <td>
-                                    {{startDate}}
-                                </td>
-                                <td>
-                                    {{endDate}}
-                                </td>
-                                <td>
-                                    {{atp.commercialName}}
-                                </td>
-                                <td>
-                                    {{atp.city}}
-                                </td>
-                                <td>
-                                    <span class="addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">
-                                        <a class="atcb-link">{{#translate}}Calendar Alert{{/translate}}</a>
-                                        <var class="atc_event">
-                                            <var class="atc_date_start">{{startDateIso}}</var>
-                                            <var class="atc_date_end">{{endDateIso}}</var>
-                                            <var class="atc_timezone">{{timeZone}}</var>
-                                            <var class="atc_title">{{course.name}}</var>
-                                            <var class="atc_description">{{course.brief}}</var>
-                                            <var class="atc_location">{{atp.city}}</var>
-                                            <var class="atc_organizer">{{atp.commercialName}}</var>
-                                            <var class="atc_organizer_email">{{atp.email}}.com</var>
-                                        </var>
-                                    </span>
-                                </td>
-                                <td>
-                                    {{{formView}}}
-                                </td>
-                                <td>
-                                    {{#canEnroll}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Enroll{{/translate}}</button></a>
-                                    {{/canEnroll}}
-                                    {{#canLeave}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
-                                    {{/canLeave}}
-                                    {{#isFull}}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{#translate}}Course Full{{/translate}}
-                                    {{/isFull}}
-                                </td>
-                            </tr>
-                            {{/alreadyStarted}}
-                            {{/hideFromCalendar}}
-                            {{/courseEvents}}
+                        </div><div class="clearfix"></div>
+                        <div>
+                            {{#locale_en}}
+                                <p>{{brief}}</p>
+                            {{/locale_en}}
+                            {{#locale_ar}}
+                                <p>{{briefAr}}</p>
+                            {{/locale_ar}}
 
-                        </tbody>
-                    </table>
-                    {{/courseEvents.count}}
+                            <ul class="list-inline list-unstyled">
+                                <a href="/courses/more/{{id}}" target="_blank" title="More"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
+                            </ul>
+                        </div>  
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{#translate}}From{{/translate}}</th>
+                                    <th>{{#translate}}To{{/translate}}</th>
+                                    <th>{{#translate}}ATP Name{{/translate}}</th>
+                                    <th>{{#translate}}ATP City{{/translate}}</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th colspan="2">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#courseEvents}}
+                                {{^hideFromCalendar}}
+                                {{^alreadyStarted}}
+                                <tr>
+                                    <td>
+                                        {{startDate}}
+                                    </td>
+                                    <td>
+                                        {{endDate}}
+                                    </td>
+                                    <td>
+                                        {{#locale_en}}
+                                        {{atp.commercialName}}
+                                        {{/locale_en}}
+                                        {{#locale_ar}}
+                                        {{atp.commercialNameAr}}
+                                        {{/locale_ar}}
+                                    </td>
+                                    <td>
+                                        {{#locale_en}}
+                                        {{atp.city}}
+                                        {{/locale_en}}
+                                        {{#locale_ar}}
+                                        {{atp.cityAr}}
+                                        {{/locale_ar}}
+                                    </td>
+                                    <td>
+                                        <span class="addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">
+                                            <a class="atcb-link">{{#translate}}Calendar Alert{{/translate}}</a>
+                                            <var class="atc_event">
+                                                <var class="atc_date_start">{{startDateIso}}</var>
+                                                <var class="atc_date_end">{{endDateIso}}</var>
+                                                <var class="atc_timezone">{{timeZone}}</var>
+                                                <var class="atc_title">{{course.name}}</var>
+                                                <var class="atc_description">{{course.brief}}</var>
+                                                <var class="atc_location">{{atp.city}}</var>
+                                                <var class="atc_organizer">{{atp.commercialName}}</var>
+                                                <var class="atc_organizer_email">{{atp.email}}.com</var>
+                                            </var>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{{formView}}}
+                                    </td>
+                                    <td>
+                                        {{#canEnroll}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="/courses/enroll/{{id}}"><button class="btn btn-small btn-success">{{#translate}}Enroll{{/translate}}</button></a>
+                                        {{/canEnroll}}
+                                        {{#canLeave}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="/courses/leave/{{id}}"><button class="btn btn-small btn-danger">{{#translate}}Cancel{{/translate}}</button></a>
+                                        {{/canLeave}}
+                                        {{#isFull}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {{#translate}}Course Full{{/translate}}
+                                        {{/isFull}}
+                                    </td>
+                                </tr>
+                                {{/alreadyStarted}}
+                                {{/hideFromCalendar}}
+                                {{/courseEvents}}
+
+                            </tbody>
+                        </table>
+                        {{/courseEvents.count}}
+                    </div>
                 </div>
+                <hr>
             </div>
-            <hr>
+            <div class="col-md-1">&nbsp;</div>
         </div>
-        <div class="col-md-1">&nbsp;</div>
+        {{/courses}}
+
+
     </div>
-    {{/courses}}
 
-
-</div>
-
-{{#hasPages}}
-<div class="pagination-bar">
-    <p > Pages :  </p>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <ul class="pagination">
-        {{#previousPageNumber}}
-        <li >
-            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
-        </li>
-        {{/previousPageNumber}}
+    {{#hasPages}}
+    <div class="pagination-bar">
+        <p > Pages :  </p>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {{#pageNumbers}}
-        <li {{#isCurrent}}class="active"{{/isCurrent}} >
-            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
-        </li>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {{/pageNumbers}}
-        {{#nextPageNumber}}
-        <li >
-            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
-        </li>
-        {{/nextPageNumber}}
-    </ul>
-</div>
-<br>
-{{/hasPages}}
-{{/content}}
-{{/layout}}
+        <ul class="pagination">
+            {{#previousPageNumber}}
+            <li >
+                <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+            </li>
+            {{/previousPageNumber}}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{#pageNumbers}}
+            <li {{#isCurrent}}class="active"{{/isCurrent}} >
+                <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{/pageNumbers}}
+            {{#nextPageNumber}}
+            <li >
+                <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+            </li>
+            {{/nextPageNumber}}
+        </ul>
+    </div>
+    <br>
+    {{/hasPages}}
+    {{/content}}
+    {{/layout}}

@@ -24,33 +24,47 @@
         <tbody>
             {{#requests}}
             <tr>
-                <td>{{course.name}}</td>
-                <td>{{atc.commercialName}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{course.name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{course.nameAr}}
+                    {{/locale_ar}}          
+                </td>
+                <td>
+                    {{#locale_en}}
+                    {{atc.commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{atc.commercialNameAr}}
+                    {{/locale_ar}}        
+                </td>
                 <td>{{date}}</td>
                 <td>{{dateHj}}</td>
                 <td>{{studentsNo}}</td>
                 {{#isAdminPending}}
-                <td><span class="error">{{adminStatus}}</span></td>
+                <td><span class="error">{{#translate}}{{adminStatus}}{{/translate}}</span></td>
                 {{/isAdminPending}}
                 {{^isAdminPending}}
-                <td><span>{{adminStatus}}</span></td>
+                <td><span>{{#translate}}{{adminStatus}}{{/translate}}</span></td>
                 {{/isAdminPending}}
-                
+
                 {{#isTvtcPending}}
-                <td><span class="error">{{tvtcStatus}}</span></td>
+                <td><span class="error">{{#translate}}{{tvtcStatus}}{{/translate}}</span></td>
                 {{/isTvtcPending}}
                 {{^isTvtcPending}}
-                <td><span>{{tvtcStatus}}</span></td>
+                <td><span>{{#translate}}{{tvtcStatus}}{{/translate}}</span></td>
                 {{/isTvtcPending}}
                 <td>
                     <a href="/courses/exam/proctors/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Proctors{{/translate}}"><span class="glyphicon glyphicon-user"></span></a>
                     {{#isAdminUser}}
-                        {{#isAdminPending}}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Accept{{/translate}}"><span class="glyphicon glyphicon-ok"></span></a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
-                        {{/isAdminPending}}
+                    {{#isAdminPending}}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/courses/exam/request/accept/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Accept{{/translate}}"><span class="glyphicon glyphicon-ok"></span></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/courses/exam/request/decline/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    {{/isAdminPending}}
                     {{/isAdminUser}}
                 </td>
             </tr>

@@ -19,7 +19,14 @@
         <tbody>
             {{#courseEvents}}
             <tr>
-                <td>{{name}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{nameAr}}
+                    {{/locale_ar}}                  
+                </td>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>

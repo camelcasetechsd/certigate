@@ -1498,16 +1498,24 @@ msgstr "Are you sure you want to activate this user ar"
 msgid "Create new course event"
 msgstr "Create new course event ar"
 
+msgid "No Courses Yet"
+msgstr "No Courses Yet ar"
+
+msgid "Pending"
+msgstr "Pending ar"
+
+msgid "Approved"
+msgstr "Approved ar"
+
+msgid "Nothing Yet"
+msgstr "Nothing Yet ar"
+
 msgid "You are currently not assigned to this organization"
 msgstr "You are currently not assigned to this organization ar"
 
 msgid "This type of organizations not supposed to have any organization users"
-msgstr ""
-"This type of organizations not supposed to have any organization users ar"
+msgstr "This type of organizations not supposed to have any organization users ar"
 
-msgid ""
-"Oops sorry it looks like something went wrong and an error has occurred .. "
-"please try again later"
-msgstr ""
-"Oops sorry it looks like something went wrong and an error has occurred .. "
-"please try again later ar"
+msgid "Oops sorry it looks like something went wrong and an error has occurred .. please try again later"
+msgstr "Oops sorry it looks like something went wrong and an error has occurred .. please try again later ar"
+

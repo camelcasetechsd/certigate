@@ -13,63 +13,91 @@
                 <div class="panel-default">
 
 
-                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue">{{name}}</h3></div> </div>
+                    <div class="panel-heading">
+                        <div  class="media-heading">
+                            <div class="pull-left">
+                                <h3 class="title-blue">
+                                    {{#locale_en}}
+                                    {{name}}
+                                    {{/locale_en}}
+                                    {{#locale_ar}}
+                                    {{nameAr}}
+                                    {{/locale_ar}}        
+                                </h3>
+                            </div>
+                        </div>
                     </div><div class="clearfix"></div>
                     <div>
-                        <p>{{brief}}</p>
-                        <p>{{briefAr}}</p>
+                        <p>
+                            {{#locale_en}}
+                            {{brief}}
+                            {{/locale_en}}
+                            {{#locale_ar}}
+                            {{briefAr}}
+                            {{/locale_ar}}        
+                        </p>
                         <ul class="list-inline list-unstyled">
                             <a href="/courses/more/{{id}}" target="_blank"  title="More"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
                         </ul>
                     </div>
                     {{^formView}}
-                        {{#courseEvents.count}}
-                        <!-- Table -->
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>{{#translate}}From{{/translate}}</th>
-                                    <th>{{#translate}}To{{/translate}}</th>
-                                    <th>{{#translate}}ATP Name{{/translate}}</th>
-                                    <th>{{#translate}}ATP City{{/translate}}</th>
-                                    <th colspan="2">&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#courseEvents}}
-                                {{^hideFromCalendar}}
-                                <tr>
-                                    <td>
-                                        {{startDate}}
-                                    </td>
-                                    <td>
-                                        {{endDate}}
-                                    </td>
-                                    <td>
-                                        {{atp.commercialName}}
-                                    </td>
-                                    <td>
-                                        {{atp.city}}
-                                    </td>
-                                    <td>
-                                        {{#canEnroll}}
-                                            {{{formView}}}
-                                        {{/canEnroll}}
-                                        {{#isFull}}
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Course Full
-                                        {{/isFull}}
-                                    </td>
-                                </tr>
-                                {{/hideFromCalendar}}
-                                {{/courseEvents}}
+                    {{#courseEvents.count}}
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{#translate}}From{{/translate}}</th>
+                                <th>{{#translate}}To{{/translate}}</th>
+                                <th>{{#translate}}ATP Name{{/translate}}</th>
+                                <th>{{#translate}}ATP City{{/translate}}</th>
+                                <th colspan="2">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#courseEvents}}
+                            {{^hideFromCalendar}}
+                            <tr>
+                                <td>
+                                    {{startDate}}
+                                </td>
+                                <td>
+                                    {{endDate}}
+                                </td>
+                                <td>
+                                    {{#locale_en}}
+                                    {{atp.commercialName}}
+                                    {{/locale_en}}
+                                    {{#locale_ar}}
+                                    {{atp.commercialNameAr}}
+                                    {{/locale_ar}}        
+                                </td>
+                                <td>
+                                    {{#locale_en}}
+                                    {{atp.city}}
+                                    {{/locale_en}}
+                                    {{#locale_ar}}
+                                    {{atp.cityAr}}
+                                    {{/locale_ar}}        
+                                </td>
+                                <td>
+                                    {{#canEnroll}}
+                                    {{{formView}}}
+                                    {{/canEnroll}}
+                                    {{#isFull}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Course Full
+                                    {{/isFull}}
+                                </td>
+                            </tr>
+                            {{/hideFromCalendar}}
+                            {{/courseEvents}}
 
-                            </tbody>
-                        </table>
-                        {{/courseEvents.count}}
+                        </tbody>
+                    </table>
+                    {{/courseEvents.count}}
                     {{/formView}}
                     {{#formView}}
-                        {{{formView}}}
+                    {{{formView}}}
                     {{/formView}}
 
                 </div>

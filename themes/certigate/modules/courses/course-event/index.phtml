@@ -23,12 +23,26 @@
         <tbody>
             {{#courseEvents}}
             <tr class="{{^status}}container-inactive{{/status}}">
-                <td>{{course.name}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{course.name}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{course.nameAr}}
+                    {{/locale_ar}}                  
+                </td>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>{{ai.firstName}} {{ai.lastName}}</td>
-                <td>{{atp.commercialName}}</td>
-                <td>{{statusText}}</td>
+                <td>
+                    {{#locale_en}}
+                    {{atp.commercialName}}
+                    {{/locale_en}}
+                    {{#locale_ar}}
+                    {{atp.commercialNameAr}}
+                    {{/locale_ar}}          
+                </td>
+                <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>
                     <a href="/course-events/edit/{{id}}{{#courseId}}/{{courseId}}{{/courseId}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}Edit{{/translate}}"><span class="glyphicon glyphicon-edit"></span></a>
                     {{#status}}
@@ -46,13 +60,13 @@
 {{/content}}
 {{/layout}}
 <script>
-    function deleteCourseEvent(id){
+            function deleteCourseEvent(id){
             message = "{{#translate}}Are you sure you want to delete this course event{{/translate}} ..?!";
-            url = '/course-events/delete/'+id;
-            bootbox.confirm(message, function(result) {
-                if (result){
+                    url = '/course-events/delete/' + id;
+                    bootbox.confirm(message, function(result) {
+                    if (result){
                     window.location.assign(url);
-                }
-            });
-    }    
+                    }
+                    });
+            }
 </script>
