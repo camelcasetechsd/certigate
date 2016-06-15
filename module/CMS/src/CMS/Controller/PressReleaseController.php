@@ -61,9 +61,17 @@ class PressReleaseController extends ActionController
             $variables['pressReleaseSubscriptionForm'] = $this->getFormView($pressReleaseSubscriptionForm);
         }
 
-        $failureMessage = $this->flashMessenger()->getErrorMessages()[0];
-        $status = $this->flashMessenger()->getInfoMessages()[0];
-        $unsubscribeFlag = $this->flashMessenger()->getInfoMessages()[1];
+        $failureMessage = $status = $unsubscribeFlag = null;
+
+        if (!empty($this->flashMessenger()->getErrorMessages())) {
+            $failureMessage = $this->flashMessenger()->getErrorMessages()[0];
+        }
+        if (!empty($this->flashMessenger()->getInfoMessages())) {
+            $status = $this->flashMessenger()->getInfoMessages()[0];
+        }
+        if (!empty($this->flashMessenger()->getInfoMessages())) {
+            $unsubscribeFlag = $this->flashMessenger()->getInfoMessages()[1];
+        }
 
         if (!is_null($failureMessage) || !is_null($status) || !is_null($unsubscribeFlag)) {
             $variables["messages"] = $pressReleaseSubscriptionModel->getSubscriptionResult((bool) $status, (bool) $unsubscribeFlag, $failureMessage);
