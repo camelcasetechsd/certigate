@@ -75,4 +75,22 @@ class ControllerApiOptionValue extends Controller
         return $isValid;
     }
 
+    public function addToList()
+    {
+        $this->load->language('api/option');
+        $this->load->model('catalog/option');
+        $this->load->model('api/request');
+        $json = array();
+
+        $this->model_api_request->validateSession($json);
+        $json["success"] = false;
+        if (!array_key_exists("error", $json) && ($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateOptionValue($json)) {
+            $productOptionData = $this->model_catalog_option->addOptionValueToList($this->request->post);
+            $json["optionId"] = $productOptionData["option_id"];
+            $json["optionValueId"] = $productOptionData["option_value_id"];
+            $json["success"] = true;
+        }
+        $this->model_api_request->prepareResponse($json);
+    }
+
 }

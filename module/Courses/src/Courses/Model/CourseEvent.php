@@ -191,13 +191,14 @@ class CourseEvent
                         'name' => "{$startDate} - {$endDate} By "
                         . "{$instructor->getFirstName()} {$instructor->getLastName()} At "
                         . "{$organization->getCommercialName()} {$organization->getCity()}",
-                        )
+                    )
                 ),
             )
         );
 
-        if (count($course->getCourseEvents()) > 0 && empty($courseEvent->getOptionValueId()) ) {
+        if (count($course->getCourseEvents()) > 0 && empty($courseEvent->getOptionValueId()) && !$editFlag) {
             $parameters['additionOperation'] = OptionValueOperation::UPDATE_PRODUCT_OPTION_VALUE;
+            $estoreApiEdge = ApiCalls::OPTION_VALUE_ADD_TO_LIST;
         }
         $queryParameters = array();
         if (!empty($courseEvent->getOptionValueId())) {

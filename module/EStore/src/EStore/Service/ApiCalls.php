@@ -63,6 +63,11 @@ class ApiCalls
     const OPTION_VALUE_ADD = "/estore/index.php?route=api/optionValue/add";
 
     /**
+     * OptionValue add route
+     */
+    const OPTION_VALUE_ADD_TO_LIST = "/estore/index.php?route=api/optionValue/addtolist";
+
+    /**
      * OptionValue edit route
      */
     const OPTION_VALUE_EDIT = "/estore/index.php?route=api/optionValue/edit";
