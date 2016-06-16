@@ -1,128 +1,148 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<div class="page-container-wide">
 
+<div class="main-holder">
+    <!-- image course
+     ================================================== -->  
     <div class="image-course">
         <div class="container">
             <div class="row row-centered">
                 <div class="col-xs-12 col-centered  text-center">
-                    <h1 class="course-name">{{course.name}}</h1>
+
+                    <h1 class="course-name">{{course.name}}<br>
+                        {{course.brief}}</h1>
                     <div class="inner-cont">
-                        <span>{{course.duration}} day(s). </span>
+                        <p style="color: #fff;">{{course.duration}} {{#translate}}Day{{/translate}}(s).</p>
+                        <button class="btn-course-enroll"><a href="/courses/calendar">Enroll this course</a></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <a class="pull-right col-md-3" href="/courses/calendar">{{#translate}}Back to Courses Calendar{{/translate}}</a>
 
-    <!--making sure that user can evaluate-->
-    {{#canEvaluate}}
-    {{#courseEventId}}
-    <!--this rule is only for students-->
-    <a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >{{#translate}}Evaluate Course{{/translate}}</a>
-    <br><br>
-    {{/courseEventId}}
-    {{/canEvaluate}}
+    <!-- end image course
+   ================================================== --> 
+
     <hr class="featurette-divider">
+
+    <!-- tabs 
+   ================================================== --> 
+
     <div class="tabs">
         <div class="container">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#courseDetails" data-toggle="tab" aria-controls="courseDetails" role="tab" data-toggle="tab">{{#translate}}Course Details{{/translate}}</a></li>
-                <li role="presentation"><a href="#courseEvents" data-toggle="tab" aria-controls="courseEvents">{{#translate}}Course Events{{/translate}}</a></li>
-                <li role="presentation"><a href="#courseOutlines" data-toggle="tab" aria-controls="courseOutlines">{{#translate}}Course Outlines{{/translate}}</a></li>
-                <li role="presentation"><a href="#courseResources" data-toggle="tab" aria-controls="courseResources">{{#translate}}Course Resources{{/translate}}</a></li>
-
+            <ul class="nav nav-tabs responsive" id="myTab">
+                <li class="active"><a data-target="#about" data-toggle="tab">{{#translate}}About This Course{{/translate}}</a></li>
+                <li><a data-target="#courseEvents" data-toggle="tab">{{#translate}}Course Events{{/translate}}</a></li>
+                <li><a data-target="#courseOutlines" data-toggle="tab">{{#translate}}Course Outlines{{/translate}}</a></li>
+                <li><a data-target="#courseResources" data-toggle="tab">{{#translate}}Course Resources{{/translate}}</a></li>
             </ul>
 
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="courseDetails">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>{{#translate}}Course Details{{/translate}}</h3>
+            <div class="tab-content responsive">
+                <div class="tab-pane active" id="about">
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <p>
+                                {{#locale_en}}
+                                {{course.brief}}
+                                {{/locale_en}}
+                                {{#locale_ar}}
+                                {{course.briefAr}}
+                                {{/locale_ar}}
+                            </p>
+                            <div class="instructor-small">
+                                <h3>{{#translate}}Instructors{{/translate}}</h3>
+                                <div class="row">
+                                    {{#instructors}}
+                                    <div class=" col-sm-3">
+                                        <a href="/users/more/{{id}}">
+                                            <img src="{{photo}}?s=100"
+                                                 width="100" height="100" alt="Author avatar" class="avatar img-circle">
+                                            <div class="instrcutor-details">
+                                                <p class="instrcutor-name">{{firstName}} {{lastName}}</p>
+                                                <p class="author-description">{{#translate}}From{{/translate}} {{country}}</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {{/instructors}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body">
-
-                            {{#course}}
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>{{#translate}}Name{{/translate}}</td><td>{{name}}</td>
-                                    </tr><tr>
-                                        <td>{{#translate}}Name in Arabic{{/translate}}</td><td>{{nameAr}}</td>
-                                    </tr><tr>
-                                        <td>{{#translate}}Brief{{/translate}}</td><td>{{brief}}</td>
-                                    </tr><tr>
-                                        <td>{{#translate}}Brief in Arabic{{/translate}}</td><td>{{briefAr}}</td>
-                                    </tr><tr>
-                                        <td>{{#translate}}Time{{/translate}}</td><td>{{time}}</td>
-                                    </tr><tr>
-                                        <td>{{#translate}}Duration{{/translate}}</td><td>{{duration}} {{#translate}}Day(s){{/translate}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            {{/course}}
-                        </div>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="courseEvents">
-                    <div class="panel panel-default">
-                        {{#courseEventCreator}}
-                        <a class="btn btn-info" href="/course-events/new/{{course.id}}" >{{#translate}}Create new course event{{/translate}}</a>
-                        {{/courseEventCreator}}
-                        <div class="panel-heading">
-                            <h3>{{#translate}}Course Events{{/translate}}</h3>
-                        </div>
-                        <div class="panel-body">
-
-
-                            {{#course}}
-                            {{#course.courseEvents.count}}
-                            <table class="table">
-                                <thead>
-
-                                    {{#courseEvents.count}}
-                                    <tr>
-                                        <th>{{#translate}}Start Date{{/translate}}</th>
-                                        <th>{{#translate}}End Date{{/translate}}</th>
-                                        <th>{{#translate}}Instructor{{/translate}}</th>
-                                        <th>{{#translate}}ATP Name{{/translate}}</th>
-                                        <th>{{#translate}}ATP City{{/translate}}</th>
-                                    </tr>
-                                    {{/courseEvents.count}}
-                                </thead>
-                                <tbody>
-                                    {{#courseEvents}}
+                        <div class="col-sm-1 "></div>
+                        <div class="col-sm-3 course-date">
+                            <div class="date">
+                                <h3>{{#translate}}Course Dates{{/translate}}</h3>
+                                {{#course}}
+                                {{#courseEvents}}
+                                <ul>
                                     {{^hideFromCalendar}}
-                                    {{^alreadyStarted}}
-                                    <tr>
-                                        <td>{{startDate}}</td>
-                                        <td>{{endDate}}</td>
-                                        <td>{{ai.firstName}} {{ai.lastName}}</td>
-                                        <td>{{atp.commercialName}}</td>
-                                        <td>{{atp.city}}</td>
-                                    </tr>
+                                    {{^alreadyStarted}}    
+                                    <li>{{#translate}}Starts at{{/translate}} {{startDate}} - {{#translate}}ends at{{/translate}} {{endDate}}</li>
                                     {{/alreadyStarted}}
                                     {{/hideFromCalendar}}
-                                    {{/courseEvents}} 
-                                </tbody>
-                            </table>
-                            {{/course.courseEvents.count}}
-                            {{^course.courseEvents.count}}
-                            Nothing Yet !
-                            {{/course.courseEvents.count}}
-                            {{/course}}
+                                </ul>
+                                {{/courseEvents}}
+                                {{/course}}
+                            </div>
+                            <div class="enroll">
+                                <h3>{{#translate}}Enroll this course{{/translate}}</h3>
+                                <button class="btn-blue-enroll"><a href="/courses/calendar" style="color: #fff">{{#translate}}Enroll this course{{/translate}}</a></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div role="tabpanel" class="tab-pane fade" id="courseOutlines">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>{{#translate}}Course Outlines{{/translate}}</h3>
+                <div class="tab-pane" id="courseEvents">
+                    <div class="row">
+                        <div class="panel panel-default">
+                            {{#courseEventCreator}}
+                            <a class="btn btn-info" href="/course-events/new/{{course.id}}" >{{#translate}}Create new course event{{/translate}}</a>
+                            {{/courseEventCreator}}
+                            <div class="panel-heading">
+                                <h3>{{#translate}}Course Events{{/translate}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                {{#course}}
+                                {{#course.courseEvents.count}}
+                                <table class="table">
+                                    <thead>
+                                        {{#courseEvents.count}}
+                                        <tr>
+                                            <th>{{#translate}}Start Date{{/translate}}</th>
+                                            <th>{{#translate}}End Date{{/translate}}</th>
+                                            <th>{{#translate}}Instructor{{/translate}}</th>
+                                            <th>{{#translate}}ATP Name{{/translate}}</th>
+                                            <th>{{#translate}}ATP City{{/translate}}</th>
+                                        </tr>
+                                        {{/courseEvents.count}}
+                                    </thead>
+                                    <tbody>
+                                        {{#courseEvents}}
+                                        {{^hideFromCalendar}}
+                                        {{^alreadyStarted}}
+                                        <tr>
+                                            <td>{{startDate}}</td>
+                                            <td>{{endDate}}</td>
+                                            <td>{{ai.firstName}} {{ai.lastName}}</td>
+                                            <td>{{atp.commercialName}}</td>
+                                            <td>{{atp.city}}</td>
+                                        </tr>
+                                        {{/alreadyStarted}}
+                                        {{/hideFromCalendar}}
+                                        {{/courseEvents}} 
+                                    </tbody>
+                                </table>
+                                {{/course.courseEvents.count}}
+                                {{^course.courseEvents.count}}
+                                Nothing Yet !
+                                {{/course.courseEvents.count}}
+                                {{/course}}
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="courseOutlines">
+                    <div class="row">
                         <div class="panel-body">
 
                             {{#course}}
@@ -152,37 +172,29 @@
                         </div>
                     </div>
                 </div>
-
-                <div role="tabpanel" class="tab-pane fade" id="courseResources">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>{{#translate}}Course Resources{{/translate}}</h3>
-                        </div>
-                        <div class="panel-body">
-
-                            {{#course}}
-                            <table class="table">
-                                <tbody>
-                                    {{#canDownloadResources}}
-                                    {{#resources}}
-                                    <tr>
-                                        <td>{{type}}</td>
-                                        <td>
-                                            {{#files}}
-                                            <a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a> <br>
-                                            {{/files}}
-                                        </td>
-                                    </tr>
-                                    {{/resources}} 
-                                    {{/canDownloadResources}}
-                                </tbody>
-                            </table>
-                            {{/course}}
-                        </div>
-                    </div>
+                <div class="tab-pane" id="courseResources">
+                    {{#course}}
+                    <table class="table">
+                        <tbody>
+                            {{#canDownloadResources}}
+                            {{#resources}}
+                            <tr>
+                                <td>{{type}}</td>
+                                <td>
+                                    {{#files}}
+                                    <a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a> <br>
+                                    {{/files}}
+                                </td>
+                            </tr>
+                            {{/resources}} 
+                            {{/canDownloadResources}}
+                        </tbody>
+                    </table>
+                    {{/course}}
                 </div>
             </div>
         </div>
     </div>
-    {{/content}}
-    {{/layout}}
+</div>
+{{/content}}
+{{/layout}}

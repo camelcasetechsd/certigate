@@ -1498,6 +1498,24 @@ msgstr "Are you sure you want to activate this user ar"
 msgid "Create new course event"
 msgstr "Create new course event ar"
 
+msgid "About This Course"
+msgstr "About This Course ar"
+
+msgid "From"
+msgstr "From ar"
+
+msgid "Course Dates"
+msgstr "Course Dates ar"
+
+msgid "Starts at"
+msgstr "Starts at ar"
+
+msgid "ends at"
+msgstr "ends at ar"
+
+msgid "Enroll this course"
+msgstr "Enroll this course ar"
+
 msgid "You are currently not assigned to this organization"
 msgstr "You are currently not assigned to this organization ar"
 

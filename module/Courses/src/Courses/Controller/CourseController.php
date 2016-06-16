@@ -203,7 +203,7 @@ class CourseController extends ActionController
             if ($auth->hasIdentity() && (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles']) || in_array(Role::ADMIN_ROLE, $storage['roles']) )) {
                 $courseEventCreator = true;
             }
-
+            $variables['instructors'] = $courseEventModel->getInstructors($course);
             $variables['courseEventCreator'] = $courseEventCreator;
             $variables['canEvaluate'] = $preparedCourse->canEvaluate;
             $variables['courseEventId'] = $this->params('courseEventId');
