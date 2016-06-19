@@ -293,14 +293,10 @@ return array(
             'cmsPressReleaseList' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/cms/press-release[/:status/:unsubscribeFlag[/:failureMessage]]',
+                    'route' => '/cms/press-release',
                     'defaults' => array(
                         'controller' => 'CMS\Controller\PressRelease',
                         'action' => 'index',
-                    ),
-                    'constraints' => array(
-                        'status' => '[0-1]{1}',
-                        'unsubscribeFlag' => '[0-1]{1}',
                     ),
                 )
             ),
