@@ -20,7 +20,7 @@
         "behat/mink-selenium2-driver": "1.1.1",
         "cboden/ratchet": "0.3.*",
         "se/selenium-server-standalone": "2.39.0",
-        "tecnickcom/tcpdf": "*"
+        "tecnickcom/tcpdf": "6.2.12"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
