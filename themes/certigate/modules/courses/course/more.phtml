@@ -1,7 +1,13 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-
+<style>
+    .page-container {
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: -131px;
+    }
+</style>
 <div class="main-holder">
     <!-- image course
      ================================================== -->  
@@ -13,7 +19,7 @@
                     <h1 class="course-name">{{course.name}}<br>
                         {{course.brief}}</h1>
                     <div class="inner-cont">
-                        <p style="color: #fff;">{{course.duration}} {{#translate}}Day{{/translate}}(s).</p>
+                        <p>{{course.duration}} {{#translate}}Day{{/translate}}(s).</p>
                         <button class="btn-course-enroll"><a href="/courses/calendar">Enroll this course</a></button>
                     </div>
                 </div>
@@ -87,7 +93,7 @@
                             </div>
                             <div class="enroll">
                                 <h3>{{#translate}}Enroll this course{{/translate}}</h3>
-                                <button class="btn-blue-enroll"><a href="/courses/calendar" style="color: #fff">{{#translate}}Enroll this course{{/translate}}</a></button>
+                                <button class="btn-blue-enroll"><a href="/courses/calendar">{{#translate}}Enroll this course{{/translate}}</a></button>
                             </div>
                         </div>
                     </div>
@@ -179,11 +185,9 @@
                             {{#canDownloadResources}}
                             {{#resources}}
                             <tr>
-                                <td>{{type}}</td>
+                                <td>{{type.title}}</td>
                                 <td>
-                                    {{#files}}
                                     <a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a> <br>
-                                    {{/files}}
                                 </td>
                             </tr>
                             {{/resources}} 

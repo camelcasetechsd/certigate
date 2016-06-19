@@ -188,8 +188,8 @@ class CourseController extends ActionController
             $preparedCourse->setOutlines($preparedOutlines);
 
             $resources = $preparedCourse->getResources();
-            $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
-            $preparedCourse->setResources($preparedResources);
+//            $preparedResources = $resourceModel->prepareResourcesForDisplay($resources);
+            $preparedCourse->setResources($resources);
 
             $variables['course'] = $preparedCourse;
 

@@ -242,7 +242,7 @@ class Resource
     }
 
     /**
-     * Prepare resources for display
+     * Prepare resources for display (not used any more)
      * 
      * @access public
      * @param array $resources
