@@ -18,6 +18,7 @@ use Notifications\Service\MailTemplates;
 use Notifications\Service\MailSubjects;
 use System\Service\Cache\CacheHandler;
 use Utilities\Service\Object;
+use EStore\Service\OptionValueOperation;
 
 /**
  * CourseEvent Model
@@ -140,6 +141,7 @@ class CourseEvent
      */
     public function saveCourseEventOption($courseEvent, $data = array(), $editFlag = false)
     {
+
         if ($editFlag === true) {
             $estoreApiEdge = ApiCalls::OPTION_VALUE_EDIT;
             $startDate = $courseEvent->getStartDate()->format(Object::DATE_DISPLAY_FORMAT);
@@ -162,6 +164,7 @@ class CourseEvent
         $languages = $this->estoreApi->getLanguageData();
         $languageId = reset($languages)["language_id"];
         $parameters = array(
+            'additionOperation' => OptionValueOperation::CREATE_PRODUCT_OPTION_VALUE,
             'option_name' => OptionTypes::COURSE_EVENT,
             'type' => 'select',
             'sort_order' => 1,
@@ -192,6 +195,11 @@ class CourseEvent
                 ),
             )
         );
+
+        if (count($course->getCourseEvents()) > 0 && empty($courseEvent->getOptionValueId()) && !$editFlag) {
+            $parameters['additionOperation'] = OptionValueOperation::UPDATE_PRODUCT_OPTION_VALUE;
+            $estoreApiEdge = ApiCalls::OPTION_VALUE_ADD_TO_LIST;
+        }
         $queryParameters = array();
         if (!empty($courseEvent->getOptionValueId())) {
             $queryParameters["option_value_id"] = $courseEvent->getOptionValueId();
@@ -373,7 +381,7 @@ class CourseEvent
         } catch (\Exception $e) {
             if ($e->getMessage() === "trials limit reached") {
                 return;
-            }            
+            }
 //            throw new \Exception("Adding course to cart failed");
         }
     }
