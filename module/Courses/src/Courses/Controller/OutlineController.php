@@ -4,7 +4,9 @@ namespace Courses\Controller;
 
 use Utilities\Controller\ActionController;
 use Zend\View\Model\ViewModel;
-use DOMPDFModule\View\Model\PdfModel;
+use Zend\Mime\Part as MimePart;
+use Zend\Mime\Message as MimeMessage;
+use TCPDF;
 
 /**
  * Outline Controller
@@ -66,14 +68,23 @@ class OutlineController extends ActionController
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
             return $this->redirect()->toUrl($url);
         }
-        $pdfModel = new PdfModel();
-        $pdfModel->setOption("filename", "{$course->getName()} outlines"); // Triggers PDF download, automatically appends ".pdf"
-        // To set view variables
-        $pdfModel->setVariables(array(
-          'outlines' => $objectUtilities->prepareForDisplay($course->getOutlines())
+
+        $tcpdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $tcpdf->AddPage();
+        $tcpdf->SetFont('aealarabiya', '', 12);
+
+        $this->renderer = $this->getServiceLocator()->get('ViewRenderer');
+        $content = $this->renderer->render('courses/outline/generate-pdf', array(
+            'outlines' => $objectUtilities->prepareForDisplay($course->getOutlines())
         ));
-        $pdfModel->setTemplate("courses/outline/generate-pdf");
-        return $this->getPdfView($pdfModel);
+        $html = new MimePart($content);
+        $html->type = "text/html";
+        $body = new MimeMessage();
+        $body->setParts(array($html));
+        // render html with our variables 
+        $tcpdf->writeHTML($html->getContent(), true, 0, true, 0);
+        // creating the output PDF  && D for download 
+        $tcpdf->Output( "{$course->getName()} outlines.pdf", 'D');
     }
 
 }

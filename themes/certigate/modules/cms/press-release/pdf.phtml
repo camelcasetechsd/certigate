@@ -1,7 +1,10 @@
 <style>
     .cover_image{
-        width: 250px;
+        width: 500px;
         height: 200px;
+    }
+    .article_data{
+        right:3px;
     }
     .summary{
         margin-top: 3px;
@@ -10,35 +13,31 @@
         margin-top: 20px;
     }
 </style>
-<div class="row">
-    <div class="col-lg-3 main_pic">
-        <div class="imageContainer">
-            <img class="cover_image" src="/var/www/html/public/upload/pagePictures/<?php echo $this->tmp_name ?>"/>
-        </div>
+<div class="col-lg-12 main_pic">
+    <div class="imageContainer">
+        <img class="cover_image" src="/var/www/html/public/upload/pagePictures/<?php echo $this->tmp_name ?>"/>
     </div>
-    <div class=" col-lg-7 news_head">
-        <blockquote>
-            <?php if ($this->language): ?>
-                <h3><?php echo $this->title ?></h3>
-            <?php else : ?>
-                <h3><?php echo $this->titleAr ?></h3>
-            <?php endif; ?>
-            <footer>
-                <span>By: <?php echo $this->author ?></span><br>
-                <span class="pull-right"><?php echo $this->created ?></span>
-            </footer>
-        </blockquote>
-
-
-        <div class="summary">            
-            <?php if ($this->language): ?>
-                <?php echo $this->summary ?>
-            <?php else : ?>
-                <?php echo $this->summaryAr ?>
-            <?php endif; ?>
-        </div>
-    </div> 
 </div>
+<div class="article_data">
+    <?php if ($this->language): ?>
+        <p style="font-size: 33px"><?php echo $this->title ?></p>
+    <?php else : ?>
+        <p style="font-size: 33px"><?php echo $this->titleAr ?></p>
+    <?php endif; ?>
+    <div class="press_data">
+        <?php if ($this->language): ?>By: <?php else : ?>للكاتب: <?php endif; ?><?php echo $this->author ?>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <?php if ($this->language): ?>At: <?php else : ?>بتاريخ: <?php endif; ?><?php echo $this->created ?>
+    </div>
+</div>
+<br>
+<div class="summary">            
+    <?php if ($this->language): ?>
+        <?php echo $this->summary ?>
+    <?php else : ?>
+        <?php echo $this->summaryAr ?>
+    <?php endif; ?>
+</div> 
 <div class="row">
     <div class="col-lg-12 news_body">
         <?php if ($this->language): ?>
