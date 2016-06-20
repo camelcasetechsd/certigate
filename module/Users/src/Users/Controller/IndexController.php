@@ -225,6 +225,7 @@ class IndexController extends ActionController
 
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
@@ -280,7 +281,19 @@ class IndexController extends ActionController
             }
         }
 
-        $variables['userForm'] = $this->getFormView($form);
+//        $this->getFormView($form->getName('firstName'));
+//        $variables['formElements'] = $userModel->prepareFormForDisplay($this, $form);
+//        echo '<pre>';
+//        var_dump($form->get('firstName'));        exit;
+//        var_dump($this->getFormView($form->get('firstName')));        exit;
+//        $variables['openTage'] = $userModel->prepareFormForDisplay($this, $this->getFormView($form));
+//        $variables['openTage'] = $this->getFormView($form->getName('firstName'));
+//        var_dump($form->get('firstName'));exit;
+//        $form->prepare();
+//
+//            
+//                                    
+        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
         $statement = new Statement();
         $variables['rolesStatements'] = $statement->rolesStatements;
         $variables['privacyStatement'] = $statement->privacyStatement;
@@ -314,7 +327,7 @@ class IndexController extends ActionController
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        
+
         /**
          * page is anonymous , but if we're dealing with logged in user it should 
          * act as this ACL Rules :

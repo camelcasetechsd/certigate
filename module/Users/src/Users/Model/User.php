@@ -163,7 +163,7 @@ class User
         }
 
         if ($editFormFlag === true && in_array(Role::PROCTOR_ROLE, $userRoles) && ($oldLatitude != $userObj->getLatitude() || $oldLongitude != $userObj->getLongitude() )) {
-            $this->organizationUserModel->sortProctors(/* $organizationId = */ null,/* $userId = */ $userObj->getId());
+            $this->organizationUserModel->sortProctors(/* $organizationId = */ null, /* $userId = */ $userObj->getId());
         }
 
         // update session if current logged in user is the updated one
@@ -365,6 +365,34 @@ class User
             "roles" => $roles,
             "status" => Status::STATUS_ACTIVE,
         ));
+    }
+
+    /**
+     * function prepare the form to be displayed as element
+     * by element  
+     * @param type $actionController
+     * @param type $viewHelperManager
+     * @param Users\Form\UserForm $form
+     * @param array $elementsContainer
+     * @return type
+     */
+    public function prepareFormForDisplay($actionController, $viewHelperManager, $form, $elementsContainer)
+    {
+        $formInput = $viewHelperManager->get('formInput');
+
+        
+        
+        $elementsContainer['openTag'] = $viewHelperManager->get('form')->openTag($form);
+        $elementsContainer['closeTag'] = $viewHelperManager->get('form')->closeTag();
+        $elementsContainer['firstName'] = $formInput($form->get('firstName'));
+
+
+//        $formViewHelper = $actionController->getFormViewHelper();
+//        $elementsContainer['openTag'] = $formViewHelper->openTag($form);
+//        $elementsContainer['closeTag'] = $formViewHelper->closeTag();
+//        $elementsContainer['firstName'] = $formViewHelper->
+
+        return $elementsContainer;
     }
 
 }
