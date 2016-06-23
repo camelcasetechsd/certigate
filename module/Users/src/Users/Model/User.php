@@ -16,6 +16,7 @@ use EStore\Service\ApiCalls;
 use Zend\Http\Request;
 use Utilities\Service\Paginator\PaginatorAdapter;
 use Zend\Paginator\Paginator;
+use Users\Service\ViewHelpers;
 
 /**
  * User Model
@@ -378,13 +379,86 @@ class User
      */
     public function prepareFormForDisplay($actionController, $viewHelperManager, $form, $elementsContainer)
     {
-        $formInput = $viewHelperManager->get('formInput');
+        /**
+         * Helper functions
+         */
+        $formInput = $viewHelperManager->get(ViewHelpers::FORM_INPUT_TEXT);
+        $formPassword = $viewHelperManager->get(ViewHelpers::FORM_PASSWORD_TEXT);
+        $formSelect = $viewHelperManager->get(ViewHelpers::FORM_SELECT_TEXT);
+        $formFile = $viewHelperManager->get(ViewHelpers::FORM_FILE_TEXT);
+        $formHidden = $viewHelperManager->get(ViewHelpers::FORM_HIDDEN_TEXT);
+        $formImage = $viewHelperManager->get(ViewHelpers::FORM_IMAGE_TEXT);
+        $formEmail = $viewHelperManager->get(ViewHelpers::FORM_EMAIL_TEXT);
+        $formCheckbox = $viewHelperManager->get(ViewHelpers::FORM_CHECKBOX_TEXT);
+        $formMultiCheckbox = $viewHelperManager->get(ViewHelpers::FORM_MULTI_CHECKBOX_TEXT);
+        $formRadio = $viewHelperManager->get(ViewHelpers::FORM_RADIO_TEXT);
+        $formCaptcha = $viewHelperManager->get(ViewHelpers::FORM_CAPTCHA_TEXT);
+        $formButton = $viewHelperManager->get(ViewHelpers::FORM_BUTTON_TEXT);
+        $formElementErrors = $viewHelperManager->get(ViewHelpers::FORM_ELEMENTS_ERRORS_TEXT);
 
-        
-        
+        /**
+         * Form open && close tags
+         */
+        $form->setAttribute('enctype', 'multipart/form-data');
         $elementsContainer['openTag'] = $viewHelperManager->get('form')->openTag($form);
         $elementsContainer['closeTag'] = $viewHelperManager->get('form')->closeTag();
-        $elementsContainer['firstName'] = $formInput($form->get('firstName'));
+
+        foreach ($form->getElements() as $element) {
+
+            $name = $element->getAttribute('name');
+            $elementsContainer[$name . 'Label'] = $element->getLabel();
+
+            if ($element->getAttribute('type') === 'text') {
+                $elementsContainer[$name] = $formInput($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'password') {
+                $elementsContainer[$name] = $formPassword($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'select') {
+                $elementsContainer[$name] = $formSelect($form->get($name), $element->getValue(), $element->getAttributes(), $element->getOptions());
+            }
+            else if ($element->getAttribute('type') === 'file') {
+                $elementsContainer[$name] = $formFile($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'hidden') {
+                $elementsContainer[$name] = $formHidden($form->get($name), $element->getValue(), $element->getAttributes());
+            }
+            else if ($element->getAttribute('type') === 'image') {
+                $elementsContainer[$name] = $formImage($form->get($name), $element->getValue(), $element->getAttributes());
+            }
+            else if ($element->getAttribute('type') === 'email') {
+                $elementsContainer[$name] = $formEmail($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'captcha') {
+                $elementsContainer[$name] = $formCaptcha($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'checkbox') {
+                $elementsContainer[$name] = $formCheckbox($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'multi_checkbox') {
+                $elementsContainer[$name] = $formMultiCheckbox($form->get($name), 'append');
+            }
+            else if ($element->getAttribute('type') === 'radio') {
+                $elementsContainer[$name] = $formRadio($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'button') {
+                $elementsContainer[$name] = $formButton($form->get($name), $element->getValue());
+            }
+            $elementsContainer[$name . 'Error'] = $formElementErrors($element);
+            $elementsContainer[$name . 'Name'] = $name;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //        $formViewHelper = $actionController->getFormViewHelper();

@@ -2,30 +2,491 @@
 {{<layout}}
 
 {{$content}}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{#translate}}New User{{/translate}}</h3>
-    </div>
-    <div class="panel-body">
-        {{{userForm}}}
+<style>
+    .page-container{
+        margin-right: 0%; 
+        margin-left: 0%; 
+    }   
+    .main-holder{
+        margin-top: -3%;
+    }
+</style>
+<!-- /.main holder -->
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading">
+                            <h3>New User</h3>
+                        </div>
+                        <div class="panel-body main-form  ">
+                            {{{openTag}}}
+
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ACCOUNT DATA</h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="user_form_firstName">{{firstNameLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{firstName}}}
+                                            {{{firstNameError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="user_form_firstNameAr">{{firstNameArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{firstNameAr}}}
+                                            {{{firstNameArError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label"  for="user_form_middleName">{{middleNameLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{middleName}}}
+                                            {{{middleNameError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label"  for="user_form_middleNameAr">{{middleNameArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{middleNameAr}}}
+                                            {{{middleNameArError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="user_form_lastName">{{lastNameLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{lastName}}}
+                                            {{{lastNameError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="user_form_lastNameAr">{{lastNameArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{lastNameAr}}}
+                                            {{{lastNameArError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <label class=" required col-sm-3 control-label " for="user_form_username">{{usernameLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{username}}}
+                                            {{{usernameError}}}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label " for="user_form_location">{{mapSearchLabel}}</label>
+
+                                        <div class="col-sm-8">
+                                            <div class="gllpMap">Google Maps</div>
+                                            {{{mapSearch}}}
+                                            {{{mapSearchError}}}
+                                            {{{mapZoom}}}
+                                            {{{mapZoomError}}}
+                                            {{{longitude}}}
+                                            {{{longitudeError}}}
+                                            {{{latitude}}}
+                                            {{{latitudeError}}}
+                                            {{{mapSearchButton}}}
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" required col-sm-3 control-label" for="user_form_email">{{emailLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{email}}}
+                                            {{{emailError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" required col-sm-3 control-label" for="user_form_confirmEmail">{{confirmEmailLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{confirmEmail}}}
+                                            {{{confirmEmailError}}}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class=" required col-sm-3 control-label" for="user_form_password">{{passwordLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{password}}}
+                                            {{{passwordError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" required col-sm-3 control-label" for="user_form_confirmPassword">{{confirmPasswordLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{confirmPassword}}}
+                                            {{{confirmPasswordError}}}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> PERSONAL DATA</h2>
+                                <div class="col-md-6">
+
+
+
+
+                                    <div class="form-group">
+
+                                        <label class="required col-sm-3 control-label" for="user_form_mobile">{{mobileLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{mobile}}}
+                                            {{{mobileError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="user_form_phone">{{phoneLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{phone}}}
+                                            {{{phoneError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label required" for="user_form_identificationType">{{identificationTypeLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{identificationType}}}
+                                            {{{identificationTypeError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label required" for="user_form_identificationNumber">{{identificationNumberLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{identificationNumber}}}
+                                            {{{identificationNumberError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label required" for="user_form_identificationExpiryDateHj">{{identificationExpiryDateHjLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{identificationExpiryDateHj}}}
+                                            {{{identificationExpiryDateHjError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label required" for="user_form_identificationExpiryDate">{{identificationExpiryDateLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{identificationExpiryDate}}}
+                                            {{{identificationExpiryDateError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label  required" for="user_form_dateOfBirthHj">{{dateOfBirthHjLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{dateOfBirthHj}}}
+                                            {{{dateOfBirthHjError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label  required" for="user_form_dateOfBirth">{{dateOfBirthLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{dateOfBirth}}}
+                                            {{{dateOfBirthError}}}
+                                        </div>
+                                    </div>
+
+                                    <!--security Q&A-->
+                                    <div class="row panel-border">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="user_form_securityQuestion">
+                                                <p class="required ">{{securityQuestionLabel}}</p> 
+                                            </label>
+
+                                            <div class="col-sm-9">
+                                                {{{securityQuestion}}}
+                                                {{{securityQuestionError}}}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="user_form_securityAnswer">
+                                                <p class="required ">{{securityAnswerLabel}}</p> 
+                                            </label>
+
+                                            <div class="col-sm-9">
+                                                {{{securityAnswer}}}
+                                                {{{securityAnswerError}}}
+                                                <ul><li>Security Question should be <strong>Memorable</strong>, You should be able to remember the answer.
+                                                    </li><li>Security Question should be <strong>Consistent</strong>, Answer should not change with time.</li>
+                                                    <li>Security Question should be <strong>Safe</strong>, Answer should be hard to guess or research.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--security Q&A Border End-->
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_addressOne">{{addressOneLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{addressOne}}}
+                                            {{{addressOneError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_addressOneAr">{{addressOneArLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{addressOneAr}}}
+                                            {{{addressOneArError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label" for="user_form_addressTwo">{{addressTwoLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{addressTwo}}}
+                                            {{{addressTwoError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label" for="user_form_addressTwoAr">{{addressTwoArLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{addressTwoAr}}}
+                                            {{{addressTwoArError}}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_nationality">{{nationalityLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{nationality}}}
+                                            {{{nationalityError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_language">{{languageLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{language}}}
+                                            {{{languageError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_country">{{countryLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{country}}}
+                                            {{{countryError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class=" col-sm-3 control-label required" for="user_form_{{cityName}}">{{cityLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{city}}}
+                                            {{{cityError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="user_form_zipcode" >{{zipCodeLabel}}</label>
+
+                                        <div class="col-sm-9">
+                                            {{{zipCode}}}
+                                            {{{zipCodeError}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_form_photo" class="col-sm-3 control-label  ">{{photoLabel}}</label>
+
+                                        <div class="col-sm-9 upload-pic">
+                                            {{{photo}}}
+                                            {{{photoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> USER ROLES</h2>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <div class="row roles-inputs">
+                                            {{{roles}}}
+                                            {{{rolesError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <div class="row">
+                                            <div>
+                                                <label class="c-input statement">
+                                                    {{{trainingManagerStatement}}}
+                                                    {{{trainingManagerStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{trainingManagerStatementName}}"><b>{{trainingManagerStatementLabel}}&nbsp;Statement</b></a> 
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{testCenterAdministratorStatement}}}
+                                                    {{{testCenterAdministratorStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{testCenterAdministratorStatementName}}"><b>{{testCenterAdministratorStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{studentStatement}}}
+                                                    {{{studentStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{studentStatementName}}"><b>{{studentStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{resellerStatement}}}
+                                                    {{{resellerStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{resellerStatementName}}"><b>{{resellerStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{proctorStatement}}}
+                                                    {{{proctorStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{proctorStatementName}}"><b>{{proctorStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{instructorStatement}}}
+                                                    {{{instructorStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{instructorStatementName}}"><b>{{instructorStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                                <label class="c-input statement">
+                                                    {{{distributorStatement}}}
+                                                    {{{distributorStatementError}}}
+                                                    <span class="c-indicator"></span>
+                                                    I agree to <a href="javascript:void(0);" class="roleStatement" id="{{distributorStatementName}}"><b>{{distributorStatementLabel}}&nbsp;Statement</b></a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> PRIVACY STATEMENT</h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="required" for="user_form_{{privacyStatementName}}">{{privacyStatementLabel}}</label>
+                                        <label class="c-input statement">
+                                            {{{privacyStatement}}}
+                                            {{{privacyStatementError}}}
+                                            <span class="c-indicator"></span>
+                                            I agree to <a href="javascript:void(0);" class="roleStatement" id="{{privacyStatementName}}"><b>{{privacyStatementLabel}}&nbsp;</b></a>
+                                        </label>
+                                        <div class="form-group">
+                                            {{{id}}}
+                                            {{{idError}}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <fieldset>
+                            <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Create">
+                            <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset"></fieldset>
+
+                        {{{closeTag}}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {{/content}}
-
-
 {{$scripts}}
-{{> ../modules/users/index/userCRUD.js }}
 <script>
     $(document).ready(function () {
-        {{#rolesStatements}}   
-                generateStatementCheckboxContent('user_form_{{type}}', '{{type}}', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
-        {{/rolesStatements}}
-        {{#privacyStatement}}
-                generateStatementCheckboxContent('user_form_privacyStatement','privacyStatement', '{{#translate}}{{title}}{{/translate}}', '{{#translate}}{{{sentence}}}{{/translate}}', '{{#translate}}{{{content}}}{{/translate}}', '{{#translate}}{{role}}{{/translate}}');
-
-        {{/privacyStatement}}
-    });
-</script>
+        $inputs = $(document).find('.role-label').children();
+        $.each($inputs, function () {
+            $(this).after('<span class="c-indicator"></span>');
+        });
+        /**
+         * statments data is going to be huge so
+         * we only get needed statement by ajax
+         */
+        $(document).on('click', '.roleStatement', function () {
+            $checkBoxSelector = $(this).parent().find('input.form-control');
+            console.log($checkBoxSelector);
+            $.ajax({
+                type: 'POST',
+                url: '/roles/statements',
+                data: {
+                    type: $(this).attr('id')
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                bootbox.dialog({
+                    message: data.content,
+                    title: data.title,
+                    buttons: {
+                        success: {
+                            label: "{{#translate}}Agree{{/translate}}",
+                            className: "btn-success",
+                            callback: function () {
+                                $checkBoxSelector.prop('checked', true);
+                            }
+                        },
+                        cancel: {
+                            label: "{{#translate}}Disagree{{/translate}}",
+                            className: "btn-primary",
+                            callback: function () {
+                                $checkBoxSelector.prop('checked', true);
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    });</script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 {{/scripts}}
 {{/layout}}

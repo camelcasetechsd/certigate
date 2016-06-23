@@ -2,6 +2,7 @@
 
 namespace Users\Form;
 
+use Zend\Form\FormInterface;
 use Utilities\Form\Form;
 use Users\Service\Statement;
 use Utilities\Service\Time;
@@ -267,7 +268,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register hijriDate-ar',
+                    'class' => 'form-register new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -281,7 +282,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate-ar',
+                    'class' => 'form-register new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -297,7 +298,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register hijriDate-ar',
+                    'class' => 'form-register new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -310,7 +311,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate-ar',
+                    'class' => 'form-register new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -326,7 +327,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register hijriDate',
+                    'class' => 'form-register new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -339,7 +340,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate',
+                    'class' => 'form-register new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -354,7 +355,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register hijriDate',
+                    'class' => 'form-register new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -367,7 +368,7 @@ class UserForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-register gregorianDate',
+                    'class' => 'form-register new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -459,7 +460,7 @@ class UserForm extends Form
                 'class' => 'form-control gllpSearchField',
             ),
             'options' => array(
-                'label' => '<div class="required">Location</div><div class="gllpMap">Google Maps</div>',
+                'label' => 'Location',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
@@ -564,7 +565,7 @@ class UserForm extends Form
             'name' => 'roles',
             'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
             'attributes' => array(
-                'class' => 'mar',
+                'class' => 'col-md-1',
             ),
             'options' => array(
                 'label' => '<label class="legendLabel"><div>Roles</div></label>',
@@ -581,7 +582,7 @@ class UserForm extends Form
                     'disable_html_escape' => true,
                 ),
                 'label_attributes' => array(
-                    'class' => "col-md-4",
+                    'class' => "col-md-9 c-input role-label",
                 )
             ),
         ));
@@ -594,7 +595,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Instructor',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -607,7 +608,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Proctor',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -620,7 +621,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Student',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -633,7 +634,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Test Center Administrator',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -646,12 +647,12 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Training Manager',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'distributorStatement',
             'type' => 'Zend\Form\Element\Checkbox',
@@ -659,7 +660,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Distributor',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -672,7 +673,7 @@ class UserForm extends Form
                 'class' => $class,
             ),
             'options' => array(
-                'label' => '',
+                'label' => 'Re-Seller',
                 'checked_value' => Statement::STATEMENT_AGREE,
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
@@ -726,6 +727,13 @@ class UserForm extends Form
         // Add buttons fieldset
         $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("save_button_only" => true));
         $this->add($buttonsFieldset);
+    }
+
+    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
+    {
+        parent::bind($object, $flags);
+        // to prevent binding password value in edit form
+        $this->get('password')->setValue('');
     }
 
 }

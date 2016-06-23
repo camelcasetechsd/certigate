@@ -116,7 +116,7 @@ class IndexController extends ActionController
         $userObj = $query->find('Users\Entity\User', $id);
         $oldLongitude = $userObj->getLongitude();
         $oldLatitude = $userObj->getLatitude();
-        $photo = $userObj->photo;
+
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
         $auth = new AuthenticationService();
@@ -141,7 +141,7 @@ class IndexController extends ActionController
 
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
-
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
 
@@ -201,12 +201,10 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
+        
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
 
-        $variables['userForm'] = $this->getFormView($form);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
-        $variables['photo'] = $photo;
         return new ViewModel($variables);
     }
 
@@ -280,23 +278,9 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
-//        $this->getFormView($form->getName('firstName'));
-//        $variables['formElements'] = $userModel->prepareFormForDisplay($this, $form);
-//        echo '<pre>';
-//        var_dump($form->get('firstName'));        exit;
-//        var_dump($this->getFormView($form->get('firstName')));        exit;
-//        $variables['openTage'] = $userModel->prepareFormForDisplay($this, $this->getFormView($form));
-//        $variables['openTage'] = $this->getFormView($form->getName('firstName'));
-//        var_dump($form->get('firstName'));exit;
-//        $form->prepare();
-//
-//            
-//                                    
+        
         $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
+
         return new ViewModel($variables);
     }
 
