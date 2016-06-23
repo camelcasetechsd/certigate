@@ -141,7 +141,7 @@ class IndexController extends ActionController
 
         $form = new UserForm(/* $name = */ null, $options);
         $form->bind($userObj);
-        
+
         $request = $this->getRequest();
         if ($request->isPost()) {
 
@@ -201,7 +201,7 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        
+
         $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
         $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
 
@@ -278,7 +278,7 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        
+
         $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
 
         return new ViewModel($variables);
@@ -298,6 +298,7 @@ class IndexController extends ActionController
     {
 
         $variables = array();
+        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
@@ -376,10 +377,7 @@ class IndexController extends ActionController
             }
         }
 
-        $variables['userForm'] = $this->getFormView($form);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
+        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
         return new ViewModel($variables);
     }
 
