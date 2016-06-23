@@ -1,6 +1,6 @@
 <?php
 
-namespace Users\Service;
+namespace Utilities\Service\FormSmasher;
 
 /**
  * names of view helpers needed for viewing 

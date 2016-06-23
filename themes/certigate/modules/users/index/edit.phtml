@@ -412,6 +412,14 @@
                             </div>
                             <div class="row panel-border">
                                 <h2 class="sub-title-form"> PRIVACY STATEMENT</h2>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label classCaptcha required" for="user_form_captcha">{{captchaLabel}}</label>
+
+                                    <div class="col-sm-9">
+                                        {{{captcha}}}
+                                        {{{captchaError}}}
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required" for="user_form_{{privacyStatementName}}">{{privacyStatementLabel}}</label>

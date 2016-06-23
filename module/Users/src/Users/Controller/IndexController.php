@@ -110,6 +110,7 @@ class IndexController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
@@ -201,10 +202,7 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
-        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
-
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
 
@@ -223,7 +221,7 @@ class IndexController extends ActionController
 
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
-        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
@@ -279,7 +277,7 @@ class IndexController extends ActionController
             }
         }
 
-        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
 
         return new ViewModel($variables);
     }
@@ -298,7 +296,7 @@ class IndexController extends ActionController
     {
 
         $variables = array();
-        $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
@@ -377,7 +375,8 @@ class IndexController extends ActionController
             }
         }
 
-        $variables = $userModel->prepareFormForDisplay($this, $viewHelperManager, $form, $variables);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+//        echo '<pre>';var_dump($variables);exit;
         return new ViewModel($variables);
     }
 
