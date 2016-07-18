@@ -2,7 +2,10 @@
 {{<layout}}
 {{$content}}
 <div class="panel-default">
-
+    <div class="pull-right">
+        <a class="btn btn-success" target="_blank" href="/quote/training/public">{{#translate}}Public Training{{/translate}}</a>
+        <a class="btn btn-success" target="_blank" href="/quote/training/private">{{#translate}}Private Training{{/translate}}</a>
+    </div>
     <div class="panel-heading">{{#translate}}Filter Quotations{{/translate}}</div>
     {{{filterForm}}}
 </div>

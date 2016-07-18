@@ -5,6 +5,7 @@ require_once __DIR__ . '/../AbstractSeed.php';
 use db\AbstractSeed;
 use \CMS\Entity\MenuItem;
 use \CMS\Service\PageTypes;
+use \Users\Entity\Role;
 
 class PosCMenus extends AbstractSeed
 {
@@ -51,32 +52,9 @@ class PosCMenus extends AbstractSeed
                     [
                         "title" => "CGP Training",
                         "titleAr" => "CGP Training",
-                        "path" => "#",
+                        "path" => "/courses/calendar",
                         "weight" => 1,
                         "children" => [
-                            [
-
-                                "title" => "Public Training",
-                                "titleAr" => "Public Training",
-                                "path" => "/quote/training/public",
-                                "weight" => 1,
-                                "children" => [
-                                ]
-                            ],
-                            [
-                                "title" => "Private Training",
-                                "titleAr" => "Private Training",
-                                "path" => "/quote/training/private",
-                                "weight" => 2,
-                                "children" => [
-                                ]
-                            ],
-                            [
-                                "title" => "Training Quotations",
-                                "titleAr" => "Training Quotations",
-                                "path" => "/quote",
-                                "weight" => 3,
-                            ]
                         ],
                     ]
                     ,
@@ -212,7 +190,7 @@ class PosCMenus extends AbstractSeed
             $this->insertMenuItem($item, $primaryMenuId);
         }
 
-
+        
         // Admin Menu
         $menu = [
             "title" => "Admin Menu",
