@@ -56,6 +56,7 @@ class RolesController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\Role');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $roleObj = new Role();
 
         $form = new RoleForm();
@@ -74,7 +75,8 @@ class RolesController extends ActionController
             }
         }
 
-        $variables['roleForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
         return new ViewModel($variables);
     }
 
@@ -92,6 +94,8 @@ class RolesController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
         $roleObj = $query->find('Users\Entity\Role', $id);
 
         $form = new RoleForm();
@@ -111,7 +115,8 @@ class RolesController extends ActionController
             }
         }
 
-        $variables['roleForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
         return new ViewModel($variables);
     }
 
