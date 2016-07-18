@@ -175,7 +175,7 @@ $(document).ready(function () {
          *  to reconnect
          */
         function connectToServer(){
-                window.connection = new WebSocket('ws://{{serverDomain}}:8080/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
+                window.connection = new WebSocket('ws://{{serverDomain}}:10100/chat/runserver?userId={{loggedInUserId}}&username={{loggedInUsername}}');
 
                 window.connection.onopen = function(){
                     console.log('connected successfully');
