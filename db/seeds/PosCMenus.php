@@ -10,6 +10,12 @@ class PosCMenus extends AbstractSeed
 {
 
     /**
+     *
+     * @var array static pages content
+     */
+    private $staticPagesContent;
+    
+    /**
      * Run Method.
      *
      * Write your database seeder using this method.
@@ -19,6 +25,9 @@ class PosCMenus extends AbstractSeed
      */
     public function run()
     {
+        $filename = __DIR__ . "/../staticContent/pages.json";
+        $this->staticPagesContent = json_decode(file_get_contents($filename));
+                
         // Primary Menu
         $menu = [
             "title" => "Primary Menu",
@@ -80,43 +89,10 @@ class PosCMenus extends AbstractSeed
                             [
                                 "title" => "ATP Program",
                                 "titleAr" => "ATP Program",
-                                "path" => "#",
+                                "path" => "/atp_program",
+                                "type" => "page",
                                 "weight" => 1,
                                 "children" => [
-                                    [
-                                        "title" => "Overview",
-                                        "titleAr" => "Overview",
-                                        "path" => "/overview",
-                                        "weight" => 1,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "ATP Benefits",
-                                        "titleAr" => "ATP Benefits",
-                                        "path" => "/atp_benefits",
-                                        "weight" => 2,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "ATP Selection Criteria",
-                                        "titleAr" => "ATP Selection Criteria",
-                                        "path" => "/atp_criteria",
-                                        "weight" => 3,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "ATP SOP",
-                                        "titleAr" => "ATP SOP",
-                                        "path" => "/atp_sop",
-                                        "weight" => 4,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "Apply to be an ATP",
-                                        "titleAr" => "Apply to be an ATP",
-                                        "weight" => 5,
-                                        "path" => "/organizations/new?organization=1",
-                                    ],
                                 ]
                             ],
                             [
@@ -144,10 +120,11 @@ class PosCMenus extends AbstractSeed
                                 "type" => "page"
                             ],
                             [
-                                "title" => "Apply to be an Instructor",
-                                "titleAr" => "Apply to be an Instructor",
-                                "path" => "/users/new",
+                                "title" => "Certified Instructor",
+                                "titleAr" => "Certified Instructor",
+                                "path" => "/certified_instructor",
                                 "weight" => 4,
+                                "type" => "page"
                             ],
                             [
                                 "title" => "Instructors Directory",
@@ -176,55 +153,10 @@ class PosCMenus extends AbstractSeed
                             [
                                 "title" => "ATC Program",
                                 "titleAr" => "ATC Program",
-                                "path" => "#",
+                                "path" => "/atc_program",
+                                "type" => "page",
                                 "weight" => 1,
                                 "children" => [
-                                    [
-                                        "title" => "Overview",
-                                        "titleAr" => "Overview",
-                                        "path" => "/atc_verview",
-                                        "weight" => 1,
-                                        "type" => "page",
-                                    ],
-                                    [
-                                        "title" => "ATC Benefits",
-                                        "titleAr" => "ATC Benefits",
-                                        "path" => "/atc_benefits",
-                                        "weight" => 2,
-                                        "type" => "page",
-                                    ],
-                                    [
-                                        "title" => "ATC Selection Criteria",
-                                        "titleAr" => "ATC Selection Criteria",
-                                        "path" => "/atc_criteria",
-                                        "weight" => 3,
-                                        "type" => "page",
-                                    ],
-                                    [
-                                        "title" => "ATC SOP",
-                                        "titleAr" => "ATC SOP",
-                                        "path" => "/atc_sop",
-                                        "weight" => 4,
-                                        "type" => "page",
-                                    ],
-                                    [
-                                        "title" => " Apply to be an ATC",
-                                        "titleAr" => " Apply to be an ATC",
-                                        "path" => "/organizations/new?organization=1",
-                                        "weight" => 5,
-                                    ],
-                                    [
-                                        "title" => "Apply to be an ATC Administrator",
-                                        "titleAr" => "Apply to be an ATC Administrator",
-                                        "path" => "/users/new",
-                                        "weight" => 6,
-                                    ],
-                                    [
-                                        "title" => "Apply to be an ATC Proctor",
-                                        "titleAr" => "Apply to be an ATC Proctor",
-                                        "path" => "/users/new",
-                                        "weight" => 7,
-                                    ],
                                 ]
                             ],
                             [
@@ -326,13 +258,19 @@ class PosCMenus extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
+        if(property_exists($this->staticPagesContent, $item['path'])){
+            $body = $this->staticPagesContent->$item['path']->body;
+            $bodyAr = $this->staticPagesContent->$item['path']->bodyAr;
+        }else{
+            $body = $bodyAr = $faker->text;
+        }
         $this->insert('page', [
             'title' => $item['title'],
             'titleAr' => $item['titleAr'] . ' ar',
             'path' => $item['path'],
             'status' => TRUE,
-            'body' => base64_encode(bzcompress($faker->text)),
-            'bodyAr' => base64_encode(bzcompress($faker->text)),
+            'body' => base64_encode(bzcompress($body)),
+            'bodyAr' => base64_encode(bzcompress($bodyAr)),
             'type' => PageTypes::PAGE_TYPE
         ]);
 
