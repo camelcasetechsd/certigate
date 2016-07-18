@@ -27,6 +27,11 @@ class ViewHelpers
     /**
      * form input helper function
      */
+    const FORM_NUMBER_TEXT = 'formNumber';
+
+    /**
+     * form input helper function
+     */
     const FORM_FILE_TEXT = 'formFile';
 
     /**
