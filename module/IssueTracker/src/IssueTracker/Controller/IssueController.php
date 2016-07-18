@@ -36,6 +36,7 @@ class IssueController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $categoryModel = $this->getServiceLocator()->get('IssueTracker\Model\Categories');
         $options['query'] = $query;
         $categoryForm = new IssuesCategoriesForm(null, $options);
@@ -51,7 +52,7 @@ class IssueController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $variables['categoriesForm'] = $this->getFormView($categoryForm);
+        $variables = $formSmasher->prepareFormForDisplay($categoryForm, $variables);
         return new ViewModel($variables);
     }
 
@@ -69,6 +70,7 @@ class IssueController extends ActionController
         $variables = array();
         $id = $this->params('issueId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $categoryModel = $this->getServiceLocator()->get('IssueTracker\Model\Categories');
         $categoryObj = $query->find('IssueTracker\Entity\IssueCategory', $id);
         $options['query'] = $query;
@@ -86,7 +88,7 @@ class IssueController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $variables['categoriesForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
 
