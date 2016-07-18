@@ -76,7 +76,6 @@ class RolesController extends ActionController
         }
 
         $variables = $formSmasher->prepareFormForDisplay($form, $variables);
-
         return new ViewModel($variables);
     }
 

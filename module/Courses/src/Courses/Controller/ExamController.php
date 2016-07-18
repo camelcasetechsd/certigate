@@ -53,6 +53,7 @@ class ExamController extends ActionController
         $variables = array();
         $config = $this->getServiceLocator()->get('Config');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $options['query'] = $query;
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $options['userId'] = $this->storage["id"];
@@ -91,6 +92,8 @@ class ExamController extends ActionController
             }
         }
         $variables['bookExamForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
         return new ViewModel($variables);
     }
 
