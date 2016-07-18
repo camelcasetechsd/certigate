@@ -193,7 +193,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control hijriDate-ar',
+                    'class' => 'form-control new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -206,7 +206,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate-ar',
+                    'class' => 'form-control new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -219,7 +219,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control hijriDate-ar',
+                    'class' => 'form-control new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -232,7 +232,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate-ar',
+                    'class' => 'form-control new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -248,7 +248,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control hijriDate',
+                    'class' => 'form-control new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -261,7 +261,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -274,7 +274,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control hijriDate',
+                    'class' => 'form-control new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -287,7 +287,7 @@ class CourseEventForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -302,11 +302,11 @@ class CourseEventForm extends Form
             'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
                 'class' => 'form-control',
-            ),
+                ),
             'options' => array(
                 'label' => 'Hide From Calendar',
                 'checked_value' => Status::STATUS_ACTIVE,
-                'unchecked_value' => Status::STATUS_INACTIVE
+                'unchecked_value' => Status::STATUS_INACTIVE,
             ),
         ));
 

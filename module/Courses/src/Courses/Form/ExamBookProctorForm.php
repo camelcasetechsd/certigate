@@ -73,7 +73,6 @@ class ExamBookProctorForm extends Form
                     $fullNameMethodName = "getFullName" . $methodSuffix;
                     $user = $targetEntity->getUser();
                     return '<span class="c-indicator"></span>' . $user->$fullNameMethodName() . " - " . $user->getCity() . " <span class='" . $targetEntity->getDistanceStyleClass() . "'>[ ~ " . $targetEntity->getDistanceSort() . " $awayWord]</span>";
-//                    return $user->$fullNameMethodName()." - ".$user->getCity()." <span class='".$targetEntity->getDistanceStyleClass()."'>[ ~ ".$targetEntity->getDistanceSort()." $awayWord]</span>";
                 },
                 'find_method' => array(
                     'name' => 'findBy',

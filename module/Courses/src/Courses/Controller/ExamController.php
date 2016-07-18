@@ -242,7 +242,7 @@ class ExamController extends ActionController
                 $form->bind($examBook);
             }
         }
-
+        
         $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
