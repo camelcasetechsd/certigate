@@ -53,6 +53,7 @@ class IssueTrackerController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $issuesModel = $this->getServiceLocator()->get('IssueTracker\Model\Issues');
         $options['query'] = $query;
         $issueTrackerForm = new IssueTrackerForm(null, $options);
@@ -72,7 +73,8 @@ class IssueTrackerController extends ActionController
             }
         }
         $variables['descriptions'] = json_encode($query->findAll('IssueTracker\Entity\IssueCategory'));
-        $variables['trackerForm'] = $this->getFormView($issueTrackerForm);
+        $variables = $formSmasher->prepareFormForDisplay($issueTrackerForm, $variables);
+
         return new ViewModel($variables);
     }
 

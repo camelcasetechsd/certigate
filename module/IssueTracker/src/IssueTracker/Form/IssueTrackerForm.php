@@ -82,11 +82,10 @@ class IssueTrackerForm extends Form
             'name' => 'filePath',
             'type' => 'Zend\Form\Element\File',
             'attributes' => array(
-                'accept' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/zip,application/octet-stream,application/pdf,pptx,potx,ppsx,thmx',
                 'multiple' => true
             ),
             'options' => array(
-                'label' => '<p class="required">File</p> <p>Supported Extensions: zip,pdf,ppt,pptx</p>',
+                'label' => 'File',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
