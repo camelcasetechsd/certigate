@@ -78,7 +78,7 @@ class RendererFactory implements FactoryInterface
         
         $chatSessionContiner = new Container('chat');
         if ($auth->hasIdentity()) {
-            $manageMenusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::MANAGE_MENU_UNDERSCORED, /* $divId = */ "manageMenu", /* $divClass = */ "navbar-collapse collapse");
+            $manageMenusViewArray = $menuView->prepareMenuView(array(Menu::MANAGE_MENU_UNDERSCORED => $storage[Menu::MANAGE_MENU_UNDERSCORED]), /* $menuTitleUnderscored = */ Menu::MANAGE_MENU_UNDERSCORED, /* $divId = */ "manageMenu", /* $divClass = */ "navbar-collapse collapse");
             $config['helpers']['manageMenu'] = isset($manageMenusViewArray[Menu::MANAGE_MENU_UNDERSCORED]) ? $manageMenusViewArray[Menu::MANAGE_MENU_UNDERSCORED] : '';
 
         

@@ -5,6 +5,8 @@ namespace Users\Auth;
 use Utilities\Service\Query\Query;
 use Users\Auth\Adapter;
 use Zend\Authentication\AuthenticationService;
+use CMS\Entity\Menu;
+use CMS\Service\Cache\CacheHandler;
 
 /**
  * Authentication
@@ -15,6 +17,8 @@ use Zend\Authentication\AuthenticationService;
  * @property Zend\Http\Request $request
  * @property Utilities\Service\Query\Query $query
  * @property EStore\Service\Api $estoreApi
+ * @property CMS\Model\MenuItem $menuItem
+ * @property CMS\Service\CacheHandler $cacheHandler
  * 
  * @package users
  * @subpackage auth
@@ -41,17 +45,32 @@ class Authentication
     private $estoreApi;
 
     /**
+     *
+     * @var CMS\Model\MenuItem
+     */
+    private $menuItem;
+    
+    /**
+     * @var CMS\Service\CacheHandler
+     */
+    private $cacheHandler;
+    
+    /**
      * Set needed properties
      * 
      * 
      * @access public
      * @param Query $query
      * @param EStore\Service\Api $estoreApi
+     * @param CMS\Model\MenuItem $menuItem
+     * @param CMS\Service\CacheHandler $cacheHandler
      */
-    public function __construct(Query $query, $estoreApi)
+    public function __construct(Query $query, $estoreApi, $menuItem, $cacheHandler)
     {
         $this->query = $query;
         $this->estoreApi = $estoreApi;
+        $this->menuItem = $menuItem;
+        $this->cacheHandler = $cacheHandler;
     }
 
     /**
@@ -110,6 +129,9 @@ class Authentication
         }
         $auth = new AuthenticationService();
         $storage = $auth->getStorage();
+        $forceFlush = (APPLICATION_ENV == "production" )? false : true;;
+        $menusArray = $this->cacheHandler->getCachedCMSData($forceFlush);
+        $sortedMenuItems = $menusArray[CacheHandler::MENUS_KEY];
         // here to add new entries to the session
         $storage->write(array(
             'id' => $user->id,
@@ -128,7 +150,8 @@ class Authentication
             'status' => $user->getStatus(),
             'roles' => $user->getRolesNames(),
             'agreements' => $user->getRolesAgreementsStatus(),
-            'customerId' => $user->getCustomerId()
+            'customerId' => $user->getCustomerId(),
+            Menu::MANAGE_MENU_UNDERSCORED => $this->menuItem->getManageMenuItems($sortedMenuItems, /*$roles =*/ $user->getRolesNames(), /*$userName =*/ $user->getUsername())
         ));
     }
     

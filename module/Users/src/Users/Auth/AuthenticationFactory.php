@@ -31,7 +31,9 @@ class AuthenticationFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $wrapperQuery = $serviceLocator->get('wrapperQuery');
         $estoreApi = $serviceLocator->get('EStore\Service\Api');
-        $authentication = new Authentication($wrapperQuery, $estoreApi);
+        $menuItem = $serviceLocator->get('CMS\Model\MenuItem');
+        $cacheHandler = $serviceLocator->get('CMS\Service\CacheHandler');
+        $authentication = new Authentication($wrapperQuery, $estoreApi, $menuItem, $cacheHandler);
         
         return $authentication;
     }

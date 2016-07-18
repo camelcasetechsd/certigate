@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\Criteria;
 use CMS\Entity\MenuItem as MenuItemEntity;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
-use CMS\Entity\Menu;
 
 /**
  * MenuItem Model
@@ -22,7 +20,7 @@ use CMS\Entity\Menu;
  * @property Utilities\Service\Inflector $inflector
  * @property Query $query
  * @property array $staticMenus
- * 
+ *  
  * @package cms
  * @subpackage model
  */
@@ -165,8 +163,6 @@ class MenuItem implements ServiceLocatorAwareInterface
         }
         $sortedMenuItems = $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root], $treeFlag);
 
-        $sortedMenuItems[Menu::MANAGE_MENU_UNDERSCORED] = $this->getManageMenuItems($sortedMenuItems);
-
         return $sortedMenuItems;
     }
 
@@ -175,37 +171,33 @@ class MenuItem implements ServiceLocatorAwareInterface
      * 
      * @access public
      * @param array $sortedMenuItems
+     * @param array $roles logged in user roles
+     * @param string $userName
      * @return array manage menu items
      */
-    public function getManageMenuItems($sortedMenuItems)
+    public function getManageMenuItems($sortedMenuItems, $roles, $userName)
     {
-        $manageMenu = array();
-        $auth = new AuthenticationService();
-        if ($auth->hasIdentity()) {
-            $storage = $auth->getIdentity();
-            $roles = $storage["roles"];
-            $manageMenuItems = reset($sortedMenuItems[$this->inflector->underscore(Role::USER_ROLE)][Role::USER_ROLE]["children"]);
-            foreach ($roles as $role) {
-                if ($role == Role::USER_ROLE) {
-                    continue;
-                }
-                $roleUnderscored = $this->inflector->underscore($role);
-                if (array_key_exists($roleUnderscored, $sortedMenuItems)) {
-                    $manageMenuItems = array_merge($manageMenuItems, reset($sortedMenuItems[$roleUnderscored][$role]["children"]));
-                }
+        $manageMenuItems = reset($sortedMenuItems[$this->inflector->underscore(Role::USER_ROLE)][Role::USER_ROLE]["children"]);
+        foreach ($roles as $role) {
+            if ($role == Role::USER_ROLE) {
+                continue;
             }
-            $manageMenu = array(
-                $storage["username"] => array(
-                    "title" => $storage["username"],
-                    "titleAr" => $storage["username"],
-                    "path" => "#",
-                    "weight" => 1,
-                    "depth" => 0,
-                    "title_underscored" => $this->inflector->underscore($storage["username"]),
-                    "children" => array($manageMenuItems)
-                )
-            );
+            $roleUnderscored = $this->inflector->underscore($role);
+            if (array_key_exists($roleUnderscored, $sortedMenuItems)) {
+                $manageMenuItems = array_merge($manageMenuItems, reset($sortedMenuItems[$roleUnderscored][$role]["children"]));
+            }
         }
+        $manageMenu = array(
+            $userName => array(
+                "title" => $userName,
+                "titleAr" => $userName,
+                "path" => "#",
+                "weight" => 1,
+                "depth" => 0,
+                "title_underscored" => $this->inflector->underscore($userName),
+                "children" => array($manageMenuItems)
+            )
+        );
         return $manageMenu;
     }
 
