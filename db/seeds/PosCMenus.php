@@ -190,6 +190,174 @@ class PosCMenus extends AbstractSeed
             $this->insertMenuItem($item, $primaryMenuId);
         }
 
+        // ATP Menu
+        $atpMenu = [
+            "title" => Role::TRAINING_MANAGER_ROLE,
+            "titleAr" => Role::TRAINING_MANAGER_ROLE,
+            "status" => true
+        ];
+
+        $this->insert('menu', $atpMenu);
+        $atpMenuId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $atpMenuItems = [
+            Role::TRAINING_MANAGER_ROLE => [
+                "title" => Role::TRAINING_MANAGER_ROLE,
+                "titleAr" => Role::TRAINING_MANAGER_ROLE,
+                "path" => "#",
+                "weight" => 1,
+                "children" => [
+                    [
+                        "title" => "My Organizations",
+                        "titleAr" => "My Organizations",
+                        "path" => "/organizations/myorganizations",
+                        "weight" => 1,
+                    ],
+                    [
+                        "title" => "Publish Training Calendar",
+                        "titleAr" => "Publish Training Calendar",
+                        "path" => "/course-events/new",
+                        "weight" => 3,
+                    ],
+                    [
+                        "title" => "Order Material",
+                        "titleAr" => "Order Material",
+                        "path" => "/estore",
+                        "weight" => 4,
+                    ],
+                ]
+            ]            
+        ];
+        foreach ($atpMenuItems as $item) {
+            $this->insertMenuItem($item, $atpMenuId);
+        }
+        
+        // ATC Menu
+        $atcMenu = [
+            "title" => Role::TEST_CENTER_ADMIN_ROLE,
+            "titleAr" => Role::TEST_CENTER_ADMIN_ROLE,
+            "status" => true
+        ];
+
+        $this->insert('menu', $atcMenu);
+        $atcMenuId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $atcMenuItems = [
+            Role::TEST_CENTER_ADMIN_ROLE => [
+                "title" => Role::TEST_CENTER_ADMIN_ROLE,
+                "titleAr" => Role::TEST_CENTER_ADMIN_ROLE,
+                "path" => "#",
+                "weight" => 1,
+                "children" => [
+                    [
+                        "title" => "My Organizations",
+                        "titleAr" => "My Organizations",
+                        "path" => "/organizations/myorganizations",
+                        "weight" => 1,
+                    ],
+                    [
+                        "title" => "Testing Session Request",
+                        "titleAr" => "Testing Session Request",
+                        "path" => "/courses/exam/book",
+                        "weight" => 3,
+                    ],
+                    [
+                        "title" => "Order Material",
+                        "titleAr" => "Order Material",
+                        "path" => "/estore",
+                        "weight" => 4,
+                    ],
+                ]
+            ]            
+        ];
+        foreach ($atcMenuItems as $item) {
+            $this->insertMenuItem($item, $atcMenuId);
+        }
+        
+        // Instructor Menu
+        $instructorMenu = [
+            "title" => Role::INSTRUCTOR_ROLE,
+            "titleAr" => Role::INSTRUCTOR_ROLE,
+            "status" => true
+        ];
+
+        $this->insert('menu', $instructorMenu);
+        $instructorMenuId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $instructorMenuItems = [
+            Role::INSTRUCTOR_ROLE => [
+                "title" => Role::INSTRUCTOR_ROLE,
+                "titleAr" => Role::INSTRUCTOR_ROLE,
+                "path" => "#",
+                "weight" => 1,
+                "children" => [
+                    [
+                        "title" => "Instructor Resources",
+                        "titleAr" => "Instructor Resources",
+                        "path" => "#",
+                        "weight" => 1,
+                        "children" => [
+                            [
+                                "title" => "General Resources",
+                                "titleAr" => "General Resources",
+                                "path" => "/general_resources",
+                                "type" => "page",
+                            ],
+//                            [
+//                                "title" => "Training Materials",
+//                                "titleAr" => "Training Materials",
+//                                "path" => "/",
+//                            ]
+                        ]
+                    ],
+                ]
+            ]            
+        ];
+        foreach ($instructorMenuItems as $item) {
+            $this->insertMenuItem($item, $instructorMenuId);
+        }
+        
+        // User Menu
+        $userMenu = [
+            "title" => Role::USER_ROLE,
+            "titleAr" => Role::USER_ROLE,
+            "status" => true
+        ];
+
+        $this->insert('menu', $userMenu);
+        $userMenuId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $userMenuItems = [
+            Role::USER_ROLE => [
+                "title" => Role::USER_ROLE,
+                "titleAr" => Role::USER_ROLE,
+                "path" => "#",
+                "weight" => 1,
+                "children" => [
+                    [
+                        "title" => "My Profile",
+                        "titleAr" => "My Profile",
+                        "path" => "/users/more",
+                        "weight" => 1,
+                    ],
+                    [
+                        "title" => "My Courses",
+                        "titleAr" => "My Courses",
+                        "path" => "/courses/mycourses",
+                        "weight" => 2,
+                    ],
+                    [
+                        "title" => "Class Room Training",
+                        "titleAr" => "Class Room Training",
+                        "path" => "/quote",
+                        "weight" => 3,
+                    ],
+                ]
+            ]            
+        ];
+        foreach ($userMenuItems as $item) {
+            $this->insertMenuItem($item, $userMenuId);
+        }
         
         // Admin Menu
         $menu = [

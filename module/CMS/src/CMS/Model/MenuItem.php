@@ -10,6 +10,9 @@ use Doctrine\Common\Collections\Criteria;
 use CMS\Entity\MenuItem as MenuItemEntity;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Authentication\AuthenticationService;
+use Users\Entity\Role;
+use CMS\Entity\Menu;
 
 /**
  * MenuItem Model
@@ -106,19 +109,22 @@ class MenuItem implements ServiceLocatorAwareInterface
                     $tree = array_merge($tree, $menuItem->children);
                     unset($menuItem->children);
                 }
-            } else {
+            }
+            else {
                 $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
                 $currentLocale = $applicationLocale->getCurrentLocale();
-                if($currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR){
+                if ($currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR) {
                     $menuItemTitle = $menuItem->getTitleAr();
-                } else if ($currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US) {
+                }
+                else if ($currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US) {
                     $menuItemTitle = $menuItem->getTitle();
                 }
-                
+
                 $menuTitle = $this->inflector->underscore($menuItem->getMenu()->getTitle());
                 if ($menuItem->getType() == MenuItemEntity::TYPE_PAGE && is_object($menuItem->getPage())) {
                     $path = $menuItem->getPage()->getPath();
-                } else {
+                }
+                else {
                     $path = $menuItem->getDirectUrl();
                 }
                 $menuItemArray = array(
@@ -136,6 +142,7 @@ class MenuItem implements ServiceLocatorAwareInterface
 
     /**
      * Get menu items sorted according to menu and menu items' parents
+     * Prepare manage menu
      * 
      * @access public
      * @param array $menuItems
@@ -156,7 +163,50 @@ class MenuItem implements ServiceLocatorAwareInterface
             }
             $menuItemsByParents[$menuItemParentId][] = $menuItem;
         }
-        return $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root], $treeFlag);
+        $sortedMenuItems = $this->sortMenuItemsByParents($menuItemsByParents, $menuItemsByParents[$root], $treeFlag);
+
+        $sortedMenuItems[Menu::MANAGE_MENU_UNDERSCORED] = $this->getManageMenuItems($sortedMenuItems);
+
+        return $sortedMenuItems;
+    }
+
+    /**
+     * Get manage menu items after merging all logged in user roles
+     * 
+     * @access public
+     * @param array $sortedMenuItems
+     * @return array manage menu items
+     */
+    public function getManageMenuItems($sortedMenuItems)
+    {
+        $manageMenu = array();
+        $auth = new AuthenticationService();
+        if ($auth->hasIdentity()) {
+            $storage = $auth->getIdentity();
+            $roles = $storage["roles"];
+            $manageMenuItems = reset($sortedMenuItems[$this->inflector->underscore(Role::USER_ROLE)][Role::USER_ROLE]["children"]);
+            foreach ($roles as $role) {
+                if ($role == Role::USER_ROLE) {
+                    continue;
+                }
+                $roleUnderscored = $this->inflector->underscore($role);
+                if (array_key_exists($roleUnderscored, $sortedMenuItems)) {
+                    $manageMenuItems = array_merge($manageMenuItems, reset($sortedMenuItems[$roleUnderscored][$role]["children"]));
+                }
+            }
+            $manageMenu = array(
+                $storage["username"] => array(
+                    "title" => $storage["username"],
+                    "titleAr" => $storage["username"],
+                    "path" => "#",
+                    "weight" => 1,
+                    "depth" => 0,
+                    "title_underscored" => $this->inflector->underscore($storage["username"]),
+                    "children" => array($manageMenuItems)
+                )
+            );
+        }
+        return $manageMenu;
     }
 
     /**
@@ -183,7 +233,8 @@ class MenuItem implements ServiceLocatorAwareInterface
             foreach ($this->staticMenus as $staticMenuTitle => $staticMenuArray) {
                 if (array_key_exists($staticMenuTitle, $menuItems)) {
                     $menuItems[$staticMenuTitle] = array_merge($staticMenuArray, $menuItems[$staticMenuTitle]);
-                } else {
+                }
+                else {
                     $menuItems[$staticMenuTitle] = $staticMenuArray;
                 }
             }
@@ -269,8 +320,7 @@ class MenuItem implements ServiceLocatorAwareInterface
             $input->setRequired(false);
         }
     }
-    
-    
+
     /**
      * 
      * @return \CMS\Entity\MenuItemRepository
@@ -280,7 +330,6 @@ class MenuItem implements ServiceLocatorAwareInterface
         $menuItemRepository = $this->query->setEntity(/* $entityName = */ 'CMS\Entity\MenuItem')->entityRepository;
         $menuItemRepository->setServiceLocator($this->getServiceLocator());
         return $menuItemRepository;
-        
     }
 
 }

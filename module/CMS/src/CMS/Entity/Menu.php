@@ -37,6 +37,11 @@ class Menu
     const ADMIN_MENU_UNDERSCORED = "admin_menu";
 
     /**
+     * Manage menu
+     */
+    const MANAGE_MENU_UNDERSCORED = "manage_menu";
+
+    /**
      *
      * @var Array translated properties
      */
