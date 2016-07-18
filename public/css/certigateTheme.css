@@ -73,3 +73,12 @@ body {
 .admin-holder {
   margin-top: 170px !important;
 }
+
+.manageMenu {
+    color: #fff;
+    margin-top: -24px;
+    margin-bottom: -14px !important;
+}
+.manageMenu .navbar-nav>li>a{
+    color: #fff !important;
+}
