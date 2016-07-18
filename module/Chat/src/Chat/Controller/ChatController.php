@@ -24,7 +24,7 @@ class ChatController extends ActionController
     public function runServerAction()
     {
         try{
-            $server = IoServer::factory(new HttpServer(new WsServer($this->getServiceLocator()->get('Chat\Service\ChatServer'))), 10100);
+            $server = IoServer::factory(new HttpServer(new WsServer($this->getServiceLocator()->get('Chat\Service\ChatServer'))), 2083);
             $server->run();
         } catch (\Exception $ex) {
             // it is already running 
