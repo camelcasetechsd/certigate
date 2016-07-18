@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../AbstractSeed.php';
+require_once __DIR__ . '/../AbstractSeed.php';
 
 use db\AbstractSeed;
 use \CMS\Entity\MenuItem;
@@ -31,66 +31,12 @@ class PosCMenus extends AbstractSeed
 
 
         $primaryMenuItems = [
-            "about" => [
-                "title" => "About",
-                "titleAr" => "About",
-                "path" => "#",
-                "weight" => 1,
-                "children" => [
-                    [
-                        "title" => "Corporate Profile",
-                        "titleAr" => "Corporate Profile",
-                        "path" => "/corportate_profile",
-                        "type" => "page",
-                    ],
-                    [
-                        "title" => "How can Certigate Pro help you ?",
-                        "titleAr" => "How can Certigate Pro help you ?",
-                        "path" => "/how_can_certigate_pro_help_you",
-                        "type" => "page",
-                    ],
-                    [
-                        "title" => "Alliances & Partnerships",
-                        "titleAr" => "Alliances & Partnerships",
-                        "path" => "#",
-                        "children" => [
-                            [
-                                "title" => "Become a Partner",
-                                "titleAr" => "Become a Partner",
-                                "path" => "/organizations/type",
-                            ],
-                        ]
-                    ],
-                    [
-                        "title" => "Media Center",
-                        "titleAr" => "Media Center",
-                        "path" => "#",
-                        "children" => [
-                            [
-                                "title" => "Ask the Expert",
-                                "titleAr" => "Ask the Expert",
-                                "path" => "/q2a",
-                            ],
-                        ]
-                    ],
-                    [
-                        "title" => "Career Center",
-                        "titleAr" => "Career Center",
-                        "path" => "http://thinktalentpro.com",
-                    ],
-                    [
-                        "title" => "Contact Us",
-                        "titleAr" => "Contact Us",
-                        "type" => "page",
-                        "path" => "/ContactUs",
-                    ],
-                ]
-            ],
-            //second menu
+
+            //first menu
             "Training & Certification" => [
                 "title" => "Training & Certification",
                 "titleAr" => "Training & Certification",
-                "weight" => 2,
+                "weight" => 1,
                 "path" => "#",
                 "children" => [
                     [
@@ -100,71 +46,36 @@ class PosCMenus extends AbstractSeed
                         "weight" => 1,
                         "children" => [
                             [
-                                "title" => "Classroom Training",
-                                "titleAr" => "Classroom Training",
-                                "path" => "#",
+
+                                "title" => "Public Training",
+                                "titleAr" => "Public Training",
+                                "path" => "/quote/training/public",
                                 "weight" => 1,
                                 "children" => [
-                                    [
-                                        "title" => "Public Training",
-                                        "titleAr" => "Public Training",
-                                        "path" => "#",
-                                        "weight" => 1,
-                                        "children" => [
-                                            [
-                                                "title" => "Request Quotation",
-                                                "titleAr" => "Request Quotation",
-                                                "path" => "/quote/training/public",
-                                            ],
-                                            [
-                                                // need to be specific 
-                                                // not implemented yet
-                                                "title" => "Course Evaluation",
-                                                "titleAr" => "Course Evaluation",
-                                                "path" => "/courses/evaluation/1",
-                                            ]
-                                        ]
-                                    ],
-                                    [
-                                        "title" => "Private Training",
-                                        "titleAr" => "Private Training",
-                                        "path" => "#",
-                                        "weight" => 2,
-                                        "children" => [
-                                            [
-                                                "title" => "Request Quotation",
-                                                "titleAr" => "Request Quotation",
-                                                "path" => "/quote/training/private",
-                                            ]
-                                        ]
-                                    ],
-                                    [
-                                        "title" => "Training Quotations",
-                                        "titleAr" => "Training Quotations",
-                                        "path" => "/quote",
-                                        "weight" => 3,
-                                    ],
-                                    [
-                                        "title" => "Course Calendar",
-                                        "titleAr" => "Course Calendar",
-                                        "path" => "/courses/calendar",
-                                        "weight" => 4,
-                                        "children" => [
-                                            [
-                                                "title" => "Register",
-                                                "titleAr" => "Register",
-                                                "path" => "/courses/new",
-                                            ]
-                                        ]
-                                    ],
                                 ]
                             ],
-                        ]
-                    ],
+                            [
+                                "title" => "Private Training",
+                                "titleAr" => "Private Training",
+                                "path" => "/quote/training/private",
+                                "weight" => 2,
+                                "children" => [
+                                ]
+                            ],
+                            [
+                                "title" => "Training Quotations",
+                                "titleAr" => "Training Quotations",
+                                "path" => "/quote",
+                                "weight" => 3,
+                            ]
+                        ],
+                    ]
+                    ,
                     [
                         "title" => "Training Partner",
                         "titleAr" => "Training Partner",
                         "path" => "#",
+                        "weight" => 2,
                         "children" => [
                             [
                                 "title" => "ATP Program",
@@ -176,48 +87,44 @@ class PosCMenus extends AbstractSeed
                                         "title" => "Overview",
                                         "titleAr" => "Overview",
                                         "path" => "/overview",
+                                        "weight" => 1,
                                         "type" => "page"
                                     ],
                                     [
                                         "title" => "ATP Benefits",
                                         "titleAr" => "ATP Benefits",
                                         "path" => "/atp_benefits",
+                                        "weight" => 2,
                                         "type" => "page"
                                     ],
                                     [
                                         "title" => "ATP Selection Criteria",
                                         "titleAr" => "ATP Selection Criteria",
                                         "path" => "/atp_criteria",
+                                        "weight" => 3,
                                         "type" => "page"
                                     ],
                                     [
                                         "title" => "ATP SOP",
                                         "titleAr" => "ATP SOP",
                                         "path" => "/atp_sop",
+                                        "weight" => 4,
                                         "type" => "page"
                                     ],
                                     [
                                         "title" => "Apply to be an ATP",
                                         "titleAr" => "Apply to be an ATP",
+                                        "weight" => 5,
                                         "path" => "/organizations/new?organization=1",
                                     ],
-                                    [
-                                        "title" => "ATP Login",
-                                        "titleAr" => "ATP Login",
-                                        "path" => "/sign/out",
-                                        "children" => [
-                                            [
-                                                "title" => "Publish Training Calendar",
-                                                "titleAr" => "Publish Training Calendar",
-                                                "path" => "/courses/new",
-                                            ]
-                                        ]
-                                    ],
-                                    [
-                                        "title" => "ATP Directory",
-                                        "titleAr" => "ATP Directory",
-                                        "path" => "/organizations/atps",
-                                    ],
+                                ]
+                            ],
+                            [
+                                "title" => "ATP Directory",
+                                "titleAr" => "ATP Directory",
+                                "path" => "/organizations/atps",
+                                "weight" => 2,
+                                "children" => [
                                 ]
                             ],
                         ]
@@ -226,103 +133,38 @@ class PosCMenus extends AbstractSeed
                         "title" => "Certified Instructors",
                         "titleAr" => "Certified Instructors",
                         "path" => "#",
-                        "weight" => 3,
-                        "children" => [
-
-
-
+                        "weight" => 4,
+                        "children" =>
+                        [
                             [
-                                "title" => "Certified Instructors",
-                                "titleAr" => "Certified Instructors",
-                                "path" => "#",
-                                "weight" => 3,
+                                "title" => "welcome page",
+                                "titleAr" => "welcome page",
+                                "path" => "/welcome_page",
+                                "weight" => 1,
+                                "type" => "page"
+                            ],
+                            [
+                                "title" => "Apply to be an Instructor",
+                                "titleAr" => "Apply to be an Instructor",
+                                "path" => "/users/new",
+                                "weight" => 4,
+                            ],
+                            [
+                                "title" => "Instructors Directory",
+                                "titleAr" => "Instructors Directory",
+                                "path" => "/users/instructors",
+                                "weight" => 5,
                                 "children" => [
-                                    [
-                                        // not implemented yet
-                                        "title" => "welcome page",
-                                        "titleAr" => "welcome page",
-                                        "path" => "/welcome_page",
-                                        "weight" => 1,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "Faculty Login",
-                                        "titleAr" => "Faculty Login",
-                                        "path" => "/sign/out",
-                                        "weight" => 2,
-                                        "children" => [
-                                            [
-                                                "title" => "CertiGate Pro Instructor Resources",
-                                                "titleAr" => "CertiGate Pro Instructor Resources",
-                                                "path" => "#",
-                                                "weight" => 2,
-                                                "children" => [
-                                                    [
-                                                        "title" => "General Resources",
-                                                        "titleAr" => "General Resources",
-                                                        "path" => "/general_resources",
-                                                        "weight" => 1,
-                                                        "type" => "page"
-                                                    ],
-                                                    [
-                                                        "title" => "Training Materials",
-                                                        "titleAr" => "Training Materials",
-                                                        "path" => "#",
-                                                        "weight" => 2,
-                                                        "children" => [
-
-                                                            [
-                                                                "title" => "Select Course",
-                                                                "titleAr" => "Select Course",
-                                                                "path" => "/courses/instructor-calendar",
-                                                                "weight" => 1,
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ],
-                                        ]
-                                    ],
-                                    [
-                                        //not implemented yet
-                                        "title" => "Certified Instructor",
-                                        "titleAr" => "Certified Instructor",
-                                        "path" => "/cerified_instructor/info",
-                                        "weight" => 3,
-                                        "type" => "page"
-                                    ],
-                                    [
-                                        "title" => "Apply to be an Instructor",
-                                        "titleAr" => "Apply to be an Instructor",
-                                        "path" => "/users/new",
-                                        "weight" => 4,
-                                    ],
-                                    [
-                                        "title" => "Authorized Instructor Program (AIP)",
-                                        "titleAr" => "Authorized Instructor Program (AIP)",
-                                        "path" => "#",
-                                        "weight" => 5,
-                                        "children" => [
-                                            [
-                                                "title" => "Welcome",
-                                                "titleAr" => "Welcome",
-                                                "path" => "/aip_welcome",
-                                                "weight" => 1,
-                                                "type" => "page"
-                                            ],
-                                            [
-                                                /**
-                                                 * no specific course 
-                                                 */
-                                                "title" => "Course Outlines",
-                                                "titleAr" => "Course Outlines",
-                                                "path" => '/courses/instructor-training',
-                                                "weight" => 2,
-                                            ],
-                                        ]
-                                    ],
                                 ]
-                            ]
+                            ],
+                            [
+                                "title" => "Authorized Instructor Program (AIP)",
+                                "titleAr" => "Authorized Instructor Program (AIP)",
+                                "path" => "/courses/instructor-training",
+                                "weight" => 6,
+                                "children" => [
+                                ]
+                            ],
                         ]
                     ],
                     [
@@ -338,124 +180,100 @@ class PosCMenus extends AbstractSeed
                                 "weight" => 1,
                                 "children" => [
                                     [
-                                        "title" => "ATC",
-                                        "titleAr" => "ATC",
-                                        "path" => "#",
+                                        "title" => "Overview",
+                                        "titleAr" => "Overview",
+                                        "path" => "/atc_verview",
                                         "weight" => 1,
-                                        "children" => [
-
-                                            [
-                                                "title" => "Overview",
-                                                "titleAr" => "Overview",
-                                                "path" => "/atc_verview",
-                                                "type" => "page",
-                                            ],
-                                            [
-                                                "title" => "ATC Benefits",
-                                                "titleAr" => "ATC Benefits",
-                                                "path" => "/atc_benefits",
-                                                "type" => "page",
-                                            ],
-                                            [
-                                                "title" => "ATC Selection Criteria",
-                                                "titleAr" => "ATC Selection Criteria",
-                                                "path" => "/atc_criteria",
-                                                "type" => "page",
-                                            ],
-                                            [
-                                                "title" => "ATC SOP",
-                                                "titleAr" => "ATC SOP",
-                                                "path" => "/atc_sop",
-                                                "type" => "page",
-                                            ],
-                                            [
-                                                "title" => "ATC FAQs",
-                                                "titleAr" => "ATC FAQs",
-                                                "path" => "/atc_faqs",
-                                                "type" => "page",
-                                            ],
-                                            [
-                                                "title" => " Apply to be an ATC",
-                                                "titleAr" => " Apply to be an ATC",
-                                                "path" => "/organizations/new?organization=1",
-                                            ],
-                                            [
-                                                "title" => "Apply to be an ATC Administrator",
-                                                "titleAr" => "Apply to be an ATC Administrator",
-                                                "path" => "/users/new",
-                                            ],
-                                            [
-                                                "title" => "Apply to be an ATC Proctor",
-                                                "titleAr" => "Apply to be an ATC Proctor",
-                                                "path" => "/users/new",
-                                            ],
-                                        ]
+                                        "type" => "page",
+                                    ],
+                                    [
+                                        "title" => "ATC Benefits",
+                                        "titleAr" => "ATC Benefits",
+                                        "path" => "/atc_benefits",
+                                        "weight" => 2,
+                                        "type" => "page",
+                                    ],
+                                    [
+                                        "title" => "ATC Selection Criteria",
+                                        "titleAr" => "ATC Selection Criteria",
+                                        "path" => "/atc_criteria",
+                                        "weight" => 3,
+                                        "type" => "page",
+                                    ],
+                                    [
+                                        "title" => "ATC SOP",
+                                        "titleAr" => "ATC SOP",
+                                        "path" => "/atc_sop",
+                                        "weight" => 4,
+                                        "type" => "page",
+                                    ],
+                                    [
+                                        "title" => " Apply to be an ATC",
+                                        "titleAr" => " Apply to be an ATC",
+                                        "path" => "/organizations/new?organization=1",
+                                        "weight" => 5,
+                                    ],
+                                    [
+                                        "title" => "Apply to be an ATC Administrator",
+                                        "titleAr" => "Apply to be an ATC Administrator",
+                                        "path" => "/users/new",
+                                        "weight" => 6,
+                                    ],
+                                    [
+                                        "title" => "Apply to be an ATC Proctor",
+                                        "titleAr" => "Apply to be an ATC Proctor",
+                                        "path" => "/users/new",
+                                        "weight" => 7,
                                     ],
                                 ]
                             ],
                             [
-                                "title" => "ATC Login",
-                                "titleAr" => "ATC Login",
-                                "path" => "#",
+                                "title" => "ATC FAQs",
+                                "titleAr" => "ATC FAQs",
+                                "path" => "/atc_faqs",
                                 "weight" => 2,
+                                "type" => "page",
                                 "children" => [
-                                    [
-                                        "title" => "Testing Session Request",
-                                        "titleAr" => "Testing Session Request",
-                                        "path" => "/courses/exam/book",
-                                        "weight" => 1,
-                                    ],
-                                    [
-                                        /**
-                                         * Ask ali ???
-                                         */
-                                        "title" => "Renew ATC Status ",
-                                        "titleAr" => "Renew ATC Status ",
-                                        "path" => "/",
-                                        "weight" => 3,
-                                    ],
-                                    [
-                                        "title" => "ATC Directory",
-                                        "titleAr" => "ATC Directory",
-                                        "path" => "/organizations/atcs",
-                                        "weight" => 4,
-                                    ],
+                                ]
+                            ],
+                            [
+                                "title" => "ATC Directory",
+                                "titleAr" => "ATC Directory",
+                                "path" => "/organizations/atcs",
+                                "weight" => 3,
+                                "children" => [
                                 ]
                             ]
                         ]
+                    ]
+                ]
+            ],
+            "about" => [
+                "title" => "About",
+                "titleAr" => "About",
+                "path" => "#",
+                "weight" => 2,
+                "children" => [
+                    [
+                        "title" => "Corporate Profile",
+                        "titleAr" => "Corporate Profile",
+                        "path" => "/corportate_profile",
+                        "type" => "page",
                     ],
                     [
-                        "title" => "Reports",
-                        "titleAr" => "Reports",
-                        "path" => "#",
-                        "weight" => 6,
-                        "children" => [
-                            [
-                                // not implemented yet
-                                "title" => "Reports",
-                                "titleAr" => "Reports",
-                                "path" => "/results",
-                                "type" => "page",
-                                "children" => [
-                                    [
-                                        // not implemented yet
-                                        "title" => "Students passed specific exam",
-                                        "titleAr" => "Students passed specific exam",
-                                        "path" => "/passed",
-                                        "children" => [
-                                            [
-                                                // not implemented yet
-                                                "title" => "Request Certificate",
-                                                "titleAr" => "Request Certificate",
-                                                "path" => "/certificate/request",
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                        ]
-                    ],
+                        "title" => "How can Certigate Pro help you ?",
+                        "titleAr" => "How can Certigate Pro help you ?",
+                        "path" => "/how_can_certigate_pro_help_you",
+                        "type" => "page",
+                    ]
                 ]
+            ],
+            "Contact Us" => [
+                "title" => "Contact Us",
+                "titleAr" => "Contact Us",
+                "weight" => 4,
+                "path" => "/contact-us",
+                "children" => []
             ]
         ];
         foreach ($primaryMenuItems as $item) {
