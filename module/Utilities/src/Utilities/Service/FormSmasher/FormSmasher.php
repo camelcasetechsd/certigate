@@ -31,6 +31,7 @@ class FormSmasher
         $formPassword = $this->viewHelperManager->get(ViewHelpers::FORM_PASSWORD_TEXT);
         $formSelect = $this->viewHelperManager->get(ViewHelpers::FORM_SELECT_TEXT);
         $formNumber = $this->viewHelperManager->get(ViewHelpers::FORM_NUMBER_TEXT);
+        $formTime = $this->viewHelperManager->get(ViewHelpers::FORM_TIME_TEXT);
         $formFile = $this->viewHelperManager->get(ViewHelpers::FORM_FILE_TEXT);
         $formHidden = $this->viewHelperManager->get(ViewHelpers::FORM_HIDDEN_TEXT);
         $formImage = $this->viewHelperManager->get(ViewHelpers::FORM_IMAGE_TEXT);
@@ -71,6 +72,9 @@ class FormSmasher
             }
             else if ($element->getAttribute('type') === 'number') {
                 $elementsContainer[$name] = $formNumber($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'time') {
+                $elementsContainer[$name] = $formTime($form->get($name));
             }
             else if ($element->getAttribute('type') === 'file') {
                 $elementsContainer[$name] = $formFile($form->get($name));

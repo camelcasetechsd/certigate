@@ -35,6 +35,11 @@ class ViewHelpers
     const FORM_NUMBER_TEXT = 'formNumber';
 
     /**
+     * form input type number helper function
+     */
+    const FORM_TIME_TEXT = 'formTime';
+
+    /**
      * form input helper function
      */
     const FORM_FILE_TEXT = 'formFile';
