@@ -27,6 +27,7 @@ class FormSmasher
          * Helper functions
          */
         $formInput = $this->viewHelperManager->get(ViewHelpers::FORM_INPUT_TEXT);
+        $formTextarea = $this->viewHelperManager->get(ViewHelpers::FORM_TEXTAREA_TEXT);
         $formPassword = $this->viewHelperManager->get(ViewHelpers::FORM_PASSWORD_TEXT);
         $formSelect = $this->viewHelperManager->get(ViewHelpers::FORM_SELECT_TEXT);
         $formNumber = $this->viewHelperManager->get(ViewHelpers::FORM_NUMBER_TEXT);
@@ -58,6 +59,9 @@ class FormSmasher
             }
             else if ($element->getAttribute('type') === 'text') {
                 $elementsContainer[$name] = $formInput($form->get($name));
+            }
+            else if ($element->getAttribute('type') === 'textarea') {
+                $elementsContainer[$name] = $formTextarea($form->get($name));
             }
             else if ($element->getAttribute('type') === 'password') {
                 $elementsContainer[$name] = $formPassword($form->get($name));

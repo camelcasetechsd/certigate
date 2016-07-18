@@ -15,6 +15,11 @@ class ViewHelpers
     const FORM_INPUT_TEXT = 'formInput';
 
     /**
+     * form textarea helper function
+     */
+    const FORM_TEXTAREA_TEXT = 'formTextarea';
+
+    /**
      * form input helper function
      */
     const FORM_PASSWORD_TEXT = 'formPassword';
@@ -25,7 +30,7 @@ class ViewHelpers
     const FORM_SELECT_TEXT = 'formSelect';
 
     /**
-     * form input helper function
+     * form input type number helper function
      */
     const FORM_NUMBER_TEXT = 'formNumber';
 
