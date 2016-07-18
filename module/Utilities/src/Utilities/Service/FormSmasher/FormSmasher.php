@@ -96,6 +96,7 @@ class FormSmasher
             else if ($element->getAttribute('type') === 'button') {
                 $elementsContainer[$name] = $formButton($form->get($name), $element->getValue());
             }
+            $element->setAttribute('id', $name);
             $elementsContainer[$name . 'Error'] = $formElementErrors($element);
             $elementsContainer[$name . 'Name'] = $name;
         }
