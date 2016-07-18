@@ -5,9 +5,33 @@
     <div class="panel-heading">
         <h3>New Setting</h3>
     </div>
-    <div class="panel-body">
-{{{settingForm}}}
-    </div><!-- body -->
+    <div class="panel-body main-form  ">
+        {{{openTag}}}
+        <div class="row panel-border">
+            <h2 class="sub-title-form"> SETTINGS DATA</h2>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="setting_form_name">{{nameLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{name}}}
+                        {{{nameError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="setting_form_value">{{valueLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{value}}}
+                        {{{valueError}}}
+                    </div>
+                </div>
+            </div>
+            <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Save">
+            <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset"></fieldset>
+        </div>
+        {{{closeTag}}}
+    </div>
 </div><!-- panel -->
 
 {{/content}}
