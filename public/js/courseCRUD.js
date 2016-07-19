@@ -7,8 +7,8 @@
 function updateOutlines(addMoreSelector, isAdminUser) {
     var currentCount, newLabel, newRemoveButton;
     // update displayed outlines fieldsets
-    if ($('#course_form > fieldset.outlinesFieldset > fieldset').length) {
-        $('#course_form > fieldset.outlinesFieldset > fieldset').each(function (index) {
+    if ($('.outlinesFieldset > fieldset').length) {
+        $('.outlinesFieldset > fieldset').each(function (index) {
             if (index !== 0) {
                 currentCount = index;
                 newLabel = getOutlineLabel(currentCount);
@@ -29,15 +29,15 @@ function updateOutlines(addMoreSelector, isAdminUser) {
  * @param {int} outlinesCount
  */
 function addMoreOutline(addMoreSelector, outlinesCount) {
-    var template = $('form > fieldset.outlinesFieldset > span').data('template');
+    var template = $('.outlinesFieldset > span').data('template');
     var tempTemplate, currentCount, newLabel, newRemoveButton, outlineFieldset;
     for (var outlineCounter = 0; outlineCounter < outlinesCount; outlineCounter++) {
-        currentCount = $('form > fieldset.outlinesFieldset > fieldset').length;
+        currentCount = $('.outlinesFieldset > fieldset').length;
         newLabel = getOutlineLabel(currentCount);
         newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
         tempTemplate = template.replace(/__outlineNumber__/g, currentCount);
         outlineFieldset = newLabel + tempTemplate + newRemoveButton;
-        $('form > fieldset.outlinesFieldset').append(outlineFieldset);
+        $('.outlinesFieldset').append(outlineFieldset);
     }
 }
 
@@ -72,5 +72,5 @@ function getOutlineLabel(currentCount) {
 function getOutlineRemoveButton(currentCount, addMoreSelector) {
 // prepare new remove button
     var newRemoveButtonId = "removeOutline" + currentCount;
-    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).val("Remove").wrap("<div />").parent().html();
+    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).text("Remove").wrap("<div />").parent().html();
 }

@@ -238,6 +238,7 @@ class CourseController extends ActionController
         }
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = new Course();
         // setting default isForInstructor
@@ -272,8 +273,7 @@ class CourseController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $variables['courseForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines','buttons'));
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
@@ -292,6 +292,7 @@ class CourseController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
         $course = $query->find('Courses\Entity\Course', $id);
         $auth = new AuthenticationService();
@@ -331,8 +332,8 @@ class CourseController extends ActionController
         }
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
 
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines','buttons'));
         $variables['courseId'] = $id;
-        $variables['courseForm'] = $this->getFormView($form);
         $variables['isAdminUser'] = $isAdminUser;
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
         $pendingUrl = $this->getEvent()->getRouter()->assemble(array('id' => $id), array('name' => 'coursesPending'));

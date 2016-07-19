@@ -5,17 +5,108 @@
     <div class="panel-heading">
         <h3>{{#translate}}New Course{{/translate}}</h3>
     </div>
-    <div class="panel-body">
-{{{courseForm}}}
-    </div><!-- body -->
-</div><!-- panel -->
+    <div class="panel-body main-form  ">
+        {{{openTag}}}
+        <div class="row panel-border">
+            <h2 class="sub-title-form"> COURSE DATA</h2>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_name">{{nameLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{name}}}
+                        {{{nameError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_nameAr">{{nameArLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{nameAr}}}
+                        {{{nameArError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_brief">{{briefLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{brief}}}
+                        {{{briefError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_briefAr">{{briefArLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{briefAr}}}
+                        {{{briefArError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_brief">{{timeLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{time}}}
+                        {{{timeError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_duration">{{durationLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{duration}}}
+                        {{{durationError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label required"  for="course_form_price">{{priceLabel}}</label>
+                    <div class="col-sm-10">
+                        {{{price}}}
+                        {{{priceError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>
+                        <span class="control-label">{{isForInstructorLabel}}</span>
+                        {{{isForInstructor}}}
+                        {{{isForInstructorError}}}
+                    </label>
+                </div>
+            </div>
+            <hr>
+            <h2>Outlines</h2>
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{{outlines}}}
+                    {{{outlinesError}}}
+                    {{{addFiveMore}}}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{{buttons}}}
+                </div>
+            </div>
+<!--            <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Save">
+            <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset">-->
+        </div>
 
-{{/content}}
-{{$scripts}}
-<script>
-    $(document).ready(function () {
-    updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
-    });
-</script>
-{{/scripts}}
-{{/layout}}
+    </div><!-- panel -->
+
+    {{/content}}
+    {{$scripts}}
+    <script>
+        $(document).ready(function () {
+        updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
+        });
+    </script>
+    {{/scripts}}
+    {{/layout}}

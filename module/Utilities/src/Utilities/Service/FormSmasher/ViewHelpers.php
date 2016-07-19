@@ -85,6 +85,11 @@ class ViewHelpers
     const FORM_BUTTON_TEXT = 'formButton';
 
     /**
+     * form collection helper function
+     */
+    const FORM_COLLECTION_TEXT = 'formCollection';
+
+    /**
      * form elements errors function
      */
     const FORM_ELEMENTS_ERRORS_TEXT= 'formElementErrors';
