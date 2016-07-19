@@ -17,11 +17,11 @@ class FormSmasher
     /**
      * function prepare the form to be displayed as element
      * by element  
-     * @param Users\Form\UserForm $form
+     * @param Zend\Form $form
      * @param array $elementsContainer
      * @return type
      */
-    public function prepareFormForDisplay($form, $elementsContainer)
+    public function prepareFormForDisplay($form, $elementsContainer, $collectionArray = null)
     {
         /**
          * Helper functions
@@ -41,17 +41,24 @@ class FormSmasher
         $formRadio = $this->viewHelperManager->get(ViewHelpers::FORM_RADIO_TEXT);
         $formCaptcha = $this->viewHelperManager->get(ViewHelpers::FORM_CAPTCHA_TEXT);
         $formButton = $this->viewHelperManager->get(ViewHelpers::FORM_BUTTON_TEXT);
+        $formCollection = $this->viewHelperManager->get(ViewHelpers::FORM_COLLECTION_TEXT);
         $formElementErrors = $this->viewHelperManager->get(ViewHelpers::FORM_ELEMENTS_ERRORS_TEXT);
 
+
+        $form->prepare();
         /**
          * Form open && close tags
          */
         $form->setAttribute('enctype', 'multipart/form-data');
         $formName = $form->getAttributes()['name'];
+
+
         $elementsContainer['openTag'] = $this->viewHelperManager->get('form')->openTag($form);
         $elementsContainer['closeTag'] = $this->viewHelperManager->get('form')->closeTag();
 
-        foreach ($form->getElements() as $element) {
+        $formElements = $form->getElements();
+
+        foreach ($formElements as $element) {
 
             $name = $element->getAttribute('name');
             $elementsContainer[$name . 'Label'] = $element->getLabel();
@@ -100,8 +107,14 @@ class FormSmasher
             }
             else if ($element->getAttribute('type') === 'button') {
                 $elementsContainer[$name] = $formButton($form->get($name), $element->getValue());
-//                $elementsContainer[$name] = $formButton($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)), $element->getValue());
             }
+            $elementsContainer[$name . 'Error'] = $formElementErrors($element);
+            $elementsContainer[$name . 'Name'] = $name;
+        }
+
+        foreach ($collectionArray as $collectionName) {
+            $newName = $collectionName;
+            $elementsContainer[$newName] = $formCollection($form->get($collectionName));
             $elementsContainer[$name . 'Error'] = $formElementErrors($element);
             $elementsContainer[$name . 'Name'] = $name;
         }
