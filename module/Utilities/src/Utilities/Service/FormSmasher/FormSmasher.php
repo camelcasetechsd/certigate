@@ -100,7 +100,7 @@ class FormSmasher
                 $elementsContainer[$name] = $formCheckbox($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)));
             }
             else if ($element->getAttribute('type') === 'multi_checkbox') {
-                $elementsContainer[$name] = $formMultiCheckbox($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)), 'append');
+                $elementsContainer[$name] = $formMultiCheckbox($form->get($name), 'append');
             }
             else if ($element->getAttribute('type') === 'radio') {
                 $elementsContainer[$name] = $formRadio($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)));
@@ -111,14 +111,14 @@ class FormSmasher
             $elementsContainer[$name . 'Error'] = $formElementErrors($element);
             $elementsContainer[$name . 'Name'] = $name;
         }
-
-        foreach ($collectionArray as $collectionName) {
-            $newName = $collectionName;
-            $elementsContainer[$newName] = $formCollection($form->get($collectionName));
-            $elementsContainer[$name . 'Error'] = $formElementErrors($element);
-            $elementsContainer[$name . 'Name'] = $name;
+        if (!is_null($collectionArray)) {
+            foreach ($collectionArray as $collectionName) {
+                $newName = $collectionName;
+                $elementsContainer[$newName] = $formCollection($form->get($collectionName));
+                $elementsContainer[$name . 'Error'] = $formElementErrors($element);
+                $elementsContainer[$name . 'Name'] = $name;
+            }
         }
-
         return $elementsContainer;
     }
 
