@@ -84,6 +84,32 @@ class CourseController extends ActionController
     }
 
     /**
+     * List courses to view training materials
+     * 
+     * 
+     * @access public
+     * 
+     * @return ViewModel
+     */
+    public function trainingMaterialsAction()
+    {
+        $variables = array();
+        $courseModel = $this->getServiceLocator()->get('Courses\Model\Course');
+
+        $pageNumber = $this->getRequest()->getQuery('page');
+        $courseModel->filterCourses(/* $criteria = */ array("isForInstructor" => Status::STATUS_INACTIVE, "status" => Status::STATUS_ACTIVE));
+        $courseModel->setPage($pageNumber);
+        $pageNumbers = $courseModel->getPagesRange($pageNumber);
+        $variables['pageNumbers'] = $pageNumbers;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
+        $variables['nextPageNumber'] = $courseModel->getNextPageNumber($pageNumber);
+        $variables['previousPageNumber'] = $courseModel->getPreviousPageNumber($pageNumber);
+
+        $variables['courses'] = $courseModel->getCurrentItems();
+        return new ViewModel($variables);
+    }
+
+    /**
      * Instructor Calendar courses
      * 
      * 

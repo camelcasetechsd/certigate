@@ -308,11 +308,11 @@ class PosAMenus extends AbstractSeed
                                 "path" => "/general_resources",
                                 "type" => "page",
                             ],
-//                            [
-//                                "title" => "Training Materials",
-//                                "titleAr" => "Training Materials",
-//                                "path" => "/",
-//                            ]
+                            [
+                                "title" => "Training Materials",
+                                "titleAr" => "Training Materials",
+                                "path" => "/",
+                            ]
                         ]
                     ],
                 ]
