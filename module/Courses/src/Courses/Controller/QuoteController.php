@@ -55,8 +55,6 @@ class QuoteController extends ActionController
         $variables['quotes'] = $objectUtilities->prepareForDisplay($quoteModel->getCurrentItems());
         $form = new QuoteFilterForm(/* $name = */ null, /* $options = */ array("quoteModel" => $quoteModel));
         $variables = $formSmasher->prepareFormForDisplay($form->setData($data), /* elements containers */ $variables);
-//        var_dump($variables);exit;
-//         $variables['filterForm'] = $this->getFormView($form);
         $variables['filterQuery'] = $this->getFilterQuery();
         return new ViewModel($variables);
     }

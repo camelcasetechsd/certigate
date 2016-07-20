@@ -91,7 +91,7 @@ class PrivateQuoteReservationForm extends Form
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control date',
+                'class' => 'form-control date new-gregorianDate',
                 'type' => 'text',
             ),
             'options' => array(

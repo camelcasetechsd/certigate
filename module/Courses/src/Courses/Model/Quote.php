@@ -541,7 +541,7 @@ class Quote
     {
         $courseEvent = $quote->getCourseEvent();
         $this->query->setEntity("Courses\Entity\CourseEvent");
-        if ($type == PublicQuote::QUOTE_TYPE  && $onlyRemove === false) {
+        if ($type == PublicQuote::QUOTE_TYPE && $onlyRemove === false) {
             $courseEvent->setStudentsNo((int) $courseEvent->getStudentsNo() - (int) $quote->getSeatsNo());
             $courseEventArray = $this->objectUtilities->prepareForSave(array($courseEvent));
             $courseEvent = reset($courseEventArray);
@@ -825,13 +825,13 @@ class Quote
         $user = $quote->getUser();
         $total = $this->getQuoteTotalPrice($quote, $type);
         $baseTemplateParameters = array(
-                "userFullName" => $user->getFullName(),
-                "userFullNameAr" => $user->getFullNameAr(),
-                "courseName" => $quote->getCourseEvent()->getCourse()->getName(),
-                "courseNameAr" => $quote->getCourseEvent()->getCourse()->getNameAr(),
-                "discount" => $quote->getDiscount(),
-                "total" => $total,
-            );
+            "userFullName" => $user->getFullName(),
+            "userFullNameAr" => $user->getFullNameAr(),
+            "courseName" => $quote->getCourseEvent()->getCourse()->getName(),
+            "courseNameAr" => $quote->getCourseEvent()->getCourse()->getNameAr(),
+            "discount" => $quote->getDiscount(),
+            "total" => $total,
+        );
         if ($type == PublicQuote::QUOTE_TYPE) {
             $templateParameters = array_merge($baseTemplateParameters, array(
                 "seatsNo" => $quote->getSeatsNo(),

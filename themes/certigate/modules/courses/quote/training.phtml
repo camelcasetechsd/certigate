@@ -1,6 +1,16 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
+<style>
+    label{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    input{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+</style>
 <div class="container static-cont">
     <h1 class="title-blue"> {{#translate}}{{type}} Training{{/translate}}</h1>
 
@@ -23,55 +33,57 @@
                         </ul>
                     </div>
                     {{^formView}}
-                        {{#courseEvents.count}}
-                        <!-- Table -->
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>{{#translate}}From{{/translate}}</th>
-                                    <th>{{#translate}}To{{/translate}}</th>
-                                    <th>{{#translate}}ATP Name{{/translate}}</th>
-                                    <th>{{#translate}}ATP City{{/translate}}</th>
-                                    <th colspan="2">&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#courseEvents}}
-                                {{^hideFromCalendar}}
-                                <tr>
-                                    <td>
-                                        {{startDate}}
-                                    </td>
-                                    <td>
-                                        {{endDate}}
-                                    </td>
-                                    <td>
-                                        {{atp.commercialName}}
-                                    </td>
-                                    <td>
-                                        {{atp.city}}
-                                    </td>
-                                    <td>
-                                        {{#canEnroll}}
-                                            {{{formView}}}
-                                        {{/canEnroll}}
-                                        {{#isFull}}
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Course Full
-                                        {{/isFull}}
-                                    </td>
-                                </tr>
-                                {{/hideFromCalendar}}
-                                {{/courseEvents}}
+                    {{#courseEvents.count}}
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{#translate}}From{{/translate}}</th>
+                                <th>{{#translate}}To{{/translate}}</th>
+                                <th>{{#translate}}ATP Name{{/translate}}</th>
+                                <th>{{#translate}}ATP City{{/translate}}</th>
+                                <th colspan="2">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#courseEvents}}
+                            {{^hideFromCalendar}}
+                            <tr>
+                                <td>
+                                    {{startDate}}
+                                </td>
+                                <td>
+                                    {{endDate}}
+                                </td>
+                                <td>
+                                    {{atp.commercialName}}
+                                </td>
+                                <td>
+                                    {{atp.city}}
+                                </td>
+                                <td>
+                                    {{#canEnroll}}
+                                    {{{formView}}}
+                                    {{/canEnroll}}
+                                    {{#isFull}}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    Course Full
+                                    {{/isFull}}
+                                </td>
+                            </tr>
+                            {{/hideFromCalendar}}
+                            {{/courseEvents}}
 
-                            </tbody>
-                        </table>
-                        {{/courseEvents.count}}
+                        </tbody>
+                    </table>
+                    {{/courseEvents.count}}
                     {{/formView}}
+
                     {{#formView}}
+                    <div class="panel-body main-form">
                         {{{formView}}}
+                    </div>
                     {{/formView}}
-
                 </div>
             </div>
             <hr>
