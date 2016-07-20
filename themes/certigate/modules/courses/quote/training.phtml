@@ -10,6 +10,9 @@
         margin-left: 10px;
         margin-right: 10px;
     }
+    .public-quote{
+        margin-top: -4%;
+    }
 </style>
 <div class="container static-cont">
     <h1 class="title-blue"> {{#translate}}{{type}} Training{{/translate}}</h1>
@@ -63,7 +66,9 @@
                                 </td>
                                 <td>
                                     {{#canEnroll}}
-                                    {{{formView}}}
+                                    <div class="panel-body main-form public-quote">
+                                        {{{formView}}}
+                                    </div>
                                     {{/canEnroll}}
                                     {{#isFull}}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
