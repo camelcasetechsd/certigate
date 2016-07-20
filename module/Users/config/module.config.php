@@ -7,6 +7,9 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../' . APPLICATION_THEMES . CURRENT_THEME . 'modules',
         ),
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ),
     'service_manager' => array(
         'aliases' => array(
@@ -149,6 +152,16 @@ return array(
                     ),
                 )
             ),
+            'rolesStatements' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/roles/statements',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Roles',
+                        'action' => 'statements',
+                    ),
+                )
+            ),
             'roles' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -216,4 +229,29 @@ return array(
             ),
         )
     ),
+//    'UserFieldNames' => array(
+//        'firstName',
+//        'firstNameAr',
+//        'middleName',
+//        'middleNameAr',
+//        'lastName',
+//        'lastNameAr',
+//        'username',
+//        'mobile',
+//        'phone',
+//        'email',
+//        'confirmEmail',
+//        'password',
+//        '',
+//        '',
+//        '',
+//        '',
+//        '',
+//        '',
+//        '',
+//        '',
+//        '',
+//    ),
 );
+
+

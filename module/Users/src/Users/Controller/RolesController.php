@@ -7,6 +7,8 @@ use Zend\View\Model\ViewModel;
 use Users\Form\RoleForm;
 use Users\Entity\Role;
 use Users\Entity\Acl as AclEntity;
+use Zend\Json\Json;
+use Users\Service\Statement;
 
 /**
  * Role Controller
@@ -32,12 +34,12 @@ class RolesController extends ActionController
     public function indexAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get( 'wrapperQuery' )->setEntity( 'Users\Entity\Role' );
-        $objectUtilities = $this->getServiceLocator()->get( 'objectUtilities' );
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\Role');
+        $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
 
-        $data = $query->findAll( /* $entityName = */null );
-        $variables['roles'] = $objectUtilities->prepareForDisplay( $data );
-        return new ViewModel( $variables );
+        $data = $query->findAll(/* $entityName = */null);
+        $variables['roles'] = $objectUtilities->prepareForDisplay($data);
+        return new ViewModel($variables);
     }
 
     /**
@@ -53,7 +55,8 @@ class RolesController extends ActionController
     public function newAction()
     {
         $variables = array();
-        $query = $this->getServiceLocator()->get( 'wrapperQuery' )->setEntity( 'Users\Entity\Role' );
+        $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\Role');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $roleObj = new Role();
 
         $form = new RoleForm();
@@ -61,19 +64,19 @@ class RolesController extends ActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter( $roleObj->getInputFilter( $query ) );
-            $form->setData( $data );
+            $form->setInputFilter($roleObj->getInputFilter($query));
+            $form->setData($data);
             if ($form->isValid()) {
-                $query->save( $roleObj, $data );
+                $query->save($roleObj, $data);
 
-                $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
-                    'name' => 'roles') );
-                $this->redirect()->toUrl( $url );
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => 'roles'));
+                $this->redirect()->toUrl($url);
             }
         }
 
-        $variables['roleForm'] = $this->getFormView( $form );
-        return new ViewModel( $variables );
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+        return new ViewModel($variables);
     }
 
     /**
@@ -88,29 +91,32 @@ class RolesController extends ActionController
     public function editAction()
     {
         $variables = array();
-        $id = $this->params( 'id' );
-        $query = $this->getServiceLocator()->get( 'wrapperQuery' );
-        $roleObj = $query->find( 'Users\Entity\Role', $id );
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
+        $roleObj = $query->find('Users\Entity\Role', $id);
 
         $form = new RoleForm();
-        $form->bind( $roleObj );
+        $form->bind($roleObj);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form->setInputFilter( $roleObj->getInputFilter( $query ) );
-            $form->setData( $data );
+            $form->setInputFilter($roleObj->getInputFilter($query));
+            $form->setData($data);
             if ($form->isValid()) {
-                $query->save( $roleObj );
+                $query->save($roleObj);
 
-                $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
-                    'name' => 'roles') );
-                $this->redirect()->toUrl( $url );
+                $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                    'name' => 'roles'));
+                $this->redirect()->toUrl($url);
             }
         }
 
-        $variables['roleForm'] = $this->getFormView( $form );
-        return new ViewModel( $variables );
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
+        return new ViewModel($variables);
     }
 
     /**
@@ -121,15 +127,15 @@ class RolesController extends ActionController
      */
     public function deleteAction()
     {
-        $id = $this->params( 'id' );
-        $query = $this->getServiceLocator()->get( 'wrapperQuery' );
-        $roleObj = $query->find( 'Users\Entity\Role', $id );
+        $id = $this->params('id');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $roleObj = $query->find('Users\Entity\Role', $id);
 
-        $query->remove( $roleObj );
+        $query->remove($roleObj);
 
-        $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
-            'name' => 'roles') );
-        $this->redirect()->toUrl( $url );
+        $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+            'name' => 'roles'));
+        $this->redirect()->toUrl($url);
     }
 
     /**
@@ -140,49 +146,49 @@ class RolesController extends ActionController
      */
     public function privilegesAction()
     {
-        $id = $this->params( 'id' );
+        $id = $this->params('id');
         /* @var $query \Utilities\Service\Query\Query */
-        $query = $this->getServiceLocator()->get( 'wrapperQuery' );
+        $query = $this->getServiceLocator()->get('wrapperQuery');
         $em = $query->entityManager;
 
-        $roleObj = $query->find( 'Users\Entity\Role', $id );
-        $rolePrivileges = $query->findBy( 'Users\Entity\Acl', array('role' => $roleObj) );
+        $roleObj = $query->find('Users\Entity\Role', $id);
+        $rolePrivileges = $query->findBy('Users\Entity\Acl', array('role' => $roleObj));
 
         $request = $this->getRequest();
         if ($request->isPost()) {
 
             // delete old privileges
             foreach ($rolePrivileges as $p) {
-                $query->remove( $p );
+                $query->remove($p);
             }
 
             // insert new privileges
             $data = $request->getPost()->toArray();
 
-            if (isset( $data['privileges'] )) {
+            if (isset($data['privileges'])) {
                 foreach ($data['privileges'] as $p) {
-                    list($module, $route) = explode( "-", $p );
+                    list($module, $route) = explode("-", $p);
                     $aclEntity = new AclEntity();
-                    $aclEntity->setModule( $module );
-                    $aclEntity->setRoute( $route );
-                    $aclEntity->setRole( $roleObj );
+                    $aclEntity->setModule($module);
+                    $aclEntity->setRoute($route);
+                    $aclEntity->setRole($roleObj);
 
-                    $em->persist( $aclEntity );
+                    $em->persist($aclEntity);
                 }
             }
             $em->flush();
 
-            $url = $this->getEvent()->getRouter()->assemble( array('action' => 'index'), array(
-                'name' => 'roles') );
-            $this->redirect()->toUrl( $url );
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
+                'name' => 'roles'));
+            $this->redirect()->toUrl($url);
         }
 
-        $manager = $this->getServiceLocator()->get( 'ModuleManager' );
+        $manager = $this->getServiceLocator()->get('ModuleManager');
         $loadedModules = $manager->getLoadedModules();
         $excludedModules = $loadedModules['CertigateAcl']->getConfig()['roles_management']['excluded_modules'];
         $filtereModules = [];
         foreach ($loadedModules as $k => $v) {
-            if (!in_array( $k, $excludedModules )) {
+            if (!in_array($k, $excludedModules)) {
                 $filtereModules[$k] = $v;
             }
         }
@@ -190,20 +196,21 @@ class RolesController extends ActionController
         $roleRoutes = [];
 
         foreach ($rolePrivileges as $p) {
-            $roleRoutes[] = implode( "-", [$p->getModule(), $p->getRoute()] );
+            $roleRoutes[] = implode("-", [$p->getModule(), $p->getRoute()]);
         }
 
         foreach ($filtereModules as $module => $object) {
-            $routes = array_keys( $object->getConfig()['router']['routes'] );
+            $routes = array_keys($object->getConfig()['router']['routes']);
             $newRoutes = [];
             foreach ($routes as $r) {
 
-                if (in_array( implode( "-", [$module, $r] ), $roleRoutes )) {
+                if (in_array(implode("-", [$module, $r]), $roleRoutes)) {
                     $newRoutes[] = [
                         'name' => $r,
                         'checked' => true
                     ];
-                } else {
+                }
+                else {
                     $newRoutes[] = [
                         'name' => $r,
                         'checked' => false
@@ -217,7 +224,29 @@ class RolesController extends ActionController
             ];
         }
 
-        return new ViewModel( ['modulesRoutes' => $modulesRoutes, 'role' => $roleObj,] );
+        return new ViewModel(['modulesRoutes' => $modulesRoutes, 'role' => $roleObj,]);
+    }
+
+    public function statementsAction()
+    {
+        $statementType = filter_input(INPUT_POST, 'type');
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $statement = new Statement();
+            if ($statementType === Statement::STATEMENT_PRIVACY_TYPE) {
+                $data = $statement->privacyStatement;
+            }
+            else {
+                foreach ($statement->rolesStatements as $singleRoleStatement) {
+                    if ($statementType === $singleRoleStatement[Statement::STATEMENT_TYPE]) {
+                        $data = $singleRoleStatement;
+                        break;
+                    }
+                }
+            }
+            $request = $this->getRequest();
+        }
+        return $this->getResponse()->setContent(Json::encode($data));
     }
 
 }

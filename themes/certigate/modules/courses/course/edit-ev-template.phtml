@@ -2,61 +2,86 @@
 {{<layout}}
 
 {{$content}}
+
+<style>
+    .removeQ{
+        margin-top: -27px;
+        float: left;
+        {{#locale_en}}
+        margin-left: 527px;   
+        {{/locale_en}}
+        {{^locale_en}}
+        margin-left: -60px;   
+        {{/locale_en}}
+    }
+</style>
+
 <ul>    
     {{#validationError}}
     <li class="error">{{.}}</li>
     {{/validationError}}
 </ul>
-<form id="editForm" class="form-horizontal" method="POST" action="">
-    <fieldset>
+<div class="container">
+    <div class="page-container">
+        <div class="row">
 
-        <!-- Form Name -->
-        <legend>{{#translate}}Evaluation Template{{/translate}}</legend>
-        {{#questions}}
-        <!-- Text input-->
-        <div class="form-group" >
-            <div class="questionContainer row">
-                <label class="col-md-4 control-label englishLabel">{{#translate}}Question Title{{/translate}}</label>  
-                <div class="col-md-4">
-                    <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitle}}">
-                    <a href="#" class="deleteQuestion removeQ pull-left" >X</a>
-                    <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
-                </div>
-                <div class="col-md-4">
+            <div class="col-md-12 col-md-offset-0">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">
+                        <h3>EDIT EVALUATION TEMPLATE</h3>
+                    </div>
+                    <div class="panel-body main-form  ">
+                        <form id="editForm" class="form-horizontal" method="POST" action="">
+                            <fieldset>
+                                {{#questions}}
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <div class="questionContainer row">
+                                            <label class="col-sm-3 control-label englishLabel">{{#translate}}Question Title{{/translate}}</label>  
+                                            <div class="col-sm-8">
+                                                <input name="editedQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitle}}">
+                                                <a href="javascript:void(0);" class="deleteQuestion removeQ">X</a>
+                                                <input type="hidden" class="dummy" name="original[]" value="{{questionTitle}}"/>
+                                            </div>
+                                            <div class="col-sm-1">
 
-                </div>
-            </div>
+                                            </div>
+                                        </div>
+                                        <div class="questionContainer row">
+                                            <label class=" col-sm-3 control-label">{{#translate}}Question Title in Arabic{{/translate}}</label>  
+                                            <div class="col-sm-8">
+                                                <input name="editedQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitleAr}}">
+                                                <input type="hidden" class="dummy" name="originalAr[]" value="{{questionTitleAr}}"/>
+                                            </div>
+                                            <div class="col-sm-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-            <div class="questionContainer row">
-                <label class="col-md-4 control-label">{{#translate}}Question Title in Arabic{{/translate}}</label>  
-                <div class="col-md-4">
-                    <input name="editedQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="" value="{{questionTitleAr}}">
-                    <input type="hidden" class="dummy" name="originalAr[]" value="{{questionTitleAr}}"/>
-                </div>
-                <div class="col-md-4">
+                                {{/questions}}
+
+                                <span id="endOfText"></span>
+                                <div class=" row form-group">
+                                    <div class="col-sm-4">
+                                        <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Save{{/translate}}</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
+                    </div>
                 </div>
             </div>
         </div>
-        {{/questions}}
-
-        <span id="endOfText"></span>
-        <!-- button -->
-        <div class=" row form-group">
-            <div class="col-md-4">
-                <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Save{{/translate}}</button>
-            </div>
-        </div>
-
-    </fieldset>
-</form>
-
-<button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
-
+    </div>
+</div>
 {{/content}}
 
 {{/layout}}
-<script>
-    $(document).ready(function () {
+<script>     $(document).ready(function () {
         //
         numerateLabels();
 
@@ -65,13 +90,10 @@
         });
 
         function getMeNewInput() {
-//        window.template = '<div class="form-group"> <label class="col-md-4 control-label" for="newQuestion[]">Question Title</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="Add Your Question Here" class="questionInputs form-control input-md" required=""> <a href="#" class="deleteNewQuestion removeQ">X</a></div></div>';
-            window.template = '<div class="form-group" > <div class="questionContainer row"> <label class="col-md-4 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-4"> <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> <a href="#" class="deleteNewQuestion removeQ pull-left" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-4 control-label" for="newQuestionAr[]">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-4"> <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> </div> </div>';
+            window.template = '<div class="col-md-12"><div class="form-group" > <div class="questionContainer row"> <label class="col-sm-3 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label> <div class="col-sm-8"> <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> <a href="javascript:void(0);" class="deleteNewQuestion removeQ" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-sm-3 control-label" for="newQuestionAr[]">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-sm-8"> <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> </div> </div></div>';
             $('#endOfText').before(window.template);
             numerateLabels();
-
         }
-
         function numerateLabels() {
             window.index = 1
             $('.englishLabel').each(function () {
@@ -81,7 +103,6 @@
                 }
             });
         }
-
         /**
          * This action is meant to delete 
          */
@@ -98,7 +119,6 @@
             $(this).parents('.form-group').find('.dummy').remove();
             numerateLabels();
         });
-
         // to delete run time created questions  
         $(document).on("click", ".deleteNewQuestion", function () {
             $(this).parent().parent().parent().remove();
@@ -113,8 +133,6 @@
         });
 
     });
-
-});
 
 </script>
 

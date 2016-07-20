@@ -163,7 +163,7 @@ class User
         }
 
         if ($editFormFlag === true && in_array(Role::PROCTOR_ROLE, $userRoles) && ($oldLatitude != $userObj->getLatitude() || $oldLongitude != $userObj->getLongitude() )) {
-            $this->organizationUserModel->sortProctors(/* $organizationId = */ null,/* $userId = */ $userObj->getId());
+            $this->organizationUserModel->sortProctors(/* $organizationId = */ null, /* $userId = */ $userObj->getId());
         }
 
         // update session if current logged in user is the updated one
@@ -366,5 +366,4 @@ class User
             "status" => Status::STATUS_ACTIVE,
         ));
     }
-
 }

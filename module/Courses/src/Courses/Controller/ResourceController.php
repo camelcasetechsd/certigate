@@ -95,6 +95,7 @@ class ResourceController extends ActionController
         $courseId = $this->params('courseId', /* $default = */ null);
 
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
         if (!is_null($courseId)) {
             $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), /* $role = */ Role::TRAINING_MANAGER_ROLE);
@@ -144,8 +145,8 @@ class ResourceController extends ActionController
                 $variables['addResourcesValidation'] = $validationOutput["addedResources"];
             }
         }
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('buttons'));
         $variables['courseId'] = $courseId;
-        $variables['resourceForm'] = $this->getFormView($form);
         $variables['oneFileTypes'] = json_encode(Resource::$oneFileTypes);
         return new ViewModel($variables);
     }
@@ -297,8 +298,8 @@ class ResourceController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $courseId = $this->params('courseId', /* $default = */ null);
-
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
         $resource = $query->find('Courses\Entity\Resource', $id);
         $translatorHandler = $this->getServiceLocator()->get('translatorHandler');
@@ -361,7 +362,7 @@ class ResourceController extends ActionController
             }
         }
 
-        $variables['resourceForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('buttons'));
         return new ViewModel($variables);
     }
 

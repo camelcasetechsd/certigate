@@ -53,6 +53,7 @@ class ExamController extends ActionController
         $variables = array();
         $config = $this->getServiceLocator()->get('Config');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\Course');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $options['query'] = $query;
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         $options['userId'] = $this->storage["id"];
@@ -90,7 +91,8 @@ class ExamController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $variables['bookExamForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
         return new ViewModel($variables);
     }
 
@@ -206,6 +208,7 @@ class ExamController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $examBook = $query->find('Courses\Entity\ExamBook', $id);
 
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateExamAccessControl(/* $response = */$this->getResponse(), /* $userData = */ $this->storage, $examBook);
@@ -239,8 +242,8 @@ class ExamController extends ActionController
                 $form->bind($examBook);
             }
         }
-
-        $variables['examBookProctorForm'] = $this->getFormView($form);
+        
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
 

@@ -10,6 +10,7 @@ return array(
             'fileUtilities' => 'Utilities\Service\File',
             'loggerUtilities' => 'Utilities\Service\Logger',
             'validationUtilities' => 'Utilities\Service\Validator',
+            'formSmasher' => 'Utilities\Service\FormSmasher',
         ),
         'factories' => array(
             'Utilities\Service\Query' => 'Utilities\Service\Query\QueryFactory',
@@ -19,6 +20,7 @@ return array(
             'Utilities\Service\Logger' => 'Utilities\Service\Logger\LoggerFactory',
             'Utilities\Service\Fixture\FixtureLoader' => 'Utilities\Service\Fixture\FixtureLoaderFactory',
             'Utilities\Service\View\FormView' => 'Utilities\Service\View\FormViewFactory',
+            'Utilities\Service\FormSmasher' => 'Utilities\Service\FormSmasher\FormSmasherFactory',
         ),
         'invokables' => array(
             'Utilities\Service\File' => 'Utilities\Service\File',

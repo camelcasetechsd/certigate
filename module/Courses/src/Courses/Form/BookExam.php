@@ -63,7 +63,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required ',
-                    'class' => 'form-control hijriDate-ar',
+                    'class' => 'form-register new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -79,7 +79,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required ',
-                    'class' => 'form-control gregorianDate-ar',
+                    'class' => 'form-register new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -97,7 +97,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required ',
-                    'class' => 'form-control hijriDate',
+                    'class' => 'form-register new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -113,7 +113,7 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'required' => 'required ',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-register new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(

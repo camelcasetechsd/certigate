@@ -585,4 +585,29 @@ class CourseEvent
         return false;
     }
 
+    /**
+     * function to get instructors of specific course 
+     * @param Courses\Entity\Course $course
+     */
+    public function getInstructors($course)
+    {
+//        return $this->query->entityManager->createQuery('SELECT DISTINCT u.ai FROM Courses\Entity\CourseEvent u '
+//                                . 'WHERE u.course = ' . $course->getId())
+//                        ->getResult();
+
+        $queryBuilder = $this->query->entityManager->createQueryBuilder("u");
+
+        $queryBuilder->select("u")
+                ->from("Users\Entity\User", "u")
+                ->join("Courses\Entity\CourseEvent", "ce")
+                ->andWhere($queryBuilder->expr()->eq('ce.course', ":courseId"))
+                ->andWhere($queryBuilder->expr()->eq('u.id', 'ce.ai'))
+                ->distinct(true);
+
+        $parameters = array(
+            'courseId' => $course->getId(),
+        );
+        return $queryBuilder->setParameters($parameters)->getQuery()->getResult();
+    }
+
 }

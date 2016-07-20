@@ -1,0 +1,208 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 19, 2016, 11:59:11 AM
+    Author     : ahmedreda
+*/
+  /***** course calendar ************/
+    .sub-title-main{
+        color: #1964B6;
+        border-bottom:1px solid #cccccc;
+        padding-bottom: 10px;
+        text-transform: uppercase;
+        margin-left: -25%;
+        display: inline-block !important;
+        width: 135% !important;
+    }
+    .title-calendar{ 
+        font-size:17px; color:#1964b6;
+        text-transform:uppercase; border-bottom:1px solid #ccc;
+        padding-bottom:5px; }
+    .calendar-download{ float:right;  padding-top: 15px;}
+    .fa-cloud-download{ color:#1964b6; font-size:20px;}
+
+    .calendar-box{ background-color:#f6f6f8; padding:15px;     margin-bottom: 16px; width: 120%; margin-left: -18%;}
+    /*    .calendar-list li{  margin:0 3%;    display: table-cell;  vertical-align: -webkit-baseline-middle;
+        }
+        .calendar-list ul{padding: 0px; width: 95%;   display: table; table-layout: fixed;}*/
+    .calendar-list li{  display: inline-block; margin:0 3%;     vertical-align: -webkit-baseline-middle; margin-left: -4px;}
+    .calendar-list ul{padding: 0px; width: 95%;    margin-left: 6%;}
+    .calendar-list { border:1px solid #ebebeb; background:#fff; position:relative;margin-bottom: 10px;
+                     padding: 11px 8px;}
+    .btn-enroll-calendar{ background-color:#1964b6;  }
+    .btn-cancel-calendar{background-color:#f20e14; }
+    .btn-done-calendar{background-color:#19b637;}
+    .btn-done-calendar, .btn-enroll-calendar, .btn-cancel-calendar{color:#fff; font-size:15px; 
+                                                                   border-radius:0px; min-width:75px;}
+    .btns-right	{ position:absolute;  right: 0px;
+                  top: 10px;
+    }
+    .fa-calendar:before, .fa-bell:before{ color: #8b8b8c;
+                                          font-size: 20px;}
+    .paging { text-align:center;}
+
+    .pagination>li:last-child>a, .pagination>li:last-child>span, .pagination>li:first-child>a, 
+    .pagination>li:first-child>span{ border-radius:0px;}
+
+    /***** .nav-pills.nav-stacked css ************/
+
+    .nav-pills.nav-stacked{    
+        border: 1px solid #efefef;
+        padding: 0px;
+    }
+    .nav-stacked li{ 
+        border-bottom: 1px solid #efefef;}
+    .nav-pills>li>a{ 
+        border-radius:0px;}
+
+    .nav-pills>li.active>a, .nav-pills>li.active>a:focus{
+
+        background-color: #1964b6;
+        color: white;
+    }
+
+    .nav-pills>li>a{ 
+        color:#464646;}
+
+    .nav-stacked>li>a:hover, .nav-pills>li.active>a:hover{	
+        color: #464646;
+        background-color: #f6f6f8;}
+
+    .nav-stacked>li+li{
+        margin-top:0px;}
+
+
+
+    /* forms css */
+
+    .panel-heading h3	{font-size: 22px;
+                       text-transform: uppercase;
+                       margin: 10px 5px;}
+
+
+    .panel-default>.panel-heading{ 
+        color: #1964B6;
+        background-color: #FFFFFF;
+        font-weight: 600;
+        text-transform: uppercase;
+    }	
+
+    .main-form .form-control{
+        border-radius: 0px; 
+        border:0px;
+        box-shadow: none !important ; 
+        background-color: rgba(238, 238, 238, 0.45);}
+
+    .form-horizontal .control-label{ 
+        color: #234FA6;    
+        text-align: left;
+        display: inline-block !important;
+
+        font-weight: 400;}
+
+    .panel-default{  
+        border:0px ;
+    }
+    .panel{    box-shadow: none;}
+
+    .required:after {
+        content: " *";
+        color: red;
+    }
+
+    .form-group ul{
+        padding-top:10px; 
+        padding-left: 0px; 
+        list-style: none; 
+        font-size: 12px;}
+
+    .sub-title-form{ font-size: 17px;
+                     color: #808080;
+                     background: #fff;
+                     margin: -16px 9px 11px 11px;
+                     padding: 7px 13px;
+                     width: 20%;
+                     text-transform: uppercase
+
+
+
+    }
+
+    .panel-border{ border:1px solid #E8E8E8 ;margin-bottom: 30px; padding: 0px 16px;}
+
+    .panel-body	{margin-top: 26px;}
+
+    form .btn{min-width: 100px; border:none; border-radius:0px ; margin-right:10px;}
+
+
+    .c-inputs-stacked{ padding-left:16px;}
+
+
+
+    .c-inputs-stacked .c-input{    
+        display: inline;     
+        font-size: 14px;
+        color: #555555;
+        font-weight: 100;
+    }
+    .c-input {
+        position: relative;
+        display: inline;
+        padding-left: 1.5rem;
+        color: #555;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    .c-input>input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;}
+    .c-radio .c-indicator {
+        border-radius: 50%;}
+    .c-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 1.2rem;
+        height: 1.2rem;
+        font-size: 65%;
+        line-height: 1rem;
+        color: #eee;
+        text-align: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #ccc;
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-background-size: 50% 50%;
+        background-size: 50% 50%;
+        margin-top: 4px;
+    }
+    label{    touch-action: manipulation;}
+    .c-input{ cursor: pointer;}
+
+    .c-inputs-stacked .c-input::after {
+        display: block;
+        margin-bottom: .25rem;
+        content: "";
+    }
+    .c-input>input:checked~.c-indicator {
+        color: #fff;
+        background-color: #234FA6;
+    }
+    .course-dates{
+        width:  31%;
+    }
+    .atp-name{
+        width:8%;
+    }
+    .city-name{
+        width: 8%;
+    }
+

@@ -110,13 +110,14 @@ class IndexController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = $query->find('Users\Entity\User', $id);
         $oldLongitude = $userObj->getLongitude();
         $oldLatitude = $userObj->getLatitude();
-        $photo = $userObj->photo;
+
         // allow access for admins for all users
         // restrict access for current user only for non-admin users
         $auth = new AuthenticationService();
@@ -201,12 +202,7 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $variables['userForm'] = $this->getFormView($form);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
-        $variables['photo'] = $photo;
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
 
@@ -225,6 +221,7 @@ class IndexController extends ActionController
 
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
@@ -280,10 +277,8 @@ class IndexController extends ActionController
             }
         }
 
-        $variables['userForm'] = $this->getFormView($form);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+
         return new ViewModel($variables);
     }
 
@@ -301,6 +296,7 @@ class IndexController extends ActionController
     {
 
         $variables = array();
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Users\Entity\User');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
@@ -314,7 +310,7 @@ class IndexController extends ActionController
         $options['excludedRoles'] = array(Role::USER_ROLE);
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        
+
         /**
          * page is anonymous , but if we're dealing with logged in user it should 
          * act as this ACL Rules :
@@ -379,10 +375,8 @@ class IndexController extends ActionController
             }
         }
 
-        $variables['userForm'] = $this->getFormView($form);
-        $statement = new Statement();
-        $variables['rolesStatements'] = $statement->rolesStatements;
-        $variables['privacyStatement'] = $statement->privacyStatement;
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+//        echo '<pre>';var_dump($variables);exit;
         return new ViewModel($variables);
     }
 

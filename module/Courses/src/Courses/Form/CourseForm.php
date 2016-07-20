@@ -139,7 +139,7 @@ class CourseForm extends Form
                 'label' => 'Duration (days)',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'price',
             'type' => 'Zend\Form\Element\Text',
@@ -168,7 +168,7 @@ class CourseForm extends Form
                 ),
             ));
         }
-        
+
         // Add the outline fieldset
         $outlineFieldset = new OutlineFieldset($this->query, $this->isAdminUser);
         $this->add(array(
@@ -193,12 +193,13 @@ class CourseForm extends Form
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-primary addMoreButton',
+                'id'=>'course_form_addFiveMore',
                 'value' => 'Add Five More',
                 'type' => 'button',
                 'onclick' => "addMoreOutline('#course_form_addFiveMore', 5)"
             )
         ));
-        
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
@@ -206,9 +207,9 @@ class CourseForm extends Form
 
         // Add buttons fieldset
         $this->add(array(
-             'name' => 'buttons',
-             'type' => 'Utilities\Form\ButtonsFieldset'
-         ));
+            'name' => 'buttons',
+            'type' => 'Utilities\Form\ButtonsFieldset'
+        ));
     }
 
 }

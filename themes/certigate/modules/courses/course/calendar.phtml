@@ -15,13 +15,24 @@
 
     {{#courses}}
 
-    {{#courseEvents.count}}
-    <div class="row">
-        <div class="col-md-1">&nbsp;</div>
-        <div class="media col-md-10">
+<!-- /.main holder -->
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <h3 class="sub-title-main">{{#translate}}Courses Calendar{{/translate}}</h3>
+            <!--if courses exist but without ant course events-->
+            {{#emptyFlag}}
+            No Courses Yet !
+            {{/emptyFlag}}
 
-            <div class="media-body">
-                <div class="panel-default">
+            <!--to handle if no courses exist--> 
+            {{^courses.count}}
+            No Courses Yet !
+            {{/courses.count}}
+            <div class="row">
+                {{#courses}}
+                {{#courseEvents.count}}
+                <div class="col-md-12 col-md-offset-1 calendar-box">
 
                     {{#locale_en}}
                     <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{name}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a></div></div>
@@ -131,6 +142,7 @@
         </div>
         {{/courses}}
 
+        {{/hasPages}}
 
     </div>
 

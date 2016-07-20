@@ -5,9 +5,66 @@
     <div class="panel-heading">
         <h3>{{#translate}}Book an Exam{{/translate}}</h3>
     </div>
-    <div class="panel-body">
-        {{{bookExamForm}}}
+    <!--    <div class="panel-body">
+            {{{bookExamForm}}}
+        </div>-->
+    <div class="panel-body main-form  ">
+        {{{openTag}}}
+        <div class="row panel-border">
+            <h2 class="sub-title-form"> EXAM DATA</h2>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label required" for="book_exam_dateHj">{{dateHjLabel}}</label>
+
+                    <div class="col-sm-9">
+                        {{{dateHj}}}
+                        {{{dateHjError}}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label required" for="book_exam_date">{{dateLabel}}</label>
+
+                    <div class="col-sm-9">
+                        {{{date}}}
+                        {{{dateError}}}
+                    </div>
+                </div> 
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="book_exam_studentsNo">{{studentsNoLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{studentsNo}}}
+                        {{{studentsNoError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="book_exam_atc">{{atcLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{atc}}}
+                        {{{atcError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="book_exam_course">{{courseLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{course}}}
+                        {{{courseError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Save">
+                <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset"></fieldset>
+            </div>
+        </div>
+        {{{closeTag}}}
     </div>
+
 </div>
 {{/content}}
 {{/layout}}

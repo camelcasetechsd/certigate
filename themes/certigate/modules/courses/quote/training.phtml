@@ -1,6 +1,19 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
+<style>
+    label{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    input{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .public-quote{
+        margin-top: -4%;
+    }
+</style>
 <div class="container static-cont">
     <h1 class="title-blue"> {{#translate}}{{type}} Training{{/translate}}</h1>
 
@@ -64,24 +77,16 @@
                                     {{endDate}}
                                 </td>
                                 <td>
-                                    {{#locale_en}}
                                     {{atp.commercialName}}
-                                    {{/locale_en}}
-                                    {{#locale_ar}}
-                                    {{atp.commercialNameAr}}
-                                    {{/locale_ar}}        
                                 </td>
                                 <td>
-                                    {{#locale_en}}
                                     {{atp.city}}
-                                    {{/locale_en}}
-                                    {{#locale_ar}}
-                                    {{atp.cityAr}}
-                                    {{/locale_ar}}        
                                 </td>
                                 <td>
                                     {{#canEnroll}}
-                                    {{{formView}}}
+                                    <div class="panel-body main-form public-quote">
+                                        {{{formView}}}
+                                    </div>
                                     {{/canEnroll}}
                                     {{#isFull}}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -96,10 +101,12 @@
                     </table>
                     {{/courseEvents.count}}
                     {{/formView}}
-                    {{#formView}}
-                    {{{formView}}}
-                    {{/formView}}
 
+                    {{#formView}}
+                    <div class="panel-body main-form">
+                        {{{formView}}}
+                    </div>
+                    {{/formView}}
                 </div>
             </div>
             <hr>

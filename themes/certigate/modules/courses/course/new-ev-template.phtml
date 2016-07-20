@@ -1,51 +1,77 @@
 {{% BLOCKS }}
 {{<layout}}
-
 {{$content}}
+
+<style>
+    .removeQ{
+        margin-top: -27px;
+        float: left;
+        {{#locale_en}}
+        margin-left: 527px;   
+        {{/locale_en}}
+        {{^locale_en}}
+        margin-left: -60px;   
+        {{/locale_en}}
+    }
+</style>
+
 <ul>    
     {{#validationError}}
     <li class="error">{{.}}</li>
     {{/validationError}}
 </ul>
-<form id="questions" class="form-horizontal" method="POST" action="">
-    <fieldset>
+<div class="container">
+    <div class="page-container">
+        <div class="row">
 
-        <!-- Form Name -->
-        <legend>{{#translate}}Evaluation Template{{/translate}}</legend>
-        <!-- Text input-->
-        <div class="form-group" >
-            <div class="questionContainer row">
-                <label class="col-md-4 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
-                <div class="col-md-4">
-                    <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
-                </div>
-                <div class="col-md-4">
-                    <a href="#" class="deleteQuestion  pull-left" >X</a>
-                </div>
-            </div>
-            <div class="questionContainer row">
-                <label class="col-md-4 control-label" for="newQuestion[]">{{#translate}}Question Title in Arabic{{/translate}}</label>  
-                <div class="col-md-4">
-                    <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
-                </div>
-                <div class="col-md-4">
-                    <a href="#" class="deleteQuestion  pull-left" >X</a>
+            <div class="col-md-12 col-md-offset-0">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">
+                        <h3>NEW EVALUATION TEMPLATE</h3>
+                    </div>
+                    <div class="panel-body main-form  ">
+                        <form id="questions" class="form-horizontal" method="POST" action="">
+                            <fieldset>
+                                <div class="col-md-12">
+                                    <div class="form-group" >
+                                        <div class="questionContainer row">
+                                            <label class="col-md-3 control-label englishLabel" for="newQuestion[]">{{#translate}}Question Title{{/translate}}</label>  
+                                            <div class="col-md-8">
+                                                <input name="newQuestion[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="javascript:void(0);" class="deleteQuestion" >X</a>
+                                            </div>
+                                        </div>
+                                        <div class="questionContainer row">
+                                            <label class="col-md-3 control-label" for="newQuestion[]">{{#translate}}Question Title in Arabic{{/translate}}</label>  
+                                            <div class="col-md-8">
+                                                <input name="newQuestionAr[]" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required="">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="javascript:void(0);" class="deleteQuestion" >X</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span id="endOfText"></span>
+                                <!-- button -->
+                                <div class=" row form-group">
+                                    <div class="col-md-4">
+                                        <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Save{{/translate}}</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+                        <button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
+                    </div>
                 </div>
             </div>
         </div>
-            <span id="endOfText"></span>
-            <!-- button -->
-            <div class=" row form-group">
-                <div class="col-md-4">
-                    <button id="singlebutton" name="submit" class="btn btn-success">{{#translate}}Save{{/translate}}</button>
-                </div>
-            </div>
-
-    </fieldset>
-</form>
-
-<button type="button" id="addmore" class=" btn btn-primary">{{#translate}}Add More{{/translate}}</button>
-
+    </div>
+</div>
 {{/content}}
 
 {{/layout}}
@@ -59,7 +85,7 @@
         });
 
         function getMeNewInput() {
-            window.template = '<div class="form-group" > <div class="questionContainer row"> <label class="col-md-4 control-label englishLabel" for="newQuestion[' + window.index + ']">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-4"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-4"> <a href="#" class="deleteQuestion  pull-left" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-4 control-label" for="newQuestionAr[' + window.index + ']">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-4"> <input name="newQuestionAr[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-4"> <a href="#" class="deleteQuestion  pull-left" >X</a> </div> </div> </div>'
+            window.template = ' <div class="col-md-12"><div class="form-group" > <div class="questionContainer row"> <label class="col-md-3 control-label englishLabel" for="newQuestion[' + window.index + ']">{{#translate}}Question Title{{/translate}}</label> <div class="col-md-8"> <input name="newQuestion[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-1"> <a href="javascript:void(0);" class="deleteQuestion" >X</a> </div> </div> <div class="questionContainer row"> <label class="col-md-3 control-label" for="newQuestionAr[' + window.index + ']">{{#translate}}Question Title in Arabic{{/translate}}</label> <div class="col-md-8"> <input name="newQuestionAr[' + window.index + ']" type="text" placeholder="{{#translate}}Add Your Question Here{{/translate}}" class="form-control questionInputs input-md" required=""> </div> <div class="col-md-1"> <a href="javascript:void(0);" class="deleteQuestion" >X</a> </div> </div> </div></div>'
             $('#endOfText').before(window.template);
             numerateLabels();
         }

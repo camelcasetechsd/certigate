@@ -15,7 +15,8 @@ use Courses\Model\Quote;
  * @package courses
  * @subpackage model
  */
-class QuoteFactory implements FactoryInterface {
+class QuoteFactory implements FactoryInterface
+{
 
     /**
      * Prepare Quote service

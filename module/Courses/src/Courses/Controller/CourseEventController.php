@@ -68,6 +68,7 @@ class CourseEventController extends ActionController
         }
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\CourseEvent');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
 
         $courseId = $this->params('courseId', /* $default = */ null);
@@ -114,6 +115,7 @@ class CourseEventController extends ActionController
             }
 
             $variables['courseEventForm'] = $this->getFormView($form);
+            $variables = $formSmasher->prepareFormForDisplay($form, $variables);
             return new ViewModel($variables);
         }
         else {
@@ -138,6 +140,7 @@ class CourseEventController extends ActionController
         $id = $this->params('id');
         $courseId = $this->params('courseId', /* $default = */ null);
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
 
         // checking case if courseid and eventid existed and valid  OR
@@ -178,6 +181,7 @@ class CourseEventController extends ActionController
                     $this->redirect()->toUrl($url);
                 }
             }
+            $variables = $formSmasher->prepareFormForDisplay($form, $variables);
             $variables['courseEventForm'] = $this->getFormView($form);
             return new ViewModel($variables);
         }

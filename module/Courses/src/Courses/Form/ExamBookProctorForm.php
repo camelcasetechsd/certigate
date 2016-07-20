@@ -34,7 +34,7 @@ class ExamBookProctorForm extends Form
      * @var InputFilter validation constraints 
      */
     private $inputFilter;
-    
+
     /**
      * setup form
      * 
@@ -58,22 +58,21 @@ class ExamBookProctorForm extends Form
             'name' => Role::PROCTOR_ROLE,
         ));
         $awayWord = $translatorHandler->translate("km away");
-        $methodSuffix = (($currentLocale == Locale::LOCALE_AR_AR)? "Ar":"");
+        $methodSuffix = (($currentLocale == Locale::LOCALE_AR_AR) ? "Ar" : "");
         $this->add(array(
             'name' => 'proctors',
             'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
             'attributes' => array(
-                'class' => 'form-control',
-                'class' => 'mar',
+                'class' => 'col-md-1',
             ),
             'options' => array(
                 'label' => '',
                 'object_manager' => $this->query->entityManager,
                 'target_class' => 'Organizations\Entity\OrganizationUser',
                 'label_generator' => function($targetEntity)use($methodSuffix, $awayWord) {
-                    $fullNameMethodName = "getFullName".$methodSuffix;
+                    $fullNameMethodName = "getFullName" . $methodSuffix;
                     $user = $targetEntity->getUser();
-                    return $user->$fullNameMethodName()." - ".$user->getCity()." <span class='".$targetEntity->getDistanceStyleClass()."'>[ ~ ".$targetEntity->getDistanceSort()." $awayWord]</span>";
+                    return '<span class="c-indicator"></span>' . $user->$fullNameMethodName() . " - " . $user->getCity() . " <span class='" . $targetEntity->getDistanceStyleClass() . "'>[ ~ " . $targetEntity->getDistanceSort() . " $awayWord]</span>";
                 },
                 'find_method' => array(
                     'name' => 'findBy',
@@ -91,6 +90,9 @@ class ExamBookProctorForm extends Form
                 'label_options' => array(
                     'disable_html_escape' => true,
                 ),
+                'label_attributes' => array(
+                    'class' => "col-md-9 c-input role-label",
+                )
             ),
         ));
 
@@ -100,9 +102,9 @@ class ExamBookProctorForm extends Form
         ));
 
         // Add buttons fieldset
-        $buttonsFieldset = new ButtonsFieldset(/*$name =*/ null, /*$options =*/ array("save_button_only" => true));
+        $buttonsFieldset = new ButtonsFieldset(/* $name = */ null, /* $options = */ array("save_button_only" => true));
         $this->add($buttonsFieldset);
-        
+
         $this->setInputFilter($this->getInputFilter());
     }
 
@@ -114,10 +116,11 @@ class ExamBookProctorForm extends Form
      * @access public
      * @return InputFilter validation constraints
      */
-    public function getInputFilter() {
+    public function getInputFilter()
+    {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            
+
             $inputFilter->add(array(
                 'name' => 'proctors',
                 'required' => true,
@@ -128,4 +131,5 @@ class ExamBookProctorForm extends Form
 
         return $this->inputFilter;
     }
+
 }

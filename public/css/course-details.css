@@ -1,0 +1,131 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 19, 2016, 12:53:05 PM
+    Author     : ahmedreda
+*/
+
+.inner-cont > p{
+    color: #fff;
+}
+
+.btn-blue-enroll > a{
+    color: #fff
+}
+.course-name{ 
+    color:#fff; 
+    font-size:36px;
+    font-family:Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif; }
+
+.btn-course-enroll{    background-color: #FFFFFF;
+                       border: 0px;
+                       padding: 10px 18px;
+                       color: #1964B6;
+                       text-transform: uppercase;
+                       font-weight: 700;}
+
+.btn-blue-enroll{   background-color: #1964B6;
+                    border: 0px;
+                    padding: 10px 18px;
+                    color: #FFF;
+                    text-transform: uppercase;
+                    font-weight: 700;}
+
+.inner-cont{ padding:20px;}
+.inner-cont span{ color:#fff;}
+.course-date { background-color:#f6f6f8; padding:25px;}
+
+
+/*Tabs Class */		
+.tab-content{ padding:30px 20px; }
+.nav-tabs{background: #f6f6f8; border-bottom:0px;}
+
+
+.title-blue { color:#1964B6; padding:18px 0px; 
+              font-weight: 600;
+              text-transform:uppercase;}
+
+.image-about{ background-image:url("images/about.jpg");
+              height: 265px;
+              background-repeat: no-repeat;
+              background-size: cover;     padding: 41px;}
+
+.static-cont{ padding: 20px 34px;}
+
+
+.page-container{ padding: 30px 10px;
+}
+
+.instructor-small h3{ color:#1964b6; font-size:16px; 
+                      text-transform:uppercase;}
+
+.instructor-small img{ float:left; margin: 0px 10px; }
+
+.instrcutor-details{ float: left;
+                     margin: 22px 0px 0px 11px;}
+.instrcutor-details p{ color:#828283; }					  
+
+.instrcutor-name{ font-size:15px; 
+                  text-transform:uppercase;
+                  color:#39393a !important; }
+
+.instructor-bio h3, .instructor-course h3{ color:#1964b6; font-size:17px; text-transform:uppercase;}
+.instructor-bio .org, .instructor-course, .course-list{
+    list-style-type: none; color:#39393a;
+    padding: 0;
+    margin: 15px 0;
+    font-size: 15px;}
+
+.org-name a{ 
+    color:#828283;}
+.instructor-course li a{ color:#39393a;}
+.course-list li a {color:#737373}
+
+.instructor-course li, .course-list li {    padding: 4px 0px;}
+.course-second-title
+{    border-bottom: 1px solid #eee;font-size: 1.0em;
+     padding: 11px 0;
+}
+.course-list li a span{ float:right;}
+
+.course-content-title{ 
+    color: #1964b6;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px;}
+
+ul.activity{border-top: none;
+            list-style: none;
+            margin: 0;
+            overflow: hidden;
+            padding: 0;
+}
+#activity-stream>li{ padding-top:15px;     
+                     overflow: hidden;
+                     border-bottom: 1px solid #eee;}
+
+.activity .activity-avatar{ 
+    float: left;
+    display: block;
+    height: 60px; margin:0px 10px;}
+
+
+.activity-content{ float:left;}
+.activity-meta{ float:right;}
+.activity-avatar img{ border:1px solid #cccccc;}
+.fa-comment-o:before, .fa-eye:before{ font-size:20px; padding:0px 5px;}
+.activity-avatar span{color:#39393a}
+.activity-inner{ padding:10px 0;}
+.activity-inner span, .activity-meta span{ color:#8d8d8d;}
+.activity-inner p{ color:#39393a ; font-weight:600;}
+
+.btn-ask{background:#1964b6; text-transform:uppercase; border-radius:0px; color:#fff;
+         font-weight: 600;}
+.btn-small-search, #small-search-input .input-group{ 
+    border-radius:0px; background:none; }
+#small-search-input{border: 1px solid #ccc;}
+.small-input{ border:none;}
+

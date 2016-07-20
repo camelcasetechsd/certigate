@@ -9,16 +9,7 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="courseDetails">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>{{#translate}}Edit Course{{/translate}}</h3>
-            </div>
-            <div class="panel-body">
-                {{{courseForm}}}
-            </div>
-        </div>
-    </div>
+    <div role="tabpanel" class="tab-pane" id="courseDetails">...</div>
     <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
     <div role="tabpanel" class="tab-pane active" id="courseResources">
         <br>
@@ -26,9 +17,75 @@
             <div class="panel-heading">
                 <h3>{{#translate}}Upload Resources{{/translate}}</h3>
             </div>
-            <div class="panel-body">
-                {{{resourceForm}}}
-            </div><!-- body -->
+            <!----------->
+            <div class="panel-body main-form  ">
+                {{{openTag}}}
+                <div class="row panel-border">
+                    <h2 class="sub-title-form"> COURSE RESOURCES DATA</h2>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_course">{{courseLabel}}</label>
+                            <div class="col-sm-9">
+                                {{{course}}}
+                                {{{courseError}}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_type">{{typeLabel}}</label>
+                            <div class="col-sm-9">
+                                {{{type}}}
+                                {{{typeError}}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_name">{{nameLabel}}</label>
+                            <div class="col-sm-9">
+                                {{{name}}}
+                                {{{nameError}}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_nameAr">{{nameArLabel}}</label>
+                            <div class="col-sm-9">
+                                {{{nameAr}}}
+                                {{{nameArError}}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_file">{{fileLabel}}</label>
+                            <div class="col-sm-3">
+                                {{{file}}}
+                                {{{fileError}}}
+                            </div>
+                            <div class="col-sm-3">
+                                <b><p>Supported Extensions: zip,pdf,ppt,pptx</p></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label required"  for="resource_form_status">{{statusLabel}}</label>
+                            <div class="col-sm-3">
+                                {{{status}}}
+                                {{{statusError}}}
+                            </div>
+                        </div>
+                    </div>
+                    {{{addMore}}}
+                    {{{addMoreError}}}
+                </div>
+                {{{buttons}}}
+                {{{closeTag}}}
+            </div>
+            <!----------->
         </div><!-- panel -->
     </div>
 </div>
@@ -39,10 +96,10 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-        addMoreListener('#resource_form_addMore', '#resource_form_type', '{{{oneFileTypes}}}');
-        {{#addResourcesValidation}}
-        addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
-        {{/addResourcesValidation}}
+    addMoreListener('#resource_form_addMore', '#resource_form_type', '{{{oneFileTypes}}}');
+    {{#addResourcesValidation}}
+    addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
+    {{/addResourcesValidation}}
     });
 </script>
 {{/scripts}}

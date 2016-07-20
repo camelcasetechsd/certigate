@@ -33,8 +33,8 @@ class SettingsController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('System\Entity\Setting');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        
-        $data = $query->findAll(/*$entityName =*/null);
+
+        $data = $query->findAll(/* $entityName = */null);
         $variables['settings'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
@@ -53,6 +53,8 @@ class SettingsController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('System\Entity\Setting');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
         $setting = new Setting();
 
         $form = new SettingForm();
@@ -64,13 +66,13 @@ class SettingsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($setting, $data);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'systemSettings'));
                 $this->redirect()->toUrl($url);
             }
         }
 
-        $variables['settingForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
 
@@ -88,6 +90,8 @@ class SettingsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
         $setting = $query->find('System\Entity\Setting', $id);
 
         $form = new SettingForm();
@@ -100,16 +104,16 @@ class SettingsController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($setting);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'systemSettings'));
                 $this->redirect()->toUrl($url);
             }
         }
 
-        $variables['settingForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
         return new ViewModel($variables);
     }
-    
+
     /**
      * Delete Setting
      *
@@ -121,13 +125,11 @@ class SettingsController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $setting = $query->find('System\Entity\Setting', $id);
-       
+
         $query->remove($setting);
-        
+
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'systemSettings'));
         $this->redirect()->toUrl($url);
     }
 
-
 }
-

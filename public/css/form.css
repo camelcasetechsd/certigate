@@ -26,7 +26,7 @@ input[type="checkbox"].form-control{
 }
 
 .form-register{
-    width: 75%;
+    width: 100%;
     display: inline-block;
     border-radius: 0px;
     box-shadow: none;
@@ -67,5 +67,9 @@ input[type="checkbox"].form-control{
 .register .btn{ 
     min-width:100px;
 }
-
-
+.upload-pic > input{
+    margin-top: 10px;
+}
+.gllpMap{
+    width: 113%;
+}
