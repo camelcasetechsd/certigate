@@ -7,7 +7,12 @@ use \CMS\Entity\MenuItem;
 use \CMS\Service\PageTypes;
 use \Users\Entity\Role;
 
-class PosCMenus extends AbstractSeed
+/**
+ * CMS related seeds : menus, menuItems and pages
+ * Menus should be inserted before users
+ * ,As users rely on manage menu
+ */
+class PosAMenus extends AbstractSeed
 {
 
     /**
