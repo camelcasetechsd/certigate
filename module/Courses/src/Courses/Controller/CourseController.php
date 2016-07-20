@@ -273,7 +273,7 @@ class CourseController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines','buttons'));
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines', 'buttons'));
         $variables['isAdminUser'] = $isAdminUser;
         return new ViewModel($variables);
     }
@@ -332,7 +332,7 @@ class CourseController extends ActionController
         }
         $entitiesAndLogEntriesArray = $courseModel->getLogEntries($course);
 
-        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines','buttons'));
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, /* array of collection type names */ array('outlines', 'buttons'));
         $variables['courseId'] = $id;
         $variables['isAdminUser'] = $isAdminUser;
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');
@@ -584,6 +584,7 @@ class CourseController extends ActionController
      */
     public function newEvTemplateAction()
     {
+
         $variables = array();
         $evalEntity = new \Courses\Entity\Evaluation();
         $evaluationModel = $this->getServiceLocator()->get("Courses\Model\Evaluation");
@@ -724,6 +725,7 @@ class CourseController extends ActionController
                 if ($isAdminUser === true) {
                     $status = isset($data["status"]) ? Status::STATUS_ACTIVE : Status::STATUS_INACTIVE;
                 }
+
                 $evalEntity->setStatus($status);
                 $evaluationModel->saveEvaluation($evalEntity, $courseId, $userEmail, $isAdminUser, /* $editFlag = */ false);
                 // save templates and newQuestions

@@ -91,8 +91,10 @@
                             </label>
                         </div>
                     </div>
-                    <hr>
-                    <h2>Outlines</h2>
+                </div>
+                <hr>
+                <div class="row panel-border">
+                    <h2 class="sub-title-form"> COURSE OUTLINES DATA</h2>
                     <div class="col-md-12">
                         <div class="form-group">
                             {{{outlines}}}
@@ -111,17 +113,18 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- panel -->
-        </div>
+            </div>
+        </div><!-- panel -->
     </div>
-    <div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
-    <div role="tabpanel" class="tab-pane" id="courseResources">...</div>
+</div>
+<div role="tabpanel" class="tab-pane" id="courseEvaluation">...</div>
+<div role="tabpanel" class="tab-pane" id="courseResources">...</div>
 </div>
 {{/content}}
 
 {{$scripts}}
 <script>
-            $(document).ready(function () {
+    $(document).ready(function () {
     updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
     });
 </script>

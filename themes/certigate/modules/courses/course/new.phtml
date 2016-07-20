@@ -81,8 +81,10 @@
                     </label>
                 </div>
             </div>
-            <hr>
-            <h2>Outlines</h2>
+        </div>
+        <hr>
+        <div class="row panel-border">
+            <h2 class="sub-title-form"> COURSE OUTLINES DATA</h2>
             <div class="col-md-12">
                 <div class="form-group">
                     {{{outlines}}}
@@ -95,18 +97,19 @@
                     {{{buttons}}}
                 </div>
             </div>
-<!--            <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Save">
-            <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset">-->
         </div>
+<!--            <input type="Submit" name="buttons[create]" class="pull-left btn-inline btn btn-success" value="Save">
+        <input name="buttons[reset]" class="pull-left btn-inline btn btn-danger resetButton" type="button" value="Reset">-->
+    </div>
 
-    </div><!-- panel -->
+</div><!-- panel -->
 
-    {{/content}}
-    {{$scripts}}
-    <script>
-        $(document).ready(function () {
-        updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
-        });
-    </script>
-    {{/scripts}}
-    {{/layout}}
+{{/content}}
+{{$scripts}}
+<script>
+    $(document).ready(function () {
+    updateOutlines("#course_form_addOneMore", {{#isAdminUser}}true{{/isAdminUser}}{{^isAdminUser}}false{{/isAdminUser}})
+    });
+</script>
+{{/scripts}}
+{{/layout}}

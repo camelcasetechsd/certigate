@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
-                    '<%= dirs.cssSrc %>/evaluation.css',
+//                    '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
                     '<%= dirs.cssSrc %>/atc-style-menu-wb.css',
                     // certigate theme css
@@ -158,7 +158,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/errors.css',
                     '<%= dirs.cssSrc %>/inactive.css',
                     '<%= dirs.cssSrc %>/CKEditor_Style.css',
-                    '<%= dirs.cssSrc %>/evaluation.css',
+//                    '<%= dirs.cssSrc %>/evaluation.css',
                     '<%= dirs.cssSrc %>/diff.css',
                     '<%= dirs.cssSrc %>/atc-style-menu-wb.css',
                     // certigate theme css
