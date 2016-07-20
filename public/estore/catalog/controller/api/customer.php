@@ -6,13 +6,7 @@ class ControllerApiCustomer extends Controller
     public function index()
     {
         $json = array();
-//        $json["old"] = $this->session->getId();
-////        session_write_close();
-//        session_id($this->request->post["session_id"]);
-////        if (session_status() != PHP_SESSION_ACTIVE) {
-////            session_start();
-////        }
-//        $json["new"] = $this->session->getId();
+
         $this->load->language('api/customer');
 
         // Delete past customer in case there is an error
@@ -204,11 +198,16 @@ class ControllerApiCustomer extends Controller
         if ($this->request->post['country_iso_code_2'] == '') {
             $json["error"]['country'] = $this->language->get('error_country');
         }
-        $this->request->post["country_id"] = $country_info["country_id"];
+        if(is_array($country_info) && array_key_exists("country_id", $country_info)){
+            $this->request->post["country_id"] = $country_info["country_id"];
 
-        if (!isset($this->request->post['zone_id']) || $this->request->post['zone_id'] == '') {
-            $countryZones = $this->model_localisation_zone->getZonesByCountryId($country_info["country_id"]);
-            $this->request->post["zone_id"] = reset($countryZones)["zone_id"];
+            if (!isset($this->request->post['zone_id']) || $this->request->post['zone_id'] == '') {
+                $countryZones = $this->model_localisation_zone->getZonesByCountryId($country_info["country_id"]);
+                $this->request->post["zone_id"] = reset($countryZones)["zone_id"];
+            }
+        }else{
+            $this->request->post["country_id"] = null;
+            $this->request->post["zone_id"] = null;
         }
         // Customer Group
         if (isset($this->request->post['customer_group_id']) && is_array($this->config->get('config_customer_group_display')) && in_array($this->request->post['customer_group_id'], $this->config->get('config_customer_group_display'))) {

@@ -311,7 +311,7 @@ class PosAMenus extends AbstractSeed
                             [
                                 "title" => "Training Materials",
                                 "titleAr" => "Training Materials",
-                                "path" => "/",
+                                "path" => "/courses/training-materials",
                             ]
                         ]
                     ],
