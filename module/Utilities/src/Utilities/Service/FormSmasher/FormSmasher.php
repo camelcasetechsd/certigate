@@ -41,6 +41,7 @@ class FormSmasher
         $formRadio = $this->viewHelperManager->get(ViewHelpers::FORM_RADIO_TEXT);
         $formCaptcha = $this->viewHelperManager->get(ViewHelpers::FORM_CAPTCHA_TEXT);
         $formButton = $this->viewHelperManager->get(ViewHelpers::FORM_BUTTON_TEXT);
+        $formSubmit = $this->viewHelperManager->get(ViewHelpers::FORM_SUBMIT_TEXT);
         $formCollection = $this->viewHelperManager->get(ViewHelpers::FORM_COLLECTION_TEXT);
         $formElementErrors = $this->viewHelperManager->get(ViewHelpers::FORM_ELEMENTS_ERRORS_TEXT);
 
@@ -106,6 +107,9 @@ class FormSmasher
                 $elementsContainer[$name] = $formRadio($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)));
             }
             else if ($element->getAttribute('type') === 'button') {
+                $elementsContainer[$name] = $formButton($form->get($name), $element->getValue());
+            }
+            else if ($element->getAttribute('type') === 'submit') {
                 $elementsContainer[$name] = $formButton($form->get($name), $element->getValue());
             }
             $elementsContainer[$name . 'Error'] = $formElementErrors($element);

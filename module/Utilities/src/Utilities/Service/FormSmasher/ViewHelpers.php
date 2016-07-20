@@ -85,6 +85,11 @@ class ViewHelpers
     const FORM_BUTTON_TEXT = 'formButton';
 
     /**
+     * form submit helper function
+     */
+    const FORM_SUBMIT_TEXT = 'formSubmit';
+
+    /**
      * form collection helper function
      */
     const FORM_COLLECTION_TEXT = 'formCollection';
