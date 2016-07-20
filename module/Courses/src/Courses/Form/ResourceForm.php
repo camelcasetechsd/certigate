@@ -156,10 +156,7 @@ class ResourceForm extends Form
                 'accept' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint,application/zip,application/octet-stream,application/pdf,pptx,potx,ppsx,thmx',
             ),
             'options' => array(
-                'label' => '<p class="required">File</p> <p>Supported Extensions: zip,pdf,ppt,pptx</p>',
-                'label_options' => array(
-                    'disable_html_escape' => true,
-                )
+                'label' => 'File',
             ),
         ));
 
@@ -168,6 +165,7 @@ class ResourceForm extends Form
             'type' => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-primary',
+                'id' => 'resource_form_addMore',
                 'value' => 'Add More',
                 'type' => 'button',
                 'onclick' => "addMoreResource('#resource_form_addMore', '#resource_form_name','#resource_form_nameAr','#resource_form_file', '', '', '', '', '')"

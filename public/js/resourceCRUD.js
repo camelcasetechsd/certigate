@@ -53,6 +53,11 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     nameArErrors = $("<div />").html(nameArErrors).text();
     fileErrors = $("<div />").html(fileErrors).text();
 
+    // style preparation
+    var divElementContainer = "<div class='col-md-12'></div>";
+    var divFormGroup = "<div class='form-group'></div>";
+    var divInputContainer = "<div class='col-sm-9'></div>";
+    
     // prepare new  name field
     var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
     var newNameInputName = $(nameInputSelector).attr("name") + newElementNameExtension;
@@ -67,10 +72,9 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     if (nameValue === "") {
         newNameInput.val("");
     }
-    var newNameLabel = $(nameInputSelector).prev("label").clone();
-    var newNameField = $("<div></div>").append(newNameLabel).append(newNameInput).append(nameErrors);
-
-
+    var newNameLabel = $(nameInputSelector).parents('.form-group').children("label").clone();
+    var newNameField = $(divElementContainer).append($(divFormGroup).append(newNameLabel).append($(divInputContainer).append(newNameInput).append(nameErrors)));
+    
     // prepare new arabic name field
     var newNameArInputId = $(nameInputArSelector).attr("id") + newElementIdArExtension;
     var newNameArInputName = $(nameInputArSelector).attr("name") + newElementNameArExtension;
@@ -86,8 +90,8 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
         newNameArInput.val("");
     }
 
-    var newNameArLabel = $(nameInputArSelector).prev("label").clone();
-    var newNameArField = $("<div></div>").append(newNameArLabel).append(newNameArInput).append(nameArErrors);
+    var newNameArLabel = $(nameInputArSelector).parents('.form-group').children("label").clone();
+    var newNameArField = $(divElementContainer).append($(divFormGroup).append(newNameArLabel).append($(divInputContainer).append(newNameArInput).append(nameArErrors)));
 
 
     // prepare new file field
@@ -103,18 +107,21 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     var newFileInput = $(fileInputSelector).clone().attr("class", newFileInputClass).attr("id", newFileInputId).attr("name", newFileInputName);
     var newFileLabel = $(fileInputSelector).prev("label").clone();
     var newFileField = $("<div></div>").append(newFileLabel).append(newFileInput).append(fileErrors);
+    var newFileField = $(divElementContainer).append($(divFormGroup).append(newFileLabel).append($(divInputContainer).append(newFileInput).append(fileErrors)));
+
     // prepare new remove button
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
-    var newRemoveButtonSpacer = $(addMoreSelector).prev("dt").clone();
-    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
+    var newRemoveButtonSpacer = '<br/>';
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).text("Remove");
 
 
 
     // prepare full new resource
     var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
     // add new resource before add button
-    $(addMoreSelector).prev("dt").before(newResource);
+    console.log($(addMoreSelector).prev("dt"));
+    $(addMoreSelector).before(newResource);
 }
 
 /**

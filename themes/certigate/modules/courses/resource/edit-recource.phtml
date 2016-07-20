@@ -1,14 +1,79 @@
 {{% BLOCKS }}
 {{<layout}}
 
-    {{$content}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>{{#translate}}Edit Resource{{/translate}}</h3>
+{{$content}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>{{#translate}}Edit Resource{{/translate}}</h3>
+    </div>
+    <!----------->
+    <div class="panel-body main-form  ">
+        {{{openTag}}}
+        <div class="row panel-border">
+            <h2 class="sub-title-form"> EDIT RESOURCE'S DATA</h2>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_course">{{courseLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{course}}}
+                        {{{courseError}}}
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                {{{resourceForm}}}
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_type">{{typeLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{type}}}
+                        {{{typeError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_name">{{nameLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{name}}}
+                        {{{nameError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_nameAr">{{nameArLabel}}</label>
+                    <div class="col-sm-9">
+                        {{{nameAr}}}
+                        {{{nameArError}}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_file">{{fileLabel}}</label>
+                    <div class="col-sm-3">
+                        {{{file}}}
+                        {{{fileError}}}
+                    </div>
+                    <div class="col-sm-3">
+                        <b><p>Supported Extensions: zip,pdf,ppt,pptx</p></b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label required"  for="resource_form_status">{{statusLabel}}</label>
+                    <div class="col-sm-3">
+                        {{{status}}}
+                        {{{statusError}}}
+                    </div>
+                </div>
             </div>
         </div>
-    {{/content}}
+        {{{buttons}}}
+        {{{closeTag}}}
+    </div>
+    <!----------->
+
+</div>
+{{/content}}
 {{/layout}}
