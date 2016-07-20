@@ -256,11 +256,13 @@ class Resource
             if ($resource->getStatus() != Status::STATUS_ACTIVE) {
                 continue;
             }
-            $preparedResources[$resource->getType()]["files"][] = array(
+            $type = $resource->getType()->getTitle();
+            $preparedResources[$type]["files"][] = array(
                 "name" => $resource->getName(),
                 "id" => $resource->getId(),
             );
-            $preparedResources[$resource->getType()]["type"] = $resource->getType();
+            
+            $preparedResources[$type]["type"] = $type;
         }
         return array_values($preparedResources);
     }

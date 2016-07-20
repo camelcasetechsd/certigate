@@ -54,7 +54,7 @@ class PosAUsers extends AbstractSeed
             "identificationNumber" => $faker->numberBetween(/* $min = */ 999999),
             "identificationExpiryDate" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
             "identificationExpiryDateHj" => $faker->dateTimeBetween(/* $startDate = */ '+2 years', /* $endDate = */ '+20 years')->format(Time::DATE_FORMAT),
-            "email" => $faker->freeEmail,
+            "email" => $faker->word . $faker->freeEmail, //increase mail randomness to avoid duplicate mails when faker fails generating same mail multiple times
             "securityQuestion" => $faker->sentence,
             "securityAnswer" => $faker->sentence,
             "dateOfBirth" => date(Time::DATE_FORMAT),

@@ -1,0 +1,77 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+<div class="container static-cont">
+    <h1 class="title-blue"> {{#translate}}Training Materials{{/translate}}</h1>
+
+    <!--to handle if no courses exist--> 
+    {{^courses.count}}
+    {{#translate}}No Courses Yet !{{/translate}}
+    {{/courses.count}}
+
+    {{#courses}}
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="media col-md-10">
+
+            <div class="media-body">
+                <div class="panel-default">
+
+
+                    <div class="panel-heading"><div  class="media-heading"><div class="pull-left"><h3 class="title-blue title-top">{{#locale_en}}{{name}}{{/locale_en}}{{#locale_ar}}{{nameAr}}{{/locale_ar}}</h3></div> <div class="text-normal text-right"><a href="/courses/outlines/generate-pdf/{{id}}">{{#translate}}Download Outlines{{/translate}}</a></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div>
+                        <p>
+                            {{#locale_en}}
+                            {{brief}}
+                            {{/locale_en}}
+                            {{#locale_ar}}
+                            {{briefAr}}
+                            {{/locale_ar}}
+                        </p>
+                        <ul class="list-inline list-unstyled">
+                            <a href="/courses/more/{{id}}" target="_blank" title="{{#translate}}More{{/translate}}"><p class="text-right">{{#translate}}Read more{{/translate}} ...</p></a>
+                            <a href="/courses/more/{{id}}#courseResources" target="_blank" title="{{#translate}}Course Resources{{/translate}}"><p class="text-right">{{#translate}}Course Resources{{/translate}}</p></a>
+                        </ul>
+                    </div>  
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="col-md-1">&nbsp;</div>
+    </div>
+    {{/courses}}
+
+
+</div>
+
+{{#hasPages}}
+<div class="pagination-bar">
+    <p > {{#translate}}Pages{{/translate}} :  </p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ul class="pagination">
+        {{#previousPageNumber}}
+        <li >
+            <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+        </li>
+        {{/previousPageNumber}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#pageNumbers}}
+        <li {{#isCurrent}}class="active"{{/isCurrent}} >
+            <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+        </li>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{/pageNumbers}}
+        {{#nextPageNumber}}
+        <li >
+            <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+        </li>
+        {{/nextPageNumber}}
+    </ul>
+</div>
+<br>
+{{/hasPages}}
+{{/content}}
+{{/layout}}

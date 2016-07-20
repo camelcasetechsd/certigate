@@ -384,6 +384,16 @@ return array(
                     ),
                 )
             ),
+            'coursesTrainingMaterials' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/courses/training-materials',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Course',
+                        'action' => 'trainingMaterials',
+                    ),
+                )
+            ),
             'coursesPending' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

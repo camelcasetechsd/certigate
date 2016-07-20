@@ -62,6 +62,9 @@ class IndexController extends ActionController
         $id = $this->params('id');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
+        if(empty($id)){
+            $id = $storage['id'];
+        }
         if (in_array(Role::ADMIN_ROLE, $storage['roles']) || $id == $storage['id']) {
             $query = $this->getServiceLocator()->get('wrapperQuery');
             $objectUtilities = $this->getServiceLocator()->get('objectUtilities');

@@ -75,9 +75,13 @@ class RendererFactory implements FactoryInterface
         $menusArray = $cmsCacheHandler->getCachedCMSData($forceFlush);
         $menusViewArray = $menuView->prepareMenuView($menusArray[CacheHandler::MENUS_KEY], /* $menuTitleUnderscored = */ Menu::PRIMARY_MENU_UNDERSCORED, /* $divId = */ "navbar", /* $divClass = */ "navbar-collapse collapse");
         $config['helpers']['primaryMenu'] = isset($menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED]) ? $menusViewArray[Menu::PRIMARY_MENU_UNDERSCORED] : '';
-
+        
         $chatSessionContiner = new Container('chat');
         if ($auth->hasIdentity()) {
+            $manageMenusViewArray = $menuView->prepareMenuView(array(Menu::MANAGE_MENU_UNDERSCORED => $storage[Menu::MANAGE_MENU_UNDERSCORED]), /* $menuTitleUnderscored = */ Menu::MANAGE_MENU_UNDERSCORED, /* $divId = */ "manageMenu", /* $divClass = */ "navbar-collapse collapse");
+            $config['helpers']['manageMenu'] = isset($manageMenusViewArray[Menu::MANAGE_MENU_UNDERSCORED]) ? $manageMenusViewArray[Menu::MANAGE_MENU_UNDERSCORED] : '';
+
+        
             $roles = $storage['roles'];
             $config['helpers']['loggedInUsername'] = $storage['username'];
             $config['helpers']['loggedInUserId'] = $storage['id'];
