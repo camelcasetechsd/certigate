@@ -1,35 +1,27 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-
+<style>
+    .main-holder{
+        margin-top: 0px;
+    }
+</style>
 <!-- /.main holder -->
 <div class="main-holder">
     <div class="container">
         <div class="page-container">
             <h3 class="sub-title-main">{{#translate}}Courses Calendar{{/translate}}</h3>
-
-    <!--to handle if no courses exist--> 
-    {{^courses.count}}
-    {{#translate}}No Courses Yet !{{/translate}}
-    {{/courses.count}}
-    
-    {{#courses.count}}
-    <div class="pull-right">
-        <a class="btn btn-success" target="_blank" href="/quote/training/public">{{#translate}}Public Training{{/translate}}</a>
-        <a class="btn btn-success" target="_blank" href="/quote/training/private">{{#translate}}Private Training{{/translate}}</a>
-    </div>
-    <div class="clearfix"></div>
-    {{/courses.count}}
-
-            <!--to handle if no courses exist--> 
-            {{^courses.count}}
-            No Courses Yet !
+            {{#courses.count}}
+            <div class="pull-right">
+                <a class="btn btn-success" target="_blank" href="/quote/training/public">{{#translate}}Public Training{{/translate}}</a>
+                <a class="btn btn-success" target="_blank" href="/quote/training/private">{{#translate}}Private Training{{/translate}}</a>
+            </div>
+            <div class="clearfix"></div>
             {{/courses.count}}
+
             <div class="row">
                 {{#courses}}
-                {{#courseEvents.count}}
-                <div class="col-md-12 col-md-offset-1 calendar-box">
-
+                <div class="col-md-12 col-md-offset-0 calendar-box">
                     <a class="fa fa-cloud-download  calendar-download" aria-hidden="true" href="/courses/outlines/generate-pdf/{{id}}" title="{{#translate}}Download Outlines{{/translate}}"></a>
                     <h3 class="title-calendar">
                         {{#locale_en}}
@@ -53,12 +45,10 @@
                     {{^alreadyStarted}}
                     <div class="calendar-list">
                         <ul class="">
-
                             <li class="course-dates">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                                 {{#translate}}Starts at {{/translate}} {{startDate}} {{#translate}}to{{/translate}} {{endDate}}</a> 									
                             </li>
-
                             <li class="atp-name">
                                 <a class="course-event-data" href="/organizations/more/{{atp.id}}" 
                                    title="Private:atp">
@@ -70,7 +60,6 @@
                                     {{/locale_ar}}
                                 </a>
                             </li>
-
                             <li class="city-name">
                                 <a class="course-event-data" href="javascript:void(0);" 
                                    title="Private:atp">
@@ -82,7 +71,6 @@
                                     {{/locale_ar}}
                                 </a>
                             </li>
-
                             <li class="">
                                 <span class=" addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">
                                     <a class="fa fa-calendar atcb-link"></a>
@@ -98,11 +86,9 @@
                                     </var>
                                 </span>
                             </li>
-
                             <li class="">
                                 {{{formView}}} 
                             </li>
-
                             <li class="">
                                 <!--<button type="button" class="btn btn-enroll-calendar">Enroll</button>-->
                                 {{#canEnroll}}
@@ -124,42 +110,38 @@
                     {{/hideFromCalendar}}
                     {{/courseEvents}}
                 </div>
+                {{/courses}}
             </div>
-            {{/courseEvents.count}}
-            {{/courses}}
-
         </div>
-        {{#hasPages}}
-        <div class="pagination-bar">
-            <p > Pages :  </p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <ul class="pagination">
-                {{#previousPageNumber}}
-                <li >
-                    <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
-                </li>
-                {{/previousPageNumber}}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{#pageNumbers}}
-                <li {{#isCurrent}}class="active"{{/isCurrent}} >
-                    <a href="?page={{pageNumber}}">{{pageNumber}}</a>
-                </li>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{/pageNumbers}}
-                {{#nextPageNumber}}
-                <li >
-                    <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
-                </li>
-                {{/nextPageNumber}}
-            </ul>
-        </div>
-
-        {{/hasPages}}
-
     </div>
-</div>
+    {{#hasPages}}
+    <div class="pagination-bar">
+        <p > Pages :  </p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <ul class="pagination">
+            {{#previousPageNumber}}
+            <li >
+                <a href="?page={{previousPageNumber}}"><span class="glyphicon glyphicon-menu-left"></span></a>
+            </li>
+            {{/previousPageNumber}}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{#pageNumbers}}
+            <li {{#isCurrent}}class="active"{{/isCurrent}} >
+                <a href="?page={{pageNumber}}">{{pageNumber}}</a>
+            </li>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{/pageNumbers}}
+            {{#nextPageNumber}}
+            <li >
+                <a href="?page={{nextPageNumber}}"><span class="glyphicon glyphicon-menu-right"></span></a>
+            </li>
+            {{/nextPageNumber}}
+        </ul>
+    </div>
 
-<!-- /.main holder -->
+    {{/hasPages}}
 
-{{/content}}
-{{/layout}}
+    <!-- /.main holder -->
+
+    {{/content}}
+    {{/layout}}
