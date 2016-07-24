@@ -13,6 +13,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $defaultCategory = array(
             'title' => 'Default Category',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'weight' => 0,
             'depth' => 1,
@@ -22,6 +23,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Category1 = array(
             'title' => 'Category 1',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 1,
             'weight' => $faker->numberBetween(0, 1000),
@@ -32,6 +34,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Category2 = array(
             'title' => 'Category 2',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 1,
             'weight' => $faker->numberBetween(0, 1000),
@@ -42,6 +45,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Category3 = array(
             'title' => 'Category 3',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 1,
             'weight' => $faker->numberBetween(0, 1000),
@@ -51,6 +55,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Category4 = array(
             'title' => 'Category 4',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 1,
             'weight' => $faker->numberBetween(0, 1000),
@@ -60,6 +65,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Sub1 = array(
             'title' => 'Sub-Category 1-1',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 2,
             'weight' => $faker->numberBetween(0, 1000),
@@ -69,6 +75,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Sub2 = array(
             'title' => 'Sub-Category 1-2',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 2,
             'weight' => $faker->numberBetween(0, 1000),
@@ -78,6 +85,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Sub3 = array(
             'title' => 'Sub-Category 2-1',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 2,
             'weight' => $faker->numberBetween(0, 1000),
@@ -88,6 +96,7 @@ class PosBAIssuesCategories extends AbstractSeed
 
         $Sub4 = array(
             'title' => 'Sub-Category 2-1-1',
+            'email' => $faker->freeEmail,
             'description' => $faker->sentence,
             'depth' => 3,
             'weight' => $faker->numberBetween(0, 1000),
