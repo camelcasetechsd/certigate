@@ -255,7 +255,6 @@ class Issues
      * @access private
      * @param IssueTracker\Entity\Issue $issueObj issue data
      * @throws \Exception From email is not set
-     * @throws \Exception Admin email is not set
      */
     private function sendMails($issueObj, $statusText)
     {
@@ -266,39 +265,31 @@ class Issues
         if (array_key_exists(Settings::SYSTEM_EMAIL, $settings)) {
             $from = $settings[Settings::SYSTEM_EMAIL];
         }
-
-        if (array_key_exists(Settings::ADMIN_EMAIL, $settings)) {
-            $adminEmail = $settings[Settings::ADMIN_EMAIL];
-        }
+        $categoryAdminEmail = $issueObj->getCategory()->getEmail();
 
         if (!isset($from)) {
             throw new \Exception("From email is not set");
         }
-
-        if (!isset($adminEmail)) {
-            throw new \Exception("Admin email is not set");
-        }
-
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $templateParameters = array(
             'issueUrl' => $this->router->assemble(array("issueId" => $issueObj->getId()), array('name' => 'viewIssues', 'force_canonical' => true))
         );
         if ($statusText === IssueMailStatuses::MAIL_CREATE_STATUS_TEXT) {
-            $adminTemplateName = MailTemplates::ADMIN_NEW_ISSUE;
+            $categoryAdminTemplateName = MailTemplates::CATEGORY_ADMIN_NEW_ISSUE;
             $userTemplateName = MailTemplates::USER_NEW_ISSUE;
             $subject = MailSubjects::NEW_ISSUE;
         }
         else if ($statusText === IssueMailStatuses::MAIL_CLOSE_STATUS_TEXT) {
-            $adminTemplateName = MailTemplates::ADMIN_CLOSE_ISSUE;
+            $categoryAdminTemplateName = MailTemplates::CATEGORY_ADMIN_CLOSE_ISSUE;
             $userTemplateName = MailTemplates::USER_CLOSE_ISSUE;
             $subject = MailSubjects::CLOSE_ISSUE;
         }
 
-        $AdminNotificationMailArray = array(
-            'to' => $adminEmail,
+        $categoryNotificationMailArray = array(
+            'to' => $categoryAdminEmail,
             'from' => $from,
-            'templateName' => $adminTemplateName,
+            'templateName' => $categoryAdminTemplateName,
             'templateParameters' => $templateParameters,
             'subject' => $subject,
         );
@@ -309,7 +300,7 @@ class Issues
             'templateParameters' => $templateParameters,
             'subject' => $subject,
         );
-        $this->notification->notify($AdminNotificationMailArray);
+        $this->notification->notify($categoryNotificationMailArray);
         $this->notification->notify($userNotificationMailArray);
     }
 
