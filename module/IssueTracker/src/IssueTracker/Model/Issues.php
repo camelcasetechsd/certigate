@@ -273,6 +273,7 @@ class Issues
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
         $templateParameters = array(
+            'ticketNo' => $issueObj->getId(),
             'issueUrl' => $this->router->assemble(array("issueId" => $issueObj->getId()), array('name' => 'viewIssues', 'force_canonical' => true))
         );
         if ($statusText === IssueMailStatuses::MAIL_CREATE_STATUS_TEXT) {
