@@ -1,15 +1,63 @@
 {{% BLOCKS }}
 {{<layout}}
+{{$content}}
 
-    {{$content}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>{{#translate}}Edit Menu{{/translate}}</h3>
-            </div>
-            <div class="panel-body">
-                {{{menuForm}}}
+
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">
+                        <h3>Edit Menu</h3>
+                    </div>
+                    <div class="panel-body main-form  ">
+                        {{{openTag}}}
+
+                        <div class="row panel-border">
+                            <h2 class="sub-title-form"> MENU DATA</h2>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="menu_form_title">{{titleLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{title}}}
+                                        {{{titleError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="menu_form_titleAr">{{titleArLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{titleAr}}}
+                                        {{{titleArError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label"  for="menu_form_status">{{statusLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{status}}}
+                                        {{{id}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        {{{buttons}}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{{closeTag}}}
+                    </div>
+                </div>
             </div>
         </div>
-    {{/content}}
+    </div>
+</div>
 
+{{/content}}
 {{/layout}}

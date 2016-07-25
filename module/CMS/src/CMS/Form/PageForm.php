@@ -152,7 +152,7 @@ class PageForm extends Form
                 'accept' => 'image/*',
             ),
             'options' => array(
-                'label' => '<p class="required">Picture</p> <p>Supported Extensions: gif,png,jpg,jpeg</p>',
+                'label' => 'Picture',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )

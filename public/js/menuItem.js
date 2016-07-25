@@ -21,14 +21,14 @@ $(document).ready(function () {
  */
 function displayMenuItemFormFieldsByType(type) {
     if (type == 2) {
-        $("#menu_item_form_page").parent().hide();
+        $("#menu_item_form_page").parents('.menu-item-type-container').hide();
         $("#menu_item_form_page").prop('required', false);
-        $("#menu_item_form_directUrl").parent().show();
+        $("#menu_item_form_directUrl").parents('.menu-item-type-container').show();
         $("#menu_item_form_directUrl").prop('required', true);
     } else {
-        $("#menu_item_form_directUrl").parent().hide();
+        $("#menu_item_form_directUrl").parents('.menu-item-type-container').hide();
         $("#menu_item_form_directUrl").prop('required', false);
-        $("#menu_item_form_page").parent().show();
+        $("#menu_item_form_page").parents('.menu-item-type-container').show();
         $("#menu_item_form_page").prop('required', true);
     }
 }
