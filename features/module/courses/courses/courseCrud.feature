@@ -13,7 +13,7 @@ Scenario: Testing course creation by Admin
     And I fill in "duration" with "885"
     And I fill in "price" with "13"
     
-    #adding 2 outlines
+    #adding 5 outlines
     And I fill in "outlines[0][title]" with "outline 1"
     And I fill in "outlines[0][titleAr]" with "outline 1 in Arabic"
     And I fill in "outlines[0][duration]" with "30"
@@ -22,11 +22,29 @@ Scenario: Testing course creation by Admin
     And I fill in "outlines[1][titleAr]" with "outline 2 in Arabic"
     And I fill in "outlines[1][duration]" with "7779"
     And I check "outlines[1][status]"
+    And I fill in "outlines[2][title]" with "outline 3"
+    And I fill in "outlines[2][titleAr]" with "outline 3 in Arabic"
+    And I fill in "outlines[2][duration]" with "7778"
+    And I check "outlines[2][status]"
+    And I fill in "outlines[3][title]" with "outline 4"
+    And I fill in "outlines[3][titleAr]" with "outline 4 in Arabic"
+    And I fill in "outlines[3][duration]" with "7777"
+    And I check "outlines[3][status]"
+    And I fill in "outlines[4][title]" with "outline 5"
+    And I fill in "outlines[4][titleAr]" with "outline 5 in Arabic"
+    And I fill in "outlines[4][duration]" with "7776"
+    And I check "outlines[4][status]"
     
-    #removing the other field sets 
-    And I press "removeOutline2"
-    And I press "removeOutline3"
-    And I press "removeOutline4"
+    #adding then removing the other field sets after adding one outline
+    And I press "Add Five More"
+    And I fill in "outlines[5][title]" with "outline 6"
+    And I fill in "outlines[5][titleAr]" with "outline 6 in Arabic"
+    And I fill in "outlines[5][duration]" with "7775"
+    And I check "outlines[5][status]"
+    And I press "removeOutline6"
+    And I press "removeOutline7"
+    And I press "removeOutline8"
+    And I press "removeOutline9"
     
     #saving and publishing the course
     And I press "Save and Publish"
@@ -34,7 +52,6 @@ Scenario: Testing course creation by Admin
     #checking if everything is alright
     Then I should be on "/courses"
     Then I should see "Hello 7"
-    Then I should see "course name in Arabic"
     And I go to "/courses/more/2"
     Then I should see "Hello 7"
     Then I should see "course name in Arabic"
@@ -108,12 +125,19 @@ Scenario: creating course for trainers
     And I fill in "outlines[1][titleAr]" with "Pro Trainer outline 2 in Arabic"
     And I fill in "outlines[1][duration]" with "111"
     And I check "outlines[1][status]"
-    
-    #removing the other field sets 
-    And I press "removeOutline2"
-    And I press "removeOutline3"
-    And I press "removeOutline4"
-    
+    And I fill in "outlines[2][title]" with "outline 3"
+    And I fill in "outlines[2][titleAr]" with "outline 3 in Arabic"
+    And I fill in "outlines[2][duration]" with "7778"
+    And I check "outlines[2][status]"
+    And I fill in "outlines[3][title]" with "outline 4"
+    And I fill in "outlines[3][titleAr]" with "outline 4 in Arabic"
+    And I fill in "outlines[3][duration]" with "7777"
+    And I check "outlines[3][status]"
+    And I fill in "outlines[4][title]" with "outline 5"
+    And I fill in "outlines[4][titleAr]" with "outline 5 in Arabic"
+    And I fill in "outlines[4][duration]" with "7776"
+    And I check "outlines[4][status]"
+   
     #saving and publishing the course
     And I press "Save and Publish"
     
@@ -145,11 +169,18 @@ Scenario: creating course for trainers
     And I fill in "outlines[1][titleAr]" with "Next Trainer outline 2 in Arabic"
     And I fill in "outlines[1][duration]" with "111"
     And I check "outlines[1][status]"
-    
-    #removing the other field sets 
-    And I press "removeOutline2"
-    And I press "removeOutline3"
-    And I press "removeOutline4"
+    And I fill in "outlines[2][title]" with "outline 3"
+    And I fill in "outlines[2][titleAr]" with "outline 3 in Arabic"
+    And I fill in "outlines[2][duration]" with "7778"
+    And I check "outlines[2][status]"
+    And I fill in "outlines[3][title]" with "outline 4"
+    And I fill in "outlines[3][titleAr]" with "outline 4 in Arabic"
+    And I fill in "outlines[3][duration]" with "7777"
+    And I check "outlines[3][status]"
+    And I fill in "outlines[4][title]" with "outline 5"
+    And I fill in "outlines[4][titleAr]" with "outline 5 in Arabic"
+    And I fill in "outlines[4][duration]" with "7776"
+    And I check "outlines[4][status]"
     
     #saving and publishing the course
     And I press "Save and Publish"
