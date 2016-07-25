@@ -68,12 +68,12 @@
                                 </tbody>
                             </table>
                             {{/course}}
-                        </div>
                         <div class="col-sm-1 "></div>
-                        <div class="col-sm-3 course-date">
+                        <div class="col-sm-6 course-date">
                             <div class="date">
                                 <h3>{{#translate}}Course Dates{{/translate}}</h3>
                                 {{#course}}
+                                {{#course.courseEvents.count}}
                                 {{#courseEvents}}
                                 <ul>
                                     {{^hideFromCalendar}}
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="courseEvents">
+                <div class="tab-pane fade" id="courseEvents">
                     <div class="row">
                         <div class="panel panel-default">
                             {{#courseEventCreator}}
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="courseOutlines">
+                <div class="tab-pane fade" id="courseOutlines">
                     <div class="row">
                         <div class="panel-body">
 

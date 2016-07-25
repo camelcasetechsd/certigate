@@ -20,7 +20,7 @@ Scenario: Testing hide from calendar which should hide course event from calenda
         But I should see text matching "[A-Z]{1}[a-z]{2}, [0-9]{1,2} [A-Z]{1}[a-z]{2,} 2[0-9]{3}"
         #one course event exists and should be visible in calendar, so periodic notifications button should appear
         And I should find field with name "subscribe"
-    Then I follow "Read more ..." 
+    Then I follow "More" 
         Then I should see "COURSE EVENTS"
         #one course event exists and should be visible in calendar, so dates should appear in calendar
         But I should see text matching "[A-Z]{1}[a-z]{2}, [0-9]{1,2} [A-Z]{1}[a-z]{2,} 2[0-9]{3}"
@@ -31,7 +31,7 @@ Scenario: Testing hide from calendar which should hide course event from calenda
         And I perform "Edit" action on row with "Active" value
     Then I should see "EDIT COURSE EVENT"
         And I check "hideFromCalendar"
-        Then I press "Edit"
+        Then I press on input with "name" "buttons[create]"
     Then I should be on "/course-events" 
     Then I go to "/sign/out" 
     #check calendar accessibility by student
@@ -42,7 +42,7 @@ Scenario: Testing hide from calendar which should hide course event from calenda
         But I should not see text matching "[A-Z]{1}[a-z]{2}, [0-9]{1,2} [A-Z]{1}[a-z]{2,} 2[0-9]{3}"
         #one course event exists and should be hidden in calendar, so periodic notifications button should not appear
         And I should not find field with name "subscribe"
-    Then I follow "Read more ..." 
+    Then I follow "More" 
         Then I should see "COURSE EVENTS"
         #one course event exists and should be hidden in calendar, so no dates should appear in calendar
         But I should not see text matching "[A-Z]{1}[a-z]{2}, [0-9]{1,2} [A-Z]{1}[a-z]{2,} 2[0-9]{3}"
@@ -61,7 +61,7 @@ Scenario: Testing CIP and hide from calendar in both course calendar and instruc
         And I perform "Edit" action on row with "Active" value
     Then I should see "EDIT COURSE EVENT"
         And I uncheck "course_event_form_hideFromCalendar"
-        Then I press "Edit"
+        Then I press on input with "name" "buttons[create]"
     Then I should be on "/course-events" 
     And I go to "/courses/instructor-training"
         Then I should see "COURSE DETAILS"
@@ -71,8 +71,7 @@ Scenario: Testing CIP and hide from calendar in both course calendar and instruc
         And I should see "End Date"
         And I should see "ATP Name"
         And I should see "ATP City"
-        # brief in english and arabic, but still one course
-        And I should see "Brief" 2 times
+        And I should see "Brief" 1 times
         # duration is displayed for both the course and the outlines, but still one course
         And I should see "Duration" 2 times
     And I go to "/courses/calendar"
@@ -90,7 +89,7 @@ Scenario: Testing CIP and hide from calendar in both course calendar and instruc
         And I perform "Edit" action on row with "Active" value
     Then I should see "EDIT COURSE EVENT"
         And I check "hideFromCalendar"
-        Then I press "Edit"
+        Then I press on input with "name" "buttons[create]"
     Then I should be on "/course-events" 
     Then I go to "/sign/out" 
     #check calendar accessibility by instructor
@@ -107,4 +106,3 @@ Scenario: Testing CIP and hide from calendar in both course calendar and instruc
         And I should not see "End Date"
         And I should not see "ATP Name"
         And I should not see "ATP City"
-        And I should not see "Read more ..." 
