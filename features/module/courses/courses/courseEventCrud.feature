@@ -23,11 +23,18 @@ Scenario: testing course events creation by Admin
     And I fill in "outlines[1][titleAr]" with "outline 2 in Arabic"
     And I fill in "outlines[1][duration]" with "7779"
     And I check "outlines[1][status]"
-    
-    #removing the other field sets 
-    And I press "removeOutline2"
-    And I press "removeOutline3"
-    And I press "removeOutline4"
+    And I fill in "outlines[2][title]" with "outline 3"
+    And I fill in "outlines[2][titleAr]" with "outline 3 in Arabic"
+    And I fill in "outlines[2][duration]" with "7778"
+    And I check "outlines[2][status]"
+    And I fill in "outlines[3][title]" with "outline 4"
+    And I fill in "outlines[3][titleAr]" with "outline 4 in Arabic"
+    And I fill in "outlines[3][duration]" with "7777"
+    And I check "outlines[3][status]"
+    And I fill in "outlines[4][title]" with "outline 5"
+    And I fill in "outlines[4][titleAr]" with "outline 5 in Arabic"
+    And I fill in "outlines[4][duration]" with "7776"
+    And I check "outlines[4][status]"
     
     #saving and publishing the course
     And I press "Save and Publish"
@@ -48,7 +55,7 @@ Scenario:  creating the course event
     And I fill in "startDate" with "03/06/2016"
     And I fill in "endDateHj" with "29/08/1437"
     And I fill in "endDate" with "05/06/2016"
-    And I press "Create"
+    And I press on input with "name" "buttons[create]"
     Then I should be on "/course-events/2"
     Then I should see only 1 row
 
@@ -66,9 +73,10 @@ Scenario:  creating the course event by TM
     And I fill in "startDate" with "05/06/2016"
     And I fill in "endDateHj" with "5/09/1437"
     And I fill in "endDate" with "10/06/2016"
-    And I press "Create"
-    Then I should be on "/course-events/2"
-    Then I should see only 2 row
+    And I press on input with "name" "buttons[create]"
+    Then I should be on "/course-events"
+    #There is already another created course event beside the other two created here
+    Then I should see only 3 row
 
     
 @javascript    
@@ -95,7 +103,7 @@ Scenario:  creating the course event on old date to check if it disappears from 
     And I fill in "startDate" with "19/05/2010"
     And I fill in "endDateHj" with "16/06/1432"
     And I fill in "endDate" with "19/05/2011"
-    And I press "Create"
+    And I press on input with "name" "buttons[create]"
     Then I should be on "/course-events/2"
     Then I should see only 3 row
 
