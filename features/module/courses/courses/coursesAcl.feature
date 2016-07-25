@@ -36,10 +36,10 @@ Scenario: Testing course pages as Admin
     
     # checking more page 
     And I go to "/courses/more/1"
-    Then I should see "COURSE DETAILS"
+    Then I should see "About This Course"
 
     # checking my courses page 
-    And I go to "/courses/my-courses"
+    And I go to "/courses/mycourses"
     Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
@@ -63,12 +63,8 @@ Scenario: Testing course pages as Admin
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go to "/resources"
-    Then I should see "RESOURCES"
-
-    #checking resources page
-    And I go to "/resources/new"
-    Then I should see "UPLOAD RESOURCES"
+    And I go to "/courses/resources/edit/1"
+    Then I should see "EDIT RESOURCES"
 
 
 @javascript 
@@ -93,10 +89,10 @@ Scenario: Testing course pages as TM
     
     # checking more page 
     And I go to "/courses/more/1"
-    Then I should see "COURSE DETAILS"
+    Then I should see "About This Course"
 
     # checking my courses page 
-    And I go to "/courses/my-courses"
+    And I go to "/courses/mycourses"
     Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
@@ -119,13 +115,8 @@ Scenario: Testing course pages as TM
     And I go to "/courses/outlines/1"
     Then I should see "COURSES OUTLINES"
 
-
     #checking resources page
-    And I go to "/resources"
-    Then I should see "You don't have access to this page , please contact the admin !"
-
-    #checking resources page
-    And I go to "/resources/new"
+    And I go to "/courses/resources/edit/1"
     Then I should see "You don't have access to this page , please contact the admin !"
 
 
@@ -151,10 +142,10 @@ Scenario: Testing course pages as TCA
     
     # checking more page 
     And I go to "/courses/more/1"
-    Then I should see "COURSE DETAILS"
+    Then I should see "About This Course"
 
     # checking my courses page 
-    And I go to "/courses/my-courses"
+    And I go to "/courses/mycourses"
     Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
@@ -178,11 +169,7 @@ Scenario: Testing course pages as TCA
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go to "/resources"
-    Then I should see "You don't have access to this page , please contact the admin !"
-
-    #checking resources page
-    And I go to "/resources/new"
+    And I go to "/courses/resources/edit/1"
     Then I should see "You don't have access to this page , please contact the admin !"
 
 
@@ -208,10 +195,10 @@ Scenario: Testing course pages as instructor
     
     # checking more page 
     And I go to "/courses/more/1"
-    Then I should see "COURSE DETAILS"
+    Then I should see "About This Course"
 
     # checking my courses page 
-    And I go to "/courses/my-courses"
+    And I go to "/courses/mycourses"
     Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
@@ -235,11 +222,7 @@ Scenario: Testing course pages as instructor
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go to "/resources"
-    Then I should see "You don't have access to this page , please contact the admin !"
-
-    #checking resources page
-    And I go to "/resources/new"
+    And I go to "/courses/resources/edit/1"
     Then I should see "You don't have access to this page , please contact the admin !"
 
     
@@ -265,10 +248,10 @@ Scenario: Testing course pages as student
     
     # checking more page 
     And I go to "/courses/more/1"
-    Then I should see "COURSE DETAILS"
+    Then I should see "About This Course"
 
     # checking my courses page 
-    And I go to "/courses/my-courses"
+    And I go to "/courses/mycourses"
     Then I should see text matching "(My Courses|Currently you are not enrolled in any courses)"
 
     #checking course-events list
@@ -292,9 +275,5 @@ Scenario: Testing course pages as student
     Then I should see "COURSES OUTLINES"
 
     #checking resources page
-    And I go to "/resources"
-    Then I should see "You don't have access to this page , please contact the admin !"
-
-    #checking resources page
-    And I go to "/resources/new"
+    And I go to "/courses/resources/edit/1"
     Then I should see "You don't have access to this page , please contact the admin !"

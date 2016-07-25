@@ -493,6 +493,16 @@ class PosARoles extends AbstractSeed
                 'module' => $courseModule,
                 'route' => $myCoursesRoute,
             ),
+            array(
+                'role_id' => $testCenterAdminRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
+            array(
+                'role_id' => $trainingManagerRoleId,
+                'module' => $courseModule,
+                'route' => $myCoursesRoute,
+            ),
         );
         $this->insert('acl', $coursesAcls);
 
