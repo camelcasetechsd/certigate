@@ -34,8 +34,8 @@ class MenuController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Menu');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
-        
-        $data = $query->findAll(/*$entityName =*/null);
+
+        $data = $query->findAll(/* $entityName = */null);
         $variables['menus'] = $objectUtilities->prepareForDisplay($data);
         return new ViewModel($variables);
     }
@@ -54,6 +54,7 @@ class MenuController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Menu');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $menuObj = new Menu();
 
         $form = new MenuForm();
@@ -65,13 +66,12 @@ class MenuController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($menuObj, $data);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $variables['menuForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
 
@@ -89,6 +89,7 @@ class MenuController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $menuObj = $query->find('CMS\Entity\Menu', $id);
 
         $form = new MenuForm();
@@ -101,16 +102,15 @@ class MenuController extends ActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $query->save($menuObj);
-                
+
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $variables['menuForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
-    
+
     /**
      * Delete menu
      *
@@ -122,15 +122,15 @@ class MenuController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuObj = $query->find('CMS\Entity\Menu', $id);
-        
+
         $menuObj->setStatus(Status::STATUS_INACTIVE);
 
         $query->save($menuObj);
-        
+
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
         $this->redirect()->toUrl($url);
     }
-    
+
     /**
      * activate menu
      *
@@ -142,15 +142,13 @@ class MenuController extends ActionController
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $menuObj = $query->find('CMS\Entity\Menu', $id);
-        
+
         $menuObj->setStatus(Status::STATUS_ACTIVE);
 
         $query->save($menuObj);
-        
+
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenu'));
         $this->redirect()->toUrl($url);
     }
 
-
 }
-

@@ -54,6 +54,7 @@ class OrganizationsController extends ActionController
     public function typeAction()
     {
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $rolesArray = array(Role::TEST_CENTER_ADMIN_ROLE, Role::TRAINING_MANAGER_ROLE, Role::DISTRIBUTOR_ROLE, Role::RESELLER_ROLE);
         $validationResult = $this->getServiceLocator()->get('aclValidator')->validateOrganizationAccessControl(/* $response = */$this->getResponse(), $rolesArray, /* $organization = */ null, /* $atLeastOneRoleFlag = */ true);
         if ($validationResult["isValid"] === false && !empty($validationResult["redirectUrl"])) {
@@ -74,7 +75,7 @@ class OrganizationsController extends ActionController
                 return $this->redirect()->toUrl($url . $data['type']);
             }
         }
-        $variables['TypeForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables);
         return new ViewModel($variables);
     }
 
@@ -208,9 +209,11 @@ class OrganizationsController extends ActionController
         $OrganizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $options = array();
         $options['query'] = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
         if ($OrganizationModel->canBeRenewed($this, $organizationId, $metaId)) {
-            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId, $options));
+//            $customizedForm = $this->getFormView($OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId, $options));
+            $customizedForm = $OrganizationModel->getCustomizedRenewalForm($this, $organizationId, $metaId, $options);
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -220,12 +223,17 @@ class OrganizationsController extends ActionController
                 );
                 $OrganizationModel->renewOrganization($this, $organizationId, $data);
             }
-            $variables['renewForm'] = $customizedForm;
+
+//            echo '<pre>';
+//            var_dump($customizedForm);
+//            exit;
+            $variables = $formSmasher->prepareFormForDisplay($customizedForm, /* elements containers */ $variables);
+//            $variables['renewForm'] = $customizedForm;
         }
         else {
             $variables['messages'] = array(
-            'message' => Messages::NO_RENEWAL_TYPE,
-            'type' => MessageTypes::WARNING
+                'message' => Messages::NO_RENEWAL_TYPE,
+                'type' => MessageTypes::WARNING
             );
         }
 
@@ -246,6 +254,7 @@ class OrganizationsController extends ActionController
         $cleanQuery = $this->getServiceLocator()->get('wrapperQuery');
         $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
         $query = $cleanQuery->setEntity('Users\Entity\User');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $orgModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
 
         /**
@@ -304,8 +313,7 @@ class OrganizationsController extends ActionController
                 $orgModel->saveOrganization($this, $data, /* $orgObj = */ null, /* $oldStatus = */ null, /* $oldLongitude = */ null, /* $oldLatitude = */ null, $creatorId, $userEmail, $isAdminUser);
             }
         }
-
-        $variables['orgForm'] = $this->getFormView($customizedForm);
+        $variables = $formSmasher->prepareFormForDisplay($customizedForm, /* elements containers */ $variables);
         return new ViewModel($variables);
     }
 
@@ -322,6 +330,7 @@ class OrganizationsController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $applicationLocale = $this->getServiceLocator()->get('applicationLocale');
         $orgsQuery = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\Organization');
         $orgObj = $query->find('Organizations\Entity\Organization', $id);
@@ -377,7 +386,9 @@ class OrganizationsController extends ActionController
             }
         }
         $variables['CRAttachment'] = $crAttachment;
-        $variables['organizationForm'] = $this->getFormView($customizedForm);
+        $variables = $formSmasher->prepareFormForDisplay($customizedForm, /* elements containers */ $variables);
+
+//        $variables['organizationForm'] = $this->getFormView($customizedForm);
 
         $organizationArray = array($orgObj);
         $versionModel = $this->getServiceLocator()->get('Versioning\Model\Version');

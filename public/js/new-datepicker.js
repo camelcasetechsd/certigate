@@ -75,9 +75,9 @@ $('.new-gregorianDate').calendarsPicker($.extend({
  * @param {string} otherDateSelector
  * @returns {getNewOtherDateInput.otherDateInput}
  */
-function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector){
-    var otherDateInput = $(currentDate).parent().parent()[relativePostion]("div").find(otherDateSelector);
-    if(otherDateInput.length === 0){
+function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
+    var otherDateInput = $(currentDate).parents('.form-group').parent()[relativePostion]("div").find(otherDateSelector);
+    if (otherDateInput.length === 0) {
         otherDateInput = $(currentDate)[relativePostion]()[relativePostion](otherDateSelector);
     }
     return otherDateInput;

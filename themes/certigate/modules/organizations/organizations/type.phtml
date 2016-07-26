@@ -1,17 +1,41 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
+<!-- /.main holder -->
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <div class="panel-body main-form  ">
+                    {{{openTag}}}
 
-{{{TypeForm}}}
-
+                    <div class="row panel-border">
+                        <h2 class="sub-title-form"> ACCOUNT DATA</h2>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{{orgType}}}
+                                {{{orgTypeError}}}
+                                {{{type}}}
+                                {{{typeError}}}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{{save}}}
+                            </div>
+                        </div>
+                    </div>
+                    {{{closeTag}}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {{/content}}
-
 {{/layout}}
 
 <script>
     $(document).ready(function () {
-
-
         $('.orgType').change(function () {
             rearrangeType();
         });

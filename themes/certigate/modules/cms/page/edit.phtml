@@ -1,15 +1,139 @@
 {{% BLOCKS }}
 {{<layout}}
-
 {{$content}}
-<a href="/cms/page/history/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View History{{/translate}}"><button class="btn btn-small btn-success">View History</button></a>
-<br><br>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{#translate}}Edit Page{{/translate}}</h3>
-    </div>
-    <div class="panel-body">
-        {{{pageForm}}}
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">
+                        <h3>Edit Page</h3>
+                    </div>
+                    <div class="panel-body main-form">
+                        {{{openTag}}}
+                        <div class="row panel-border">
+                            <h2 class="sub-title-form"> PAGE DATA</h2>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_title">{{titleLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{title}}}
+                                        {{{titleError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_titleAr">{{titleArLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{titleAr}}}
+                                        {{{titleArError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_type">{{typeLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{type}}}
+                                        {{{typeError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_path">{{pathLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{path}}}
+                                        {{{pathError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_category">{{categoryLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{category}}}
+                                        {{{categoryError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_author">{{authorLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{author}}}
+                                        {{{authorError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_picture">{{pictureLabel}}</label>
+                                    <div class="col-sm-5">
+                                        {{{picture}}}
+                                        {{{pictureError}}}
+                                    </div>
+                                    <p class="col-sm-4"><b>Supported Extensions: gif,png,jpg,jpeg</b></p>                                    <div class="col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_summary">{{summaryLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{summary}}}
+                                        {{{summaryError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_summaryAr">{{summaryArLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{summaryAr}}}
+                                        {{{summaryArError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_body">{{bodyLabel}}</label>
+                                    <div class="col-sm-12">
+                                        {{{body}}}
+                                        {{{bodyError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label required"  for="page_form_bodyAr">{{bodyArLabel}}</label>
+                                    <div class="col-sm-12">
+                                        {{{bodyAr}}}
+                                        {{{bodyArError}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        {{{id}}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        {{{buttons}}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{{closeTag}}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {{/content}}
@@ -17,9 +141,19 @@
 <!--scripts can not be concatenated as other scripts/ style sheets are initiated with relative paths-->
 <script type="text/javascript" src="/bower_components/ckeditor/ckeditor.js"></script>
 <script>
-    $(document).ready(function () {
-        managePressReleaseFields('{{pressReleaseType}}');
-    });
-</script>
+        $(document).ready(function () {
+managePressReleaseFields('{{pressReleaseType}}');
+        });</script>
 {{/scripts}}
 {{/layout}}
+
+<script>
+            $(document).ready(function () {
+    {{#imageSource}}
+    $('#cke_118_textInput').val({{imageSource}});
+    {{/imageSource}}
+
+
+
+    });
+</script>

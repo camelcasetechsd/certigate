@@ -67,6 +67,7 @@ class PageController extends ActionController
 
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\Page');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $pageObj = new Page();
 
         $options = array();
@@ -94,9 +95,7 @@ class PageController extends ActionController
             }
         }
 
-        $formViewHelper = new FormViewHelper();
-        $this->setFormViewHelper($formViewHelper);
-        $variables['pageForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         $variables['pressReleaseType'] = PageTypes::PRESS_RELEASE_TYPE;
         return new ViewModel($variables);
     }
@@ -117,6 +116,7 @@ class PageController extends ActionController
         $id = $this->params('id');
         $pageModel = $this->getServiceLocator()->get('CMS\Model\Page');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $pageObj = $query->find('CMS\Entity\Page', $id);
         $request = $this->getRequest();
         if (!$request->isPost()) {
@@ -156,11 +156,7 @@ class PageController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-
-        $formViewHelper = new FormViewHelper();
-        $this->setFormViewHelper($formViewHelper);
-        $variables['id'] = $id;
-        $variables['pageForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         $variables['pressReleaseType'] = PageTypes::PRESS_RELEASE_TYPE;
         return new ViewModel($variables);
     }
