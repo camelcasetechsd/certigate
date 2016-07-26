@@ -94,6 +94,12 @@ class MenuItemController extends ActionController
             $form->setData($data);
             $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
+                /**
+                 *  query save function assumes that the name of the field equeal to the name of 
+                 *  the column in database so we adding data with the same name to override this
+                 *  problem
+                 */
+                $data['parent'] = $data['optgroup-parent'];
                 $query->save($menuItemObj, $data);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));

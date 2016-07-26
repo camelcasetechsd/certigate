@@ -133,7 +133,7 @@ class MenuItemForm extends Form
         ) );
 
         $this->add( array(
-            'name' => 'parent',
+            'name' => 'optgroup-parent',
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'attributes' => array(
                 'class' => 'form-control',

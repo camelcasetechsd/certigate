@@ -82,7 +82,7 @@ class FormSmasher
             /**
              * to handle opt-groups in menuitems 
              */
-            else if ($element->getAttribute('type') === 'select' && $element->getAttribute('name') === 'parent') {
+            else if ($element->getAttribute('type') === 'select' && $element->getAttribute('name') === 'optgroup-parent') {
                 $valueOptions = $this->handleOptgroups($element);
                 $elementsContainer[$name] = $formSelect($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)), $element->getValue(), $element->getAttributes(), $element->setValueOptions($valueOptions));
             }
