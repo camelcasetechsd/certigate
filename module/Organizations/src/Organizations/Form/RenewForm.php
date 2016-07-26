@@ -182,7 +182,7 @@ class RenewForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
-                    'class' => 'form-control hijriDate-ar',
+                    'class' => 'form-control new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -198,7 +198,7 @@ class RenewForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -216,7 +216,7 @@ class RenewForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
-                    'class' => 'form-control hijriDate',
+                    'class' => 'form-control new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -232,7 +232,7 @@ class RenewForm extends Form
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
