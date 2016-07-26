@@ -697,12 +697,12 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
             'name' => 'officeVersion',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'placeholder' => 'Enter Microseft Office Version',
+                'placeholder' => 'Enter Microsoft Office Version',
                 'required' => 'required',
                 'class' => 'form-control atcSet',
             ),
             'options' => array(
-                'label' => 'Microseft Office Version',
+                'label' => 'Microsoft Office Version',
                 'empty_option' => self::EMPTY_SELECT_VALUE,
                 'value_options' => $options['staticOfficeVersions'],
                 'label_attributes' => array(
