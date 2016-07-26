@@ -494,39 +494,43 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{#atcPrivacyStatement}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label required atcSet"  for="org_form_atcPrivacyStatement">{{atcPrivacyStatementLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{atcPrivacyStatement}}}
-                                    {{{atcPrivacyStatementError}}}
+                                {{#atcPrivacyStatement}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required atcSet"  for="org_form_atcPrivacyStatement">{{atcPrivacyStatementLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcPrivacyStatement}}}
+                                            {{{atcPrivacyStatementError}}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{/atcPrivacyStatement}}
+                                {{/atcPrivacyStatement}}
 
-                            {{#atpPrivacyStatement}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label required atpSet"  for="org_form_atpPrivacyStatement">{{atpPrivacyStatementLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{atpPrivacyStatement}}}
-                                    {{{atpPrivacyStatementError}}}
+                                {{#atpPrivacyStatement}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required atpSet"  for="org_form_atpPrivacyStatement">{{atpPrivacyStatementLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpPrivacyStatement}}}
+                                            {{{atpPrivacyStatementError}}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{/atpPrivacyStatement}}
+                                {{/atpPrivacyStatement}}
 
-                            {{#status}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label atpSet"  for="org_form_status">{{statusLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{status}}}
-                                    {{{statusError}}}
-                                    {{{id}}}
+                                {{#status}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label atpSet"  for="org_form_status">{{statusLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{status}}}
+                                            {{{statusError}}}
+                                            {{{id}}}
+                                        </div>
+                                    </div>
                                 </div>
+                                {{/status}}
                             </div>
-                            {{/status}}
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -592,51 +596,51 @@
 $(document).ready(function () {
 
 $('#atpModalLinkAgree').click(function () {
-    $('#org_form_atpPrivacyStatement').prop('checked', 'checked');
-    ;
+$('#org_form_atpPrivacyStatement').prop('checked', 'checked');
+;
 });
 
 $('#atcModalLinkAgree').click(function () {
-    $('#org_form_atcPrivacyStatement').prop('checked', 'checked');
-    ;
+$('#org_form_atcPrivacyStatement').prop('checked', 'checked');
+;
 });
 
 $('#org_form_saveState').click(function (e) {
 
-    if ($('#org_form_commercialName').val() !== "") {
-        $state = $('#org_form').serialize();
-        console.log($state);
-        $.ajax({
-            type: "POST",
-            url: "/organizations/savestate",
-            data: {
-                saveState: $state
-            },
-            dataType: "json",
-            success: function (data, textStatus, jqXHR) {
-                if (data.result === "Commercial Name already Exists") {
-                    alert("Commercial Name already Exists");
-                } else if (data.result === true) {
-                    alert("saved");
-                    window.location.replace("/organizations/atps");
+if ($('#org_form_commercialName').val() !== "") {
+    $state = $('#org_form').serialize();
+    console.log($state);
+    $.ajax({
+        type: "POST",
+        url: "/organizations/savestate",
+        data: {
+            saveState: $state
+        },
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            if (data.result === "Commercial Name already Exists") {
+                alert("Commercial Name already Exists");
+            } else if (data.result === true) {
+                alert("saved");
+                window.location.replace("/organizations/atps");
+            }
+        }, error: function (ts) {
+            try
+            {
+                var json = $.parseJSON(ts.responseText);
+                if (json.redirect === true) {
+                    window.location.replace(json.result);
                 }
-            }, error: function (ts) {
-                try
-                {
-                    var json = $.parseJSON(ts.responseText);
-                    if (json.redirect === true) {
-                        window.location.replace(json.result);
-                    }
-                }
-                catch (err)
-                {
-                    alert(ts.responseText);
-                }
-
+            }
+            catch (err)
+            {
+                alert(ts.responseText);
             }
 
-        });
-    }
+        }
+
+    });
+}
 });
 
 $url = window.location.href;
