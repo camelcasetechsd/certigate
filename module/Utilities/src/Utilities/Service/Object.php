@@ -197,8 +197,7 @@ class Object
         $objectProperties = $this->getObjectProperties($object);
 
         if (array_key_exists("status", $objectProperties)) {
-            $statusKey = array_search($object->status, $this->statusConstants);
-
+            $statusKey = array_search((string)$object->status, $this->statusConstants);
             if ($statusKey !== false) {
                 $statusExplosionArray = explode('_', $statusKey);
                 if (in_array('TEXT', $statusExplosionArray)) {
