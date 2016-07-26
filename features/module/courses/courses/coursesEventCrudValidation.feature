@@ -4,7 +4,7 @@ Feature: course Acl
 Scenario: Testing course pages as Admin
     Given I mock the login session as "admin"
     And I go to "/course-events/new"
-    And I press "Create"
+    And I press on input with "name" "buttons[create]"
     Then I should see "Value is required and can't be empty" 9 times
 
 
@@ -33,7 +33,7 @@ Scenario: checking date difference validation
     And I go to "/course-events/new"
     And I fill in "startDate" with "03/06/2016"
     And I fill in "endDate" with "01/06/2016"
-    And I press "Create"
+    And I press on input with "name" "buttons[create]"
     Then I should see "End date should be after Start date"
 
 
