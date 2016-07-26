@@ -239,6 +239,7 @@ class CourseEvent
                 $nonAuthorizedEnroll = false;
                 $courseFull = false;
                 $canEnroll = true;
+                $canEnrollMultipleTimes = true;
                 $canLeave = false;
                 $enrolling = false;
                 if ($auth->hasIdentity()) {
@@ -262,7 +263,10 @@ class CourseEvent
                 if ($courseEvent->getStudentsNo() >= $courseEvent->getCapacity()) {
                     $courseFull = true;
                 }
-                if ($canLeave === true || $nonAuthorizedEnroll === true || $courseFull === true) {
+                if ($nonAuthorizedEnroll === true || $courseFull === true) {
+                    $canEnrollMultipleTimes = false;
+                }
+                if ($canLeave === true || $canEnrollMultipleTimes === false) {
                     $canEnroll = false;
                 }
                 $today = new \DateTime();
@@ -273,6 +277,7 @@ class CourseEvent
                 $courseEvent->alreadyStarted = $alreadyStarted;
                 $courseEvent->enrolling = $enrolling;
                 $courseEvent->canEnroll = $canEnroll;
+                $courseEvent->canEnrollMultipleTimes = $canEnrollMultipleTimes;
                 $courseEvent->isFull = $courseFull;
                 $courseEvent->canLeave = $canLeave;
                 if ($course->canDownload === false && $canLeave === true) {
