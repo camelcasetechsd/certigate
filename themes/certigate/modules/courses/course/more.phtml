@@ -31,7 +31,14 @@
 
     <!-- end image course
    ================================================== --> 
-
+    <!--making sure that user can evaluate-->
+    {{#canEvaluate}}
+    {{#courseEventId}}
+    <!--this rule is only for students-->
+    <a class="btn btn-info" href="/courses/vote/{{courseEventId}}" >{{#translate}}Evaluate Course{{/translate}}</a>
+    <br><br>
+    {{/courseEventId}}
+    {{/canEvaluate}}
     <hr class="featurette-divider">
 
     <!-- tabs 
