@@ -20,7 +20,9 @@
                         {{course.brief}}</h1>
                     <div class="inner-cont">
                         <p>{{course.duration}} {{#translate}}Day{{/translate}}(s).</p>
+                        {{^course.currentUserEnrolled}}
                         <button class="btn-course-enroll"><a href="/courses/calendar">Enroll this course</a></button>
+                        {{/course.currentUserEnrolled}}
                     </div>
                 </div>
             </div>
@@ -186,7 +188,9 @@
                                     {{#canDownloadResources}}
                                     {{#resources}}
                                     <tr>
-                                        <td>{{#translate}}{{type}}{{/translate}}</td>
+                                        <td>
+                                            {{#translate}}{{type}}{{/translate}}
+                                        </td>
                                         <td>
                                             {{#files}}
                                             <a target="_blank" href="/courses/resources/download/{{id}}" >{{name}}</a> <br>
