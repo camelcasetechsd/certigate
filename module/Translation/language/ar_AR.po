@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-07-27 21:37+0200\n"
+"PO-Revision-Date: 2016-07-27 22:22+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -1547,3 +1547,21 @@ msgstr "Ticket No."
 
 msgid "Hijri Preferred Date"
 msgstr "Hijri Preferred Date ar"
+
+msgid "Submit pricing proposal to user"
+msgstr "Submit pricing proposal to user ar"
+
+msgid "Accept user payment"
+msgstr "Accept user payment ar"
+
+msgid "Reject user payment"
+msgstr "Reject user payment ar"
+
+msgid "Submit payment accepting pricing proposal"
+msgstr "Submit payment accepting pricing proposal ar"
+
+msgid "Cancel quotation rejecting pricing proposal"
+msgstr "Cancel quotation rejecting pricing proposal ar"
+
+msgid "Cancel quotation"
+msgstr "Cancel quotation ar"

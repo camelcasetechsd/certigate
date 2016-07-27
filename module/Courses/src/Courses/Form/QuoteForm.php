@@ -71,18 +71,27 @@ class QuoteForm extends Form
                 'attributes' => array(
                     'class' => 'pull-left btn-inline btn btn-success',
                     'value' => FormButtons::PROCESS_BUTTON_TEXT,
+                    'title' => 'Submit pricing proposal to user'
                 )
             ));
         }
 
         if (($this->isAdminUser === true && $status == Status::STATUS_PENDING_REVIEW )
                 || ($this->isAdminUser === false && ($status == Status::STATUS_PENDING_PAYMENT || $status == Status::STATUS_PENDING_REPAYMENT))) {
+            if($this->isAdminUser === true){
+                $acceptTitle = 'Accept user payment';
+                $declineTitle = 'Reject user payment';
+            }else{
+                $acceptTitle = 'Submit payment accepting pricing proposal';
+                $declineTitle = 'Cancel quotation rejecting pricing proposal';
+            }
             $this->add(array(
                 'name' => FormButtons::ACCEPT_BUTTON,
                 'type' => 'Zend\Form\Element\Submit',
                 'attributes' => array(
                     'class' => 'pull-left btn-inline btn btn-success',
                     'value' => FormButtons::ACCEPT_BUTTON_TEXT,
+                    'title' => $acceptTitle,
                 )
             ));
             $this->add(array(
@@ -92,6 +101,7 @@ class QuoteForm extends Form
                     'class' => 'pull-left btn-inline btn btn-danger',
                     'value' => FormButtons::DECLINE_BUTTON_TEXT,
                     'formnovalidate' => true,
+                    'title' => $declineTitle,
                 )
             ));
         }
@@ -104,6 +114,7 @@ class QuoteForm extends Form
                     'class' => 'pull-left btn-inline btn btn-danger',
                     'value' => FormButtons::CANCEL_BUTTON_TEXT,
                     'formnovalidate' => true,
+                    'title' => 'Cancel quotation'
                 )
             ));
         }
