@@ -6,6 +6,7 @@ use Utilities\Form\Form;
 use Utilities\Service\Time;
 use Utilities\Form\FormButtons;
 use Zend\InputFilter\InputFilter;
+use Translation\Service\Locale\Locale;
 
 /**
  * PrivateQuoteReservation Form
@@ -85,13 +86,31 @@ class PrivateQuoteReservationForm extends Form
                 'display_empty_item' => true,
             ),
         ));
+        $locale = $options['applicationLocale']->getCurrentLocale();
+        $dateClassExtension = "";
+        if ($locale == Locale::LOCALE_AR_AR) {
+            $dateClassExtension = "-ar";
+        }
+        $this->add(array(
+            'name' => 'preferredDateHj',
+            'type' => 'Zend\Form\Element\Date',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control new-hijriDate'.$dateClassExtension,
+                'type' => 'text',
+            ),
+            'options' => array(
+                'label' => 'Hijri Preferred Date',
+                'format' => Time::DATE_FORMAT,
+            ),
+        ));
         
         $this->add(array(
             'name' => 'preferredDate',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control date new-gregorianDate',
+                'class' => 'form-control new-gregorianDate'.$dateClassExtension,
                 'type' => 'text',
             ),
             'options' => array(
@@ -99,6 +118,8 @@ class PrivateQuoteReservationForm extends Form
                 'format' => Time::DATE_FORMAT,
             ),
         ));
+        
+        
         
         $this->add(array(
             'name' => FormButtons::RESERVE_BUTTON,

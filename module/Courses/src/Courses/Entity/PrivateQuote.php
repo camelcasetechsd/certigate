@@ -29,6 +29,7 @@ use Utilities\Service\Status;
  * @property array $wireTransfer
  * @property int $status
  * @property \DateTime $preferredDate
+ * @property \DateTime $preferredDateHj
  * @property \DateTime $created
  * @property \DateTime $modified
  * 
@@ -104,6 +105,13 @@ class PrivateQuote
      * @var \DateTime
      */
     public $preferredDate;
+    
+    /**
+     * 
+     * @ORM\Column(type="date")
+     * @var \DateTime
+     */
+    public $preferredDateHj;
 
     /**
      *
@@ -355,6 +363,35 @@ class PrivateQuote
     }
 
     /**
+     * Get PreferredDate
+     * 
+     * 
+     * @access public
+     * @return \DateTime preferredDate
+     */
+    public function getPreferredDateHj()
+    {
+        return $this->preferredDateHj;
+    }
+    
+    /**
+     * Set PreferredDate
+     * 
+     * 
+     * @access public
+     * @param \DateTime $preferredDateHj
+     * @return PrivateQuote
+     */
+    public function setPreferredDateHj($preferredDateHj)
+    {
+        if (!is_object($preferredDateHj)) {
+            $preferredDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $preferredDateHj);
+        }
+        $this->preferredDateHj = $preferredDateHj;
+        return $this;
+    }
+    
+    /**
      * Get created
      * 
      * 
@@ -477,6 +514,9 @@ class PrivateQuote
         }
         if (array_key_exists('preferredDate', $data)) {
             $this->setPreferredDate($data["preferredDate"]);
+        }
+        if (array_key_exists('preferredDateHj', $data)) {
+            $this->setPreferredDateHj($data["preferredDateHj"]);
         }
     }
 

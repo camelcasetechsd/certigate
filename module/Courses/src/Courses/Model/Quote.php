@@ -379,7 +379,7 @@ class Quote
      */
     public function prepareReservationForms($courses, $type, $userId, $actionUrl)
     {
-        $options = array("actionUrl" => $actionUrl, "user" => $userId);
+        $options = array("actionUrl" => $actionUrl, "user" => $userId, "applicationLocale" => $this->applicationLocale);
         foreach ($courses as $course) {
             if ($type === PrivateQuote::QUOTE_TYPE) {
                 $options["course"] = $course->getId();
