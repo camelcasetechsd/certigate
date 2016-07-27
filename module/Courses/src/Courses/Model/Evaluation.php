@@ -93,8 +93,6 @@ class Evaluation
             ));
             //assign course to evaluation
             $evalObj->setCourse($course);
-            $evalObj->setStatus(Status::STATUS_NOT_APPROVED);
-
             $this->query->setEntity('Courses\Entity\Evaluation')->save($evalObj);
         }
         if ($isAdminUser === false) {
