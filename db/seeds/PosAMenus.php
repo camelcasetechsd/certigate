@@ -20,7 +20,7 @@ class PosAMenus extends AbstractSeed
      * @var array static pages content
      */
     private $staticPagesContent;
-    
+
     /**
      * Run Method.
      *
@@ -33,7 +33,7 @@ class PosAMenus extends AbstractSeed
     {
         $filename = __DIR__ . "/../staticContent/pages.json";
         $this->staticPagesContent = json_decode(file_get_contents($filename));
-                
+
         // Primary Menu
         $menu = [
             "title" => "Primary Menu",
@@ -231,12 +231,12 @@ class PosAMenus extends AbstractSeed
                         "weight" => 4,
                     ],
                 ]
-            ]            
+            ]
         ];
         foreach ($atpMenuItems as $item) {
             $this->insertMenuItem($item, $atpMenuId);
         }
-        
+
         // ATC Menu
         $atcMenu = [
             "title" => Role::TEST_CENTER_ADMIN_ROLE,
@@ -273,12 +273,12 @@ class PosAMenus extends AbstractSeed
                         "weight" => 4,
                     ],
                 ]
-            ]            
+            ]
         ];
         foreach ($atcMenuItems as $item) {
             $this->insertMenuItem($item, $atcMenuId);
         }
-        
+
         // Instructor Menu
         $instructorMenu = [
             "title" => Role::INSTRUCTOR_ROLE,
@@ -316,12 +316,12 @@ class PosAMenus extends AbstractSeed
                         ]
                     ],
                 ]
-            ]            
+            ]
         ];
         foreach ($instructorMenuItems as $item) {
             $this->insertMenuItem($item, $instructorMenuId);
         }
-        
+
         // User Menu
         $userMenu = [
             "title" => Role::USER_ROLE,
@@ -358,21 +358,190 @@ class PosAMenus extends AbstractSeed
                         "weight" => 3,
                     ],
                 ]
-            ]            
+            ]
         ];
         foreach ($userMenuItems as $item) {
             $this->insertMenuItem($item, $userMenuId);
         }
-        
+
         // Admin Menu
-        $menu = [
+        $adminMenu = [
             "title" => "Admin Menu",
-            "titleAr" => "Admin Menu",
             "titleAr" => "Admin Menu",
             "status" => true
         ];
 
-        $this->insert('menu', $menu);
+        $this->insert('menu', $adminMenu);
+        $adminMenuId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        $adminMenuItems = array(
+            "CMS" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 1,
+                'title' => "CMS",
+                'titleAr' => "CMS",
+                'children' =>
+                array(
+                    "Pages" => array(
+                        'depth' => 1,
+                        'path' => "/cms/page",
+                        'weight' => 1,
+                        'title' => "Pages",
+                        'titleAr' => "Pages",
+                        'children' => array(
+                        )
+                    ),
+                    "Menus" => array(
+                        'depth' => 1,
+                        'path' => "/cms/menu",
+                        'weight' => 1,
+                        'title' => "Menus",
+                        'titleAr' => "Menus",
+                        'children' => array(
+                        )
+                    ),
+                    "Menu Items" => array(
+                        'depth' => 1,
+                        'path' => "/cms/menuitem",
+                        'weight' => 1,
+                        'title' => "Menu Items",
+                        'titleAr' => "Menu Items",
+                        'children' => array(
+                        )
+                    ),
+                )
+            ),
+            "Courses" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 3,
+                'title' => "Course",
+                'titleAr' => "Course",
+                'children' =>
+                array(
+                    "Courses" => array(
+                        'depth' => 1,
+                        'path' => "/courses",
+                        'weight' => 0,
+                        'title' => "Courses",
+                        'titleAr' => "Courses",
+                        'children' => array(
+                        )
+                    ),
+                    "Course Events" => array(
+                        'depth' => 1,
+                        'path' => "/course-events",
+                        'weight' => 1,
+                        'title' => "Course Events",
+                        'titleAr' => "Course Events",
+                        'children' => array(
+                        )
+                    )
+                )
+            ),
+            "Users" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 2,
+                'title' => "User",
+                'titleAr' => "User",
+                'children' =>
+                array(
+                    "Users" => array(
+                        'depth' => 1,
+                        'path' => "/users",
+                        'weight' => 0,
+                        'title' => "Users",
+                        'titleAr' => "Users",
+                        'children' => array(
+                        )
+                    ),
+                    "Roles" => array(
+                        'depth' => 1,
+                        'path' => "/roles",
+                        'weight' => 1,
+                        'title' => "Roles",
+                        'titleAr' => "Roles",
+                        'children' => array(
+                        )
+                    ),
+                )
+            ),
+            "Organizations" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 2,
+                'title' => "Organization",
+                'titleAr' => "Organization",
+                'children' =>
+                array(
+                    "New Organization" => array(
+                        'depth' => 1,
+                        'path' => "/organizations/type",
+                        'weight' => 1,
+                        'title' => "New Organization",
+                        'titleAr' => "New Organization",
+                        'children' => array()
+                    ),
+                    "Organizations" => array(
+                        'depth' => 1,
+                        'path' => "/organizations",
+                        'weight' => 1,
+                        'title' => "Organizations",
+                        'titleAr' => "Organizations",
+                        'children' => array()
+                    ),
+                    "ATPs" => array(
+                        'depth' => 1,
+                        'path' => "/organizations/atps",
+                        'weight' => 1,
+                        'title' => "ATPs",
+                        'titleAr' => "ATPs",
+                        'children' => array()
+                    ),
+                    "ATCs" => array(
+                        'depth' => 1,
+                        'path' => "/organizations/atcs",
+                        'weight' => 1,
+                        'title' => "ATCs",
+                        'titleAr' => "ATCs",
+                        'children' => array()
+                    ),
+                )
+            ),
+            "Evaluation Template" => array(
+                'depth' => 0,
+                'path' => "/courses/ev-templates",
+                'weight' => 4,
+                'title' => "Evaluation Template",
+                'titleAr' => "Evaluation Template",
+                'children' => array(
+                )
+            ),
+            "System" => array(
+                'depth' => 0,
+                'path' => "#",
+                'weight' => 5,
+                'title' => "System",
+                'titleAr' => "System",
+                'children' =>
+                array(
+                    "Settings" => array(
+                        'depth' => 1,
+                        'path' => "/system/settings",
+                        'weight' => 1,
+                        'title' => "Settings",
+                        'titleAr' => "Settings",
+                        'children' => array(
+                        )
+                    ),
+                )
+            ),
+        );
+        foreach ($adminMenuItems as $item) {
+            $this->insertMenuItem($item, $adminMenuId);
+        }
     }
 
     public function insertMenuItem($item, $primaryMenuId, $parentId = null)
@@ -409,10 +578,11 @@ class PosAMenus extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-        if(property_exists($this->staticPagesContent, $item['path'])){
+        if (property_exists($this->staticPagesContent, $item['path'])) {
             $body = $this->staticPagesContent->$item['path']->body;
             $bodyAr = $this->staticPagesContent->$item['path']->bodyAr;
-        }else{
+        }
+        else {
             $body = $bodyAr = $faker->text;
         }
         $this->insert('page', [
