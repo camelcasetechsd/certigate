@@ -51,7 +51,7 @@
                             </li>
                             <li class="atp-name">
                                 <a class="course-event-data" href="/organizations/more/{{atp.id}}" 
-                                   title="Private:atp">
+                                   title="{{#translate}}ATP Organization{{/translate}}">
                                     {{#locale_en}}
                                     {{atp.commercialName}}
                                     {{/locale_en}}
@@ -61,15 +61,15 @@
                                 </a>
                             </li>
                             <li class="city-name">
-                                <a class="course-event-data" href="javascript:void(0);" 
-                                   title="Private:atp">
+                                <p class="course-event-data" 
+                                   title="{{#translate}}City{{/translate}}">
                                     {{#locale_en}}
                                     {{atp.city}}
                                     {{/locale_en}}
                                     {{#locale_ar}}
                                     {{atp.cityAr}}
                                     {{/locale_ar}}
-                                </a>
+                                </p>
                             </li>
                             <li class="">
                                 <span class=" addtocalendar atc-style-blue" data-on-calendar-click="atcOnCalendarClick" data-calendars="Google Calendar, Outlook">

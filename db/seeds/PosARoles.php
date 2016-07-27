@@ -880,22 +880,7 @@ class PosARoles extends AbstractSeed
             ),
             // organization More
             array(
-                'role_id' => $testCenterAdminRoleId,
-                'module' => $organizationModule,
-                'route' => $orgMoreRoute,
-            ),
-            array(
-                'role_id' => $trainingManagerRoleId,
-                'module' => $organizationModule,
-                'route' => $orgMoreRoute,
-            ),
-            array(
-                'role_id' => $distributorRoleId,
-                'module' => $organizationModule,
-                'route' => $orgMoreRoute,
-            ),
-            array(
-                'role_id' => $resellerRoleId,
+                'role_id' => $normalUserRoleId,
                 'module' => $organizationModule,
                 'route' => $orgMoreRoute,
             ),
