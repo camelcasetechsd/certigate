@@ -520,7 +520,7 @@ class MenuItem
         }
         if (array_key_exists('menu', $data)) {
             $this->setMenu($data["menu"]);
-        }
+        }   
         if (array_key_exists('parent', $data)) {
             $this->setParent($data["parent"]);
         }
