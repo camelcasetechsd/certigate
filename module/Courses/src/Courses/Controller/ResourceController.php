@@ -136,6 +136,7 @@ class ResourceController extends ActionController
                 $formData["nameAdded"] = isset($data["nameAdded"]) ? $data["nameAdded"] : array();
                 $formData["nameArAddedAr"] = isset($data["nameArAddedAr"]) ? $data["nameArAddedAr"] : array();
                 $formData["fileAdded"] = isset($data["fileAdded"]) ? $data["fileAdded"] : array();
+                $formData["typeAdded"] = isset($data["typeAdded"]) ? $data["typeAdded"] : array();
                 $resourceModel->save($resource, $formData, $isAdminUser);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'edit', 'courseId' => $courseId), array('name' => 'resourcesEdit'));

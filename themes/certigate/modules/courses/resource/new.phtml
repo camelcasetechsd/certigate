@@ -70,6 +70,8 @@
                             </div>
                         </div>
                     </div>
+                    {{{addMore}}}
+                    {{{addMoreError}}}
                     <div class="col-md-12">
                         <div class="form-group">
                             <label  class="col-sm-3 control-label required"  for="resource_form_status">{{statusLabel}}</label>
@@ -79,8 +81,6 @@
                             </div>
                         </div>
                     </div>
-                    {{{addMore}}}
-                    {{{addMoreError}}}
                 </div>
                 {{{buttons}}}
                 {{{closeTag}}}
@@ -96,9 +96,8 @@
 {{$scripts}}
 <script>
     $(document).ready(function () {
-    addMoreListener('#resource_form_addMore', '#resource_form_type', '{{{oneFileTypes}}}');
     {{#addResourcesValidation}}
-    addMoreResource('#resource_form_addMore', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}');
+    addMoreResource('#resource_form_addMore', '#resource_form_type', '#resource_form_name', '#resource_form_nameAr', '#resource_form_file', '{{type.value}}', '{{type.errorClass}}', '{{type.errorsMarkup}}', '{{name.value}}', '{{name.errorClass}}', '{{name.errorsMarkup}}', '{{nameAr.value}}', '{{nameAr.errorClass}}', '{{nameAr.errorsMarkup}}', '{{file.errorClass}}', '{{file.errorsMarkup}}', '{{{oneFileTypes}}}');
     {{/addResourcesValidation}}
     });
 </script>

@@ -110,6 +110,7 @@ class Resource
                 $resource = clone $resource;
                 $uploadedFile = $filter->filter($fileValue);
                 $resource->setFile($uploadedFile);
+                $resource->setType($data["typeAdded"][$fileKey]);
                 $resource->setName($data["nameAdded"][$fileKey]);
                 $resource->setNameAr($data["nameArAddedAr"][$fileKey]);
                 $this->query->setEntity('Courses\Entity\Resource')->save($resource);
@@ -139,17 +140,16 @@ class Resource
         $validationOutput = array();
         // prepare data for validation
         $courseId = $data["course"];
-        $validatedFields = array("name", "file");
+        $validatedFields = array("type","name", "file");
         // store data needed to reset form
         $originalData = $data;
         $originalFilter = $form->getInputFilter();
         $isValid = true;
-        $moreThanOneResource = false;
+        $resourcesTypesCount = array($data["type"] => 1);
         // validate each added resource
-        if (isset($data["nameAdded"]) && isset($data["nameArAddedAr"]) && isset($data["fileAdded"]) &&
-                is_array($data["nameAdded"]) && is_array($data["nameArAddedAr"]) && is_array($data["fileAdded"]) &&
-                (count($data["nameAdded"]) == count($data["nameArAddedAr"]) && count($data["nameArAddedAr"]) == count($data["fileAdded"]))) {
-            $moreThanOneResource = true;
+        if (isset($data["typeAdded"]) && isset($data["nameAdded"]) && isset($data["nameArAddedAr"]) && isset($data["fileAdded"]) &&
+                is_array($data["typeAdded"]) && is_array($data["nameAdded"]) && is_array($data["nameArAddedAr"]) && is_array($data["fileAdded"]) &&
+                (count($data["typeAdded"]) == count($data["nameAdded"]) && count($data["nameAdded"]) == count($data["nameArAddedAr"]) && count($data["nameArAddedAr"]) == count($data["fileAdded"]))) {
             foreach ($data["nameAdded"] as $nameKey => $nameValue) {
                 foreach ($validatedFields as $validatedField) {
                     $validationOutput["addedResources"][$nameKey][$validatedField] = array(
@@ -160,9 +160,17 @@ class Resource
                     );
                 }
                 // manipulate data passed to form as if added resource is the original one
+                $data["type"] = $typeValue = $data["typeAdded"][$nameKey];
+                
+                if(array_key_exists($typeValue, $resourcesTypesCount)){
+                    $resourcesTypesCount[$typeValue] += 1;
+                }else{
+                    $resourcesTypesCount[$typeValue] = 1;
+                }
                 $data["name"] = $nameValue;
                 $nameArValue = $data["nameArAddedAr"][$nameKey];
                 $data["nameAr"] = $nameArValue;
+                $validationOutput["addedResources"][$nameKey]["type"]["value"] = $typeValue;
                 $validationOutput["addedResources"][$nameKey]["name"]["value"] = $nameValue;
                 $validationOutput["addedResources"][$nameKey]["nameAr"]["value"] = $nameArValue;
                 $data["file"] = $data["fileAdded"][$nameKey];
@@ -171,8 +179,28 @@ class Resource
                 $form->setInputFilter($resource->getInputFilter($courseId, $nameValue, /* $overrideFilterFlag = */ true, /* $fileUploadOptions = */ $data["fileAdded"][$nameKey]["uploadOptions"]));
                 $form->setData($data);
                 // validate added resource
+                
+                
+                $currentType = $this->getResourceTypeTitle($typeValue);
+                if (in_array($currentType, $oneFileTypes)) {
+                    $moreThanOneFileType = false;
+                    if ($resourcesTypesCount[$typeValue] > 1) {
+                        $moreThanOneFileType = true;
+                    }
+                    else {
+                        $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $typeValue, "course" => $courseId));
+                        if (!is_null($existingResource)) {
+                            $moreThanOneFileType = true;
+                        }
+                    }
+                    if ($moreThanOneFileType === true) {
+                        $form->get("type")->setMessages(array("{$currentType} Type can not accept more than one file"));
+                        $isValid = false;
+                    }
+                }
                 $isValid &= $form->isValid();
                 $messages = $form->getMessages();
+                
                 foreach ($validatedFields as $validatedField) {
                     // add error messages -if exist-
                     // generate errors markup to be used in display directly
@@ -194,14 +222,9 @@ class Resource
         $currentType = $this->getResourceTypeTitle($currentTypeId);
         if (in_array($currentType, $oneFileTypes)) {
             $moreThanOneFileType = false;
-            if ($moreThanOneResource === true) {
+            $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $currentTypeId, "course" => $courseId));
+            if (!is_null($existingResource)) {
                 $moreThanOneFileType = true;
-            }
-            else {
-                $existingResource = $this->query->findOneBy("Courses\Entity\Resource", array("type" => $currentTypeId, "course" => $courseId));
-                if (!is_null($existingResource)) {
-                    $moreThanOneFileType = true;
-                }
             }
             if ($moreThanOneFileType === true) {
                 $form->get("type")->setMessages(array("{$currentType} Type can not accept more than one file"));

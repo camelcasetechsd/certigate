@@ -11,8 +11,8 @@ function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
     oneFileTypes = $.parseJSON(oneFileTypes);
     $(typeSelector).change(function () {
         var typeValue = $(this).val();
-        var slectedText = $(this).find('option[value=' + typeValue + ']').text();
-        if ($.inArray(slectedText, oneFileTypes) > -1) {
+        var selectedText = $(this).find('option[value=' + typeValue + ']').text();
+        if ($.inArray(selectedText, oneFileTypes) > -1) {
             // remove all previously added sub-forms
             $('input[value="Remove"]').click();
             $(addMoreSelector).hide();
@@ -26,18 +26,23 @@ function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
  * Add more resource above add more button
  * 
  * @param {string} addMoreSelector
+ * @param {string} typeInputSelector
  * @param {string} nameInputSelector
  * @param {string} fileInputSelector
+ * @param {string} typeValue
+ * @param {string} typeClass
+ * @param {string} typeErrors
  * @param {string} nameValue
  * @param {string} nameClass
  * @param {string} nameErrors
  * @param {string} fileClass
  * @param {string} fileErrors
+ * @param {array} oneFileTypes
  * @returns {Boolean} false in case any field does not exist
  */
-function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector, fileInputSelector, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors) {
+function addMoreResource(addMoreSelector, typeInputSelector, nameInputSelector, nameInputArSelector, fileInputSelector, typeValue, typeClass, typeErrors, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors, oneFileTypes) {
 
-    if (!$(addMoreSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
+    if (!$(addMoreSelector).length || !$(typeInputSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
         return false;
     }
 
@@ -49,6 +54,7 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     var newElementNameArExtension = "AddedAr[" + fileInputsCount + "]";
 
     // This is a way to "htmlDecode" your string...  
+    typeErrors = $("<div />").html(typeErrors).text();
     nameErrors = $("<div />").html(nameErrors).text();
     nameArErrors = $("<div />").html(nameArErrors).text();
     fileErrors = $("<div />").html(fileErrors).text();
@@ -57,6 +63,24 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     var divElementContainer = "<div class='col-md-12'></div>";
     var divFormGroup = "<div class='form-group'></div>";
     var divInputContainer = "<div class='col-sm-9'></div>";
+    var divFileInputContainer = "<div class='col-sm-3'></div>";
+    
+    // prepare new type field
+    var newTypeInputId = $(typeInputSelector).attr("id") + newElementIdExtension;
+    var newTypeInputName = $(typeInputSelector).attr("name") + newElementNameExtension;
+    var oldTypeInputClass = $(typeInputSelector).attr("class");
+    if (typeof oldTypeInputClass !== "undefined") {
+        oldTypeInputClass.replace('input-error', '')
+    } else {
+        oldTypeInputClass = '';
+    }
+    var newTypeInputClass = oldTypeInputClass + " " + typeClass;
+    var newTypeInput = $(typeInputSelector).clone().find('option:selected').prop('selected', false).end().attr('class', newTypeInputClass).attr("id", newTypeInputId).attr("name", newTypeInputName).attr('value', typeValue);
+    if (typeValue !== "") {
+        newTypeInput.find('option[value='+typeValue+']').prop('selected', true).end();
+    }
+    var newTypeLabel = $(typeInputSelector).parents('.form-group').children("label").clone();
+    var newTypeField = $(divElementContainer).append($(divFormGroup).append(newTypeLabel).append($(divInputContainer).append(newTypeInput).append(typeErrors)));
     
     // prepare new  name field
     var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
@@ -105,20 +129,26 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     }
     var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
     var newFileInput = $(fileInputSelector).clone().attr("class", newFileInputClass).attr("id", newFileInputId).attr("name", newFileInputName);
-    var newFileLabel = $(fileInputSelector).prev("label").clone();
-    var newFileField = $("<div></div>").append(newFileLabel).append(newFileInput).append(fileErrors);
-    var newFileField = $(divElementContainer).append($(divFormGroup).append(newFileLabel).append($(divInputContainer).append(newFileInput).append(fileErrors)));
-
+    var newFileLabel = $(fileInputSelector).parents('.form-group').children("label").clone();
+    var newFileNote = $(fileInputSelector).parents('.form-group').children("div").last().clone();
+    var newFileField = $(divFormGroup).append(newFileLabel);
+    if(fileErrors !== ''){
+        newFileField = newFileField.append($(divFileInputContainer).append(newFileInput).append(fileErrors));
+    }else{
+        newFileField = newFileField.append($(divFileInputContainer).append(newFileInput));
+    }
+    newFileField = newFileField.append($(divFileInputContainer).append(newFileNote));
+    newFileField = $(divElementContainer).append(newFileField);
     // prepare new remove button
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
     var newRemoveButtonSpacer = '<br/>';
-    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).text("Remove");
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newTypeInputId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).text("Remove");
 
 
 
     // prepare full new resource
-    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newTypeField).append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
     // add new resource before add button
     $(addMoreSelector).before(newResource);
 }
@@ -127,15 +157,16 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
  * Remove resource
  * 
  * @param {string} removeButtonSelector
+ * @param {string} typeInputSelector
  * @param {string} nameInputSelector
  * @param {string} fileInputSelector
  * @returns {Boolean} false in case any field does not exist
  */
-function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector) {
-    if (!$(removeButtonSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
+function removeResource(removeButtonSelector, typeInputSelector, nameInputSelector, fileInputSelector) {
+    if (!$(removeButtonSelector).length || !$(typeInputSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
         return false;
     }
-    $(nameInputSelector).parents(".new-resource-container").remove();
+    $(typeInputSelector).parents(".new-resource-container").remove();
 }
 
 /**
