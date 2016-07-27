@@ -72,5 +72,5 @@ function getOutlineLabel(currentCount) {
 function getOutlineRemoveButton(currentCount, addMoreSelector) {
 // prepare new remove button
     var newRemoveButtonId = "removeOutline" + currentCount;
-    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).text("Remove").wrap("<div />").parent().html();
+    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).text("Remove").wrap("<div />").parent().html() + "<div class='form-group'>&nbsp;</div>";
 }

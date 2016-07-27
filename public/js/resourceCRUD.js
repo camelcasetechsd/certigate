@@ -148,7 +148,7 @@ function addMoreResource(addMoreSelector, typeInputSelector, nameInputSelector, 
 
 
     // prepare full new resource
-    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newTypeField).append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newTypeField).append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton).append("<div class='form-group'>&nbsp;</div>");
     // add new resource before add button
     $(addMoreSelector).before(newResource);
 }
