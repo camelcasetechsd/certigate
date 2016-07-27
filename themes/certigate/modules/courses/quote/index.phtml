@@ -87,10 +87,10 @@
                 {{/isAdminUser}}
                 <td>{{#translate}}{{statusText}}{{/translate}}</td>
                 <td>
-                    <a href="/quote/process/{{type}}/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a href="/quote/process/{{quoteType}}/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>
                     {{^isAdminUser}}
                     &nbsp;&nbsp;&nbsp;
-                    <a onclick="deleteQuote({{type}}, {{id}})" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a onclick="deleteQuote('{{quoteType}}', '{{id}}')" data-toggle="tooltip" data-placement="left" title="{{#translate}}Delete{{/translate}}"><span class="glyphicon glyphicon-remove"></span></a>
                     {{/isAdminUser}}
                 </td>
             </tr>

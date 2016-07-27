@@ -448,11 +448,15 @@ class Quote
      * @param int $id
      * @param int $userId
      * @return Utilities\Form\Form submitted form
+     * @throws \Exception Quotation is not found
      */
     public function getQuoteForm($type, $id, $userId)
     {
         $quoteEntityClass = $this->getQuoteEntityClass($type);
         $quote = $this->query->find($quoteEntityClass, $id);
+        if(is_null($quote)){
+            throw new \Exception("Quotation is not found");
+        }
         $options = array(
             'status' => $quote->getStatus()
         );

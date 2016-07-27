@@ -50,7 +50,7 @@ class QuoteController extends ActionController
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
         $variables['isAdminUser'] = $isAdminUser;
-        $variables['type'] = strtolower($quoteModel->getCurrentType());
+        $variables['quoteType'] = strtolower($quoteModel->getCurrentType());
 
         $variables['quotes'] = $objectUtilities->prepareForDisplay($quoteModel->getCurrentItems());
         $form = new QuoteFilterForm(/* $name = */ null, /* $options = */ array("quoteModel" => $quoteModel));
@@ -124,7 +124,13 @@ class QuoteController extends ActionController
         $isAdminUser = $this->isAdminUser();
 
         $quoteModel = $this->getServiceLocator()->get('Courses\Model\Quote');
-        $form = $quoteModel->getQuoteForm($type, $id, /* $userId = */ $this->storage["id"]);
+        try{
+            $form = $quoteModel->getQuoteForm($type, $id, /* $userId = */ $this->storage["id"]);
+        } catch (\Exception $e) {
+            $this->getResponse()->setStatusCode(302);
+            $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => 'resource_not_found'));
+            return $this->redirect()->toUrl($url);
+        }
         $quote = $form->getObject();
         $variables["course"] = $quoteModel->prepareQuoteCourseForDisplay($quote, $type);
 
