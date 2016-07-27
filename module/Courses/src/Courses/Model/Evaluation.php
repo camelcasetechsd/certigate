@@ -161,7 +161,7 @@ class Evaluation
     {
         unset($questions['submit']);
         $messages = array();
-        $stringValidator = new \Zend\Validator\Regex('/^a-zA-Z0-9 \?|\s/');
+        $stringValidator = new \Zend\Validator\Regex('/^([a-zA-Z0-9 ]+\?|[0-9\p{Arabic} ]+؟)$/u');
         $tempArray = array_merge($questions[$key], $questions[$keyAr]);
         foreach ($tempArray as $question) {
             // start question validation
