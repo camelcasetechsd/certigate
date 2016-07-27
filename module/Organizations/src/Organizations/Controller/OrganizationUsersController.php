@@ -101,6 +101,7 @@ class OrganizationUsersController extends ActionController
         $variables = array();
         $organizationId = $this->params('organizationId');
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Organizations\Entity\OrganizationUser');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');
         $organization = $query->find('Organizations\Entity\Organization', $organizationId);
@@ -133,6 +134,7 @@ class OrganizationUsersController extends ActionController
         }
 
         $variables['organizationUserForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
 

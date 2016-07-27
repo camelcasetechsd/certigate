@@ -69,7 +69,10 @@ return array(
             ),
             'registration' => array(
                 'resource' => 'Users'
-            )
+            ),
+            'rolesStatements' => array(
+                'resource' => 'Users'
+            ),
         )
     )
 );

@@ -11,6 +11,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>{{#translate}}Ticket No.{{/translate}}</th>
                 <th>{{#translate}}Title{{/translate}}</th>
                 <th>{{#translate}}Description{{/translate}}</th>
                 <th>{{#translate}}Categories path{{/translate}}</th>
@@ -21,6 +22,7 @@
         <tbody>
             {{#issues}}
             <tr>
+                <td>{{id}}</td>
                 <td>{{title}}</td>
                 <td>{{description}}</td>
                 <td>{{#parent3}}{{#parent2}}{{#parent1}}{{title}} > {{/parent1}}{{title}} > {{/parent2}}{{title}}{{/parent3}}</td>

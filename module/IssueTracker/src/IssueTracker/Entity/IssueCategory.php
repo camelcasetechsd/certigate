@@ -16,6 +16,7 @@ use IssueTracker\Service\DepthLevel;
  * @property InputFilter $inputFilter validation constraints 
  * @property int $id
  * @property string $title
+ * @property string $email
  * @property string $description
  * @property int $parent
  * 
@@ -45,6 +46,12 @@ class IssueCategory
      * @var string
      */
     public $title;
+
+    /**
+     * @ORM\Column(type="string");
+     * @var string
+     */
+    public $email;
 
     /**
      * @ORM\Column(type="string");
@@ -84,6 +91,11 @@ class IssueCategory
         return $this->title;
     }
 
+    function getEmail()
+    {
+        return $this->email;
+    }
+
     function getDescription()
     {
         return $this->description;
@@ -92,6 +104,11 @@ class IssueCategory
     function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     function setDescription($description)
@@ -155,6 +172,7 @@ class IssueCategory
     public function exchangeArray($data = array())
     {
         $this->setTitle($data['title']);
+        $this->setEmail($data['email']);
         $this->setDescription($data['description']);
         $this->setWeight($data['weight']);
     }
@@ -196,6 +214,15 @@ class IssueCategory
             $inputFilter->add(array(
                 'name' => 'title',
                 'required' => true,
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'email',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'EmailAddress',
+                    ),
+                )
             ));
 
             $inputFilter->add(array(

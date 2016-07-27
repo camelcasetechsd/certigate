@@ -56,7 +56,8 @@ and open the template in the editor.
 .static-cont{ padding: 20px 34px;}
 
 
-.page-container{ padding: 30px 10px;
+.page-container{
+    /*padding: 30px 10px;*/
 }
 
 .instructor-small h3{ color:#1964b6; font-size:16px; 

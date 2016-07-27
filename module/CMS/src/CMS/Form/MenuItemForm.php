@@ -73,7 +73,7 @@ class MenuItemForm extends Form
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'type',
             'options' => array(
-                'label' => '<div class="required">Menu Item Type</div>',
+                'label' => 'Menu Item Type',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 ),
@@ -153,7 +153,7 @@ class MenuItemForm extends Form
                     )
                 ),
                 'display_empty_item' => true,
-                'empty_item_label' => "- - ",
+                'empty_item_label' => "- - ",
             ),
         ) );
 

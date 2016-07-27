@@ -1,14 +1,67 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{#translate}}New Organization User{{/translate}}</h3>
+
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading">
+                            <h3>{{#translate}}New Organization User{{/translate}}</h3>
+                        </div>
+                        <div class="panel-body main-form  ">
+                            {{{openTag}}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ORGANIZATION USER DATA</h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_user">{{userLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{user}}}
+                                            {{{userError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_role">{{roleLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{role}}}
+                                            {{{roleError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-sm-9">
+                                            {{{organization}}}
+                                            {{{organizationError}}}
+
+                                            {{{buttons}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{{closeTag}}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="panel-body">
-{{{organizationUserForm}}}
-    </div><!-- body -->
-</div><!-- panel -->
+</div>
+
+
+
+
+
+
+
+
+
+
 
 {{/content}}
 {{$scripts}}

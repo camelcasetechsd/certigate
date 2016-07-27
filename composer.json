@@ -2,13 +2,17 @@
     "name": "camelcasetechsd/certigate",
     "description": "Certigate website",
     "license": "BSD-3-Clause",
+    "repositories": [{
+        "type": "vcs",
+        "url": "http://github.com/lebaz20/losi18n-data"
+    }],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.3",
         "doctrine/doctrine-orm-module": "0.*",
         "widmogrod/zf2-mustache-module": "dev-master",
         "robmorgan/phinx": "^0.5.1",
-        "los/losi18n-data": "1.*",
+        "los/losi18n-data": "1.0.1",
         "los/losi18n": "1.*",
         "fzaninotto/faker": "^1.5",
         "gedmo/doctrine-extensions": "^2.4",

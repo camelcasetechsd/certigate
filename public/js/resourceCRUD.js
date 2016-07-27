@@ -118,9 +118,8 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
 
 
     // prepare full new resource
-    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
     // add new resource before add button
-    console.log($(addMoreSelector).prev("dt"));
     $(addMoreSelector).before(newResource);
 }
 
@@ -136,7 +135,7 @@ function removeResource(removeButtonSelector, nameInputSelector, fileInputSelect
     if (!$(removeButtonSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
         return false;
     }
-    $(nameInputSelector).parent("div").parent("div").remove();
+    $(nameInputSelector).parents(".new-resource-container").remove();
 }
 
 /**

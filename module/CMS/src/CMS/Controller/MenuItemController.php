@@ -51,7 +51,7 @@ class MenuItemController extends ActionController
         $previousPageNumber = $menuItemModel->getPreviousPageNumber($pageNumber);
         $variables['menuItems'] = $objectUtilities->prepareForDisplay($menuItemModel->getCurrentItems());
         $variables['pageNumbers'] = $pageNumbers;
-        $variables['hasPages'] = ( count($pageNumbers) > 0 )? true : false;
+        $variables['hasPages'] = ( count($pageNumbers) > 0 ) ? true : false;
         $variables['nextPageNumber'] = $nextPageNumber;
         $variables['previousPageNumber'] = $previousPageNumber;
 
@@ -78,6 +78,8 @@ class MenuItemController extends ActionController
     {
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('CMS\Entity\MenuItem');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
         $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
         $menuItemObj = new MenuItem();
 
@@ -99,9 +101,7 @@ class MenuItemController extends ActionController
             }
         }
 
-        $formViewHelper = new FormViewHelper();
-        $this->setFormViewHelper($formViewHelper);
-        $variables['menuItemForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
 
@@ -119,6 +119,8 @@ class MenuItemController extends ActionController
         $variables = array();
         $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
+        $formSmasher = $this->getServiceLocator()->get('formSmasher');
+
         $menuItemObj = $query->find('CMS\Entity\MenuItem', $id);
         $menuItemModel = $this->getServiceLocator()->get('CMS\Model\MenuItem');
         $options = array();
@@ -146,9 +148,7 @@ class MenuItemController extends ActionController
         }
 
         $menuItemObj->setMenu($menu);
-        $formViewHelper = new FormViewHelper();
-        $this->setFormViewHelper($formViewHelper);
-        $variables['menuItemForm'] = $this->getFormView($form);
+        $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
 

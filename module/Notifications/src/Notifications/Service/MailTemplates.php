@@ -90,9 +90,9 @@ class MailTemplates
     const SEND_TO_FRIEND_TEMPLATE = "send-to-friend";
 
     /**
-     * admin template to notify him about issues created
+     * template to notify category about issues created
      */
-    const ADMIN_NEW_ISSUE = "admin-new-issue";
+    const CATEGORY_ADMIN_NEW_ISSUE = "category-admin-new-issue";
 
     /**
      * user template for creating issues
@@ -102,7 +102,7 @@ class MailTemplates
     /**
      * admin template to notify him about issues created
      */
-    const ADMIN_CLOSE_ISSUE = "admin-issue-closed";
+    const CATEGORY_ADMIN_CLOSE_ISSUE = "category-admin-issue-closed";
 
     /**
      * user template for creating issues

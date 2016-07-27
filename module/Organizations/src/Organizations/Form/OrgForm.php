@@ -125,7 +125,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'class' => 'form-control gllpSearchField',
             ),
             'options' => array(
-                'label' => '<div class="required">Location</div><div class="gllpMap">Google Maps</div>',
+                'label' => 'Location',
                 'label_options' => array(
                     'disable_html_escape' => true,
                 )
@@ -233,7 +233,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'CRNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter CR',
                 'required' => 'required',
@@ -251,7 +251,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter CR Expiration ',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate-ar',
+                    'class' => 'form-control new-hijriDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -266,7 +266,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter CR Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate-ar',
+                    'class' => 'form-control new-gregorianDate-ar',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -282,7 +282,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter CR Expiration',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate',
+                    'class' => 'form-control new-hijriDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -297,7 +297,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter CR Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate',
+                    'class' => 'form-control new-gregorianDate',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -493,7 +493,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         /////////// ATP Data ///////////////
         $this->add(array(
             'name' => 'atcLicenseNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter License',
                 'required' => 'required',
@@ -515,7 +515,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate-ar atcSet',
+                    'class' => 'form-control new-hijriDate-ar atcSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -532,7 +532,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate-ar atcSet',
+                    'class' => 'form-control new-gregorianDate-ar atcSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -552,7 +552,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate atcSet',
+                    'class' => 'form-control new-hijriDate atcSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -569,7 +569,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate atcSet',
+                    'class' => 'form-control new-gregorianDate atcSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -644,7 +644,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
 
         $this->add(array(
             'name' => 'internetSpeed_lab',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter Internet Speed Per Lab',
                 'required' => 'required',
@@ -735,7 +735,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
         //////////// ATC DATA /////////////
         $this->add(array(
             'name' => 'atpLicenseNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter License',
                 'required' => 'required',
@@ -758,7 +758,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate-ar atpSet',
+                    'class' => 'form-control new-hijriDate-ar atpSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -775,7 +775,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate-ar atpSet',
+                    'class' => 'form-control new-gregorianDate-ar atpSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -795,7 +795,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control hijriDate atpSet',
+                    'class' => 'form-control new-hijriDate atpSet',
                     'type' => 'text',
                 ),
                 'options' => array(
@@ -812,7 +812,7 @@ class OrgForm extends Form implements ObjectManagerAwareInterface
                 'attributes' => array(
                     'placeholder' => 'Enter License Expiration Date',
                     'required' => 'required',
-                    'class' => 'form-control gregorianDate atpSet',
+                    'class' => 'form-control new-gregorianDate atpSet',
                     'type' => 'text',
                 ),
                 'options' => array(

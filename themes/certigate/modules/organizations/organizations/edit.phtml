@@ -1,52 +1,588 @@
 {{% BLOCKS }}
 {{<layout}}
 {{$content}}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{#translate}}Edit Organization{{/translate}}</h3>
-    </div>
-    <div class="panel-body">
-        {{{organizationForm}}}
+<style>
+    .page-container {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+</style>
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading">
+                            <h3>{{#translate}}New Organization{{/translate}}</h3>
+                        </div>
+                        <div class="panel-body main-form  ">
+                            {{{openTag}}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ACCOUNT DATA</h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_commercialName">{{commercialNameLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{type}}}
+                                            {{{typeError}}}
+                                            {{{commercialName}}}
+                                            {{{commercialNameError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_commercialNameAr">{{commercialNameArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{commercialNameAr}}}
+                                            {{{commercialNameArError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_ownerName">{{ownerNameLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{ownerName}}}
+                                            {{{ownerNameError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_ownerNameAr">{{ownerNameArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{ownerNameAr}}}
+                                            {{{ownerNameArError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_ownerNationalId">{{ownerNationalIdLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{ownerNationalId}}}
+                                            {{{ownerNationalIdError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> CERTIFICATE OF REGISTRATION (CR) </h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_CRNo">{{CRNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{CRNo}}}
+                                            {{{CRNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
 
-        <div class="modal fade atcSet" id="AtcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{#translate}}ATC Privacy Statement{{/translate}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {{#translate}}ATC Privacy Statement{{/translate}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                        <button type="button" class="btn btn-primary">{{#translate}}Save changes{{/translate}}</button>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_CRAttachment">{{CRAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{CRAttachment}}}
+                                            {{{CRAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_CRExpirationHj">{{CRExpirationHjLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{CRExpirationHj}}}
+                                            {{{CRExpirationHjError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_CRExpiration">{{CRExpirationLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{CRExpiration}}}
+                                            {{{CRExpirationError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> LOCATION</h2>
+                                <div class="col-md-12">
+                                    <div class="gllpMap">Google Maps</div>
+                                    <div class="form-group">
+                                        {{{mapSearch}}}
+                                        {{{latitude}}}
+                                        {{{latitudeError}}}
+                                        {{{longitude}}}
+                                        {{{longitudeError}}}
+                                        {{{mapZoom}}}
+                                        {{{mapSearchButton}}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_city">{{cityLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{city}}}
+                                            {{{cityError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_cityAr">{{cityArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{cityAr}}}
+                                            {{{cityArError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_governorate">{{governorateLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{governorate}}}
+                                            {{{governorateError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_region">{{regionLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{region}}}
+                                            {{{regionError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_addressLine1">{{addressLine1Label}}</label>
+                                        <div class="col-sm-9">
+                                            {{{addressLine1}}}
+                                            {{{addressLine1Error}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_addressLine1Ar">{{addressLine1ArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{addressLine1Ar}}}
+                                            {{{addressLine1ArError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="org_form_addressLine2">{{addressLine2Label}}</label>
+                                        <div class="col-sm-9">
+                                            {{{addressLine2}}}
+                                            {{{addressLine2Error}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="org_form_addressLine2Ar">{{addressLine2ArLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{addressLine2Ar}}}
+                                            {{{addressLine2ArError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required "  for="org_form_zipCode">{{zipCodeLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{zipCode}}}
+                                            {{{zipCodeError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> COMMUNICATION </h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_phone1">{{phone1Label}}</label>
+                                        <div class="col-sm-9">
+                                            {{{phone1}}}
+                                            {{{phone1Error}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label"  for="org_form_phone2">{{phone2Label}}</label>
+                                        <div class="col-sm-9">
+                                            {{{phone2}}}
+                                            {{{phone2Error}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label"  for="org_form_phone3">{{phone3Label}}</label>
+                                        <div class="col-sm-9">
+                                            {{{phone3}}}
+                                            {{{phone3Error}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label"  for="org_form_fax">{{faxLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{fax}}}
+                                            {{{faxError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required "  for="org_form_website">{{websiteLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{website}}}
+                                            {{{websiteError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required "  for="org_form_email">{{emailLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{email}}}
+                                            {{{emailError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{#atcLicenseNo}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ATC License DATA </h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseNo">{{atcLicenseNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseNo}}}
+                                            {{{atcLicenseNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseAttachment">{{atcLicenseAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseAttachment}}}
+                                            {{{atcLicenseAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atcWireTransferAttachment">{{atcWireTransferAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcWireTransferAttachment}}}
+                                            {{{atcWireTransferAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseExpirationHj">{{atcLicenseExpirationHjLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseExpirationHj}}}
+                                            {{{atcLicenseExpirationHjError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseExpiration">{{atcLicenseExpirationLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseExpiration}}}
+                                            {{{atcLicenseExpirationError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/atcLicenseNo}}
+
+                            {{#labsNo}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ATC ASSETS </h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_labsNo">{{labsNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{labsNo}}}
+                                            {{{labsNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_pcsNo_lab">{{pcsNo_labLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{pcsNo_lab}}}
+                                            {{{pcsNo_labError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_internetSpeed_lab">{{internetSpeed_labLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{internetSpeed_lab}}}
+                                            {{{internetSpeed_labError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_operatingSystem">{{operatingSystemLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{operatingSystem}}}
+                                            {{{operatingSystemError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_operatingSystemLang">{{operatingSystemLangLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{operatingSystemLang}}}
+                                            {{{operatingSystemLangError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_officeLang">{{officeLangLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{officeLang}}}
+                                            {{{officeLangError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_officeVersion">{{officeVersionLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{officeVersion}}}
+                                            {{{officeVersionError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/labsNo}}
+
+                            {{#atpLicenseNo}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ATP License DATA </h2>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atpLicenseNo">{{atpLicenseNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseNo}}}
+                                            {{{atpLicenseNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atpLicenseAttachment">{{atpLicenseAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseAttachment}}}
+                                            {{{atpLicenseAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atpWireTransferAttachment">{{atpWireTransferAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpWireTransferAttachment}}}
+                                            {{{atpWireTransferAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atpLicenseExpirationHj">{{atpLicenseExpirationHjLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseExpirationHj}}}
+                                            {{{atpLicenseExpirationErrorHj}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="org_form_atpLicenseExpiration">{{atpLicenseExpirationLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseExpiration}}}
+                                            {{{atpLicenseExpirationError}}}
+                                        </div>
+                                    </div>
+                                </div>                             
+                                {{/atpLicenseNo}}
+
+                                {{#classesNo}}
+                                <div class="row panel-border">
+                                    <h2 class="sub-title-form"> ATP ASSETS </h2>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label required"  for="org_form_classesNo">{{classesNoLabel}}</label>
+                                            <div class="col-sm-9">
+                                                {{{classesNo}}}
+                                                {{{classesNoError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label required"  for="org_form_pcsNo_class">{{pcsNo_classLabel}}</label>
+                                            <div class="col-sm-9">
+                                                {{{pcsNo_class}}}
+                                                {{{pcsNo_classError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/classesNo}}
+
+                                <div class="row panel-border">
+                                    <h2 class="sub-title-form"> ADMINISTRATORS </h2>
+
+                                    {{#atcLicenseNo}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label"  for="org_form_testCenterAdmin_id">{{testCenterAdmin_idLabel}}</label>
+                                            <div class="col-sm-9">
+                                                {{{testCenterAdmin_id}}}
+                                                {{{testCenterAdmin_idError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/atcLicenseNo}}
+
+                                    {{#atpLicenseNo}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label "  for="org_form_trainingManager_id">{{trainingManager_idLabel}}</label>
+                                            <div class="col-sm-9">
+                                                {{{trainingManager_id}}}
+                                                {{{trainingManager_idError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/atpLicenseNo}}
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label required"  for="org_form_focalContactPerson_id">{{focalContactPerson_idLabel}}</label>
+                                            <div class="col-sm-9">
+                                                {{{focalContactPerson_id}}}
+                                                {{{focalContactPerson_idError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{#atcPrivacyStatement}}
+                                <div class="col-md-12">
+                                    <label  class="col-sm-3 control-label required atcSet"  for="org_form_atcPrivacyStatement">{{atcPrivacyStatementLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{atcPrivacyStatement}}}
+                                        {{{atcPrivacyStatementError}}}
+                                    </div>
+                                </div>
+                                {{/atcPrivacyStatement}}
+
+                                {{#atpPrivacyStatement}}
+                                <div class="col-md-12">
+                                    <label  class="col-sm-3 control-label required atpSet"  for="org_form_atpPrivacyStatement">{{atpPrivacyStatementLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{atpPrivacyStatement}}}
+                                        {{{atpPrivacyStatementError}}}
+                                    </div>
+                                </div>
+                                {{/atpPrivacyStatement}}
+
+                                {{#status}}
+                                <div class="col-md-12">
+                                    <label  class="col-sm-3 control-label atpSet"  for="org_form_status">{{statusLabel}}</label>
+                                    <div class="col-sm-9">
+                                        {{{status}}}
+                                        {{{statusError}}}
+                                        {{{id}}}
+                                    </div>
+                                </div>
+                                {{/status}}
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        {{{save}}}
+                                        &nbsp;&nbsp;
+                                        {{{saveState}}}
+                                        &nbsp;&nbsp;
+                                        {{{reset}}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{{closeTag}}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="modal fade atpSet" id="AtpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{#translate}}ATP Privacy Statement{{/translate}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {{#translate}}ATP Privacy Statement{{/translate}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
-                        <button type="button" class="btn btn-primary">{{#translate}}Save changes{{/translate}}</button>
-                    </div>
+    </div>
+    <!--Modals-->
+    <div class="modal fade atcSet" id="AtcModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{#translate}}ATC Privacy Statement{{/translate}}</h4>
+                </div>
+                <div class="modal-body">
+                    {{#translate}}ATC Privacy Statement{{/translate}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
+                    <button type="button" class="btn btn-primary" id="atcModalLinkAgree" data-dismiss="modal" aria-label="Close">{{#translate}}I agree{{/translate}}</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{{/content}}
-{{$scripts}}
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-{{/scripts}}
-{{/layout}}
+
+    <div class="modal fade atpSet" id="AtpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" >{{#translate}}ATP Privacy Statement{{/translate}}</h4>
+                </div>
+                <div class="modal-body">
+                    {{#translate}}ATP Privacy Statement{{/translate}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{#translate}}Close{{/translate}}</button>
+                    <button type="button" class="btn btn-primary" id="atpModalLinkAgree" data-dismiss="modal" aria-label="Close">{{#translate}}I agree{{/translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/content}}
+    {{$scripts}}
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    {{/scripts}}
+    {{/layout}}

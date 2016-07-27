@@ -152,16 +152,6 @@ return array(
                     ),
                 )
             ),
-            'rolesStatements' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/roles/statements',
-                    'defaults' => array(
-                        'controller' => 'Users\Controller\Roles',
-                        'action' => 'statements',
-                    ),
-                )
-            ),
             'roles' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -185,6 +175,16 @@ return array(
                      */
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                )
+            ),
+            'rolesStatements' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/roles/statements',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Roles',
+                        'action' => 'statements',
                     ),
                 )
             ),

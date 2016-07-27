@@ -82,6 +82,18 @@ class IssuesCategoriesForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'email',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'class' => 'form-control',
+            ),
+            'options' => array(
+                'label' => 'Email',
+            ),
+        ));
+        
+        $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));

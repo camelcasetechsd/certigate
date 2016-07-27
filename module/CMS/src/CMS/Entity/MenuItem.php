@@ -487,7 +487,7 @@ class MenuItem
     {
         $menu = $this->getMenu();
         $nestedTitle = $menu->getId() . String::TEXT_SEPARATOR . $menu->getTitle() . String::TEXT_SEPARATOR;
-        $nestedTitle .= str_repeat( '- ', $this->getDepthLevel() ) . $this->getTitle();
+        $nestedTitle .= str_repeat( '- ', $this->getDepthLevel() ) . $this->getTitle();
         if ($this->getStatus() === Status::STATUS_INACTIVE || (is_object( $menu ) && $menu->getStatus() === Status::STATUS_INACTIVE)) {
             $nestedTitle .= ' [' . Status::STATUS_INACTIVE_TEXT . ']';
         }

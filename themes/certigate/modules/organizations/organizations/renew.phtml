@@ -2,7 +2,133 @@
 {{<layout}}
 
 {{$content}}
-{{{renewForm}}}
-{{/content}}
+<div class="main-holder">
+    <div class="container">
+        <div class="page-container">
+            <div class="row">
+                <!--if there's a form-->
+                {{#openTag}}
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading">
+                            <h3>{{#translate}}Renew Your Organization{{/translate}}</h3>
+                        </div>
+                        <div class="panel-body main-form  ">
+                            {{{openTag}}}
+                            <div class="row panel-border">
+                                <h2 class="sub-title-form"> ORGANIZATION DATA</h2>
+                                {{#atpLicenseNo}}
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atpLicenseNo">{{atpLicenseNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseNo}}}
+                                            {{{atpLicenseNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atpLicenseExpirationHj">{{atpLicenseExpirationHjLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseExpirationHj}}}
+                                            {{{atpLicenseExpirationHjError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atpLicenseExpiration">{{atpLicenseExpirationLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseExpiration}}}
+                                            {{{atpLicenseExpirationError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atpLicenseAttachment">{{atpLicenseAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpLicenseAttachment}}}
+                                            {{{atpLicenseAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="renew_form_atpWireTransferAttachment">{{atpWireTransferAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpWireTransferAttachment}}}
+                                            {{{atpWireTransferAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/atpLicenseNo}}
 
+                                {{#atcLicenseNo}}
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atcLicenseNo">{{atcLicenseNoLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseNo}}}
+                                            {{{atcLicenseNoError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atcLicenseExpirationHj">{{atcLicenseExpirationHjLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseExpirationHj}}}
+                                            {{{atcLicenseExpirationHjError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atcLicenseExpiration">{{atcLicenseExpirationLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseExpiration}}}
+                                            {{{atcLicenseExpirationError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label "  for="renew_form_atcLicenseAttachment">{{atcLicenseAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcLicenseAttachment}}}
+                                            {{{atcLicenseAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required"  for="renew_form_atcWireTransferAttachment">{{atcWireTransferAttachmentLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcWireTransferAttachment}}}
+                                            {{{atcWireTransferAttachmentError}}}
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/atcLicenseNo}}
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-9">
+                                            {{{save}}}
+                                            {{{reset}}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{{closeTag}}}
+                        </div>
+                    </div>
+                    {{/openTag}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/content}}
 {{/layout}}

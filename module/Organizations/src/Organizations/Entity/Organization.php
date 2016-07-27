@@ -16,7 +16,10 @@ use Utilities\Service\Validator\UniqueObject;
 /**
  * Organziation Entity
  * @ORM\Entity(repositoryClass="Organizations\Entity\OrganizationRepository")
- * @ORM\Table(name="organization",uniqueConstraints={@ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"})})
+ * @ORM\Table(name="organization",uniqueConstraints={
+ * @ORM\UniqueConstraint(name="commercialName_idx", columns={"commercialName"}),
+ * @ORM\UniqueConstraint(name="commercialNameAr_idx", columns={"commercialNameAr"})
+ * })
  * @Gedmo\Loggable
  * 
  * 
@@ -1382,6 +1385,48 @@ class Organization
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $query->setEntity("Organizations\Entity\Organization");
+
+            $inputFilter->add(array(
+                'name' => 'commercialName',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialName'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This commercial name is already in use")
+                        )
+                    ),
+                ),
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+            $inputFilter->add(array(
+                'name' => 'commercialNameAr',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context' => true,
+                            'object_manager' => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields' => array('commercialNameAr'),
+                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This commercial name is already in use")
+                        )
+                    ),
+                ),
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+
             $inputFilter->add(array(
                 'name' => 'longitude',
                 'required' => true,
@@ -1390,13 +1435,13 @@ class Organization
                         'name' => 'NotEmpty',
                         'options' => array(
                             'messages' => array(
-                                NotEmpty::IS_EMPTY=> 'Longitude is required',
+                                NotEmpty::IS_EMPTY => 'Longitude is required',
                             ),
                         ),
                     ),
                 ),
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'latitude',
                 'required' => true,
@@ -1405,7 +1450,7 @@ class Organization
                         'name' => 'NotEmpty',
                         'options' => array(
                             'messages' => array(
-                                NotEmpty::IS_EMPTY=> 'Latitude is required',
+                                NotEmpty::IS_EMPTY => 'Latitude is required',
                             ),
                         ),
                     ),
@@ -1435,6 +1480,17 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'CRNo',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 //
             $inputFilter->add(array(
@@ -1483,8 +1539,17 @@ class Organization
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
+                        array('name' => 'Int'),
                     )
-                )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
             $inputFilter->add(array(
                 'name' => 'atcLicenseExpiration',
@@ -1544,8 +1609,17 @@ class Organization
                 'filters' => array(
                     array(
                         'name' => 'StringTrim',
+                        array('name' => 'Int'),
                     )
-                )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
@@ -1699,21 +1773,65 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'labsNo',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_lab',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'classesNo',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_class',
                 'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $inputFilter->add(array(
@@ -1758,7 +1876,18 @@ class Organization
 
             $inputFilter->add(array(
                 'name' => 'internetSpeed_lab',
-                'required' => true
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Between',
+                        'options' => array(
+                            'min' => 0,
+                        ),
+                    )
+                ),
             ));
 
             $this->inputFilter = $inputFilter;
@@ -1802,36 +1931,36 @@ class Organization
                 ),
             )
         ));
-        
+
         $inputFilter->add(array(
-                'name' => 'atcPrivacyStatement',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Identical',
-                        'options' => array(
-                            'token' => '1',
-                            'messages' => array(
-                                Identical::NOT_SAME => 'You must agree to the terms of use.',
-                            ),
-                        )
-                    ),
-                )
-            ));
-        
+            'name' => 'atcPrivacyStatement',
+            'required' => true,
+            'validators' => array(
+                array('name' => 'Identical',
+                    'options' => array(
+                        'token' => '1',
+                        'messages' => array(
+                            Identical::NOT_SAME => 'You must agree to the terms of use.',
+                        ),
+                    )
+                ),
+            )
+        ));
+
         $inputFilter->add(array(
-                'name' => 'atpPrivacyStatement',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Identical',
-                        'options' => array(
-                            'token' => '1',
-                            'messages' => array(
-                                Identical::NOT_SAME => 'You must agree to the terms of use.',
-                            ),
-                        )
-                    ),
-                )
-            ));
+            'name' => 'atpPrivacyStatement',
+            'required' => true,
+            'validators' => array(
+                array('name' => 'Identical',
+                    'options' => array(
+                        'token' => '1',
+                        'messages' => array(
+                            Identical::NOT_SAME => 'You must agree to the terms of use.',
+                        ),
+                    )
+                ),
+            )
+        ));
 
         return $this->inputFilter;
     }
