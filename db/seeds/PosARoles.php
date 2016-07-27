@@ -242,6 +242,7 @@ class PosARoles extends AbstractSeed
         $quoteDownloadRoute = "quoteDownload";
         $examRequestsRoute = "examRequests";
         $examProctorsRoute = "examProctors";
+        $coursesTrainingMaterialsRoute = "coursesTrainingMaterials";
         $coursesAcls = array(
             array(
                 'role_id' => $testCenterAdminRoleId,
@@ -502,6 +503,11 @@ class PosARoles extends AbstractSeed
                 'role_id' => $trainingManagerRoleId,
                 'module' => $courseModule,
                 'route' => $myCoursesRoute,
+            ),
+            array(
+                'role_id' => $instructorRoleId,
+                'module' => $courseModule,
+                'route' => $coursesTrainingMaterialsRoute,
             ),
         );
         $this->insert('acl', $coursesAcls);
