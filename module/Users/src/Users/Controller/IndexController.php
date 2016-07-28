@@ -62,7 +62,7 @@ class IndexController extends ActionController
         $id = $this->params('id');
         $auth = new AuthenticationService();
         $storage = $auth->getIdentity();
-        if(empty($id)){
+        if (empty($id)) {
             $id = $storage['id'];
         }
         if (in_array(Role::ADMIN_ROLE, $storage['roles']) || $id == $storage['id']) {
@@ -205,7 +205,7 @@ class IndexController extends ActionController
                 $this->redirect()->toUrl($url);
             }
         }
-        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables, array('buttons'));
         return new ViewModel($variables);
     }
 
@@ -280,7 +280,7 @@ class IndexController extends ActionController
             }
         }
 
-        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables, array('buttons'));
 
         return new ViewModel($variables);
     }
@@ -378,8 +378,7 @@ class IndexController extends ActionController
             }
         }
 
-        $variables = $formSmasher->prepareFormForDisplay($form, $variables);
-//        echo '<pre>';var_dump($variables);exit;
+        $variables = $formSmasher->prepareFormForDisplay($form, $variables, array('buttons'));
         return new ViewModel($variables);
     }
 
