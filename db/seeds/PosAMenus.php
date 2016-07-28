@@ -38,7 +38,8 @@ class PosAMenus extends AbstractSeed
         $menu = [
             "title" => "Primary Menu",
             "titleAr" => "Primary Menu",
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $menu);
@@ -199,7 +200,8 @@ class PosAMenus extends AbstractSeed
         $atpMenu = [
             "title" => Role::TRAINING_MANAGER_ROLE,
             "titleAr" => Role::TRAINING_MANAGER_ROLE,
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $atpMenu);
@@ -241,7 +243,8 @@ class PosAMenus extends AbstractSeed
         $atcMenu = [
             "title" => Role::TEST_CENTER_ADMIN_ROLE,
             "titleAr" => Role::TEST_CENTER_ADMIN_ROLE,
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $atcMenu);
@@ -283,7 +286,8 @@ class PosAMenus extends AbstractSeed
         $instructorMenu = [
             "title" => Role::INSTRUCTOR_ROLE,
             "titleAr" => Role::INSTRUCTOR_ROLE,
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $instructorMenu);
@@ -326,7 +330,8 @@ class PosAMenus extends AbstractSeed
         $userMenu = [
             "title" => Role::USER_ROLE,
             "titleAr" => Role::USER_ROLE,
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $userMenu);
@@ -368,7 +373,8 @@ class PosAMenus extends AbstractSeed
         $adminMenu = [
             "title" => "Admin Menu",
             "titleAr" => "Admin Menu",
-            "status" => true
+            "status" => true,
+            'created' => date('Y-m-d H:i:s'),
         ];
 
         $this->insert('menu', $adminMenu);
@@ -563,7 +569,8 @@ class PosAMenus extends AbstractSeed
         $menuItem['titleAr'] = $item['titleAr'] . ' ar';
         $menuItem['weight'] = (isset($item['weight'])) ? $item['weight'] : 1;
         $menuItem['status'] = true;
-
+        $menuItem['created'] = date('Y-m-d H:i:s');
+                
         $this->insert('menuItem', $menuItem);
 
         $menuItemParentId = $this->getAdapter()->getConnection()->lastInsertId();
@@ -592,7 +599,8 @@ class PosAMenus extends AbstractSeed
             'status' => TRUE,
             'body' => base64_encode(bzcompress($body)),
             'bodyAr' => base64_encode(bzcompress($bodyAr)),
-            'type' => PageTypes::PAGE_TYPE
+            'type' => PageTypes::PAGE_TYPE,
+            'created' => date('Y-m-d H:i:s'),
         ]);
 
         $pageId = $this->getAdapter()->getConnection()->lastInsertId();
