@@ -608,16 +608,20 @@ class MenuItem
                 'name' => 'parent',
                 'required' => false,
                 'validators' => array(
-                    array(
-                        'name' => 'Regex',
+                    array('name' => 'GreaterThan',
                         'options' => array(
-                            'pattern' => '#^([1-9]{1}[0-9]*)?$#',
-                            'messages' => array(
-                                Regex::NOT_MATCH => "Value is required and can't be empty"
-                            )
+                            'min' => 1,
+                            'inclusive' => false
                         )
+                    ),
+                    array(
+                            'name' => 'Digits',
                     )
                 )
+            ));
+            $inputFilter->add(array(
+                'name' => 'optgroup-parent',
+                'required' => false,
             ));
             $this->inputFilter = $inputFilter;
         }
