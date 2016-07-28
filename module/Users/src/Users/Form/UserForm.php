@@ -488,6 +488,7 @@ class UserForm extends Form
                 'label' => 'Longitude',
             ),
         ));
+
         $this->add(array(
             'name' => 'latitude',
             'type' => 'Zend\Form\Element\Hidden',
@@ -499,6 +500,7 @@ class UserForm extends Form
                 'label' => 'Latitude',
             )
         ));
+        
         $this->add(array(
             'name' => 'mapZoom',
             'type' => 'Zend\Form\Element\Hidden',

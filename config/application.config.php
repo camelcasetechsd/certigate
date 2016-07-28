@@ -44,8 +44,7 @@ $config = array(
         'IssueTracker',
         'Translation',
         'EStore',
-        'Chat',
-//        'ServiceLocatorFactory'
+        'Chat'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

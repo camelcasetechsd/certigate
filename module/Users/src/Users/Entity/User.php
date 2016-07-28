@@ -375,7 +375,7 @@ class User
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     public $courseEventSubscriptions;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Courses\Entity\PrivateQuote", mappedBy="user")
      * @var Doctrine\Common\Collections\ArrayCollection
@@ -419,7 +419,7 @@ class User
      * @ORM\OneToMany(targetEntity="Chat\Entity\Message", mappedBy="sender")
      */
     public $messagefrom;
-    
+
     /**
      * @ORM\Column(type="float" , nullable=false)
      * @var string
@@ -1054,7 +1054,6 @@ class User
         $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
         return $this;
     }
-
 
     /**
      * Set dateOfBirth
@@ -1745,7 +1744,7 @@ class User
         $this->publicQuotes = $publicQuotes;
         return $this;
     }
-    
+
     /**
      * Get CourseEventSubscriptions
      * 
@@ -1771,8 +1770,7 @@ class User
         $this->courseEventSubscriptions = $courseEventSubscriptions;
         return $this;
     }
-    
-    
+
     /**
      * Get PrivateQuotes
      * 
@@ -1835,10 +1833,10 @@ class User
         if (array_key_exists('customerId', $data)) {
             $this->setCustomerId($data["customerId"]);
         }
-        if (array_key_exists('longitude', $data) && ! empty($data["longitude"])) {
+        if (array_key_exists('longitude', $data) && !empty($data["longitude"])) {
             $this->setLongitude($data["longitude"]);
         }
-        if (array_key_exists('latitude', $data) && ! empty($data["latitude"])) {
+        if (array_key_exists('latitude', $data) && !empty($data["latitude"])) {
             $this->setLatitude($data["latitude"]);
         }
         if (array_key_exists('studentStatement', $data)) {
@@ -2341,32 +2339,12 @@ class User
 
             $inputFilter->add(array(
                 'name' => 'longitude',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY=> 'Longitude is required',
-                            ),
-                        ),
-                    ),
-                ),
+                'required' => false,
             ));
-            
+
             $inputFilter->add(array(
                 'name' => 'latitude',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY=> 'Latitude is required',
-                            ),
-                        ),
-                    ),
-                ),
+                'required' => false,
             ));
 
             $inputFilter->add(array(
@@ -2384,10 +2362,9 @@ class User
                         'name' => 'NotEmpty',
                         'options' => array(
                             'messages' => array(
-                                NotEmpty::IS_EMPTY=> 'You must agree to the privacy statement',
+                                NotEmpty::IS_EMPTY => 'You must agree to the privacy statement',
                             ),
                         ),
-                        
                     ),
                 ),
             ));

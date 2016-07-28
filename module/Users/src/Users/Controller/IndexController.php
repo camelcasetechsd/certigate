@@ -256,15 +256,23 @@ class IndexController extends ActionController
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
+
+            if ($data['longitude'] === '' || $data['latitude'] === '' || $data['mapZoom'] === '') {
+                $form->get('latitude')->setMessages(array("Location is required"));
+                $isCustomValidationValid = false;
+            }
+
             $isCustomValidationValid = true;
             if ($data['email'] != $data['confirmEmail']) {
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
                 $isCustomValidationValid = false;
             }
+            
             if ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
             }
+
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
 
