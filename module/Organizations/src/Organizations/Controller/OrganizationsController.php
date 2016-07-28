@@ -221,14 +221,19 @@ class OrganizationsController extends ActionController
                 $data = array_merge_recursive(
                         $request->getPost()->toArray(), $fileData
                 );
-                $OrganizationModel->renewOrganization($this, $organizationId, $data);
+
+                if ($data['atcLicenseAttachment']['name'] === '') {
+                    $customizedForm->getInputFilter()->get('atcLicenseAttachment')->setRequired(false);
+                }
+
+                $customizedForm->setData($data);
+
+                if ($customizedForm->isValid()) {
+                    $OrganizationModel->renewOrganization($this, $organizationId, $data);
+                }
             }
 
-//            echo '<pre>';
-//            var_dump($customizedForm);
-//            exit;
             $variables = $formSmasher->prepareFormForDisplay($customizedForm, /* elements containers */ $variables);
-//            $variables['renewForm'] = $customizedForm;
         }
         else {
             $variables['messages'] = array(

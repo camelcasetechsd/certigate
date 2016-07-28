@@ -7,6 +7,7 @@ use Utilities\Service\Time;
 use Zend\Form\FormInterface;
 use Translation\Service\Locale\Locale;
 use Utilities\Form\FormButtons;
+
 /**
  * OrganizationUser Form
  * 
@@ -163,7 +164,7 @@ class RenewForm extends Form
          */
         $this->add(array(
             'name' => 'atcLicenseNo',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter License',
                 'class' => 'form-control ',
