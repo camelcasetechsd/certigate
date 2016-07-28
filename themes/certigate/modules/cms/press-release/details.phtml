@@ -69,7 +69,9 @@
 {{/layout}}
 <script>
     function getStfForm() {
-        bootbox.alert('{{{form}}}');
+        bootbox.dialog({
+                message:'{{{form}}}'
+            });
         document.getElementById('contact_us_form_name').removeAttribute('required');
         document.getElementById('contact_us_form_name').parentNode.style.display = 'none';
         document.getElementById('contact_us_form_subject').removeAttribute('required');
