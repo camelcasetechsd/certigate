@@ -34,13 +34,15 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label  class="col-sm-3 control-label"  for="menu_form_status">{{statusLabel}}</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-md-6 c-input control-label statement" for="menu_form_status">
                                         {{{status}}}
-                                        {{{id}}}
-                                    </div>
+                                        {{{statusError}}}
+                                        <span class="c-indicator col-md-offset-7" ></span>
+                                        {{statusLabel}}
+                                    </label>
                                 </div>
                             </div>
+                            {{{id}}}
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="col-sm-9">
