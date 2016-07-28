@@ -28,7 +28,7 @@ and open the template in the editor.
     /*    .calendar-list li{  margin:0 3%;    display: table-cell;  vertical-align: -webkit-baseline-middle;
         }
         .calendar-list ul{padding: 0px; width: 95%;   display: table; table-layout: fixed;}*/
-    .calendar-list li{  display: inline-block; margin:0 3%;     vertical-align: -webkit-baseline-middle; margin-left: -4px;}
+    .calendar-list li{  display: inline-block; margin:0 3%;     vertical-align: -webkit-baseline-middle; margin-left: -10px;}
     .calendar-list ul{padding: 0px; width: 95%;    margin-left: 6%;}
     .calendar-list { border:1px solid #ebebeb; background:#fff; position:relative;margin-bottom: 10px;
                      padding: 11px 8px;}
@@ -197,7 +197,7 @@ and open the template in the editor.
         background-color: #234FA6;
     }
     .course-dates{
-        width:  31%;
+        width:  35%;
     }
     .atp-name{
         width:8%;

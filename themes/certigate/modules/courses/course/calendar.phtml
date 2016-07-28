@@ -38,7 +38,6 @@
                         {{#locale_ar}}
                         {{briefAr}}
                         {{/locale_ar}}
-                        <a href="/courses/more/{{id}}"> More</a>
                     </p>
                     {{#courseEvents}}
                     {{^hideFromCalendar}}
@@ -47,7 +46,8 @@
                         <ul class="">
                             <li class="course-dates">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{#translate}}Starts at {{/translate}} {{startDate}} {{#translate}}to{{/translate}} {{endDate}}</a> 									
+                                {{#translate}}Starts at {{/translate}} {{startDate}} {{#translate}}to{{/translate}} {{endDate}}
+                                <a href="/courses/more/{{course.id}}/{{id}}"> {{#translate}}More{{/translate}}</a>
                             </li>
                             <li class="atp-name">
                                 <a class="course-event-data" href="/organizations/more/{{atp.id}}" 
