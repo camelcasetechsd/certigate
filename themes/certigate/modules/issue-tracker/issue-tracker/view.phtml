@@ -15,20 +15,20 @@
     }
 </style>
 {{#issue}}
-{{#isAdmin}}
-{{#status}}
-<br><br><br>
-<a  onclick="toggleIssue(false, {{id}})"data-placement="left" ><button class="btn btn-sm btn-warning" data-placement="left">{{#translate}}Close Issue{{/translate}}</button></a>
-{{/status}}
-{{^status}}
-<a  onclick="toggleIssue(true, {{id}})"data-placement="left"><button class="btn btn-sm btn-success">{{#translate}}Reopen Issue{{/translate}}</button></a>
-{{/status}}
-{{/isAdmin}}
-<br><br><br>
 <div class="row">
     <div class="col-lg-1">
     </div>
     <div class="col-lg-10 issue_report">
+        {{#isAdmin}}
+        {{#status}}
+        <br>
+        <a onclick="toggleIssue(false, {{id}})"data-placement="left" ><button class="btn btn-sm btn-warning" data-placement="left">{{#translate}}Close Issue{{/translate}}</button></a>
+        {{/status}}
+        {{^status}}
+        <a  onclick="toggleIssue(true, {{id}})"data-placement="left"><button class="btn btn-sm btn-success">{{#translate}}Reopen Issue{{/translate}}</button></a>
+        {{/status}}
+        {{/isAdmin}}
+        <br><br>
         <div class="panel panel-info">
             <div class="panel-heading">[{{id}}] {{title}}</div>
             <div class="panel-body">
@@ -55,8 +55,8 @@
             </div>
         </div>
         <br><br>
-        {{#previousComments}}
         <div class="panel panel-success">
+            {{#previousComments}}
             <div class="panel-heading"><img class="user_pic"src="{{user.photo}}"/>&nbsp;&nbsp;<span>{{user.firstName}}&nbsp;{{user.lastName}}</span>
                 
                 <div class="pull-right">
