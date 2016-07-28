@@ -2154,8 +2154,6 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 3,
-                            'max' => 128,
                             "encoding" => "utf-8"
                         )
                     )
@@ -2168,8 +2166,6 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 3,
-                            'max' => 128,
                             "encoding" => "utf-8"
                         )
                     )
@@ -2196,8 +2192,6 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 3,
-                            'max' => 128,
                             "encoding" => "utf-8"
                         )
                     )
@@ -2210,8 +2204,6 @@ class User
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 3,
-                            'max' => 128,
                             "encoding" => "utf-8"
                         )
                     )

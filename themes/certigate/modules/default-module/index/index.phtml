@@ -18,7 +18,9 @@
                     <div class="carousel-caption">
                         <h1 class="slidefont">Learn from the best.</h1>
                         <p>Stay tuned as we reveal more of our approach and how we will change the way you learn, forever.</p>
+                        {{^loggedInUsername}}
                         <p><a class="btn btn-lg btn-primary" href="/register" role="button">Sign up today</a></p>
+                        {{/loggedInUsername}}
                     </div>
                 </div>
             </div>
