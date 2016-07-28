@@ -17,6 +17,7 @@ return array(
     'roles_management' => array(
         'excluded_modules' => array(
             'DoctrineModule',
+//            'DefaultModule',
             'DoctrineORMModule',
             'Utilities',
             'Mustache',
@@ -28,7 +29,10 @@ return array(
             'SlmQueueDoctrine',
             'Versioning',
             'Notifications',
-            'DOMPDFModule'
+            'DOMPDFModule',
+            'EStore',
+//            'Chat',
+//            'Translator'
         ),
         'anonymous_routes' => array(
             'contactUs' => array(
