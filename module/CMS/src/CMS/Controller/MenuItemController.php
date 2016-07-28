@@ -95,11 +95,11 @@ class MenuItemController extends ActionController
             $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
                 /**
-                 *  query save function assumes that the name of the field equeal to the name of 
-                 *  the column in database so we adding data with the same name to override this
-                 *  problem
-                 */
-                $data['parent'] = $data['optgroup-parent'];
+                *  query save function assumes that the name of the field equeal to the name of 
+                *  the column in database so we adding data with the same name to override this
+                *  problem
+                */
+                $data['parent'] = empty($data['optgroup-parent'])?null:$data['optgroup-parent'];
                 $query->save($menuItemObj, $data);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
@@ -138,7 +138,7 @@ class MenuItemController extends ActionController
         // menu hidden field can hold only id, not an object
         $menuItemObj->setMenu($menu->getId());
         $form->bind($menuItemObj);
-
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -146,6 +146,12 @@ class MenuItemController extends ActionController
             $form->setData($data);
             $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
+                /**
+                *  query save function assumes that the name of the field equeal to the name of 
+                *  the column in database so we adding data with the same name to override this
+                *  problem
+                */
+                $data['parent'] = empty($data['optgroup-parent'])?null:$data['optgroup-parent'];
                 $query->setEntity('CMS\Entity\MenuItem')->save($menuItemObj, $data);
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));

@@ -78,14 +78,16 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label"  for="menu_item_form_status">{{statusLabel}}</label>
-                                    <div class="col-sm-9">
-                                        {{{menu}}}
+                                    <label class="col-md-12 c-input control-label statement" for="menu_item_form_status">
                                         {{{status}}}
-                                        {{{id}}}
-                                    </div>
+                                        {{{statusError}}}
+                                        <span class="c-indicator col-md-offset-3" ></span>
+                                        {{statusLabel}}
+                                    </label>
                                 </div>
                             </div>
+                            {{{menu}}}
+                            {{{id}}}
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="col-sm-9">
