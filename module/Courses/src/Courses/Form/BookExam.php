@@ -70,9 +70,6 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                     'label' => 'Hijri Exam Date',
                     'format' => Time::DATE_FORMAT,
                 ),
-                'validators' => array(
-                    'Courses\Form\TenDaysAfterValidator' => true
-                )
             ));
             $this->add(array(
                 'name' => 'date',
@@ -86,9 +83,6 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                     'label' => 'Exam Date',
                     'format' => Time::DATE_FORMAT,
                 ),
-                'validators' => array(
-                    'Courses\Form\TenDaysAfterValidator' => true
-                )
             ));
         }
         else {
@@ -104,9 +98,6 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                     'label' => 'Hijri Exam Date',
                     'format' => Time::DATE_FORMAT,
                 ),
-                'validators' => array(
-                    'Courses\Form\TenDaysAfterValidator' => true
-                )
             ));
             $this->add(array(
                 'name' => 'date',
@@ -120,9 +111,6 @@ class BookExam extends Form implements ObjectManagerAwareInterface
                     'label' => 'Exam Date',
                     'format' => Time::DATE_FORMAT,
                 ),
-                'validators' => array(
-                    'Courses\Form\TenDaysAfterValidator' => true
-                )
             ));
         }
 

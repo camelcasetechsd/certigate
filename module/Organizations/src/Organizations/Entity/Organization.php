@@ -1536,7 +1536,13 @@ class Organization
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
-                    )
+                    ),
+                    array(
+                        'name' => 'Utilities\Service\Validator\DaysAfterValidator',
+                        'options' => array(
+                            'diff' => 7
+                        )
+                    ),
                 )
             ));
 
