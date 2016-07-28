@@ -59,17 +59,25 @@ class SignController extends ActionController
                     $auth->newSession();
                     $cmsCacheHandler = $this->getServiceLocator()->get('cmsCacheHandler');
                     $systemCacheHandler = $this->getServiceLocator()->get('systemCacheHandler');
-                    $forceFlush = (APPLICATION_ENV == "production" )? false : true;
+                    $forceFlush = (APPLICATION_ENV == "production" ) ? false : true;
                     $cmsCacheHandler->prepareCachedCMSData($forceFlush);
                     $systemCacheHandler->prepareCachedSystemData($forceFlush);
                     $defaultUrl = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'home'));
                     $url = $this->params()->fromQuery('redirectBackUrl', $defaultUrl);
                     $this->redirect()->toUrl($url);
-                } else {
+                }
+                else {
                     $variables['message'] = $result->getMessages();
                 }
             }
         }
+        
+        // to show deactivation message caused by deactivating user while he's logged in 
+        if (!empty($this->flashMessenger()->getErrorMessages())) {
+            $variables['message'] = $this->flashMessenger()->getErrorMessages()[0];
+            $this->flashMessenger()->clearMessages();
+        }
+
         $variables['form'] = $this->getFormView($form);
         return new ViewModel($variables);
     }
@@ -86,12 +94,10 @@ class SignController extends ActionController
     {
         $auth = $this->getServiceLocator()->get('Users\Auth\Authentication');
         $auth->clearSession();
-        
+
         // Redirect to login page again 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'in'), array('name' => 'defaultSign'));
         $this->redirect()->toUrl($url);
     }
 
-
 }
-

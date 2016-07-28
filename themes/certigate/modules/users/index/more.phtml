@@ -5,8 +5,20 @@
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <h3>{{#translate}}User Details{{/translate}}</h3>
-        <img src="{{user.0.photo}}" data-toggle="tooltip" data-placement="left"  class="user-photos" style="height: 70px !important;width: 70px !important;">
+        <div class="row">
+            <div class="col-md-3">
+                <h3>{{#translate}}User Details{{/translate}}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <img src="{{user.0.photo}}" data-toggle="tooltip" data-placement="left"  class="user-photos" style="height: 70px !important;width: 70px !important;">
+            </div>
+            <div class="col-md-3">
+                <a href="/users/edit/{{user.0.id}}"><button class="btn btn-info">Edit your profile</button></a>   
+            </div>
+        </div>
+
     </div>
 
     <!-- Table -->
