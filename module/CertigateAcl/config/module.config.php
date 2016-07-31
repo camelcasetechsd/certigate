@@ -30,29 +30,32 @@ return array(
             'Notifications',
             'DOMPDFModule',
             'EStore',
+            'DefaultModule',
+            'Translation',
+            'Chat'
         ),
         'anonymous_routes' => array(
-            'contactUs' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'defaultSign' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'noaccess' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'noAgreement' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'resource_not_found' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'home' => array(
-                'resource' => 'DefaultModule',
-            ),
-            'noOrganizationUsers' => array(
-                'resource' => 'DefaultModule',
-            ),
+//            'contactUs' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'defaultSign' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'noaccess' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'noAgreement' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'resource_not_found' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'home' => array(
+//                'resource' => 'DefaultModule',
+//            ),
+//            'noOrganizationUsers' => array(
+//                'resource' => 'DefaultModule',
+//            ),
             'cmsPageView' => array(
                 'resource' => 'CMS',
             ),
@@ -65,9 +68,9 @@ return array(
             'cmsPressReleaseUnsubscribe' => array(
                 'resource' => 'CMS',
             ),
-            'translationSetLocale' => array(
-                'resource' => 'Translation',
-            ),
+//            'translationSetLocale' => array(
+//                'resource' => 'Translation',
+//            ),
             'registration' => array(
                 'resource' => 'Users'
             ),
