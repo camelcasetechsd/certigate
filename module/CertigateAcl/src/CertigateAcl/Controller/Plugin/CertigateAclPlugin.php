@@ -8,6 +8,7 @@ use Zend\Permissions\Acl\Role\GenericRole as ZendRole;
 use Zend\Authentication\AuthenticationService;
 use Users\Entity\Role;
 use Zend\Console\Request;
+use Utilities\Service\Status;
 
 class CertigateAclPlugin extends AbstractPlugin
 {
@@ -40,10 +41,20 @@ class CertigateAclPlugin extends AbstractPlugin
         // return if not logged in
         $auth = new AuthenticationService();
         $authenticated = true;
-        if (!$auth->hasIdentity()) {
+        $deleted = false;
+
+        if ($auth->hasIdentity()) {
+            $em = $this->getController()->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+            $user = $em->find('Users\Entity\User', $auth->getIdentity()['id']);
+
+            if ($user->getStatus() === Status::STATUS_DELETED) {
+                $authenticated = false;
+                $deleted = true;
+            }
+        }
+        else if (!$auth->hasIdentity()) {
             $authenticated = false;
         }
-
         // set ACL
         $acl = new ZendAcl();
         $acl->deny();
@@ -110,7 +121,9 @@ class CertigateAclPlugin extends AbstractPlugin
             }
         }
 
-        if ($authenticated === false && $controllerClass != $signInController) {
+
+        if ($authenticated === false && $controllerClass != $signInController && $deleted === false) {
+
             if (!$acl->isAllowed(Role::ANONYMOUS_ROLE, $moduleName, $routeMatch)) {
                 // redirect to sign/in
                 $redirectBackUrl = $event->getRequest()->getRequestUri();
@@ -121,11 +134,27 @@ class CertigateAclPlugin extends AbstractPlugin
                     'name' => 'defaultSign',
                     'query' => array(
                         'redirectBackUrl' => $redirectBackUrl
-                            )
+                    )
                         )
                 );
                 $status = 200;
             }
+        }
+        else if ($authenticated === false && $deleted === true) {
+
+            $redirectBackUrl = $event->getRequest()->getRequestUri();
+            $url = $router->assemble(
+                    array(
+                'action' => 'out'
+                    ), array(
+                'name' => 'defaultSign',
+                    )
+            );
+            $auth->getStorage()->clear();
+            $flassMessenger = new \Zend\Mvc\Controller\Plugin\FlashMessenger();
+            $flassMessenger->addErrorMessage('You\'r currently been deactived please contact admin !');
+            
+            $status = 302;
         }
 
         if (isset($url) && isset($status)) {
