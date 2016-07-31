@@ -16,20 +16,30 @@ use Utilities\Service\Time;
  * @package utilities
  * @subpackage validator
  */
-class TenDaysAfterValidator extends AbstractValidator
+class DaysAfterValidator extends AbstractValidator
 {
+
+    /**
+     * value that stores number pf days needed to be validated against
+     * Note : does not meant to store variables like this but only to 
+     * point to the other filed validating against but for this case we used it to 
+     * pass value to the validator as value not field name 
+     * @var int
+     */
+    protected $token;
 
     /**
      * error codes
      */
-    const MSG_THAN_TEN_DAYS = 'lessThan';
+    const MSG_THAN_NUMBER_OF_DAYS = 'lessThan';
 
     /**
      * Error messages
      * @var array
      */
+//    "Required date must not be before %d days of today's date",
     protected $messageTemplates = array(
-        self::MSG_THAN_TEN_DAYS => "Required date must not be before 10 days of today's date",
+        self::MSG_THAN_NUMBER_OF_DAYS => "Required date must not be before %value% days of today's date",
     );
 
     /**
@@ -38,9 +48,11 @@ class TenDaysAfterValidator extends AbstractValidator
      * @access public
      * @param mixed $token ,default is null
      */
-    public function __construct()
+    public function __construct($token)
     {
+
         parent::__construct();
+        $this->token = $token['diff'];
     }
 
     /**
@@ -57,8 +69,8 @@ class TenDaysAfterValidator extends AbstractValidator
         $this->setValue($value);
         $isValid = true;
         $dateDiff = date_diff(\DateTime::createFromFormat(Time::DATE_FORMAT, $value), new \DateTime());
-        if (($dateDiff->days < 10)) {
-            $this->error(self::MSG_THAN_TEN_DAYS);
+        if (($dateDiff->days < $this->token)) {
+            $this->error(self::MSG_THAN_NUMBER_OF_DAYS, $this->token);
             $isValid = false;
         }
         return $isValid;

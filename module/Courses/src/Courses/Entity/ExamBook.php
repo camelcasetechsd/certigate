@@ -521,9 +521,10 @@ class ExamBook
                 'name' => 'date',
                 'required' => true,
                 'validators' => array(
-                    array('name' => 'Utilities\Service\Validator\TenDaysAfterValidator',
+                    array('name' => 'Utilities\Service\Validator\DaysAfterValidator',
                         'options' => array(
-                            'token' => 'startDate'
+                            'token' => 'startDate',
+                            'diff' => 10
                         )
                     ),
                 )

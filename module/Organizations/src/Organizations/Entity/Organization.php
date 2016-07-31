@@ -1480,17 +1480,6 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'CRNo',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 //
             $inputFilter->add(array(
@@ -1536,21 +1525,8 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'atcLicenseNo',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                        array('name' => 'Int'),
-                    )
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
+
             $inputFilter->add(array(
                 'name' => 'atcLicenseExpiration',
                 'required' => true,
@@ -1560,12 +1536,35 @@ class Organization
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
-                    )
+                    ),
+                    array(
+                        'name' => 'Utilities\Service\Validator\DaysAfterValidator',
+                        'options' => array(
+                            'diff' => 7
+                        )
+                    ),
                 )
             ));
 
             $inputFilter->add(array(
                 'name' => 'atcLicenseAttachment',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Filesize',
+                        'options' => array(
+                            'max' => 2097152
+                        )
+                    ),
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'gif,jpg,png,pdf,docx'
+                        )
+                    ),
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'atcWireTransferAttachment',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Filesize',
@@ -1606,20 +1605,6 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'atpLicenseNo',
                 'required' => true,
-                'filters' => array(
-                    array(
-                        'name' => 'StringTrim',
-                        array('name' => 'Int'),
-                    )
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $inputFilter->add(array(
@@ -1638,9 +1623,38 @@ class Organization
                     ),
                 )
             ));
+            $inputFilter->add(array(
+                'name' => 'atpWireTransferAttachment',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Filesize',
+                        'options' => array(
+                            'max' => 2097152
+                        )
+                    ),
+                    array('name' => 'Fileextension',
+                        'options' => array(
+                            'extension' => 'gif,jpg,png,pdf,docx'
+                        )
+                    ),
+                )
+            ));
 
             $inputFilter->add(array(
                 'name' => 'atpLicenseExpiration',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => Time::DATE_FORMAT,
+                        )
+                    )
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'atpLicenseExpirationHj',
                 'required' => true,
                 'validators' => array(
                     array(
@@ -1773,65 +1787,21 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'labsNo',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_lab',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'classesNo',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'pcsNo_class',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $inputFilter->add(array(
@@ -1877,17 +1847,6 @@ class Organization
             $inputFilter->add(array(
                 'name' => 'internetSpeed_lab',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'Between',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    )
-                ),
             ));
 
             $this->inputFilter = $inputFilter;

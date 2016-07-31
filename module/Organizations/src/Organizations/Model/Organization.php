@@ -176,7 +176,7 @@ class Organization
         $criteria = array(
             "id" => $organizationIds,
         );
-        if(!is_null($status)){
+        if (!is_null($status)) {
             $criteria["status"] = $status;
         }
         return $this->query->findBy("Organizations\Entity\Organization", $criteria);
@@ -521,9 +521,10 @@ class Organization
      */
     private function prepareOrganizationTypesForDisplay($organization)
     {
-        if(method_exists($organization, "getId")){
+        if (method_exists($organization, "getId")) {
             $id = $organization->getId();
-        }else{
+        }
+        else {
             $id = $organization->id;
         }
         $organizationMetas = $this->query->findBy('Organizations\Entity\OrganizationMeta', array(
@@ -1009,15 +1010,15 @@ class Organization
             'id' => $metaId
         ));
 
-//        if (!(in_array(OrganizationEntity::TYPE_ATC, $types) && in_array(OrganizationEntity::TYPE_ATP, $types))) {
-//
-//            if (in_array(OrganizationEntity::TYPE_ATC, $types)) {
-//                $form = $this->unsetRenewFields($form, $atpFields);
-//            }
-//            else if (in_array(OrganizationEntity::TYPE_ATP, $types)) {
-//                $form = $this->unsetRenewFields($form, $atcFields);
-//            }
-//        }
+        $organizationObj = $this->query->findOneBy('Organizations\Entity\Organization', array(
+            'id' => $organizationId
+        ));
+
+        $inputFilter = $this->prepareRenewlInputFilter($organizationObj, $atcFields, $atpFields);
+
+        // setting input filter as 
+        $form->setInputFilter($inputFilter);
+
         if ($organizationMeta->getType()->getId() == OrganizationEntity::TYPE_ATC) {
             $form = $this->unsetRenewFields($form, $atpFields);
         }
@@ -1025,16 +1026,34 @@ class Organization
             $form = $this->unsetRenewFields($form, $atcFields);
         }
 
-        $form->bind($this->query->findOneBy('Organizations\Entity\Organization', array(
-                    'id' => $organizationId
-        )));
+        $form->bind($organizationObj);
 
         return $form;
     }
 
-    private function unsetRenewFields($form, $fields)
+    /**
+     * function to customize inout filter from organization inputfilter
+     * @param OrganizationEntity $organizationObj
+     * @param array $atcFields
+     * @param array $atpFields
+     * @return \Zend\InputFilter\InputFilter
+     */
+    private function prepareRenewlInputFilter($organizationObj, $atcFields, $atpFields)
     {
-        foreach ($fields as $field) {
+        $inputFilter = $organizationObj->getInputFilter($this->query);
+        $renewFields = array_merge($atcFields, $atpFields);
+
+        foreach ($inputFilter->getRawValues() as $key => $value) {
+            if (!in_array($key, $renewFields)) {
+                $inputFilter->remove($key);
+            }
+        }
+        return $inputFilter;
+    }
+
+    private function unsetRenewFields($form, $ignoredFields)
+    {
+        foreach ($ignoredFields as $field) {
             $form->remove($field);
             $form->getInputFilter()->remove($field);
         }

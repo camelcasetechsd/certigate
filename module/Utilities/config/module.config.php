@@ -29,7 +29,7 @@ return array(
     ),
     'validators' => array(
         'invokables' => array(
-            'TenDaysAfterValidator' => 'Utilities\Service\Validator\TenDaysAfterValidator',
+            'DaysAfterValidator' => 'Utilities\Service\Validator\DaysAfterValidator',
         ),
     ),
 );

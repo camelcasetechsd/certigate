@@ -311,124 +311,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row panel-border">
-                                <h2 class="sub-title-form"> ATC ASSETS </h2>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_labsNo">{{labsNoLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{labsNo}}}
-                                            {{{labsNoError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_pcsNo_lab">{{pcsNo_labLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{pcsNo_lab}}}
-                                            {{{pcsNo_labError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_internetSpeed_lab">{{internetSpeed_labLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{internetSpeed_lab}}}
-                                            {{{internetSpeed_labError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_operatingSystem">{{operatingSystemLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{operatingSystem}}}
-                                            {{{operatingSystemError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_operatingSystemLang">{{operatingSystemLangLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{operatingSystemLang}}}
-                                            {{{operatingSystemLangError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_officeLang">{{officeLangLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{officeLang}}}
-                                            {{{officeLangError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_officeVersion">{{officeVersionLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{officeVersion}}}
-                                            {{{officeVersionError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{/atcLicenseNo}}
-
-                            {{#atcLicenseNo}}
-                            <div class="row panel-border">
-                                <h2 class="sub-title-form"> ATC License DATA </h2>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseNo">{{atcLicenseNoLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{atcLicenseNo}}}
-                                            {{{atcLicenseNoError}}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseAttachment">{{atcLicenseAttachmentLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{atcLicenseAttachment}}}
-                                            {{{atcLicenseAttachmentError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_atcWireTransferAttachment">{{atcWireTransferAttachmentLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{atcWireTransferAttachment}}}
-                                            {{{atcWireTransferAttachmentError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseExpirationHj">{{atcLicenseExpirationHjLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{atcLicenseExpirationHj}}}
-                                            {{{atcLicenseExpirationHjError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="org_form_atcLicenseExpiration">{{atcLicenseExpirationLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{atcLicenseExpiration}}}
-                                            {{{atcLicenseExpirationError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {{/atcLicenseNo}}
 
                             {{#labsNo}}
@@ -612,39 +494,43 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{#atcPrivacyStatement}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label required atcSet"  for="org_form_atcPrivacyStatement">{{atcPrivacyStatementLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{atcPrivacyStatement}}}
-                                    {{{atcPrivacyStatementError}}}
+                                {{#atcPrivacyStatement}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required atcSet"  for="org_form_atcPrivacyStatement">{{atcPrivacyStatementLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atcPrivacyStatement}}}
+                                            {{{atcPrivacyStatementError}}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{/atcPrivacyStatement}}
+                                {{/atcPrivacyStatement}}
 
-                            {{#atpPrivacyStatement}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label required atpSet"  for="org_form_atpPrivacyStatement">{{atpPrivacyStatementLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{atpPrivacyStatement}}}
-                                    {{{atpPrivacyStatementError}}}
+                                {{#atpPrivacyStatement}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label required atpSet"  for="org_form_atpPrivacyStatement">{{atpPrivacyStatementLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{atpPrivacyStatement}}}
+                                            {{{atpPrivacyStatementError}}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{/atpPrivacyStatement}}
+                                {{/atpPrivacyStatement}}
 
-                            {{#status}}
-                            <div class="col-md-12">
-                                <label  class="col-sm-3 control-label atpSet"  for="org_form_status">{{statusLabel}}</label>
-                                <div class="col-sm-9">
-                                    {{{status}}}
-                                    {{{statusError}}}
-                                    {{{id}}}
+                                {{#status}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label atpSet"  for="org_form_status">{{statusLabel}}</label>
+                                        <div class="col-sm-9">
+                                            {{{status}}}
+                                            {{{statusError}}}
+                                            {{{id}}}
+                                        </div>
+                                    </div>
                                 </div>
+                                {{/status}}
                             </div>
-                            {{/status}}
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
@@ -710,51 +596,51 @@
 $(document).ready(function () {
 
 $('#atpModalLinkAgree').click(function () {
-    $('#org_form_atpPrivacyStatement').prop('checked', 'checked');
-    ;
+$('#org_form_atpPrivacyStatement').prop('checked', 'checked');
+;
 });
 
 $('#atcModalLinkAgree').click(function () {
-    $('#org_form_atcPrivacyStatement').prop('checked', 'checked');
-    ;
+$('#org_form_atcPrivacyStatement').prop('checked', 'checked');
+;
 });
 
 $('#org_form_saveState').click(function (e) {
 
-    if ($('#org_form_commercialName').val() !== "") {
-        $state = $('#org_form').serialize();
-        console.log($state);
-        $.ajax({
-            type: "POST",
-            url: "/organizations/savestate",
-            data: {
-                saveState: $state
-            },
-            dataType: "json",
-            success: function (data, textStatus, jqXHR) {
-                if (data.result === "Commercial Name already Exists") {
-                    alert("Commercial Name already Exists");
-                } else if (data.result === true) {
-                    alert("saved");
-                    window.location.replace("/organizations/atps");
+if ($('#org_form_commercialName').val() !== "") {
+    $state = $('#org_form').serialize();
+    console.log($state);
+    $.ajax({
+        type: "POST",
+        url: "/organizations/savestate",
+        data: {
+            saveState: $state
+        },
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+            if (data.result === "Commercial Name already Exists") {
+                alert("Commercial Name already Exists");
+            } else if (data.result === true) {
+                alert("saved");
+                window.location.replace("/organizations/atps");
+            }
+        }, error: function (ts) {
+            try
+            {
+                var json = $.parseJSON(ts.responseText);
+                if (json.redirect === true) {
+                    window.location.replace(json.result);
                 }
-            }, error: function (ts) {
-                try
-                {
-                    var json = $.parseJSON(ts.responseText);
-                    if (json.redirect === true) {
-                        window.location.replace(json.result);
-                    }
-                }
-                catch (err)
-                {
-                    alert(ts.responseText);
-                }
-
+            }
+            catch (err)
+            {
+                alert(ts.responseText);
             }
 
-        });
-    }
+        }
+
+    });
+}
 });
 
 $url = window.location.href;
