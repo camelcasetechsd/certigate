@@ -39,16 +39,17 @@ if (!defined( 'APPLICATION_ENV' ) && getenv( 'APPLICATION_ENV' )) {
 
     define( 'APPLICATION_ENV', getenv( 'APPLICATION_ENV' ) );
 }
+
 if (defined( 'APPLICATION_ENV' )) {
     if (APPLICATION_ENV == "production") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
-        define( 'QA_MYSQL_USERNAME', 'root' );
-        define( 'QA_MYSQL_PASSWORD', '' );
-        define( 'QA_MYSQL_DATABASE', 'production_db' );
+        define( 'QA_MYSQL_USERNAME', 'certigate' );
+        define( 'QA_MYSQL_PASSWORD', 'qXYe8kmrx!' );
+        define( 'QA_MYSQL_DATABASE', 'certigatepro' );
         define( 'QA_MYSQL_PORT', '3306' );
-        define( 'CONFIG_FROM_EMAIL', 'no-reply@certigate.com' );
-        define( 'CONFIG_SITE_TITLE', 'Certigate Q&A' );
-        define( 'CONFIG_SITE_URL', 'http://certigate.com/q2a/' );
+        define( 'CONFIG_FROM_EMAIL', 'no-reply@certigatepro.com' );
+        define( 'CONFIG_SITE_TITLE', 'certigate Q&A' );
+        define( 'CONFIG_SITE_URL', 'http://certigatepro.com/q2a/' );
     } elseif (APPLICATION_ENV == "acceptance") {
         define( 'QA_MYSQL_HOSTNAME', 'localhost' );
         define( 'QA_MYSQL_USERNAME', 'camelcasetech_acceptance' );

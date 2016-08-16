@@ -1,3 +1,6 @@
+# retrieving Application Environment 
+app_env=${APPLICATION_ENV:-'vagrant'} 
+
 # composer 
 composer install
 
@@ -6,11 +9,10 @@ npm update npm
 npm install
 
 # creating schema
-bin/doctrine orm:schema-tool:drop --force;
-bin/doctrine orm:schema-tool:update --force;
+APPLICATION_ENV=$app_env bin/doctrine orm:schema-tool:drop --force;
+APPLICATION_ENV=$app_env bin/doctrine orm:schema-tool:update --force;
 
 # seeding data
-app_env=${APPLICATION_ENV:-'vagrant'} 
 
 # seeding estore first 
 APPLICATION_ENV=$app_env php public/estore/updateDB.php -e $app_env 
