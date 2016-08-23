@@ -453,7 +453,7 @@ class CourseEvent
             $auth = new AuthenticationService();
             $storage = $auth->getIdentity();
             if ($auth->hasIdentity()) {
-                if (in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
+                if (!in_array(Role::ADMIN_ROLE, $storage['roles']) && in_array(Role::TRAINING_MANAGER_ROLE, $storage['roles'])) {
                     $trainingManagerId = $storage['id'];
                 }
             }
