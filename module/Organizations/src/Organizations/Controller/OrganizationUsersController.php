@@ -202,7 +202,7 @@ class OrganizationUsersController extends ActionController
      */
     public function deleteAction()
     {
-        $id = $this->params('organizationId');
+        $id = $this->params('id');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $organizationUser = $query->find('Organizations\Entity\OrganizationUser', $id);
         $organizationModel = $this->getServiceLocator()->get('Organizations\Model\Organization');

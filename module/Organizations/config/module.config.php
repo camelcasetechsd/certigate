@@ -96,7 +96,7 @@ return array(
             'organizationUsersDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/organization-users/delete/:organizationId',
+                    'route' => '/organization-users/delete/:id',
                     'defaults' => array(
                         'controller' => 'Organizations\Controller\OrganizationUsers',
                         'action' => 'delete',
