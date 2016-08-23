@@ -5,7 +5,7 @@ namespace CMS\Form;
 use Zend\Form\FormInterface;
 use Utilities\Form\FormViewHelper as OriginalFormViewHelper;
 use DoctrineModule\Form\Element\ObjectSelect;
-use Utilities\Service\String;
+use Utilities\Service\UtilitiesString;
 use Utilities\Service\Status;
 use Utilities\Form\Form;
 
@@ -53,7 +53,7 @@ class FormViewHelper extends OriginalFormViewHelper {
                     foreach ($valueOption as $propertyName => $propertyValue) {
                         // process label to get menu data
                         if ($propertyName === "label") {
-                            $propertyValueItems = explode(/* $delimiter = */ String::TEXT_SEPARATOR, $propertyValue);
+                            $propertyValueItems = explode(/* $delimiter = */ UtilitiesString::TEXT_SEPARATOR, $propertyValue);
                             $menuId = reset($propertyValueItems);
                             $menuTitle = next($propertyValueItems);
                             $propertyValue = end($propertyValueItems);

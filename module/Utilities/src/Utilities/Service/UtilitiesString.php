@@ -10,7 +10,7 @@ namespace Utilities\Service;
  * @package utilities
  * @subpackage service
  */
-class String
+class UtilitiesString
 {
 
     /**

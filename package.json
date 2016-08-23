@@ -13,7 +13,8 @@
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "^0.5.1",
     "jquery-latitude-longitude-picker-gmaps": "1.1.0",
-    "jquery-prettytextdiff": "1.x.x"
+    "jquery-prettytextdiff": "1.x.x",
+    "addtocalendar" : "1.5.3"
   },
   "repository": {
     "type": "git",

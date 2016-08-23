@@ -4,7 +4,7 @@ namespace Utilities\Service\FormSmasher;
 
 use Utilities\Service\FormSmasher\ViewHelpers;
 use Utilities\Service\Status;
-Use Utilities\Service\String;
+Use Utilities\Service\UtilitiesString;
 use Utilities\Form\Form;
 
 class FormSmasher
@@ -167,7 +167,7 @@ class FormSmasher
             foreach ($valueOption as $propertyName => $propertyValue) {
                 // process label to get menu data
                 if ($propertyName === "label") {
-                    $propertyValueItems = explode(/* $delimiter = */ String::TEXT_SEPARATOR, $propertyValue);
+                    $propertyValueItems = explode(/* $delimiter = */ UtilitiesString::TEXT_SEPARATOR, $propertyValue);
                     $menuId = reset($propertyValueItems);
                     $menuTitle = next($propertyValueItems);
                     $propertyValue = end($propertyValueItems);
