@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use CMS\Model\MenuItem as MenuItemModel;
 use Doctrine\ORM\Query\Expr\Join;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 /**
  * MenuItem Repository
@@ -13,7 +14,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @package cms
  * @subpackage entity
  */
-class MenuItemRepository extends EntityRepository 
+class MenuItemRepository extends EntityRepository implements ServiceLocatorAwareInterface
 {
     
     /**
