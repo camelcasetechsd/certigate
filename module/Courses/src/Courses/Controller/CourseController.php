@@ -919,7 +919,7 @@ class CourseController extends ActionController
         if (isset($redirectRoute)) {
             $this->getResponse()->setStatusCode(302);
             $url = $this->getEvent()->getRouter()->assemble(array(), array('name' => $redirectRoute));
-            $this->redirect()->toUrl($url);
+            return $this->redirect()->toUrl($url);
         }
         $enrolledStudent = $query->find("Users\Entity\User", $id);
         $questionsArray = $course->getEvaluation()->getApprovedQuestions();
@@ -928,8 +928,8 @@ class CourseController extends ActionController
             $values = $request->getPost()->toArray();
             $voteModel->saveCourseVotes($questionsArray['questionIds'], $values, $enrolledStudent, $course->getEvaluation(), $courseEvent);
             // redirect to course more
-            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $courseEventId), array('name' => 'coursesMore'));
-            $this->redirect()->toUrl($url);
+            $url = $this->getEvent()->getRouter()->assemble(array('action' => 'more', 'id' => $course->getId(), 'courseEventId' => $courseEventId), array('name' => 'coursesMore'));
+            return $this->redirect()->toUrl($url);
         }
         $variables['questions'] = $questionsArray['questions'];
         return new ViewModel($variables);
