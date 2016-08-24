@@ -68,7 +68,7 @@
                     <tbody>
                         {{#courseEvents}}
                         {{^hideFromCalendar}}
-                        {{^alreadyStarted}}
+                        {{^alreadyEnded}}
                         <tr>
                             <td>
                                 {{startDate}}
@@ -110,7 +110,7 @@
                                 {{/isFull}}
                             </td>
                         </tr>
-                        {{/alreadyStarted}}
+                        {{/alreadyEnded}}
                         {{/hideFromCalendar}}
                         {{/courseEvents}} 
                     </tbody>

@@ -86,9 +86,9 @@
                                 {{#courseEvents}}
                                 <ul>
                                     {{^hideFromCalendar}}
-                                    {{^alreadyStarted}}    
+                                    {{^alreadyEnded}}    
                                     <li>{{#translate}}Starts at{{/translate}} {{startDate}} - {{#translate}}ends at{{/translate}} {{endDate}}</li>
-                                    {{/alreadyStarted}}
+                                    {{/alreadyEnded}}
                                     {{/hideFromCalendar}}
                                     {{/courseEvents}} 
                                 </tbody>
@@ -128,7 +128,7 @@
                                     <tbody>
                                         {{#courseEvents}}
                                         {{^hideFromCalendar}}
-                                        {{^alreadyStarted}}
+                                        {{^alreadyEnded}}
                                         <tr>
                                             <td>{{startDate}}</td>
                                             <td>{{endDate}}</td>
@@ -136,7 +136,7 @@
                                             <td>{{atp.commercialName}}</td>
                                             <td>{{atp.city}}</td>
                                         </tr>
-                                        {{/alreadyStarted}}
+                                        {{/alreadyEnded}}
                                         {{/hideFromCalendar}}
                                         {{/courseEvents}} 
                                     </tbody>

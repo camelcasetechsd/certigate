@@ -274,7 +274,12 @@ class CourseEvent
                 if ($courseEvent->getStartDate() <= $today) {
                     $alreadyStarted = true;
                 }
+                $alreadyEnded = false;
+                if ($courseEvent->getEndDate() <= $today) {
+                    $alreadyEnded = true;
+                }
                 $courseEvent->alreadyStarted = $alreadyStarted;
+                $courseEvent->alreadyEnded = $alreadyEnded;
                 $courseEvent->enrolling = $enrolling;
                 $courseEvent->canEnroll = $canEnroll;
                 $courseEvent->canEnrollMultipleTimes = $canEnrollMultipleTimes;

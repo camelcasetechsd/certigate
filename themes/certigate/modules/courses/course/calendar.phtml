@@ -41,7 +41,7 @@
                     </p>
                     {{#courseEvents}}
                     {{^hideFromCalendar}}
-                    {{^alreadyStarted}}
+                    {{^alreadyEnded}}
                     <div class="calendar-list">
                         <ul class="">
                             <li class="course-dates">
@@ -106,7 +106,7 @@
                             </li>
                         </ul>
                     </div>
-                    {{/alreadyStarted}}
+                    {{/alreadyEnded}}
                     {{/hideFromCalendar}}
                     {{/courseEvents}}
                 </div>
