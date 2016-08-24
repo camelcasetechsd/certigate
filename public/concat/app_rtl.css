@@ -1,8 +1,8 @@
 /* OriginalFileName : public/bower_components/bootstrap/dist/css/bootstrap.css */ 
 
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -1108,7 +1108,6 @@ a:focus {
   text-decoration: underline;
 }
 a:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -2539,7 +2538,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -3031,7 +3029,6 @@ select[multiple].input-lg {
 .btn.focus,
 .btn:active.focus,
 .btn.active.focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -6764,7 +6761,7 @@ button.close {
 /* OriginalFileName : public/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css */ 
 
 /*!
- * Datepicker for Bootstrap v1.6.0 (https://github.com/eternicode/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.6.4 (https://github.com/eternicode/bootstrap-datepicker)
  *
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
@@ -6795,7 +6792,7 @@ button.close {
   display: inline-block;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid #999999;
+  border-bottom: 7px solid #999;
   border-top: 0;
   border-bottom-color: rgba(0, 0, 0, 0.2);
   position: absolute;
@@ -6805,7 +6802,7 @@ button.close {
   display: inline-block;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 6px solid #ffffff;
+  border-bottom: 6px solid #fff;
   border-top: 0;
   position: absolute;
 }
@@ -6830,15 +6827,12 @@ button.close {
 .datepicker-dropdown.datepicker-orient-top:before {
   bottom: -7px;
   border-bottom: 0;
-  border-top: 7px solid #999999;
+  border-top: 7px solid #999;
 }
 .datepicker-dropdown.datepicker-orient-top:after {
   bottom: -6px;
   border-bottom: 0;
-  border-top: 6px solid #ffffff;
-}
-.datepicker > div {
-  display: none;
+  border-top: 6px solid #fff;
 }
 .datepicker table {
   margin: 0;
@@ -6865,17 +6859,17 @@ button.close {
 }
 .datepicker table tr td.day:hover,
 .datepicker table tr td.day.focused {
-  background: #eeeeee;
+  background: #eee;
   cursor: pointer;
 }
 .datepicker table tr td.old,
 .datepicker table tr td.new {
-  color: #999999;
+  color: #999;
 }
 .datepicker table tr td.disabled,
 .datepicker table tr td.disabled:hover {
   background: none;
-  color: #999999;
+  color: #999;
   cursor: default;
 }
 .datepicker table tr td.highlighted {
@@ -6942,7 +6936,7 @@ button.close {
 .datepicker table tr td.range:hover,
 .datepicker table tr td.range.disabled,
 .datepicker table tr td.range.disabled:hover {
-  background: #eeeeee;
+  background: #eee;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -7055,14 +7049,14 @@ button.close {
 .datepicker table tr td.active.disabled,
 .datepicker table tr td.active.disabled:hover {
   background-color: #006dcc;
-  background-image: -moz-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -ms-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
-  background-image: -webkit-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -moz-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -ms-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08c), to(#0044cc));
+  background-image: -webkit-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -o-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: linear-gradient(to bottom, #08c, #0044cc);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#08c', endColorstr='#0044cc', GradientType=0);
   border-color: #0044cc #0044cc #002a80;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
@@ -7115,12 +7109,12 @@ button.close {
 }
 .datepicker table tr td span:hover,
 .datepicker table tr td span.focused {
-  background: #eeeeee;
+  background: #eee;
 }
 .datepicker table tr td span.disabled,
 .datepicker table tr td span.disabled:hover {
   background: none;
-  color: #999999;
+  color: #999;
   cursor: default;
 }
 .datepicker table tr td span.active,
@@ -7128,14 +7122,14 @@ button.close {
 .datepicker table tr td span.active.disabled,
 .datepicker table tr td span.active.disabled:hover {
   background-color: #006dcc;
-  background-image: -moz-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -ms-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
-  background-image: -webkit-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(to bottom, #0088cc, #0044cc);
-  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+  background-image: -moz-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -ms-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08c), to(#0044cc));
+  background-image: -webkit-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -o-linear-gradient(to bottom, #08c, #0044cc);
+  background-image: linear-gradient(to bottom, #08c, #0044cc);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#08c', endColorstr='#0044cc', GradientType=0);
   border-color: #0044cc #0044cc #002a80;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
@@ -7176,7 +7170,7 @@ button.close {
 }
 .datepicker table tr td span.old,
 .datepicker table tr td span.new {
-  color: #999999;
+  color: #999;
 }
 .datepicker .datepicker-switch {
   width: 145px;
@@ -7191,7 +7185,7 @@ button.close {
 .datepicker .prev:hover,
 .datepicker .next:hover,
 .datepicker tfoot tr th:hover {
-  background: #eeeeee;
+  background: #eee;
 }
 .datepicker .cw {
   font-size: 10px;
@@ -7229,9 +7223,9 @@ button.close {
   font-weight: normal;
   line-height: 18px;
   text-align: center;
-  text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #fff;
   vertical-align: middle;
-  background-color: #eeeeee;
+  background-color: #eee;
   border: 1px solid #ccc;
   margin-left: -5px;
   margin-right: -5px;
@@ -14879,15 +14873,15 @@ td.visible-print {
 /* OriginalFileName : public/bower_components/font-awesome/css/font-awesome.css */ 
 
 /*!
- *  Font Awesome 4.5.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../fonts/fontawesome-webfont.eot?v=4.5.0');
-  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
+  src: url('../fonts/fontawesome-webfont.eot?v=4.6.3');
+  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14998,31 +14992,31 @@ td.visible-print {
   }
 }
 .fa-rotate-90 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .fa-rotate-180 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .fa-rotate-270 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
   -webkit-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
 }
 .fa-flip-horizontal {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
   -webkit-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
 .fa-flip-vertical {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
   -webkit-transform: scale(1, -1);
   -ms-transform: scale(1, -1);
   transform: scale(1, -1);
@@ -16263,7 +16257,7 @@ td.visible-print {
 .fa-digg:before {
   content: "\f1a6";
 }
-.fa-pied-piper:before {
+.fa-pied-piper-pp:before {
   content: "\f1a7";
 }
 .fa-pied-piper-alt:before {
@@ -16389,6 +16383,7 @@ td.visible-print {
   content: "\f1ce";
 }
 .fa-ra:before,
+.fa-resistance:before,
 .fa-rebel:before {
   content: "\f1d0";
 }
@@ -16964,6 +16959,118 @@ td.visible-print {
 .fa-percent:before {
   content: "\f295";
 }
+.fa-gitlab:before {
+  content: "\f296";
+}
+.fa-wpbeginner:before {
+  content: "\f297";
+}
+.fa-wpforms:before {
+  content: "\f298";
+}
+.fa-envira:before {
+  content: "\f299";
+}
+.fa-universal-access:before {
+  content: "\f29a";
+}
+.fa-wheelchair-alt:before {
+  content: "\f29b";
+}
+.fa-question-circle-o:before {
+  content: "\f29c";
+}
+.fa-blind:before {
+  content: "\f29d";
+}
+.fa-audio-description:before {
+  content: "\f29e";
+}
+.fa-volume-control-phone:before {
+  content: "\f2a0";
+}
+.fa-braille:before {
+  content: "\f2a1";
+}
+.fa-assistive-listening-systems:before {
+  content: "\f2a2";
+}
+.fa-asl-interpreting:before,
+.fa-american-sign-language-interpreting:before {
+  content: "\f2a3";
+}
+.fa-deafness:before,
+.fa-hard-of-hearing:before,
+.fa-deaf:before {
+  content: "\f2a4";
+}
+.fa-glide:before {
+  content: "\f2a5";
+}
+.fa-glide-g:before {
+  content: "\f2a6";
+}
+.fa-signing:before,
+.fa-sign-language:before {
+  content: "\f2a7";
+}
+.fa-low-vision:before {
+  content: "\f2a8";
+}
+.fa-viadeo:before {
+  content: "\f2a9";
+}
+.fa-viadeo-square:before {
+  content: "\f2aa";
+}
+.fa-snapchat:before {
+  content: "\f2ab";
+}
+.fa-snapchat-ghost:before {
+  content: "\f2ac";
+}
+.fa-snapchat-square:before {
+  content: "\f2ad";
+}
+.fa-pied-piper:before {
+  content: "\f2ae";
+}
+.fa-first-order:before {
+  content: "\f2b0";
+}
+.fa-yoast:before {
+  content: "\f2b1";
+}
+.fa-themeisle:before {
+  content: "\f2b2";
+}
+.fa-google-plus-circle:before,
+.fa-google-plus-official:before {
+  content: "\f2b3";
+}
+.fa-fa:before,
+.fa-font-awesome:before {
+  content: "\f2b4";
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
 
 /* OriginalFileName : node_modules/jquery-latitude-longitude-picker-gmaps/css/jquery-gmaps-latlon-picker.css */ 
 
@@ -17383,17 +17490,7 @@ and open the template in the editor.
     margin-right: -12.5%; 
     margin-left: -12.5%;
 }
-/**
-Organization Form buttons
-**/
-.saveStateButton{
-    margin-top: -96px;
-    margin-left: 80px;
-}
-.orgResetButton{    
-    margin-top: -175px;
-    margin-left: 188px;
-}
+
 .navbar-toggle{
     background-color: #1964B6;
 }
@@ -17444,6 +17541,15 @@ body {
 .admin-holder {
   margin-top: 170px !important;
 }
+
+.manageMenu {
+    color: #fff;
+    margin-top: -24px;
+    margin-bottom: -14px !important;
+}
+.manageMenu .navbar-nav>li>a{
+    color: #fff !important;
+}
 /* OriginalFileName : public/css/form.css */ 
 
 .required:after { 
@@ -17474,7 +17580,7 @@ input[type="checkbox"].form-control{
 }
 
 .form-register{
-    width: 75%;
+    width: 100%;
     display: inline-block;
     border-radius: 0px;
     box-shadow: none;
@@ -17515,14 +17621,479 @@ input[type="checkbox"].form-control{
 .register .btn{ 
     min-width:100px;
 }
+.upload-pic > input{
+    margin-top: 10px;
+}
+.gllpMap{
+    width: 100%;
+}
+/* OriginalFileName : public/css/chat.css */ 
 
+    .online-admin-container , .chat-box-container {
+        background-color: #FFF;
+    }
+    .online-admin-container{
+        width:150px;
+        height: 350px;
+        border-style: solid ;
+        border-width: 1px;
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px;         
+    }
+    .admin-id{
+        display: none;
+    }
+    .chat-box-container{
+        border-style: solid;
+        border-width: 1px;
+        display: inline-block;
+        margin-right: 3px;
+        height: 350px;
+        max-width: 245px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+    .online-admin-container-header{
+        background-color: rgba(82,168,236,0.6);
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px;
+        width: 100%;
+        display: inline-block;
 
+    }
+    .online-user-container-header{
+        background-color: rgba(82,168,236,0.6);
+    }
+    .hide-online-admins-container{
+        float: right;
+        margin-top: -28px;
+        margin-right: 10px;
+    }
+    .chat-box-header{
+        margin-bottom: 1px;
+        background-color: rgba(82,168,236,0.6);
+        border-radius: 10px 10px 0px 0px; 
+        -moz-border-radius: 10px 10px 0px 0px; 
+        -webkit-border-radius: 10px 10px 0px 0px; 
 
+    }
+    .close-chat-box{
+        position: relative;
+        float: right;
+        margin-right: 10px;
+    }
+    .chat-box-header > span{
+        margin-left: 5px;
+    }
+    .chat-box-body{
+        border-style: solid;
+        border-width: 1px;
+        height: 253px;
+        margin-left: 1%; 
+        margin-right: 1%; 
+        margin-top: -1px;
+        overflow: scroll;
+    }
+    .chat-box-footer{
+        margin-top: 1px;
+    }
+    /*    .dialogue{
+            padding-bottom: 1px;
+            display: inline-block;
+            height: 65px;
+        }*/
+    .user-message{
+        width: 74%;
+        height: 63px;
+        margin-left: 2.5px;
+        float: left;
+        margin-top: 3px;
+    }
+    .send{
+        margin-right: 2px;
+        height: 62px;
+        width: 23%;
+        margin-top: 3px;
+    }
+    .my-message{
+        color: #000;
+        float: left;
+    }
+    .his-message{
+        color: #66aa66;
+        float: right;
+    }
+    .server-message{
+        color: red;
+        float: right;
+    }
+    .message{
+        display: flex;
+    }
+    .single-admin-container :hover {
+        cursor: pointer;        
+    }
+
+    .chat-container{
+        position: fixed;
+        z-index: 10000;
+        bottom: 0;
+        right: 0;
+    }
 /* OriginalFileName : public/css/userForm.css */ 
 
 #user_form input[type="checkbox"].form-control{
     float: left;
 }
+/* OriginalFileName : public/css/course-calendar.css */ 
+
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 19, 2016, 11:59:11 AM
+    Author     : ahmedreda
+*/
+  /***** course calendar ************/
+    .sub-title-main{
+        color: #1964B6;
+        border-bottom:1px solid #cccccc;
+        padding-bottom: 10px;
+        text-transform: uppercase;
+        margin-left: -25%;
+        display: inline-block !important;
+        width: 135% !important;
+    }
+    .title-calendar{ 
+        font-size:17px; color:#1964b6;
+        text-transform:uppercase; border-bottom:1px solid #ccc;
+        padding-bottom:5px; }
+    .calendar-download{ float:right;  padding-top: 15px;}
+    .fa-cloud-download{ color:#1964b6; font-size:20px;}
+
+    .calendar-box{ background-color:#f6f6f8; padding:15px;     margin-bottom: 16px; width: 120%; margin-left: -18%;}
+    /*    .calendar-list li{  margin:0 3%;    display: table-cell;  vertical-align: -webkit-baseline-middle;
+        }
+        .calendar-list ul{padding: 0px; width: 95%;   display: table; table-layout: fixed;}*/
+    .calendar-list li{  display: inline-block; margin:0 3%;     vertical-align: -webkit-baseline-middle; margin-left: -10px;}
+    .calendar-list ul{padding: 0px; width: 95%;    margin-left: 6%;}
+    .calendar-list { border:1px solid #ebebeb; background:#fff; position:relative;margin-bottom: 10px;
+                     padding: 11px 8px;}
+    .btn-enroll-calendar{ background-color:#1964b6;  }
+    .btn-cancel-calendar{background-color:#f20e14; }
+    .btn-done-calendar{background-color:#19b637;}
+    .btn-done-calendar, .btn-enroll-calendar, .btn-cancel-calendar{color:#fff; font-size:15px; 
+                                                                   border-radius:0px; min-width:75px;}
+    .btns-right	{ position:absolute;  right: 0px;
+                  top: 10px;
+    }
+    .fa-calendar:before, .fa-bell:before{ color: #8b8b8c;
+                                          font-size: 20px;}
+    .paging { text-align:center;}
+
+    .pagination>li:last-child>a, .pagination>li:last-child>span, .pagination>li:first-child>a, 
+    .pagination>li:first-child>span{ border-radius:0px;}
+
+    /***** .nav-pills.nav-stacked css ************/
+
+    .nav-pills.nav-stacked{    
+        border: 1px solid #efefef;
+        padding: 0px;
+    }
+    .nav-stacked li{ 
+        border-bottom: 1px solid #efefef;}
+    .nav-pills>li>a{ 
+        border-radius:0px;}
+
+    .nav-pills>li.active>a, .nav-pills>li.active>a:focus{
+
+        background-color: #1964b6;
+        color: white;
+    }
+
+    .nav-pills>li>a{ 
+        color:#464646;}
+
+    .nav-stacked>li>a:hover, .nav-pills>li.active>a:hover{	
+        color: #464646;
+        background-color: #f6f6f8;}
+
+    .nav-stacked>li+li{
+        margin-top:0px;}
+
+
+
+    /* forms css */
+
+    .panel-heading h3	{font-size: 22px;
+                       text-transform: uppercase;
+                       margin: 10px 5px;}
+
+
+    .panel-default>.panel-heading{ 
+        color: #1964B6;
+        background-color: #FFFFFF;
+        font-weight: 600;
+        text-transform: uppercase;
+    }	
+
+    .main-form .form-control{
+        border-radius: 0px; 
+        border:0px;
+        box-shadow: none !important ; 
+        background-color: rgba(238, 238, 238, 0.45);}
+
+    .form-horizontal .control-label{ 
+        color: #234FA6;    
+        text-align: left;
+        display: inline-block !important;
+
+        font-weight: 400;}
+
+    .panel-default{  
+        border:0px ;
+    }
+    .panel{    box-shadow: none;}
+
+    .required:after {
+        content: " *";
+        color: red;
+    }
+
+    .form-group ul{
+        padding-top:10px; 
+        padding-left: 0px; 
+        list-style: none; 
+        font-size: 12px;}
+
+    .sub-title-form{ font-size: 17px;
+                     color: #808080;
+                     background: #fff;
+                     margin: -16px 9px 11px 11px;
+                     padding: 7px 13px;
+                     width: 20%;
+                     text-transform: uppercase
+
+
+
+    }
+
+    .panel-border{ border:1px solid #E8E8E8 ;margin-bottom: 30px; padding: 0px 16px;}
+
+    .panel-body	{margin-top: 26px;}
+
+    form .btn{min-width: 100px; border:none; border-radius:0px ; margin-right:10px;}
+
+
+    .c-inputs-stacked{ padding-left:16px;}
+
+
+
+    .c-inputs-stacked .c-input{    
+        display: inline;     
+        font-size: 14px;
+        color: #555555;
+        font-weight: 100;
+    }
+    .c-input {
+        position: relative;
+        display: inline;
+        padding-left: 1.5rem;
+        color: #555;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    .c-input>input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;}
+    .c-radio .c-indicator {
+        border-radius: 50%;}
+    .c-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 1.2rem;
+        height: 1.2rem;
+        font-size: 65%;
+        line-height: 1rem;
+        color: #eee;
+        text-align: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #ccc;
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-background-size: 50% 50%;
+        background-size: 50% 50%;
+        margin-top: 4px;
+    }
+    label{    touch-action: manipulation;}
+    .c-input{ cursor: pointer;}
+
+    .c-inputs-stacked .c-input::after {
+        display: block;
+        margin-bottom: .25rem;
+        content: "";
+    }
+    .c-input>input:checked~.c-indicator {
+        color: #fff;
+        background-color: #234FA6;
+    }
+    .course-dates{
+        width:  35%;
+    }
+    .atp-name{
+        width:8%;
+    }
+    .city-name{
+        width: 8%;
+    }
+
+
+/* OriginalFileName : public/css/course-details.css */ 
+
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 19, 2016, 12:53:05 PM
+    Author     : ahmedreda
+*/
+
+.inner-cont > p{
+    color: #fff;
+}
+
+.btn-blue-enroll > a{
+    color: #fff
+}
+.course-name{ 
+    color:#fff; 
+    font-size:36px;
+    font-family:Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif; }
+
+.btn-course-enroll{    background-color: #FFFFFF;
+                       border: 0px;
+                       padding: 10px 18px;
+                       color: #1964B6;
+                       text-transform: uppercase;
+                       font-weight: 700;}
+
+.btn-blue-enroll{   background-color: #1964B6;
+                    border: 0px;
+                    padding: 10px 18px;
+                    color: #FFF;
+                    text-transform: uppercase;
+                    font-weight: 700;}
+
+.inner-cont{ padding:20px;}
+.inner-cont span{ color:#fff;}
+.course-date { background-color:#f6f6f8; padding:25px;}
+
+
+/*Tabs Class */		
+.tab-content{ padding:30px 20px; }
+.nav-tabs{background: #f6f6f8; border-bottom:0px;}
+
+
+.title-blue { color:#1964B6; padding:18px 0px; 
+              font-weight: 600;
+              text-transform:uppercase;}
+
+.image-about{ background-image:url("images/about.jpg");
+              height: 265px;
+              background-repeat: no-repeat;
+              background-size: cover;     padding: 41px;}
+
+.static-cont{ padding: 20px 34px;}
+
+
+.page-container{
+    /*padding: 30px 10px;*/
+}
+
+.instructor-small h3{ color:#1964b6; font-size:16px; 
+                      text-transform:uppercase;}
+
+.instructor-small img{ float:left; margin: 0px 10px; }
+
+.instrcutor-details{ float: left;
+                     margin: 22px 0px 0px 11px;}
+.instrcutor-details p{ color:#828283; }					  
+
+.instrcutor-name{ font-size:15px; 
+                  text-transform:uppercase;
+                  color:#39393a !important; }
+
+.instructor-bio h3, .instructor-course h3{ color:#1964b6; font-size:17px; text-transform:uppercase;}
+.instructor-bio .org, .instructor-course, .course-list{
+    list-style-type: none; color:#39393a;
+    padding: 0;
+    margin: 15px 0;
+    font-size: 15px;}
+
+.org-name a{ 
+    color:#828283;}
+.instructor-course li a{ color:#39393a;}
+.course-list li a {color:#737373}
+
+.instructor-course li, .course-list li {    padding: 4px 0px;}
+.course-second-title
+{    border-bottom: 1px solid #eee;font-size: 1.0em;
+     padding: 11px 0;
+}
+.course-list li a span{ float:right;}
+
+.course-content-title{ 
+    color: #1964b6;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px;}
+
+ul.activity{border-top: none;
+            list-style: none;
+            margin: 0;
+            overflow: hidden;
+            padding: 0;
+}
+#activity-stream>li{ padding-top:15px;     
+                     overflow: hidden;
+                     border-bottom: 1px solid #eee;}
+
+.activity .activity-avatar{ 
+    float: left;
+    display: block;
+    height: 60px; margin:0px 10px;}
+
+
+.activity-content{ float:left;}
+.activity-meta{ float:right;}
+.activity-avatar img{ border:1px solid #cccccc;}
+.fa-comment-o:before, .fa-eye:before{ font-size:20px; padding:0px 5px;}
+.activity-avatar span{color:#39393a}
+.activity-inner{ padding:10px 0;}
+.activity-inner span, .activity-meta span{ color:#8d8d8d;}
+.activity-inner p{ color:#39393a ; font-weight:600;}
+
+.btn-ask{background:#1964b6; text-transform:uppercase; border-radius:0px; color:#fff;
+         font-weight: 600;}
+.btn-small-search, #small-search-input .input-group{ 
+    border-radius:0px; background:none; }
+#small-search-input{border: 1px solid #ccc;}
+.small-input{ border:none;}
+
+
 /* OriginalFileName : public/css/courseForm.css */ 
 
 #course_form fieldset label {
@@ -17570,16 +18141,6 @@ and open the template in the editor.
 
 #cke_169_label { font-size: 0; }
 #cke_169_label:before { content: "Upload Image"; font-size: 14px; }
-/* OriginalFileName : public/css/evaluation.css */ 
-
-/*remove x mark after questions*/
-.removeQ{
-    margin-top: -27px;
-    float: left;
-    margin-left: 527px;
-} 
-
-
 /* OriginalFileName : public/css/diff.css */ 
 
 ins {
@@ -17590,6 +18151,127 @@ ins {
 del {
     background-color: #ffc6c6;
 }
+/* OriginalFileName : public/css/atc-style-menu-wb.css */ 
+
+/**
+ * AddToCalendar White Blue Menu Style
+ * http://addtocalendar.com
+ */
+
+/* Base */
+
+.addtocalendar var{
+    display: none;
+}
+
+.addtocalendar {
+    position: relative;
+    display: inline-block;
+    background: transparent!important;
+}
+
+.atcb-link {
+    display: block;
+    outline: none!important;
+    cursor: pointer;
+}
+
+.atcb-link:focus~ul,
+.atcb-link:active~ul,
+.atcb-list:hover{
+    visibility:visible;
+}
+
+.atcb-list {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 170px;
+    z-index: 900;
+}
+
+.atcb-list,
+.atcb-item
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+.atcb-item {
+    float: none;
+    text-align: left;
+}
+
+.atcb-item-link
+{
+    text-decoration: none;
+    outline: none;
+    display: block;
+}
+
+.atcb-item.hover,
+.atcb-item:hover {
+    position: relative;
+    z-index: 900;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+}
+
+
+/* Menu WB */
+
+.atc-style-menu-wb .atcb-list {
+    width: 170px;
+    border: 1px solid rgb(186,186,186);
+    border-radius: 2px;
+    box-shadow: 0 0 5px #AAA;
+}
+
+.atc-style-menu-wb .atcb-list,
+.atc-style-menu-wb .atcb-item
+{
+    background: #fff;
+    color: #000;
+}
+
+.atc-style-menu-wb .atcb-item,
+.atc-style-menu-wb .atcb-item-link
+{
+    line-height: 1.3em;
+    vertical-align: middle;
+    zoom: 1;
+}
+
+.atc-style-menu-wb .atcb-item-link,
+.atc-style-menu-wb .atcb-item-link:hover,
+.atc-style-menu-wb .atcb-item-link:active,
+.atc-style-menu-wb .atcb-item-link:focus
+{
+    color: #000;
+    font-family: "Verdana";
+    font-size: 14px;
+    text-decoration: none;
+    outline: none;
+    padding: 5px 15px;
+}
+
+.atc-style-menu-wb .atcb-item-link:hover,
+.atc-style-menu-wb .atcb-item-link:active,
+.atc-style-menu-wb .atcb-item-link:focus
+{
+    color: #fff;
+}
+
+.atc-style-menu-wb .atcb-item.hover,
+.atc-style-menu-wb .atcb-item:hover {
+    background: rgb(66,129,244);
+}
+
+
 /* OriginalFileName : themes/certigate/assets/css/carousel.rtl.css */ 
 
 /* GLOBAL STYLES
