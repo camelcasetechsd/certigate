@@ -25,6 +25,7 @@ return array(
             'CMS\Model\Press' => 'CMS\Model\PressFactory',
             'CMS\Service\CacheHandler' => 'CMS\Service\Cache\CacheHandlerFactory',
             'CMS\Event\RouteEvent' => 'CMS\Event\RouteEventFactory',
+            'CMS\Entity\MenuItemRepository' => 'CMS\Entity\MenuItemRepositoryFactory',
         ),
         'invokables' => array(
             'CMS\Service\View\MenuView' => 'CMS\Service\View\MenuView',
