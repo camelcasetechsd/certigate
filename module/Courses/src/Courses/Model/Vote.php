@@ -61,6 +61,38 @@ class Vote
     }
 
     /**
+     * Get votes average for course event
+     * 
+     * @access public
+     * @param int $courseEventId
+     * @return array
+     */
+    public function getVotesAverage($courseEventId)
+    {
+        $votesArray = $this->query->setEntity('Courses\Entity\Vote')->entityRepository->getVotesByCourseEvent($courseEventId);
+
+        $processedVotes = array();
+        // process votes total and count
+        foreach($votesArray as $voteArray){
+            if(!array_key_exists($voteArray["id"], $processedVotes)){
+                $processedVotes[$voteArray["id"]]["questionTitle"] = $voteArray["questionTitle"];
+                $processedVotes[$voteArray["id"]]["questionTitleAr"] = $voteArray["questionTitleAr"];
+                $processedVotes[$voteArray["id"]]["votesTotal"] = $voteArray["vote"];
+                $processedVotes[$voteArray["id"]]["votesCount"] = 1;
+            }else{
+                $processedVotes[$voteArray["id"]]["votesTotal"] += $voteArray["vote"];
+                $processedVotes[$voteArray["id"]]["votesCount"]++;
+            }
+        }
+        // calculate votes average
+        foreach($processedVotes as &$processedVote){
+            $processedVote["votesAverage"] = number_format($processedVote["votesTotal"] / $processedVote["votesCount"] ,2);
+            $processedVote["votesPercent"] = round(100 * $processedVote["votesAverage"] / 5 ,2);
+        }
+        return array_values($processedVotes);
+    }
+
+    /**
      * 
      * @param Evaluation $evalObj
      */

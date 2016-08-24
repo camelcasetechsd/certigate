@@ -197,12 +197,15 @@ class CourseController extends ActionController
     {
         $variables = array();
         $id = $this->params('id');
+        $courseEventId = $this->params('courseEventId');
         $query = $this->getServiceLocator()->get('wrapperQuery');
         $objectUtilities = $this->getServiceLocator()->get('objectUtilities');
         $course = $query->find('Courses\Entity\Course', $id);
+        
         if ($course != null) {
             $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
             $resourceModel = $this->getServiceLocator()->get('Courses\Model\Resource');
+            $voteModel = $this->getServiceLocator()->get('Courses\Model\Vote');
 
             $courseArray = array($course);
 
@@ -232,7 +235,12 @@ class CourseController extends ActionController
             $variables['instructors'] = $courseEventModel->getInstructors($course);
             $variables['courseEventCreator'] = $courseEventCreator;
             $variables['canEvaluate'] = $preparedCourse->canEvaluate;
-            $variables['courseEventId'] = $this->params('courseEventId');
+            $variables['courseEventId'] = $courseEventId;
+            if(! empty($courseEventId) && $courseEventCreator === true){
+                $variables['votes'] = $voteModel->getVotesAverage($courseEventId);
+                $currentCourseEvent = $query->find('Courses\Entity\CourseEvent', $courseEventId);
+                $variables['courseEventUsers'] = $currentCourseEvent->getCourseEventUsers();
+            }
             $variables['canDownloadResources'] = $canDownloadResources;
         }
         // if course does not exist

@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * 
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Courses\Entity\VoteRepository")
  * @ORM\Table(name="vote")
  * @Gedmo\Loggable
  * 

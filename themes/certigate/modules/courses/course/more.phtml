@@ -48,9 +48,17 @@
         <div class="container">
             <ul class="nav nav-tabs responsive" id="myTab">
                 <li class="active"><a data-target="#about" data-toggle="tab">{{#translate}}About This Course{{/translate}}</a></li>
+                {{^courseEventId}}
                 <li><a data-target="#courseEvents" data-toggle="tab">{{#translate}}Course Events{{/translate}}</a></li>
+                {{/courseEventId}}
                 <li><a data-target="#courseOutlines" data-toggle="tab">{{#translate}}Course Outlines{{/translate}}</a></li>
                 <li><a data-target="#courseResources" data-toggle="tab">{{#translate}}Course Resources{{/translate}}</a></li>
+                {{#courseEventId}}
+                {{#courseEventCreator}}
+                <li><a data-target="#courseEventVotes" data-toggle="tab">{{#translate}}Votes{{/translate}}</a></li>
+                <li><a data-target="#courseEventUsers" data-toggle="tab">{{#translate}}Enrolled Users{{/translate}}</a></li>
+                {{/courseEventCreator}}
+                {{/courseEventId}}
             </ul>
 
             <div class="tab-content responsive">
@@ -101,6 +109,7 @@
                         </div>
                     </div>
                 </div>
+                {{^courseEventId}}
                 <div class="tab-pane fade" id="courseEvents">
                     <div class="row">
                         <div class="panel panel-default">
@@ -150,6 +159,7 @@
                         </div>
                     </div>
                 </div>
+                {{/courseEventId}}
                 <div class="tab-pane fade" id="courseOutlines">
                     <div class="row">
                         <div class="panel-body">
@@ -212,6 +222,86 @@
                         </div>
                     </div>
                 </div>
+                {{#courseEventId}}
+                {{#courseEventCreator}}
+                <div class="tab-pane fade" id="courseEventVotes">
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>{{#translate}}Votes{{/translate}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                        {{#votes.count}}
+                                        <tr>
+                                            <th>{{#translate}}Question{{/translate}}</th>
+                                            <th>{{#translate}}Average Vote{{/translate}}</th>
+                                        </tr>
+                                        {{/votes.count}}
+                                    </thead>
+                                    <tbody>
+                                        {{#votes}}
+                                        <tr>
+                                            <td>{{#locale_ar}}{{questionTitleAr}}{{/locale_ar}}{{#locale_en}}{{questionTitle}}{{/locale_en}}</td>
+                                            <td>{{votesPercent}} %</td>
+                                        </tr>
+                                        {{/votes}} 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="courseEventUsers">
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>{{#translate}}Enrolled Users{{/translate}}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                        {{#courseEventUsers.count}}
+                                        <tr>
+                                            <th>{{#translate}}First Name{{/translate}}</th>
+                                            <th>{{#translate}}Last Name{{/translate}}</th>
+                                            <th>{{#translate}}User Name{{/translate}}</th>
+                                            <th>{{#translate}}Email{{/translate}}</th>
+                                        </tr>
+                                        {{/courseEventUsers.count}}
+                                    </thead>
+                                    <tbody>
+                                        {{#courseEventUsers}}
+                                        <tr>
+                                            <td>
+                                                {{#locale_en}}
+                                                {{user.firstName}}
+                                                {{/locale_en}}
+                                                {{#locale_ar}}
+                                                {{user.firstNameAr}}
+                                                {{/locale_ar}}        
+                                            </td>
+                                            <td>
+                                                {{#locale_en}}
+                                                {{user.lastName}}
+                                                {{/locale_en}}
+                                                {{#locale_ar}}
+                                                {{user.lastNameAr}}
+                                                {{/locale_ar}}        
+                                            </td>
+                                            <td>{{user.username}}</td>
+                                            <td>{{user.email}}</td>
+                                        </tr>
+                                        {{/courseEventUsers}} 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/courseEventCreator}}
+                {{/courseEventId}}
             </div>
         </div>
     </div>
