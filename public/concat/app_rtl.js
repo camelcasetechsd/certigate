@@ -1,7 +1,7 @@
 /* OriginalFileName : public/bower_components/jquery/dist/jquery.js */ 
 
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -11,7 +11,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-05-20T17:23Z
  */
 
 (function( global, factory ) {
@@ -67,7 +67,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -5008,13 +5008,14 @@ jQuery.Event.prototype = {
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
+	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
 
 		this.isDefaultPrevented = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.preventDefault();
 		}
 	},
@@ -5023,7 +5024,7 @@ jQuery.Event.prototype = {
 
 		this.isPropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopPropagation();
 		}
 	},
@@ -5032,7 +5033,7 @@ jQuery.Event.prototype = {
 
 		this.isImmediatePropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopImmediatePropagation();
 		}
 
@@ -5962,19 +5963,6 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
 		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// Support: IE11 only
-	// In IE 11 fullscreen elements inside of an iframe have
-	// 100x too small dimensions (gh-1764).
-	if ( document.msFullscreenElement && window.top !== window ) {
-
-		// Support: IE11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-		}
-	}
 
 	// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -7866,6 +7854,7 @@ jQuery.extend( jQuery.event, {
 	},
 
 	// Piggyback on a donor event to simulate a different one
+	// Used only for `focus(in | out)` events
 	simulate: function( type, elem, event ) {
 		var e = jQuery.extend(
 			new jQuery.Event(),
@@ -7873,27 +7862,10 @@ jQuery.extend( jQuery.event, {
 			{
 				type: type,
 				isSimulated: true
-
-				// Previously, `originalEvent: {}` was set here, so stopPropagation call
-				// would not be triggered on donor event, since in our own
-				// jQuery.event.stopPropagation function we had a check for existence of
-				// originalEvent.stopPropagation method, so, consequently it would be a noop.
-				//
-				// But now, this "simulate" function is used only for events
-				// for which stopPropagation() is noop, so there is no need for that anymore.
-				//
-				// For the 1.x branch though, guard for "click" and "submit"
-				// events is still used, but was moved to jQuery.event.stopPropagation function
-				// because `originalEvent` should point to the original event for the constancy
-				// with other events and for more focused logic
 			}
 		);
 
 		jQuery.event.trigger( e, null, elem );
-
-		if ( e.isDefaultPrevented() ) {
-			event.preventDefault();
-		}
 	}
 
 } );
@@ -9850,8 +9822,8 @@ return jQuery;
 /* OriginalFileName : public/bower_components/bootstrap/dist/js/bootstrap.js */ 
 
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under the MIT license
  */
 
@@ -9862,16 +9834,16 @@ if (typeof jQuery === 'undefined') {
 +function ($) {
   'use strict';
   var version = $.fn.jquery.split(' ')[0].split('.')
-  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 2)) {
-    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 3')
+  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 3)) {
+    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4')
   }
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: transition.js v3.3.6
+ * Bootstrap: transition.js v3.3.7
  * http://getbootstrap.com/javascript/#transitions
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9928,10 +9900,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: alert.js v3.3.6
+ * Bootstrap: alert.js v3.3.7
  * http://getbootstrap.com/javascript/#alerts
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9947,7 +9919,7 @@ if (typeof jQuery === 'undefined') {
     $(el).on('click', dismiss, this.close)
   }
 
-  Alert.VERSION = '3.3.6'
+  Alert.VERSION = '3.3.7'
 
   Alert.TRANSITION_DURATION = 150
 
@@ -9960,7 +9932,7 @@ if (typeof jQuery === 'undefined') {
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = $(selector)
+    var $parent = $(selector === '#' ? [] : selector)
 
     if (e) e.preventDefault()
 
@@ -10023,10 +9995,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: button.js v3.3.6
+ * Bootstrap: button.js v3.3.7
  * http://getbootstrap.com/javascript/#buttons
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10043,7 +10015,7 @@ if (typeof jQuery === 'undefined') {
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.3.6'
+  Button.VERSION  = '3.3.7'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -10065,10 +10037,10 @@ if (typeof jQuery === 'undefined') {
 
       if (state == 'loadingText') {
         this.isLoading = true
-        $el.addClass(d).attr(d, d)
+        $el.addClass(d).attr(d, d).prop(d, true)
       } else if (this.isLoading) {
         this.isLoading = false
-        $el.removeClass(d).removeAttr(d)
+        $el.removeClass(d).removeAttr(d).prop(d, false)
       }
     }, this), 0)
   }
@@ -10132,10 +10104,15 @@ if (typeof jQuery === 'undefined') {
 
   $(document)
     .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target)
-      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
+      var $btn = $(e.target).closest('.btn')
       Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"]') || $(e.target).is('input[type="checkbox"]'))) e.preventDefault()
+      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
+        // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
+        e.preventDefault()
+        // The target component still receive the focus
+        if ($btn.is('input,button')) $btn.trigger('focus')
+        else $btn.find('input:visible,button:visible').first().trigger('focus')
+      }
     })
     .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
       $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
@@ -10144,10 +10121,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.6
+ * Bootstrap: carousel.js v3.3.7
  * http://getbootstrap.com/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10175,7 +10152,7 @@ if (typeof jQuery === 'undefined') {
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.6'
+  Carousel.VERSION  = '3.3.7'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -10382,13 +10359,14 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.6
+ * Bootstrap: collapse.js v3.3.7
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
+/* jshint latedef: false */
 
 +function ($) {
   'use strict';
@@ -10412,7 +10390,7 @@ if (typeof jQuery === 'undefined') {
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.6'
+  Collapse.VERSION  = '3.3.7'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -10594,10 +10572,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.6
+ * Bootstrap: dropdown.js v3.3.7
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10614,7 +10592,7 @@ if (typeof jQuery === 'undefined') {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.6'
+  Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
     var selector = $this.attr('data-target')
@@ -10760,10 +10738,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: modal.js v3.3.6
+ * Bootstrap: modal.js v3.3.7
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10794,7 +10772,7 @@ if (typeof jQuery === 'undefined') {
     }
   }
 
-  Modal.VERSION  = '3.3.6'
+  Modal.VERSION  = '3.3.7'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -10901,7 +10879,9 @@ if (typeof jQuery === 'undefined') {
     $(document)
       .off('focusin.bs.modal') // guard against infinite focus loop
       .on('focusin.bs.modal', $.proxy(function (e) {
-        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+        if (document !== e.target &&
+            this.$element[0] !== e.target &&
+            !this.$element.has(e.target).length) {
           this.$element.trigger('focus')
         }
       }, this))
@@ -11098,11 +11078,11 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.6
+ * Bootstrap: tooltip.js v3.3.7
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -11125,7 +11105,7 @@ if (typeof jQuery === 'undefined') {
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.6'
+  Tooltip.VERSION  = '3.3.7'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -11416,9 +11396,11 @@ if (typeof jQuery === 'undefined') {
 
     function complete() {
       if (that.hoverState != 'in') $tip.detach()
-      that.$element
-        .removeAttr('aria-describedby')
-        .trigger('hidden.bs.' + that.type)
+      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
+        that.$element
+          .removeAttr('aria-describedby')
+          .trigger('hidden.bs.' + that.type)
+      }
       callback && callback()
     }
 
@@ -11461,7 +11443,10 @@ if (typeof jQuery === 'undefined') {
       // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
       elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
     }
-    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
+    var isSvg = window.SVGElement && el instanceof window.SVGElement
+    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
+    // See https://github.com/twbs/bootstrap/issues/20280
+    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
     var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
     var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
 
@@ -11577,6 +11562,7 @@ if (typeof jQuery === 'undefined') {
       that.$tip = null
       that.$arrow = null
       that.$viewport = null
+      that.$element = null
     })
   }
 
@@ -11613,10 +11599,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: popover.js v3.3.6
+ * Bootstrap: popover.js v3.3.7
  * http://getbootstrap.com/javascript/#popovers
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -11633,7 +11619,7 @@ if (typeof jQuery === 'undefined') {
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
 
-  Popover.VERSION  = '3.3.6'
+  Popover.VERSION  = '3.3.7'
 
   Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
     placement: 'right',
@@ -11722,10 +11708,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: scrollspy.js v3.3.6
+ * Bootstrap: scrollspy.js v3.3.7
  * http://getbootstrap.com/javascript/#scrollspy
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -11751,7 +11737,7 @@ if (typeof jQuery === 'undefined') {
     this.process()
   }
 
-  ScrollSpy.VERSION  = '3.3.6'
+  ScrollSpy.VERSION  = '3.3.7'
 
   ScrollSpy.DEFAULTS = {
     offset: 10
@@ -11895,10 +11881,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: tab.js v3.3.6
+ * Bootstrap: tab.js v3.3.7
  * http://getbootstrap.com/javascript/#tabs
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -11915,7 +11901,7 @@ if (typeof jQuery === 'undefined') {
     // jscs:enable requireDollarBeforejQueryAssignment
   }
 
-  Tab.VERSION = '3.3.6'
+  Tab.VERSION = '3.3.7'
 
   Tab.TRANSITION_DURATION = 150
 
@@ -12051,10 +12037,10 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: affix.js v3.3.6
+ * Bootstrap: affix.js v3.3.7
  * http://getbootstrap.com/javascript/#affix
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -12080,7 +12066,7 @@ if (typeof jQuery === 'undefined') {
     this.checkPosition()
   }
 
-  Affix.VERSION  = '3.3.6'
+  Affix.VERSION  = '3.3.7'
 
   Affix.RESET    = 'affix affix-top affix-bottom'
 
@@ -13204,7 +13190,7 @@ if (typeof jQuery === 'undefined') {
 /* OriginalFileName : public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js */ 
 
 /*!
- * Datepicker for Bootstrap v1.6.0 (https://github.com/eternicode/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.6.4 (https://github.com/eternicode/bootstrap-datepicker)
  *
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
@@ -13297,12 +13283,13 @@ if (typeof jQuery === 'undefined') {
 		this.focusDate = null;
 
 		this.element = $(element);
-		this.isInline = false;
 		this.isInput = this.element.is('input');
+		this.inputField = this.isInput ? this.element : this.element.find('input');
 		this.component = this.element.hasClass('date') ? this.element.find('.add-on, .input-group-addon, .btn') : false;
-		this.hasInput = this.component && this.element.find('input').length;
+		this.hasInput = this.component && this.inputField.length;
 		if (this.component && this.component.length === 0)
 			this.component = false;
+		this.isInline = !this.component && this.element.is('div');
 
 		this.picker = $(DPGlobal.template);
 
@@ -13474,9 +13461,9 @@ if (typeof jQuery === 'undefined') {
 
 			o.datesDisabled = o.datesDisabled||[];
 			if (!$.isArray(o.datesDisabled)) {
-				var datesDisabled = [];
-				datesDisabled.push(DPGlobal.parseDate(o.datesDisabled, format, o.language, o.assumeNearbyYear));
-				o.datesDisabled = datesDisabled;
+				o.datesDisabled = [
+					o.datesDisabled
+				];
 			}
 			o.datesDisabled = $.map(o.datesDisabled,function(d){
 				return DPGlobal.parseDate(d, format, o.language, o.assumeNearbyYear);
@@ -13574,19 +13561,17 @@ if (typeof jQuery === 'undefined') {
             else if (this.component && this.hasInput) { // component: input + button
                 this._events = [
                     // For components that are not readonly, allow keyboard nav
-                    [this.element.find('input'), events],
+                    [this.inputField, events],
                     [this.component, {
                         click: $.proxy(this.show, this)
                     }]
                 ];
             }
-			else if (this.element.is('div')){  // inline datepicker
-				this.isInline = true;
-			}
 			else {
 				this._events = [
 					[this.element, {
-						click: $.proxy(this.show, this)
+						click: $.proxy(this.show, this),
+						keydown: $.proxy(this.keydown, this)
 					}]
 				];
 			}
@@ -13629,7 +13614,7 @@ if (typeof jQuery === 'undefined') {
 							this.element.find(e.target).length ||
 							this.picker.is(e.target) ||
 							this.picker.find(e.target).length ||
-							this.picker.hasClass('datepicker-inline')
+							this.isInline
 						)){
 							this.hide();
 						}
@@ -13676,8 +13661,7 @@ if (typeof jQuery === 'undefined') {
 		},
 
 		show: function(){
-      var element = this.component ? this.element.find('input') : this.element;
-			if (element.attr('readonly') && this.o.enableOnReadonly === false)
+			if (this.inputField.prop('disabled') || (this.inputField.prop('readonly') && this.o.enableOnReadonly === false))
 				return;
 			if (!this.isInline)
 				this.picker.appendTo(this.o.container);
@@ -13692,9 +13676,7 @@ if (typeof jQuery === 'undefined') {
 		},
 
 		hide: function(){
-			if (this.isInline)
-				return this;
-			if (!this.picker.is(':visible'))
+			if (this.isInline || !this.picker.is(':visible'))
 				return this;
 			this.focusDate = null;
 			this.picker.hide().detach();
@@ -13702,13 +13684,7 @@ if (typeof jQuery === 'undefined') {
 			this.viewMode = this.o.startView;
 			this.showMode();
 
-			if (
-				this.o.forceParse &&
-				(
-					this.isInput && this.element.val() ||
-					this.hasInput && this.element.find('input').val()
-				)
-			)
+			if (this.o.forceParse && this.inputField.val())
 				this.setValue();
 			this._trigger('hide');
 			return this;
@@ -13780,15 +13756,8 @@ if (typeof jQuery === 'undefined') {
 		},
 
 		clearDates: function(){
-			var element;
-			if (this.isInput) {
-				element = this.element;
-			} else if (this.component) {
-				element = this.element.find('input');
-			}
-
-			if (element) {
-				element.val('');
+			if (this.inputField) {
+				this.inputField.val('');
 			}
 
 			this.update();
@@ -13820,14 +13789,7 @@ if (typeof jQuery === 'undefined') {
 
 		setValue: function(){
 			var formatted = this.getFormattedDate();
-			if (!this.isInput){
-				if (this.component){
-					this.element.find('input').val(formatted);
-				}
-			}
-			else {
-				this.element.val(formatted);
-			}
+			this.inputField.val(formatted);
 			return this;
 		},
 
@@ -13987,7 +13949,7 @@ if (typeof jQuery === 'undefined') {
 			else {
 				dates = this.isInput
 						? this.element.val()
-						: this.element.data('date') || this.element.find('input').val();
+						: this.element.data('date') || this.inputField.val();
 				if (dates && this.o.multidate)
 					dates = dates.split(this.o.multidateSeparator);
 				else
@@ -14095,9 +14057,12 @@ if (typeof jQuery === 'undefined') {
 			}
 			if (this.dates.contains(date) !== -1)
 				cls.push('active');
-			if (!this.dateWithinRange(date) || this.dateIsDisabled(date)){
+			if (!this.dateWithinRange(date)){
 				cls.push('disabled');
 			}
+			if (this.dateIsDisabled(date)){
+				cls.push('disabled', 'disabled-date');	
+			} 
 			if ($.inArray(date.getUTCDay(), this.o.daysOfWeekHighlighted) !== -1){
 				cls.push('highlighted');
 			}
@@ -14235,7 +14200,6 @@ if (typeof jQuery === 'undefined') {
 							// Calendar week: ms between thursdays, div ms per day, div 7 days
 							calWeek =  (th - yth) / 864e5 / 7 + 1;
 						html.push('<td class="cw">'+ calWeek +'</td>');
-
 					}
 				}
 				clsName = this.getClassNames(prevMonth);
@@ -14257,7 +14221,14 @@ if (typeof jQuery === 'undefined') {
 						tooltip = before.tooltip;
 				}
 
-				clsName = $.unique(clsName);
+				//Check if uniqueSort exists (supported by jquery >=1.12 and >=2.2)
+				//Fallback to unique function for older jquery versions
+				if ($.isFunction($.uniqueSort)) {
+					clsName = $.uniqueSort(clsName);
+				} else {
+					clsName = $.unique(clsName);
+				}
+
 				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+prevMonth.getUTCDate() + '</td>');
 				tooltip = null;
 				if (prevMonth.getUTCDay() === this.o.weekEnd){
@@ -14417,7 +14388,7 @@ if (typeof jQuery === 'undefined') {
 			}
 
 			// Clicked on today button
-			if (target.hasClass('today')){
+			if (target.hasClass('today') && !target.hasClass('day')){
 				this.showMode(-2);
 				this._setDate(UTCToday(), this.o.todayBtn === 'linked' ? null : 'view');
 			}
@@ -14560,15 +14531,8 @@ if (typeof jQuery === 'undefined') {
 			if (!which || which !== 'view') {
 				this._trigger('changeDate');
 			}
-			var element;
-			if (this.isInput){
-				element = this.element;
-			}
-			else if (this.component){
-				element = this.element.find('input');
-			}
-			if (element){
-				element.change();
+			if (this.inputField){
+				this.inputField.change();
 			}
 			if (this.o.autoclose && (!which || which === 'date')){
 				this.hide();
@@ -14769,15 +14733,8 @@ if (typeof jQuery === 'undefined') {
 					this._trigger('changeDate');
 				else
 					this._trigger('clearDate');
-				var element;
-				if (this.isInput){
-					element = this.element;
-				}
-				else if (this.component){
-					element = this.element.find('input');
-				}
-				if (element){
-					element.change();
+				if (this.inputField){
+					this.inputField.change();
 				}
 			}
 		},
@@ -15257,7 +15214,7 @@ if (typeof jQuery === 'undefined') {
 	};
 	DPGlobal.template = '<div class="datepicker">'+
 							'<div class="datepicker-days">'+
-								'<table class=" table-condensed">'+
+								'<table class="table-condensed">'+
 									DPGlobal.headTemplate+
 									'<tbody></tbody>'+
 									DPGlobal.footTemplate+
@@ -15306,7 +15263,7 @@ if (typeof jQuery === 'undefined') {
 
 	/* DATEPICKER VERSION
 	 * =================== */
-	$.fn.datepicker.version = '1.6.0';
+	$.fn.datepicker.version = '1.6.4';
 
 	/* DATEPICKER DATA-API
 	* ================== */
@@ -19287,9 +19244,9 @@ $('.hijriDate-ar').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var gregorianDate = $.calendars.instance('gregorian').fromJD(julianDate);
-            $(this).parent().next('div').find('.gregorianDate-ar').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('next', this, '.gregorianDate-ar').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().next('div').find('.gregorianDate-ar').val("");
+            getOtherDateInput('next', this, '.gregorianDate-ar').val("");
         }
     }
 }));
@@ -19303,9 +19260,9 @@ $('.gregorianDate-ar').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
-            $(this).parent().prev('div').find('.hijriDate-ar').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('prev', this, '.hijriDate-ar').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().prev('div').find('.hijriDate-ar').val("");
+            getOtherDateInput('prev', this, '.hijriDate-ar').val("");
 
         }
 
@@ -19323,9 +19280,9 @@ $('.hijriDate').calendarsPicker($.extend({
             // creating gregorian date out of julain date
             var gregorianDate = $.calendars.instance('gregorian')
                     .fromJD(julianDate);
-            $(this).parent().next('div').find('.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('next', this, '.gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().next('div').find('.gregorianDate').val("");
+            getOtherDateInput('next', this, '.gregorianDate').val("");
         }
     }
 }));
@@ -19339,19 +19296,121 @@ $('.gregorianDate').calendarsPicker($.extend({
             var julianDate = dateText[0].toJD();
             // creating gregorian date out of julain date
             var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
-            $(this).parent().prev('div').find('.hijriDate').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+            getOtherDateInput('prev', this, '.hijriDate').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
         } else {
-            $(this).parent().prev('div').find('.hijriDate').val("");
+            getOtherDateInput('prev', this, '.hijriDate').val("");
+        }
+
+    }
+}));
+
+/**
+ * Get other date input from current date
+ * @param {string} relativePostion
+ * @param {object} currentDate
+ * @param {string} otherDateSelector
+ * @returns {getOtherDateInput.otherDateInput}
+ */
+function getOtherDateInput(relativePostion, currentDate, otherDateSelector){
+    var otherDateInput = $(currentDate).parent()[relativePostion]("div").find(otherDateSelector);
+    if(otherDateInput.length === 0){
+        otherDateInput = $(currentDate)[relativePostion]()[relativePostion](otherDateSelector);
+    }
+    return otherDateInput;
+};
+/* OriginalFileName : public/js/new-datepicker.js */ 
+
+// rtl date pickers classes
+$('.new-hijriDate-ar').calendarsPicker($.extend({
+    calendar: $.calendars.instance('ummalqura', 'ar'),
+    onSelect: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
+        // getting julian date out of hijri date
+        if (dateText.length > 0) {
+            var julianDate = dateText[0].toJD();
+            // creating gregorian date out of julain date
+            var gregorianDate = $.calendars.instance('gregorian').fromJD(julianDate);
+            getNewOtherDateInput('next', this, '.new-gregorianDate-ar').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+        } else {
+            getNewOtherDateInput('next', this, '.new-gregorianDate-ar').val("");
+        }
+    }
+}));
+
+$('.new-gregorianDate-ar').calendarsPicker($.extend({
+    calendar: $.calendars.instance('gregorian', 'ar'),
+    onSelect: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
+        // getting julian date out of hijri date
+        if (dateText.length > 0) {
+            var julianDate = dateText[0].toJD();
+            // creating gregorian date out of julain date
+            var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
+            getNewOtherDateInput('prev', this, '.new-hijriDate-ar').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+        } else {
+            getNewOtherDateInput('prev', this, '.new-hijriDate-ar').val("");
 
         }
 
     }
 }));
-;
+
+// ltr date pickers classes
+$('.new-hijriDate').calendarsPicker($.extend({
+    calendar: $.calendars.instance('ummalqura'),
+    onSelect: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
+        // getting julian date out of hijri date
+        if (dateText.length > 0) {
+            var julianDate = dateText[0].toJD();
+            // creating gregorian date out of julain date
+            var gregorianDate = $.calendars.instance('gregorian')
+                    .fromJD(julianDate);
+            getNewOtherDateInput('next', this, '.new-gregorianDate').val(gregorianDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+        } else {
+            getNewOtherDateInput('next', this, '.new-gregorianDate').val("");
+        }
+    }
+}));
+
+$('.new-gregorianDate').calendarsPicker($.extend({
+    calendar: $.calendars.instance('gregorian'),
+    onSelect: function (dateText, datePickerInstance) {
+        $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
+        // getting julian date out of hijri date
+        if (dateText.length > 0) {
+            var julianDate = dateText[0].toJD();
+            // creating gregorian date out of julain date
+            var ummAlQuraDate = $.calendars.instance('ummalqura').fromJD(julianDate);
+            getNewOtherDateInput('prev', this, '.new-hijriDate').val(ummAlQuraDate.formatDate('dd/mm/yyyy').toLocaleString().replace(/-/g, '/'));
+        } else {
+            getNewOtherDateInput('prev', this, '.new-hijriDate').val("");
+        }
+
+    }
+}));
+
+/**
+ * Get other date input from current date
+ * @param {string} relativePostion
+ * @param {object} currentDate
+ * @param {string} otherDateSelector
+ * @returns {getNewOtherDateInput.otherDateInput}
+ */
+function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
+    var otherDateInput = $(currentDate).parents('.form-group').parent()[relativePostion]("div").find(otherDateSelector);
+    if (otherDateInput.length === 0) {
+        otherDateInput = $(currentDate).parents('.form-group')[relativePostion]("div").find(otherDateSelector);
+    }
+    if (otherDateInput.length === 0) {
+        otherDateInput = $(currentDate)[relativePostion]()[relativePostion](otherDateSelector);
+    }
+    return otherDateInput;
+};
 /* OriginalFileName : public/bower_components/metisMenu/dist/metisMenu.js */ 
 
 /*
- * metismenu - v2.5.0
+ * metismenu - v2.5.2
  * A jQuery menu plugin
  * https://github.com/onokumus/metisMenu#readme
  *
@@ -19496,8 +19555,6 @@ $('.gregorianDate').calendarsPicker($.extend({
 
     function setTransitionEndSupport() {
       transition = transitionEndTest();
-
-      $.fn.emulateTransitionEnd = transitionEndEmulator;
 
       if (Util.supportsTransitionEnd()) {
         $.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent();
@@ -19657,7 +19714,7 @@ $('.gregorianDate').calendarsPicker($.extend({
             return;
           }
 
-          _el.height(0).one(Util.TRANSITION_END, complete);
+          _el.height() == 0 || _el.css('display') == 'none' ? complete() : _el.height(0).one(Util.TRANSITION_END, complete);
 
           transitionEndEmulator(TRANSITION_DURATION);
         }
@@ -20105,6 +20162,335 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
 
 }).call(this);
 ;
+/* OriginalFileName : node_modules/addtocalendar/addtocalendar.js */ 
+
+(function (w, d) {
+    var
+        atc_url = '//addtocalendar.com/atc/',
+        atc_version = '1.5';
+
+
+    if (!Array.indexOf) {
+        Array.prototype.indexOf = function (obj) {
+            for (var i = 0, l = this.length; i < l; i++) {
+                if (this[i] == obj) {
+                    return i
+                }
+            }
+            return -1
+        }
+    }
+
+    if (!Array.prototype.map) {
+        Array.prototype.map = function (f) {
+            var result = [];
+            for (var i = 0, l = this.length; i < l; i++) {
+                result.push(f(this[i]))
+            }
+            return result
+        }
+    }
+
+    var isArray = function (obj) {
+        return Object.prototype.toString.call(obj) === "[object Array]"
+    };
+
+    var isFunc = function (obj) {
+        return Object.prototype.toString.call(obj) === "[object Function]"
+    };
+
+    var ready = function (w, d) {
+        var inited = false,
+            loaded = false,
+            queue = [],
+            done, old;
+
+        function go() {
+            if (!inited) {
+                if (!d.body) return setTimeout(go, 13);
+                inited = true;
+                if (queue) {
+                    var j, k = 0;
+                    while (j = queue[k++]) j.call(null);
+                    queue = null
+                }
+            }
+        }
+
+        function check() {
+            if (loaded) return;
+            loaded = true;
+            if (d.readyState === "complete") return go();
+            if (d.addEventListener) {
+                d.addEventListener("DOMContentLoaded", done, false);
+                w.addEventListener("load", go, false)
+            } else {
+                if (d.attachEvent) {
+                    d.attachEvent("onreadystatechange", done);
+                    w.attachEvent("onload", go);
+                    var k = false;
+                    try {
+                        k = w.frameElement == null
+                    } catch (j) {}
+                    if (b.doScroll && k) ie()
+                } else {
+                    old = w.onload;
+                    w.onload = function (e) {
+                        old(e);
+                        go()
+                    }
+                }
+            }
+        }
+        if (d.addEventListener) {
+            done = function () {
+                d.removeEventListener("DOMContentLoaded", done, false);
+                go()
+            }
+        } else {
+            if (d.attachEvent) {
+                done = function () {
+                    if (d.readyState === "complete") {
+                        d.detachEvent("onreadystatechange", done);
+                        go()
+                    }
+                }
+            }
+        }
+
+        function ie() {
+            if (inited) return;
+            try {
+                b.doScroll("left")
+            } catch (j) {
+                setTimeout(ie, 1);
+                return
+            }
+            go()
+        }
+        return function (callback) {
+            check();
+            if (inited) {
+                callback.call(null)
+            } else {
+                queue.push(callback)
+            }
+        }
+    }(w, d);
+
+    if (w.addtocalendar && typeof w.addtocalendar.start == "function") return;
+    if (!w.addtocalendar) w.addtocalendar = {};
+
+    addtocalendar.languages = {
+        'de': 'In den Kalender',
+        'en': 'Add to Calendar',
+        'es': 'Añadir al Calendario',
+        'fr': 'Ajouter au calendrier',
+        'hi': 'कैलेंडर में जोड़ें',
+        'in': 'Tambahkan ke Kalender',
+        'ja': 'カレンダーに追加',
+        'ko': '캘린더에 추가',
+        'pt': 'Adicionar ao calendário',
+        'ru': 'Добавить в календарь',
+        'uk': 'Додати в календар',
+        'zh': '添加到日历'
+    };
+
+    addtocalendar.calendar_urls = {
+
+    }
+
+    addtocalendar.loadSettings = function(element){
+        var settings = {
+            'language':'auto',
+            'show-list-on':'click',
+            'calendars':[
+                'iCalendar',
+                'Google Calendar',
+                'Outlook',
+                'Outlook Online',
+                'Yahoo! Calendar'
+            ],
+            'secure':'auto',
+            'on-button-click':function(){},
+            'on-calendar-click':function(){}
+        };
+
+        for (var option in settings){
+            var pname = 'data-' + option;
+            var eattr = element.getAttribute(pname);
+            if(eattr != null){
+
+                if(isArray(settings[option])){
+                    settings[option] = eattr.replace(/\s*,\s*/g,',').replace(/^\s+|\s+$/g, '').split(',');
+                    continue;
+                }
+
+                if(isFunc(settings[option])){
+                    var fn = window[eattr];
+                    if(isFunc(fn)) {
+                        settings[option]=fn;
+                    }else {
+                        settings[option]=eval('(function(mouseEvent){'+eattr+'})');
+                    }
+                    continue;
+                }
+
+                settings[option]=element.getAttribute(pname);
+            }
+        }
+
+        return settings;
+    };
+
+    addtocalendar.load = function () {
+
+        var calendarsUrl = {
+            'iCalendar':'ical',
+            'Google Calendar':'google',
+            'Outlook':'outlook',
+            'Outlook Online':'outlookonline',
+            'Yahoo! Calendar':'yahoo'
+        };
+        var utz = (-(new Date()).getTimezoneOffset().toString());
+
+        var languages = addtocalendar.languages;
+
+        var dom = document.getElementsByTagName('*');
+        for (var tagnum = 0; tagnum < dom.length; tagnum++) {
+            var tag_class = dom[tagnum].className;
+
+            if (tag_class.length && tag_class.split(" ").indexOf('addtocalendar') != -1) {
+
+                var settings = addtocalendar.loadSettings(dom[tagnum]);
+
+                var protocol = 'http:';
+                if(settings['secure'] == 'auto'){
+                    protocol = location.protocol == 'https:' ? 'https:' : 'http:';
+                } else if(settings['secure'] == 'true'){
+                    protocol = 'https:';
+                }
+
+                var tag_id = dom[tagnum].id;
+                var atc_button_title = languages['en'];
+                if(settings['language'] == 'auto'){
+                    var user_lang = "no_lang";
+					if (typeof navigator.language === "string") {
+					    user_lang = navigator.language.substr(0, 2)
+					} else if (typeof navigator.browserLanguage === "string") {
+					    user_lang = navigator.browserLanguage.substr(0, 2)
+					}
+
+                    if(languages.hasOwnProperty(user_lang)){
+                        atc_button_title = languages[user_lang];
+                    }
+                }else if(languages.hasOwnProperty(settings['language'])){
+                    atc_button_title = languages[settings['language']];
+                }
+
+                var url_paramteres = [
+                    'utz=' + utz,
+                    'uln=' + navigator.language,
+                    'vjs=' + atc_version
+                ];
+
+                var addtocalendar_div = dom[tagnum].getElementsByTagName('var');
+                var event_number = -1;
+                for (var varnum = 0; varnum < addtocalendar_div.length; varnum++) {
+                    var param_name = addtocalendar_div[varnum].className.replace("atc_","").split(" ")[0];
+                    var param_value = addtocalendar_div[varnum].innerHTML;
+
+                    if(param_name == 'event'){
+                        event_number++;
+                        continue;
+                    }
+
+                    if(param_name == addtocalendar_div[varnum].className){
+                        if(param_name == 'atc-body'){
+                            atc_button_title = param_value;
+                        }
+                        continue;
+                    }
+
+                    if(event_number == -1){
+                        continue;
+                    }
+
+                    url_paramteres.push('e['+event_number+']['+param_name+']' + '=' + encodeURIComponent(param_value));
+                }
+
+
+                var atcb_link_id_val = (tag_id == ''?'':(tag_id + '_link') );
+                var atcb_list = document.createElement('ul');
+                atcb_list.className = 'atcb-list';
+
+                var menu_links = '';
+                for (var cnum in settings['calendars']){
+                    if(!calendarsUrl.hasOwnProperty(settings['calendars'][cnum])){
+                        continue;
+                    }
+                    var cal_id = calendarsUrl[settings['calendars'][cnum]];
+                    var atcb_cal_link_id = (tag_id == '' ? '' : ('id="'+tag_id + '_' + cal_id + '_link"') );
+                    menu_links += '<li class="atcb-item"><a '+atcb_cal_link_id+' class="atcb-item-link" href="' 
+						+ (cal_id=='ical' && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream ? 'webcal:' : protocol)
+						+ atc_url
+						+ cal_id + '?' + url_paramteres.join('&')
+						+ '" target="_blank">' + settings['calendars'][cnum] + '</a></li>';
+                }
+                atcb_list.innerHTML = menu_links;
+
+                if(dom[tagnum].getElementsByClassName('atcb-link')[0] == undefined){
+                    var atcb_link = document.createElement('a');
+                    atcb_link.className = 'atcb-link';
+                    atcb_link.innerHTML = atc_button_title;
+                    atcb_link.id = atcb_link_id_val;
+                    atcb_link.tabIndex = 1;
+
+                    dom[tagnum].appendChild(atcb_link);
+                    dom[tagnum].appendChild(atcb_list);
+                }else{
+                    var atcb_link = dom[tagnum].getElementsByClassName('atcb-link')[0];
+                    atcb_link.parentNode.appendChild(atcb_list);
+                    atcb_link.tabIndex=1;
+                    if(atcb_link.id == ''){
+                        atcb_link.id = atcb_link_id_val;
+                    }
+                }
+
+                dom[tagnum]
+                    .getElementsByClassName('atcb-link')[0]
+                    .addEventListener("click", settings['on-button-click'], false);
+
+                var item_links = dom[tagnum].getElementsByClassName('atcb-item-link');
+
+                for (var varnum = 0; varnum < item_links.length; varnum++) {
+                    item_links[varnum].addEventListener("click", settings['on-calendar-click'], false);
+                }
+
+            }
+        }
+    };
+    addtocalendar.load();
+})(window, document);
+;
+/* OriginalFileName : public/js/addToCalendar.js */ 
+
+/**
+ * Add to client calendar
+ * 
+ * @param {object} mouseEvent
+ * @returns {undefined}
+ */
+function atcOnCalendarClick(mouseEvent) {
+    $.get("/course-events/add-calendar", {url: this.href})
+            .done(function (data) {
+                var parsedData = $.parseJSON(data);
+                if ("message" in parsedData) {
+                    bootbox.alert(parsedData.message);
+                }
+            });
+    mouseEvent.preventDefault();
+};
 /* OriginalFileName : public/js/form.js */ 
 
 /**
@@ -20161,25 +20547,26 @@ $(document).ready(function () {
 });;
 /* OriginalFileName : public/js/menu.js */ 
 
-$(document).ready(function(){
-  $('.dropdown a').on("click", function(e){
-    $(this).next('ul').toggle();
-    e.stopPropagation();
-  });
-});
-;
+$(document).ready(function () {
+    $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $(this).parent().siblings().removeClass('open');
+        $(this).parent().toggleClass('open');
+    });
+});;
 /* OriginalFileName : public/js/menuItemCRUD.js */ 
 
-if ($('#menu_item_form_parent').length) {
+if ($('#menu_item_form_optgroup-parent').length) {
     var menuId = $('#menu_item_form_menu').val();
     // in case selected value is empty and menuId has value set
     // select empty value under proper optGroup "parent"
-    if ($('#menu_item_form_parent :selected').val() == false && menuId) {
+    if ($('#menu_item_form_optgroup-parent :selected').val() == false && menuId) {
         // set value for select empty, which is the already expected case
-        $('#menu_item_form_parent').val('');
+        $('#menu_item_form_optgroup-parent').val('');
         // loop on options
         // select option with right menu id
-        $("#menu_item_form_parent option").each(function()
+        $("#menu_item_form_optgroup-parent option").each(function()
         {
             // menu id matches value for menu field
             if( $(this).val() === '' && $(this).attr("data-menu") ===  menuId){
@@ -20190,13 +20577,13 @@ if ($('#menu_item_form_parent').length) {
     // selected parent is not empty value "root"          
     } else {
         // update menu field with selected option menu
-        menuId = $('#menu_item_form_parent :selected').attr('data-menu');
+        menuId = $('#menu_item_form_optgroup-parent :selected').attr('data-menu');
         $('#menu_item_form_menu').val(menuId);
     }
     // on parent change, update menu field
-    $('#menu_item_form_parent').change(function ()
+    $('#menu_item_form_optgroup-parent').change(function ()
     {
-        menuId = $('#menu_item_form_parent :selected').attr('data-menu');
+        menuId = $('#menu_item_form_optgroup-parent :selected').attr('data-menu');
         $('#menu_item_form_menu').val(menuId);
     });
 };
@@ -20224,27 +20611,32 @@ function managePressReleaseFields(pressReleaseType) {
  */
 function displayPressReleaseFields(pressReleaseType) {
     if ($('#page_form_type :selected').val() == pressReleaseType) {
+        $("#page_form_path").parents('.form-group').parent().hide();
+        $("#page_form_path").prop('required',false);
+        $("#page_form_path").val('');
         // show press release inputs at the beginning
-        $("#page_form_category").parent().show();
+        $("#page_form_category").parents('.form-group').parent().show();
         $("#page_form_category").prop('required',true);
-        $("#page_form_author").parent().show();
+        $("#page_form_author").parents('.form-group').parent().show();
         $("#page_form_author").prop('required',true);
-        $("#page_form_summary").parent().show();
+        $("#page_form_summary").parents('.form-group').parent().show();
         $("#page_form_summary").prop('required',true);
-        $("#page_form_summaryAr").parent().show();
+        $("#page_form_summaryAr").parents('.form-group').parent().show();
         $("#page_form_summaryAr").prop('required',true);
-        $("#page_form_picture").parent().show();
+        $("#page_form_picture").parents('.form-group').parent().show();
     } else {
+        $("#page_form_path").parents('.form-group').parent().show();
+        $("#page_form_path").prop('required',true);
         // hide press release inputs at the beginning
-        $("#page_form_category").parent().hide();
+        $("#page_form_category").parents('.form-group').parent().hide();
         $("#page_form_category").prop('required',false);
-        $("#page_form_author").parent().hide();
+        $("#page_form_author").parents('.form-group').parent().hide();
         $("#page_form_author").prop('required',false);
-        $("#page_form_summary").parent().hide();
+        $("#page_form_summary").parents('.form-group').parent().hide();
         $("#page_form_summary").prop('required',false);
-        $("#page_form_summaryAr").parent().hide();
+        $("#page_form_summaryAr").parents('.form-group').parent().hide();
         $("#page_form_summaryAr").prop('required',false);
-        $("#page_form_picture").parent().hide();
+        $("#page_form_picture").parents('.form-group').parent().hide();
     }
 };
 /* OriginalFileName : public/js/courseCRUD.js */ 
@@ -20258,8 +20650,8 @@ function displayPressReleaseFields(pressReleaseType) {
 function updateOutlines(addMoreSelector, isAdminUser) {
     var currentCount, newLabel, newRemoveButton;
     // update displayed outlines fieldsets
-    if ($('#course_form > fieldset.outlinesFieldset > fieldset').length) {
-        $('#course_form > fieldset.outlinesFieldset > fieldset').each(function (index) {
+    if ($('.outlinesFieldset > fieldset').length) {
+        $('.outlinesFieldset > fieldset').each(function (index) {
             if (index !== 0) {
                 currentCount = index;
                 newLabel = getOutlineLabel(currentCount);
@@ -20280,15 +20672,15 @@ function updateOutlines(addMoreSelector, isAdminUser) {
  * @param {int} outlinesCount
  */
 function addMoreOutline(addMoreSelector, outlinesCount) {
-    var template = $('form > fieldset.outlinesFieldset > span').data('template');
+    var template = $('.outlinesFieldset > span').data('template');
     var tempTemplate, currentCount, newLabel, newRemoveButton, outlineFieldset;
     for (var outlineCounter = 0; outlineCounter < outlinesCount; outlineCounter++) {
-        currentCount = $('form > fieldset.outlinesFieldset > fieldset').length;
+        currentCount = $('.outlinesFieldset > fieldset').length;
         newLabel = getOutlineLabel(currentCount);
         newRemoveButton = getOutlineRemoveButton(currentCount, addMoreSelector);
         tempTemplate = template.replace(/__outlineNumber__/g, currentCount);
         outlineFieldset = newLabel + tempTemplate + newRemoveButton;
-        $('form > fieldset.outlinesFieldset').append(outlineFieldset);
+        $('.outlinesFieldset').append(outlineFieldset);
     }
 }
 
@@ -20323,7 +20715,7 @@ function getOutlineLabel(currentCount) {
 function getOutlineRemoveButton(currentCount, addMoreSelector) {
 // prepare new remove button
     var newRemoveButtonId = "removeOutline" + currentCount;
-    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).val("Remove").wrap("<div />").parent().html();
+    return $(addMoreSelector).clone().attr("onclick", "removeOutline('#" + newRemoveButtonId + "')").attr("id", newRemoveButtonId).text("Remove").wrap("<div />").parent().html() + "<div class='form-group'>&nbsp;</div>";
 };
 /* OriginalFileName : public/js/courseEventCRUD.js */ 
 
@@ -20353,7 +20745,10 @@ function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
     oneFileTypes = $.parseJSON(oneFileTypes);
     $(typeSelector).change(function () {
         var typeValue = $(this).val();
-        if ($.inArray(typeValue, oneFileTypes) > -1) {
+        var selectedText = $(this).find('option[value=' + typeValue + ']').text();
+        if ($.inArray(selectedText, oneFileTypes) > -1) {
+            // remove all previously added sub-forms
+            $('input[value="Remove"]').click();
             $(addMoreSelector).hide();
         } else {
             $(addMoreSelector).show();
@@ -20365,18 +20760,23 @@ function addMoreListener(addMoreSelector, typeSelector, oneFileTypes) {
  * Add more resource above add more button
  * 
  * @param {string} addMoreSelector
+ * @param {string} typeInputSelector
  * @param {string} nameInputSelector
  * @param {string} fileInputSelector
+ * @param {string} typeValue
+ * @param {string} typeClass
+ * @param {string} typeErrors
  * @param {string} nameValue
  * @param {string} nameClass
  * @param {string} nameErrors
  * @param {string} fileClass
  * @param {string} fileErrors
+ * @param {array} oneFileTypes
  * @returns {Boolean} false in case any field does not exist
  */
-function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector, fileInputSelector, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors) {
+function addMoreResource(addMoreSelector, typeInputSelector, nameInputSelector, nameInputArSelector, fileInputSelector, typeValue, typeClass, typeErrors, nameValue, nameClass, nameErrors, nameArValue, nameArClass, nameArErrors, fileClass, fileErrors, oneFileTypes) {
 
-    if (!$(addMoreSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
+    if (!$(addMoreSelector).length || !$(typeInputSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length || !$(nameInputArSelector).length) {
         return false;
     }
 
@@ -20388,10 +20788,34 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     var newElementNameArExtension = "AddedAr[" + fileInputsCount + "]";
 
     // This is a way to "htmlDecode" your string...  
+    typeErrors = $("<div />").html(typeErrors).text();
     nameErrors = $("<div />").html(nameErrors).text();
     nameArErrors = $("<div />").html(nameArErrors).text();
     fileErrors = $("<div />").html(fileErrors).text();
 
+    // style preparation
+    var divElementContainer = "<div class='col-md-12'></div>";
+    var divFormGroup = "<div class='form-group'></div>";
+    var divInputContainer = "<div class='col-sm-9'></div>";
+    var divFileInputContainer = "<div class='col-sm-3'></div>";
+    
+    // prepare new type field
+    var newTypeInputId = $(typeInputSelector).attr("id") + newElementIdExtension;
+    var newTypeInputName = $(typeInputSelector).attr("name") + newElementNameExtension;
+    var oldTypeInputClass = $(typeInputSelector).attr("class");
+    if (typeof oldTypeInputClass !== "undefined") {
+        oldTypeInputClass.replace('input-error', '')
+    } else {
+        oldTypeInputClass = '';
+    }
+    var newTypeInputClass = oldTypeInputClass + " " + typeClass;
+    var newTypeInput = $(typeInputSelector).clone().find('option:selected').prop('selected', false).end().attr('class', newTypeInputClass).attr("id", newTypeInputId).attr("name", newTypeInputName).attr('value', typeValue);
+    if (typeValue !== "") {
+        newTypeInput.find('option[value='+typeValue+']').prop('selected', true).end();
+    }
+    var newTypeLabel = $(typeInputSelector).parents('.form-group').children("label").clone();
+    var newTypeField = $(divElementContainer).append($(divFormGroup).append(newTypeLabel).append($(divInputContainer).append(newTypeInput).append(typeErrors)));
+    
     // prepare new  name field
     var newNameInputId = $(nameInputSelector).attr("id") + newElementIdExtension;
     var newNameInputName = $(nameInputSelector).attr("name") + newElementNameExtension;
@@ -20406,10 +20830,9 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     if (nameValue === "") {
         newNameInput.val("");
     }
-    var newNameLabel = $(nameInputSelector).prev("label").clone();
-    var newNameField = $("<div></div>").append(newNameLabel).append(newNameInput).append(nameErrors);
-
-
+    var newNameLabel = $(nameInputSelector).parents('.form-group').children("label").clone();
+    var newNameField = $(divElementContainer).append($(divFormGroup).append(newNameLabel).append($(divInputContainer).append(newNameInput).append(nameErrors)));
+    
     // prepare new arabic name field
     var newNameArInputId = $(nameInputArSelector).attr("id") + newElementIdArExtension;
     var newNameArInputName = $(nameInputArSelector).attr("name") + newElementNameArExtension;
@@ -20425,8 +20848,8 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
         newNameArInput.val("");
     }
 
-    var newNameArLabel = $(nameInputArSelector).prev("label").clone();
-    var newNameArField = $("<div></div>").append(newNameArLabel).append(newNameArInput).append(nameArErrors);
+    var newNameArLabel = $(nameInputArSelector).parents('.form-group').children("label").clone();
+    var newNameArField = $(divElementContainer).append($(divFormGroup).append(newNameArLabel).append($(divInputContainer).append(newNameArInput).append(nameArErrors)));
 
 
     // prepare new file field
@@ -20440,35 +20863,44 @@ function addMoreResource(addMoreSelector, nameInputSelector, nameInputArSelector
     }
     var newFileInputClass = oldFileInputClass + " addedResources " + fileClass;
     var newFileInput = $(fileInputSelector).clone().attr("class", newFileInputClass).attr("id", newFileInputId).attr("name", newFileInputName);
-    var newFileLabel = $(fileInputSelector).prev("label").clone();
-    var newFileField = $("<div></div>").append(newFileLabel).append(newFileInput).append(fileErrors);
+    var newFileLabel = $(fileInputSelector).parents('.form-group').children("label").clone();
+    var newFileNote = $(fileInputSelector).parents('.form-group').children("div").last().clone();
+    var newFileField = $(divFormGroup).append(newFileLabel);
+    if(fileErrors !== ''){
+        newFileField = newFileField.append($(divFileInputContainer).append(newFileInput).append(fileErrors));
+    }else{
+        newFileField = newFileField.append($(divFileInputContainer).append(newFileInput));
+    }
+    newFileField = newFileField.append($(divFileInputContainer).append(newFileNote));
+    newFileField = $(divElementContainer).append(newFileField);
     // prepare new remove button
     var newRemoveButtonId = "removeButton" + newElementIdExtension;
     var newRemoveButtonName = "removeButton" + newElementNameExtension;
-    var newRemoveButtonSpacer = $(addMoreSelector).prev("dt").clone();
-    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).val("Remove");
+    var newRemoveButtonSpacer = '<br/>';
+    var newRemoveButton = $(addMoreSelector).clone().attr("onclick", "removeResource('#" + newRemoveButtonId + "','#" + newTypeInputId + "','#" + newNameInputId + "','#" + newNameArInputId + "','#" + newFileInputId + "')").attr("id", newRemoveButtonId).attr("name", newRemoveButtonName).text("Remove");
 
 
 
     // prepare full new resource
-    var newResource = $("<div><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton);
+    var newResource = $("<div class='new-resource-container'><br/><strong>Added resource no. " + (fileInputsCount + 2) + "</strong></div>").append(newTypeField).append(newNameField).append(newNameArField).append(newFileField).append(newRemoveButtonSpacer).append(newRemoveButton).append("<div class='form-group'>&nbsp;</div>");
     // add new resource before add button
-    $(addMoreSelector).prev("dt").before(newResource);
+    $(addMoreSelector).before(newResource);
 }
 
 /**
  * Remove resource
  * 
  * @param {string} removeButtonSelector
+ * @param {string} typeInputSelector
  * @param {string} nameInputSelector
  * @param {string} fileInputSelector
  * @returns {Boolean} false in case any field does not exist
  */
-function removeResource(removeButtonSelector, nameInputSelector, fileInputSelector) {
-    if (!$(removeButtonSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
+function removeResource(removeButtonSelector, typeInputSelector, nameInputSelector, fileInputSelector) {
+    if (!$(removeButtonSelector).length || !$(typeInputSelector).length || !$(nameInputSelector).length || !$(fileInputSelector).length) {
         return false;
     }
-    $(nameInputSelector).parent("div").parent("div").remove();
+    $(typeInputSelector).parents(".new-resource-container").remove();
 }
 
 /**
