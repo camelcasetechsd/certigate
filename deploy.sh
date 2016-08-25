@@ -6,7 +6,7 @@ composer install
 
 ## prepare Grunt libraries
 npm update npm
-npm install
+npm update
 
 # creating schema
 APPLICATION_ENV=$app_env bin/doctrine orm:schema-tool:drop --force;
@@ -29,7 +29,7 @@ APPLICATION_ENV=$app_env php public/forum/updateDB.php
 
 ## prepare public resources
 cd public
-bower install 
+bower update 
 cd ../
 
 ## run Grunt tasks
