@@ -233,12 +233,12 @@
                             <div class="panel-body">
                                 <table class="table">
                                     <thead>
-                                        {{#votes.count}}
+                                        {{#votes.0}}
                                         <tr>
                                             <th>{{#translate}}Question{{/translate}}</th>
                                             <th>{{#translate}}Average Vote{{/translate}}</th>
                                         </tr>
-                                        {{/votes.count}}
+                                        {{/votes.0}}
                                     </thead>
                                     <tbody>
                                         {{#votes}}
@@ -266,7 +266,7 @@
                                         <tr>
                                             <th>{{#translate}}First Name{{/translate}}</th>
                                             <th>{{#translate}}Last Name{{/translate}}</th>
-                                            <th>{{#translate}}User Name{{/translate}}</th>
+                                            <th>{{#translate}}Username{{/translate}}</th>
                                             <th>{{#translate}}Email{{/translate}}</th>
                                         </tr>
                                         {{/courseEventUsers.count}}

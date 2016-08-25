@@ -10,7 +10,8 @@
 
         <fieldset>
             <legend>{{module}}</legend>
-            <input class="checkAllModuleRoutes" data-module="{{module}}" type="checkbox"/><label>{{#translate}}Check All{{/translate}}</label>
+            <input id="privilege-{{module}}" class="checkAllModuleRoutes" data-module="{{module}}" type="checkbox"/>
+            <label for="privilege-{{module}}">{{#translate}}Check All{{/translate}}</label>
             <div class="input-group-sm checkAll-{{module}}">
                 {{#routes}}
 
