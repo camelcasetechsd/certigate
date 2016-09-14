@@ -103,6 +103,16 @@ return array(
                     ),
                 )
             ),
+            'refreshcaptcha' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/users/refreshcaptcha',
+                    'defaults' => array(
+                        'controller' => 'Users\Controller\Index',
+                        'action' => 'refreshcaptcha',
+                    ),
+                )
+            ),
             'userDelete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

@@ -428,5 +428,36 @@ class IndexController extends ActionController
             'name' => 'users'));
         $this->redirect()->toUrl($url);
     }
+    
+    
+    /**
+     * Ajax call to refresh the captcha
+     */
+    public function refreshcaptchaAction()
+    {
+        $countriesService = $this->getServiceLocator()->get('losi18n-countries');
+        $languagesService = $this->getServiceLocator()->get('losi18n-languages');
+        $query = $this->getServiceLocator()->get('wrapperQuery');
+        $options = array();
+        $options['query'] = $query;
+        $options['countriesService'] = $countriesService;
+        $options['languagesService'] = $languagesService;
+        $options['applicationLocale'] = $this->getServiceLocator()->get('applicationLocale');
+        $options['excludedRoles'] = array(Role::USER_ROLE);
+        $auth = new AuthenticationService();
+        $storage = $auth->getIdentity();
+        if (!$auth->hasIdentity() || ( $auth->hasIdentity() && !in_array(Role::ADMIN_ROLE, $storage['roles']))) {
+            $options['excludedRoles'][] = Role::ADMIN_ROLE;
+        }
+        $form = new UserForm(/* $name = */ null, $options);
+        
+        $captcha = $form->get('captcha')->getCaptcha();
+        $data['id'] = $captcha->generate();
+        $data['src'] = $captcha->getImgUrl() .
+                $captcha->getId() .
+                $captcha->getSuffix();
+
+        return $this->getResponse()->setContent(json_encode($data));
+    }
 
 }

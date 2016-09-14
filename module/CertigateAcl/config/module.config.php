@@ -74,6 +74,9 @@ return array(
             'registration' => array(
                 'resource' => 'Users'
             ),
+            'refreshcaptcha' => array(
+                'resource' => 'Users'
+            ),
             'rolesStatements' => array(
                 'resource' => 'Users'
             ),

@@ -57,6 +57,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/CKEditor_config.js',
                     '<%= dirs.jsSrc %>/homepage.js',
                     '<%= dirs.jsSrc %>/rolesPrivileges.js',
+                    '<%= dirs.jsSrc %>/userForm.js'
                 ]
 
             },
@@ -101,6 +102,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/CKEditor_config.js',
                     '<%= dirs.jsSrc %>/homepage.js',
                     '<%= dirs.jsSrc %>/rolesPrivileges.js',
+                    '<%= dirs.jsSrc %>/userForm.js'
                 ]
 
             },
