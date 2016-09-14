@@ -66,6 +66,9 @@ class FormSmasher
 
             $name = $element->getAttribute('name');
             $elementsContainer[$name . 'Label'] = $element->getLabel();
+            if(isset($element->getOptions()['description'])){
+                $elementsContainer[$name . 'Description'] = $element->getOptions()['description'];
+            }
 
             if ($element->getAttribute('type') === 'captcha' || $element->getAttribute('name') === 'captcha') {
                 $elementsContainer[$name] = $formCaptcha($form->get($name), $element->setAttributes(array('id' => $formName . '_' . $name)));

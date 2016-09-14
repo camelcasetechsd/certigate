@@ -150,6 +150,7 @@ class UserForm extends Form
             ),
             'options' => array(
                 'label' => 'Mobile',
+                'description' => 'e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) '
             ),
         ));
         $this->add(array(
@@ -157,10 +158,11 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
-                'class' => 'form-register',
+                'class' => 'form-register',                
             ),
             'options' => array(
                 'label' => 'Phone',
+                'description' => 'e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) '
             ),
         ));
 
