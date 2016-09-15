@@ -257,7 +257,7 @@ class IndexController extends ActionController
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
 
-            if ($data['longitude'] === '' || $data['latitude'] === '' || $data['mapZoom'] === '') {
+            if (empty($data['longitude']) || empty($data['latitude'])) {
                 $form->get('latitude')->setMessages(array("Location is required"));
                 $isCustomValidationValid = false;
             }
