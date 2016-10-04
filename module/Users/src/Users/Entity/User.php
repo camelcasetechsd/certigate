@@ -31,7 +31,6 @@ use Zend\Validator\NotEmpty;
  * @property string $lastName
  * @property string $lastNameAr
  * @property string $country
- * @property string $language
  * @property string $username
  * @property string $password
  * @property string $mobile
@@ -140,13 +139,6 @@ class User
      * @var string
      */
     public $country;
-
-    /**
-     *
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    public $language;
 
     /**
      *
@@ -618,18 +610,6 @@ class User
     public function getCountry()
     {
         return $this->country;
-    }
-
-    /**
-     * Get language
-     * 
-     * 
-     * @access public
-     * @return string language
-     */
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     /**
@@ -1136,20 +1116,6 @@ class User
     public function setCountry($country)
     {
         $this->country = $country;
-        return $this;
-    }
-
-    /**
-     * Set language
-     * 
-     * 
-     * @access public
-     * @param string $language
-     * @return User current entity
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
         return $this;
     }
 
@@ -1870,7 +1836,6 @@ class User
                 ->setMiddleName($data["middleName"])
                 ->setMiddleNameAr($data["middleNameAr"])
                 ->setCountry($data["country"])
-                ->setLanguage($data["language"])
                 ->setUsername($data["username"])
                 ->setAddressOne($data["addressOne"])
                 ->setAddressTwo($data["addressTwo"])
@@ -2078,10 +2043,6 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'country',
-                'required' => true,
-            ));
-            $inputFilter->add(array(
-                'name' => 'language',
                 'required' => true,
             ));
             $inputFilter->add(array(

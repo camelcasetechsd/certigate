@@ -393,21 +393,6 @@ class UserForm extends Form
                 'empty_option' => self::EMPTY_SELECT_VALUE,
             ),
         ));
-
-        $this->add(array(
-            'name' => 'language',
-            'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
-                'class' => 'form-register',
-                'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Language',
-                'value_options' => $languagesService->getAllLanguages($currentLanguageCode),
-                'empty_option' => self::EMPTY_SELECT_VALUE,
-            ),
-        ));
-
         $this->add(array(
             'name' => 'addressOne',
             'type' => 'Zend\Form\Element\Text',

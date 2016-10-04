@@ -39,7 +39,6 @@ class User extends AbstractFixture implements OrderedFixtureInterface
                     ->setMiddleName($faker->firstName)
                     ->setLastName($faker->lastName)
                     ->setCountry($faker->countryCode)
-                    ->setLanguage($faker->languageCode)
                     ->setUsername($userName)
                     ->setPassword(UserEntity::hashPassword($userCredential["password"]))
                     ->setMobile($faker->numberBetween(/* $min = */ 1000000000, /* $max = */ 2000000000))
