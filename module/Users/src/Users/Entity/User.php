@@ -233,14 +233,14 @@ class User
 
     /**
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      * @var \DateTime
      */
     public $identificationExpiryDate;
 
     /**
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      * @var \DateTime
      */
     public $identificationExpiryDateHj;
@@ -268,14 +268,14 @@ class User
 
     /**
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      * @var \DateTime
      */
     public $dateOfBirth;
 
     /**
      * hijri date
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date",nullable=true)
      * @var \DateTime
      */
     public $dateOfBirthHj;
@@ -1031,7 +1031,8 @@ class User
      */
     public function setDateOfBirth($dateOfBirth)
     {
-        $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
+        if (!empty($dateOfBirth))
+            $this->dateOfBirth = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirth);
         return $this;
     }
 
@@ -1045,7 +1046,8 @@ class User
      */
     public function setDateOfBirthHj($dateOfBirthHj)
     {
-        $this->dateOfBirthHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirthHj);
+        if (!empty($dateOfBirthHj))
+            $this->dateOfBirthHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $dateOfBirthHj);
         return $this;
     }
 
@@ -1507,7 +1509,8 @@ class User
      */
     public function setIdentificationExpiryDate($identificationExpiryDate)
     {
-        $this->identificationExpiryDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDate);
+        if (!empty($identificationExpiryDate))
+            $this->identificationExpiryDate = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDate);
         return $this;
     }
 
@@ -1521,7 +1524,8 @@ class User
      */
     public function setIdentificationExpiryDateHj($identificationExpiryDateHj)
     {
-        $this->identificationExpiryDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDateHj);
+        if (!empty($identificationExpiryDateHj))
+            $this->identificationExpiryDateHj = \DateTime::createFromFormat(Time::DATE_FORMAT, $identificationExpiryDateHj);
         return $this;
     }
 
@@ -1953,7 +1957,7 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'firstNameAr',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
@@ -1989,7 +1993,7 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'lastNameAr',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
@@ -2066,7 +2070,7 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'dateOfBirth',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -2078,7 +2082,7 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'dateOfBirthHj',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -2208,16 +2212,16 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'identificationType',
-                'required' => true,
+                'required' => false,
             ));
 
             $inputFilter->add(array(
                 'name' => 'identificationNumber',
-                'required' => true,
+                'required' => false,
             ));
             $inputFilter->add(array(
                 'name' => 'identificationExpiryDate',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'date',
@@ -2229,7 +2233,7 @@ class User
             ));
             $inputFilter->add(array(
                 'name' => 'identificationExpiryDateHj',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'date',

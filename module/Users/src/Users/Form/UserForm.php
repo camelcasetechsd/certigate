@@ -73,7 +73,6 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter First Name in Arabic',
-                'required' => 'required',
                 'class' => 'form-register',
             ),
             'options' => array(
@@ -119,7 +118,6 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Last Name in Arabic',
-                'required' => 'required',
                 'class' => 'form-register',
             ),
             'options' => array(
@@ -242,7 +240,6 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Identification Type (National ID, or Passport, etc)',
-                'required' => 'required',
                 'class' => 'form-register',
             ),
             'options' => array(
@@ -255,7 +252,6 @@ class UserForm extends Form
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Enter Identification Number',
-                'required' => 'required',
                 'class' => 'form-register',
             ),
             'options' => array(
@@ -269,7 +265,6 @@ class UserForm extends Form
                 'name' => 'identificationExpiryDateHj',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-hijriDate-ar',
                     'type' => 'text',
                 ),
@@ -283,7 +278,6 @@ class UserForm extends Form
                 'name' => 'identificationExpiryDate',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-gregorianDate-ar',
                     'type' => 'text',
                 ),
@@ -299,7 +293,6 @@ class UserForm extends Form
                 'name' => 'dateOfBirthHj',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-hijriDate-ar',
                     'type' => 'text',
                 ),
@@ -312,7 +305,6 @@ class UserForm extends Form
                 'name' => 'dateOfBirth',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-gregorianDate-ar',
                     'type' => 'text',
                 ),
@@ -328,7 +320,6 @@ class UserForm extends Form
                 'name' => 'identificationExpiryDateHj',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-hijriDate',
                     'type' => 'text',
                 ),
@@ -341,7 +332,6 @@ class UserForm extends Form
                 'name' => 'identificationExpiryDate',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-gregorianDate',
                     'type' => 'text',
                 ),
@@ -356,7 +346,6 @@ class UserForm extends Form
                 'name' => 'dateOfBirthHj',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-hijriDate',
                     'type' => 'text',
                 ),
@@ -369,7 +358,6 @@ class UserForm extends Form
                 'name' => 'dateOfBirth',
                 'type' => 'Zend\Form\Element\Date',
                 'attributes' => array(
-                    'required' => 'required',
                     'class' => 'form-register new-gregorianDate',
                     'type' => 'text',
                 ),
