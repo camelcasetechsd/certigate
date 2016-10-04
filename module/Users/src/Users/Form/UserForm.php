@@ -539,8 +539,10 @@ class UserForm extends Form
                 'label' => 'Country',
                 'value_options' => $countriesService->getAllCountries($currentLanguageCode),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-            ),
+                ),
         ));
+        // setting saudi Arabia as default country
+        $this->get('country')->setValue('SA');
 
         $this->add(array(
             'name' => 'photo',
