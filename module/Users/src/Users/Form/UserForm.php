@@ -151,19 +151,43 @@ class UserForm extends Form
                 'description' => 'e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) '
             ),
         ));
+
+        // phone fields
+        $this->add(array(
+            'name' => 'countryCode',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'class' => 'form-register',
+            ),
+            'options' => array(
+                'empty_option' => self::EMPTY_SELECT_VALUE,
+                // disabling checking item injection for this select
+                'disable_inarray_validator' => true,
+            )
+        ));
+        $this->add(array(
+            'name' => 'areaCode',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Enter 3 digits Area Code',
+                'class' => 'form-register',
+            ),
+            'options' => array(
+            ),
+        ));
         $this->add(array(
             'name' => 'phone',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
-                'class' => 'form-register',                
+                'placeholder' => 'Enter Phone Number 6-8 digits',
+                'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Phone',
-                'description' => 'e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) '
+                'description' => 'e.g. : ( +XXX-XXX-XXXXXXXX ), phone will be ignored if no country code is selected '
             ),
         ));
-
+        ///////// End phone
 
         $this->add(array(
             'name' => 'email',
@@ -475,7 +499,7 @@ class UserForm extends Form
                 'label' => 'Latitude',
             )
         ));
-        
+
         $this->add(array(
             'name' => 'mapZoom',
             'type' => 'Zend\Form\Element\Hidden',
@@ -527,7 +551,7 @@ class UserForm extends Form
                 'label' => 'Country',
                 'value_options' => $countriesService->getAllCountries($currentLanguageCode),
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                ),
+            ),
         ));
         // setting saudi Arabia as default country
         $this->get('country')->setValue('SA');

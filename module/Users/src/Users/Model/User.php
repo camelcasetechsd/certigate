@@ -366,4 +366,5 @@ class User
             "status" => Status::STATUS_ACTIVE,
         ));
     }
+
 }

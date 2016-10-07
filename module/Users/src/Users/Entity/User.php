@@ -1852,7 +1852,7 @@ class User
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
-                ->setPhone($data["phone"])
+                ->setPhone($data["countryCode"].'-'.$data["areaCode"].'-'.$data["phone"])
                 ->setSecurityAnswer($data["securityAnswer"])
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
@@ -2172,7 +2172,30 @@ class User
                     )
                 ),
             ));
+            $inputFilter->add(array(
+                'name' => 'countryCode',
+                'required' => false,
+            ));
 
+            $inputFilter->add(array(
+                'name' => 'areaCode',
+                'required' => false,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^[0-9]{3}$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid area code (3 digits)!'
+                            )
+                        ))
+                )
+            ));
             $inputFilter->add(array(
                 'name' => 'phone',
                 'required' => false,
@@ -2185,13 +2208,13 @@ class User
                     array(
                         'name' => 'Regex',
                         'options' => array(
-                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'pattern' => '/^[0-9]{6,8}$/',
                             'messages' => array(
-                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid phone number!'
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid phone number (6-8 digits)!'
                             )
                         ))
                 )
-            ));
+            ));       
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,

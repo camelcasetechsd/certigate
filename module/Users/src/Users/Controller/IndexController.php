@@ -267,7 +267,7 @@ class IndexController extends ActionController
                 $form->get('confirmEmail')->setMessages(array("email doesnt match"));
                 $isCustomValidationValid = false;
             }
-            
+
             if ($data['password'] != $data['confirmPassword']) {
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
@@ -358,7 +358,7 @@ class IndexController extends ActionController
             $data = array_merge_recursive(
                     $request->getPost()->toArray(), $fileData
             );
-
+//            var_dump($data);exit;
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
@@ -371,6 +371,24 @@ class IndexController extends ActionController
                 $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
             }
+
+            if (empty($data['countryCode'])) {
+                // if country code empty , ignore phone data if enjected
+                $data['areaCode'] = $data['phone'] = '';
+            }
+            else {
+                // if country code existed but no code Area
+                if ($data['areaCode'] === '') {
+                    // setting dummy data to force validation because user had selected country code
+                    $form->get('areaCode')->setValue('######');
+                }
+                // if country code existed but no phone number
+                if ($data['phone'] === '') {
+                    // setting dummy data to force validation  because user had selected country code
+                    $form->get('phone')->setValue('######');
+                }
+            }
+
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
 
@@ -428,8 +446,7 @@ class IndexController extends ActionController
             'name' => 'users'));
         $this->redirect()->toUrl($url);
     }
-    
-    
+
     /**
      * Ajax call to refresh the captcha
      */
@@ -450,7 +467,7 @@ class IndexController extends ActionController
             $options['excludedRoles'][] = Role::ADMIN_ROLE;
         }
         $form = new UserForm(/* $name = */ null, $options);
-        
+
         $captcha = $form->get('captcha')->getCaptcha();
         $data['id'] = $captcha->generate();
         $data['src'] = $captcha->getImgUrl() .

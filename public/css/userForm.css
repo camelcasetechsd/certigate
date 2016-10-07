@@ -1,3 +1,6 @@
 #user_form input[type="checkbox"].form-control{
     float: left;
 }
+.phone-form{
+    margin-left: -60px;
+}

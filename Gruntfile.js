@@ -38,6 +38,7 @@ module.exports = function (grunt) {
                     '<%= dirs.jsSrc %>/datepicker/jquery.calendars.ummalqura.js', // prototype and calcuations
                     '<%= dirs.jsSrc %>/datepicker.js',
                     '<%= dirs.jsSrc %>/new-datepicker.js',
+                    '<%= dirs.jsSrc %>/phonecodes.js',
                     '<%= dirs.bowerSrc %>/metisMenu/dist/metisMenu.js',
                     '<%= dirs.nodeSrc %>/jquery-latitude-longitude-picker-gmaps/js/jquery-gmaps-latlon-picker.js',
                     '<%= dirs.jsSrc %>/diff_match_patch.js',

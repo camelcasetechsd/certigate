@@ -147,6 +147,28 @@
                                         {{{mapSearchButton}}}
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="user_form_phone">{{phoneLabel}}</label>
+                                        <div class="phone-form col-sm-10">
+                                            <div class="col-sm-5">
+                                                {{{countryCode}}}                                           
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{{areaCode}}}
+                                            </div>
+                                            <div class="col-sm-5">
+                                                {{{phone}}}
+                                            </div>                                        
+                                            <div class="col-sm-12">
+                                                {{{phoneDescription}}}
+                                                {{{countryCodeError}}}
+                                                {{{areaCodeError}}}
+                                                {{{phoneError}}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required col-sm-3 control-label" for="user_form_mobile">{{mobileLabel}}</label>
@@ -154,16 +176,6 @@
                                             {{{mobile}}}
                                             {{{mobileDescription}}}
                                             {{{mobileError}}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_phone">{{phoneLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{phone}}}
-                                            {{{phoneDescription}}}
-                                            {{{phoneError}}}
                                         </div>
                                     </div>
                                 </div>
@@ -491,6 +503,32 @@
                 });
             });
         });
+
+        $('#user_form_areaCode').hide();
+        $('#user_form_phone').hide();
+
+        $(document).on('change', '#user_form_countryCode', function () {
+
+            if ($('#user_form_countryCode').val() === '') {
+                // ignore phone data if no country code selected
+                $('#user_form_areaCode').val('');
+                $('#user_form_areaCode').hide();
+                $('#user_form_phone').val('');
+                $('#user_form_phone').hide();
+            } else {
+                $('#user_form_areaCode').show();
+                $('#user_form_phone').show();
+            }
+
+        });
+
+//        $().select(function () {
+//            alert('hay');
+//
+//        });
+
+
+
     });</script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 {{/scripts}}
