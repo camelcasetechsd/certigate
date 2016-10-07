@@ -503,32 +503,6 @@
                 });
             });
         });
-
-        $('#user_form_areaCode').hide();
-        $('#user_form_phone').hide();
-
-        $(document).on('change', '#user_form_countryCode', function () {
-
-            if ($('#user_form_countryCode').val() === '') {
-                // ignore phone data if no country code selected
-                $('#user_form_areaCode').val('');
-                $('#user_form_areaCode').hide();
-                $('#user_form_phone').val('');
-                $('#user_form_phone').hide();
-            } else {
-                $('#user_form_areaCode').show();
-                $('#user_form_phone').show();
-            }
-
-        });
-
-//        $().select(function () {
-//            alert('hay');
-//
-//        });
-
-
-
     });</script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 {{/scripts}}

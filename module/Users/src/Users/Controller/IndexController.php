@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Users\Form\UserForm;
 use Users\Entity\User;
 use Users\Service\Statement;
+use Users\Service\Messages;
 use Users\Entity\Role;
 use Zend\Authentication\AuthenticationService;
 
@@ -273,6 +274,27 @@ class IndexController extends ActionController
                 $isCustomValidationValid = false;
             }
 
+            /**
+             * validating phone number if existed (phone is optional)
+             */
+            if (empty($data['countryCode'])) {
+                // if country code empty , ignore phone data if enjected
+                $data['areaCode'] = $data['phone'] = '';
+            }
+            else {
+                // if country code existed but no code Area
+                if ($data['areaCode'] === '') {
+                    $form->get('areaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
+                    $isCustomValidationValid = false;
+                }
+                // if country code existed but no phone number
+                if ($data['phone'] === '') {
+                    $form->get('phone')->setMessages(array(Messages::MISSING_PHONE));
+                    $isCustomValidationValid = false;
+                }
+            }
+
+
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
 
@@ -372,6 +394,9 @@ class IndexController extends ActionController
                 $isCustomValidationValid = false;
             }
 
+            /**
+             * validating phone number if existed (phone is optional)
+             */
             if (empty($data['countryCode'])) {
                 // if country code empty , ignore phone data if enjected
                 $data['areaCode'] = $data['phone'] = '';
@@ -379,13 +404,13 @@ class IndexController extends ActionController
             else {
                 // if country code existed but no code Area
                 if ($data['areaCode'] === '') {
-                    // setting dummy data to force validation because user had selected country code
-                    $form->get('areaCode')->setValue('######');
+                    $form->get('areaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
+                    $isCustomValidationValid = false;
                 }
                 // if country code existed but no phone number
                 if ($data['phone'] === '') {
-                    // setting dummy data to force validation  because user had selected country code
-                    $form->get('phone')->setValue('######');
+                    $form->get('phone')->setMessages(array(Messages::MISSING_PHONE));
+                    $isCustomValidationValid = false;
                 }
             }
 

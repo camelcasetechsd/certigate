@@ -205,7 +205,7 @@ class User
 
     /**
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string",nullable = true)
      * @var string
      */
     public $phone;
@@ -1451,9 +1451,11 @@ class User
      * @param string $phone
      * @return User current entity
      */
-    public function setPhone($phone)
+    public function setPhone($countryCode, $areaCode, $phone)
     {
-        $this->phone = $phone;
+        if(!empty($countryCode) && !empty($areaCode) && !empty($phone)){
+            $this->phone = $countryCode.'-'.$areaCode.'-'.$phone;
+        }
         return $this;
     }
 
@@ -1852,7 +1854,7 @@ class User
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
-                ->setPhone($data["countryCode"].'-'.$data["areaCode"].'-'.$data["phone"])
+                ->setPhone($data["countryCode"],$data["areaCode"],$data["phone"])
                 ->setSecurityAnswer($data["securityAnswer"])
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])

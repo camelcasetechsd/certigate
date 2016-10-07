@@ -167,7 +167,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'areaCode',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter 3 digits Area Code',
                 'class' => 'form-register',
@@ -177,7 +177,7 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'phone',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number 6-8 digits',
                 'class' => 'form-register',
