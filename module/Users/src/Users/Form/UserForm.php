@@ -8,6 +8,7 @@ use Users\Service\Statement;
 use Utilities\Service\Time;
 use Utilities\Form\ButtonsFieldset;
 use Translation\Service\Locale\Locale;
+use Users\Service\CountryCodes;
 
 /**
  * User Form
@@ -162,7 +163,8 @@ class UserForm extends Form
             'options' => array(
                 'empty_option' => self::EMPTY_SELECT_VALUE,
                 // disabling checking item injection for this select
-                'disable_inarray_validator' => true,
+//                'disable_inarray_validator' => true,
+                'value_options' => CountryCodes::fetchCodes(),
             )
         ));
         $this->add(array(
@@ -737,10 +739,12 @@ class UserForm extends Form
         parent::bind($object, $flags);
         // to prevent binding password value in edit form
         $this->get('password')->setValue('');
-        $phone = explode('-', $object->phone);
-        $this->get('countryCode')->setValue($phone[0]);
-        $this->get('areaCode')->setValue($phone[1]);
-        $this->get('phone')->setValue($phone[2]);
+        if (!is_null($object->phone)) {
+            $phone = explode('-', $object->phone);
+            $this->get('countryCode')->setValue($phone[0]);
+            $this->get('areaCode')->setValue($phone[1]);
+            $this->get('phone')->setValue($phone[2]);
+        }
     }
 
 }
