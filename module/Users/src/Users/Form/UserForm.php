@@ -737,6 +737,10 @@ class UserForm extends Form
         parent::bind($object, $flags);
         // to prevent binding password value in edit form
         $this->get('password')->setValue('');
+        $phone = explode('-', $object->phone);
+        $this->get('countryCode')->setValue($phone[0]);
+        $this->get('areaCode')->setValue($phone[1]);
+        $this->get('phone')->setValue($phone[2]);
     }
 
 }
