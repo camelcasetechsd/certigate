@@ -195,14 +195,14 @@ class IndexController extends ActionController
             /**
              * validating phone number if existed (phone is optional)
              */
-            if (empty($data['countryCode'])) {
+            if (empty($data['phoneCountryCode'])) {
                 // if country code empty , ignore phone data if enjected
-                $data['areaCode'] = $data['phone'] = '';
+                $data['phoneAreaCode'] = $data['phone'] = '';
             }
             else {
                 // if country code existed but no code Area
-                if ($data['areaCode'] === '') {
-                    $form->get('areaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
+                if ($data['phoneAreaCode'] === '') {
+                    $form->get('phoneAreaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
                     $isCustomValidationValid = false;
                 }
                 // if country code existed but no phone number
@@ -297,14 +297,14 @@ class IndexController extends ActionController
             /**
              * validating phone number if existed (phone is optional)
              */
-            if (empty($data['countryCode'])) {
+            if (empty($data['phoneCountryCode'])) {
                 // if country code empty , ignore phone data if enjected
-                $data['areaCode'] = $data['phone'] = '';
+                $data['phoneAreaCode'] = $data['phone'] = '';
             }
             else {
                 // if country code existed but no code Area
-                if ($data['areaCode'] === '') {
-                    $form->get('areaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
+                if ($data['phoneAreaCode'] === '') {
+                    $form->get('phoneAreaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
                     $isCustomValidationValid = false;
                 }
                 // if country code existed but no phone number
@@ -417,14 +417,14 @@ class IndexController extends ActionController
             /**
              * validating phone number if existed (phone is optional)
              */
-            if (empty($data['countryCode'])) {
+            if (empty($data['phoneCountryCode'])) {
                 // if country code empty , ignore phone data if enjected
-                $data['areaCode'] = $data['phone'] = '';
+                $data['phoneAreaCode'] = $data['phone'] = '';
             }
             else {
                 // if country code existed but no code Area
-                if ($data['areaCode'] === '') {
-                    $form->get('areaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
+                if ($data['phoneAreaCode'] === '') {
+                    $form->get('phoneAreaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
                     $isCustomValidationValid = false;
                 }
                 // if country code existed but no phone number

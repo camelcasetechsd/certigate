@@ -1451,10 +1451,10 @@ class User
      * @param string $phone
      * @return User current entity
      */
-    public function setPhone($countryCode, $areaCode, $phone)
+    public function setPhone($phoneCountryCode, $phoneAreaCode, $phone)
     {
-        if(!empty($countryCode) && !empty($areaCode) && !empty($phone)){
-            $this->phone = $countryCode.'-'.$areaCode.'-'.$phone;
+        if(!empty($phoneCountryCode) && !empty($phoneAreaCode) && !empty($phone)){
+            $this->phone = $phoneCountryCode.'-'.$phoneAreaCode.'-'.$phone;
         }
         return $this;
     }
@@ -1854,7 +1854,7 @@ class User
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
-                ->setPhone($data["countryCode"],$data["areaCode"],$data["phone"])
+                ->setPhone($data["phoneCountryCode"],$data["phoneAreaCode"],$data["phone"])
                 ->setSecurityAnswer($data["securityAnswer"])
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
@@ -2175,12 +2175,12 @@ class User
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'countryCode',
+                'name' => 'phoneCountryCode',
                 'required' => false,
             ));
 
             $inputFilter->add(array(
-                'name' => 'areaCode',
+                'name' => 'phoneAreaCode',
                 'required' => false,
                 'filters' => array(
                     array(

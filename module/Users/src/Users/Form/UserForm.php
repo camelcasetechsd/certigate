@@ -155,7 +155,7 @@ class UserForm extends Form
 
         // phone fields
         $this->add(array(
-            'name' => 'countryCode',
+            'name' => 'phoneCountryCode',
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
                 'class' => 'form-register',
@@ -168,7 +168,7 @@ class UserForm extends Form
             )
         ));
         $this->add(array(
-            'name' => 'areaCode',
+            'name' => 'phoneAreaCode',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Enter 3 digits Area Code',
@@ -741,8 +741,8 @@ class UserForm extends Form
         $this->get('password')->setValue('');
         if (!is_null($object->phone)) {
             $phone = explode('-', $object->phone);
-            $this->get('countryCode')->setValue($phone[0]);
-            $this->get('areaCode')->setValue($phone[1]);
+            $this->get('phoneCountryCode')->setValue($phone[0]);
+            $this->get('phoneAreaCode')->setValue($phone[1]);
             $this->get('phone')->setValue($phone[2]);
         }
     }
