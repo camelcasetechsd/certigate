@@ -157,15 +157,15 @@ class UserForm extends Form
         $this->add(array(
             'name' => 'phoneCountryCode',
             'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
-                'class' => 'form-register',
-            ),
             'options' => array(
                 'empty_option' => self::EMPTY_SELECT_VALUE,
-                // disabling checking item injection for this select
-//                'disable_inarray_validator' => true,
                 'value_options' => CountryCodes::fetchCodes(),
-            )
+            ),
+            'attributes' => array(
+                'class' => 'form-register',
+                // making KSA default country code
+                'value' => '+966'
+            ),
         ));
         $this->add(array(
             'name' => 'phoneAreaCode',
