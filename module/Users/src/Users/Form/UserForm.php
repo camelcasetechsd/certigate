@@ -139,20 +139,35 @@ class UserForm extends Form
             ),
         ));
 
+        // mobile fields
+        $this->add(array(
+            'name' => 'mobileCountryCode',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'class' => 'form-register',
+                'required' => 'required',
+                // making KSA default country code
+                'value' => '+966'
+            ),
+            'options' => array(
+                'empty_option' => self::EMPTY_SELECT_VALUE,
+                'value_options' => CountryCodes::fetchCodes(),
+            ),
+        ));
         $this->add(array(
             'name' => 'mobile',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)',
+                'placeholder' => 'Enter mobile Number 6-8 digits',
                 'required' => 'required',
                 'class' => 'form-register',
             ),
             'options' => array(
                 'label' => 'Mobile',
-                'description' => 'e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) '
+                'description' => 'e.g. : ( +XXX-XXX-XXXXXXXX ), mobile will be ignored if no country code is selected '
             ),
         ));
-
+        // End Mobile
         // phone fields
         $this->add(array(
             'name' => 'phoneCountryCode',
@@ -745,6 +760,9 @@ class UserForm extends Form
             $this->get('phoneAreaCode')->setValue($phone[1]);
             $this->get('phone')->setValue($phone[2]);
         }
+        $mobile = explode('-', $object->mobile);
+        $this->get('mobileCountryCode')->setValue($mobile[0]);
+        $this->get('mobile')->setValue($mobile[1]);
     }
 
 }

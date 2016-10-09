@@ -147,10 +147,10 @@
                                         {{{mapSearchButton}}}
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label" for="user_form_phone">{{phoneLabel}}</label>
-                                        <div class="phone-form col-sm-10">
+                                        <label class="col-sm-3 control-label" for="user_form_phone">{{phoneLabel}}</label>
+                                        <div class="phone-form col-sm-9">
                                             <div class="col-sm-5">
                                                 {{{phoneCountryCode}}}                                           
                                             </div>
@@ -172,10 +172,18 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="required col-sm-3 control-label" for="user_form_mobile">{{mobileLabel}}</label>
-                                        <div class="col-sm-9">
-                                            {{{mobile}}}
-                                            {{{mobileDescription}}}
-                                            {{{mobileError}}}
+                                        <div class="phone-form col-sm-9">
+                                            <div class="col-sm-6">
+                                                {{{mobileCountryCode}}}                                           
+                                            </div>
+                                            <div class="col-sm-6">
+                                                {{{mobile}}}
+                                            </div>                                        
+                                            <div class="col-sm-12">
+                                                {{{mobileDescription}}}
+                                                {{{mobileCountryCodeError}}}
+                                                {{{mobileError}}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

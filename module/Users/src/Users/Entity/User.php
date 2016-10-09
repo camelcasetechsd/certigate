@@ -1059,9 +1059,9 @@ class User
      * @param string $mobile
      * @return User current entity
      */
-    public function setMobile($mobile)
+    public function setMobile($mobileCountryCode, $mobile)
     {
-        $this->mobile = $mobile;
+        $this->mobile = $mobileCountryCode . '-' . $mobile;
         return $this;
     }
 
@@ -1453,8 +1453,8 @@ class User
      */
     public function setPhone($phoneCountryCode, $phoneAreaCode, $phone)
     {
-        if(!empty($phoneCountryCode) && !empty($phoneAreaCode) && !empty($phone)){
-            $this->phone = $phoneCountryCode.'-'.$phoneAreaCode.'-'.$phone;
+        if (!empty($phoneCountryCode) && !empty($phoneAreaCode) && !empty($phone)) {
+            $this->phone = $phoneCountryCode . '-' . $phoneAreaCode . '-' . $phone;
         }
         return $this;
     }
@@ -1834,7 +1834,7 @@ class User
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDateOfBirthHj($data["dateOfBirthHj"])
-                ->setMobile($data["mobile"])
+                ->setMobile($data["mobileCountryCode"],$data["mobile"])
                 ->setFirstName($data["firstName"])
                 ->setFirstNameAr($data["firstNameAr"])
                 ->setLastName($data["lastName"])
@@ -1854,7 +1854,7 @@ class User
                 ->setIdentificationNumber($data["identificationNumber"])
                 ->setIdentificationType($data["identificationType"])
                 ->setNationality($data["nationality"])
-                ->setPhone($data["phoneCountryCode"],$data["phoneAreaCode"],$data["phone"])
+                ->setPhone($data["phoneCountryCode"], $data["phoneAreaCode"], $data["phone"])
                 ->setSecurityAnswer($data["securityAnswer"])
                 ->setSecurityQuestion($data["securityQuestion"])
                 ->setZipCode($data["zipCode"])
@@ -2051,6 +2051,12 @@ class User
                 'name' => 'country',
                 'required' => true,
             ));
+
+            $inputFilter->add(array(
+                'name' => 'mobileCountryCode',
+                'required' => true,
+            ));
+            
             $inputFilter->add(array(
                 'name' => 'mobile',
                 'required' => true,
@@ -2063,9 +2069,9 @@ class User
                     array(
                         'name' => 'Regex',
                         'options' => array(
-                            'pattern' => '/^\b\d{3}[-.]?\d{3}[-.]?\d{4}\b$/',
+                            'pattern' => '/^[0-9]{6,8}$/',
                             'messages' => array(
-                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile number!'
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile number (6-8 digits)!'
                             )
                         ))
                 )
@@ -2216,7 +2222,7 @@ class User
                             )
                         ))
                 )
-            ));       
+            ));
             $inputFilter->add(array(
                 'name' => 'city',
                 'required' => true,
