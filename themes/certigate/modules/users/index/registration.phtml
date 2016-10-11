@@ -151,13 +151,13 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="user_form_phone">{{phoneLabel}}</label>
                                         <div class="phone-form col-sm-9">
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 {{{phoneCountryCode}}}                                           
                                             </div>
                                             <div class="col-sm-3">
                                                 {{{phoneAreaCode}}}
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-5">
                                                 {{{phone}}}
                                             </div>                                        
                                             <div class="col-sm-12">
@@ -173,20 +173,25 @@
                                     <div class="form-group">
                                         <label class="required col-sm-3 control-label" for="user_form_mobile">{{mobileLabel}}</label>
                                         <div class="phone-form col-sm-9">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 {{{mobileCountryCode}}}                                           
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-3">
+                                                {{{mobileAreaCode}}}
+                                            </div>                                        
+                                            <div class="col-sm-5">
                                                 {{{mobile}}}
                                             </div>                                        
                                             <div class="col-sm-12">
                                                 {{{mobileDescription}}}
                                                 {{{mobileCountryCodeError}}}
+                                                {{{mobileAreaCodeError}}}
                                                 {{{mobileError}}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="user_form_identificationType">{{identificationTypeLabel}}</label>

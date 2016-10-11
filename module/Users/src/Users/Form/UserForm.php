@@ -155,6 +155,18 @@ class UserForm extends Form
             ),
         ));
         $this->add(array(
+            'name' => 'mobileAreaCode',
+            'type' => 'Zend\Form\Element\Number',
+            'attributes' => array(
+                'placeholder' => 'Enter mobile Area code 3 digits',
+                'required' => 'required',
+                'class' => 'form-register',
+            ),
+            'options' => array(
+                'label' => 'Mobile',
+            ),
+        ));
+        $this->add(array(
             'name' => 'mobile',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
@@ -762,7 +774,8 @@ class UserForm extends Form
         }
         $mobile = explode('-', $object->mobile);
         $this->get('mobileCountryCode')->setValue($mobile[0]);
-        $this->get('mobile')->setValue($mobile[1]);
+        $this->get('mobileAreaCode')->setValue($mobile[1]);
+        $this->get('mobile')->setValue($mobile[2]);
     }
 
 }
