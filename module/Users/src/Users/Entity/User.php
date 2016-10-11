@@ -1059,9 +1059,9 @@ class User
      * @param string $mobile
      * @return User current entity
      */
-    public function setMobile($mobileCountryCode, $mobile)
+    public function setMobile($mobileCountryCode, $mobileAreaCode, $mobile)
     {
-        $this->mobile = $mobileCountryCode . '-' . $mobile;
+        $this->mobile = $mobileCountryCode . '-' . $mobileAreaCode . '-' . $mobile;
         return $this;
     }
 
@@ -1834,7 +1834,7 @@ class User
         }
         $this->setDateOfBirth($data["dateOfBirth"])
                 ->setDateOfBirthHj($data["dateOfBirthHj"])
-                ->setMobile($data["mobileCountryCode"],$data["mobile"])
+                ->setMobile($data["mobileCountryCode"], $data["mobileAreaCode"], $data["mobile"])
                 ->setFirstName($data["firstName"])
                 ->setFirstNameAr($data["firstNameAr"])
                 ->setLastName($data["lastName"])
@@ -2056,7 +2056,27 @@ class User
                 'name' => 'mobileCountryCode',
                 'required' => true,
             ));
-            
+
+            $inputFilter->add(array(
+                'name' => 'mobileAreaCode',
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^[0-9]{3}$/',
+                            'messages' => array(
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile Area code (3 digits)!'
+                            )
+                        ))
+                )
+            ));
+
             $inputFilter->add(array(
                 'name' => 'mobile',
                 'required' => true,
