@@ -34,7 +34,7 @@ class CacheFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {
         $memcachedOptions = new MemcachedOptions(array(
-            'ttl' => 60 * 60 * 24 * 365, // 1 year
+            'ttl' => 60 * 5, // 5 mins
             'namespace' => 'certigate_cache',
             'key_pattern' => null,
             'readable' => true,
