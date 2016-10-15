@@ -2069,9 +2069,9 @@ class User
                     array(
                         'name' => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{3}$/',
+                            'pattern' => '/^[0-9]{2,3}$/',
                             'messages' => array(
-                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile Area code (3 digits)!'
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile Area code (2-3 digits)!'
                             )
                         ))
                 )
@@ -2217,9 +2217,9 @@ class User
                     array(
                         'name' => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{3}$/',
+                            'pattern' => '/^[0-9]{2,3}$/',
                             'messages' => array(
-                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid area code (3 digits)!'
+                                \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid area code (2-3 digits)!'
                             )
                         ))
                 )
