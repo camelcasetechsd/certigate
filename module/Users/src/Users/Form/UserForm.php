@@ -158,7 +158,7 @@ class UserForm extends Form
             'name' => 'mobileAreaCode',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter mobile Area code 3 digits',
+                'placeholder' => 'Enter mobile Area code 2-3 digits',
                 'required' => 'required',
                 'class' => 'form-register',
             ),
@@ -198,7 +198,7 @@ class UserForm extends Form
             'name' => 'phoneAreaCode',
             'type' => 'Zend\Form\Element\Number',
             'attributes' => array(
-                'placeholder' => 'Enter 3 digits Area Code',
+                'placeholder' => 'Enter 2-3 digits Area Code',
                 'class' => 'form-register',
             ),
             'options' => array(
