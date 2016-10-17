@@ -17,11 +17,11 @@ use Translation\Service\Locale\Locale as ApplicationLocale;
 
 /**
  * Page Controller
- * 
+ *
  * pages entries listing
- * 
- * 
- * 
+ *
+ *
+ *
  * @package cms
  * @subpackage controller
  */
@@ -30,10 +30,10 @@ class PageController extends ActionController
 
     /**
      * List pages
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @return ViewModel
      */
     public function indexAction()
@@ -52,12 +52,12 @@ class PageController extends ActionController
 
     /**
      * Create new page
-     * 
-     * 
+     *
+     *
      * @access public
      * @uses Page
      * @uses PageForm
-     * 
+     *
      * @return ViewModel
      */
     public function newAction()
@@ -88,7 +88,8 @@ class PageController extends ActionController
                 $processedData = $form->getData(FormInterface::VALUES_AS_ARRAY);
                 $data["picture"] = $processedData["picture"];
                 $pageModel->save($pageObj, $data, /* $editFlag = */ false);
-
+                $this->flushPagesCache();
+                
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
                 $this->redirect()->toUrl($url);
@@ -102,11 +103,11 @@ class PageController extends ActionController
 
     /**
      * Edit page
-     * 
-     * 
+     *
+     *
      * @access public
      * @uses PageForm
-     * 
+     *
      * @return ViewModel
      */
     public function editAction()
@@ -150,6 +151,7 @@ class PageController extends ActionController
 
             if ($form->isValid()) {
                 $pageModel->save($pageObj, $data, /* $editFlag = */ true);
+                $this->flushPagesCache();
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
                     'name' => 'cmsPage'));
@@ -164,7 +166,7 @@ class PageController extends ActionController
     /**
      * Delete page
      *
-     * 
+     *
      * @access public
      */
     public function deactivateAction()
@@ -176,6 +178,7 @@ class PageController extends ActionController
         $pageObj->setStatus(Status::STATUS_INACTIVE);
 
         $query->setEntity('CMS\Entity\Page')->save($pageObj);
+        $this->flushPagesCache();
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
             'name' => 'cmsPage'));
@@ -185,7 +188,7 @@ class PageController extends ActionController
     /**
      * Activate page
      *
-     * 
+     *
      * @access public
      */
     public function activateAction()
@@ -197,6 +200,7 @@ class PageController extends ActionController
         $pageObj->setStatus(Status::STATUS_ACTIVE);
 
         $query->setEntity('CMS\Entity\Page')->save($pageObj);
+        $this->flushPagesCache();
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array(
             'name' => 'cmsPage'));
@@ -206,7 +210,7 @@ class PageController extends ActionController
     /**
      * List page history
      *
-     * 
+     *
      * @access public
      */
     public function historyAction()
@@ -227,10 +231,10 @@ class PageController extends ActionController
 
     /**
      * View page
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @return ViewModel
      */
     public function viewAction()
@@ -240,7 +244,7 @@ class PageController extends ActionController
 
         $page = $query->setEntity('CMS\Entity\Page')->entityRepository->getPageByPath($staticPagePath);
 
-        // is inActive page 
+        // is inActive page
         if ($page->getStatus() == \Utilities\Service\Status::STATUS_INACTIVE) {
             $url = $this->getEvent()->getRouter()->assemble(array('action' => 'ResourceNotFound'), array(
                 'name' => 'resource_not_found'));
@@ -270,10 +274,10 @@ class PageController extends ActionController
 
     /**
      * upload Images
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @return ViewModel
      */
     public function imgUploadAction()
@@ -292,10 +296,10 @@ class PageController extends ActionController
 
     /**
      * browse Images
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @return ViewModel
      */
     public function browseAction()
@@ -307,4 +311,14 @@ class PageController extends ActionController
         return new ViewModel($variables);
     }
 
+    /**
+     * flush menu cache
+     */
+    public function flushPagesCache()
+    {
+        // flush cache of menu items after adding any menu item change
+        /* @var $cmsCacheHandler \CMS\Service\Cache\CacheHandler */
+        $cmsCacheHandler = $this->getServiceLocator()->get('cmsCacheHandler');
+        $cmsCacheHandler->flushCMSCache(\CMS\Service\Cache\CacheHandler::MENUS_PATHS_KEY);
+    }
 }

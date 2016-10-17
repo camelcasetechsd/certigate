@@ -9,15 +9,15 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * CacheHandler
- * 
+ *
  * Handles caching usage related business
- * 
- * 
- * 
+ *
+ *
+ *
  * @property CMS\Model\MenuItem $menuItem
  * @property Cache $cache
  * @property Query $query
- * 
+ *
  * @package cms
  * @subpackage cache
  */
@@ -41,16 +41,16 @@ class CacheHandler implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @var Cache 
+     * @var Cache
      */
     public $cache;
 
     /**
      *
-     * @var Query 
+     * @var Query
      */
     public $query;
-    
+
     /**
      *
      * @var ServiceLocatorInterface
@@ -59,8 +59,8 @@ class CacheHandler implements ServiceLocatorAwareInterface
 
     /**
      * Set needed properties
-     * 
-     * 
+     *
+     *
      * @access public
      * @param Cache $cache
      * @param Query $query
@@ -72,7 +72,7 @@ class CacheHandler implements ServiceLocatorAwareInterface
         $this->query = $query;
         $this->menuItem = $menuItem;
     }
-    
+
     public function getServiceLocator()
     {
         return $this->serviceLocator;
@@ -85,10 +85,10 @@ class CacheHandler implements ServiceLocatorAwareInterface
 
     /**
      * Prepare cached data for CMS usage
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @param bool $forceFlush ,default is bool false
      * @return array cached CMS data serialized
      */
@@ -128,10 +128,10 @@ class CacheHandler implements ServiceLocatorAwareInterface
 
     /**
      * Get cached data for CMS usage
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @param bool $forceFlush ,default is bool false
      * @return array cached CMS data unserialized
      */
@@ -161,6 +161,21 @@ class CacheHandler implements ServiceLocatorAwareInterface
             self::MENUS_PATHS_KEY => unserialize( $items[self::MENUS_PATHS_KEY] )
         );
         return $cachedCMSData;
+    }
+
+    /**
+     * flush cache of cms
+     * @param mixed $key
+     */
+    public function flushCMSCache($key = null)
+    {
+        if(is_null($key)){
+            $key = array(
+                self::MENUS_KEY,
+                self::MENUS_PATHS_KEY
+            );
+        }
+        $this->cache->flush($key);
     }
 
 }

@@ -34,6 +34,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'System\Controller\Settings' => 'System\Controller\SettingsController',
+            'System\Controller\Cache' => 'System\Controller\CacheController',
         ),
     ),
     'router' => array(
@@ -90,6 +91,16 @@ return array(
                     ),
                 )
             ),
-)
+            'systemCache' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/system/cache',
+                    'defaults' => array(
+                        'controller' => 'System\Controller\Cache',
+                        'action' => 'index',
+                    ),
+                )
+            ),
+        )
     )
 );

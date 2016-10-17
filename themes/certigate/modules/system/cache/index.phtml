@@ -1,0 +1,36 @@
+{{% BLOCKS }}
+{{<layout}}
+{{$content}}
+
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">{{#translate}}System Cache{{/translate}}</div>
+    
+    <!-- Table -->
+    <table class="table">
+        <form action="/system/cache" method="post">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{{#translate}}Cache Type{{/translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#cache_types}}
+                <tr>
+                    <td><input type="checkbox" name="cache_types[]" value="{{key}}" /></td>
+                    <td>{{#translate}}{{name}}{{/translate}}</td>
+                </tr>
+                {{/cache_types}}
+                <tr>
+                    <td></td>
+                    <td><input type="submit" class="btn btn-danger" value="{{#translate}}Flush{{/translate}}" /></td> 
+                </tr>
+            </tbody>
+        </form>
+    </table>
+</div>
+{{/content}}
+{{/layout}}
+

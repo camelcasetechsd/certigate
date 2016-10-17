@@ -6,13 +6,13 @@ use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Cache
- * 
+ *
  * Handles caching related business
- * 
- * 
- * 
+ *
+ *
+ *
  * @property StorageInterface $cacheAdapter
- * 
+ *
  * @package utilities
  * @subpackage cache
  */
@@ -20,26 +20,26 @@ class Cache {
 
     /**
      *
-     * @var StorageInterface 
+     * @var StorageInterface
      */
     public $cacheAdapter;
 
 
     /**
      * Set needed properties
-     * 
-     * 
+     *
+     *
      * @access public
      * @param StorageInterface $cacheAdapter
      */
     public function __construct(StorageInterface $cacheAdapter) {
         $this->cacheAdapter = $cacheAdapter;
     }
-    
+
     /**
      * Set key with value
      * If item already exists, it is replaced
-     * 
+     *
      * @access public
      * @param string $key
      * @param string $value
@@ -52,11 +52,11 @@ class Cache {
         }
         $this->cacheAdapter->$methodName($key, $value);
     }
-    
+
     /**
      * Set array of items
      * If items already exists, they are replaced
-     * 
+     *
      * @access public
      * @param array $items
      */
@@ -72,4 +72,12 @@ class Cache {
         }
     }
 
+    /**
+     * flush cache of cms
+     * @param mixed $key
+     */
+    public function flush($key)
+    {
+        $this->cacheAdapter->flush($key);
+    }
 }

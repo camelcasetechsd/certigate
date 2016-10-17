@@ -124,5 +124,18 @@ class CacheHandler
         );
         return $cachedSystemData;
     }
-
+    
+    /**
+     * flush cache of settings
+     * @param mixed $key
+     */
+    public function flushSettingsCache($key = null)
+    {
+        if(is_null($key)){
+            $key = array(
+                self::SETTINGS_KEY,
+            );
+        }
+        $this->cache->flush($key);
+    }
 }

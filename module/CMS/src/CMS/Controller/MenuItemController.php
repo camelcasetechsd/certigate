@@ -12,11 +12,11 @@ use CMS\Form\FormViewHelper;
 
 /**
  * MenuItem Controller
- * 
+ *
  * menuItems entries listing
- * 
- * 
- * 
+ *
+ *
+ *
  * @package cms
  * @subpackage controller
  */
@@ -25,10 +25,10 @@ class MenuItemController extends ActionController
 
     /**
      * List menuItems
-     * 
-     * 
+     *
+     *
      * @access public
-     * 
+     *
      * @uses MenuItemFilterForm
      * @return ViewModel
      */
@@ -66,12 +66,12 @@ class MenuItemController extends ActionController
 
     /**
      * Create new menuItem
-     * 
-     * 
+     *
+     *
      * @access public
      * @uses MenuItem
      * @uses MenuItemForm
-     * 
+     *
      * @return ViewModel
      */
     public function newAction()
@@ -95,12 +95,13 @@ class MenuItemController extends ActionController
             $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
                 /**
-                *  query save function assumes that the name of the field equeal to the name of 
+                *  query save function assumes that the name of the field equeal to the name of
                 *  the column in database so we adding data with the same name to override this
                 *  problem
                 */
                 $data['parent'] = empty($data['optgroup-parent'])?null:$data['optgroup-parent'];
                 $query->save($menuItemObj, $data);
+                $this->flushMenuCache();
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
                 $this->redirect()->toUrl($url);
@@ -113,11 +114,11 @@ class MenuItemController extends ActionController
 
     /**
      * Edit menuItem
-     * 
-     * 
+     *
+     *
      * @access public
      * @uses MenuItemForm
-     * 
+     *
      * @return ViewModel
      */
     public function editAction()
@@ -138,7 +139,7 @@ class MenuItemController extends ActionController
         // menu hidden field can hold only id, not an object
         $menuItemObj->setMenu($menu->getId());
         $form->bind($menuItemObj);
-        
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -147,12 +148,13 @@ class MenuItemController extends ActionController
             $menuItemModel->setFormRequiredFields($form, $data);
             if ($form->isValid()) {
                 /**
-                *  query save function assumes that the name of the field equeal to the name of 
+                *  query save function assumes that the name of the field equeal to the name of
                 *  the column in database so we adding data with the same name to override this
                 *  problem
                 */
                 $data['parent'] = empty($data['optgroup-parent'])?null:$data['optgroup-parent'];
                 $query->setEntity('CMS\Entity\MenuItem')->save($menuItemObj, $data);
+                $this->flushMenuCache();
 
                 $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
                 $this->redirect()->toUrl($url);
@@ -167,7 +169,7 @@ class MenuItemController extends ActionController
     /**
      * Delete menu item
      *
-     * 
+     *
      * @access public
      */
     public function deactivateAction()
@@ -179,6 +181,7 @@ class MenuItemController extends ActionController
         $menuItemObj->setStatus(Status::STATUS_INACTIVE);
 
         $query->save($menuItemObj);
+        $this->flushMenuCache();
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
         $this->redirect()->toUrl($url);
@@ -187,7 +190,7 @@ class MenuItemController extends ActionController
     /**
      * activate menu item
      *
-     * 
+     *
      * @access public
      */
     public function activateAction()
@@ -199,9 +202,21 @@ class MenuItemController extends ActionController
         $menuItemObj->setStatus(Status::STATUS_ACTIVE);
 
         $query->save($menuItemObj);
+        $this->flushMenuCache();
 
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'cmsMenuItem'));
         $this->redirect()->toUrl($url);
+    }
+
+    /**
+     * flush menu cache
+     */
+    public function flushMenuCache()
+    {
+        // flush cache of menu items after adding any menu item change
+        /* @var $cmsCacheHandler \CMS\Service\Cache\CacheHandler */
+        $cmsCacheHandler = $this->getServiceLocator()->get('cmsCacheHandler');
+        $cmsCacheHandler->flushCMSCache(\CMS\Service\Cache\CacheHandler::MENUS_KEY);
     }
 
 }

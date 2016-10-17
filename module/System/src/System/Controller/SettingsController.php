@@ -131,5 +131,16 @@ class SettingsController extends ActionController
         $url = $this->getEvent()->getRouter()->assemble(array('action' => 'index'), array('name' => 'systemSettings'));
         $this->redirect()->toUrl($url);
     }
+    
+    /**
+     * flush settings cache
+     */
+    public function flushMenuCache()
+    {
+        // flush cache of menu items after adding any settings change
+        /* @var $systemCacheHandler \System\Service\Cache\CacheHandler */
+        $systemCacheHandler = $this->getServiceLocator()->get('systemCacheHandler');
+        $systemCacheHandler->flushCMSCache(\System\Service\Cache\CacheHandler::SETTINGS_KEY);
+    }
 
 }
