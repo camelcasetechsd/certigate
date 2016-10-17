@@ -105,7 +105,8 @@ class RendererFactory implements FactoryInterface
         $config['helpers']['currentLocale'] = $currentLocale;
         $config['helpers']['locale_ar'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_AR_AR);
         $config['helpers']['locale_en'] = ( $currentLocale == \Translation\Service\Locale\Locale::LOCALE_EN_US);
-        $config['helpers']['googleMapsApiKey'] = 'AIzaSyDQjaIqU-jFarAhO1SDMmIOJTmuvRGrVa8';
+        $config['helpers']['googleMapsApiKey'] = $serviceLocator->get('Configuration')['google']['maps']['api_key'];
+        
         // add current host url
         $serverUrl = new ServerUrl();
         $config['helpers']['serverDomain'] = $serverUrl->getHost();

@@ -90,5 +90,10 @@ return array(
     ),
     'quote' => array(
         'expireAfterDays' => 10
+    ),
+    'google' => array(
+        'maps' => array(
+            'api_key' => 'AIzaSyDQjaIqU-jFarAhO1SDMmIOJTmuvRGrVa8'
+        )
     )
 );
