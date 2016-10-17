@@ -135,11 +135,12 @@ class MenuItemController extends ActionController
         // hide current menu from possible parents options
         $options['hiddenMenuItemsIds'] = array($id);
         $form = new MenuItemForm(/* $name = */ null, $options);
-        $menu = $menuItemObj->getMenu();
-        // menu hidden field can hold only id, not an object
-        $menuItemObj->setMenu($menu->getId());
         $form->bind($menuItemObj);
-
+        
+        // filling the form with ids not objects 
+        $form->get('optgroup-parent')->setValue($menuItemObj->getParent()->getId());
+        $form->get('menu')->setValue($menuItemObj->getMenu()->getId());
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -161,7 +162,6 @@ class MenuItemController extends ActionController
             }
         }
 
-        $menuItemObj->setMenu($menu);
         $variables = $formSmasher->prepareFormForDisplay($form, /* elements containers */ $variables, array('buttons'));
         return new ViewModel($variables);
     }
