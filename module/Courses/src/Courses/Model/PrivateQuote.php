@@ -3,7 +3,7 @@
 namespace Courses\Model;
 
 use Utilities\Service\Status;
-use Courses\Entity\CourseEvent;
+use Courses\Entity\CourseEvent as CourseEventEntity;
 
 /**
  * PrivateQuote Model
@@ -81,7 +81,7 @@ class PrivateQuote implements QuoteInterface
                 "studentsNo" => 1,
                 "hideFromCalendar" => Status::STATUS_ACTIVE
             );
-            $this->query->setEntity("Courses\Entity\CourseEvent")->save($courseEvent = new CourseEvent(), $data);
+            $this->query->setEntity("Courses\Entity\CourseEvent")->save($courseEvent = new CourseEventEntity(), $data);
             $quote->setCourseEvent($courseEvent);
         }
     }
