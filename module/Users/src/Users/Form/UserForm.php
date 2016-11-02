@@ -724,7 +724,7 @@ class UserForm extends Form
                 'unchecked_value' => Statement::STATEMENT_DISAGREE
             ),
         ));
-
+        
         if (!$this->isAdminUser && APPLICATION_ENV != "test") {
             $this->add(array(
                 'type' => 'Zend\Form\Element\Captcha',
@@ -744,8 +744,9 @@ class UserForm extends Form
                             'font' => APPLICATION_PATH . '/fonts/Arctik.ttf',
                             'width' => 200,
                             'height' => 65,
-                            'dotNoiseLevel' => 20,
-                            'lineNoiseLevel' => 3,
+                            'dotNoiseLevel' => 10,
+                            'lineNoiseLevel' => 0,
+                            'wordlen' => 4
                         ),
                     ),
                 ),
