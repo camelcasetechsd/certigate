@@ -414,25 +414,6 @@ class IndexController extends ActionController
                 $isCustomValidationValid = false;
             }
 
-            /**
-             * validating phone number if existed (phone is optional)
-             */
-            if (empty($data['phoneCountryCode'])) {
-                // if country code empty , ignore phone data if enjected
-                $data['phoneAreaCode'] = $data['phone'] = '';
-            }
-            else {
-                // if country code existed but no code Area
-                if ($data['phoneAreaCode'] === '') {
-                    $form->get('phoneAreaCode')->setMessages(array(Messages::MISSING_AREA_CODE));
-                    $isCustomValidationValid = false;
-                }
-                // if country code existed but no phone number
-                if ($data['phone'] === '') {
-                    $form->get('phone')->setMessages(array(Messages::MISSING_PHONE));
-                    $isCustomValidationValid = false;
-                }
-            }
 
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);

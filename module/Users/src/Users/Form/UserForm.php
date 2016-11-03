@@ -190,6 +190,7 @@ class UserForm extends Form
             ),
             'attributes' => array(
                 'class' => 'form-register',
+                'required' => 'required',
                 // making KSA default country code
                 'value' => '+966'
             ),
@@ -200,6 +201,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter 2-3 digits Area Code',
                 'class' => 'form-register',
+                'required' => 'required',
             ),
             'options' => array(
             ),
@@ -210,6 +212,7 @@ class UserForm extends Form
             'attributes' => array(
                 'placeholder' => 'Enter Phone Number 6-8 digits',
                 'class' => 'form-register',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Phone',
