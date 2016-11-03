@@ -1,6 +1,7 @@
 // rtl date pickers classes
 $('.new-hijriDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('ummalqura', 'ar'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -17,6 +18,7 @@ $('.new-hijriDate-ar').calendarsPicker($.extend({
 
 $('.new-gregorianDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian', 'ar'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -36,6 +38,7 @@ $('.new-gregorianDate-ar').calendarsPicker($.extend({
 // ltr date pickers classes
 $('.new-hijriDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('ummalqura'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -53,6 +56,7 @@ $('.new-hijriDate').calendarsPicker($.extend({
 
 $('.new-gregorianDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
