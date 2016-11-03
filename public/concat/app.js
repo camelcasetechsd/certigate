@@ -19250,6 +19250,7 @@ function getOtherDateInput(relativePostion, currentDate, otherDateSelector){
 // rtl date pickers classes
 $('.new-hijriDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('ummalqura', 'ar'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -19266,6 +19267,7 @@ $('.new-hijriDate-ar').calendarsPicker($.extend({
 
 $('.new-gregorianDate-ar').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian', 'ar'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -19285,6 +19287,7 @@ $('.new-gregorianDate-ar').calendarsPicker($.extend({
 // ltr date pickers classes
 $('.new-hijriDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('ummalqura'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -19302,6 +19305,7 @@ $('.new-hijriDate').calendarsPicker($.extend({
 
 $('.new-gregorianDate').calendarsPicker($.extend({
     calendar: $.calendars.instance('gregorian'),
+    dateFormat: 'dd/mm/yyyy',
     onSelect: function (dateText, datePickerInstance) {
         $(this).val(dateText[0].formatDate('dd/mm/yyyy'));
         // getting julian date out of hijri date
@@ -20089,316 +20093,9 @@ See https://github.com/arnab/jQuery.PrettyTextDiff/
 
 }).call(this);
 ;
-/* OriginalFileName : node_modules/addtocalendar/addtocalendar.js */ 
+/* OriginalFileName : node_modules/addtocalendar/addtocalendar.min.js */ 
 
-(function (w, d) {
-    var
-        atc_url = '//addtocalendar.com/atc/',
-        atc_version = '1.5';
-
-
-    if (!Array.indexOf) {
-        Array.prototype.indexOf = function (obj) {
-            for (var i = 0, l = this.length; i < l; i++) {
-                if (this[i] == obj) {
-                    return i
-                }
-            }
-            return -1
-        }
-    }
-
-    if (!Array.prototype.map) {
-        Array.prototype.map = function (f) {
-            var result = [];
-            for (var i = 0, l = this.length; i < l; i++) {
-                result.push(f(this[i]))
-            }
-            return result
-        }
-    }
-
-    var isArray = function (obj) {
-        return Object.prototype.toString.call(obj) === "[object Array]"
-    };
-
-    var isFunc = function (obj) {
-        return Object.prototype.toString.call(obj) === "[object Function]"
-    };
-
-    var ready = function (w, d) {
-        var inited = false,
-            loaded = false,
-            queue = [],
-            done, old;
-
-        function go() {
-            if (!inited) {
-                if (!d.body) return setTimeout(go, 13);
-                inited = true;
-                if (queue) {
-                    var j, k = 0;
-                    while (j = queue[k++]) j.call(null);
-                    queue = null
-                }
-            }
-        }
-
-        function check() {
-            if (loaded) return;
-            loaded = true;
-            if (d.readyState === "complete") return go();
-            if (d.addEventListener) {
-                d.addEventListener("DOMContentLoaded", done, false);
-                w.addEventListener("load", go, false)
-            } else {
-                if (d.attachEvent) {
-                    d.attachEvent("onreadystatechange", done);
-                    w.attachEvent("onload", go);
-                    var k = false;
-                    try {
-                        k = w.frameElement == null
-                    } catch (j) {}
-                    if (b.doScroll && k) ie()
-                } else {
-                    old = w.onload;
-                    w.onload = function (e) {
-                        old(e);
-                        go()
-                    }
-                }
-            }
-        }
-        if (d.addEventListener) {
-            done = function () {
-                d.removeEventListener("DOMContentLoaded", done, false);
-                go()
-            }
-        } else {
-            if (d.attachEvent) {
-                done = function () {
-                    if (d.readyState === "complete") {
-                        d.detachEvent("onreadystatechange", done);
-                        go()
-                    }
-                }
-            }
-        }
-
-        function ie() {
-            if (inited) return;
-            try {
-                b.doScroll("left")
-            } catch (j) {
-                setTimeout(ie, 1);
-                return
-            }
-            go()
-        }
-        return function (callback) {
-            check();
-            if (inited) {
-                callback.call(null)
-            } else {
-                queue.push(callback)
-            }
-        }
-    }(w, d);
-
-    if (w.addtocalendar && typeof w.addtocalendar.start == "function") return;
-    if (!w.addtocalendar) w.addtocalendar = {};
-
-    addtocalendar.languages = {
-        'de': 'In den Kalender',
-        'en': 'Add to Calendar',
-        'es': 'Añadir al Calendario',
-        'fr': 'Ajouter au calendrier',
-        'hi': 'कैलेंडर में जोड़ें',
-        'in': 'Tambahkan ke Kalender',
-        'ja': 'カレンダーに追加',
-        'ko': '캘린더에 추가',
-        'pt': 'Adicionar ao calendário',
-        'ru': 'Добавить в календарь',
-        'uk': 'Додати в календар',
-        'zh': '添加到日历'
-    };
-
-    addtocalendar.calendar_urls = {
-
-    }
-
-    addtocalendar.loadSettings = function(element){
-        var settings = {
-            'language':'auto',
-            'show-list-on':'click',
-            'calendars':[
-                'iCalendar',
-                'Google Calendar',
-                'Outlook',
-                'Outlook Online',
-                'Yahoo! Calendar'
-            ],
-            'secure':'auto',
-            'on-button-click':function(){},
-            'on-calendar-click':function(){}
-        };
-
-        for (var option in settings){
-            var pname = 'data-' + option;
-            var eattr = element.getAttribute(pname);
-            if(eattr != null){
-
-                if(isArray(settings[option])){
-                    settings[option] = eattr.replace(/\s*,\s*/g,',').replace(/^\s+|\s+$/g, '').split(',');
-                    continue;
-                }
-
-                if(isFunc(settings[option])){
-                    var fn = window[eattr];
-                    if(isFunc(fn)) {
-                        settings[option]=fn;
-                    }else {
-                        settings[option]=eval('(function(mouseEvent){'+eattr+'})');
-                    }
-                    continue;
-                }
-
-                settings[option]=element.getAttribute(pname);
-            }
-        }
-
-        return settings;
-    };
-
-    addtocalendar.load = function () {
-
-        var calendarsUrl = {
-            'iCalendar':'ical',
-            'Google Calendar':'google',
-            'Outlook':'outlook',
-            'Outlook Online':'outlookonline',
-            'Yahoo! Calendar':'yahoo'
-        };
-        var utz = (-(new Date()).getTimezoneOffset().toString());
-
-        var languages = addtocalendar.languages;
-
-        var dom = document.getElementsByTagName('*');
-        for (var tagnum = 0; tagnum < dom.length; tagnum++) {
-            var tag_class = dom[tagnum].className;
-
-            if (tag_class.length && tag_class.split(" ").indexOf('addtocalendar') != -1) {
-
-                var settings = addtocalendar.loadSettings(dom[tagnum]);
-
-                var protocol = 'http:';
-                if(settings['secure'] == 'auto'){
-                    protocol = location.protocol == 'https:' ? 'https:' : 'http:';
-                } else if(settings['secure'] == 'true'){
-                    protocol = 'https:';
-                }
-
-                var tag_id = dom[tagnum].id;
-                var atc_button_title = languages['en'];
-                if(settings['language'] == 'auto'){
-                    var user_lang = "no_lang";
-					if (typeof navigator.language === "string") {
-					    user_lang = navigator.language.substr(0, 2)
-					} else if (typeof navigator.browserLanguage === "string") {
-					    user_lang = navigator.browserLanguage.substr(0, 2)
-					}
-
-                    if(languages.hasOwnProperty(user_lang)){
-                        atc_button_title = languages[user_lang];
-                    }
-                }else if(languages.hasOwnProperty(settings['language'])){
-                    atc_button_title = languages[settings['language']];
-                }
-
-                var url_paramteres = [
-                    'utz=' + utz,
-                    'uln=' + navigator.language,
-                    'vjs=' + atc_version
-                ];
-
-                var addtocalendar_div = dom[tagnum].getElementsByTagName('var');
-                var event_number = -1;
-                for (var varnum = 0; varnum < addtocalendar_div.length; varnum++) {
-                    var param_name = addtocalendar_div[varnum].className.replace("atc_","").split(" ")[0];
-                    var param_value = addtocalendar_div[varnum].innerHTML;
-
-                    if(param_name == 'event'){
-                        event_number++;
-                        continue;
-                    }
-
-                    if(param_name == addtocalendar_div[varnum].className){
-                        if(param_name == 'atc-body'){
-                            atc_button_title = param_value;
-                        }
-                        continue;
-                    }
-
-                    if(event_number == -1){
-                        continue;
-                    }
-
-                    url_paramteres.push('e['+event_number+']['+param_name+']' + '=' + encodeURIComponent(param_value));
-                }
-
-
-                var atcb_link_id_val = (tag_id == ''?'':(tag_id + '_link') );
-                var atcb_list = document.createElement('ul');
-                atcb_list.className = 'atcb-list';
-
-                var menu_links = '';
-                for (var cnum in settings['calendars']){
-                    if(!calendarsUrl.hasOwnProperty(settings['calendars'][cnum])){
-                        continue;
-                    }
-                    var cal_id = calendarsUrl[settings['calendars'][cnum]];
-                    var atcb_cal_link_id = (tag_id == '' ? '' : ('id="'+tag_id + '_' + cal_id + '_link"') );
-                    menu_links += '<li class="atcb-item"><a '+atcb_cal_link_id+' class="atcb-item-link" href="' 
-						+ (cal_id=='ical' && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream ? 'webcal:' : protocol)
-						+ atc_url
-						+ cal_id + '?' + url_paramteres.join('&')
-						+ '" target="_blank">' + settings['calendars'][cnum] + '</a></li>';
-                }
-                atcb_list.innerHTML = menu_links;
-
-                if(dom[tagnum].getElementsByClassName('atcb-link')[0] == undefined){
-                    var atcb_link = document.createElement('a');
-                    atcb_link.className = 'atcb-link';
-                    atcb_link.innerHTML = atc_button_title;
-                    atcb_link.id = atcb_link_id_val;
-                    atcb_link.tabIndex = 1;
-
-                    dom[tagnum].appendChild(atcb_link);
-                    dom[tagnum].appendChild(atcb_list);
-                }else{
-                    var atcb_link = dom[tagnum].getElementsByClassName('atcb-link')[0];
-                    atcb_link.parentNode.appendChild(atcb_list);
-                    atcb_link.tabIndex=1;
-                    if(atcb_link.id == ''){
-                        atcb_link.id = atcb_link_id_val;
-                    }
-                }
-
-                dom[tagnum]
-                    .getElementsByClassName('atcb-link')[0]
-                    .addEventListener("click", settings['on-button-click'], false);
-
-                var item_links = dom[tagnum].getElementsByClassName('atcb-item-link');
-
-                for (var varnum = 0; varnum < item_links.length; varnum++) {
-                    item_links[varnum].addEventListener("click", settings['on-calendar-click'], false);
-                }
-
-            }
-        }
-    };
-    addtocalendar.load();
-})(window, document);
+!function(w,d){var atc_url="//addtocalendar.com/atc/",atc_version="1.5";Array.indexOf||(Array.prototype.indexOf=function(e){for(var t=0,a=this.length;a>t;t++)if(this[t]==e)return t;return-1}),Array.prototype.map||(Array.prototype.map=function(e){for(var t=[],a=0,n=this.length;n>a;a++)t.push(e(this[a]));return t});var isArray=function(e){return"[object Array]"===Object.prototype.toString.call(e)},isFunc=function(e){return"[object Function]"===Object.prototype.toString.call(e)},ready=function(e,t){function a(){if(!i){if(!t.body)return setTimeout(a,13);if(i=!0,c){for(var e,n=0;e=c[n++];)e.call(null);c=null}}}function n(){if(!d){if(d=!0,"complete"===t.readyState)return a();if(t.addEventListener)t.addEventListener("DOMContentLoaded",r,!1),e.addEventListener("load",a,!1);else if(t.attachEvent){t.attachEvent("onreadystatechange",r),e.attachEvent("onload",a);var n=!1;try{n=null==e.frameElement}catch(i){}b.doScroll&&n&&o()}else l=e.onload,e.onload=function(e){l(e),a()}}}function o(){if(!i){try{b.doScroll("left")}catch(e){return void setTimeout(o,1)}a()}}var r,l,i=!1,d=!1,c=[];return t.addEventListener?r=function(){t.removeEventListener("DOMContentLoaded",r,!1),a()}:t.attachEvent&&(r=function(){"complete"===t.readyState&&(t.detachEvent("onreadystatechange",r),a())}),function(e){n(),i?e.call(null):c.push(e)}}(w,d);w.addtocalendar&&"function"==typeof w.addtocalendar.start||(w.addtocalendar||(w.addtocalendar={}),addtocalendar.languages={de:"In den Kalender",en:"Add to Calendar",es:"Añadir al Calendario",fr:"Ajouter au calendrier",hi:"कैलेंडर में जोड़ें","in":"Tambahkan ke Kalender",ja:"カレンダーに追加",ko:"캘린더에 추가",pt:"Adicionar ao calendário",ru:"Добавить в календарь",uk:"Додати в календар",zh:"添加到日历"},addtocalendar.calendar_urls={},addtocalendar.loadSettings=function(element){var settings={language:"auto","show-list-on":"click",calendars:["iCalendar","Google Calendar","Outlook","Outlook Online","Yahoo! Calendar"],secure:"auto","on-button-click":function(){},"on-calendar-click":function(){}};for(var option in settings){var pname="data-"+option,eattr=element.getAttribute(pname);if(null!=eattr){if(isArray(settings[option])){settings[option]=eattr.replace(/\s*,\s*/g,",").replace(/^\s+|\s+$/g,"").split(",");continue}if(isFunc(settings[option])){var fn=window[eattr];isFunc(fn)?settings[option]=fn:settings[option]=eval("(function(mouseEvent){"+eattr+"})");continue}settings[option]=element.getAttribute(pname)}}return settings},addtocalendar.load=function(){for(var e={iCalendar:"ical","Google Calendar":"google",Outlook:"outlook","Outlook Online":"outlookonline","Yahoo! Calendar":"yahoo"},t=-(new Date).getTimezoneOffset().toString(),a=addtocalendar.languages,n=document.getElementsByTagName("*"),o=0;o<n.length;o++){var r=n[o].className;if(r.length&&-1!=r.split(" ").indexOf("addtocalendar")){var l=addtocalendar.loadSettings(n[o]),i="http:";"auto"==l.secure?i="https:"==location.protocol?"https:":"http:":"true"==l.secure&&(i="https:");var d=n[o].id,c=a.en;if("auto"==l.language){var s="no_lang";"string"==typeof navigator.language?s=navigator.language.substr(0,2):"string"==typeof navigator.browserLanguage&&(s=navigator.browserLanguage.substr(0,2)),a.hasOwnProperty(s)&&(c=a[s])}else a.hasOwnProperty(l.language)&&(c=a[l.language]);for(var u=["utz="+t,"uln="+navigator.language,"vjs="+atc_version],g=n[o].getElementsByTagName("var"),f=-1,p=0;p<g.length;p++){var v=g[p].className.replace("atc_","").split(" ")[0],m=g[p].innerHTML;"event"!=v?v!=g[p].className?-1!=f&&u.push("e["+f+"]["+v+"]="+encodeURIComponent(m)):"atc-body"==v&&(c=m):f++}var h=""==d?"":d+"_link",y=document.createElement("ul");y.className="atcb-list";var b="";for(var k in l.calendars)if(e.hasOwnProperty(l.calendars[k])){var E=e[l.calendars[k]],w=""==d?"":'id="'+d+"_"+E+'_link"';b+='<li class="atcb-item"><a '+w+' class="atcb-item-link" href="'+("ical"==E&&/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream?"webcal:":i)+atc_url+E+"?"+u.join("&")+'" target="_blank">'+l.calendars[k]+"</a></li>"}if(y.innerHTML=b,void 0==n[o].getElementsByClassName("atcb-link")[0]){var C=document.createElement("a");C.className="atcb-link",C.innerHTML=c,C.id=h,C.tabIndex=1,n[o].appendChild(C),n[o].appendChild(y)}else{var C=n[o].getElementsByClassName("atcb-link")[0];C.parentNode.appendChild(y),C.tabIndex=1,""==C.id&&(C.id=h)}n[o].getElementsByClassName("atcb-link")[0].addEventListener("click",l["on-button-click"],!1);for(var O=n[o].getElementsByClassName("atcb-item-link"),p=0;p<O.length;p++)O[p].addEventListener("click",l["on-calendar-click"],!1)}}}),addtocalendar.load()}(window,document);
 ;
 /* OriginalFileName : public/js/addToCalendar.js */ 
 
@@ -20998,4 +20695,27 @@ $(document).ready(function () {
 
 $('.start-now').click(function(){
     location.href = "/users/new";
+});
+;
+/* OriginalFileName : public/js/rolesPrivileges.js */ 
+
+if ($('.checkAllModuleRoutes').length) {
+    $(".checkAllModuleRoutes").change(function () {
+        $('.checkAll-' + $(this).attr("data-module") + ' input:checkbox').prop('checked', this.checked);
+    });
+};
+/* OriginalFileName : public/js/userForm.js */ 
+
+$(document).ready(function () {
+    $('.refresh_captcha').click(function () {
+        $.ajax({
+            url: '/users/refreshcaptcha',
+            dataType: 'json',
+            success: function (data) {
+                $('#user_form_captcha-image').attr('src', data.src);
+                $('#user_form_captcha-hidden').attr('value', data.id);
+            }
+        });
+        return false;
+    });
 });

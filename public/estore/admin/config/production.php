@@ -1,11 +1,11 @@
 <?php
 // HTTP
-define('HTTP_SERVER', 'http://certigate-acceptance.camelcasetech.com/estore/admin/');
-define('HTTP_CATALOG', 'http://certigate-acceptance.camelcasetech.com/estore/');
+define('HTTP_SERVER', 'http://certigatepro.com/estore/admin/');
+define('HTTP_CATALOG', 'http://certigatepro.com/estore/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://certigate-acceptance.camelcasetech.com/estore/admin/');
-define('HTTPS_CATALOG', 'http://certigate-acceptance.camelcasetech.com/estore/');
+define('HTTPS_SERVER', 'http://certigatepro.com/estore/admin/');
+define('HTTPS_CATALOG', 'http://certigatepro.com/estore/');
 
 // DIR
 define('DIR_APPLICATION', '/home/mkadous/public_html/public/estore/admin/');
