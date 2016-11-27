@@ -12,39 +12,28 @@
         <thead>
             <tr>
                 <th>{{#translate}}Commercial Name{{/translate}}</th>
-                <th>{{#translate}}City{{/translate}}</th>
+                <th>{{#translate}}Address{{/translate}}</th>
                 <th>{{#translate}}Phone{{/translate}}</th>
+                <th>{{#translate}}Email{{/translate}}</th>
                 <th>{{#translate}}WebSite{{/translate}}</th>
-                <th>{{#translate}}ATC License Expiration{{/translate}}</th>
+                <th>{{#translate}}City{{/translate}}</th>
                 <th colspan="2">{{#translate}}Actions{{/translate}}</th>
             </tr>
         </thead>
         <tbody>
             {{#atcs}}
             <tr>
-                <td>
-                    {{#locale_en}}
-                    {{commercialName}}
-                    {{/locale_en}}
-                    {{#locale_ar}}
-                    {{commercialName}}
-                    {{/locale_ar}}        
-                </td>
-                <td>
-                    {{#locale_en}}
-                    {{city}}
-                    {{/locale_en}}
-                    {{#locale_ar}}
-                    {{city}}
-                    {{/locale_ar}}        
-                </td>
+                <td>{{commercialName}}</td>
+                <td>{{addressLine1}}</td>
                 <td>{{phone1}}</td>
+                <td>{{email}}</td>
                 <td>{{website}}</td>
-                <td>{{atcLicenseExpiration}}</td>
+                <td>{{city}}</td>
                 <td>
+                    {{#orgUser}}
                     <a href="/organizations/more/{{id}}" title="More">{{#translate}}More{{/translate}}</a>     
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{#orgUser}}
+                    
                     <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -63,7 +52,9 @@
 
                     {{^orgUser}}
                     {{#isAdmin}}
-
+                    <a href="/organizations/more/{{id}}" title="More">{{#translate}}More{{/translate}}</a>     
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    
                     <a data-toggle="tooltip" data-placement="left" title="{{#translate}}Manage Users{{/translate}}" href="/organization-users/{{id}}"><span class="glyphicon glyphicon-user"></span></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="/organizations/pending/{{id}}" data-toggle="tooltip" data-placement="left" title="{{#translate}}View{{/translate}}"><span class="glyphicon glyphicon-eye-open"></span></a>

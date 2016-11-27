@@ -95,10 +95,10 @@ class OrganizationsController extends ActionController
         $variables['atcs'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATC, /* $status = */ Status::STATUS_ACTIVE);
 
         foreach ($variables['atcs'] as $org) {
-            $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
-            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+            $org->orgUser = $organizationUserModel->isOrganizationUser(null, $org);
             $org->atcLicenseExpiration = $org->getAtcLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $variables['isAdmin'] = $organizationUserModel->isAdmin();
         $variables['atcTypeId'] = OrgEntity::TYPE_ATC;
         return new ViewModel($variables);
     }
@@ -117,10 +117,10 @@ class OrganizationsController extends ActionController
         $organizationUserModel = $this->getServiceLocator()->get('Organizations\Model\OrganizationUser');
         $variables['atps'] = $organizationModel->listOrganizations(OrgEntity::TYPE_ATP, /* $status = */ Status::STATUS_ACTIVE);
         foreach ($variables['atps'] as $org) {
-            $variables['orgUser'] = $organizationUserModel->isOrganizationUser(null, $org);
-            $variables['isAdmin'] = $organizationUserModel->isAdmin();
+            $org->orgUser = $organizationUserModel->isOrganizationUser(null, $org);
             $org->atpLicenseExpiration = $org->getAtpLicenseExpiration()->format(Time::DATE_FORMAT);
         }
+        $variables['isAdmin'] = $organizationUserModel->isAdmin();
         $variables['atpTypeId'] = OrgEntity::TYPE_ATP;
         return new ViewModel($variables);
     }
