@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ar_Ar.po conversion\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-10-17 13:34+0200\n"
+"PO-Revision-Date: 2016-11-27 14:49+0200\n"
 "Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1407,3 +1407,9 @@ msgstr "Cache Type"
 
 msgid "Menus Pathes ( Pages )"
 msgstr "Menus Pathes ( Pages )"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Create new user/account"
+msgstr "Create new user/account"
