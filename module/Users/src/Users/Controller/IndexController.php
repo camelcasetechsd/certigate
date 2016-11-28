@@ -212,6 +212,8 @@ class IndexController extends ActionController
                 }
             }
 
+            $userModel->addRolesAgreementValidators($data , $form);
+            
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, $userObj, $isAdminUser, /* $editFormFlag = */ null, $oldLongitude, $oldLatitude);
 
@@ -248,6 +250,7 @@ class IndexController extends ActionController
         $formSmasher = $this->getServiceLocator()->get('formSmasher');
         $countriesService = $this->getServiceLocator()->get('losi18n-countries');
         $languagesService = $this->getServiceLocator()->get('losi18n-languages');
+        /* @var $userModel \Users\Model\User */
         $userModel = $this->getServiceLocator()->get('Users\Model\User');
         $userObj = new User();
         $options = array();
@@ -313,7 +316,8 @@ class IndexController extends ActionController
                     $isCustomValidationValid = false;
                 }
             }
-
+            
+            $userModel->addRolesAgreementValidators($data , $form);
 
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
@@ -414,6 +418,7 @@ class IndexController extends ActionController
                 $isCustomValidationValid = false;
             }
 
+            $userModel->addRolesAgreementValidators($data , $form);
 
             if ($form->isValid() && $isCustomValidationValid === true) {
                 $userModel->saveUser($data, /* $userObj = */ null, $isAdminUser);
