@@ -161,6 +161,7 @@ class UserForm extends Form
                 'placeholder' => 'Enter mobile Area code 2-3 digits',
                 'required' => 'required',
                 'class' => 'form-register',
+                'min' => 1
             ),
             'options' => array(
                 'label' => 'Mobile',
@@ -173,6 +174,7 @@ class UserForm extends Form
                 'placeholder' => 'Enter mobile Number 6-8 digits',
                 'required' => 'required',
                 'class' => 'form-register',
+                'min' => 1
             ),
             'options' => array(
                 'label' => 'Mobile',
@@ -202,6 +204,7 @@ class UserForm extends Form
                 'placeholder' => 'Enter 2-3 digits Area Code',
                 'class' => 'form-register',
                 'required' => 'required',
+                'min' => 1
             ),
             'options' => array(
             ),
@@ -213,6 +216,7 @@ class UserForm extends Form
                 'placeholder' => 'Enter Phone Number 6-8 digits',
                 'class' => 'form-register',
                 'required' => 'required',
+                'min' => 1
             ),
             'options' => array(
                 'label' => 'Phone',
@@ -618,7 +622,8 @@ class UserForm extends Form
                 ),
                 'label_attributes' => array(
                     'class' => "col-md-9 c-input role-label",
-                )
+                ),
+                'disable_inarray_validator' => true,                
             ),
         ));
 

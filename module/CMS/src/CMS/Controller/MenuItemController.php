@@ -138,7 +138,9 @@ class MenuItemController extends ActionController
         $form->bind($menuItemObj);
         
         // filling the form with ids not objects 
-        $form->get('optgroup-parent')->setValue($menuItemObj->getParent()->getId());
+        if(null !== $menuItemObj->getParent() ){
+            $form->get('optgroup-parent')->setValue($menuItemObj->getParent()->getId());
+        }
         $form->get('menu')->setValue($menuItemObj->getMenu()->getId());
         
         $request = $this->getRequest();
