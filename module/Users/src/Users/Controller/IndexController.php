@@ -160,8 +160,8 @@ class IndexController extends ActionController
             $form->setInputFilter($userObj->getInputFilter($query));
             $inputFilter = $form->getInputFilter();
             $form->setData($data);
-            $isCustomValidationValid = true;
 
+            $isCustomValidationValid = true;
 
             // file not updated
             if (isset($fileData['photo']['name']) && empty($fileData['photo']['name'])) {
@@ -176,20 +176,12 @@ class IndexController extends ActionController
                 $confirmEmail = $inputFilter->get('confirmEmail');
                 $confirmEmail->setRequired(false);
             }
-            elseif ($data['email'] != $data['confirmEmail']) {
-                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
-                $isCustomValidationValid = false;
-            }
 
             if (empty($data['password'])) {
                 $password = $inputFilter->get('password');
                 $password->setRequired(false);
                 $confirmPassword = $inputFilter->get('confirmPassword');
                 $confirmPassword->setRequired(false);
-            }
-            elseif ($data['password'] != $data['confirmPassword']) {
-                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
-                $isCustomValidationValid = false;
             }
 
             /**
@@ -280,20 +272,10 @@ class IndexController extends ActionController
             $query->setEntity('Users\Entity\User');
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
-
+            
+            $isCustomValidationValid = true;
             if (empty($data['longitude']) || empty($data['latitude'])) {
                 $form->get('latitude')->setMessages(array("Location is required"));
-                $isCustomValidationValid = false;
-            }
-
-            $isCustomValidationValid = true;
-            if ($data['email'] != $data['confirmEmail']) {
-                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
-                $isCustomValidationValid = false;
-            }
-
-            if ($data['password'] != $data['confirmPassword']) {
-                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
                 $isCustomValidationValid = false;
             }
 
@@ -409,14 +391,6 @@ class IndexController extends ActionController
             $form->setInputFilter($userObj->getInputFilter($query));
             $form->setData($data);
             $isCustomValidationValid = true;
-            if ($data['email'] != $data['confirmEmail']) {
-                $form->get('confirmEmail')->setMessages(array("email doesnt match"));
-                $isCustomValidationValid = false;
-            }
-            if ($data['password'] != $data['confirmPassword']) {
-                $form->get('confirmPassword')->setMessages(array("password doesnt match"));
-                $isCustomValidationValid = false;
-            }
 
             $userModel->addRolesAgreementValidators($data , $form);
 

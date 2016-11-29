@@ -436,8 +436,7 @@ class User
     {
         if (function_exists("password_hash")) {
             return password_hash($password, PASSWORD_BCRYPT);
-        }
-        else {
+        } else {
             return crypt($password);
         }
     }
@@ -455,8 +454,7 @@ class User
     {
         if (function_exists('password_verify')) {
             return password_verify($givenPassword, $savedPassword);
-        }
-        else {
+        } else {
             return crypt($givenPassword, $savedPassword) == $savedPassword;
         }
     }
@@ -469,15 +467,15 @@ class User
      */
     public function __construct()
     {
-        $this->courseEventUsers = new ArrayCollection();
-        $this->organizationUser = new ArrayCollection();
-        $this->messagefrom = new ArrayCollection();
-        $this->messageTo = new ArrayCollection();
-        $this->roles = new ArrayCollection();
-        $this->publicQuotes = new ArrayCollection();
+        $this->courseEventUsers         = new ArrayCollection();
+        $this->organizationUser         = new ArrayCollection();
+        $this->messagefrom              = new ArrayCollection();
+        $this->messageTo                = new ArrayCollection();
+        $this->roles                    = new ArrayCollection();
+        $this->publicQuotes             = new ArrayCollection();
         $this->courseEventSubscriptions = new ArrayCollection();
-        $this->privateQuotes = new ArrayCollection();
-        $this->issues = new ArrayCollection();
+        $this->privateQuotes            = new ArrayCollection();
+        $this->issues                   = new ArrayCollection();
     }
 
     /**
@@ -709,8 +707,8 @@ class User
      */
     public function getRolesAgreementsStatus()
     {
-        $inflector = new Inflector();
-        $roles = $this->getRolesNames();
+        $inflector             = new Inflector();
+        $roles                 = $this->getRolesNames();
         $rolesAgreementsStatus = array();
         foreach ($roles as $role) {
             $roleAgrementStatusMethod = "get" . $inflector->camelize($role) . "Statement";
@@ -1833,32 +1831,32 @@ class User
             $this->setresellerStatement($data["resellerStatement"]);
         }
         $this->setDateOfBirth($data["dateOfBirth"])
-                ->setDateOfBirthHj($data["dateOfBirthHj"])
-                ->setMobile($data["mobileCountryCode"], $data["mobileAreaCode"], $data["mobile"])
-                ->setFirstName($data["firstName"])
-                ->setFirstNameAr($data["firstNameAr"])
-                ->setLastName($data["lastName"])
-                ->setLastNameAr($data["lastNameAr"])
-                ->setMiddleName($data["middleName"])
-                ->setMiddleNameAr($data["middleNameAr"])
-                ->setCountry($data["country"])
-                ->setUsername($data["username"])
-                ->setAddressOne($data["addressOne"])
-                ->setAddressTwo($data["addressTwo"])
-                ->setAddressOneAr($data["addressOneAr"])
-                ->setAddressTwoAr($data["addressTwoAr"])
-                ->setCity($data["city"])
-                ->setEmail($data["email"])
-                ->setIdentificationExpiryDate($data["identificationExpiryDate"])
-                ->setIdentificationExpiryDateHj($data["identificationExpiryDateHj"])
-                ->setIdentificationNumber($data["identificationNumber"])
-                ->setIdentificationType($data["identificationType"])
-                ->setNationality($data["nationality"])
-                ->setPhone($data["phoneCountryCode"], $data["phoneAreaCode"], $data["phone"])
-                ->setSecurityAnswer($data["securityAnswer"])
-                ->setSecurityQuestion($data["securityQuestion"])
-                ->setZipCode($data["zipCode"])
-                ->setPrivacyStatement($data["privacyStatement"])
+            ->setDateOfBirthHj($data["dateOfBirthHj"])
+            ->setMobile($data["mobileCountryCode"], $data["mobileAreaCode"], $data["mobile"])
+            ->setFirstName($data["firstName"])
+            ->setFirstNameAr($data["firstNameAr"])
+            ->setLastName($data["lastName"])
+            ->setLastNameAr($data["lastNameAr"])
+            ->setMiddleName($data["middleName"])
+            ->setMiddleNameAr($data["middleNameAr"])
+            ->setCountry($data["country"])
+            ->setUsername($data["username"])
+            ->setAddressOne($data["addressOne"])
+            ->setAddressTwo($data["addressTwo"])
+            ->setAddressOneAr($data["addressOneAr"])
+            ->setAddressTwoAr($data["addressTwoAr"])
+            ->setCity($data["city"])
+            ->setEmail($data["email"])
+            ->setIdentificationExpiryDate($data["identificationExpiryDate"])
+            ->setIdentificationExpiryDateHj($data["identificationExpiryDateHj"])
+            ->setIdentificationNumber($data["identificationNumber"])
+            ->setIdentificationType($data["identificationType"])
+            ->setNationality($data["nationality"])
+            ->setPhone($data["phoneCountryCode"], $data["phoneAreaCode"], $data["phone"])
+            ->setSecurityAnswer($data["securityAnswer"])
+            ->setSecurityQuestion($data["securityQuestion"])
+            ->setZipCode($data["zipCode"])
+            ->setPrivacyStatement($data["privacyStatement"])
         ;
     }
 
@@ -1892,184 +1890,193 @@ class User
 
             $query->setEntity("Users\Entity\User");
             $inputFilter->add(array(
-                'name' => 'username',
-                'required' => true,
+                'name'       => 'username',
+                'required'   => true,
                 'validators' => array(
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                    array('name'    => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
+                            'use_context'       => true,
+                            'object_manager'    => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('username'),
-                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This username is already in use")
+                            'fields'            => array('username'),
+                            'messages'          => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This username is already in use")
                         )
                     ),
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'password',
-                'required' => true,
+                'name'       => 'password',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'min' => 8,
-                            'max' => 20,
+                            'min'      => 8,
+                            'max'      => 20,
                             "encoding" => "utf-8"
                         )
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'confirmPassword',
-                'required' => true,
+                'name'       => 'confirmPassword',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'min' => 8,
-                            'max' => 20,
+                            'min'      => 8,
+                            'max'      => 20,
                             "encoding" => "utf-8"
+                        )
+                    ),
+                    array(
+                        'name'    => 'Identical',
+                        'options' => array(
+                            'token'    => 'password',
+                            'messages' => array(
+                                Identical::NOT_SAME => 'The 2 passwords are not the same !'
+                            )
                         )
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'firstName',
-                'required' => true,
+                'name'       => 'firstName',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'firstNameAr',
-                'required' => false,
+                'name'       => 'firstNameAr',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'lastName',
-                'required' => true,
+                'name'       => 'lastName',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'lastNameAr',
-                'required' => false,
+                'name'       => 'lastNameAr',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'middleName',
-                'required' => false,
+                'name'       => 'middleName',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'middleNameAr',
-                'required' => false,
+                'name'       => 'middleNameAr',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 32,
+                            'max'      => 32,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'country',
+                'name'     => 'country',
                 'required' => true,
             ));
 
             $inputFilter->add(array(
-                'name' => 'mobileCountryCode',
+                'name'     => 'mobileCountryCode',
                 'required' => true,
             ));
 
             $inputFilter->add(array(
-                'name' => 'mobileAreaCode',
-                'required' => true,
-                'filters' => array(
+                'name'       => 'mobileAreaCode',
+                'required'   => true,
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'Regex',
+                        'name'    => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{2,3}$/',
+                            'pattern'  => '/^[0-9]{2,3}$/',
                             'messages' => array(
                                 \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile Area code (2-3 digits)!'
                             )
@@ -2078,18 +2085,18 @@ class User
             ));
 
             $inputFilter->add(array(
-                'name' => 'mobile',
-                'required' => true,
-                'filters' => array(
+                'name'       => 'mobile',
+                'required'   => true,
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'Regex',
+                        'name'    => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{6,8}$/',
+                            'pattern'  => '/^[0-9]{6,8}$/',
                             'messages' => array(
                                 \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid mobile number (6-8 digits)!'
                             )
@@ -2097,11 +2104,11 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'dateOfBirth',
-                'required' => false,
+                'name'       => 'dateOfBirth',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'date',
+                        'name'    => 'date',
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
@@ -2109,11 +2116,11 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'dateOfBirthHj',
-                'required' => false,
+                'name'       => 'dateOfBirthHj',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'date',
+                        'name'    => 'date',
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
@@ -2122,15 +2129,15 @@ class User
             ));
 
             $inputFilter->add(array(
-                'name' => 'photo',
-                'required' => false,
+                'name'       => 'photo',
+                'required'   => false,
                 'validators' => array(
-                    array('name' => 'Filesize',
+                    array('name'    => 'Filesize',
                         'options' => array(
                             'max' => 2097152
                         )
                     ),
-                    array('name' => 'Fileextension',
+                    array('name'    => 'Fileextension',
                         'options' => array(
                             'extension' => 'gif,jpg,png'
                         )
@@ -2139,11 +2146,11 @@ class User
             ));
 
             $inputFilter->add(array(
-                'name' => 'addressOne',
-                'required' => true,
+                'name'       => 'addressOne',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             "encoding" => "utf-8"
                         )
@@ -2151,11 +2158,11 @@ class User
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'addressTwo',
-                'required' => false,
+                'name'       => 'addressTwo',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             "encoding" => "utf-8"
                         )
@@ -2163,37 +2170,25 @@ class User
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'zipCode',
-                'required' => false,
+                'name'       => 'zipCode',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'min' => 2,
-                            'max' => 10,
+                            'min'      => 2,
+                            'max'      => 10,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'addressOneAr',
-                'required' => true,
+                'name'       => 'addressOneAr',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            "encoding" => "utf-8"
-                        )
-                    )
-                ),
-            ));
-            $inputFilter->add(array(
-                'name' => 'addressTwoAr',
-                'required' => false,
-                'validators' => array(
-                    array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             "encoding" => "utf-8"
                         )
@@ -2201,23 +2196,35 @@ class User
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'phoneCountryCode',
+                'name'       => 'addressTwoAr',
+                'required'   => false,
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            "encoding" => "utf-8"
+                        )
+                    )
+                ),
+            ));
+            $inputFilter->add(array(
+                'name'     => 'phoneCountryCode',
                 'required' => false,
             ));
 
             $inputFilter->add(array(
-                'name' => 'phoneAreaCode',
-                'required' => false,
-                'filters' => array(
+                'name'       => 'phoneAreaCode',
+                'required'   => false,
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'Regex',
+                        'name'    => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{2,3}$/',
+                            'pattern'  => '/^[0-9]{2,3}$/',
                             'messages' => array(
                                 \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid area code (2-3 digits)!'
                             )
@@ -2225,18 +2232,18 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'phone',
-                'required' => false,
-                'filters' => array(
+                'name'       => 'phone',
+                'required'   => false,
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'Regex',
+                        'name'    => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]{6,8}$/',
+                            'pattern'  => '/^[0-9]{6,8}$/',
                             'messages' => array(
                                 \Zend\Validator\Regex::NOT_MATCH => 'Please enter valid phone number (6-8 digits)!'
                             )
@@ -2244,38 +2251,38 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'city',
-                'required' => true,
+                'name'       => 'city',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'min' => 2,
-                            'max' => 128,
+                            'min'      => 2,
+                            'max'      => 128,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'nationality',
+                'name'     => 'nationality',
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'identificationType',
+                'name'     => 'identificationType',
                 'required' => false,
             ));
 
             $inputFilter->add(array(
-                'name' => 'identificationNumber',
+                'name'     => 'identificationNumber',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'identificationExpiryDate',
-                'required' => false,
+                'name'       => 'identificationExpiryDate',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'date',
+                        'name'    => 'date',
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
@@ -2283,11 +2290,11 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'identificationExpiryDateHj',
-                'required' => false,
+                'name'       => 'identificationExpiryDateHj',
+                'required'   => false,
                 'validators' => array(
                     array(
-                        'name' => 'date',
+                        'name'    => 'date',
                         'options' => array(
                             'format' => Time::DATE_FORMAT,
                         )
@@ -2295,87 +2302,109 @@ class User
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'securityQuestion',
+                'name'     => 'securityQuestion',
                 'required' => true,
             ));
             $inputFilter->add(array(
-                'name' => 'securityAnswer',
+                'name'     => 'securityAnswer',
                 'required' => true,
             ));
 
             $inputFilter->add(array(
-                'name' => 'email',
-                'required' => true,
+                'name'       => 'email',
+                'required'   => true,
                 'validators' => array(
                     array('name' => 'EmailAddress',
                     ),
-                    array('name' => 'DoctrineModule\Validator\UniqueObject',
+                    array('name'    => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
-                            'use_context' => true,
-                            'object_manager' => $query->entityManager,
+                            'use_context'       => true,
+                            'object_manager'    => $query->entityManager,
                             'object_repository' => $query->entityRepository,
-                            'fields' => array('email'),
-                            'messages' => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This email address is already in use")
+                            'fields'            => array('email'),
+                            'messages'          => array(UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "This email address is already in use")
                         )
                     ),
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 96,
+                            'max'      => 96,
                             "encoding" => "utf-8"
                         )
                     )
                 ),
-                'filters' => array(
+                'filters'    => array(
                     array(
                         'name' => 'StringTrim',
                     )
                 )
             ));
             $inputFilter->add(array(
-                'name' => 'confirmEmail',
-                'required' => true,
+                'name'       => 'confirmEmail',
+                'required'   => true,
                 'validators' => array(
-                    array('name' => 'EmailAddress',
+                    array(
+                        'name' => 'EmailAddress',
                     ),
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
-                            'max' => 96,
+                            'max'      => 96,
                             "encoding" => "utf-8"
+                        )
+                    ),
+                    array(
+                        'name'    => 'Identical',
+                        'options' => array(
+                            'token'    => 'email',
+                            'messages' => array(
+                                Identical::NOT_SAME => 'The 2 emails are not the same !'
+                            )
                         )
                     )
                 )
             ));
 
             $inputFilter->add(array(
-                'name' => 'roles',
-                'required' => false,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'longitude',
-                'required' => false,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'latitude',
-                'required' => false,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'privacyStatement',
-                'required' => true,
+                'name'       => 'roles',
+                'required'   => true,
                 'validators' => array(
                     array(
-                        'name' => 'Identical',
+                        'name'    => 'NotEmpty',
                         'options' => array(
-                            'token' => (string) Status::STATUS_ACTIVE,
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'You must select at least one role !',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'longitude',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'latitude',
+                'required' => false,
+            ));
+
+            $inputFilter->add(array(
+                'name'       => 'privacyStatement',
+                'required'   => true,
+                'validators' => array(
+                    array(
+                        'name'    => 'Identical',
+                        'options' => array(
+                            'token'    => (string) Status::STATUS_ACTIVE,
                             'messages' => array(
                                 Identical::NOT_SAME => 'You must agree to the privacy statement',
                             ),
                         ),
-                        'name' => 'NotEmpty',
+                    ),
+                    array(
+                        'name'    => 'NotEmpty',
                         'options' => array(
                             'messages' => array(
                                 NotEmpty::IS_EMPTY => 'You must agree to the privacy statement',
@@ -2385,31 +2414,31 @@ class User
                 ),
             ));
             $inputFilter->add(array(
-                'name' => 'instructorStatement',
+                'name'     => 'instructorStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'proctorStatement',
+                'name'     => 'proctorStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'studentStatement',
+                'name'     => 'studentStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'testCenterAdministratorStatement',
+                'name'     => 'testCenterAdministratorStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'trainingManagerStatement',
+                'name'     => 'trainingManagerStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'distributorStatement',
+                'name'     => 'distributorStatement',
                 'required' => false,
             ));
             $inputFilter->add(array(
-                'name' => 'resellerStatement',
+                'name'     => 'resellerStatement',
                 'required' => false,
             ));
 

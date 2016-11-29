@@ -370,35 +370,37 @@ class User
     public function addRolesAgreementValidators($data, $form)
     {
         // validating roles agreement 
-        $rolesSelected = $data['roles'];
+        if (isset($data['roles'])) {
+            $rolesSelected = $data['roles'];
 
-        /* @var $rolesElement DoctrineModule\Form\Element\ObjectMultiCheckbox */
-        $rolesValues = $form->get('roles')->getValueOptions();
+            /* @var $rolesElement DoctrineModule\Form\Element\ObjectMultiCheckbox */
+            $rolesValues = $form->get('roles')->getValueOptions();
 
-        foreach ($rolesSelected as $r) {
-            $roleLabel = call_user_func(function($r, $rolesValues) {
-                foreach ($rolesValues as $rv) {
-                    if ($rv['value'] == $r) {
-                        return $rv['label'];
+            foreach ($rolesSelected as $r) {
+                $roleLabel = call_user_func(function($r, $rolesValues) {
+                    foreach ($rolesValues as $rv) {
+                        if ($rv['value'] == $r) {
+                            return $rv['label'];
+                        }
                     }
-                }
-            }, $r, $rolesValues);
+                }, $r, $rolesValues);
 
-            $statementElementName = lcfirst(str_replace([" ", "-"], "", $roleLabel)) . "Statement";
-            if ($statementElementName == "reSellerStatement") {
-                $statementElementName = "resellerStatement";
+                $statementElementName = lcfirst(str_replace([" ", "-"], "", $roleLabel)) . "Statement";
+                if ($statementElementName == "reSellerStatement") {
+                    $statementElementName = "resellerStatement";
+                }
+                $inputFilter = $form->getInputFilter()->get($statementElementName);
+                $inputFilter->setRequired(TRUE);
+                $inputFilter->getValidatorChain()->attach(new \Zend\Validator\Identical(array(
+                    'token'    => (string) \Utilities\Service\Status::STATUS_ACTIVE,
+                    'messages' => array(
+                        \Zend\Validator\Identical::NOT_SAME => 'You must agree to the ' . $roleLabel . ' privacy statement',
+                ))));
+                $inputFilter->getValidatorChain()->attach(new \Zend\Validator\NotEmpty(array(
+                    'messages' => array(
+                        \Zend\Validator\NotEmpty::IS_EMPTY => 'You must agree to the ' . $roleLabel . ' privacy statement',
+                ))));
             }
-            $inputFilter = $form->getInputFilter()->get($statementElementName);
-            $inputFilter->setRequired(TRUE);
-            $inputFilter->getValidatorChain()->attach(new \Zend\Validator\Identical(array(
-                'token'    => (string) \Utilities\Service\Status::STATUS_ACTIVE,
-                'messages' => array(
-                    \Zend\Validator\Identical::NOT_SAME => 'You must agree to the ' . $roleLabel . ' privacy statement',
-            ))));
-            $inputFilter->getValidatorChain()->attach(new \Zend\Validator\NotEmpty(array(
-                'messages' => array(
-                    \Zend\Validator\NotEmpty::IS_EMPTY => 'You must agree to the ' . $roleLabel . ' privacy statement',
-            ))));
         }
     }
 

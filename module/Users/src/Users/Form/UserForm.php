@@ -618,7 +618,8 @@ class UserForm extends Form
                 ),
                 'label_attributes' => array(
                     'class' => "col-md-9 c-input role-label",
-                )
+                ),
+                'disable_inarray_validator' => true,                
             ),
         ));
 

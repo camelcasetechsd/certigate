@@ -19,12 +19,19 @@ $(document).ready(function () {
         if (statementId == "reSellerStatement") {
             statementId = "resellerStatement";
         }
-        console.log(statementId);
-        console.log($(this).is(":checked"));
+        
         if ($(this).is(":checked")) {
             $("input[name=\"" + statementId + "\"]").attr("required", "required");
         } else {
             $("input[name=\"" + statementId + "\"]").removeAttr("required");
+        }
+    });
+    
+    $("form#user_form").submit(function(){
+        if($("input[name=\"roles[]\"]:checked").length === 0){
+            $(".roles-inputs").after("<ul><li class=\"errors\">You must select at least one role !</li></ul>");
+            $(".roles-inputs").focus();
+            return false;
         }
     });
 });
