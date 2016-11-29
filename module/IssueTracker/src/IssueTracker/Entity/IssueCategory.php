@@ -6,11 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use IssueTracker\Service\DepthLevel;
+use Utilities\Service\Validator\UniqueObject;
 
 /**
  * issue category Entity
  * @ORM\Entity(repositoryClass="IssueTracker\Entity\IssueCategoryRepository")
- * @ORM\Table(name="issue_category",uniqueConstraints={@ORM\UniqueConstraint(name="title_idx", columns={"title"})})
+ * @ORM\Table(name="issue_category",uniqueConstraints={@ORM\UniqueConstraint(name="title_parent_idx", columns={"title","parent_id"})})
  * 
  * 
  * @property InputFilter $inputFilter validation constraints 
@@ -206,19 +207,39 @@ class IssueCategory
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
+            $query->setEntity("IssueTracker\Entity\IssueCategory");
+
             $inputFilter->add(array(
-                'name' => 'description',
+                'name'       => 'title',
+                'validators' => array(
+                    array(
+                        'name'    => 'Utilities\Service\Validator\UniqueObject',
+                        'options' => array(
+                            'use_context'       => true,
+                            'object_manager'    => $query->entityManager,
+                            'object_repository' => $query->entityRepository,
+                            'fields'            => array('title', 'parent'),
+                            'messages'          => array(
+                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "There is aleady another category with the same name in this subcategory !"
+                            )
+                        )
+                    ),
+                ),
+                'filters'    => array(
+                    array(
+                        'name' => 'StringTrim',
+                    )
+                )
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'description',
                 'required' => true,
             ));
 
             $inputFilter->add(array(
-                'name' => 'title',
-                'required' => true,
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'email',
-                'required' => true,
+                'name'       => 'email',
+                'required'   => true,
                 'validators' => array(
                     array('name' => 'EmailAddress',
                     ),
@@ -226,12 +247,12 @@ class IssueCategory
             ));
 
             $inputFilter->add(array(
-                'name' => 'weight',
+                'name'     => 'weight',
                 'required' => true,
             ));
 
             $inputFilter->add(array(
-                'name' => 'parent',
+                'name'     => 'parent',
                 'required' => false,
             ));
 

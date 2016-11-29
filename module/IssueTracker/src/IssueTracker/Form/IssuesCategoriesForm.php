@@ -21,60 +21,65 @@ class IssuesCategoriesForm extends Form
         $this->setAttribute('class', 'form form-horizontal');
 
         $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
+            'name' => 'id',
+            'type' => 'Zend\Form\Element\Hidden',
+        ));
+
+        $this->add(array(
+            'name'       => 'title',
+            'type'       => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control',
+                'class'    => 'form-control',
             ),
-            'options' => array(
+            'options'    => array(
                 'label' => 'Title',
             ),
         ));
 
         $this->add(array(
-            'name' => 'description',
-            'type' => 'Zend\Form\Element\Text',
+            'name'       => 'description',
+            'type'       => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control',
+                'class'    => 'form-control',
             ),
-            'options' => array(
+            'options'    => array(
                 'label' => 'Description',
             ),
         ));
 
         $this->add(array(
-            'name' => 'weight',
-            'type' => 'Zend\Form\Element\Number',
+            'name'       => 'weight',
+            'type'       => 'Zend\Form\Element\Number',
             'attributes' => array(
                 'placeholder' => 'Lower value will be displayed at the Top',
-                'required' => 'required',
-                'class' => 'form-control',
-                'min' => '1',
+                'required'    => 'required',
+                'class'       => 'form-control',
+                'min'         => '1',
             ),
-            'options' => array(
+            'options'    => array(
                 'label' => 'Sort Order',
             ),
         ));
 
         $this->add(array(
-            'name' => 'parent',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'attributes' => array(
+            'name'        => 'parent',
+            'type'        => 'DoctrineModule\Form\Element\ObjectSelect',
+            'attributes'  => array(
                 'class' => 'form-control',
             ),
-            'options' => array(
-                'label' => 'Parent',
-                'object_manager' => $this->query->entityManager,
-                'target_class' => 'IssueTracker\Entity\IssueCategory',
+            'options'     => array(
+                'label'              => 'Parent',
+                'object_manager'     => $this->query->entityManager,
+                'target_class'       => 'IssueTracker\Entity\IssueCategory',
                 'display_empty_item' => true,
-                'empty_item_label' => "#",
-                'label_generator' => function($targetEntity) {
+                'empty_item_label'   => "#",
+                'label_generator'    => function($targetEntity) {
                     return $targetEntity->getTitle();
                 },
                 'find_method' => array(
-                    'name' => 'getCategoriesSorted',
+                    'name'   => 'getCategoriesSorted',
                     'params' => array(
                     )
                 ),
@@ -82,25 +87,25 @@ class IssuesCategoriesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'email',
-            'type' => 'Zend\Form\Element\Text',
+            'name'       => 'email',
+            'type'       => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'required' => 'required',
-                'class' => 'form-control',
+                'class'    => 'form-control',
             ),
-            'options' => array(
+            'options'    => array(
                 'label' => 'Email',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
         ));
 
         $this->add(array(
-            'name' => FormButtons::SAVE_BUTTON,
-            'type' => 'Zend\Form\Element\Submit',
+            'name'       => FormButtons::SAVE_BUTTON,
+            'type'       => 'Zend\Form\Element\Submit',
             'attributes' => array(
                 'class' => 'btn btn-success',
                 'value' => FormButtons::SAVE_BUTTON_TEXT,
@@ -108,11 +113,11 @@ class IssuesCategoriesForm extends Form
         ));
 
         $this->add(array(
-            'name' => FormButtons::RESET_BUTTON,
-            'type' => 'Zend\Form\Element',
+            'name'       => FormButtons::RESET_BUTTON,
+            'type'       => 'Zend\Form\Element',
             'attributes' => array(
                 'class' => 'btn btn-danger resetButton',
-                'type' => 'button',
+                'type'  => 'button',
                 'value' => FormButtons::RESET_BUTTON_TEXT,
             )
         ));
