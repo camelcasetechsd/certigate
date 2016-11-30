@@ -69,6 +69,7 @@ class CourseEventController extends ActionController
         $variables = array();
         $query = $this->getServiceLocator()->get('wrapperQuery')->setEntity('Courses\Entity\CourseEvent');
         $formSmasher = $this->getServiceLocator()->get('formSmasher');
+        /* @var $courseEventModel \Courses\Model\CourseEvent */
         $courseEventModel = $this->getServiceLocator()->get('Courses\Model\CourseEvent');
 
         $courseId = $this->params('courseId', /* $default = */ null);
@@ -107,7 +108,12 @@ class CourseEventController extends ActionController
                 $form->setData($data);
                 $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent, /* $isEditForm = */ false);
                 if ($form->isValid() && $isCustomValidationValid === true) {
-                    $courseEventModel->save($courseEvent, $data);
+                    
+                    $auth = new AuthenticationService();
+                    $roles = $auth->getIdentity()['roles'];
+                    $isTrainingManager = in_array(Role::TRAINING_MANAGER_ROLE, $roles);
+                    
+                    $courseEventModel->save($courseEvent, $data , $isTrainingManager);
 
                     $url = $this->getIndexUrl();
                     $this->redirect()->toUrl($url);
@@ -176,7 +182,13 @@ class CourseEventController extends ActionController
 
                 $isCustomValidationValid = $courseEventModel->validateForm($form, $data, $courseEvent);
                 if ($form->isValid() && $isCustomValidationValid === true) {
-                    $courseEventModel->save($courseEvent);
+
+                    $auth = new AuthenticationService();
+                    $roles = $auth->getIdentity()['roles'];
+                    $isTrainingManager = in_array(Role::TRAINING_MANAGER_ROLE, $roles);
+                    
+                    $courseEventModel->save($courseEvent, [] , $isTrainingManager);
+
                     $url = $this->getIndexUrl();
                     $this->redirect()->toUrl($url);
                 }

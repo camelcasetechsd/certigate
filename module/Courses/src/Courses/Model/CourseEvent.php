@@ -121,14 +121,21 @@ class CourseEvent
      * @param Courses\Entity\CourseEvent $courseEvent
      * @param array $data ,default is empty array
      */
-    public function save($courseEvent, $data = array())
+    public function save($courseEvent, $data = array(),$isTrainingManager = false)
     {
         $editFlag = false;
         if (empty($data)) {
             $editFlag = true;
         }
         $this->saveCourseEventOption($courseEvent, $data, $editFlag);
-        $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent->setStatus(Status::STATUS_ACTIVE), $data);
+        
+        if($isTrainingManager){
+            $courseEvent->setStatus(Status::STATUS_INACTIVE);
+        } else {
+            $courseEvent->setStatus(Status::STATUS_ACTIVE);
+        }
+        
+        $this->query->setEntity('Courses\Entity\CourseEvent')->save($courseEvent, $data);
     }
 
     /**
