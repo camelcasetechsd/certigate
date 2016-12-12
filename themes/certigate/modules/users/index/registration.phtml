@@ -16,16 +16,16 @@
                 <div class="col-md-12 col-md-offset-0">
                     <div class="panel panel-default ">
                         <div class="panel-heading">
-                            <h3>New User</h3>
+                            <h3>{{#translate}}New User{{/translate}}</h3>
                         </div>
                         <div class="panel-body main-form  ">
                             {{{openTag}}}
 
                             <div class="row panel-border">
-                                <h2 class="sub-title-form"> ACCOUNT DATA</h2>
+                                <h2 class="sub-title-form">{{#translate}}ACCOUNT DATA{{/translate}}</h2>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="user_form_firstName">{{firstNameLabel}}</label>
+                                        <label  class="col-sm-3 control-label required"  for="user_form_firstName">{{#translate}}{{firstNameLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{firstName}}}
                                             {{{firstNameError}}}
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label"  for="user_form_firstNameAr">{{firstNameArLabel}}</label>
+                                        <label  class="col-sm-3 control-label"  for="user_form_firstNameAr">{{#translate}}{{firstNameArLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{firstNameAr}}}
                                             {{{firstNameArError}}}
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label"  for="user_form_middleName">{{middleNameLabel}}</label>
+                                        <label  class="col-sm-3 control-label"  for="user_form_middleName">{{#translate}}{{middleNameLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{middleName}}}
                                             {{{middleNameError}}}
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label"  for="user_form_middleNameAr">{{middleNameArLabel}}</label>
+                                        <label  class="col-sm-3 control-label"  for="user_form_middleNameAr">{{#translate}}{{middleNameArLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{middleNameAr}}}
                                             {{{middleNameArError}}}
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label required"  for="user_form_lastName">{{lastNameLabel}}</label>
+                                        <label  class="col-sm-3 control-label required"  for="user_form_lastName">{{#translate}}{{lastNameLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{lastName}}}
                                             {{{lastNameError}}}
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label  class="col-sm-3 control-label"  for="user_form_lastNameAr">{{lastNameArLabel}}</label>
+                                        <label  class="col-sm-3 control-label"  for="user_form_lastNameAr">{{#translate}}{{lastNameArLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{lastNameAr}}}
                                             {{{lastNameArError}}}
@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class=" required col-sm-2 control-label " for="user_form_username">{{usernameLabel}}</label>
+                                        <label class=" required col-sm-2 control-label " for="user_form_username">{{#translate}}{{usernameLabel}}{{/translate}}</label>
                                         <div class="userName-field col-sm-10">
                                             {{{username}}}
                                             {{{usernameError}}}
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" required col-sm-3 control-label" for="user_form_email">{{emailLabel}}</label>
+                                        <label class=" required col-sm-3 control-label" for="user_form_email">{{#translate}}{{emailLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{email}}}
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" required col-sm-3 control-label" for="user_form_confirmEmail">{{confirmEmailLabel}}</label>
+                                        <label class=" required col-sm-3 control-label" for="user_form_confirmEmail">{{#translate}}{{confirmEmailLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{confirmEmail}}}
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" required col-sm-3 control-label" for="user_form_password">{{passwordLabel}}</label>
+                                        <label class=" required col-sm-3 control-label" for="user_form_password">{{#translate}}{{passwordLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{password}}}
@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" required col-sm-3 control-label" for="user_form_confirmPassword">{{confirmPasswordLabel}}</label>
+                                        <label class=" required col-sm-3 control-label" for="user_form_confirmPassword">{{#translate}}{{confirmPasswordLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{confirmPassword}}}
@@ -129,10 +129,10 @@
                             </div>
 
                             <div class="row panel-border">
-                                <h2 class="sub-title-form"> PERSONAL DATA</h2>
+                                <h2 class="sub-title-form">{{#translate}}PERSONAL DATA{{/translate}}</h2>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label " for="user_form_location">{{mapSearchLabel}}</label>
+                                        <label class="control-label " for="user_form_location">{{#translate}}{{mapSearchLabel}}{{/translate}}</label>
                                         <div class="gllpMap">Google Maps</div>
                                         {{{mapSearch}}}
                                         {{{mapSearchError}}}
@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="required col-sm-3 control-label" for="user_form_phone">{{phoneLabel}}</label>
+                                        <label class="required col-sm-3 control-label" for="user_form_phone">{{#translate}}{{phoneLabel}}{{/translate}}</label>
                                         <div class="phone-form col-sm-9">
                                             <div class="col-sm-4">
                                                 {{{phoneCountryCode}}}                                           
@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="required col-sm-3 control-label" for="user_form_mobile">{{mobileLabel}}</label>
+                                        <label class="required col-sm-3 control-label" for="user_form_mobile">{{#translate}}{{mobileLabel}}{{/translate}}</label>
                                         <div class="phone-form col-sm-9">
                                             <div class="col-sm-4">
                                                 {{{mobileCountryCode}}}                                           
@@ -192,7 +192,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_identificationType">{{identificationTypeLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_identificationType">{{#translate}}{{identificationTypeLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{identificationType}}}
                                             {{{identificationTypeError}}}
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_identificationNumber">{{identificationNumberLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_identificationNumber">{{#translate}}{{identificationNumberLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{identificationNumber}}}
                                             {{{identificationNumberError}}}
@@ -210,7 +210,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_identificationExpiryDateHj">{{identificationExpiryDateHjLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_identificationExpiryDateHj">{{#translate}}{{identificationExpiryDateHjLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{identificationExpiryDateHj}}}
                                             {{{identificationExpiryDateHjError}}}
@@ -219,7 +219,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_identificationExpiryDate">{{identificationExpiryDateLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_identificationExpiryDate">{{#translate}}{{identificationExpiryDateLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{identificationExpiryDate}}}
                                             {{{identificationExpiryDateError}}}
@@ -228,7 +228,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_dateOfBirthHj">{{dateOfBirthHjLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_dateOfBirthHj">{{#translate}}{{dateOfBirthHjLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{dateOfBirthHj}}}
                                             {{{dateOfBirthHjError}}}
@@ -237,7 +237,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_dateOfBirth">{{dateOfBirthLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_dateOfBirth">{{#translate}}{{dateOfBirthLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{dateOfBirth}}}
@@ -282,7 +282,7 @@
                                 <!--security Q&A Border End-->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label required" for="user_form_addressOne">{{addressOneLabel}}</label>
+                                        <label class=" col-sm-3 control-label required" for="user_form_addressOne">{{#translate}}{{addressOneLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{addressOne}}}
                                             {{{addressOneError}}}
@@ -291,7 +291,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label required" for="user_form_addressOneAr">{{addressOneArLabel}}</label>
+                                        <label class=" col-sm-3 control-label required" for="user_form_addressOneAr">{{#translate}}{{addressOneArLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{addressOneAr}}}
                                             {{{addressOneArError}}}
@@ -300,7 +300,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label" for="user_form_addressTwo">{{addressTwoLabel}}</label>
+                                        <label class=" col-sm-3 control-label" for="user_form_addressTwo">{{#translate}}{{addressTwoLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{addressTwo}}}
                                             {{{addressTwoError}}}
@@ -309,7 +309,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label" for="user_form_addressTwoAr">{{addressTwoArLabel}}</label>
+                                        <label class=" col-sm-3 control-label" for="user_form_addressTwoAr">{{#translate}}{{addressTwoArLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{addressTwoAr}}}
@@ -319,7 +319,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label required" for="user_form_nationality">{{nationalityLabel}}</label>
+                                        <label class=" col-sm-3 control-label required" for="user_form_nationality">{{#translate}}{{nationalityLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{nationality}}}
@@ -329,7 +329,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label required" for="user_form_country">{{countryLabel}}</label>
+                                        <label class=" col-sm-3 control-label required" for="user_form_country">{{#translate}}{{countryLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{country}}}
@@ -339,7 +339,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class=" col-sm-3 control-label required" for="user_form_{{cityName}}">{{cityLabel}}</label>
+                                        <label class=" col-sm-3 control-label required" for="user_form_{{cityName}}">{{#translate}}{{cityLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{city}}}
@@ -349,7 +349,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="user_form_zipcode" >{{zipCodeLabel}}</label>
+                                        <label class="col-sm-3 control-label" for="user_form_zipcode" >{{#translate}}{{zipCodeLabel}}{{/translate}}</label>
 
                                         <div class="col-sm-9">
                                             {{{zipCode}}}
@@ -359,7 +359,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="user_form_photo" class="col-sm-3 control-label  ">{{photoLabel}}</label>
+                                        <label for="user_form_photo" class="col-sm-3 control-label  ">{{#translate}}{{photoLabel}}{{/translate}}</label>
                                         <div class="col-sm-9 upload-pic">
                                             {{{photo}}}
                                             {{{photoError}}}
@@ -369,7 +369,7 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="row panel-border">
-                                <h2 class="sub-title-form"> USER ROLES</h2>
+                                <h2 class="sub-title-form">{{#translate}}USER ROLES{{/translate}}</h2>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="row roles-inputs">
@@ -430,11 +430,11 @@
                                 </div>
                             </div>
                             <div class="row panel-border">
-                                <h2 class="sub-title-form"> PRIVACY STATEMENT</h2>
+                                <h2 class="sub-title-form">{{#translate}}PRIVACY STATEMENT{{/translate}}</h2>
                                 {{#captcha}}
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label classCaptcha required" for="user_form_captcha">{{captchaLabel}}</label>
+                                        <label class="col-sm-3 control-label classCaptcha required" for="user_form_captcha">{{#translate}}{{captchaLabel}}{{/translate}}</label>
                                         <div class="col-sm-9">
                                             {{{captcha}}}
                                             {{{captchaError}}}
@@ -445,7 +445,7 @@
                                 {{/captcha}}
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="required" for="user_form_{{privacyStatementName}}">{{privacyStatementLabel}}</label>
+                                        <label class="required" for="user_form_{{privacyStatementName}}">{{#translate}}{{privacyStatementLabel}}{{/translate}}</label>
                                         <label class="c-input statement">
                                             {{{privacyStatement}}}
                                             {{{privacyStatementError}}}

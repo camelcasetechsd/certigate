@@ -8,10 +8,10 @@
     <div class="panel-body main-form  ">
         {{{openTag}}}
         <div class="row panel-border">
-            <h2 class="sub-title-form"> ISSUE DATA </h2>
+            <h2 class="sub-title-form">{{#translate}}ISSUE DATA {{/translate}}</h2>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_parent">{{parentLabel}}</label>
+                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_parent">{{#translate}}{{parentLabel}}{{/translate}}</label>
                     <div class="col-sm-6">
                         {{{parent}}}
                         {{{parentError}}}
@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_title">{{titleLabel}}</label>
+                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_title">{{#translate}}{{titleLabel}}{{/translate}}</label>
                     <div class="col-sm-6">
                         {{{title}}}
                         {{{titleError}}}
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-1 control-label"  for="issue_tracker_form_filePath">{{filePathLabel}}</label>
+                    <label  class="col-sm-1 control-label"  for="issue_tracker_form_filePath">{{#translate}}{{filePathLabel}}{{/translate}}</label>
                     <div class="col-sm-6">
                         {{{filePath}}}
                         {{{filePathError}}}
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_description">{{descriptionLabel}}</label>
+                    <label  class="col-sm-1 control-label required"  for="issue_tracker_form_description">{{#translate}}{{descriptionLabel}}{{/translate}}</label>
                     <div class="col-sm-6">
                         {{{description}}}
                         {{{descriptionError}}}

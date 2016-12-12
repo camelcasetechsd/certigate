@@ -11,13 +11,13 @@
     <div class="panel-body main-form  ">
         {{{openTag}}}
         <div class="row panel-border">
-            <h2 class="sub-title-form"> COURSE EVENT DATA</h2>
+            <h2 class="sub-title-form">{{#translate}}COURSE EVENT DATA{{/translate}}</h2>
 
             {{!-- if course-event for a specific course --! }}
             {{#courseName}}
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-2 control-label required"  for="course_event_form_course">{{courseLabel}}</label>
+                    <label  class="col-sm-2 control-label required"  for="course_event_form_course">{{#translate}}{{courseLabel}}{{/translate}}</label>
                     <div class="col-sm-10">
                         {{{course}}}
                         {{{courseError}}}
@@ -28,7 +28,7 @@
 
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="course_event_form_atp">{{atpLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="course_event_form_atp">{{#translate}}{{atpLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{atp}}}
                         {{{atpError}}}
@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="course_event_form_ai">{{aiLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="course_event_form_ai">{{#translate}}{{aiLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{ai}}}
                         {{{aiError}}}
@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="course_event_form_capacity">{{capacityLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="course_event_form_capacity">{{#translate}}{{capacityLabel}}{{/translate}}</label>
                     <div class="col-sm-5">
                         {{{capacity}}}
                         {{{capacityError}}}
@@ -58,7 +58,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="course_event_form_studentsNo">{{studentsNoLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="course_event_form_studentsNo">{{#translate}}{{studentsNoLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{studentsNo}}}
                         {{{studentsNoError}}}
@@ -67,7 +67,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label required" for="course_event_form_startDateHj">{{startDateHjLabel}}</label>
+                    <label class="col-sm-3 control-label required" for="course_event_form_startDateHj">{{#translate}}{{startDateHjLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{startDateHj}}}
                         {{{startDateHjError}}}
@@ -76,7 +76,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label required" for="course_event_form_startDate">{{startDateLabel}}</label>
+                    <label class="col-sm-3 control-label required" for="course_event_form_startDate">{{#translate}}{{startDateLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{startDate}}}
                         {{{startDateError}}}
@@ -85,7 +85,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label required" for="course_event_form_endDateHj">{{endDateHjLabel}}</label>
+                    <label class="col-sm-3 control-label required" for="course_event_form_endDateHj">{{#translate}}{{endDateHjLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{endDateHj}}}
                         {{{endDateHjError}}}
@@ -94,7 +94,7 @@
             </div> 
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label required" for="course_event_form_endDate">{{endDateLabel}}</label>
+                    <label class="col-sm-3 control-label required" for="course_event_form_endDate">{{#translate}}{{endDateLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{endDate}}}
                         {{{endDateError}}}

@@ -3,15 +3,15 @@
 {{$content}}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>New Setting</h3>
+        <h3>{{#translate}}New Setting{{/translate}}</h3>
     </div>
     <div class="panel-body main-form  ">
         {{{openTag}}}
         <div class="row panel-border">
-            <h2 class="sub-title-form"> SETTINGS DATA</h2>
+            <h2 class="sub-title-form">{{#translate}}SETTINGS DATA{{/translate}}</h2>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="setting_form_name">{{nameLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="setting_form_name">{{#translate}}{{nameLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{name}}}
                         {{{nameError}}}
@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label  class="col-sm-3 control-label required"  for="setting_form_value">{{valueLabel}}</label>
+                    <label  class="col-sm-3 control-label required"  for="setting_form_value">{{#translate}}{{valueLabel}}{{/translate}}</label>
                     <div class="col-sm-9">
                         {{{value}}}
                         {{{valueError}}}

@@ -1,25 +1,19 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ar_Ar.po conversion\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Thu Feb 25 2016 11:14:31 GMT+0200 (EET)\n"
-"PO-Revision-Date: 2016-11-27 14:49+0200\n"
-"Last-Translator: AhmedReda <ahmedredamohamed01@gmail.com>\n"
-"Language-Team: \n"
-"Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 "
-"&& n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
+"POT-Creation-Date: 2016-12-12 11:51+0200\n"
+"PO-Revision-Date: 2016-12-12 13:39+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Source-Locale: ar_EG\n"
-"X-Loco-Parser: loco_parse_po\n"
-"X-Loco-Target-Locale: ar_AR\n"
 "X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar_AR\n"
 
 msgid "test"
-msgstr "Translated Test in arabic"
+msgstr "اختبار"
 
 msgid "English"
 msgstr "الانجليزية "
@@ -34,925 +28,928 @@ msgid "Page"
 msgstr "صفحه "
 
 msgid "Press Release"
-msgstr "الاخبار "
+msgstr "الأخبار "
 
 msgid "You don't have access to this page , please contact the admin"
-msgstr "You don't have access to this page , please contact the admin ar"
+msgstr "ليس لديك صلاحية للولوج لهذه الصفحة ، يرجى مراجعة مشرف النظام"
 
 msgid "Actions"
-msgstr "Actions ar"
+msgstr "الإجراءات"
 
 msgid "Activate"
-msgstr "Activate ar"
+msgstr "تنشيط"
 
 msgid "Add More"
-msgstr "Add More ar"
+msgstr "إضافة المزيد"
 
 msgid "Add new Organization User"
-msgstr "Add new Organization User ar"
+msgstr "إضافة منشأة جديدة"
 
 msgid "Add Your Question Here"
-msgstr "Add Your Question Here ar"
+msgstr "أضف سؤالك هنا"
 
 msgid "Add"
-msgstr "Add ar"
+msgstr "اضافة"
 
 msgid "Address 1"
-msgstr "Address 1 ar"
+msgstr "العنوان 1"
 
 msgid "Address 2"
-msgstr "Address 2 ar"
+msgstr "العنوان 2"
 
 msgid "Address line 1"
-msgstr "Address line 1 ar"
+msgstr "السطر الأول للعنوان "
 
 msgid "Address Line 1"
-msgstr "Address Line 1 ar"
+msgstr "السطر الأول للعنوان "
 
 msgid "Address line 2"
-msgstr "Address line 2 ar"
+msgstr "السطر الثاني للعنوان "
 
 msgid "Address Line 2"
-msgstr "Address Line 2 ar"
+msgstr "السطر الثاني للعنوان "
 
 msgid "Address"
-msgstr "Address ar"
+msgstr "العنوان"
 
 msgid "Approve all changes"
-msgstr "Approve all changes ar"
+msgstr "موافقة على كل التغيرات"
 
 msgid "ATC Info"
-msgstr "ATC Info ar"
+msgstr "معلومات مركز الإختبارات المعتمد"
 
 msgid "ATC License Attachment"
-msgstr "ATC License Attachment ar"
+msgstr "إرفاق ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC license attachment"
-msgstr "ATC license attachment ar"
+msgstr "إرفاق ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC License Expiration Date"
-msgstr "ATC License Expiration Date ar"
+msgstr "تاريخ إنتهاء ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC License Expiration"
-msgstr "ATC License Expiration ar"
+msgstr "إنتهاء ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC license expiration"
-msgstr "ATC license expiration ar"
+msgstr "إنتهاء ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC License No"
-msgstr "ATC License No ar"
+msgstr "رقم ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC license number"
-msgstr "ATC license number ar"
+msgstr "رقم ترخيص مركز الإختبارات المعتمد"
 
 msgid "ATC Organization"
-msgstr "ATC Organization ar"
+msgstr "منشأة مركز الإختبارات المعتمد"
 
 msgid "ATC Privacy Statement"
-msgstr "ATC Privacy Statement ar"
+msgstr "حالة السرية لمركز الإختبارات المعتمد"
 
 msgid "ATC Resources"
-msgstr "ATC Resources ar"
+msgstr "موارد مركز الإختبارات المعتمد"
 
 msgid "ATCs"
-msgstr "ATCs ar"
+msgstr "مراكز الإختبارات المعتمد"
 
 msgid "ATP Info"
-msgstr "ATP Info ar"
+msgstr "معلومات شريك التدريب المعتمد"
 
 msgid "ATP License Attachment"
-msgstr "ATP License Attachment ar"
+msgstr "إرفاق ترخيص شريك التدريب المعتمد"
 
 msgid "ATP license attachment"
-msgstr "ATP license attachment ar"
+msgstr "إرفاق ترخيص شريك التدريب المعتمد"
 
 msgid "ATP License Expiration Date"
-msgstr "ATP License Expiration Date ar"
+msgstr "تاريخ إنتهاء ترخيص شريك التدريب المعتمد"
 
 msgid "ATP license expiration"
-msgstr "ATP license expiration ar"
+msgstr "إنتهاء ترخيص شريك التدريب المعتمد"
 
 msgid "ATP License No"
-msgstr "ATP License No ar"
+msgstr "رقم ترخيص شريك التدريب المعتمد"
 
 msgid "ATP license number"
-msgstr "ATP license number ar"
+msgstr "رقم ترخيص شريك التدريب المعتمد"
 
 msgid "ATP Organization"
-msgstr "ATP Organization ar"
+msgstr "منشأة شريك التدريب المعتمد"
 
 msgid "ATP Privacy Statement"
-msgstr "ATP Privacy Statement ar"
+msgstr "حالة السرية لشريك التدريب المعتمد"
 
 msgid "ATP Resources"
-msgstr "ATP Resources ar"
+msgstr "موارد شريك التدريب المعتمد"
 
 msgid "ATP"
-msgstr "ATP ar"
+msgstr "شريك التدريب المعتمد"
 
 msgid "ATPs"
-msgstr "ATPs ar"
+msgstr "شركاء التدريب المعتمدون"
 
 msgid "Authenticated Test Center"
-msgstr "Authenticated Test Center ar"
+msgstr "مركز الاختبارات الذي تم توثيقة"
 
 msgid "Author"
-msgstr "Author ar"
+msgstr "المؤلف"
 
 msgid "Authorized Instructor"
-msgstr "Authorized Instructor ar"
+msgstr "مدرب معتمد"
 
 msgid "Authorized instructor"
-msgstr "Authorized instructor ar"
+msgstr "مدرب معتمد"
 
 msgid "Authorized Training Partner"
-msgstr "Authorized Training Partner ar"
+msgstr "شريك تدريب معتمد"
 
 msgid "Authroized training partner"
-msgstr "Authroized training partner ar"
+msgstr "شريك تدريب معتمد"
 
 msgid "Body"
-msgstr "Body ar"
+msgstr "الهيئة"
 
 msgid "Brief"
-msgstr "Brief ar"
+msgstr "نبذة"
 
 msgid "Capacity"
-msgstr "Capacity ar"
+msgstr "السعة"
 
 msgid "Category"
-msgstr "Category ar"
+msgstr "الفئة"
 
 msgid "Certified instructor logo"
-msgstr "Certified instructor logo ar"
+msgstr "شعار المدرب المعتمد"
 
 msgid "CertigatePro General Resources"
-msgstr "CertigatePro General Resources ar"
+msgstr "الموارد العامة لسيرتيجيت برو"
 
 msgid "City"
-msgstr "City ar"
+msgstr "المدينة"
 
 msgid "Classes No"
-msgstr "Classes No ar"
+msgstr "عدد القاعات"
 
 msgid "Classes Number"
-msgstr "Classes Number ar"
+msgstr "عدد القاعات"
 
 msgid "Classes number"
-msgstr "Classes number ar"
+msgstr "عدد القاعات"
 
 msgid "click me if you accept"
-msgstr "click me if you accept ar"
+msgstr "انقر هنا لو موافق"
 
 msgid "click me if you decline"
-msgstr "click me if you decline ar"
+msgstr "انقر هنا لو رافض"
 
 msgid "Close"
-msgstr "Close ar"
+msgstr "إغلاق"
 
 msgid "Code"
-msgstr "Code ar"
+msgstr "الرمز"
 
 msgid "Commercial Name"
-msgstr "Commercial Name ar"
+msgstr "الإسم التجاري"
 
 msgid "Commercial name"
-msgstr "Commercial name ar"
+msgstr "الإسم التجاري"
 
 msgid "Confirm Email"
-msgstr "Confirm Email ar"
+msgstr "تأكيد البريد الإلكتروني"
 
 msgid "Contacts"
-msgstr "Contacts ar"
+msgstr "جهات الإتصال"
 
 msgid "Country"
-msgstr "Country ar"
+msgstr "البلد"
 
 msgid "Course Details"
-msgstr "Course Details ar"
+msgstr "تفاصيل الدورة"
 
 msgid "Course Evaluation"
-msgstr "Course Evaluation ar"
+msgstr "تقييم الدورة"
 
 msgid "Course has no evaluation yet"
-msgstr "Course has no evaluation yet ar"
+msgstr "هذه الدورة ليس لها تقييم حتى الآن"
 
 msgid "Course Info"
-msgstr "Course Info ar"
+msgstr "معلومات الدورة"
 
 msgid "Course Name"
-msgstr "Course Name ar"
+msgstr "اسم الدورة"
 
 msgid "Course name"
-msgstr "Course name ar"
+msgstr "اسم الدورة"
 
 msgid "Course order form"
-msgstr "Course order form ar"
+msgstr "نموذج طلب دورة"
 
 msgid "Course Outlines"
-msgstr "Course Outlines ar"
+msgstr "عناوين موضوع الدورة"
 
 msgid "Course Resources"
-msgstr "Course Resources ar"
+msgstr "موارد الدورة"
 
 msgid "Course roaster templates"
-msgstr "Course roaster templates ar"
+msgstr "قوالب قائمة الدورة"
 
 msgid "course Status"
-msgstr "course Status ar"
+msgstr "حالة الدورة"
 
 msgid "Course Type"
-msgstr "Course Type ar"
+msgstr "نوع الدورة"
 
 msgid "Course You Are Assigned To"
-msgstr "Course You Are Assigned To ar"
+msgstr "الدورات التي سُجلت عليها"
 
 msgid "Courses Calendar"
-msgstr "Courses Calendar ar"
+msgstr "تقويم الدورات"
 
 msgid "Courses"
-msgstr "Courses ar"
+msgstr "الدورات"
 
 msgid "CR Attachment"
-msgstr "CR Attachment ar"
+msgstr "ارفاق إشتراك الغرفة التجارية"
 
 msgid "CR attachment"
-msgstr "CR attachment ar"
+msgstr "ارفاق إشتراك الغرفة التجارية"
 
 msgid "CR Expiration Date"
-msgstr "CR Expiration Date ar"
+msgstr "تاريخ إنتهاء إشتراك الغرفة التجارية"
 
 msgid "CR expiration"
-msgstr "CR expiration ar"
+msgstr "إنتهاء إشتراك الغرفة التجارية"
 
 msgid "CR No"
-msgstr "CR No ar"
+msgstr "رقم إشتراك الغرفة التجارية"
 
 msgid "CR number"
-msgstr "CR number ar"
+msgstr "رقم إشتراك الغرفة التجارية"
 
 msgid "Create Course Evaluation"
-msgstr "Create Course Evaluation ar"
+msgstr "إنشاء تقييم لدورة"
 
 msgid "Create Evaluation"
-msgstr "Create Evaluation ar"
+msgstr "إنشاء تقييم"
 
 msgid "Create new ATC"
-msgstr "Create new ATC ar"
+msgstr "إنشاء مركز إختبارات معتمد"
 
 msgid "Create new ATP"
-msgstr "Create new ATP ar"
+msgstr "إنشاء شريك تدريب معتمد"
 
 msgid "Create new Course"
-msgstr "Create new Course ar"
+msgstr "إنشاء دورة جديدة"
 
 msgid "Create new Evaluation"
-msgstr "Create new Evaluation ar"
+msgstr "أنشاء تقييم جديد"
 
 msgid "Create new Menu Item"
-msgstr "Create new Menu Item ar"
+msgstr "Create new Menu Item"
 
 msgid "Create new Menu"
-msgstr "Create new Menu ar"
+msgstr "Create new Menu"
 
 msgid "Create new Organization"
-msgstr "Create new Organization ar"
+msgstr "إنشاء منشأة جديدة"
 
 msgid "Create new Page"
-msgstr "Create new Page ar"
+msgstr "إنشاء صفحة جديدة"
 
 msgid "Create new Role"
-msgstr "Create new Role ar"
+msgstr "إنشاء دور جديدة"
 
 msgid "Create new Setting"
-msgstr "Create new Setting ar"
+msgstr "إنشاء إعدادات جديدة"
 
 msgid "Create new Template Evaluation"
-msgstr "Create new Template Evaluation ar"
+msgstr "إنشاء نموذج تقييم جديد"
 
 msgid "Create new User"
-msgstr "Create new User ar"
+msgstr "إنشاء مستخدم جديد"
 
 msgid "created By"
-msgstr "created By ar"
+msgstr "أُنشئ بواسطة"
 
 msgid "Created"
-msgstr "Created ar"
+msgstr "تم إنشاءه"
 
 msgid "Data"
-msgstr "Data ar"
+msgstr "بيانات"
 
 msgid "Date Of Birth"
-msgstr "Date Of Birth ar"
+msgstr "تارخ الميلاد"
 
 msgid "Day(s)"
-msgstr "Day(s) ar"
+msgstr "يوم/أيام"
 
 msgid "Days"
-msgstr "Days ar"
+msgstr "الأيام"
 
 msgid "Default Evaluation Templates"
-msgstr "Default Evaluation Templates ar"
+msgstr "نموذج التقييم الإفتراضي"
 
 msgid "Delete"
-msgstr "Delete ar"
+msgstr "حذف"
 
 msgid "Direct Url"
-msgstr "Direct Url ar"
+msgstr "رابط مباشر"
 
 msgid "Disapprove all changes"
-msgstr "Disapprove all changes ar"
+msgstr "عدم الموافقة على كل التغييرات"
 
 msgid "Duration"
-msgstr "Duration ar"
+msgstr "المدة"
 
 msgid "E-mail"
-msgstr "E-mail ar"
+msgstr "البريد الإلكتروني"
 
 msgid "Edit Course Evaluation"
-msgstr "Edit Course Evaluation ar"
+msgstr "تحرير تقييم الدورة"
 
 msgid "Edit Course"
-msgstr "Edit Course ar"
+msgstr "تحرير الدورة"
 
 msgid "Edit Evaluation Template"
-msgstr "Edit Evaluation Template ar"
+msgstr "تحرير نموذج التقييم"
 
 msgid "Edit Evaluation"
-msgstr "Edit Evaluation ar"
+msgstr "تحرير التقييم"
 
 msgid "Edit Menu Item"
-msgstr "Edit Menu Item ar"
+msgstr "Edit Menu Item"
 
 msgid "Edit Menu"
-msgstr "Edit Menu ar"
+msgstr "Edit Menu"
 
 msgid "Edit Organization User"
-msgstr "Edit Organization User ar"
+msgstr "تحرير مستخدم بمنشأة"
 
 msgid "Edit Organization"
-msgstr "Edit Organization ar"
+msgstr "تحرير منشأة"
 
 msgid "Edit Page"
-msgstr "Edit Page ar"
+msgstr "Edit Page"
 
 msgid "Edit Role"
-msgstr "Edit Role ar"
+msgstr "Edit Role"
 
 msgid "Edit Setting"
-msgstr "Edit Setting ar"
+msgstr "Edit Setting"
 
 msgid "Edit User"
-msgstr "Edit User ar"
+msgstr "تحرير مستخدم"
 
 msgid "Edit"
-msgstr "Edit ar"
+msgstr "تحرير"
 
 msgid "Email"
-msgstr "Email ar"
+msgstr "بريد إلكتروني"
 
 msgid "End Date"
-msgstr "End Date ar"
+msgstr "تاريخ الإنتهاء"
 
 msgid "End date"
-msgstr "End date ar"
+msgstr "تاريخ الإنتهاء"
 
 msgid "Enroll"
-msgstr "Enroll ar"
+msgstr "مُسجَل"
 
 msgid "Error"
-msgstr "Error ar"
+msgstr "خطأ"
 
 msgid "Evaluate Course"
-msgstr "Evaluate Course ar"
+msgstr "تقييم دورة"
 
 msgid "Evaluation Template"
-msgstr "Evaluation Template ar"
+msgstr "نموذج تقييم"
 
 msgid "Exam Date"
-msgstr "Exam Date ar"
+msgstr "تاريخ إختبار"
 
 msgid "Exam Request"
-msgstr "Exam Request ar"
+msgstr "طلب إختبار"
 
 msgid "Expand Body"
-msgstr "Expand Body ar"
+msgstr "توسع الهيئة"
 
 msgid "Fax"
-msgstr "Fax ar"
+msgstr "فاكس"
 
 msgid "File"
-msgstr "File ar"
+msgstr "ملف"
 
 msgid "Filter Menu Items"
-msgstr "Filter Menu Items ar"
+msgstr "تصفية عناصر القوائم"
 
 msgid "Find Us"
-msgstr "Find Us ar"
+msgstr "كيف تَجدُنا"
 
 msgid "First Name"
-msgstr "First Name ar"
+msgstr "الإسم الأول"
 
 msgid "Focal Contact Person"
-msgstr "Focal Contact Person ar"
+msgstr "الشخص المُنَسق"
 
 msgid "Focal contact person"
-msgstr "Focal contact person ar"
+msgstr "الشخص المُنَسق"
 
 msgid "Google Maps"
-msgstr "Google Maps ar"
+msgstr "خرائط جووجل"
 
 msgid "Hello there"
-msgstr "Hello there ar"
+msgstr "مرحباً"
 
 msgid "History"
-msgstr "History ar"
+msgstr "التاريخ"
 
 msgid "ID"
-msgstr "ID ar"
+msgstr "الهوية"
 
 msgid "translation"
-msgstr "translation ar"
+msgstr "ترجمة"
 
 msgid "Identification Expiry Date"
-msgstr "Identification Expiry Date ar"
+msgstr "تاريخ الإنتهاء الهوية"
 
 msgid "Identification Number"
-msgstr "Identification Number ar"
+msgstr "رقم الهوية"
 
 msgid "Identification Type"
-msgstr "Identification Type ar"
+msgstr "نوع الهوية"
 
 msgid "Instructor Statement"
-msgstr "Instructor Statement ar"
+msgstr "حالة المدرب"
 
 msgid "Internet Speed / Lab"
-msgstr "Internet Speed / Lab ar"
+msgstr "سرعة الانترنت لكل معمل"
 
 msgid "Labs No"
-msgstr "Labs No ar"
+msgstr "عدد المعامل"
 
 msgid "Labs Number"
-msgstr "Labs Number ar"
+msgstr "عدد المعامل"
 
 msgid "Language"
-msgstr "Language ar"
+msgstr "اللغة"
 
 msgid "Last Name"
-msgstr "Last Name ar"
+msgstr "اللإسم الأخير"
 
 msgid "Latitude"
-msgstr "Latitude ar"
+msgstr "خط العرض"
 
 msgid "Leave"
-msgstr "Leave ar"
+msgstr "يترك"
 
 msgid "Location"
-msgstr "Location ar"
+msgstr "موقع"
 
 msgid "Logos"
-msgstr "Logos ar"
+msgstr "الشعارات"
 
 msgid "Longitude"
-msgstr "Longitude ar"
+msgstr "خط الطول"
 
 msgid "Manage Users"
-msgstr "Manage Users ar"
+msgstr "إدارة المستخدمين"
 
 msgid "Memorable"
-msgstr "Memorable ar"
+msgstr "للتذكر"
 
 msgid "Menu"
-msgstr "Menu ar"
+msgstr "القائمة"
 
 msgid "Menu Item Parent"
-msgstr "Menu Item Parent ar"
+msgstr "Menu Item Parent"
 
 msgid "Menu Item Type"
-msgstr "Menu Item Type ar"
+msgstr "نوع عنصر القائمة"
 
 msgid "Menu Items"
-msgstr "Menu Items ar"
+msgstr "عنصر القائمة"
 
 msgid "Menu Status"
-msgstr "Menu Status ar"
+msgstr "حالة القوائم"
 
 msgid "Menus"
-msgstr "Menus ar"
+msgstr "القوائم"
 
 msgid "Message"
-msgstr "Message ar"
+msgstr "رسالة"
 
 msgid "Microseft Office Version"
-msgstr "Microseft Office Version ar"
+msgstr "إصدار ميكروسوفت اوفيس"
 
 msgid "Microsoft office Language"
-msgstr "Microsoft office Language ar"
+msgstr "لغة ميكروسوفت اوفيس"
 
 msgid "Microsoft Office Language"
-msgstr "Microsoft Office Language ar"
+msgstr "لغة ميكروسوفت اوفيس"
 
 msgid "Microsoft Office Version"
-msgstr "Microsoft Office Version ar"
+msgstr "إصدار ميكروسوفت اوفيس"
 
 msgid "Middle Name"
-msgstr "Middle Name ar"
+msgstr "الإسم الأوسط"
 
 msgid "minutes"
-msgstr "minutes ar"
+msgstr "دقائق"
 
 msgid "Mobile Phone"
-msgstr "Mobile Phone ar"
+msgstr "هاتف جوال"
 
 msgid "modified By"
-msgstr "modified By ar"
+msgstr "تم التعديل بواسطة"
 
 msgid "More"
-msgstr "More ar"
+msgstr "المزيد"
 
 msgid "Name"
-msgstr "Name ar"
+msgstr "اللإسم"
 
 msgid "New Contact Message"
-msgstr "New Contact Message ar"
+msgstr "رسالة إتصال جديدة"
 
 msgid "New Course"
-msgstr "New Course ar"
+msgstr "دورة جديدة"
 
 msgid "New Menu Item"
-msgstr "New Menu Item ar"
+msgstr "عنصر قائمة جديد"
 
 msgid "New Menu"
-msgstr "New Menu ar"
+msgstr "قائمة جديدة"
 
 msgid "New Organization User"
-msgstr "New Organization User ar"
+msgstr "مستخدم جديد لدي المنشأة"
 
 msgid "New Page"
-msgstr "New Page ar"
+msgstr "صفحة جديدة"
 
 msgid "New User"
-msgstr "New User ar"
+msgstr "مستخدم جديد"
 
 msgid "Office language"
-msgstr "Office language ar"
+msgstr "لغة الأوفيس"
 
 msgid "Office version"
-msgstr "Office version ar"
+msgstr "إصدار الأوفيس"
 
 msgid "Operating System"
-msgstr "Operating System ar"
+msgstr "نظام التشغيل"
 
 msgid "Operating System Language"
-msgstr "Operating System Language ar"
+msgstr "لغة نظام التشغيل"
 
 msgid "Order"
-msgstr "Order ar"
+msgstr "الطلب"
 
 msgid "Order Forms"
-msgstr "Order Forms ar"
+msgstr "نموذج الطلب"
 
 msgid "Organization Type"
-msgstr "Organization Type ar"
+msgstr "نوع المنشأة"
 
 msgid "Organization Users"
-msgstr "Organization Users ar"
+msgstr "المستخدمون بالمنشأة"
 
 msgid "Organizations"
-msgstr "Organizations ar"
+msgstr "المنشأت"
 
 msgid "OS language"
-msgstr "OS language ar"
+msgstr "لغة نظام التشغيل"
 
 msgid "OS Language"
-msgstr "OS Language ar"
+msgstr "لغة نظام التشغيل"
 
 msgid "OS"
-msgstr "OS ar"
+msgstr "نظام التشغيل"
 
 msgid "Our Address"
-msgstr "Our Address ar"
+msgstr "عنواننا"
 
 msgid "Outlines"
-msgstr "Outlines ar"
+msgstr "عناوين المواضيع"
 
 msgid "Owner Name"
-msgstr "Owner Name ar"
+msgstr "إسم المالك"
 
 msgid "Owner name"
-msgstr "Owner name ar"
+msgstr "إسم المالك"
 
 msgid "Owner national Id"
-msgstr "Owner national Id ar"
+msgstr "الهوية الوطنية للمالك"
 
 msgid "Owner National Id"
-msgstr "Owner National Id ar"
+msgstr "الهوية الوطنية للمالك"
 
 msgid "Owner Profile"
-msgstr "Owner Profile ar"
+msgstr "الملف الشخصي للمالك"
 
 msgid "Owner"
-msgstr "Owner ar"
+msgstr "المالك"
 
 msgid "Page Path"
-msgstr "Page Path ar"
+msgstr "مسار الصفحة"
 
 msgid "Pages History"
-msgstr "Pages History ar"
+msgstr "تاريخ الصفحة"
 
 msgid "Pages"
-msgstr "Pages ar"
+msgstr "الصفحات"
 
 msgid "Parent"
-msgstr "Parent ar"
+msgstr "رئيسي"
 
 msgid "Password"
-msgstr "Password ar"
+msgstr "كلمة المرور"
 
 msgid "Password Confirm"
-msgstr "Password Confirm ar"
+msgstr "تأكيد كلمة المرور"
 
 msgid "Path"
-msgstr "Path ar"
+msgstr "مسار"
 
 msgid "PCs Number / Class"
-msgstr "PCs Number / Class ar"
+msgstr "عدد الاجهزة بكل فصل"
 
 msgid "PCs number / Lab"
-msgstr "PCs number / Lab ar"
+msgstr "عدد الاجهزة بكل معمل"
 
 msgid "Pcs/Class"
-msgstr "Pcs/Class ar"
+msgstr "اجهزة حاسب بالفصل"
 
 msgid "Pcs/Lab"
-msgstr "Pcs/Lab ar"
+msgstr "اجهزة حاسب بالمعمل"
 
 msgid "Phone 1"
-msgstr "Phone 1 ar"
+msgstr "هاتف 1"
 
 msgid "Phone 2"
-msgstr "Phone 2 ar"
+msgstr "هاتف 2"
 
 msgid "Phone 3"
-msgstr "Phone 3 ar"
+msgstr "هاتف 3"
 
 msgid "Phone"
-msgstr "Phone ar"
+msgstr "هاتف"
 
 msgid "Photo"
-msgstr "Photo ar"
+msgstr "صورة"
 
 msgid "Picture"
-msgstr "Picture ar"
+msgstr "صورة"
 
 msgid "Please Sign In"
-msgstr "Please Sign In ar"
+msgstr "يرجى تسجيل الدخول"
+
+msgid "Sign In"
+msgstr "تسجيل الدخول"
 
 msgid "Please verify you are human."
-msgstr "Please verify you are human. ar"
+msgstr "يرجى التحقق من كونك بشري"
 
 msgid "Privacy Statement"
-msgstr "Privacy Statement ar"
+msgstr "حالة السرية "
 
 msgid "Privileges of role"
-msgstr "Privileges of role ar"
+msgstr "إمتيازات الدور"
 
 msgid "Privileges"
-msgstr "Privileges ar"
+msgstr "إمتيازات"
 
 msgid "Proctor Statement"
-msgstr "Proctor Statement ar"
+msgstr "حالة المراقب"
 
 msgid "Profile"
-msgstr "Profile ar"
+msgstr "الملف الخاص"
 
 msgid "Question Title"
-msgstr "Question Title ar"
+msgstr "عنوان الإستفسار"
 
 msgid "Rating"
-msgstr "Rating ar"
+msgstr "تقدير"
 
 msgid "Resource Not Found"
-msgstr "Resource Not Found ar"
+msgstr "الموارد غير متوفرة"
 
 msgid "Resources"
-msgstr "Resources ar"
+msgstr "الموارد"
 
 msgid "Restore"
-msgstr "Restore ar"
+msgstr "إسترجاع"
 
 msgid "Role"
-msgstr "Role ar"
+msgstr "دور"
 
 msgid "Roles"
-msgstr "Roles ar"
+msgstr "الأدوار"
 
 msgid "Save changes"
-msgstr "Save changes ar"
+msgstr "حفظ التغييرات"
 
 msgid "Security Answer"
-msgstr "Security Answer ar"
+msgstr "إجابة سؤال الأمان"
 
 msgid "Security Question should be"
-msgstr "Security Question should be ar"
+msgstr "سؤال الأمان يجب أن يكون "
 
 msgid "Security Question"
-msgstr "Security Question ar"
+msgstr "سؤال الأمان"
 
 msgid "Send Us Message"
-msgstr "Send Us Message ar"
+msgstr "أرسسل لنا رسالة"
 
 msgid "Settings"
-msgstr "Settings ar"
+msgstr "إعدادات"
 
 msgid "Shorten Body"
-msgstr "Shorten Body ar"
+msgstr "اختصار الهيئة"
 
 msgid "Sort order"
-msgstr "Sort order ar"
+msgstr "ترتيب"
 
 msgid "Sort"
-msgstr "Sort ar"
+msgstr "فرز"
 
 msgid "Start Date"
-msgstr "Start Date ar"
+msgstr "تاريخ البدء"
 
 msgid "Start date"
-msgstr "Start date ar"
+msgstr "تاريخ البدء"
 
 msgid "Status"
-msgstr "Status ar"
+msgstr "الحالة"
 
 msgid "Stored at"
-msgstr "Stored at ar"
+msgstr "تم الحفظ في"
 
 msgid "Student No"
-msgstr "Student No ar"
+msgstr "رقم الطالب"
 
 msgid "Student Statement"
-msgstr "Student Statement ar"
+msgstr "حالة الطالب"
 
 msgid "Students Number"
-msgstr "Students Number ar"
+msgstr "رقم الطالب"
 
 msgid "Subject"
-msgstr "Subject ar"
+msgstr "الموضوع"
 
 msgid "Submit Course Evaluation"
-msgstr "Submit Course Evaluation ar"
+msgstr "تسليم تقييم الدورة"
 
 msgid "Submit Evaluation Template"
-msgstr "Submit Evaluation Template ar"
+msgstr "تسليم قالب التقييم"
 
 msgid "Submit for admin approval"
-msgstr "Submit for admin approval ar"
+msgstr "تسليم للحصول على موافقة مشرف النظام"
 
 msgid "Summary"
-msgstr "Summary ar"
+msgstr "ملخص"
 
 msgid "Supported Extensions"
-msgstr "Supported Extensions ar"
+msgstr "دعم التمديدات"
 
 msgid "Taken Action"
-msgstr "Taken Action ar"
+msgstr "الإجراء المُتَخذ"
 
 msgid "Templates"
-msgstr "Templates ar"
+msgstr "القوالب"
 
 msgid "Test Center Admin"
-msgstr "Test Center Admin ar"
+msgstr "مشرف مركز الإختبارات"
 
 msgid "Test Center Administrator Statement"
-msgstr "Test Center Administrator Statement ar"
+msgstr "حالة مشرف مركز الإختبارات"
 
 msgid "Time Duration"
-msgstr "Time Duration ar"
+msgstr "المدة الزمنية"
 
 msgid "Time"
-msgstr "Time ar"
+msgstr "الوقت"
 
 msgid "Train the Trainer"
-msgstr "Train the Trainer ar"
+msgstr "تدريب المدربين"
 
 msgid "Training Manager"
-msgstr "Training Manager ar"
+msgstr "مدير التدريب"
 
 msgid "Training Manager Statement"
-msgstr "Training Manager Statement ar"
+msgstr "حالة مدير التدريب"
 
 msgid "Type"
-msgstr "Type ar"
+msgstr "النوع"
 
 msgid "Url"
-msgstr "Url ar"
+msgstr "رابط العنوان"
 
 msgid "User"
-msgstr "User ar"
+msgstr "المستخدم"
 
 msgid "User Name"
-msgstr "User Name ar"
+msgstr "إسم المستخدم"
 
 msgid "Username"
-msgstr "Username ar"
+msgstr "إسم المستخدم"
 
 msgid "Users"
-msgstr "Users ar"
+msgstr "المستخدمون"
 
 msgid "Value"
-msgstr "Value ar"
+msgstr "القيمة"
 
 msgid "Version"
-msgstr "Version ar"
+msgstr "الإصدار"
 
 msgid "View History"
-msgstr "View History ar"
+msgstr "عرض التاريخ"
 
 msgid "View"
-msgstr "View ar"
+msgstr "عرض"
 
 msgid "Website"
-msgstr "Website ar"
+msgstr "موقع"
 
 msgid "WebSite"
-msgstr "WebSite ar"
+msgstr "موقع"
 
 msgid "Welcome Kit required for a new Instructor"
-msgstr "Welcome Kit required for a new Instructor ar"
+msgstr "باقة الترحيب المطلوبة للمدرب الجديد"
 
 msgid "Welcome User"
-msgstr "Welcome User ar"
+msgstr "الترحيب بالمستخدم"
 
 msgid "Wire Transfer Attachment"
-msgstr "Wire Transfer Attachment ar"
+msgstr "مرفق الحوالة المصرفية"
 
 msgid "Wire transfer attachment"
-msgstr "Wire transfer attachment ar"
+msgstr "مرفق الحوالة المصرفية"
 
 msgid "You should be able to remember the answer"
-msgstr "You should be able to remember the answer ar"
+msgstr "يجب أن تتوفر القدرة لديك على تذكر الإجابة"
 
 msgid "Zip Code"
-msgstr "Zip Code ar"
+msgstr "الرقم البريدي"
 
 msgid "TVTC Status"
-msgstr "TVTC Status ar"
+msgstr "حالة المؤسسة العامة للتدريب التقني والمهني"
 
 msgid "Admin Status"
-msgstr "Admin Status ar"
+msgstr "حالة مشرف النظام"
 
 msgid "New Course Event"
-msgstr "New Course Event ar"
+msgstr "حدث جديد لدورة"
 
 msgid "Courses Outlines"
-msgstr "Courses Outlines ar"
+msgstr "عناوين مواضيع الدورات"
 
 msgid "Edit Resource"
-msgstr "Edit Resource ar"
+msgstr "تحرير الموارد"
 
 msgid "Bulk upload Resources"
-msgstr "Bulk upload Resources ar"
+msgstr "تحميل جملة من الموارد"
 
 msgid "Download"
-msgstr "Download ar"
+msgstr "تنزيل"
 
 msgid "Process failed to complete"
-msgstr "Process failed to complete ar"
+msgstr "فشل في استكمال التشغيل"
 
 msgid "Title in Arabic"
-msgstr "Title in Arabic ar"
+msgstr "العنواب باللغة العربية"
 
 msgid "First Name in Arabic"
-msgstr "First Name in Arabic ar"
+msgstr "الإسم الأول باللغة العربية"
 
 msgid "Last Name in Arabic"
-msgstr "Last Name in Arabic ar"
+msgstr "اللإسم الأخير باللغة العربية"
 
 msgid "Active"
-msgstr "Active ar"
+msgstr "نشيط"
 
 msgid "Inactive"
-msgstr "Inactive ar"
+msgstr "غير نشط"
 
 msgid "Deleted"
-msgstr "Deleted ar"
+msgstr "تم الحذف"
 
 msgid "Not Approved"
-msgstr "Not Approved ar"
+msgstr "غير مقبول"
 
 msgid "State Saved"
-msgstr "State Saved ar"
+msgstr "حفظ الحالة"
 
 msgid "Enter First Name"
-msgstr "Enter First Name ar"
+msgstr "أدخل الإسم الأول"
 
 msgid "Middle Name in Arabic"
-msgstr "Middle Name in Arabic ar"
+msgstr "الاسم الأوسط باللغة العربية"
 
 msgid "Mobile"
-msgstr "Mobile ar"
+msgstr "جوال"
 
 msgid "Confirm Password"
-msgstr "Confirm Password ar"
+msgstr "تأكيد كلمة المرور"
 
 msgid ""
 "<p class=\"required\">Security Question</p> <p><ul><li>Security Question "
@@ -962,7 +959,7 @@ msgid ""
 "<strong>Safe</strong>, Answer should be hard to guess or research.</li></"
 "ul></p>"
 msgstr ""
-"<p class=\"required\">Security Question ar</p> <p><ul><li>Security Question "
+"<p class=\"required\">Security Question</p> <p><ul><li>Security Question "
 "should be <strong>Memorable</strong>, You should be able to remember the "
 "answer.</li><li>Security Question should be <strong>Consistent</strong>, "
 "Answer should not change with time.</li><li>Security Question should be "
@@ -970,631 +967,630 @@ msgstr ""
 "ul></p>"
 
 msgid "Nationality"
-msgstr "Nationality ar"
+msgstr "الجنسية"
 
 msgid "Address Line 1 in Arabic"
-msgstr "Address Line 1 in Arabic ar"
+msgstr "السطر الأول للعنوان العربي"
 
 msgid "Address Line 2 in Arabic"
-msgstr "Address Line 2 in Arabic ar"
+msgstr "السطر الثاني للعنوان العربي"
 
 msgid "<label class=\"legendLabel\">Roles</label>"
-msgstr "<label class=\"legendLabel\">Roles ar</label>"
+msgstr "<label class=\"legendLabel\">Roles</label>"
 
 msgid "Enter First Name in Arabic"
-msgstr "Enter First Name in Arabic ar"
+msgstr "أدخل الإسم الأول باللغة العربية"
 
 msgid "Enter Middle Name"
-msgstr "Enter Middle Name ar"
+msgstr "أدخل الاسم الأوسط"
 
 msgid "Enter Middle Name in Arabic"
-msgstr "Enter Middle Name in Arabic ar"
+msgstr "أدخل الاسم الأوسط باللغة العربية"
 
 msgid "Enter Last Name"
-msgstr "Enter Last Name ar"
+msgstr "أدخل الإسم الأخير"
 
 msgid "Enter Last Name in Arabic"
-msgstr "Enter Last Name in Arabic ar"
+msgstr "أدخل الإسم الأخير باللغة العربية"
 
 msgid "Enter User Name"
-msgstr "Enter User Name ar"
+msgstr "أدخل إسم المستخدم"
 
 msgid "Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
-msgstr "Enter Mobile Number ( 444-555-1234 / 246.555.8888 / 1235554567) ar"
+msgstr "أدخل رقم الجوال (444-555-1234 / 246.555.888 / 1235554567)"
 
 msgid "Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567)"
-msgstr "Enter Phone Number ( 444-555-1234 / 246.555.8888 / 1235554567) ar"
+msgstr "أدخل رقم الهاتف (444-555-1234 / 246.555.888 / 1235554567)"
 
 msgid "e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 )"
-msgstr "e.g. : ( 444-555-1234 / 246.555.8888 / 1235554567 ) ar"
+msgstr "مثال(444-555-1234 / 246.555.888 / 1235554567)"
 
 msgid "Enter Email"
-msgstr "Enter Email ar"
+msgstr "أدخل البريد الإلكتروني"
 
 msgid "Confirm User Email"
-msgstr "Confirm User Email ar"
+msgstr "تأكيد البريد الإلكتروني للمستخدم"
 
 msgid "Enter Password"
-msgstr "Enter Password ar"
+msgstr "أدخل كلمة المرور"
 
 msgid "Confirm User Password"
-msgstr "Confirm User Password ar"
+msgstr "تأكيد كلمة المرور للمستخدم"
 
 msgid "Enter Security Question"
-msgstr "Enter Security Question ar"
+msgstr "أدخل سؤال الأمان"
 
 msgid "Enter Security Answer"
-msgstr "Enter Security Answer ar"
+msgstr "أدخل إجابة سؤال الأمان"
 
 msgid "Enter Identification Type (National ID, or Passport, etc)"
-msgstr "Enter Identification Type (National ID, or Passport, etc) ar"
+msgstr "أدخل نوع الهوية ( الهوية الوطنية ، الاقامة ، جواز السفر، ... إلخ)"
 
 msgid "Enter Identification Number"
-msgstr "Enter Identification Number ar"
+msgstr "أدخل رقم الهوية"
 
 msgid "Enter Address Line 1"
-msgstr "Enter Address Line 1 ar"
+msgstr "أدخل السطر الأول للعنوان"
 
 msgid "Enter Address Line 1 in Arabic"
-msgstr "Enter Address Line 1 in Arabic ar"
+msgstr "أدخل السطر الأول للعنوان باللغة العربية"
 
 msgid "Enter Address Line 2"
-msgstr "Enter Address Line 2 ar"
+msgstr "أدخل السطر الثاني للعنوان"
 
 msgid "Enter Address Line 2 in Arabic"
-msgstr "Enter Address Line 2 in Arabic ar"
+msgstr "أدخل السطر الثاني للعنوان باللغة العربية"
 
 msgid "Enter City"
-msgstr "Enter City ar"
+msgstr "أدخل اسم المدينة"
 
 msgid "Enter Zip Code"
-msgstr "Enter Zip Code ar"
+msgstr "أدخل الرمز البريدي"
 
 msgid "-- Select --"
-msgstr "-- Select -- ar"
+msgstr "-- Select --"
 
 msgid "Create"
-msgstr "Create ar"
+msgstr "إنشاء"
 
 msgid "Reset"
-msgstr "Reset ar"
+msgstr "إعادة تعيين"
 
 msgid "Save"
-msgstr "Save ar"
+msgstr "حفظ"
 
 msgid "Save and Publish"
-msgstr "Save and Publish ar"
+msgstr "حفظ ونشر"
 
 msgid "Unpublish"
-msgstr "Unpublish ar"
+msgstr "الغاء النشر"
 
 msgid "Subscribe"
-msgstr "Subscribe ar"
+msgstr "إشترك"
 
 msgid "Unsubscribe"
-msgstr "Unsubscribe ar"
+msgstr "الغاء الإشتراك"
 
 msgid "Disagree"
-msgstr "Disagree ar"
+msgstr "رفض"
 
 msgid "Agree"
-msgstr "Agree ar"
+msgstr "موافق"
 
 msgid "dummy Privacy Statement content"
-msgstr "dummy Privacy Statement content ar"
+msgstr "dummy Privacy Statement content"
 
 msgid "dummy Student Statement content"
-msgstr "dummy Student Statement content ar"
+msgstr "dummy Student Statement content"
 
 msgid "dummy Proctor Statement content"
-msgstr "dummy Proctor Statement content ar"
+msgstr "dummy Proctor Statement content"
 
 msgid "dummy Instructor Statement content"
-msgstr "dummy Instructor Statement content ar"
+msgstr "dummy Instructor Statement content"
 
 msgid "dummy Test Center Administrator Statement content"
-msgstr "dummy Test Center Administrator Statement content ar"
+msgstr "dummy Test Center Administrator Statement content"
 
 msgid "dummy Training Manager Statement content"
-msgstr "dummy Training Manager Statement content ar"
+msgstr "dummy Training Manager Statement content"
 
 msgid "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>"
-msgstr "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a> ar"
+msgstr "I agree to <a href=\"javascript:void(0)\">Privacy Statement</a>"
 
 msgid "I agree to <a href=\"javascript:void(0)\">Student Statement</a>"
-msgstr "I agree to <a href=\"javascript:void(0)\">Student Statement</a> ar"
+msgstr "I agree to <a href=\"javascript:void(0)\">Student Statement</a>"
 
 msgid "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>"
-msgstr "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a> ar"
+msgstr "I agree to <a href=\"javascript:void(0)\">Proctor Statement</a>"
 
 msgid "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>"
-msgstr "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a> ar"
+msgstr "I agree to <a href=\"javascript:void(0)\">Instructor Statement</a>"
 
 msgid ""
 "I agree to <a href=\"javascript:void(0)\">Test Center Administrator "
 "Statement</a>"
 msgstr ""
 "I agree to <a href=\"javascript:void(0)\">Test Center Administrator "
-"Statement</a> ar"
+"Statement</a>"
 
 msgid ""
 "I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>"
 msgstr ""
-"I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a> ar"
+"I agree to <a href=\"javascript:void(0)\">Training Manager Statement</a>"
 
 msgid "Instructors"
-msgstr "Instructors ar"
+msgstr "المدربون"
 
 msgid "User Details"
-msgstr "User Details ar"
+msgstr "تفاصيل المستخدم"
 
 msgid "Process Quote"
-msgstr "Process Quote ar"
+msgstr "تشغيل التسعير"
 
 msgid "Course Name in Arabic"
-msgstr "Course Name in Arabic ar"
+msgstr "اسم الدورة بالعربي"
 
 msgid "User Name in Arabic"
-msgstr "User Name in Arabic ar"
+msgstr "إسم المستخدم باللغة العربية"
 
 msgid "Course Full"
-msgstr "Course Full ar"
+msgstr "الدورة مكتملة"
 
 msgid "Name in Arabic"
-msgstr "Name in Arabic ar"
+msgstr "اللإسم باللغة العربية"
 
 msgid "Brief in Arabic"
-msgstr "Brief in Arabic ar"
+msgstr "نبذة بالعربية"
 
 msgid "Duration (minutes)"
-msgstr "Duration (minutes) ar"
+msgstr "المدة (بالدقائق)"
 
 msgid "Instructor"
-msgstr "Instructor ar"
+msgstr "المدرب"
 
 msgid "ATP Name"
-msgstr "ATP Name ar"
+msgstr "إسم شريك التدريب المعتمد"
 
 msgid "ATP City"
-msgstr "ATP City ar"
+msgstr "مدينة شريك التدريب المعتمد"
 
 msgid "Cancel"
-msgstr "Cancel ar"
+msgstr "ألغاء"
 
 msgid "No training found for instructor!"
-msgstr "No training found for instructor! ar"
+msgstr "لم يتم العثور على تدريب للمدربين!"
 
 msgid "Instructor in Arabic"
-msgstr "Instructor in Arabic ar"
+msgstr "المدرب باللغة العربية"
 
 msgid "ATP Name in Arabic"
-msgstr "ATP Name in Arabic ar"
+msgstr "إسم شريك التدريب المعتمد العربي"
 
 msgid "ATP City in Arabic"
-msgstr "ATP City in Arabic ar"
+msgstr "مدينة شريك التدريب المعتمد بالعربي"
 
 msgid "Venue"
-msgstr "Venue ar"
+msgstr "المكان"
 
 msgid "Preferred Date"
-msgstr "Preferred Date ar"
+msgstr "التاريخ المفضل"
 
 msgid "Seats No"
-msgstr "Seats No ar"
+msgstr "رقم المقعد"
 
 msgid "Price"
-msgstr "Price ar"
+msgstr "الثمن"
 
 msgid "Unit Price"
-msgstr "Unit Price ar"
+msgstr "سعر الوحدة"
 
 msgid "Discount"
-msgstr "Discount ar"
+msgstr "قطع الإتصال"
 
 msgid "Total"
-msgstr "Total ar"
+msgstr "الاجمالي"
 
 msgid "Filter Quotations"
-msgstr "Filter Quotations ar"
+msgstr "تصفية طلبات التسعير"
 
 msgid "Quotations"
-msgstr "Quotations ar"
+msgstr "عروض اسعار"
 
 msgid "Public Training"
-msgstr "Public Training ar"
+msgstr "التدريب العام"
 
 msgid "Private Training"
-msgstr "Private Training ar"
+msgstr "التدريب الخاص"
 
 msgid "Current Payment"
-msgstr "Current Payment ar"
+msgstr "السداد الحالي"
 
 msgid "Public quote invoice"
-msgstr "Public quote invoice ar"
+msgstr "فاتورة ذات عرض سعر عام"
 
 msgid "Public quote with unacceptable payment"
-msgstr "Public quote with unacceptable payment ar"
+msgstr "عرض سعر عام مع سداد غير مقبول"
 
 msgid "Public quote"
-msgstr "Public quote ar"
+msgstr "عرض سعر العام"
 
 msgid "Public quote cancelled"
-msgstr "Public quote cancelled ar"
+msgstr "عرض السعر العام تم ألغاءه"
 
 msgid "Private quote invoice"
-msgstr "Private quote invoice ar"
+msgstr "فاتورة ذات عرض سعر خاص"
 
 msgid "Private quote with unacceptable payment"
-msgstr "Private quote with unacceptable payment ar"
+msgstr "عرض سعر خاص مع سداد غير مقبول"
 
 msgid "Private quote"
-msgstr "Private quote ar"
+msgstr "عرض سعر خاص"
 
 msgid "Private quote cancelled"
-msgstr "Private quote cancelled ar"
+msgstr "عرض السعر الخاص تم ألغاءه"
 
 msgid "Public quote has wire transfer"
-msgstr "Public quote has wire transfer ar"
+msgstr "عرض السعر العام لديه حوالة مصرفية"
 
 msgid "New public quote"
-msgstr "New public quote ar"
+msgstr "عرض سعر عام جديد"
 
 msgid "Private quote has wire transfer"
-msgstr "Private quote has wire transfer ar"
+msgstr "عرض السعر الخاص لديه حوالة مصرفية"
 
 msgid "New private quote"
-msgstr "New private quote ar"
+msgstr "عرض سعر خاص جديد"
 
 msgid "Cancelled"
-msgstr "Cancelled ar"
+msgstr "مُلغَى"
 
 msgid "Pending Repayment"
-msgstr "Pending Repayment ar"
+msgstr "اعادة السداد قيد الانتظار"
 
 msgid "Pending Review"
-msgstr "Pending Review ar"
+msgstr "المراجعة قيد الانتظار"
 
 msgid "Pending Payment"
-msgstr "Pending Payment ar"
+msgstr "السداد قيد الانتظار"
 
 msgid "Pending Pricing"
-msgstr "Pending Pricing ar"
+msgstr "التسعير قيد الانتظار"
 
 msgid "Accept"
-msgstr "Accept ar"
+msgstr "موافق"
 
 msgid "Decline"
-msgstr "Decline ar"
+msgstr "مرفوض"
 
 msgid "Reserve"
-msgstr "Reserve ar"
+msgstr "حجز"
 
 msgid "Process"
-msgstr "Process ar"
+msgstr "تشغيل"
 
 msgid "Filter"
-msgstr "Filter ar"
+msgstr "تصفية"
 
 msgid "Public"
-msgstr "Public ar"
+msgstr "عام"
 
 msgid "Private"
-msgstr "Private ar"
+msgstr "شخصي"
 
 msgid "Hotel / Other venue"
-msgstr "Hotel / Other venue ar"
+msgstr "الفندق/مكان أخر"
 
 msgid "Company premises"
-msgstr "Company premises ar"
+msgstr "أماكن الشركة"
 
 msgid "Customer premises"
-msgstr "Customer premises ar"
+msgstr "أماكن العميل"
 
 msgid "Course does not have enough seats"
-msgstr "Course does not have enough seats ar"
+msgstr "الدورة لا تحتوي علي مقاعد كافية."
 
 msgid ""
-"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,gif,"
-"png,jpg,jpeg</p>"
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,"
+"gif,png,jpg,jpeg</p>"
 msgstr ""
-"<p class=\"required\">Wire Transfer ar</p> <p>Supported Extensions: zip,pdf,"
+"<p class=\"required\">Wire Transfer</p> <p>Supported Extensions: zip,pdf,"
 "gif,png,jpg,jpeg</p>"
 
 msgid "Create new Category"
-msgstr "Create new Category ar"
+msgstr "إنشاء فئة جديدة"
 
 msgid "Categories"
-msgstr "Categories ar"
+msgstr "فئات"
 
 msgid "Weight"
-msgstr "Weight ar"
+msgstr "وزن"
 
 msgid "Warning"
-msgstr "Warning ar"
+msgstr "تحذير"
 
 msgid "This category may have sub-Categories"
-msgstr "This category may have sub-Categories ar"
+msgstr "هذه الفئة ربما تحتوي فئات فرعية"
 
 msgid "This category has No sub-Categories"
-msgstr "This category has No sub-Categories ar"
+msgstr "هذه الفئة لا تحتوي فئات فرعية"
 
 msgid "New Issues Category"
-msgstr "New Issues Category ar"
+msgstr "فئة مشكلة جديدة"
 
 msgid "Edit Issue Category"
-msgstr "Edit Issue Category ar"
+msgstr "تحرير فئة مشكلة"
 
 msgid "Create new Issue"
-msgstr "Create new Issue ar"
+msgstr "أنشاء مشكلة جديدة"
 
 msgid "Reported Issues"
-msgstr "Reported Issues ar"
+msgstr "المشاكل المقدمة"
 
 msgid "parents"
-msgstr "parents ar"
+msgstr "رؤساء"
 
 msgid "close"
-msgstr "close ar"
+msgstr "إغلاق"
 
 msgid "Are you sure you want to close this issue"
-msgstr "Are you sure you want to close this issue ar"
+msgstr "هل أنت متأكد من إغلاق هذه المشكلة؟"
 
 msgid "Are you sure you want to reopen this issue"
-msgstr "Are you sure you want to reopen this issue ar"
+msgstr "هل أنت متأكد من إعادة فتح هذه المشكلة؟"
 
 msgid "Dismiss this message"
-msgstr "Dismiss this message ar"
+msgstr "رفض الرسالة"
 
 msgid "Close Issue"
-msgstr "Close Issue ar"
+msgstr "إغلاق المشكلة"
 
 msgid "reopen"
-msgstr "reopen ar"
+msgstr "إعادة فتح"
 
 msgid "Reopen Issue"
-msgstr "Reopen Issue ar"
+msgstr "إعادة فتح مشكلة"
 
 msgid "Are you sure you want to delete this issue"
-msgstr "Are you sure you want to delete this issue ar"
+msgstr "هل أنت متأكد من حذف هذه المشكلة؟"
 
 msgid "Delete Issue"
-msgstr "Delete Issue ar"
+msgstr "حذف المشكلة"
 
 msgid "New Issue"
-msgstr "New Issue ar"
+msgstr "مشكلة جديدة"
 
 msgid "Issue has no attachments"
-msgstr "Issue has no attachments ar"
+msgstr "المشكلة ليس لديها مرفقات"
 
 msgid "Are you sure you want to delete this comment"
-msgstr "Are you sure you want to delete this comment ar"
+msgstr "هل أنت متأكد من حذف هذا التعليق؟"
 
 msgid "Delete comment"
-msgstr "Delete comment ar"
+msgstr "حذف التعليق"
 
 msgid "Bad request ... you cant edit this comment"
-msgstr "Bad request ... you cant edit this comment ar"
+msgstr "طلب غير مقبول ... لا يمكنك تحرير هذا التعليق."
 
 msgid ">"
-msgstr "<"
+msgstr ">"
 
 msgid "Attachments"
-msgstr "Attachments ar"
+msgstr "المرفقات"
 
 msgid "Manage Proctors"
-msgstr "Manage Proctors ar"
+msgstr "إدارة المراقبين"
 
 msgid "Longitude is required"
-msgstr "Longitude is required ar"
+msgstr "خط الطول مطلوب"
 
 msgid "Latitude is required"
-msgstr "Latitude is required ar"
+msgstr "خط العرض مطلوب"
 
 msgid "km away"
-msgstr "km away ar"
+msgstr "البعد بالكيلومتر"
 
 msgid "Mail will be sent shortly!"
-msgstr "Mail will be sent shortly! ar"
+msgstr "سيتم ارسال البريد في اسرع وقت!"
 
 msgid "Dear"
-msgstr "Dear ar"
+msgstr "عزيزي"
 
 msgid "Add event to calendar"
-msgstr "Add event to calendar ar"
+msgstr "إضافة حدث إلى التقويم"
 
 msgid "Course"
-msgstr "Course ar"
+msgstr "دورة"
 
 msgid "will start in"
-msgstr "will start in ar"
+msgstr "سنبدأ في"
 
 msgid "day(s)"
-msgstr "day(s) ar"
+msgstr "يوم/أيام"
 
 msgid "Unsubscribe periodic notifications"
-msgstr "Unsubscribe periodic notifications ar"
+msgstr "الغاء الإشتراك في النشرات الدورية"
 
 msgid "Subscribe periodic notifications"
-msgstr "Subscribe periodic notifications ar"
+msgstr "الإشتراك في الإشعارات الدورية"
 
 msgid "You must agree to the terms of use."
-msgstr "You must agree to the terms of use. ar"
+msgstr "يجب عليك الموافقة على شروط الإستخدام"
 
 msgid "Enter Commercial Name in Arabic"
-msgstr "Enter Commercial Name in Arabic ar"
+msgstr "أدخل الاسم التجاري باللغة العربية"
 
 msgid "Enter Owner Name in Arabic"
-msgstr "Enter Owner Name in Arabic ar"
+msgstr "أدخل إسم المالك باللغة العربية"
 
 msgid "Enter Address in Arabic"
-msgstr "Enter Address in Arabic ar"
+msgstr "أدخل العنوان باللغة العربية"
 
 msgid "Enter City in Arabic"
-msgstr "Enter City in Arabic ar"
+msgstr "أدخل اسم المدينة باللغة العربية"
 
 msgid "Presentation"
-msgstr "Presentation ar"
+msgstr "عرض تقديمي"
 
 msgid "Activities"
-msgstr "Activities ar"
+msgstr "أنشطة"
 
 msgid "Exams"
-msgstr "Exams ar"
+msgstr "الإختبارات"
 
 msgid "Standards"
-msgstr "Standards ar"
+msgstr "إفتراضيات"
 
 msgid "Course Updates"
-msgstr "Course Updates ar"
+msgstr "تحديثات الدورة"
 
 msgid "Ice Breakers"
-msgstr "Ice Breakers ar"
+msgstr "إزالة الحواجز"
 
 msgid "Send to friend"
-msgstr "Send to friend ar"
+msgstr "إرسال إلى صديق"
 
 msgid "I agree"
-msgstr "I agree ar"
+msgstr "أوافق"
 
 msgid "Are you sure you want to delete this quote"
-msgstr "Are you sure you want to delete this quote ar"
+msgstr "هل أنت متأكد من حذف عرض السعر هذا؟"
 
 msgid "Are you sure you want to delete this settings"
-msgstr "Are you sure you want to delete this settings ar"
+msgstr "Are you sure you want to delete this settings"
 
 msgid "Are you sure you want to delete this role"
-msgstr "Are you sure you want to delete this role ar"
+msgstr "Are you sure you want to delete this role"
 
 msgid "Are you sure you want to delete this organization"
-msgstr "Are you sure you want to delete this organization ar"
+msgstr "هل أنت متأكد من حذف هذه المنشأة؟"
 
 msgid "Are you sure you want to delete this course"
-msgstr "Are you sure you want to delete this course ar"
+msgstr "هل أنت متأكد من حذف هذه الدورة؟"
 
 msgid "Are you sure you want to delete this course event"
-msgstr "Are you sure you want to delete this course event ar"
+msgstr "هل أنت متأكد من حذف هذا الحدث؟"
 
 msgid "Are you sure you want to deactivate this menu"
-msgstr "Are you sure you want to deactivate this menu ar"
+msgstr "Are you sure you want to deactivate this menu"
 
 msgid "Are you sure you want to activate this menu"
-msgstr "Are you sure you want to activate this menu ar"
+msgstr "Are you sure you want to activate this menu"
 
 msgid "Are you sure you want to deactivate this menu item"
-msgstr "Are you sure you want to deactivate this menu item ar"
+msgstr "Are you sure you want to deactivate this menu item"
 
 msgid "Are you sure you want to activate this menu item"
-msgstr "Are you sure you want to activate this menu item ar"
+msgstr "Are you sure you want to activate this menu item"
 
 msgid "Are you sure you want to deactivate this page"
-msgstr "Are you sure you want to deactivate this page ar"
+msgstr "Are you sure you want to deactivate this page"
 
 msgid "Are you sure you want to activate this page"
-msgstr "Are you sure you want to activate this page ar"
+msgstr "Are you sure you want to activate this page"
 
 msgid "Are you sure you want to deactivate this user"
-msgstr "Are you sure you want to deactivate this user ar"
+msgstr "Are you sure you want to deactivate this user"
 
 msgid "Are you sure you want to activate this user"
-msgstr "Are you sure you want to activate this user ar"
+msgstr "Are you sure you want to activate this user"
 
 msgid "Create new course event"
-msgstr "Create new course event ar"
+msgstr "إنشاء حدث جديد لدورة "
 
 msgid "About This Course"
-msgstr "About This Course ar"
+msgstr "عن هذه الدورة"
 
 msgid "From"
-msgstr "From ar"
+msgstr "من"
 
 msgid "Course Dates"
-msgstr "Course Dates ar"
+msgstr "تواريخ الدورة"
 
 msgid "Starts at"
-msgstr "Starts at ar"
+msgstr "يبدأ في"
 
 msgid "ends at"
-msgstr "ends at ar"
+msgstr "ينتهي في"
 
 msgid "Enroll this course"
-msgstr "Enroll this course ar"
+msgstr "تسجيل هذه الدورة"
 
 msgid "No Courses Yet"
-msgstr "No Courses Yet ar"
+msgstr "لا يوجد دورات حتي الأن"
 
 msgid "Pending"
-msgstr "Pending ar"
+msgstr "قيد الانتظار"
 
 msgid "Approved"
-msgstr "Approved ar"
+msgstr "تم الموافقة عليه"
 
 msgid "Nothing Yet"
-msgstr "Nothing Yet ar"
+msgstr "لا شئ بعد"
 
 msgid "You are currently not assigned to this organization"
-msgstr "You are currently not assigned to this organization ar"
+msgstr "أنت الأن غير مسجل على هذه المنشأة"
 
 msgid "This type of organizations not supposed to have any organization users"
-msgstr ""
-"This type of organizations not supposed to have any organization users ar"
+msgstr "هذا النوع من المنشأت لا يدعم وجود مستخدمين"
 
 msgid ""
 "Oops sorry it looks like something went wrong and an error has occurred .. "
 "please try again later"
 msgstr ""
-"Oops sorry it looks like something went wrong and an error has occurred .. "
-"please try again later ar"
+"عفواً... يبدو وكأنه يوجد شئ ما قد حدث بصورة غير سليمة .. يرجى معاودة "
+"المحاولة مرة أخرى في وقت لاحق."
 
 msgid "Ticket No."
-msgstr "Ticket No."
+msgstr "رقم التذكرة"
 
 msgid "Hijri Preferred Date"
-msgstr "Hijri Preferred Date ar"
+msgstr "التاريخ الهجري المفضل"
 
 msgid "Submit pricing proposal to user"
-msgstr "Submit pricing proposal to user ar"
+msgstr "تسليم عرض السعر المقدم للمستخدم"
 
 msgid "Accept user payment"
-msgstr "Accept user payment ar"
+msgstr "موافقة على سداد المستخدم"
 
 msgid "Reject user payment"
-msgstr "Reject user payment ar"
+msgstr "رفض سداد المستخدم"
 
 msgid "Submit payment accepting pricing proposal"
-msgstr "Submit payment accepting pricing proposal ar"
+msgstr "تسليم السداد ذو الموافقة على عرض السعر المقدم"
 
 msgid "Cancel quotation rejecting pricing proposal"
-msgstr "Cancel quotation rejecting pricing proposal ar"
+msgstr "إلغاء التسعير يسبب رفض اقتراح الأسعار"
 
 msgid "Cancel quotation"
-msgstr "Cancel quotation ar"
+msgstr "الغاء التسعير"
 
 msgid "Votes"
-msgstr "Votes ar"
+msgstr "تصويت"
 
 msgid "Enrolled Users"
-msgstr "Enrolled Users ar"
+msgstr "المستخدمين المسجلين"
 
 msgid "Average Vote"
-msgstr "Average Vote ar"
+msgstr "متوسط التصويت"
 
 msgid "Question"
-msgstr "Question ar"
+msgstr "إستفسار"
 
 msgid "Check All"
-msgstr "Check All ar"
+msgstr "تحديد الكل"
 
 msgid "System Cache"
-msgstr "System Cache ar"
+msgstr "ذاكرة التخزين المؤقت بالنظام"
 
 msgid "Cache Type"
-msgstr "Cache Type ar"
+msgstr "Cache Type"
 
 msgid "Menus Pathes ( Pages )"
-msgstr "Menus Pathes ( Pages ) ar"
+msgstr "مسارات القوائم (صفحات)"
 
 msgid "Register"
-msgstr "Register ar"
+msgstr "تسجيل"
 
 msgid "Create new user/account"
-msgstr "Create new user/account ar"
+msgstr "إنشاء مستخدم/حساب جديد"

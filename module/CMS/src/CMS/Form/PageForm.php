@@ -36,7 +36,7 @@ class PageForm extends Form
 
     /**
      *
-     * @var Translation\Helper\translatorHandler 
+     * @var Translation\Service\Translator\TranslatorHandler
      */
     protected $translatorHandler;
 

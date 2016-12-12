@@ -22,8 +22,8 @@
                     <div class="dropdown pull-left" >
                         <button class="btn btn-link btn-menu {{^loggedInUsername}}btn-language-loggedout{{/loggedInUsername}}{{#loggedInUsername}}btn-language-loggedin{{/loggedInUsername}} dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a href="/trans/setlocale/en_US">English</a></li>
-                            <li><a href="/trans/setlocale/ar_AR">العربية</a></li>
+                            <li {{#locale_en}}class="active"{{/locale_en}}><a href="/trans/setlocale/en_US">English</a></li>
+                            <li {{#locale_ar}}class="active"{{/locale_ar}}><a href="/trans/setlocale/ar_AR">العربية</a></li>
                         </ul>
                     </div>
                     &nbsp;
@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <input name="password" type="password" placeholder="Password" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-success">Sign in</button>
+                        <button type="submit" class="btn btn-success">{{#translate}}Sign In{{/translate}}</button>
                         <a href="/register"><button class="btn btn-success">{{#translate}}Register{{/translate}}</button></a>
                     </form>
                     {{/loggedInUsername}}
