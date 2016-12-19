@@ -80,6 +80,12 @@ return array(
             'rolesStatements' => array(
                 'resource' => 'Users'
             ),
+            'list_atc_orgs' => array(
+                'resource' => 'Organizations'
+            ),
+            'list_atp_orgs' => array(
+                'resource' => 'Organizations'
+            ),
         )
     )
 );
