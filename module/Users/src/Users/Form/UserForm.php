@@ -156,12 +156,11 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'mobileAreaCode',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter mobile Area code 2-3 digits',
+                'placeholder' => '012',
                 'required' => 'required',
-                'class' => 'form-register',
-                'min' => 1
+                'class' => 'form-register'
             ),
             'options' => array(
                 'label' => 'Mobile',
@@ -169,12 +168,11 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'mobile',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter mobile Number 6-8 digits',
+                'placeholder' => '34567890',
                 'required' => 'required',
-                'class' => 'form-register',
-                'min' => 1
+                'class' => 'form-register'
             ),
             'options' => array(
                 'label' => 'Mobile',
@@ -199,24 +197,22 @@ class UserForm extends Form
         ));
         $this->add(array(
             'name' => 'phoneAreaCode',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter 2-3 digits Area Code',
+                'placeholder' => '012',
                 'class' => 'form-register',
-                'required' => 'required',
-                'min' => 1
+                'required' => 'required'
             ),
             'options' => array(
             ),
         ));
         $this->add(array(
             'name' => 'phone',
-            'type' => 'Zend\Form\Element\Number',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Enter Phone Number 6-8 digits',
+                'placeholder' => '34567890',
                 'class' => 'form-register',
-                'required' => 'required',
-                'min' => 1
+                'required' => 'required'
             ),
             'options' => array(
                 'label' => 'Phone',
