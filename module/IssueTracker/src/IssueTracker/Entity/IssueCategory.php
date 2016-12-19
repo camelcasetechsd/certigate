@@ -220,7 +220,7 @@ class IssueCategory
                             'object_repository' => $query->entityRepository,
                             'fields'            => array('title', 'parent'),
                             'messages'          => array(
-                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "There is aleady another category with the same name in this subcategory !"
+                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "There is aleady another sub-category with the same name in this category !"
                             )
                         )
                     ),
