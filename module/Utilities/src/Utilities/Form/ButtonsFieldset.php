@@ -76,6 +76,7 @@ class ButtonsFieldset extends Fieldset
             'type' => 'Zend\Form\Element\Button',
             'attributes' => array(
                 'class' => 'pull-left btn-inline btn btn-danger resetButton',
+                'type' => 'reset'
             ),
             'options' => array(
                 'label' => FormButtons::RESET_BUTTON_TEXT,

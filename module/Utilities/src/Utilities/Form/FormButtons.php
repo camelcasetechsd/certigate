@@ -51,7 +51,7 @@ class FormButtons
     /**
      * save button text
      */
-    const SAVE_BUTTON_TEXT = "Save";
+    const SAVE_BUTTON_TEXT = "Submit";
 
     /**
      * save and publish button
@@ -101,7 +101,7 @@ class FormButtons
     /**
      * reset button text
      */
-    const RESET_BUTTON_TEXT = "Reset";
+    const RESET_BUTTON_TEXT = "Cancel";
 
     /**
      * accept button
@@ -171,6 +171,6 @@ class FormButtons
     /**
      * filter button text
      */
-    const SAVE_STATE_BUTTON_TEXT = "Save State";
+    const SAVE_STATE_BUTTON_TEXT = "Save";
 
 }
