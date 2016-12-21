@@ -13,6 +13,7 @@ use Users\Entity\Role;
 use Utilities\Service\Status;
 use Organizations\Service\Messages;
 use Utilities\Service\MessageTypes;
+use Utilities\Service\File;
 
 /**
  * Atps Controller
@@ -303,15 +304,37 @@ class OrganizationsController extends ActionController
         $options['applicationLocale'] = $applicationLocale;
         $customizedForm = $orgModel->customizeOrgForm($rolesArray, $options, $this);
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            // Make certain to merge the files info!
-            $fileData = $request->getFiles()->toArray();
-            $data = array_merge_recursive(
-                    $request->getPost()->toArray(), $fileData
-            );
+        // Apply File Post->Redirect->Get plugin to this page/form
+        $prg = $this->filePrg($customizedForm);
 
-            $customizedForm->setData($data);
+        // File input filter required to allow $prg plugin to hook on to files
+        if (false !== $prg) {
+            $uploadTmpTarget = APPLICATION_PATH . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+            File::createDir($uploadTmpTarget);
+            foreach ($customizedForm->getData() as $field => $data) {
+                $fieldElement = $customizedForm->getInputFilter()->get($field);
+                if (!$fieldElement instanceof FileInput) continue;
+                $fieldElement->getFilterChain()->attach(
+                    new \Zend\Filter\File\RenameUpload(array(
+                        'target'    => $uploadTmpTarget,
+                        'randomize' => true,
+                    ))
+                );
+            }
+        }
+
+        // The plugin *always* redirects after a POST.
+        // If this is the first load of the form, $prg === false
+        // Otherwise $prg is set to the form values
+        // The plugin uses a session store to persist values between requests
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+            return $prg;
+        }
+
+        // Use $prg plugin to determine if we need to check the form validity
+        if (false !== $prg) {
+
+            $data = $prg;
             $data['creatorId'] = $creatorId;
 
             if ($customizedForm->isValid()) {
@@ -322,7 +345,7 @@ class OrganizationsController extends ActionController
         return new ViewModel($variables);
     }
 
-    /**
+    /** 
      * more details of an ATC
      * 
      * 
