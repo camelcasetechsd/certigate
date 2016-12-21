@@ -27,8 +27,15 @@
                 <td>{{addressLine1}}</td>
                 <td>{{phone1}}</td>
                 <td>{{email}}</td>
-                <td>{{website}}</td>
-                <td>{{city}}</td>
+                <td>
+                    <a href="{{website}}" target="_blank" class="btn btn-primary">
+                        <span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span>
+                    </a></td>
+                <td>{{city}}
+                    <a target="_blank" href="https://www.google.com/maps/search/{{city}}/@{{latitude}},{{longitude}}">
+                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                    </a>
+                </td>
                 <td>
                     {{#orgUser}}
                     <a href="/organizations/more/{{id}}" title="More">{{#translate}}More{{/translate}}</a>     
