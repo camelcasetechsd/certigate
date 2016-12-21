@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use IssueTracker\Service\DepthLevel;
-use Utilities\Service\Validator\UniqueObject;
+use IssueTracker\Service\Validator\IssueCategory as IssueCategoryValidator;
 
 /**
  * issue category Entity
@@ -213,14 +213,14 @@ class IssueCategory
                 'name'       => 'title',
                 'validators' => array(
                     array(
-                        'name'    => 'Utilities\Service\Validator\UniqueObject',
+                        'name'    => IssueCategoryValidator::class,
                         'options' => array(
                             'use_context'       => true,
                             'object_manager'    => $query->entityManager,
                             'object_repository' => $query->entityRepository,
                             'fields'            => array('title', 'parent'),
                             'messages'          => array(
-                                UniqueObject::ERROR_OBJECT_NOT_UNIQUE => "There is aleady another sub-category with the same name in this category !"
+                                IssueCategoryValidator::ERROR_OBJECT_NOT_UNIQUE => "There is aleady another sub-category with the same name in this category !",
                             )
                         )
                     ),

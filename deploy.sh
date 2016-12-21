@@ -2,7 +2,7 @@
 app_env=${APPLICATION_ENV:-'vagrant'} 
 
 # composer 
-composer install
+composer install --ignore-platform-reqs
 
 ## prepare Grunt libraries
 npm update npm
@@ -29,7 +29,7 @@ APPLICATION_ENV=$app_env php public/forum/updateDB.php
 
 ## prepare public resources
 cd public
-bower update 
+bower install
 cd ../
 
 ## run Grunt tasks
