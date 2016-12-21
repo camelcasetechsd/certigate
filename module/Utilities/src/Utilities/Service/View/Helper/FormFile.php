@@ -28,11 +28,6 @@ class FormFile extends ZendFormFile
      */
     public function render(ElementInterface $element)
     {
-        /*
-        $html = parent::render($element);
-        return $html . sprintf('<span>%s</span>', htmlentities(serialize($element)));
-        */
-
         // Check to see if a valid file has already been uploaded (from a previous request)
         $hasFile = (bool)$element->getValue();
 
@@ -51,6 +46,9 @@ class FormFile extends ZendFormFile
         $fieldName = $element->getName();
         $fileName = $element->getValue()['name'];
 
+        // Render a readonly section showing the previously uploaded filename
+        // As well as the normal file field (hidden)
+        // With a link "Change file" toggling the file field to be shown again
         return sprintf(
             "<span id=\"%s_readonly_holder\">%s <a href=\"javascript:;\" style=\"margin-left:10px;\" onclick=\"$('#%s_file_holder').show();$('#%s_readonly_holder').hide();\">Change file</a></span><span id=\"%s_file_holder\" style=\"display:none;\">%s</span>",
             $fieldName,
@@ -60,8 +58,6 @@ class FormFile extends ZendFormFile
             $fieldName,
             $fileUploadHtml
         );
-
-        //return sprintf('<input type="text" value="%s" readonly="readonly">', $fileName);
     }
 
 }
