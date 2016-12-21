@@ -66,6 +66,11 @@ class DaysAfterValidator extends AbstractValidator
      */
     public function isValid($value, $context = null)
     {
+        if (!$value) {
+            // If value is invalid, stop processing and return false.
+            return false;
+        }
+
         $this->setValue($value);
         $isValid = true;
         $dateDiff = date_diff(\DateTime::createFromFormat(Time::DATE_FORMAT, $value), new \DateTime());
