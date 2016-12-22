@@ -1,0 +1,9 @@
+ul.dropdown-child-menu {
+  left: inherit;
+  right: 100%;
+}
+
+.caret-by-side {
+  border-left: 4px solid transparent;
+  border-right: 4px solid;
+}

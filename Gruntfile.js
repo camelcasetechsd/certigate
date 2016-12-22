@@ -153,6 +153,7 @@ module.exports = function (grunt) {
                     '<%= dirs.cssSrc %>/custom.calendars.rtl.css',
                     '<%= dirs.cssSrc %>/style.css',
                     '<%= dirs.cssSrc %>/certigateTheme.css',
+                    '<%= dirs.cssSrc %>/certigateTheme.rtl.css',
                     '<%= dirs.cssSrc %>/form.css',
                     '<%= dirs.cssSrc %>/chat.css',
                     '<%= dirs.cssSrc %>/userForm.css',

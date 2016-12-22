@@ -1,5 +1,5 @@
 .title-top{
-    padding: 0px 0px !important; 
+    padding: 0px 0px !important;
     margin-top: 0px;
 }
 
@@ -18,8 +18,8 @@
     text-transform: uppercase;
 }
 .page-container-wide{
-    margin-top: -0.2%; 
-    margin-right: -12.5%; 
+    margin-top: -0.2%;
+    margin-right: -12.5%;
     margin-left: -12.5%;
 }
 
@@ -81,4 +81,14 @@ body {
 }
 .manageMenu .navbar-nav>li>a{
     color: #fff !important;
+}
+ul.dropdown-child-menu {
+  left: 100%;
+  top: -4px;
+}
+
+.caret-by-side {
+  border-left: 4px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
 }

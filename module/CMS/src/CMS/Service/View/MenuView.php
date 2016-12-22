@@ -6,10 +6,10 @@ use CMS\Entity\Menu;
 
 /**
  * MenuView
- * 
+ *
  * Handles CMS menu view related business
- * 
- * 
+ *
+ *
  * @property string $menuCloseString
  * @property string $menuOpenString
  * @property string $subMenuCloseString
@@ -19,7 +19,7 @@ use CMS\Entity\Menu;
  * @property string $menuItemLiAttributesString
  * @property string $menuItemAnchorAttributesString
  * @property array $primaryMenuAttributes
- * 
+ *
  * @package cms
  * @subpackage view
  */
@@ -38,80 +38,86 @@ class MenuView
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuCloseString = '</ul></div>';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuOpenString = '<div id="%s" class="%s"><ul class="%s">';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $subMenuCloseString = '</ul>';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $subMenuOpenString = '<ul class="%s">';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuItemOpenString = '<li %s><a %s href="%s">%s%s</a>';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuItemCloseString = '</li>';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuItemLiAttributesString = 'class="menu-item-li %1$s menu-li-%2$s menu-%2$s %3$s"';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $menuItemAnchorAttributesString = 'class="%1$s menu-anchor-%2$s menu-%2$s" %3$s';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $activeClass = 'active';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $childIndicator = ' <span class="caret"></span>';
 
     /**
      *
-     * @var string 
+     * @var string
+     */
+    protected $secondChildIndicator = ' <span class="caret caret-by-side"></span>';
+
+    /**
+     *
+     * @var string
      */
     protected $ulClass = 'nav navbar-nav';
 
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $activePath = '/';
 
     /**
      * Set active path (i.e. current active URL)
-     * 
-     * 
+     *
+     *
      * @access public
      * @param string $path
      */
@@ -122,8 +128,8 @@ class MenuView
 
     /**
      * Get active path (i.e. current active URL)
-     * 
-     * 
+     *
+     *
      * @access public
      * @return string
      */
@@ -136,8 +142,8 @@ class MenuView
      * Match active path against path provided
      *
      * TODO: Implement a better way to do this, allowing menu item hierarchy to be respected
-     * 
-     * 
+     *
+     *
      * @access public
      * @param string $path
      * @return bool
@@ -149,8 +155,8 @@ class MenuView
 
     /**
      * Prepare menu for view by it's title
-     * 
-     * 
+     *
+     *
      * @access public
      * @param array $menusArray
      * @param string $menuTitleUnderscored menu title underscored ,default is null
@@ -188,7 +194,11 @@ class MenuView
                 $anchorExtraAttributes = '';
                 $condChildIndicator = '';
                 if (count($menuItemArray["children"]) > 0) {
-                    $condChildIndicator = $this->childIndicator;
+                    if ($depthLevel == 1) {
+                        $condChildIndicator = $this->secondChildIndicator;
+                    }else {
+                        $condChildIndicator = $this->childIndicator;
+                    }
                     $anchorClass .= " dropdown-toggle";
                     $liClass .= " dropdown";
                     $anchorExtraAttributes .= 'data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
@@ -197,7 +207,11 @@ class MenuView
                 $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $anchorClass, $depthLevel, $anchorExtraAttributes);
                 $menuView .= sprintf($this->menuItemOpenString, $liAttributes, $anchorAttributes, $menuItemArray['path'], $menuItemTitle, $condChildIndicator);
                 if (count($menuItemArray["children"]) > 0) {
-                    $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divId = */ '', /* $divClass = */ '', /* $ulClass = */ 'dropdown-menu', $depthLevel + 1));
+                    $ulClasses = 'dropdown-menu';
+                    if ($depthLevel == 1) {
+                        $ulClasses .= ' dropdown-child-menu';
+                    }
+                    $menuView .= implode(" ", $this->prepareMenuView($menuItemArray["children"], /* $menuTitleUnderscored = */ null, /* $divId = */ '', /* $divClass = */ '', /* $ulClass = */ $ulClasses, $depthLevel + 1));
                 }
                 $menuView .= $this->menuItemCloseString;
             }
