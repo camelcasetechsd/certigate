@@ -17605,7 +17605,7 @@ and open the template in the editor.
 /* OriginalFileName : public/css/certigateTheme.css */ 
 
 .title-top{
-    padding: 0px 0px !important; 
+    padding: 0px 0px !important;
     margin-top: 0px;
 }
 
@@ -17624,8 +17624,8 @@ and open the template in the editor.
     text-transform: uppercase;
 }
 .page-container-wide{
-    margin-top: -0.2%; 
-    margin-right: -12.5%; 
+    margin-top: -0.2%;
+    margin-right: -12.5%;
     margin-left: -12.5%;
 }
 
@@ -17687,6 +17687,31 @@ body {
 }
 .manageMenu .navbar-nav>li>a{
     color: #fff !important;
+}
+ul.dropdown-child-menu {
+  left: 100%;
+  top: -4px;
+}
+
+.caret-by-side {
+  border-left: 4px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+}
+
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+}
+/* OriginalFileName : public/css/certigateTheme.rtl.css */ 
+
+ul.dropdown-child-menu {
+  left: inherit;
+  right: 100%;
+}
+
+.caret-by-side {
+  border-left: 4px solid transparent;
+  border-right: 4px solid;
 }
 /* OriginalFileName : public/css/form.css */ 
 

@@ -19341,7 +19341,7 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
 /* OriginalFileName : public/bower_components/metisMenu/dist/metisMenu.js */ 
 
 /*
- * metismenu - v2.5.2
+ * metismenu - v2.6.1
  * A jQuery menu plugin
  * https://github.com/onokumus/metisMenu#readme
  *
@@ -19375,7 +19375,7 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
 
   function _classCallCheck(instance, Constructor) {
@@ -19531,6 +19531,7 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
           $(this._element).find('li').has('ul').children('a').on(Event.CLICK_DATA_API, function (e) {
             var _this = $(this);
             var _parent = _this.parent('li');
+            var _siblings = _parent.siblings('li').children('a');
             var _list = _parent.children('ul');
             if (self._config.preventDefault) {
               e.preventDefault();
@@ -19544,6 +19545,9 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
             } else {
               self._show(_list);
               _this.attr('aria-expanded', true);
+              if (self._config.toggle) {
+                _siblings.attr('aria-expanded', false);
+              }
             }
 
             if (self._config.onTransitionStart) {
@@ -19669,6 +19673,17 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
           this._transitioning = isTransitioning;
         }
       }, {
+        key: 'dispose',
+        value: function dispose() {
+          $.removeData(this._element, DATA_KEY);
+
+          $(this._element).find('li').has('ul').children('a').off('click');
+
+          this._transitioning = null;
+          this._config = null;
+          this._element = null;
+        }
+      }, {
         key: '_getConfig',
         value: function _getConfig(config) {
           config = $.extend({}, Default, config);
@@ -19681,6 +19696,10 @@ function getNewOtherDateInput(relativePostion, currentDate, otherDateSelector) {
             var $this = $(this);
             var data = $this.data(DATA_KEY);
             var _config = $.extend({}, Default, $this.data(), (typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object' && config);
+
+            if (!data && /dispose/.test(config)) {
+              this.dispose();
+            }
 
             if (!data) {
               data = new MetisMenu(this, _config);
@@ -20167,16 +20186,6 @@ $(document).ready(function () {
                 .not(':checkbox, :radio, select')
                 .val('').removeAttr('value');
         closestForm.find("select").prop('selectedIndex',0);
-    });
-});;
-/* OriginalFileName : public/js/menu.js */ 
-
-$(document).ready(function () {
-    $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        $(this).parent().siblings().removeClass('open');
-        $(this).parent().toggleClass('open');
     });
 });;
 /* OriginalFileName : public/js/menuItemCRUD.js */ 
@@ -20717,5 +20726,29 @@ $(document).ready(function () {
             }
         });
         return false;
+    });
+
+    $("input[name='roles[]']").change(function () {
+        var roleLabel = $(this).parent().text();
+        var statementId = roleLabel.replace(/\s+/g, '').replace("-", "") + "Statement";
+        statementId = statementId.charAt(0).toLowerCase() + statementId.slice(1);
+        
+        if (statementId == "reSellerStatement") {
+            statementId = "resellerStatement";
+        }
+        
+        if ($(this).is(":checked")) {
+            $("input[name=\"" + statementId + "\"]").attr("required", "required");
+        } else {
+            $("input[name=\"" + statementId + "\"]").removeAttr("required");
+        }
+    });
+    
+    $("form#user_form").submit(function(){
+        if($("input[name=\"roles[]\"]:checked").length === 0){
+            $(".roles-inputs").after("<ul><li class=\"errors\">You must select at least one role !</li></ul>");
+            $(".roles-inputs").focus();
+            return false;
+        }
     });
 });
