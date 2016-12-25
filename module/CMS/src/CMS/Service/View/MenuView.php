@@ -201,7 +201,7 @@ class MenuView
                     }
                     $anchorClass .= " dropdown-toggle";
                     $liClass .= " dropdown";
-                    $anchorExtraAttributes .= 'data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+                    $anchorExtraAttributes .= 'role="button" aria-haspopup="true" aria-expanded="false"';
                 }
                 $liAttributes = sprintf($this->menuItemLiAttributesString, $liClass, $depthLevel, $activeFlag);
                 $anchorAttributes = sprintf($this->menuItemAnchorAttributesString, $anchorClass, $depthLevel, $anchorExtraAttributes);

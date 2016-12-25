@@ -92,3 +92,7 @@ ul.dropdown-child-menu {
   border-bottom: 4px solid transparent;
   border-top: 4px solid transparent;
 }
+
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+}
