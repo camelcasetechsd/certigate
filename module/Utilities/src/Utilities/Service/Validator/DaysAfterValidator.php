@@ -73,7 +73,14 @@ class DaysAfterValidator extends AbstractValidator
 
         $this->setValue($value);
         $isValid = true;
-        $dateDiff = date_diff(\DateTime::createFromFormat(Time::DATE_FORMAT, $value), new \DateTime());
+        $dateFormatted = \DateTime::createFromFormat(Time::DATE_FORMAT, $value);
+        
+        // if value is bad formatted , stop processing and return false
+        if (!$dateFormatted) {
+            return false;
+        }
+        
+        $dateDiff = date_diff($dateFormatted, new \DateTime());
         if (($dateDiff->days < $this->token)) {
             $this->error(self::MSG_THAN_NUMBER_OF_DAYS, $this->token);
             $isValid = false;
