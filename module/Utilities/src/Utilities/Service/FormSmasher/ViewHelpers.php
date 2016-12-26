@@ -41,8 +41,9 @@ class ViewHelpers
 
     /**
      * form input helper function
+     * (use custom view helper to facilitate file PRG helper)
      */
-    const FORM_FILE_TEXT = 'formFile';
+    const FORM_FILE_TEXT = '\Utilities\Service\View\Helper\FormFile';
 
     /**
      * form input helper function
